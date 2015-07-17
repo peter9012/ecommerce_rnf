@@ -1,0 +1,9 @@
+/target
+.classpath
+.project
+.settings/
+target/
+bin/
+test-output/
+*.log
+*.DS_Store

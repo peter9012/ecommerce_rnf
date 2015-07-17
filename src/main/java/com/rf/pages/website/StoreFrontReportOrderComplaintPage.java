@@ -1,0 +1,59 @@
+package com.rf.pages.website;
+
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import com.rf.core.driver.website.RFWebsiteDriver;
+
+public class StoreFrontReportOrderComplaintPage extends RFWebsiteBasePage {
+	 //private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[1]/a");
+	 private final By REPORT_PAGE_HEADER_LOC = By.xpath("//div[contains(text(),'Report a problem')]");
+	 private final By REPORT_PAGE_CHECKBOX_LOC = By.xpath("//div[@class='repaired-checkbox']");
+	 private final By REPORT_PAGE_DROPDOWN_OPTION_LOC = By.xpath("//select[@id='problemType']/option");
+	 private final By REPORT_PAGE_TEXT_AREA_LOC = By.xpath("//textarea[@id='problemText']");
+	 private final By REPORT_PAGE_SUBMIT_LOC = By.xpath("//input[@id='submitButton']");
+	 private final By REPORT_PAGE_DROPDOWN_SELECT_LOC = By.xpath("//select[@id='problemType']");
+	 private final By REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC = By.xpath("//select[@id='problemType']/option[contains(text(),'Order is incorrect')]");
+
+	public StoreFrontReportOrderComplaintPage(RFWebsiteDriver driver) {
+		super(driver);
+		
+	}
+	public boolean VerifyOrderNumberOnReportPage(){
+		String header = driver.findElement(REPORT_PAGE_HEADER_LOC).getText();
+		System.out.println("header--------"+header);
+		if(header.contains(StoreFrontOrdersPage.orderNumberOfOrderHistory)){
+		return true;
+	}
+	    return false;
+	}
+	public void clickOnCheckBox(){
+		driver.findElement(REPORT_PAGE_CHECKBOX_LOC).click();
+	}
+	public boolean verifyCountOfDropDownOptionsOnReportPage(){
+		List<WebElement> list = driver.findElements(REPORT_PAGE_DROPDOWN_OPTION_LOC);
+		int size = list.size();
+		System.out.println(size);
+		if(size == 6){
+			return true;
+		}
+		return false;
+		
+	}
+	public void selectOptionFromDropDown() throws InterruptedException{
+		driver.findElement(REPORT_PAGE_DROPDOWN_SELECT_LOC).click();
+		Thread.sleep(2000);
+		driver.click(REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC);
+//		Select sel = new Select(driver.findElement(REPORT_PAGE_DROPDOWN_OPTION_LOC));
+//        sel.selectByValue("Order is incorrect");
+	}
+	public StoreFrontReportProblemConfirmationPage enterYourProblemAndSubmit(String problemTextArea){
+		driver.type(REPORT_PAGE_TEXT_AREA_LOC,problemTextArea);
+		driver.click(REPORT_PAGE_SUBMIT_LOC);
+		return new StoreFrontReportProblemConfirmationPage(driver);
+	}
+}

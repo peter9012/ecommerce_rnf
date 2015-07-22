@@ -1,16 +1,18 @@
 package com.rf.pages.website;
 
+import org.openqa.selenium.By;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
 
 public class RFWebsiteBasePage extends RFBasePage{
-	
+
 	protected RFWebsiteDriver driver;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
 		super(driver);
 		this.driver = driver;
 	}
-	
+
 	//contains the common methods useful for all the pages inherited
 
 	public static String convertDBDateFormatToUIFormat(String DBDate){
@@ -57,9 +59,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 			UIMonth="December";
 			break;		
 		}
-		
+
 		return UIMonth+" "+date+", "+year;
 	}
-	
+
+	public void clickOnShopLink(){
+		driver.findElement(By.id("our-products")).click();
+	}
+
+	public void clickOnAllProductsLink(){
+		driver.findElement(By.xpath("//a[@title='All Products']")).click();
+	}
+
+
 }
 

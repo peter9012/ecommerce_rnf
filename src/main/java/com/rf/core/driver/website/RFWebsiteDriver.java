@@ -39,6 +39,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 30;
+	private String environment = null;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -62,30 +63,45 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new ChromeDriver();
 		}
 
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.get(propertyFile.getProperty("baseUrl"));
 	}
-	
+
 	public void setDBConnectionString(){
-		String dbIP = propertyFile.getProperty("dbIP");
-		String dbUsername = propertyFile.getProperty("dbUsername");
-		String dbPassword = propertyFile.getProperty("dbPassword");
-		String dbDomain = propertyFile.getProperty("dbDomain");
-		String databaseName = propertyFile.getProperty("databaseName");
-		DBUtil.setConnectionString(dbIP, dbUsername, dbPassword, dbDomain, databaseName);
+		String dbIP = null;
+		String dbUsername = null;
+		String dbPassword = null;
+		String dbDomain = null;
+		String databaseName = null;
+		String authentication = null;
+
+		if(propertyFile.getProperty("env").equalsIgnoreCase("tst4")){
+			environment = "tst4";
+			dbIP = propertyFile.getProperty("dbIP");
+			dbUsername = propertyFile.getProperty("dbUsername");
+			dbPassword = propertyFile.getProperty("dbPassword");
+			dbDomain = propertyFile.getProperty("dbDomain");
+			databaseName = propertyFile.getProperty("databaseName");
+			authentication = propertyFile.getProperty("authentication");
+		}
+
+		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, databaseName, authentication);
 	}
 
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
 
+	public String getEnvName(){
+		return environment;
+	}
 	/**
 	 * @param locator
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
-		
+
 		if (driver.findElements(locator).size() > 0) {
 			return true;
 		} else
@@ -143,7 +159,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public WebElement findElement(By by) {
-		movetToElementJavascript(by);
 		return driver.findElement(by);
 	}
 
@@ -459,5 +474,5 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		return sDateTime;
 	}
-	
+
 }

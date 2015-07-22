@@ -1,6 +1,7 @@
 package com.rf.pages.website;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -19,16 +20,17 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private final By ORDER_STATUS_TEXT_LOC = By.xpath("//div[@class='order-summary-left']/h3");
 	private final By ORDER_PAYMENT_METHOD_LOC = By.xpath("//strong[text()='Payment Method:']/ancestor::p");
 	private final By ORDER_TOTAL_PRICE_LOC = By.xpath("//table[@class='order-products']//td[@id='productSV']//following::td[2]");
+	private final By ORDER_GRAND_TOTAL_BOTTOM_LOC = By.xpath("//li[@class='grand-total']/span");
 	private final By SKU_VALUE_OF_ITEM_IN_ORDER_LOC = By.xpath("//td[text()='Items In Order']//following::img[1]//ancestor::td/span");
 	private final By ITEM_ORDER_DESCRIPTION_LOC = By.xpath("//td[text()='Items In Order']//following::img[1]//ancestor::td");
 	private final By SHIPPING_ADDRESS_LOC = By.xpath("//strong[text()='Shipping Address:']/following::p[1]");
 	private final By ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Order details:')]");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
-    private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
-    private final By ACTIONS_BUTTON_LOC = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[5]/span/img");
-    private final By ACTIONS_DROPDOWN_LOC = By.xpath("//table[@id='history-orders-table']//tr[2]/td[5]/ul/li[2]/a");
-    private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[1]/a");
-		
+	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
+	private final By ACTIONS_BUTTON_LOC = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[5]/span/img");
+	private final By ACTIONS_DROPDOWN_LOC = By.xpath("//table[@id='history-orders-table']//tr[2]/td[5]/ul/li[2]/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[1]/a");
+
 	String autoShipOrderNumber = null;
 	static String  orderNumberOfOrderHistory = null;
 
@@ -57,7 +59,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			grandTotal = "CAD$ " +grandTotal;
 		}
 		else{
-			grandTotal = "US$ "+grandTotal;
+			grandTotal = "$"+grandTotal;
 		}		
 		return grandTotal.contains(driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
 	}
@@ -92,7 +94,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifySVValue(String userType){
-		String svValue = driver.findElement(By.cssSelector("td[id='productSV']")).getText();
+		String svValue = driver.findElement(By.xpath("//table[@class='order-products']//tr[2]//td[@id='productSV']")).getText();
+		System.out.println("----sv UI---- "+svValue);
 		if(userType.equalsIgnoreCase("consultant")){
 			if(Integer.parseInt(svValue)>=100){
 				return true;
@@ -140,7 +143,16 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-	
+
+	public boolean verifyAutoshipGrandTotalPrice(String grandTotalDB){
+		String autoshipGrandTotalPrice = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText();
+		System.out.println("GT--------- "+autoshipGrandTotalPrice.substring(1));
+		if(autoshipGrandTotalPrice.substring(1).contains(grandTotalDB)){
+			return true;
+		}
+		return false;
+	}
+
 	public boolean verifySKUValueOfItemInOrder(String skuValueDB){
 		String skuValue = driver.findElement(SKU_VALUE_OF_ITEM_IN_ORDER_LOC).getText();
 		if(skuValue.equals(skuValueDB)){
@@ -148,7 +160,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-	
+
 	public boolean verifyDescriptionOfItemInOrder(String itemDescDB){
 		String itemDescription = driver.findElement(ITEM_ORDER_DESCRIPTION_LOC).getText();
 		if(itemDescription.contains(itemDescDB)){
@@ -156,112 +168,37 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-	
 
-	//	public boolean verifySKUValueOfItemInOrder(String skuValueDB){
-	//		String skuValue = driver.findElement(SKU_VALUE_OF_ITEM_IN_ORDER_LOC).getText();
-	//		if(skuValue.equals(skuValueDB)){
-	//			return true;
-	//		}
-	//		return false;
-	//	}
-	//	
-	//	public boolean verifyDescriptionOfItemInOrder(String itemDescDB){
-	//		String itemDescription = driver.findElement(ITEM_ORDER_DESCRIPTION_LOC).getText();
-	//		if(itemDescription.contains(itemDescDB)){
-	//			return true;
-	//		}
-	//		return false;
-	//	}
 
-	public boolean verifyShippingAddressDetails(String address){
-		String shippingAddress = driver.findElement(SHIPPING_ADDRESS_LOC).getText();
-		System.out.println("SHIPPING ADDRESS : "+shippingAddress);
-		if(shippingAddress.contains(address)){
-			return true;
-		}
-		return false;
+	public boolean verifyShippingAddressDetails(String shippingAddressDB){		
+		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().contains(shippingAddressDB);		
+	}
+
+	public boolean verifyShippingMethod(String shippingMethodDB){
+		System.out.println("UI --"+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText());
+		System.out.println("DB --"+shippingMethodDB);
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().contains(shippingMethodDB);
 	}
 
 	public boolean verifyPCPerksAutoShipHeader(){
 		System.out.println(driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
 		return driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: AUTOSHIPMENT #"+autoShipOrderNumber);
 	}
-	
-//	public boolean verifyPresenceOfScheduleDateText(){
-//		  boolean isScheduleDateTextPresent = false;
-//		  String scheduleDateTagText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
-//		  System.out.println("scheduleDateTagText---"+scheduleDateTagText);
-//		  if(scheduleDateTagText.contains("SCHEDULE DATE")){
-//		   isScheduleDateTextPresent = true;
-//		  }
-//		  return isScheduleDateTextPresent;
-//		 }
-//		 
-//		 public boolean verifyPresenceOfOrderStatusText(){
-//		  boolean isOrderStatusTextPresent = false;
-//		  String orderStatusTagText = driver.findElement(ORDER_STATUS_TEXT_LOC).getText();
-//		  System.out.println("orderStatusTagText---"+orderStatusTagText);
-//		  if(orderStatusTagText.contains("ORDER STATUS")){
-//		   isOrderStatusTextPresent = true;
-//		  }
-//		  return isOrderStatusTextPresent;
-//		 }
-//		 
-//		 public boolean verifyExpirationDate(String expirationDate){
-//		  String paymentMethodTagText = driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText();
-//		  if(paymentMethodTagText.contains(expirationDate)){
-//		   return true;
-//		  }
-//		  return false;
-//		 }
-		 
-		 
-		 public boolean verifyOrderStatusToBeSubmitted(String orderNumber){
-			 String orderStatus = driver.findElement(By.xpath(String.format(ORDER_NUMBER_STATUS_LOC,orderNumber))).getText();
-			 if(orderStatus.equals("SUBMITTED")){
-				 return true;
-			 }
-			 return false;	
-		 }
 
-		 public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
-			 driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
-			 System.out.println("Clicked");
-			 return new StoreFrontAccountInfoPage(driver);
-		 }
+	public boolean verifyOrderStatusToBeSubmitted(String orderNumber){
+		String orderStatus = driver.findElement(By.xpath(String.format(ORDER_NUMBER_STATUS_LOC,orderNumber))).getText();
+		if(orderStatus.equals("SUBMITTED")){
+			return true;
+		}
+		return false;	
+	}
 
+	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
+		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
+		System.out.println("Clicked");
+		return new StoreFrontAccountInfoPage(driver);
+	}
 
-
-
-
-	//	public boolean verifyPresenceOfScheduleDateText(){
-	//		  boolean isScheduleDateTextPresent = false;
-	//		  String scheduleDateTagText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
-	//		  System.out.println("scheduleDateTagText---"+scheduleDateTagText);
-	//		  if(scheduleDateTagText.contains("SCHEDULE DATE")){
-	//		   isScheduleDateTextPresent = true;
-	//		  }
-	//		  return isScheduleDateTextPresent;
-	//		 }
-	//		 
-	//		 public boolean verifyPresenceOfOrderStatusText(){
-	//		  boolean isOrderStatusTextPresent = false;
-	//		  String orderStatusTagText = driver.findElement(ORDER_STATUS_TEXT_LOC).getText();
-	//		  System.out.println("orderStatusTagText---"+orderStatusTagText);
-	//		  if(orderStatusTagText.contains("ORDER STATUS")){
-	//		   isOrderStatusTextPresent = true;
-	//		  }
-	//		  return isOrderStatusTextPresent;
-	//		 }
-	//		 
-	//		 public boolean verifyExpirationDate(String expirationDate){
-	//		  String paymentMethodTagText = driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText();
-	//		  if(paymentMethodTagText.contains(expirationDate)){
-	//		   return true;
-	//		  }
-	//		  return false;
-	//		 }
 
 	public boolean verifyCRPTotalPrice(String price){
 		String[] totalPriceValueForAssertion = price.split("\\.");
@@ -273,29 +210,74 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return false;
 	}
 
-	public boolean verifyCRPAutoShipAddressFromDB(){
-		String address = driver.findElement(ORDER_AUTOSHIP_ADDRESS_LOC).getText();
-		return true;
-	}
+	//	public boolean verifyCRPAutoShipAddressFromDB(){
+	//		String address = driver.findElement(ORDER_AUTOSHIP_ADDRESS_LOC).getText();
+	//		return true;
+	//	}
+
 	public StoreFrontReportOrderComplaintPage clickOnActions(){
 		driver.findElement(ACTIONS_BUTTON_LOC).click();
 		driver.findElement(ACTIONS_DROPDOWN_LOC).click();	 
 		return new StoreFrontReportOrderComplaintPage(driver);
 	}
+
 	public void orderNumberForOrderHistory(){
 		orderNumberOfOrderHistory = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText();
 	}
 
 	public boolean isPaymentMethodContainsName(String name){
-		System.out.println("******* "+name.toLowerCase());
-		System.out.println("***UI**** "+driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase());
 		return driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase().contains(name.toLowerCase());
 	}
-	
+
 	public void clickOrderNumber(String orderNumber){
 		driver.click(By.linkText(orderNumber));
 	}
 
+	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[1]/span")).getText();
+		return subTotal.substring(1).contains(subTotalDB);
+	}
+
+	public boolean verifyAutoShipTemplateShipping(String shippingDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[2]/span")).getText();
+		return subTotal.substring(1).contains(shippingDB);
+	}
+
+	public boolean verifyAutoShipTemplateHandling(String handlingDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[3]/span")).getText();
+		return subTotal.substring(1).contains(handlingDB);
+	}
+
+	public boolean verifyAutoShipTemplateTax(String taxDB){
+		String subTotal = driver.findElement(By.xpath("//li[@id='module-hst']/span")).getText();
+		return subTotal.trim().substring(1).contains(taxDB);
+	}
+
+//	public boolean verifyPayeeName(String payeeNameDB){
+//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
+//	}
+
+	public boolean verifyCardType(String cardTypeDB){		
+		if(cardTypeDB.contains("master")){		
+			try{
+				driver.findElement(By.xpath("//span[@class='cardType mastercard']"));				
+				return true;
+			}
+			catch(NoSuchElementException e){
+				return false;
+			}
+		}
+		else if(cardTypeDB.contains("Visa")){
+			try{
+				driver.findElement(By.xpath("//span[@class='cardType visa']"));
+				return true;
+			}
+			catch(NoSuchElementException e){
+				return false;
+			}
+		}
+		return false;
+
+	}
+
 }
-
-

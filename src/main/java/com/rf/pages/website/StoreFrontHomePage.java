@@ -9,7 +9,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By BUSINESS_LINK_LOC = By.cssSelector("a[id='corp-opp']"); 
 	private final By ENROLL_NOW_LINK_LOC = By.cssSelector("a[title='Enroll Now']");	
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
-//	private final By LOGIN_LINK_LOC = By.xpath("//li[@id='log-in-button']/a");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='Log in']");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");

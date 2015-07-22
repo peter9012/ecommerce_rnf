@@ -6,13 +6,14 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontConsultantEnrollmentConfirmationPage extends RFWebsiteBasePage {
 
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.cssSelector("img[title='Rodan+Fields']");
 	
 	public StoreFrontConsultantEnrollmentConfirmationPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
 
 	public StoreFrontConsultantPage clickOnRodanFieldsImage(){
-		driver.findElement(By.cssSelector("img[title='Rodan+Fields']")).click();
+		driver.findElement(RODAN_AND_FIELDS_IMG_LOC).click();
 		return new StoreFrontConsultantPage(driver);
 	}
 }

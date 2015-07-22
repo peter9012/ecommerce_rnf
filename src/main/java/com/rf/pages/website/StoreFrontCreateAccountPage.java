@@ -21,8 +21,7 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 	}
 
-	public void enterEmailAddress(String emailAddress){
-		System.out.println("*******************************"+emailAddress);
+	public void enterEmailAddress(String emailAddress){		
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress);		
 	}
 

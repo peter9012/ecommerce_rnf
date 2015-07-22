@@ -35,5 +35,10 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		Thread.sleep(3000);
 		return new StoreFrontAccountInfoPage(driver);
 	}
+
+	public StoreFrontCartAutoShipPage addProductToPCPerk(){
+		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']")).click();
+		return new StoreFrontCartAutoShipPage(driver);
+	}
 }
 

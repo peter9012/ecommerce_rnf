@@ -27,7 +27,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private String ACCOUNT_INFO_YEAR_OF_BIRTH_LOC = "//select[@id='yearOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
 	private final By ACCOUNT_AUTOSHIP_STATUS_LOC = By.xpath("//div[@id='left-menu']//a[text()='Autoship Status']");
-
+	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -38,6 +38,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return driver.getCurrentUrl().contains(TestConstants.ACCOUNT_PAGE_SUFFIX_URL);
 
 	}
+	
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.findElement(TERMINATE_MY_ACCOUNT).click();
@@ -191,6 +192,26 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ACCOUNT_AUTOSHIP_STATUS_LOC);
 		driver.click(ACCOUNT_AUTOSHIP_STATUS_LOC);
 		return new StoreFrontOrdersAutoshipStatusPage(driver);
+	}
+
+	public StoreFrontAccountInfoPage enterMainPhoneNumber(String mainPhoneNumber){
+		driver.clear(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
+		driver.type(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC, mainPhoneNumber);
+		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		return new StoreFrontAccountInfoPage(driver);
+	}
+	
+	public boolean verifyValidationMessageOfPhoneNumber(String validationMessage){
+		if(driver.isElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC)){
+			String validationMessageFromUI = driver.findElement(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC).getText();
+			System.out.println("Validation Message from UI -->  "+validationMessageFromUI);
+			if(validationMessageFromUI.equalsIgnoreCase(validationMessage)){
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

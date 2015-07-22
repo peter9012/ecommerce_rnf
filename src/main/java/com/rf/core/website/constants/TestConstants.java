@@ -30,9 +30,9 @@ public class TestConstants {
 	/*
 	 * Consultant User Details
 	 */
-	public static final String CONSULTANT_EMAIL_ID = "rfTestUser730240@xyz.com";
+	public static final String CONSULTANT_EMAIL_ID_STG2 = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "rftestuser596824@xyz.com";
-	public static final String CONSULTANT_PASSWORD = "test1234";
+	public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String CONSULTANT_ADDRESS_LINE_1 = "5502 54 St";
@@ -57,6 +57,9 @@ public class TestConstants {
 	public static final String CONSULTANT_YEAR_OF_BIRTH = "2013";
 	public static final String CONSULTANT_GENDER = "male";
 	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION = "Ontario";
+	public static final String CONSULTANT_INVALID_11_DIGIT_MAIN_PHONE_NUMBER = "23423423423";
+	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
+	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 
 	// Conslutant Details For Reupdate Account Info
 
@@ -134,9 +137,19 @@ public class TestConstants {
 	public static final String TELL_US_ABOUT_YOUR_PROBLEM = "Wrong delivery";
 
 	/*
-	 * env related Keywords
+	 * US tst4 
 	 */
-
+	public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
+	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
+	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";
+	public static final String CONSULTANT_ACC_TERMINATION_PASSWORD_TST4 = "test1234";
+	
+	public static final String PC_EMAIL_ID_TST4 = "wigginsk@comcast.net";
+	public static final String PC_PASSWORD_TST4 = "abcde";
+	
+	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
+	public static final String RCUSER_PASSWORD_TST4 = "abcde";
+	public static final String RCUSER_USERNAME_TST4 = "Kasey";
 
 	/*
 	 * env related keywords list

@@ -70,6 +70,8 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 	//Hybris Phase 2-4223 :: Version : 1 :: Account with multiple payment profiles
 	@Test
 	public void testBillingInfoPageDetails() throws SQLException, InterruptedException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomEmailList =  null;
 		List<Map<String, Object>> billingAddressCountList =  null;
 		int totalBillingAddressesFromDB = 0;

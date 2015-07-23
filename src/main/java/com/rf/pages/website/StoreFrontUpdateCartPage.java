@@ -18,8 +18,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void clickUpdateCartBtn(){
+	public void clickUpdateCartBtn() throws InterruptedException{
 		driver.click(UPDATE_CART_BTN_LOC);
+		System.out.println("*********** update cart clicked");
+		Thread.sleep(5000);
 	}
 
 	public void clickOnEditPaymentBillingProfile(){
@@ -89,6 +91,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	
 	public void clickOnUpdateCartShippingNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
+		Thread.sleep(5000);
 		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).doubleClick().build().perform();		
 		action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).click(driver.findElement(By.xpath("//input[@id='use_address']"))).build().perform();
 		Thread.sleep(2000);
@@ -110,8 +113,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//span")).click();
 			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//label")).getText();	
-		}
-		Thread.sleep(3000);
+		}		
 		return null;
 	}
 	

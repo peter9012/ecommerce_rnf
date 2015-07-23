@@ -22,7 +22,7 @@ import com.rf.test.base.RFBaseTest;
  */
 public class RFWebsiteBaseTest extends RFBaseTest {
 	// TODO dynamic input from user
-	
+
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBaseTest.class.getName());
@@ -48,7 +48,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		System.out.println("tearDown Method");
 		driver.quit();
 	}
-	
+
 	@AfterMethod
 	public void logout(){
 		driver.findElement(By.cssSelector("li[id='account-info-button']")).click();
@@ -61,13 +61,29 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.findElement(By.linkText("Log out")).click();
 	}
 
+	// This assertion for the UI Texts
 	public void assertTrue(String message, boolean condition) {
-
 		if (!condition) {
 			logger.info("[FUNCTIONAL FAILURE - ASSERTION ERROR ----------- "
-					+ message + "]");
-			Assert.fail(message);
+					+ message + "]");			
+			Assert.fail(message);				
 		}
+
+	}
+
+
+	//This assertion for the Database validations
+	public boolean assertTrueDB(String message, boolean condition,String dbName) {
+		if (!condition) {
+			logger.info("[DATABASE ASSERTION FAILURE -  "+dbName+" ----------- " +message + "]");
+			if(!dbName.equals(driver.getDBNameRFL())){
+				Assert.fail(message);
+			}
+			else{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void assertTrue(boolean condition, String message) {
@@ -80,7 +96,6 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void assertEquals(Object obj1, Object obj2, String message) {
-
 		if (!obj1.equals(obj2)) {
 			logger.info("[FUNCTIONAL FAILURE - ASSERTION ERROR ----------- "
 					+ message + "]");
@@ -88,8 +103,33 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-	public void assertEquals(String message, int num1,int num2) {
+	public boolean assertEqualsDB(Object obj1, Object obj2, String message,String dbName) {
+		if (!obj1.equals(obj2)) {
+			logger.info("[DATABASE ASSERTION FAILURE -  "+dbName+" ----------- " +message + "]");
+			if(!dbName.equals(driver.getDBNameRFL())){
+				Assert.fail(message);
+			}	
+			else{
+				return false;
+			}
+		}
+		return true;		
+	}
 
+	public boolean assertEqualsDB(String message, int num1,int num2,String dbName) {
+		if (!(num1==num2)) {
+			logger.info("[DATABASE ASSERTION FAILURE -  "+dbName+" ----------- " +message + "]");
+			if(!dbName.equals(driver.getDBNameRFL())){
+				Assert.fail(message);
+			}
+			else{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void assertEquals(String message, int num1,int num2) {
 		if (!(num1==num2)) {
 			logger.info("[FUNCTIONAL FAILURE - ASSERTION ERROR ----------- "
 					+ message + "]");
@@ -115,15 +155,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-//	public void assertTrue(boolean condition) {
-//
-//		try {
-//			assertTrue(condition);
-//
-//		} catch (Exception e) {
-//			logger.trace(e.getMessage());
-//		}
-//	}
+	//	public void assertTrue(boolean condition) {
+	//
+	//		try {
+	//			assertTrue(condition);
+	//
+	//		} catch (Exception e) {
+	//			logger.trace(e.getMessage());
+	//		}
+	//	}
 
 	public void assertEquals(String message, float num1,float num2) {
 

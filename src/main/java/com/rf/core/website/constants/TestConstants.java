@@ -42,6 +42,9 @@ public class TestConstants {
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
 	
+	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
+	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
+	
 	// Conslutant Details For Account Info
 	
 	// Conslutant Details For Update Account Info
@@ -141,8 +144,11 @@ public class TestConstants {
 	 */
 	public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
 	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
+	public static final String CONSULTANT_PASSWORD_RFL = "abcde";
+	public static final String PC_USER_PASSWORD_RFL = "abcde";
 	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";
 	public static final String CONSULTANT_ACC_TERMINATION_PASSWORD_TST4 = "test1234";
+	
 	
 	public static final String PC_EMAIL_ID_TST4 = "wigginsk@comcast.net";
 	public static final String PC_PASSWORD_TST4 = "abcde";
@@ -158,5 +164,6 @@ public class TestConstants {
 
 
 }
+
 
 

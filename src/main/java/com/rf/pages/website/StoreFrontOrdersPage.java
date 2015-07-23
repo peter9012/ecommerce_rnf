@@ -253,9 +253,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return subTotal.trim().substring(1).contains(taxDB);
 	}
 
-//	public boolean verifyPayeeName(String payeeNameDB){
-//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
-//	}
+	//	public boolean verifyPayeeName(String payeeNameDB){
+	//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
+	//	}
 
 	public boolean verifyCardType(String cardTypeDB){		
 		if(cardTypeDB.contains("master")){		
@@ -277,7 +277,18 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			}
 		}
 		return false;
+	}
 
+	public boolean verifyReturnOrderNumber(String returnOrderNumber){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[1]/a")).getText().equals(returnOrderNumber);
+	}
+
+	public boolean verifyReturnOrderGrandTotal(String total){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[3]")).getText().contains(total);
+	}
+
+	public boolean verifyReturnOrderStatus(String status){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[4]")).getText().equalsIgnoreCase(status);
 	}
 
 }

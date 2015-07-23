@@ -60,8 +60,7 @@ public class RFBaseTest {
 			System.out.println("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			System.out.println("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
 			System.out.println("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
-			System.out.println("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));
-			System.out.println("Default database is  ------ "+propertyFile.getProperty("databaseName"));			
+			System.out.println("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));						
 		}
 		// clear screenshots folder
 		try {

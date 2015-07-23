@@ -39,7 +39,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 30;
-	private String environment = null;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -73,29 +72,29 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
-		String databaseName = null;
+
 		String authentication = null;
-
-		if(propertyFile.getProperty("env").equalsIgnoreCase("tst4")){
-			environment = "tst4";
-			dbIP = propertyFile.getProperty("dbIP");
-			dbUsername = propertyFile.getProperty("dbUsername");
-			dbPassword = propertyFile.getProperty("dbPassword");
-			dbDomain = propertyFile.getProperty("dbDomain");
-			databaseName = propertyFile.getProperty("databaseName");
-			authentication = propertyFile.getProperty("authentication");
-		}
-
-		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, databaseName, authentication);
+		dbIP = propertyFile.getProperty("dbIP");
+		dbUsername = propertyFile.getProperty("dbUsername");
+		dbPassword = propertyFile.getProperty("dbPassword");
+		dbDomain = propertyFile.getProperty("dbDomain");		 
+		authentication = propertyFile.getProperty("authentication");
+		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 	}
 
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
 
-	public String getEnvName(){
-		return environment;
+	public String getDBNameRFL(){
+		return propertyFile.getProperty("databaseNameRFL");
 	}
+
+	public String getDBNameRFO(){
+		return propertyFile.getProperty("databaseNameRFO");
+	}
+
+
 	/**
 	 * @param locator
 	 * @return

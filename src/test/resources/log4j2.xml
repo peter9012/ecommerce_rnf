@@ -7,8 +7,8 @@
         <Console name="console-log" target="SYSTEM_OUT">
             <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
         </Console>
-        <RollingFile name="trace-log" fileName="${log-path}/rnf-info.log"
-                     filePattern="${log-path}/rnf-trace-%d{yyyy-MM-dd}.log" append="false">
+        <RollingFile name="trace-log" fileName="${log-path}/rf-info.log"
+                     filePattern="${log-path}/rf-trace-%d{yyyy-MM-dd}.log" append="false">
             <PatternLayout>
                 <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
             </PatternLayout>
@@ -16,8 +16,8 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingFile>
-        <RollingFile name="debug-log" fileName="${log-path}/rnf-debug.log"
-                     filePattern="${log-path}/rnf-debug-%d{yyyy-MM-dd}.log" append="false">
+        <RollingFile name="debug-log" fileName="${log-path}/rf-debug.log"
+                     filePattern="${log-path}/rf-debug-%d{yyyy-MM-dd}.log" append="false">
             <PatternLayout>
                 <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
             </PatternLayout>
@@ -27,7 +27,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.rnf" level="debug" additivity="false" append="false">
+        <Logger name="com.rf" level="debug" additivity="false" append="false">
             <appender-ref ref="trace-log" level="info"/>
             <appender-ref ref="debug-log" level="debug"/>
         </Logger>

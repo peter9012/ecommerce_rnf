@@ -21,33 +21,22 @@ public class TestListner extends TestListenerAdapter {
 
 	@Override
 	public void onTestStart(ITestResult tr) {
-		System.out.println("test starts "+tr.getName());
-
-
-		//		testIds = qmetryID(tr);
-		//		testIds = qmetryID(tr);
-		//		for (String test : testIds)
-		//			logger.info("[TC-" + test + " ------- Executing "
-		//					+ tr.getMethod().getMethodName() + "]"
-		//					+ "<br>DESCRIPTION :" + tr.getMethod().getDescription());
+		logger.info("\n******************************************************************************************************************************"+
+		"\n\t\t\t\t\tTEST CASE NAME:                  "+ tr.getMethod().getMethodName()+
+		"\n******************************************************************************************************************************");
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult tr) {
-
-		//		testIds = qmetryID(tr);
-		//		testIds = qmetryID(tr);
-		//		for (String test : testIds)
-		//			logger.info("[TEST IS SUCCESSFUL -------- Test case " + test
-		//					+ " passed]");
+		logger.info("[TEST IS SUCCESSFUL -------- Test case " + tr.getMethod().getMethodName()+ " has passed]");
 	}
 
 	@Override
-	public void onTestFailure(ITestResult testResult) {
-		if (testResult.getStatus() == ITestResult.FAILURE){
-			
+	public void onTestFailure(ITestResult tr) {
+		if (tr.getStatus() == ITestResult.FAILURE){
+			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]");
 			try {
-				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, testResult.getMethod());
+				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, tr.getMethod().getMethodName());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,10 +46,7 @@ public class TestListner extends TestListenerAdapter {
 
 	@Override
 	public void onTestSkipped(ITestResult tr) {
-		//		testIds = qmetryID(tr);
-		//		for (String test : testIds)
-		//			logger.info("[TEST IS SKIPPED -------- Test case " + test
-		//					+ " skipped]");
+		logger.info("[TEST IS SKIPPED -------- Test case " + tr.getMethod().getMethodName()	+ " skipped]");
 	}
 
 }

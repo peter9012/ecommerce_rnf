@@ -5,19 +5,22 @@ package com.rf.core.utils;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 //import org.openqa.selenium.WebDriver;
 import org.testng.Reporter;
 import org.testng.asserts.IAssert;
 import org.testng.collections.Maps;
 
+import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.listeners.TestListner;
+
 public class SoftAssert extends org.testng.asserts.SoftAssert {
+	private static final Logger logger = LogManager.getLogger(SoftAssert.class
+			.getName());
 
 	private final Map<AssertionError, IAssert>	m_errors	= Maps.newHashMap();
-//	private static WebDriver					driver;
-
-//	public SoftAssert(WebDriver driver) {
-//		this.driver = driver;
-//	}
 
 	@Override
 	public void executeAssert(IAssert a)
@@ -34,47 +37,46 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 	public void assertAll()
 	{
 		if (!m_errors.isEmpty()) {
-			StringBuilder sb = new StringBuilder("[FUNCTIONAL FAILURE - ASSERTION ERROR ----------- ");
+			StringBuilder sb = new StringBuilder();
 			boolean first = true;
+			int i=1;
 			for (Map.Entry<AssertionError, IAssert> ae : m_errors.entrySet()) {
 				if (first) {
 					first = false;
 				} else {
-					sb.append(", ");
+					sb.append("\n ");
 				}
-				sb.append(ae.getValue().getMessage());
+				sb.append(i+"."+ae.getValue().getMessage()+"\n");
 			}
 
 			throw new AssertionError(sb.toString());
 		}
 	}
 
-	@Override
-	public void onAfterAssert(IAssert a)
-	{
-//		Reporter.log("Expected: " + a.getExpected());
-//		Reporter.log("Actual: " + a.getActual());
-//		Reporter.log("");
-		super.onAfterAssert(a);
-	}
-
-	@Override
-	public void onBeforeAssert(IAssert a)
-	{
-		//Reporter.log("Test Case Desciption: " + a.getMessage());
-	}
+//	@Override
+//	public void onAfterAssert(IAssert a)
+//	{
+//		logger.info("Expected: " + a.getExpected());
+//		logger.info("Actual: " + a.getActual());
+//		super.onAfterAssert(a);
+//	}
+//
+//	@Override
+//	public void onBeforeAssert(IAssert a)
+//	{
+//		//Reporter.log("Test Case Desciption: " + a.getMessage());
+//	}
 
 	@Override
 	public void onAssertFailure(IAssert a, AssertionError ex)
 	{
 		try {
-			Reporter.log("Test Case Desciption: " + a.getMessage());
-			Reporter.log("TEST Case Failed ->" + ex.getMessage());
-			Reporter.log("Expected: " + a.getExpected());
-			Reporter.log("Actual: " + a.getActual());
-			Reporter.log("");
-			//String sScreenshotPath= driver.takeSnapShotAndRetPath();
-			//Reporter.log("Snapshot Path :<a href='" + sScreenshotPath + "'>"+ sScreenshotPath+"</a>");
+			logger.info("VERIFICATION FAILED: " + ex.getMessage());
+			logger.info("Expected: " + a.getExpected());
+			logger.info("Actual: " + a.getActual());			
+			String sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
+			logger.info("Snapshot Path :<a href='" + sScreenshotPath + "'>"+ sScreenshotPath+"</a>\n");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -19,7 +19,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 	private final By ADD_NEW_BILLING_CARD_NAME_LOC = By.id("card-name");
 	private final By ADD_NEW_BILLING_CARD_EXP_MONTH_LOC = By.id("expiryMonth");
-	private final By ADD_NEW_BILLING_CARD_EXP_YEAR_LOC = By.id("expiryMonth");
+	private final By ADD_NEW_BILLING_CARD_EXP_YEAR_LOC = By.id("expiryYear");
 	private final By ADD_NEW_BILLING_CARD_SECURITY_CODE_LOC = By.id("security-code");
 	private final By ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC = By.xpath("//*[@id='addressBookdropdown']");
 	private final By ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC = By.xpath("//*[@id='addressBookdropdown']/option[1]");
@@ -48,8 +48,10 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	
 	public boolean isDefaultBillingAddressSelected(String address1) throws InterruptedException{
 		Thread.sleep(2000);
-		System.out.println("UI "+driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li[1]/p[1]")).getText());
-		return driver.findElement(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]")).getText().contains(address1);
+		String defaultAddressUI = driver.findElement(By.xpath("//input[@name='bill-card' and @checked='checked']/ancestor::li[1]/p[1]")).getText(); 
+		System.out.println("UI "+defaultAddressUI);
+		System.out.println("-----------DB "+address1);
+		return defaultAddressUI.contains(address1);
 	}
 
 	public String getDefaultBillingAddress(){
@@ -96,8 +98,9 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		Thread.sleep(5000);
 	}
 	
-	public void clickOnEditBillingProfile(String billingProfileName){		
-		driver.findElement(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a")).click();
+	public void clickOnEditBillingProfile() throws InterruptedException{		
+		driver.findElement(By.xpath("//input[@checked='checked']/preceding::p[1]/a")).click();
+		Thread.sleep(3000);
 	}
 	
 	public String getBillingProfileName(){

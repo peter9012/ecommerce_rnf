@@ -26,7 +26,7 @@ import com.rf.core.website.constants.TestConstants;
  */
 
 @Listeners({ com.rf.core.listeners.TestListner.class })
-public class RFBaseTest {
+public class RFBaseTest{
 	public static WebDriver driver;
 	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
@@ -34,7 +34,7 @@ public class RFBaseTest {
 	protected PropertyFile propertyFile = new PropertyFile();
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
-	protected SoftAssert s_assert;
+	protected SoftAssert s_assert = new SoftAssert();
 
 	/**
 	 * @param envproperties
@@ -54,13 +54,13 @@ public class RFBaseTest {
 
 		} else {
 			propertyFile.loadProps(defaultProps);
-			System.out.println("Environment properties are not provided by the user ... loading the default properties");
-			System.out.println("Default Browser is  ------ "+propertyFile.getProperty("browser"));
-			System.out.println("Default URL is  ------ "+propertyFile.getProperty("baseUrl"));
-			System.out.println("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
-			System.out.println("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
-			System.out.println("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
-			System.out.println("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));						
+			logger.info("Environment properties are not provided by the user ... loading the default properties");
+			logger.info("Default Browser is  ------ "+propertyFile.getProperty("browser"));
+			logger.info("Default URL is  ------ "+propertyFile.getProperty("baseUrl"));
+			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
+			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
+			logger.info("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
+			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));						
 		}
 		// clear screenshots folder
 		try {

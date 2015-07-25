@@ -53,5 +53,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void openConsultantPWS(String pwsURL){
 		driver.get(pwsURL);		
 	}
+	
+	public boolean isCurrentURLShowsError(){
+		return driver.getCurrentUrl().contains("login?error=true");
+	}
 
 }

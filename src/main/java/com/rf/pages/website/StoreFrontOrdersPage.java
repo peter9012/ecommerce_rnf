@@ -69,11 +69,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public void clickAutoshipOrderNumber(){		
-		getOrderNumber();
+		getAutoshipOrderNumber();
 		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);		
 	}
 
-	public String getOrderNumber(){
+	public String getAutoshipOrderNumber(){
 		autoShipOrderNumber = driver.findElement(ORDER_AUTOSHIP_ORDER_NUMBER_LOC).getText(); 
 		return  autoShipOrderNumber;
 	}
@@ -109,7 +109,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return false;
 	}
 
-	public boolean verifyPresenceOfScheduleDateText(){
+	public boolean verifyPresenceOfScheduleDateText() throws InterruptedException{
+		Thread.sleep(3000);
 		boolean isScheduleDateTextPresent = false;
 		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
 		if(scheduleDateText.contains("SCHEDULE DATE")){
@@ -257,8 +258,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
 	//	}
 
-	public boolean verifyCardType(String cardTypeDB){		
-		if(cardTypeDB.contains("master")){		
+	public boolean verifyCardType(String cardTypeDB){	
+		String cardType = cardTypeDB.toLowerCase();
+		if(cardType.contains("master")){		
 			try{
 				driver.findElement(By.xpath("//span[@class='cardType mastercard']"));				
 				return true;
@@ -267,7 +269,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 				return false;
 			}
 		}
-		else if(cardTypeDB.contains("Visa")){
+		else if(cardType.contains("visa")){
 			try{
 				driver.findElement(By.xpath("//span[@class='cardType visa']"));
 				return true;

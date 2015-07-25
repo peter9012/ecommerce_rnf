@@ -20,8 +20,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		return driver.findElement(LEFT_PANE_TEXT_LOC).getText().contains("R + F Independent Consultant");
 	}
 
-	public void clickOnWelcomeDropDown(){		
-		driver.findElement(WELCOME_USER_DD_LOC).click();
+	public void clickOnWelcomeDropDown() throws InterruptedException{		
+		Thread.sleep(2000);
+		driver.findElement(WELCOME_USER_DD_LOC).click();		
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{

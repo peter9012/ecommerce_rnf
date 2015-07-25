@@ -19,8 +19,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickUpdateCartBtn() throws InterruptedException{
-		driver.click(UPDATE_CART_BTN_LOC);
-		System.out.println("*********** update cart clicked");
+		driver.click(UPDATE_CART_BTN_LOC);		
 		Thread.sleep(5000);
 	}
 
@@ -104,15 +103,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public String selectAndGetShippingMethodName() throws InterruptedException{
 		if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//span")).click();
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//label")).getText();	
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//label")).getText().split("-")[0];	
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//span")).click();
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//label")).getText();	
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//label")).getText().split("-")[0];	
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//span")).click();
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//label")).getText();	
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//label")).getText().split("-")[0];	
 		}		
 		return null;
 	}

@@ -25,6 +25,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestNGMethod;
+import org.testng.Reporter;
 
 import com.rf.core.driver.RFDriver;
 import com.rf.core.utils.DBUtil;
@@ -64,7 +65,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-		driver.get(propertyFile.getProperty("baseUrl"));
+		//	driver.get(propertyFile.getProperty("baseUrl"));
 	}
 
 	public void setDBConnectionString(){
@@ -433,16 +434,34 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		executor.executeScript("arguments[0].click();", element);
 	}
 
-	public static String takeSnapShotAndRetPath(WebDriver driver,ITestNGMethod m) throws Exception {
-		logger.info("INTO METHOD->Fn_TakeSnapShotAndRetPath");
+	public static String takeSnapShotAndRetPath(WebDriver driver,String methodName) throws Exception {
+
 		String FullSnapShotFilePath = "";
 
-		try {
-			logger.info("Take Screen shot started");
+		try {			
 			File scrFile = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.FILE);
 			String sFilename = null;
-			sFilename = "Screenshot-" +m.getClass().getSimpleName()+m.getMethodName().toString()+getDateTime() + ".png";
+			sFilename = "Screenshot-" +methodName+getDateTime() + ".png";
+			FullSnapShotFilePath = System.getProperty("user.dir")
+					+ "\\Output\\ScreenShots\\" + sFilename;
+			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
+		} catch (Exception e) {
+
+		}
+
+		return FullSnapShotFilePath;
+	}
+
+	public static String takeSnapShotAndRetPath(WebDriver driver) throws Exception {
+
+		String FullSnapShotFilePath = "";
+		try {
+			logger.info("Taking Screenshot");
+			File scrFile = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.FILE);
+			String sFilename = null;
+			sFilename = "verificationFailure_Screenshot.png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
 					+ "\\Output\\ScreenShots\\" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));

@@ -43,10 +43,10 @@ public class RFShippingPageTest extends RFWebsiteBaseTest{
 		String address1=null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsultantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
-		assertTrue("shipping info page has not been displayed", storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
 		// assert with RFL
 		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
@@ -68,8 +68,10 @@ public class RFShippingPageTest extends RFWebsiteBaseTest{
 				address1 = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
 				assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(address1));
 			}
-		}	
-	}	
+		}
+		logout();
+		s_assert.assertAll();
+	}
 
 	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 
 	// WIP

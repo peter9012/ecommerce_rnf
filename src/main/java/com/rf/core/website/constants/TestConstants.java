@@ -21,7 +21,7 @@ public class TestConstants {
 	public static final String POSTAL_CODE = "T9N 2H4";
 	public static final String PHONE_NUMBER = "(234) 234-2342";
 	public static final String CARD_NUMBER = "4111111111111111";
-	public static final String CARD_EXP_MONTH = "Dec";
+	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
 	public static final String SECURITY_CODE = "123";
 	public static final String SECURITY_INSURANCE_NUMBER = "556677900";
@@ -144,6 +144,7 @@ public class TestConstants {
 	 */
 	public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
 	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
+	public static final String RC_PASSWORD_TST4 = "abcde";
 	public static final String CONSULTANT_PASSWORD_RFL = "abcde";
 	public static final String PC_USER_PASSWORD_RFL = "abcde";
 	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";

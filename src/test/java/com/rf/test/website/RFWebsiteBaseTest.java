@@ -6,13 +6,20 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.asserts.IAssert;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.DBUtil;
+import com.rf.core.utils.HtmlLogger;
+import com.rf.core.utils.SoftAssert;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -21,7 +28,7 @@ import com.rf.test.base.RFBaseTest;
  *
  */
 public class RFWebsiteBaseTest extends RFBaseTest {
-	// TODO dynamic input from user
+	StringBuilder verificationErrors = new StringBuilder();
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -34,9 +41,18 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		System.out.println("setUp Method");		
 		driver.loadApplication();
-		driver.setDBConnectionString();
+		driver.setDBConnectionString();		
+	}
+
+	@BeforeMethod(alwaysRun=true)
+	public void beforeMethod(){
+		driver.get(driver.getURL());
+		try{
+			logout();
+		}catch(NoSuchElementException e){
+
+		}		
 	}
 
 	/**
@@ -44,12 +60,11 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		//new HtmlLogger().createHtmlLogFile();
+		new HtmlLogger().createHtmlLogFile();
 		System.out.println("tearDown Method");
 		driver.quit();
 	}
 
-	@AfterMethod
 	public void logout(){
 		driver.findElement(By.cssSelector("li[id='account-info-button']")).click();
 		try {
@@ -173,6 +188,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			Assert.fail(message);
 		}
 	}
+
 
 	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
 		Object value = null;

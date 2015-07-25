@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.DBQueries;
@@ -18,6 +20,8 @@ import com.rf.pages.website.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class RFBillingInfoTest extends RFWebsiteBaseTest{
+	private static final Logger logger = LogManager
+			.getLogger(RFBillingInfoTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsulatantPage;
@@ -39,10 +43,10 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 		String address1=null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsulatantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		assertTrue("Billing Info page has not been displayed", storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 
 		// assert with RFL
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
@@ -62,14 +66,19 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 				//assert with RFO
 				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
 				address1 = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressLine1");
-				assertTrue("Default radio button in Billing page is not selected", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1));
+				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),"Default radio button in Billing page is not selected");
 			}
-		}		
+		}
+
+		logout();
+		s_assert.assertAll();
 	}
+
+
 
 	//Hybris Phase 2-4223 :: Version : 1 :: Account with multiple payment profiles
 	@Test
-	public void testBillingInfoPageDetails() throws SQLException, InterruptedException{
+	public void testBillingInfoPageDetails_4223() throws SQLException, InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomEmailList =  null;
@@ -80,10 +89,10 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(userEmailId, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsulatantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		assertTrue("Billing Info page has not been displayed", storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 
 		// assert with RFL
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
@@ -92,24 +101,25 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 			//assert with RFO
 			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
-			assertEquals("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
+			s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");			
 		}
-
+		logout();
+		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
-	@Test(enabled=false)
-	public void testAddNewBillingProfileOnBillingProfilePage() throws InterruptedException, SQLException{
+	@Test
+	public void testAddNewBillingProfileOnBillingProfilePage_2041() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();		
 		int totalBillingAddressesFromDB = 0;
 		List<Map<String, Object>> billingAddressCountList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsulatantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		assertTrue("Billing Info page has not been displayed", storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS);
@@ -122,38 +132,39 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 		// assert with RFL
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
-		if(assertEqualsDB("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
+		if(assertEqualsDB("Billing Addresses count on UI is different from RFL DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
 			//assert with RFO
 			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
-			assertEquals("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
+			assertEquals("Billing Addresses count on UI is different from RFO DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
 		}
 
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		assertTrue("autoship order payment name is not as expected", storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS));
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"autoship order payment name is not as expected");
 		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		assertTrue("New Billing Profile is not selected by default on update cart page",storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS));
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"New Billing Profile is not selected by default on update cart page");
 		storeFrontConsulatantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		logout();
+		s_assert.assertAll();
 	}
 
 
 	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page 
-	@Test(enabled=false)
-	public void testEditBillingProfileOnBillingProfilePage() throws InterruptedException, SQLException{
+	@Test
+	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsulatantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		assertTrue("Billing Info page has not been displayed", storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
 		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
-		System.out.println("initialBillingProfileName= "+initialBillingProfileName);
-		storeFrontBillingInfoPage.clickOnEditBillingProfile(initialBillingProfileName);
+		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS);
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
@@ -162,31 +173,32 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		assertTrue("autoship order payment name is not as expected", storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS));
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"autoship order payment name is not as expected");
 		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		assertTrue("",storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS));
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"New Billing Address is not selected by default");
 		storeFrontConsulatantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		assertTrue("Billing Info page has not been displayed", storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed());
-		storeFrontBillingInfoPage.clickOnEditBillingProfile(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS);
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(initialBillingProfileName);
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-
+		logout();
+		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
-	@Test(enabled = false)
-	public void testEditBillingProfileInAutoshipTemplate() throws InterruptedException, SQLException{
+	@Test
+	public void testEditBillingProfileInAutoshipTemplate_2049() throws InterruptedException, SQLException{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
-		assertTrue("Consultant Page doesn't contain Welcome User Message",storeFrontConsulatantPage.verifyConsultantPage());
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -207,8 +219,9 @@ public class RFBillingInfoTest extends RFWebsiteBaseTest{
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		assertTrue("autoship order payment name is not as expected", storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS));
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"autoship order payment name is not as expected");
+		logout();
+		s_assert.assertAll();
 	}
-
 }
 

@@ -51,7 +51,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 
-	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber){
+	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
 		driver.clear(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
 		driver.clear(ACCOUNT_INFO_LAST_NAME_LOC);
@@ -71,9 +71,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_GENDER_LOC,TestConstants.CONSULTANT_GENDER)));
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		Thread.sleep(5000);
 		return new StoreFrontAccountInfoPage(driver);
-
 	}
+
 
 
 	public StoreFrontAccountInfoPage reUpdateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber){

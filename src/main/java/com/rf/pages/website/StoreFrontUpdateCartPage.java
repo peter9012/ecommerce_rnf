@@ -1,17 +1,25 @@
 package com.rf.pages.website;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.test.website.storeFront.account.AddShippingTest;
 
 public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontUpdateCartPage.class.getName());
 
 	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 	private final By PAYMENT_BILLING_EDIT_BTN_LOC = By.xpath("//a[@class='editPayment']");
 	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//p[@id='selectedPaymentInfo']/span[1]");
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
+	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
+
 
 	public StoreFrontUpdateCartPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -87,7 +95,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("clickNext")).click();
 		Thread.sleep(2000);
 	}
-	
+
 	public void clickOnUpdateCartShippingNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		Thread.sleep(5000);
@@ -115,10 +123,85 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}		
 		return null;
 	}
-	
+
 	public void clickOnEditShipping() throws InterruptedException{
 		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")).click();
 		Thread.sleep(3000);
+	}
+
+	public boolean isShippingAddressPresent(String name){
+		try{
+			driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul//span[@class='font-bold'][contains(text(),'"+name+"')]"));
+			return true;
+		}
+		catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+
+
+
+	public void enterNewShippingAddressName(String name){
+		logger.info("New Shipping Address name is "+name);
+		driver.findElement(By.id("new-attention")).sendKeys(name);
+	}
+
+	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
+	}
+
+	public void enterNewShippingAddressCity(String city){
+		driver.findElement(By.id("townCity")).sendKeys(city);
+	}
+
+	public void selectNewShippingAddressState(String state){
+		Select stateDD = new Select(driver.findElement(By.id("state")));
+		stateDD.selectByValue(state);
+	}
+
+	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+	}
+
+	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
+	}
+
+	public void clickOnSaveShippingProfile() throws InterruptedException{
+		driver.click(By.xpath("//input[@id='autoShipShippingAddr']"));
+		Thread.sleep(5000);
+	}
+
+	public void acceptNewShippingAddress() throws InterruptedException{
+		try{
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//input[@id='QAS_RefineBtn']")).click();
+			Thread.sleep(5000);
+		}catch(NoSuchElementException e){
+
+		}
+
+	}
+
+	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
+		try{
+			driver.findElement(By.xpath("//div[@id='new-shipping-added']//span[@class='font-bold'][contains(text(),'"+name.toLowerCase()+"')]/ancestor::li[1]//input[@type='radio'][@checked='checked']"));
+			return true;
+		}catch(NoSuchElementException e){
+			try{
+				driver.findElement(By.xpath("//div[@id='new-shipping-added']//span[@class='font-bold'][contains(text(),'"+name+"')]/ancestor::li[1]//input[@type='radio'][@checked='checked']"));
+				return true;
+			}catch(NoSuchElementException e1){
+				return false;
+			}
+		}
+
+	}
+
+	public void clickAddNewShippingProfileLink() throws InterruptedException{
+		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
+		Thread.sleep(2000);
 	}
 
 }

@@ -36,8 +36,9 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.isElementPresent(By.linkText(link));
 	}
 
-	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown(){
+	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();
+		Thread.sleep(3000);
 		return new StoreFrontShippingInfoPage(driver);
 	}
 

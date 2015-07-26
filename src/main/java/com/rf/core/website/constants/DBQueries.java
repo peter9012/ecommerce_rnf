@@ -118,7 +118,7 @@ public class DBQueries {
 					"FROM dbo.OrderShipments AS os "+
 					"WHERE os.OrderID = @Orderid";
 
-	public static String GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFL = "SELECT TOP 1 [as].UserName FROM dbo.Accounts AS a JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID WHERE EXISTS(SELECT 1 FROM dbo.AccountPaymentMethods AS apm WHERE apm.AccountID=a.AccountID GROUP BY apm.AccountID HAVING COUNT(*)>1) ORDER BY NEWID()";
+	public static String GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFL = "SELECT TOP 1 a.EmailAddress FROM dbo.Accounts AS a JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID WHERE EXISTS(SELECT 1 FROM dbo.AccountPaymentMethods AS apm WHERE apm.AccountID=a.AccountID GROUP BY apm.AccountID HAVING COUNT(*)>1) ORDER BY NEWID()";
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL = 
 			"SELECT TOP 1 [as].UserName "
 					+"FROM dbo.Accounts AS a "+
@@ -756,11 +756,19 @@ public class DBQueries {
 					"AND o.OrderStatusID=7) "+/*Submitted Template*/ 
 					"ORDER BY NEWID()";
 
+	public static String GET_ACCOUNTS_WITH_NULL_EMAIL_ADDRESS =
+			"SELECT TOP 1000 a.AccountID "+
+			", [as].UserName "+
+			"FROM dbo.Accounts AS a "+
+			"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID "+
+			"WHERE a.EmailAddress IS NULL "+
+			"ORDER BY NEWID()";
+
 	public static String GET_RANDOM_PWS_SITE_URL_RFL =
-			"SELECT TOP 1 "+
-					"SUL.URL "+
-					"FROM    dbo.SiteURLs AS SUL where URL Like '%.biz'"+
-					"ORDER BY NEWID() ";
+	"SELECT TOP 1 "+
+			"SUL.URL "+
+			"FROM    dbo.SiteURLs AS SUL where URL Like '%.biz'"+
+			"ORDER BY NEWID() ";
 
 	/**
 	 * 

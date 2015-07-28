@@ -481,7 +481,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			String sFilename = null;
 			sFilename = "Screenshot-" + getDateTime() + ".png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
-					+ "\\Output\\ScreenShots\\" + sFilename;
+					+ "\\output\\ScreenShots\\" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
 		} catch (Exception e) {
 

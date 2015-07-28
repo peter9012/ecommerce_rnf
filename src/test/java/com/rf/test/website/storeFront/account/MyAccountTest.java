@@ -52,6 +52,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
@@ -77,13 +78,41 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
+		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
-		s_assert.assertAll();
 		logout();
 		s_assert.assertAll();
+	}
+
+	// Hybris Phase 2-2228 :: Version : 1 :: Perform RC Account termination through my account
+	@Test
+	public void testAccountTerminationPageForRCUser_2228() throws InterruptedException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_RC_EMAIL_ID_RFL,RFL_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "EmailAddress");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, TestConstants.RC_PASSWORD_TST4);
+		logger.info("login is successful");
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		storeFrontHomePage.loginAsConsultant(rcUserEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
+		s_assert.assertAll();
+
 	}
 
 	// Hybris Phase 2-1980 :: Version : 1 :: Order >>Actions >>Report problems
@@ -96,8 +125,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4,TestConstants.CONSULTANT_PASSWORD_RFL);			
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -110,7 +140,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontReportProblemConfirmationPage = storeFrontReportOrderComplaintPage.enterYourProblemAndSubmit(TestConstants.TELL_US_ABOUT_YOUR_PROBLEM);
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyHeaderAtReportConfirmationPage("REPORT A PROBLEM"),"Report a problem is not present at header");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyThankYouTagAtReportConfirmationPage("THANK YOU"),"Thank you tag is not present on the page");
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(TestConstants.CONSULTANT_EMAIL_ID_TST4),"Email Address is not present as expected" );
+		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyOrderNumberAtReportConfirmationPage(),"Order number not present as expected");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyBackToOrderButtonAtReportConfirmationPage(),"Back To Order button is not present");
 		logout();
@@ -119,7 +149,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	//Hybris Phase 2-1981:Orders page UI for RC
 	@Test
-	public void testOrdersPageUIForRCUser_HP2_1981() throws SQLException{
+	public void testOrdersPageUIForRCUser_HP2_1981() throws SQLException, InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> orderNumberList =  null;
@@ -136,6 +166,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		rcUserUsername = TestConstants.RCUSER_USERNAME_TST4;
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(TestConstants.RCUSER_EMAIL_ID_TST4, TestConstants.RCUSER_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserUsername),"RC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -182,15 +213,16 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	// Hybris Phase 2-2235:Verify that user can change the information in 'my account info'
+	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
 	@Test
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> accountNameDetailsList = null;
 		List<Map<String, Object>> accountAddressDetailsList = null;
 		List<Map<String, Object>> mainPhoneNumberList = null;
+		List<Map<String, Object>> randomConsultantList =  null;
 
 		String firstNameDB = null;
 		String lastNameDB = null;
@@ -201,16 +233,21 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String postalCodeDB = null;
 		String mainPhoneNumberDB = null;
 		String dobDB = null;
-		String stateDB = null;
+		//String stateDB = null;
 
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		//assertTrue("Account Info page has not been displayed", storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed());
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
 		storeFrontAccountInfoPage.updateAccountInformation(TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION);
 
-		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFL_DB);
+		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
 		firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
 		lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
 		String genderId = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderID"));
@@ -221,20 +258,21 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			genderDB = "female";
 		}
 		dobDB  = (String) getValueFromQueryResult(accountNameDetailsList, "Birthday");
-		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFL_DB);
+		System.out.println("Birtthday ++++++"+ dobDB);
+		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
 		addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "Address1");
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "City");
-		String state = (String) getValueFromQueryResult(accountAddressDetailsList, "State");
-		if(state.equalsIgnoreCase("TX")){
-			stateDB = "Texas";	
-		}
+		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "State");
+		/*if(state.equalsIgnoreCase("TX")){
+	   stateDB = "Texas"; 
+	  }*/
 		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
 		mainPhoneNumberDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PhoneNumber");
 
 		// assert First Name with RFL
 		if(assertTrueDB("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), RFL_DB) == false){
 			//assert First Name with RFO
-			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 			firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
 			assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
 		}
@@ -242,7 +280,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//assert Last Name with RFL
 		if(assertTrueDB("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), RFL_DB) == false){
 			// assert Last Name with RFO
-			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 			lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
 			assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
 		}
@@ -250,7 +288,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//assert Address Line 1 with RFL
 		if(assertTrueDB("Address Line 1 on UI is different from DB", storeFrontAccountInfoPage.verifyAddressLine1FromUIForAccountInfo(addressLine1DB), RFL_DB) == false){
 			// assert Address Line 1 with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "AddressLine1");
 			assertTrue("Address Line 1 on UI is different from DB", storeFrontAccountInfoPage.verifyAddressLine1FromUIForAccountInfo(addressLine1DB));
 		}
@@ -258,34 +296,33 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		// assert City with RFL
 		if(assertTrueDB("City on UI is different from DB", storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB), RFL_DB) == false){
 			// assert City with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Locale");
 			assertTrue("City on UI is different from DB", storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB));
 		}
 
 		// assert State with RFL
-		if(assertTrueDB("State on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(stateDB), RFL_DB) == false){
+		if(assertTrueDB("State on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB), RFL_DB) == false){
 			// assert State with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
-			String provinceFromDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
-			if(provinceFromDB.equalsIgnoreCase("TX")){
-				provinceDB = "Texas";	
-			}
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
+			provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
+			/*if(provinceFromDB.equalsIgnoreCase("TX")){
+	    provinceDB = "Texas"; 
+	   }*/
 			assertTrue("Province on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB));
 		}
 
 		// assert Postal Code with RFL
 		if(assertTrueDB("", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB), RFL_DB) == false){
-			//assert Postal Code eith RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			//assert Postal Code with RFO
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
 			assertTrue("Postal Code on UI is different from DB", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB));
 		}
-
 		// assert Main Phone Number with RFL
-		if(assertTrueDB("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB), RFL_DB)){
+		if(assertTrueDB("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB), RFL_DB)==false){
 			// assert Main Phone Number with RFO
-			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
 			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
 			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 		}
@@ -293,7 +330,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		// assert Gender with RFL
 		if(assertTrueDB("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB), RFL_DB) == false){
 			// assert Gender Id with RFO
-			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 			genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
 			assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
 		}
@@ -301,14 +338,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		// assert BirthDay with RFL
 		if(assertTrueDB("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB), RFL_DB) == false){
 			// assert BirthDay with RFO
-			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, TestConstants.CONSULTANT_EMAIL_ID_TST4), RFO_DB);
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 			dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB));
-		}		
-		storeFrontAccountInfoPage.reUpdateAccountInformation(TestConstants.CONSULTANT_FIRST_NAME_FOR_REUPDATE_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_LAST_NAME_FOR_REUPDATE_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_REUPDATE_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_CITY_FOR_REUPDATE_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_POSTAL_CODE_FOR_REUPDATE_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_REUPDATE_ACCOUNT_INFORMATION);
+		}  
 		logout();
 		s_assert.assertAll();
 	}
+
 
 	// Test Case Hybris Phase 2-2241 :: version 1 :: Verify the various field validations
 	@Test
@@ -322,6 +359,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");

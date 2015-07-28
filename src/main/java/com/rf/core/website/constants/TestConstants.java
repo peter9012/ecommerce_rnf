@@ -1,7 +1,7 @@
 package com.rf.core.website.constants;
 
 public class TestConstants {
-	
+
 
 	/*
 	 * Consultant User Creation Details
@@ -41,43 +41,28 @@ public class TestConstants {
 	public static final String CONSULTANT_COUNTRY = "CANADA";
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
-	
+
 	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
 	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
-	
+
 	// Conslutant Details For Account Info
-	
+
 	// Conslutant Details For Update Account Info
-	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNT_INFORMATION="rfTestUser596824@xyz.com";
-	public static final String CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION="rfTestUser1234";
-	public static final String CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION="rfTestUser596824";
-	public static final String CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION="10 Dunlop Street West";
-	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION="Barrie";
-	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION="L4N 1A2";
-	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION="2342342343";
+
+	public static final String CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION="smstone";
+	public static final String CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION="smstone1234";
+	public static final String CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION="1708 N 6TH ST";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION="TAHOKA";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION="79373-5171";
+	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION="8067736419";
 	public static final String CONSULTANT_DAY_OF_BIRTH = "4"; 
-	public static final String CONSULTANT_MONTH_OF_BIRTH = "04";
-	public static final String CONSULTANT_YEAR_OF_BIRTH = "2013";
+	public static final String CONSULTANT_MONTH_OF_BIRTH = "05";
+	public static final String CONSULTANT_YEAR_OF_BIRTH = "2010";
 	public static final String CONSULTANT_GENDER = "male";
-	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION = "Ontario";
+	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION = "Texas";
 	public static final String CONSULTANT_INVALID_11_DIGIT_MAIN_PHONE_NUMBER = "23423423423";
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
-
-	// Conslutant Details For Reupdate Account Info
-
-	public static final String CONSULTANT_FIRST_NAME_FOR_REUPDATE_ACCOUNT_INFORMATION="rfTestUser596824";
-	public static final String CONSULTANT_LAST_NAME_FOR_REUPDATE_ACCOUNT_INFORMATION="rfTestUser";
-	public static final String CONSULTANT_ADDRESS_LINE_1_FOR_REUPDATE_ACCOUNT_INFORMATION="5502 54 St";
-	public static final String CONSULTANT_CITY_FOR_REUPDATE_ACCOUNT_INFORMATION="BONNYVILLE";
-	public static final String CONSULTANT_POSTAL_CODE_FOR_REUPDATE_ACCOUNT_INFORMATION="V0R 2Z0";
-	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_REUPDATE_ACCOUNT_INFORMATION="2342342342";
-	public static final String CONSULTANT_DAY_OF_BIRTH_FOR_REUPDATE = "8"; 
-	public static final String CONSULTANT_MONTH_OF_BIRTH_FOR_REUPDATE = "08";
-	public static final String CONSULTANT_YEAR_OF_BIRTH_FOR_REUPDATE = "2008";
-	public static final String CONSULTANT_GENDER_FOR_REUPDATE = "female";
-	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION_FOR_REUPDATE = "Alberta";
-
 
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
@@ -142,18 +127,18 @@ public class TestConstants {
 	/*
 	 * US tst4 
 	 */
-	public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
+	//public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
 	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
 	public static final String RC_PASSWORD_TST4 = "abcde";
 	public static final String CONSULTANT_PASSWORD_RFL = "abcde";
 	public static final String PC_USER_PASSWORD_RFL = "abcde";
 	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";
 	public static final String CONSULTANT_ACC_TERMINATION_PASSWORD_TST4 = "test1234";
-	
-	
+
+
 	public static final String PC_EMAIL_ID_TST4 = "wigginsk@comcast.net";
 	public static final String PC_PASSWORD_TST4 = "abcde";
-	
+
 	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
 	public static final String RCUSER_PASSWORD_TST4 = "abcde";
 	public static final String RCUSER_USERNAME_TST4 = "Kasey";

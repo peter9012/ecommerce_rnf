@@ -1,11 +1,17 @@
 package com.rf.pages.website;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.test.website.storeFront.account.AddShippingTest;
 
 
 public class StoreFrontConsultantPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontConsultantPage.class.getName());
+
 
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
 	private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']"); 
@@ -20,16 +26,18 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		super(driver);		
 	}
 
-	// to do
-	public boolean verifyConsultantPage(){
-		//		driver.waitForElementPresent(WELCOME_USER_LOC);
-		//		return driver.findElement(LEFT_PANE_TEXT_LOC).getText().contains("R + F Independent Consultant");
-		return true;
+	
+	public boolean verifyConsultantPage() throws InterruptedException{
+		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a"));
+		return driver.findElement(By.xpath("//li[@id='account-info-button']/a")).getText().contains("Welcome");		
 	}
 
-	public void clickOnWelcomeDropDown() throws InterruptedException{		
-		driver.findElement(WELCOME_USER_DD_LOC).click();
+	public void clickOnWelcomeDropDown() throws InterruptedException{
 		Thread.sleep(3000);
+		driver.findElement(WELCOME_USER_DD_LOC).click();
+		Thread.sleep(2000);
+		logger.info("User has clicked on welcome drop down");
 	}
 
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
@@ -39,17 +47,20 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();
 		Thread.sleep(3000);
+		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		Thread.sleep(3000);
 		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
+		logger.info("User has clicked on orders link from welcome drop down");
 		return new StoreFrontOrdersPage(driver);
 	}
 
 	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
 		driver.findElement(WELCOME_DD_BILLING_INFO_LINK_LOC).click();
+		logger.info("User has clicked on billing link from welcome drop down");
 		return new StoreFrontBillingInfoPage(driver);
 	}
 
@@ -60,6 +71,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
 		Thread.sleep(3000);
+		logger.info("User has clicked on account link from welcome drop down");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

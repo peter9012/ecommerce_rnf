@@ -65,7 +65,7 @@ public class RFBaseTest{
 		// clear screenshots folder
 		try {
 			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
-					+ "\\Output\\ScreenShots"));
+					+ "\\output\\ScreenShots"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

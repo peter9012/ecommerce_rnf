@@ -444,7 +444,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			String sFilename = null;
 			sFilename = "Screenshot-" +methodName+getDateTime() + ".png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
-					+ "\\Output\\ScreenShots\\" + sFilename;
+					+ "\\output\\ScreenShots\\" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
 		} catch (Exception e) {
 
@@ -463,7 +463,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			String sFilename = null;
 			sFilename = "verificationFailure_Screenshot.png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
-					+ "\\Output\\ScreenShots\\" + sFilename;
+					+ "\\output\\ScreenShots\\" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
 		} catch (Exception e) {
 

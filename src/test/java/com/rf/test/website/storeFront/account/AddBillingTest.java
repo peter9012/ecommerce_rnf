@@ -40,9 +40,16 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();		
 		int totalBillingAddressesFromDB = 0;
 		List<Map<String, Object>> billingAddressCountList =  null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> defaultBillingAddressList =  null;
+		String consultantEmailID = null;
+		String address1=null;	
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
@@ -56,13 +63,25 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 
 		// assert with RFL
-		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
+		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
 		if(assertEqualsDB("Billing Addresses count on UI is different from RFL DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
 			//assert with RFO
-			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
+			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
 			assertEquals("Billing Addresses count on UI is different from RFO DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
+		}
+
+		if(totalBillingAddressesFromDB > 1){
+			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
+			address1 = (String) getValueFromQueryResult(defaultBillingAddressList, "Address1");
+			//assert with RFL
+			if(assertTrueDB("Default Billing Address radio button as per RFL DB is not selected on UI", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),RFL_DB)==false){
+				//assert with RFO
+				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+				address1 = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressLine1");
+				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),"Default Billing Address radio button as per RFO DB is not selected on UI");
+			}
 		}
 
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
@@ -101,39 +120,42 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		int totalBillingAddressesFromDB = 0;
 		List<Map<String, Object>> billingAddressCountList =  null;
 		List<Map<String, Object>> defaultBillingAddressList =  null;
-		String address1=null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		String address1=null;		
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 
 		// assert with RFL
-		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
+		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
-		if(assertEqualsDB("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
+		if(assertEqualsDB("Billing Addresses count on UI is different from RFL DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
 			//assert with RFO
-			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
+			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
-			assertEquals("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
+			assertEquals("Billing Addresses count on UI is different from RFO DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed());			
 		}
 
 		if(totalBillingAddressesFromDB > 1){
-			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
+			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
 			address1 = (String) getValueFromQueryResult(defaultBillingAddressList, "Address1");
 			//assert with RFL
-			if(assertTrueDB("Default radio button in Billing page is not selected", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),RFL_DB)==false){
+			if(assertTrueDB("Default Billing Address radio button as per RFL DB is not selected on UI", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),RFL_DB)==false){
 				//assert with RFO
-				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
+				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
 				address1 = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressLine1");
-				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),"Default radio button in Billing page is not selected");
+				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(address1),"Default Billing Address radio button as per RFO DB is not selected on UI");
 			}
 		}
-
 		logout();
 		s_assert.assertAll();
 	}
-
 
 }

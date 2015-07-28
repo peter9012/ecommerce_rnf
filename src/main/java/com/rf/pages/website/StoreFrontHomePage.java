@@ -37,8 +37,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);
 		driver.click(LOGIN_BTN_LOC);	
-		logger.info("login username is "+username);
-		logger.info("login password is "+password);
+		logger.info("login username is: "+username);
+		logger.info("login password is: "+password);
 		return new StoreFrontConsultantPage(driver);
 	}
 
@@ -65,7 +65,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.get(pwsURL);		
 	}
 
-	public boolean isCurrentURLShowsError(){
+	public boolean isCurrentURLShowsError() throws InterruptedException{
+		Thread.sleep(5000);
 		return driver.getCurrentUrl().contains("login?error=true");
 	}
 

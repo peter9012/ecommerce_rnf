@@ -133,7 +133,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	public boolean assertEqualsDB(String message, int num1,int num2,String dbName) {
 		if (!(num1==num2)) {
-			logger.info("[DATABASE ASSERTION FAILURE -  "+dbName+" ----------- " +message + "]");
+			logger.info("[RFL DATABASE ASSERTION FAILURE -  "+message + "]");
 			if(!dbName.equals(driver.getDBNameRFL())){
 				Assert.fail(message);
 			}

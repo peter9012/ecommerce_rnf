@@ -15,12 +15,15 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 		super(driver);		
 	}
 	
-	public boolean verifyRCUserPage(String username){
+	public boolean verifyRCUserPage(String username) throws InterruptedException{
+		Thread.sleep(2000);
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.findElement(By.xpath("//a[contains(text(),'Welcome "+username+"')]")).isDisplayed();
 	}
 
-	public void clickOnWelcomeDropDown(){		
+	public void clickOnWelcomeDropDown() throws InterruptedException{	
+		Thread.sleep(5000);
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.findElement(WELCOME_USER_DD_LOC).click();
 	}
 	

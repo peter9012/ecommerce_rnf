@@ -8,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.test.website.storeFront.account.AddShippingTest;
 
 public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
@@ -139,9 +138,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
-
-
-
 	public void enterNewShippingAddressName(String name){
 		logger.info("New Shipping Address name is "+name);
 		driver.findElement(By.id("new-attention")).sendKeys(name);
@@ -202,6 +198,78 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
 		Thread.sleep(2000);
+	}
+
+	public void clickOnBuyNowButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).click();
+	}
+
+	public void clickOnCheckoutButton(){
+		driver.findElement(By.xpath("//input[@value='checkout']")).click();
+	}
+
+	public boolean verifyCheckoutConfirmation(){
+		try{
+			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+	public void clickOnConfirmationOK(){
+		driver.findElement(By.xpath("//input[@value='OK']")).click();
+	}
+
+	public String getSubtotal(){
+		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//p[@id='module-subtotal'][1]/span[1]"));
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-subtotal'][1]/span[1]")).getText();
+	}
+
+	public String getDeliveryCharges(){
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-subtotal'][2]/span[1]")).getText();
+	}
+
+	public String getHandlingCharges(){
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-handling'][1]/span[1]")).getText();
+	}
+
+	public String getTax(){
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-hst'][1]/span[1]")).getText();
+	}
+
+	public String getTotal(){
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-total'][1]/span[1]")).getText();
+	}
+
+	public String getTotalSV(){
+		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//p[@id='module-subtotal'][3]/span[1]")).getText();
+	}
+
+	public String getShippingMethod(){
+		return driver.findElement(By.xpath("//select[@id='deliveryMode']/option[@selected='selected']")).getText();
+	}
+	
+	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		Thread.sleep(5000);
+		action.moveToElement(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).click(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).build().perform();
+		Thread.sleep(2000);
+	}
+	
+	public String getSelectedBillingAddress(){
+		return driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]/p[1]")).getText();
+	}
+	
+	public void clickOnBillingNextStepBtn() throws InterruptedException{
+		driver.findElement(By.xpath("//div[@id='payment-next-button']/input")).click();
+		Thread.sleep(3000);
+	}
+	
+	public void clickPlaceOrderBtn()throws InterruptedException{
+		driver.findElement(By.xpath("//input[@id='placeOrderButton']")).click();
+		Thread.sleep(3000);
 	}
 
 }

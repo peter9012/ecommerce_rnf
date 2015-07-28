@@ -1,12 +1,16 @@
 package com.rf.test.website.storeFront.account;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
+import com.rf.core.utils.DBUtil;
+import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
@@ -32,9 +36,16 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page 
 	@Test
 	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
@@ -72,9 +83,16 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
 	@Test
 	public void testEditBillingProfileInAutoshipTemplate_2049() throws InterruptedException, SQLException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();

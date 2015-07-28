@@ -1,6 +1,8 @@
 package com.rf.pages.website;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
@@ -64,7 +66,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnShopLink(){
-		driver.findElement(By.id("our-products")).click();
+		driver.waitForElementPresent(By.xpath("//a[@id='our-products']"));
+		driver.findElement(By.xpath("//a[@id='our-products']")).click();
 	}
 
 	public void clickOnAllProductsLink(){

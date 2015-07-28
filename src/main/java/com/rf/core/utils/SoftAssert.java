@@ -17,8 +17,8 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.listeners.TestListner;
 
 public class SoftAssert extends org.testng.asserts.SoftAssert {
-	private static final Logger logger = LogManager.getLogger(SoftAssert.class
-			.getName());
+	private static final Logger logger = LogManager
+			.getLogger(SoftAssert.class.getName());
 
 	private final Map<AssertionError, IAssert>	m_errors	= Maps.newHashMap();
 

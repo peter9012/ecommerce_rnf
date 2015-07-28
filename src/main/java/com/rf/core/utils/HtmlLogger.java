@@ -22,7 +22,8 @@ public class HtmlLogger
 		OutputStream htmlfile = new FileOutputStream(new File(
 				"logs/rf-info.html"));
 		PrintStream printhtml = new PrintStream(htmlfile);
-
+		String imagePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\staticdata\\RodanAndFields.png";
+		System.out.println("Image path is "+imagePath);
 
 		BufferedReader br = new BufferedReader(new FileReader("logs/rf-info.log"));
 		try {
@@ -30,21 +31,19 @@ public class HtmlLogger
 			String line = br.readLine();
 			String htmlheader = "<html><head>";
 			htmlheader += "<title>Execution Log - RodanAndFields</title>";
-			htmlheader += "</head><body BGCOLOR=\"#E5E4E2\"><CENTER><FONT FACE=\"TIMES NEW ROMAN\" COLOR=\"#2B65EC\" +" +
-					"SIZE=\"7\"><U>RODAN AND FIELDS</U></FONT></CENTER><br/><br/> "+
-					"<LEFT><img src=\"src/test/resources/staticdata/RodanAndFields.jpg\"></img></LEFT> "+
+			htmlheader += "</head><body BGCOLOR=\"#FAFAFA\">"+
+					"<LEFT><img src="+imagePath+"></img></LEFT> "+
 					"<CENTER><FONT FACE=\"Algerian\" COLOR=\"#483C32\" +" +
-					" SIZE=\"7\"><U>AUTOMATION TEST REPORT</U></FONT></CENTER><br/><br/>";
+					" SIZE=\"6\"><U>AUTOMATION TEST REPORT</U></FONT></CENTER><br/><br/>";
 			String htmlfooter = "</body></html>";
 			sb.append(htmlheader);
-
 
 			int count = 1;
 			while (line != null) {
 				line = line.replace("[main]", "");
 
 				if (line.contains("TEST CASE NAME")){
-					sb.append("<font color='#151B54'>" + "<" + "br" + "/><b>"
+					sb.append("<font color='#0000FF'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font>");
 				}
 
@@ -53,17 +52,22 @@ public class HtmlLogger
 							+ line + "</b></font><br/>");
 				}
 				else if (line.contains("TEST IS SUCCESSFUL")){
-					sb.append("<font color='#54C571'>" + "<" + "br" + "/><b>"
+					sb.append("<font color='#04B404'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}
 
 				else if (line.contains("TEST IS SKIPPED")){
-					sb.append("<font color='#C71586'>" + "<" + "br" + "/><b>"
+					sb.append("<font color='#848484'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}
 
-				else if (line.contains("[DATABASE ASSERTION FAILURE - RodanFieldsLive")){
-					sb.append("<font color='#C71586'>" + "<" + "br" + "/><b>"
+				else if (line.contains("[RFL DATABASE ASSERTION FAILURE")){
+					sb.append("<font color='#DF7401'>" + "<" + "br" + "/><b>"
+							+ line + "</b></font><br/>");
+				}
+
+				else if (line.contains("[FUNCTIONAL FAILURE - ASSERTION ERROR")){
+					sb.append("<font color='#DF7401'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}
 

@@ -23,18 +23,17 @@ import com.rf.test.website.RFWebsiteBaseTest;
 public class EditShippingTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EditShippingTest.class.getName());
-	
+
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
-	private StoreFrontOrdersPage storeFrontOrdersPage;
-		
+
 	private String RFL_DB = null;
 	private String RFO_DB = null;
-	
+
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
 	@Test
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
@@ -43,31 +42,36 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		int totalShippingAddressesFromDB = 0;
 		List<Map<String, Object>> shippingAddressCountList =  null;
 		List<Map<String, Object>> defaultShippingAddressList =  null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
 		String address1=null;
+		String consultantEmailID = null;
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_TST4, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
 		// assert with RFL
-		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
+		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
 		totalShippingAddressesFromDB = (Integer) getValueFromQueryResult(shippingAddressCountList, "count");		
 		if(assertEqualsDB("Shipping Addresses count on UI is different from DB", totalShippingAddressesFromDB,storeFrontShippingInfoPage.getTotalShippingAddressesDisplayed(),RFL_DB)==false){
 			//assert with RFO
-			shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
+			shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 			totalShippingAddressesFromDB = (Integer) getValueFromQueryResult(shippingAddressCountList, "count");			
 			assertEquals("Shipping Addresses count on UI is different from DB", totalShippingAddressesFromDB,storeFrontShippingInfoPage.getTotalShippingAddressesDisplayed());			
 		}
 
 		if(totalShippingAddressesFromDB > 1){
-			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_SHIPPING_ADDRESS_QUERY_TST4,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFL_DB);
+			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_SHIPPING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
 			address1 = (String) getValueFromQueryResult(defaultShippingAddressList, "Address1");
 			//assert with RFL
 			if(assertTrueDB("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(address1),RFL_DB)==false){
 				//assert with RFO
-				defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,TestConstants.CONSULTANT_EMAIL_ID_TST4),RFO_DB);
+				defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
 				address1 = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
 				assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(address1));
 			}
@@ -89,6 +93,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");

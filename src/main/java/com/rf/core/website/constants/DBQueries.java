@@ -90,13 +90,14 @@ public class DBQueries {
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select Name from dbo.OrderStatus where OrderStatusID IN (select top 1 OrderStatusID from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc)";
 
 	public static String GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select * from dbo.Accounts where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
-	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
+	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AddressTypeId='1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
 
+	public static String GET_RANDOM_CONSULTANT_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=1 order by NEWID()";
+	public static String GET_RANDOM_PC_USER_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=2 order by NEWID()";
+	public static String GET_RANDOM_RC_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=3 order by NEWID()";
 
-	public static String GET_RANDOM_CONSULTANT_EMAIL_ID_RFL = "select top 1 EmailAddress from dbo.Accounts where Active = '1' and AccountTypeID = '1' ORDER BY NEWID()";
-	public static String GET_RANDOM_PC_USER_EMAIL_ID_RFL = "select top 1 EmailAddress from dbo.Accounts where Active = '1' and AccountTypeID = '2' ORDER BY NEWID()";
-	public static String GET_RANDOM_RC_EMAIL_ID_RFL = "select top 1 EmailAddress from dbo.Accounts where Active = '1' and AccountTypeID = '3' ORDER BY NEWID()";
+
 	public static String GET_RANDOM_CONSULTANT_AUTOSHIP_HEADER_DETAILS_RFL =
 			"DECLARE @Orderid INT "+
 					"SET @OrderID = '%s' "+
@@ -758,28 +759,103 @@ public class DBQueries {
 
 	public static String GET_ACCOUNTS_WITH_NULL_EMAIL_ADDRESS =
 			"SELECT TOP 1000 a.AccountID "+
-			", [as].UserName "+
-			"FROM dbo.Accounts AS a "+
-			"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID "+
-			"WHERE a.EmailAddress IS NULL "+
-			"ORDER BY NEWID()";
+					", [as].UserName "+
+					"FROM dbo.Accounts AS a "+
+					"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID "+
+					"WHERE a.EmailAddress IS NULL "+
+					"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_PWS_SITE_URL_RFL =
-	"SELECT TOP 1 "+
-			"SUL.URL "+
-			"FROM    dbo.SiteURLs AS SUL where URL Like '%.biz'"+
-			"ORDER BY NEWID() ";
+			"SELECT TOP 1 "+
+					"SUL.URL "+
+					"FROM    dbo.SiteURLs AS SUL where URL Like '%.biz'"+
+					"ORDER BY NEWID() ";
 
-	/**
-	 * 
-	 * @param query
-	 * @param value
-	 * @return
-	 */
+	public static String GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182 = 
+			/*********************************************************************************************
+			Test Case Hybris Phase 2-4182 :: Version : 1 :: Inactive Account should have no autoship template
+			Author: Adrian Calvo
+			Date:   2015-07-15 
+			 **********************************************************************************************/
+			"USE RodanFieldsLive "+
+			"GO "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
 
-	public static String callQueryWithArguement(String query,String value){
-		return String.format(query, value);
-	}
+			/*********************************************************************************************
+			STEP #1
+			    Return 1000 random inactive accounts.
+			 **********************************************************************************************/
+			"SELECT TOP 1 a.EmailAddress "+
+			"FROM dbo.Accounts AS a "+
+			"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			"WHERE a.Active = 0 "+
+			"AND a.StatusID = 2 "+
+			"ORDER BY NEWID() "+
+
+			/*********************************************************************************************
+			STEP #2
+			    Load the list of Auto-ships, for an inactive user
+			 **********************************************************************************************/
+			"IF OBJECT_ID('tempdb..#AccountList') IS NOT NULL "+
+			"BEGIN "+
+			"DROP TABLE #AccountList "+
+			"END "+
+
+			"IF OBJECT_ID('tempdb..#DS') IS NOT NULL "+
+			"BEGIN "+
+			"DROP TABLE #DS "+
+			"END "+
+
+			"SELECT DISTINCT oc.AccountID "+
+			",o.OrderID INTO #AccountList "+
+			"FROM dbo.Orders AS o "+
+			"JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			"WHERE o.OrderTypeID IN (4,5) "+/*PC Auto-ship Template,Consultant Auto-ship Template*/
+			"AND o.OrderStatusID = 7 "+/*Submitted Template*/
+			"AND EXISTS ( "+
+			"SELECT 1 "+
+			"FROM dbo.Accounts AS a "+
+			"WHERE a.Active = 0 "+
+			"AND a.StatusID = 2 "+
+			"AND a.AccountID = oc.AccountID) "+
+
+			/*********************************************************************************************
+			STEP #3
+			    Get the next due date for the auto ships
+			 **********************************************************************************************/
+			"SELECT al.AccountID "+
+			",ao.TemplateOrderID "+
+			",dbo.udf_get_autoship_nextduedate (ao.TemplateOrderID,[as].IntervalTypeID,ao.DateLastCreated,ao.IntervalDayOverride) AS NextDueDate "+
+			",ac.Username INTO #DS "+
+			"FROM dbo.AccountSecurity AS ac "+
+			"JOIN #AccountList AS al ON ac.AccountID = al.AccountID "+
+			"JOIN dbo.AutoshipOrders AS ao ON al.OrderID = ao.TemplateOrderID "+
+			"JOIN dbo.AutoshipSchedules AS [as] ON [as].AutoshipScheduleID = ao.AutoshipScheduleID "+
+
+			/*********************************************************************************************
+			STEP #4
+			    Return data ordered by most recent due date, fill free to remove the filter if needed, the filter is used to get only future autoships
+			 **********************************************************************************************/
+			"SELECT AccountID "+
+			",Username "+
+			",TemplateOrderID "+
+			",NextDueDate "+
+			"FROM #DS "+
+			"WHERE NextDueDate >= GETDATE() "+ 
+			"ORDER BY NextDueDate";
+
+
+			/**
+			 * 
+			 * @param query
+			 * @param value
+			 * @return
+			 */
+
+			public static String callQueryWithArguement(String query,String value){
+				return String.format(query, value);
+			}
 }
 
 

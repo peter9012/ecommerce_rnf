@@ -34,7 +34,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
 	private final By ACCOUNT_AUTOSHIP_STATUS_LOC = By.xpath("//div[@id='left-menu']//a[text()='Autoship Status']");
 	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
-	private String ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC_ = "//select[@id='state']//option[@selected='selected']";
+	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
+	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -59,6 +60,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.clear(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
 		driver.clear(ACCOUNT_INFO_LAST_NAME_LOC);
@@ -84,6 +86,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 
 	public boolean verifyFirstNameFromUIForAccountInfo(String firstName){
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		String firstNameFromUI = driver.findElement(ACCOUNT_INFO_FIRST_NAME_LOC).getAttribute("value");
 		if(firstNameFromUI.equalsIgnoreCase(firstName)){
 			return true;
@@ -92,6 +95,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyLasttNameFromUIForAccountInfo(String lastName){
+		driver.waitForElementPresent(ACCOUNT_INFO_LAST_NAME_LOC);
 		String lastNameFromUI = driver.findElement(ACCOUNT_INFO_LAST_NAME_LOC).getAttribute("value");
 		if(lastNameFromUI.equalsIgnoreCase(lastName)){
 			return true;
@@ -100,6 +104,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAddressLine1FromUIForAccountInfo(String addressLine1){
+		driver.waitForElementPresent(ACCOUNT_INFO_ADDRESS_LINE_1_LOC);
 		String addressLine1FromUI = driver.findElement(ACCOUNT_INFO_ADDRESS_LINE_1_LOC).getAttribute("value");
 		if(addressLine1FromUI.equalsIgnoreCase(addressLine1)){
 			return true;
@@ -108,6 +113,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyCityFromUIForAccountInfo(String city){
+		driver.waitForElementPresent(ACCOUNT_INFO_CITY_LOC);
 		String cityFromUI = driver.findElement(ACCOUNT_INFO_CITY_LOC).getAttribute("value");
 		if(cityFromUI.equalsIgnoreCase(city)){
 			return true;
@@ -116,7 +122,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyProvinceFromUIForAccountInfo(String province){
-		String provinceFromUI =driver.findElement(By.xpath(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC_)).getAttribute("value");
+		driver.waitForElementPresent(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC);
+		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getAttribute("value");
 		if(provinceFromUI.equalsIgnoreCase(province)){
 			return true;
 		}
@@ -124,6 +131,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyPostalCodeFromUIForAccountInfo(String postalCode){
+		driver.waitForElementPresent(ACCOUNT_INFO_POSTAL_CODE_LOC);
 		String postalCodeFromUI = driver.findElement(ACCOUNT_INFO_POSTAL_CODE_LOC).getAttribute("value");
 		if(postalCodeFromUI.equalsIgnoreCase(postalCode)){
 			return true;
@@ -132,6 +140,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyMainPhoneNumberFromUIForAccountInfo(String mainPhoneNumber){
+		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		String mainPhoneNumberFromUI = driver.findElement(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC).getAttribute("value");
 		if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
 			return true;
@@ -159,7 +168,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String completeDate[] = dob.split(" ");
 			String splittedMonth = completeDate[0].substring(0,3);
 			String day =driver.findElement(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH))).getAttribute("value");
-			System.out.println(day);
 			String month = driver.findElement(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH))).getText();
 
 			switch (Integer.parseInt(month)) {  
@@ -215,20 +223,23 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public StoreFrontOrdersAutoshipStatusPage clickOnAutoShipStatus(){
 		driver.waitForElementPresent(ACCOUNT_AUTOSHIP_STATUS_LOC);
 		driver.click(ACCOUNT_AUTOSHIP_STATUS_LOC);
+		logger.info("Autoship status clicked "+ACCOUNT_AUTOSHIP_STATUS_LOC);
 		return new StoreFrontOrdersAutoshipStatusPage(driver);
 	}
 
 	public StoreFrontAccountInfoPage enterMainPhoneNumber(String mainPhoneNumber){
+		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		driver.clear(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		driver.type(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC, mainPhoneNumber);
+		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		logger.info("Save account info button clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
 	public boolean verifyValidationMessageOfPhoneNumber(String validationMessage){
 		if(driver.isElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC)){
 			String validationMessageFromUI = driver.findElement(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC).getText();
-			System.out.println("Validation Message from UI -->  "+validationMessageFromUI);
 			if(validationMessageFromUI.equalsIgnoreCase(validationMessage)){
 				return true;
 			}else {
@@ -251,8 +262,15 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickSaveAccountPageInfo(){
+		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
 	}
 
+	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
+		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
+		logger.info("Account inof link from left panel clicked "+LEFT_MENU_ACCOUNT_INFO_LOC);
+		return new StoreFrontAccountInfoPage(driver);
+	}
 }
 

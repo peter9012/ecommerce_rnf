@@ -1,13 +1,16 @@
 package com.rf.pages.website;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.interactions.Actions;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
 
+
 public class RFWebsiteBasePage extends RFBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(RFWebsiteBasePage.class.getName());
+
 
 	protected RFWebsiteDriver driver;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -68,10 +71,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnShopLink(){
 		driver.waitForElementPresent(By.xpath("//a[@id='our-products']"));
 		driver.findElement(By.xpath("//a[@id='our-products']")).click();
+		logger.info("Shop link clicked "+"//a[@id='our-products']");
 	}
 
 	public void clickOnAllProductsLink(){
+		driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
 		driver.findElement(By.xpath("//a[@title='All Products']")).click();
+		logger.info("All products link clicked "+"//a[@title='All Products']");
 	}
 
 

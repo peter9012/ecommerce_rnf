@@ -2,9 +2,14 @@ package com.rf.pages.website;
 
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class StoreFrontRCUserPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontRCUserPage.class.getName());
+	
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
 	private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
@@ -22,9 +27,9 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{	
-		Thread.sleep(5000);
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.findElement(WELCOME_USER_DD_LOC).click();
+		logger.info("welcome drop down clicked");
 	}
 	
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
@@ -32,18 +37,24 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	}
 	
 	public StoreFrontShippingInfoPage clickShoppingLinkPresentOnWelcomeDropDown(){
+		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
 		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();
+		logger.info("Shipping link from welcome drop down clicked");
 		return new StoreFrontShippingInfoPage(driver);
 	}
 	
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown(){
+		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
 		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
+		logger.info("Orders link from welcome drop down clicked");
 		return new StoreFrontOrdersPage(driver);
 	}
 	
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
 		Thread.sleep(3000);
+		logger.info("Account info link from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

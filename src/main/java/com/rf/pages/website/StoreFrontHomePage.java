@@ -24,6 +24,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnOurBusinessLink(){
+		driver.waitForElementPresent(BUSINESS_LINK_LOC);
 		driver.findElement(BUSINESS_LINK_LOC).click();
 	}
 
@@ -33,31 +34,40 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
-		driver.click(LOGIN_LINK_LOC);		
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);
-		driver.click(LOGIN_BTN_LOC);	
+		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is: "+username);
 		logger.info("login password is: "+password);
+		driver.click(LOGIN_BTN_LOC);	
+		logger.info("login button clicked");
 		return new StoreFrontConsultantPage(driver);
 	}
 
 	public StoreFrontRCUserPage loginAsRCUser(String username,String password){
-		driver.click(LOGIN_LINK_LOC);		
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);
-		driver.click(LOGIN_BTN_LOC);	
+		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");
 		return new StoreFrontRCUserPage(driver);
 	}
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);		
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);
-		driver.click(LOGIN_BTN_LOC);	
+		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");
 		return new StoreFrontPCUserPage(driver);
 	}
 

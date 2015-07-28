@@ -347,7 +347,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 
-	// Test Case Hybris Phase 2-2241 :: version 1 :: Verify the various field validations
+	// Hybris Phase 2-2241 :: version 1 :: Verify the various field validations
 	@Test
 	public void testPhoneNumberFieldValidationForConsultant_2241() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();

@@ -82,6 +82,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
+	@Test
 	public void testEditShippingAddressOnShippingProfilePage() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();

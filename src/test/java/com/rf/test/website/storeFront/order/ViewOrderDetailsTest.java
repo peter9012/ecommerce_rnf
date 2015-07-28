@@ -157,7 +157,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 	}
 
-	// phase 2 4287 -> Verify order details of consultant order
+	// Hybris Phase 2 4287 -> Verify order details of consultant order
 	@Test
 	public void testOrdersDetailsOfConsultant_HP2_4287() throws SQLException, InterruptedException{
 		RFL_DB = driver.getDBNameRFL();

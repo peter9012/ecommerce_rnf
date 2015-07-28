@@ -4,12 +4,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.RFDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
+	
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontAccountTerminationPage.class.getName());
+	
 	private final By ACCOUNT_TERMINATION_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),' Account termination')]");
 	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='submit']");
 	private final By ACCOUNT_TERMINATION_PAGE_POPUP_HEADER = By.xpath("//div[@id='popup-content']//h2");
@@ -26,6 +31,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	public void clickSubmitToTerminateAccount(){
 		driver.waitForElementPresent(SUBMIT_BOX_LOC);
 		driver.findElement(SUBMIT_BOX_LOC).click();
+		logger.info("Submit to terminate account button clicked "+SUBMIT_BOX_LOC);
 	}
 	public boolean verifyPopupHeader(){
 		driver.waitForElementPresent(ACCOUNT_TERMINATION_PAGE_POPUP_HEADER);
@@ -51,6 +57,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		}
 	}
 	public void clickCancelTerminationButton() throws InterruptedException{
+		driver.waitForElementPresent(POPUP_CANCEL_TERMINATION_BUTTON);
 		driver.findElement(POPUP_CANCEL_TERMINATION_BUTTON).click();
 		Thread.sleep(3000);
 	}
@@ -59,10 +66,13 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//select[@id='reason']"));
 		Select selectDD = new Select(driver.findElement(By.xpath("//select[@id='reason']")));
 		selectDD.selectByVisibleText("Other");    	
+		logger.info("Termination reason is selected as 'Other'");
 	}
 
 	public void enterTerminationComments(){
+		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
 		driver.findElement(By.xpath("//textarea[@id='terminationComments']")).sendKeys("Automation Test comments");
+		logger.info("termination comments entered");
 	}
 
 	public void selectCheckBoxForVoluntarilyTerminate() throws InterruptedException{
@@ -71,5 +81,6 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));
 		actions.click(driver.findElement(By.xpath("//div[@class='repaired-checkbox']"))).build().perform();
+		logger.info("Checkbox for voluntarily terminate selected");
 	}
 }

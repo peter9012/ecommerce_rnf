@@ -18,7 +18,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 	}
 
 	public boolean verifyHeaderAtReportConfirmationPage(String header){
-
+		driver.waitForElementPresent(REPORT_CONFIRMATION_HEADER_LOC);
 		String headerUI= driver.findElement(REPORT_CONFIRMATION_HEADER_LOC).getText();
 
 		if(headerUI.equals(header)){
@@ -28,6 +28,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 	}
 
 	public boolean verifyThankYouTagAtReportConfirmationPage(String message){
+		driver.waitForElementPresent(REPORT_CONFIRMATION_THANK_U_MSG_LOC);
 		String messageUI = driver.findElement(REPORT_CONFIRMATION_THANK_U_MSG_LOC).getText();
 		if(messageUI.equals(message)){
 			return true;
@@ -37,7 +38,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 
 	public boolean verifyEmailAddAtReportConfirmationPage(String EmailAdd){
 		String emailAddress = EmailAdd.toLowerCase();
-
+		driver.waitForElementPresent(REPORT_CONFIRMATION_EMAIL_ADD_LOC);
 		String emailAdd = driver.findElement(REPORT_CONFIRMATION_EMAIL_ADD_LOC).getText();
 
 		if(emailAdd.equals(emailAddress)){
@@ -48,6 +49,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 
 	public boolean verifyOrderNumberAtReportConfirmationPage(){
 		String orderNumber = StoreFrontOrdersPage.orderNumberOfOrderHistory;
+		driver.waitForElementPresent(REPORT_CONFIRMATION_ORDER_NUM_LOC);
 		String orderNumberAtUI = driver.findElement(REPORT_CONFIRMATION_ORDER_NUM_LOC).getText();
 		if(orderNumber.equals(orderNumberAtUI)){
 			return true;

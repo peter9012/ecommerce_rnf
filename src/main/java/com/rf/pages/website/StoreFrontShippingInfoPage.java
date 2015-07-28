@@ -42,7 +42,6 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public boolean isDefaultShippingAddressSelected(String address1) throws InterruptedException{
 		Thread.sleep(2000);
-		System.out.println("UI "+driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li[1]/p[1]")).getText());
 		return driver.findElement(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]")).getText().contains(address1);
 	}	
 
@@ -52,30 +51,38 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public int getTotalShippingAddressesDisplayed(){
+		driver.waitForElementPresent(TOTAL_SHIPPING_ADDRESSES_LOC);
 		List<WebElement> totalShippingAddressesDisplayed = driver.findElements(TOTAL_SHIPPING_ADDRESSES_LOC);
 		return totalShippingAddressesDisplayed.size();
 	}
 
 	public void clickOnEditForFirstAddress(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']")).click();
+		logger.info("First Address Edit link clicked");
+		
 	}
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
+		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
 		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
 		Thread.sleep(2000);
+		logger.info("Add new shipping profile link clicked");
 	}
 
 	public void enterNewShippingAddressName(String name){
-		logger.info("New Shipping Address name is "+name);
 		driver.findElement(By.id("new-attention")).sendKeys(name);
+		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
 		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
+		logger.info("New Shipping Address is "+addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
 		driver.findElement(By.id("townCity")).sendKeys(city);
+		logger.info("New Shipping City is "+city);
 	}
 
 	public void selectNewShippingAddressState(String state){
@@ -94,14 +101,17 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public void selectFirstCardNumber() throws InterruptedException{
 		Thread.sleep(2000);
 		try{
+			driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']"));
 			driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']")).click();
+			
 		}catch(WebDriverException e){
-			System.out.println("*********** EXception");
 			Actions action = new Actions(RFWebsiteDriver.driver);
 			action.moveToElement(driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']"))).click().build().perform();
+			
 		}
 		Thread.sleep(2000);
 		driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']/option[2]")).click();
+		logger.info("First Card number selected from drop down");
 	}
 
 	public void enterNewShippingAddressSecurityCode(String securityCode){
@@ -113,8 +123,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
+		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		Thread.sleep(5000);
+		logger.info("New Shipping prifile save button clicked");
 	}
 
 	public boolean isShippingAddressPresentOnShippingPage(String name){

@@ -2,8 +2,13 @@ package com.rf.pages.website;
 
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class StoreFrontPCUserPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontPCUserPage.class.getName());
+
 
 	public StoreFrontPCUserPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -22,25 +27,33 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		return true;
 	}
 
-	public void clickOnWelcomeDropDown() throws InterruptedException{		
+	public void clickOnWelcomeDropDown() throws InterruptedException{	
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		Thread.sleep(4000);
-		driver.findElement(WELCOME_USER_DD_LOC).click();		
+		driver.findElement(WELCOME_USER_DD_LOC).click();	
+		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
 		Thread.sleep(3000);
 		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
+		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
 		return new StoreFrontOrdersPage(driver);
 	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
 		Thread.sleep(3000);
+		logger.info("Account info linked from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']")).click();
+		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']");
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 }

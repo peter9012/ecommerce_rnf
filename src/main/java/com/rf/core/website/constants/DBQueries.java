@@ -80,7 +80,6 @@ public class DBQueries {
 	public static String GET_BILLING_ADDRESS_COUNT_QUERY_TST4 = "select count(*) as count from dbo.AccountAddresses where addressTypeId = '3' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_DEFAULT_SHIPPING_ADDRESS_QUERY_TST4 = "select * from dbo.AccountAddresses where addressTypeId = '2' and IsDefault = '1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4 = "select * from dbo.AccountAddresses where addressTypeId = '3' and IsDefault = '1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
-	public static String GET_AUTOSHIP_ADDRESS_QUERY_TST4 = "select * from dbo.AccountAddresses where addressTypeId = '2' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')"; 
 	public static String GET_AUTOSHIP_ORDER_DETAILS_QUERY_TST4 = "select * from dbo.OrderCustomers where OrderID IN (select OrderID from dbo.Orders where orderNumber='%s') ";
 	public static String GET_AUTOSHIP_PAYMENT_DETAILS_QUERY_TST4 = "select * from dbo.AccountPaymentMethods where IsDefault='1' and accountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_AUTOSHIP_SHIPPING_METHOD_QUERY_TST4 = "select * from dbo.ShippingMethods where ShippingMethodID IN (select shippingMethodID from dbo.OrderShipments where orderId IN (select orderID from dbo.Orders where OrderNumber = '%s'))";
@@ -92,11 +91,83 @@ public class DBQueries {
 	public static String GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select * from dbo.Accounts where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AddressTypeId='1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
-
+	public static String GET_AUTOSHIP_ADDRESS_QUERY_TST4 = "select top 1 * from dbo.AccountAddresses where addressTypeId = '2' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_RANDOM_CONSULTANT_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=1 order by NEWID()";
 	public static String GET_RANDOM_PC_USER_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=2 order by NEWID()";
 	public static String GET_RANDOM_RC_EMAIL_ID_RFL = "select top 1 acc.EmailAddress from dbo.accounts acc where  acc.Active=1 and acc.AccountTypeID=3 order by NEWID()";
+	public static String GET_PC_USER_HAVING_AUTOSHIP_ORDER_RFL_4300 =
 
+			"USE RodanFieldsLive "+
+
+			   /*
+			   STEP #1
+
+			       Pick a random PC order, for an active user
+			    */
+			    "DECLARE @Orderid INT "+
+
+			   "DECLARE @Accountid INT "+
+
+			   "SELECT TOP 1 @Orderid = o.OrderID "+
+			   ",@Accountid = oc.AccountID "+
+			   "FROM dbo.Orders AS o "+
+			   "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			   "WHERE o.OrderTypeID = 2 "+
+			   "AND o.OrderStatusID = 4 "+
+			   "AND NOT EXISTS ( "+
+			   "SELECT 1 "+
+			   "FROM dbo.Accounts AS a "+
+			   "WHERE a.Active = 0 "+
+			   "AND a.StatusID = 2 "+
+			   "AND a.AccountID = oc.AccountID) "+ 
+			   "ORDER BY NEWID() "+
+
+			   /*
+			   STEP #2
+			       Return login to use
+			    */
+			    "SELECT Username "+
+			    ",[Password] "+
+			    "FROM RFOperations.[Security].[AccountSecurity] "+
+			    "WHERE AccountID = @Accountid "+
+
+			   /*
+			   STEP #3
+			       Return order header details
+			    */
+			    "SELECT * "+
+			    "FROM dbo.Orders AS o "+
+			    "WHERE o.OrderID = @Orderid "+
+
+			   "SELECT * "+
+			   "FROM dbo.OrderCustomers AS oc "+
+			   "WHERE oc.OrderID = @Orderid "+
+
+			   /*
+			   STEP #4
+			       Return order items details
+			    */
+			    "SELECT oi.* "+
+			    "FROM dbo.OrderCustomers AS oc "+
+			    "JOIN dbo.OrderItems AS oi ON oi.OrderCustomerID = oc.OrderCustomerID "+
+			    "WHERE oc.OrderID = @Orderid "+
+
+			   /*
+			   STEP #4
+			       Return order shipment details
+			    */
+			    "SELECT * "+
+			    "FROM dbo.OrderShipments AS os "+
+			    "WHERE os.OrderID = @Orderid "+
+
+			   /*
+			   STEP #5
+			       Return order shipment items details
+			    */
+			    "SELECT osi.* "+
+			    "FROM dbo.OrderShipments AS os "+
+			    "JOIN dbo.OrderShipmentItems AS osi ON osi.OrderShipmentID = os.OrderShipmentID "+
+			    "WHERE os.OrderID = @Orderid ";
 
 	public static String GET_RANDOM_CONSULTANT_AUTOSHIP_HEADER_DETAILS_RFL =
 			"DECLARE @Orderid INT "+
@@ -514,6 +585,69 @@ public class DBQueries {
 					"AND o.OrderStatusID=7) "+/*Submitted Template*/ 
 					"ORDER BY NEWID()";
 
+
+	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4189 =
+
+			"USE RodanFieldsLive; "+
+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+
+			/*********************************************************************************************
+			STEP #1
+			    Return 1 random active consultants accounts, with failed orders, has CRP, has PULSE and no downlines 
+			 **********************************************************************************************/
+			 "SELECT TOP 1 a.AccountID ,[as].UserName "+
+			 "FROM dbo.Accounts AS a "+
+			 "JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			 "WHERE a.AccountTypeID = 1 "+/* Consultant*/
+			 "AND a.EnrollmentDate IS NOT NULL "+
+			 /*Active Account*/
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a3 "+
+			 "WHERE a3.Active = 0 "+
+			 "AND a3.StatusID = 2 "+
+			 "AND a3.AccountID = a.AccountID) "+ 
+			 /*No Downline*/
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a2 "+
+			 "WHERE a2.SponsorID = a.AccountID) "+ 
+			 /*Failed Orders/ */
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID NOT IN (4,5) "+
+			 "AND o.OrderStatusID=2) "+ 
+			 /*Has CRP*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 1 "+/*Consultant Replenishment*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 /*Has PULSE*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 "ORDER BY NEWID() "+
+			 "COMMIT";
+
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4190 =
 
 			"SELECT TOP 1 a.EmailAddress "+
@@ -565,6 +699,69 @@ public class DBQueries {
 					"AND o.OrderStatusID=7) "+/*Submitted Template*/ 
 					"ORDER BY NEWID()";
 
+	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_ACTIVE_RFL_4191 =
+
+			"USE RodanFieldsLive "+
+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			/*********************************************************************************************
+			STEP #1
+			    Return 1000 random active consultants accounts, with submitted orders, has CRP, has PULSE and no downlines 
+			 **********************************************************************************************/
+			 "SELECT TOP 1 a.AccountID "+
+			 ",[as].UserName "+
+			 "FROM dbo.Accounts AS a "+
+			 "JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			 "WHERE a.AccountTypeID = 1 "+/* Consultant*/
+			 "AND a.EnrollmentDate IS NOT NULL "+
+			 /*Active Account*/ 
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a3 "+
+			 "WHERE a3.Active = 0 "+
+			 "AND a3.StatusID = 2 "+
+			 "AND a3.AccountID = a.AccountID) "+ 
+			 /*No Downline*/
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a2 "+
+			 "WHERE a2.SponsorID = a.AccountID) "+ 
+			 /*Submitted Orders/ */
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID NOT IN (4,5) "+
+			 "AND o.OrderStatusID=4) "+ 
+			 /*Has CRP*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 1 "+/*Consultant Replenishment*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 /*Has PULSE*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 "ORDER BY NEWID() "+
+			 "COMMIT";
+
+
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFL =
 			"SELECT TOP 1 "+
 					"EmailAddress "+ 
@@ -583,6 +780,8 @@ public class DBQueries {
 					"AND a2.AccountID = A.AccountID ) "+
 					"AND A.AccountTypeID ='1' "+
 					"ORDER BY NEWID() ";
+
+
 
 	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFL =
 
@@ -655,6 +854,67 @@ public class DBQueries {
 					"AND o.OrderStatusID=7) "+ /*Submitted Template*/ 
 					"ORDER BY NEWID()";
 
+	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFL_4193 = 
+			"USE RodanFieldsLive "+
+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			/*********************************************************************************************
+			STEP #1
+			    Return 1000 random active consultants accounts, with failed orders, has CRP, has PULSE and downlines 
+			 **********************************************************************************************/
+			 "SELECT TOP 1 a.AccountID "+
+			 ",[as].UserName "+
+			 "FROM dbo.Accounts AS a "+
+			 "JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			 "WHERE a.AccountTypeID = 1 "+/* Consultant*/
+			 "AND a.EnrollmentDate IS NOT NULL "+
+			 /*Active Account*/
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a3 "+
+			 "WHERE a3.Active = 0 "+
+			 "AND a3.StatusID = 2 "+
+			 "AND a3.AccountID = a.AccountID) "+ 
+			 /*Has Downline*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a2 "+
+			 "WHERE a2.SponsorID = a.AccountID) "+
+			 /*Failed Orders/ */
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID NOT IN (4,5) "+
+			 "AND o.OrderStatusID=2) "+ 
+			 /*Has CRP*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 1 "+/*Consultant Replenishment*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 /*Has PULSE*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 "ORDER BY NEWID() "+
+			 "COMMIT";
+
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4194 =
 
 			"SELECT TOP 1 a.EmailAddress "+
@@ -705,6 +965,68 @@ public class DBQueries {
 					"AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
 					"AND o.OrderStatusID=7) "+/*Submitted Template*/ 
 					"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFL_4195 =
+			"USE RodanFieldsLive "+
+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			/*********************************************************************************************
+			STEP #1
+			    Return 1000 random active consultants accounts, with submitted orders, has CRP, has PULSE and downlines 
+			 **********************************************************************************************/
+			 "SELECT TOP 1 a.AccountID "+
+			 ",[as].UserName "+
+			 "FROM dbo.Accounts AS a "+
+			 "JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			 "WHERE a.AccountTypeID = 1 "+/* Consultant*/
+			 "AND a.EnrollmentDate IS NOT NULL "+
+			 /*Active Account*/
+			 "AND NOT EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a3 "+
+			 "WHERE a3.Active = 0 "+
+			 "AND a3.StatusID = 2 "+
+			 "AND a3.AccountID = a.AccountID) "+ 
+			 /*Has Downline*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Accounts AS a2 "+
+			 "WHERE a2.SponsorID = a.AccountID) "+ 
+			 /*Submitted Orders/ */
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID NOT IN (4,5) "+
+			 "AND o.OrderStatusID=4) "+ 
+			 /*Has CRP*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 1 "+/*Consultant Replenishment*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 /*Has PULSE*/
+			 "AND EXISTS ( "+
+			 "SELECT 1 "+
+			 "FROM dbo.Orders AS o "+
+			 "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			 "JOIN dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+
+			 "AND oc.AccountID=ao.AccountID "+
+			 "WHERE oc.AccountID = a.AccountID "+
+			 "AND o.OrderTypeID =5 "+/*Consultant Auto-ship Template*/
+			 "AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
+			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
+			 "ORDER BY NEWID() "+
+			 "COMMIT";
+
 
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFL_4196 =
 
@@ -772,35 +1094,30 @@ public class DBQueries {
 					"ORDER BY NEWID() ";
 
 	public static String GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182 = 
-			/*********************************************************************************************
-			Test Case Hybris Phase 2-4182 :: Version : 1 :: Inactive Account should have no autoship template
-			Author: Adrian Calvo
-			Date:   2015-07-15 
-			 **********************************************************************************************/
+
 			"USE RodanFieldsLive "+
-			"GO "+
-			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-			"BEGIN TRANSACTION "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
 
 			/*********************************************************************************************
 			STEP #1
 			    Return 1000 random inactive accounts.
 			 **********************************************************************************************/
-			"SELECT TOP 1 a.EmailAddress "+
-			"FROM dbo.Accounts AS a "+
-			"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
-			"WHERE a.Active = 0 "+
-			"AND a.StatusID = 2 "+
-			"ORDER BY NEWID() "+
+			 "SELECT TOP 1 a.EmailAddress "+
+			 "FROM dbo.Accounts AS a "+
+			 "JOIN dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
+			 "WHERE a.Active = 0 "+
+			 "AND a.StatusID = 2 "+
+			 "ORDER BY NEWID() "+
 
 			/*********************************************************************************************
 			STEP #2
 			    Load the list of Auto-ships, for an inactive user
 			 **********************************************************************************************/
-			"IF OBJECT_ID('tempdb..#AccountList') IS NOT NULL "+
-			"BEGIN "+
-			"DROP TABLE #AccountList "+
-			"END "+
+			 "IF OBJECT_ID('tempdb..#AccountList') IS NOT NULL "+
+			 "BEGIN "+
+			 "DROP TABLE #AccountList "+
+			 "END "+
 
 			"IF OBJECT_ID('tempdb..#DS') IS NOT NULL "+
 			"BEGIN "+
@@ -824,38 +1141,38 @@ public class DBQueries {
 			STEP #3
 			    Get the next due date for the auto ships
 			 **********************************************************************************************/
-			"SELECT al.AccountID "+
-			",ao.TemplateOrderID "+
-			",dbo.udf_get_autoship_nextduedate (ao.TemplateOrderID,[as].IntervalTypeID,ao.DateLastCreated,ao.IntervalDayOverride) AS NextDueDate "+
-			",ac.Username INTO #DS "+
-			"FROM dbo.AccountSecurity AS ac "+
-			"JOIN #AccountList AS al ON ac.AccountID = al.AccountID "+
-			"JOIN dbo.AutoshipOrders AS ao ON al.OrderID = ao.TemplateOrderID "+
-			"JOIN dbo.AutoshipSchedules AS [as] ON [as].AutoshipScheduleID = ao.AutoshipScheduleID "+
+			 "SELECT al.AccountID "+
+			 ",ao.TemplateOrderID "+
+			 ",dbo.udf_get_autoship_nextduedate (ao.TemplateOrderID,[as].IntervalTypeID,ao.DateLastCreated,ao.IntervalDayOverride) AS NextDueDate "+
+			 ",ac.Username INTO #DS "+
+			 "FROM dbo.AccountSecurity AS ac "+
+			 "JOIN #AccountList AS al ON ac.AccountID = al.AccountID "+
+			 "JOIN dbo.AutoshipOrders AS ao ON al.OrderID = ao.TemplateOrderID "+
+			 "JOIN dbo.AutoshipSchedules AS [as] ON [as].AutoshipScheduleID = ao.AutoshipScheduleID "+
 
 			/*********************************************************************************************
 			STEP #4
 			    Return data ordered by most recent due date, fill free to remove the filter if needed, the filter is used to get only future autoships
 			 **********************************************************************************************/
-			"SELECT AccountID "+
-			",Username "+
-			",TemplateOrderID "+
-			",NextDueDate "+
-			"FROM #DS "+
-			"WHERE NextDueDate >= GETDATE() "+ 
-			"ORDER BY NextDueDate";
+			 "SELECT AccountID "+
+			 ",Username "+
+			 ",TemplateOrderID "+
+			 ",NextDueDate "+
+			 "FROM #DS "+
+			 "WHERE NextDueDate >= GETDATE() "+ 
+			 "ORDER BY NextDueDate";
 
 
-			/**
-			 * 
-			 * @param query
-			 * @param value
-			 * @return
-			 */
+	/**
+	 * 
+	 * @param query
+	 * @param value
+	 * @return
+	 */
 
-			public static String callQueryWithArguement(String query,String value){
-				return String.format(query, value);
-			}
+	public static String callQueryWithArguement(String query,String value){
+		return String.format(query, value);
+	}
 }
 
 

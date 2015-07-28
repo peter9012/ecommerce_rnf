@@ -26,8 +26,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickUpdateCartBtn() throws InterruptedException{
+		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
 		driver.click(UPDATE_CART_BTN_LOC);		
 		Thread.sleep(5000);
+		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
 	}
 
 	public void clickOnEditPaymentBillingProfile(){
@@ -43,7 +45,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontConsultantPage clickRodanAndFieldsLogo(){
+		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
 		driver.findElement(RODAN_AND_FIELDS_IMG_LOC).click();
+		logger.info("Rodan and Fields logo clicked");
 		return new StoreFrontConsultantPage(driver);
 	}
 
@@ -72,18 +76,24 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewBillingCardAddress() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//*[@id='addressBookdropdown']"));
 		driver.findElement(By.xpath("//*[@id='addressBookdropdown']")).click();
-		Thread.sleep(3000);
+		Thread.sleep(3000);		
 		driver.findElement(By.xpath("//*[@id='addressBookdropdown']/option[1]")).click();
+		logger.info("New Billing card address selected");
 	}
 
 	public void selectUseThisBillingProfileFutureAutoshipChkbox(){
+		driver.waitForElementPresent(By.xpath("//div[@id='use-for-autoship']/div"));
 		driver.findElement(By.xpath("//div[@id='use-for-autoship']/div")).click();
+		logger.info("checkbox for Use this billing profile future autoship selected");
 	}
 
 	public void clickOnSaveBillingProfile() throws InterruptedException{
+		driver.waitForElementPresent(By.id("submitButton"));
 		driver.click(By.id("submitButton"));
 		Thread.sleep(10000);
+		logger.info("Save billing profile button clicked");
 	}
 
 	public String getBillingProfileName(){
@@ -91,40 +101,52 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnNextStepBtn() throws InterruptedException{
+		driver.waitForElementPresent(By.id("clickNext"));
 		driver.findElement(By.id("clickNext")).click();
 		Thread.sleep(2000);
+		logger.info("Next Step button clicked");
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//input[@id='use_address']"));
 		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).doubleClick().build().perform();		
 		action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).click(driver.findElement(By.xpath("//input[@id='use_address']"))).build().perform();
+		logger.info("Next button on shipping update cart clicked");
 		Thread.sleep(2000);
 	}
 
-	public void clickOnEditBillingProfile(String billingProfileName){	
+	public void clickOnEditBillingProfile(String billingProfileName){
+		driver.waitForElementPresent(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a"));
 		driver.findElement(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a")).click();
+		logger.info("Edit link for "+billingProfileName+"clicked");
 	}
 
 	public String selectAndGetShippingMethodName() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//input"));
 		if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//span")).click();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//label")).getText().split("-")[0]);
 			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[1]//label")).getText().split("-")[0];	
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//span")).click();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//label")).getText().split("-")[0]);
 			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[2]//label")).getText().split("-")[0];	
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//input")).isSelected()==false){
 			driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//span")).click();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//label")).getText().split("-")[0]);
 			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//ul/li[3]//label")).getText().split("-")[0];	
 		}		
 		return null;
 	}
 
 	public void clickOnEditShipping() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));
 		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")).click();
+		logger.info("Edit Shipping link clicked "+"//div[@id='checkout_summary_deliverymode_div']//a");
 		Thread.sleep(3000);
 	}
 
@@ -139,8 +161,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressName(String name){
-		logger.info("New Shipping Address name is "+name);
+		driver.waitForElementPresent(By.id("new-attention"));
 		driver.findElement(By.id("new-attention")).sendKeys(name);
+		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
@@ -165,15 +188,19 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//input[@id='autoShipShippingAddr']"));
 		driver.click(By.xpath("//input[@id='autoShipShippingAddr']"));
 		Thread.sleep(5000);
+		logger.info("Save shipping profile button clicked");
 	}
 
 	public void acceptNewShippingAddress() throws InterruptedException{
 		try{
 			Thread.sleep(2000);
+			driver.waitForElementPresent(By.xpath("//input[@id='QAS_RefineBtn']"));
 			driver.findElement(By.xpath("//input[@id='QAS_RefineBtn']")).click();
 			Thread.sleep(5000);
+			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
 
 		}
@@ -196,17 +223,22 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
+		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
 		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
 		Thread.sleep(2000);
+		logger.info("Ads new shipping profile link clicked");
 	}
 
 	public void clickOnBuyNowButton(){
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).click();
+		logger.info("Buy Now button clicked");
 	}
 
 	public void clickOnCheckoutButton(){
+		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
 		driver.findElement(By.xpath("//input[@value='checkout']")).click();
+		logger.info("checkout button clicked");
 	}
 
 	public boolean verifyCheckoutConfirmation(){
@@ -219,7 +251,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnConfirmationOK(){
+		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
 		driver.findElement(By.xpath("//input[@value='OK']")).click();
+		logger.info("Confirmation OK button clicked");
 	}
 
 	public String getSubtotal(){
@@ -250,26 +284,32 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public String getShippingMethod(){
 		return driver.findElement(By.xpath("//select[@id='deliveryMode']/option[@selected='selected']")).getText();
 	}
-	
+
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//input[@id='saveShippingInfo']"));
 		action.moveToElement(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).click(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).build().perform();
+		logger.info("Next button on shipping address clicked");
 		Thread.sleep(2000);
 	}
-	
+
 	public String getSelectedBillingAddress(){
 		return driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]/p[1]")).getText();
 	}
-	
+
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
 		driver.findElement(By.xpath("//div[@id='payment-next-button']/input")).click();
+		logger.info("Next button on billing profile clicked");
 		Thread.sleep(3000);
 	}
-	
+
 	public void clickPlaceOrderBtn()throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//input[@id='placeOrderButton']"));
 		driver.findElement(By.xpath("//input[@id='placeOrderButton']")).click();
 		Thread.sleep(3000);
+		logger.info("Place order button clicked");
 	}
 
 }

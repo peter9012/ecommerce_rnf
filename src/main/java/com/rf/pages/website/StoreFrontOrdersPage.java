@@ -2,12 +2,15 @@ package com.rf.pages.website;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.interactions.Actions;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class StoreFrontOrdersPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontOrdersPage.class.getName());	
+	
 	private final By ORDERS_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Orders')]");
 	private final By ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Order details: CRP')]");
 	private final By ORDER_NUMBER_LOC = By.cssSelector("table[class='orders-table']>tbody>tr:nth-child(2) td:nth-child(1)>a");
@@ -44,13 +47,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyOrderNumber(String orderNum){
+		driver.waitForElementPresent(ORDER_NUMBER_LOC);
 		return driver.findElement(ORDER_NUMBER_LOC).getText().equalsIgnoreCase(orderNum);
 	}
 
 	public boolean verifyScheduleDate(String schDate){
+		driver.waitForElementPresent(ORDER_SCHEDULE_DATE_LOC);
 		schDate = convertDBDateFormatToUIFormat(schDate);
-		System.out.println("schDate "+schDate);
-		System.out.println("UI date "+driver.findElement(ORDER_SCHEDULE_DATE_LOC).getText());
 		return driver.findElement(ORDER_SCHEDULE_DATE_LOC).getText().equalsIgnoreCase(schDate);
 	}
 
@@ -65,16 +68,20 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyOrderStatus(String status){
+		driver.waitForElementPresent(ORDER_STATUS_LOC);
 		return driver.findElement(ORDER_STATUS_LOC).getText().equalsIgnoreCase(status);
 	}
 
 	public void clickAutoshipOrderNumber(){		
 		getAutoshipOrderNumber();
-		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);		
+		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 	}
 
 	public String getAutoshipOrderNumber(){
-		autoShipOrderNumber = driver.findElement(ORDER_AUTOSHIP_ORDER_NUMBER_LOC).getText(); 
+		driver.waitForElementPresent(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		autoShipOrderNumber = driver.findElement(ORDER_AUTOSHIP_ORDER_NUMBER_LOC).getText();
+		logger.info("autoship order number is "+autoShipOrderNumber);
 		return  autoShipOrderNumber;
 	}
 
@@ -94,8 +101,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifySVValue(String userType){
+		driver.waitForElementPresent(By.xpath("//table[@class='order-products']//tr[2]//td[@id='productSV']"));
 		String svValue = driver.findElement(By.xpath("//table[@class='order-products']//tr[2]//td[@id='productSV']")).getText();
-		System.out.println("----sv UI---- "+svValue);
 		if(userType.equalsIgnoreCase("consultant")){
 			if(Integer.parseInt(svValue)>=100){
 				return true;
@@ -112,6 +119,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean verifyPresenceOfScheduleDateText() throws InterruptedException{
 		Thread.sleep(3000);
 		boolean isScheduleDateTextPresent = false;
+		driver.waitForElementPresent(SCHEDULE_DATE_TEXT_LOC);
 		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
 		if(scheduleDateText.contains("SCHEDULE DATE")){
 			isScheduleDateTextPresent = true;
@@ -121,6 +129,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public boolean verifyPresenceOfOrderStatusText(){
 		boolean isOrderStatusTextPresent = false;
+		driver.waitForElementPresent(ORDER_STATUS_TEXT_LOC);
 		String orderStatusText = driver.findElement(ORDER_STATUS_TEXT_LOC).getText();
 		if(orderStatusText.contains("ORDER STATUS")){
 			isOrderStatusTextPresent = true;
@@ -129,6 +138,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyExpirationDate(String expirationDate){
+		driver.waitForElementPresent(ORDER_PAYMENT_METHOD_LOC);
 		String paymentCardDetails = driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText();
 		if(paymentCardDetails.contains(expirationDate)){
 			return true;
@@ -137,6 +147,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAutoshipTotalPrice(String price){
+		driver.waitForElementPresent(ORDER_TOTAL_PRICE_LOC);
 		String autoshipTotalPrice = driver.findElement(ORDER_TOTAL_PRICE_LOC).getText();
 		String splittedPriceForAssertion = price.split("\\.")[0];
 		if(autoshipTotalPrice.contains(splittedPriceForAssertion)){
@@ -146,8 +157,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAutoshipGrandTotalPrice(String grandTotalDB){
+		driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
 		String autoshipGrandTotalPrice = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText();
-		System.out.println("GT--------- "+autoshipGrandTotalPrice.substring(1));
 		if(autoshipGrandTotalPrice.substring(1).contains(grandTotalDB)){
 			return true;
 		}
@@ -176,13 +187,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyShippingMethod(String shippingMethodDB){
-		System.out.println("UI --"+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText());
-		System.out.println("DB --"+shippingMethodDB);
 		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().contains(shippingMethodDB);
 	}
 
 	public boolean verifyPCPerksAutoShipHeader(){
-		System.out.println(driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
 		return driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: AUTOSHIPMENT #"+autoShipOrderNumber);
 	}
 
@@ -195,8 +203,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
+		driver.waitForElementPresent(LEFT_MENU_ACCOUNT_INFO_LOC);
 		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
-		System.out.println("Clicked");
+		logger.info("Account info link from left panel clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
@@ -231,7 +240,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOrderNumber(String orderNumber){
+		driver.waitForElementPresent(By.linkText(orderNumber));
 		driver.click(By.linkText(orderNumber));
+		logger.info("Order number clicked "+orderNumber);
 	}
 
 	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){

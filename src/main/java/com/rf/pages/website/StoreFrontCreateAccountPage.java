@@ -3,10 +3,13 @@ package com.rf.pages.website;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontCreateAccountPage.class.getName());
 
 	public StoreFrontCreateAccountPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -14,7 +17,9 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void enterFirstName(String firstName){
+		driver.waitForElementPresent(By.id("first-name"));
 		driver.findElement(By.id("first-name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
 	}
 
 	public void enterLastName(String lastName){

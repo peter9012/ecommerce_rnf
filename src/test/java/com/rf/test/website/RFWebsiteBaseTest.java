@@ -74,6 +74,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			e.printStackTrace();
 		}
 		driver.findElement(By.linkText("Log out")).click();
+		logger.info("Logout");
 	}
 
 	// This assertion for the UI Texts

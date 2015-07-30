@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
@@ -36,12 +37,17 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page 
 	@Test
 	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> defaultBillingAddressList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		consultantEmailID = "sharonvdk@msn.com";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -52,15 +58,28 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
 		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
-		storeFrontBillingInfoPage.enterNewBillingNameOnCard(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-		storeFrontBillingInfoPage.clickOnSaveBillingProfile();		
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+
+		defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
+		newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "Name");
+		newBillingProfileName = newBillingProfileName.split(" ")[0];
+		//assert with RFL
+		if(assertTrueDB("Default Billing Address radio button as per RFL DB is not selected on UI", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),RFL_DB)==false){
+			//assert with RFO
+			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+			newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressProfileName");
+			newBillingProfileName = newBillingProfileName.split(" ")[0];
+			s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Default Billing Address radio button as per RFO DB is not selected on UI");
+		}
+
 		storeFrontConsulatantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"autoship order payment name is not as expected");
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"autoship order payment name is not as expected");
 		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -81,14 +100,15 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
-	@Test
+	@Test(enabled=false)
 	public void testEditBillingProfileInAutoshipTemplate_2049() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		consultantEmailID = "sharonvdk@msn.com";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");

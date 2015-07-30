@@ -147,14 +147,18 @@ public class TestConstants {
 	 * New Shipping Address US
 	 * 
 	 */
-	public static final String NEW_ADDRESS_NAME_US = "testNewAddressName";
+	public static final String NEW_ADDRESS_NAME_US = "newSAName";
 	public static final String NEW_ADDRESS_LINE1_US = "10 Hemlock Way";
 	public static final String NEW_ADDRESS_CITY_US = "Cohasset";
 	public static final String NEW_ADDRESS_STATE_US = "MA";
 	public static final String NEW_ADDRESS_POSTAL_CODE_US = "02025-4001";
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US = "9178873219";
 	public static final String NEW_ADDRESS_SECURITY_NUMBER_US = "123";
-
+	
+	/**
+	 * 
+	 */
+	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 
 }
 

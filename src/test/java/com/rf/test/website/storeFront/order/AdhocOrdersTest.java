@@ -32,14 +32,15 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCreateAdhocOrderConsultant() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		consultantEmailID = "nishazenoff@gmail.com";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -85,8 +86,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFL,RFL_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "EmailAddress");
+//		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFL,RFL_DB);
+//		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "EmailAddress");
+		pcUserEmailID = "wigginsk@comcast.net";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);

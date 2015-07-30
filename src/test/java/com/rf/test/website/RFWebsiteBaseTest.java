@@ -66,6 +66,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
+		driver.waitForElementPresent(By.cssSelector("li[id='account-info-button']"));
 		driver.findElement(By.cssSelector("li[id='account-info-button']")).click();
 		try {
 			Thread.sleep(2000);
@@ -194,7 +195,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
 		Object value = null;
 		for (Map<String, Object> map : userDataList) {
-			System.out.println("count:" + map.get(column));
+			logger.info("query result:" + map.get(column));
 			value = map.get(column);			
 		}
 		return value;

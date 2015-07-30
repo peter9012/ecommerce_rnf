@@ -39,7 +39,6 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 		Thread.sleep(3000);
 		try{
 			driver.findElement(By.xpath("//div[text()='Please fix this field.']"));
-			System.out.println("Email Available");
 			return true;
 		}catch(NoSuchElementException e){
 			return false;
@@ -94,10 +93,8 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	public void selectExpirationDate(String month,String year){
 		Select monthDD = new Select(driver.findElement(By.cssSelector("select[id='expiryMonth']")));
 		Select yearDD = new Select(driver.findElement(By.cssSelector("select[id='expiryYear']")));
-		System.out.println("in");
 		monthDD.selectByVisibleText(month.toUpperCase());
-		yearDD.selectByVisibleText(year);
-		System.out.println("out");
+		yearDD.selectByVisibleText(year);		
 	}
 
 	public void enterSecurityCode(String securityCode){

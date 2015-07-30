@@ -23,7 +23,8 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	public boolean verifyRCUserPage(String username) throws InterruptedException{
 		Thread.sleep(2000);
 		driver.waitForElementPresent(WELCOME_USER_LOC);
-		return driver.findElement(By.xpath("//a[contains(text(),'Welcome "+username+"')]")).isDisplayed();
+		return driver.isElementPresent(WELCOME_USER_LOC);
+		
 	}
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{	

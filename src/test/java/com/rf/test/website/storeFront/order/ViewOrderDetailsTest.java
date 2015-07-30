@@ -61,7 +61,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> autoShipPaymentDetailsList = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -168,7 +168,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderDateList =  null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 
 		String orderNumberDB = null;

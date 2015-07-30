@@ -13,9 +13,6 @@ import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.rf.test.website.storeFront.account.AddBillingTest;
-
-
 public class DBUtil {
 	private static final Logger logger = LogManager
 			.getLogger(DBUtil.class.getName());

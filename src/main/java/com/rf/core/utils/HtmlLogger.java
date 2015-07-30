@@ -35,7 +35,7 @@ public class HtmlLogger
 					"<LEFT><img src="+imagePath+"></img></LEFT> "+
 					"<CENTER><FONT FACE=\"Algerian\" COLOR=\"#483C32\" +" +
 					" SIZE=\"6\"><U>AUTOMATION TEST REPORT</U></FONT></CENTER><br/><br/>";
-			String htmlfooter = "</body></html>";
+			String htmlfooter = "<p>Created by Shubham Mathur\n GSPANN Technologies Inc.</body></html>";
 			sb.append(htmlheader);
 
 			int count = 1;

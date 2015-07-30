@@ -35,14 +35,15 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	// Hybris Phase 2-130:change shipping method on autoship - PC	
-	@Test
+	@Test(enabled=false)
 	public void testChangeShippingMethodOnPCAutoShip_130() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFL,RFL_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "EmailAddress");
+//		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFL,RFL_DB);
+//		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "EmailAddress");
+		pcUserEmailID = "wigginsk@comcast.net";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
 		logger.info("login is successful");
@@ -66,14 +67,15 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
-	@Test
+	@Test(enabled=false)
 	public void testChangeShippingMethodOnConsultantAutoShip_131() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		consultantEmailID = "nishazenoff@gmail.com";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
@@ -129,7 +131,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> shippingMethodList = null;
 		List<Map<String, Object>> autoShipPaymentDetailsList = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -355,13 +357,13 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		// assert PC Tax Amount with RFL
 		if(assertTrueDB("PC Perks Tax value is not as in DB", storeFrontOrdersPage.verifyAutoShipTemplateTax(taxDB), RFL_DB)==false){
-			// assert PC Tax Amount with RFL
+			// assert PC Tax Amount with RFO
 			// Waiting for RFO Queries
 		}
 
 		//assert PC GrandTotal Amount with RFL
 		if(assertTrueDB("PC Perks Tax value is not as in DB", storeFrontOrdersPage.verifyAutoshipGrandTotalPrice(grandTotalDB), RFL_DB)==false){
-			// assert PC Tax Amount with RFL
+			// assert PC Tax Amount with RFO
 			// Waiting for RFO Queries
 		}
 

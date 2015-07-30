@@ -4,9 +4,10 @@
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 	</listeners>
-	<test name="RegressionTest">
+	<test name="RegressionTest">	    
 		<packages>
-			<package name="com.rf.test.website.storeFront.*" />
+		    <package name="com.rf.test.website.storeFront.*"></package>
 		</packages>
+		
 	</test>
 </suite>

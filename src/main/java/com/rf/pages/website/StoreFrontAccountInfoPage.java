@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.test.website.storeFront.RFPWSLoginTest;
 
 
 public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
@@ -150,7 +149,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public boolean verifyGenderFromUIAccountInfo(String gender){
 		boolean genderValue = driver.findElement(By.xpath(String.format(ACCOUNT_INFO_RADIO_BUTTON_LOC, TestConstants.CONSULTANT_GENDER))).isSelected();
-		System.out.println(genderValue);
 		if(genderValue == true){
 			String genderFromUI = "male";
 			genderFromUI.equalsIgnoreCase(gender);

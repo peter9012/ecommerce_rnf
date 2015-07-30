@@ -20,6 +20,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -60,11 +62,16 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new FirefoxDriver();
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-			driver = new ChromeDriver();
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			// for clearing cache
+			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+			driver = new ChromeDriver(capabilities);
 		}
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
+		// for clearing cookies
+		driver.manage().deleteAllCookies();
 		//	driver.get(propertyFile.getProperty("baseUrl"));
 	}
 

@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.test.website.storeFront.account.AddShippingTest;
 
 
 public class StoreFrontConsultantPage extends RFWebsiteBasePage{
@@ -68,6 +67,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	public String getCurrentURL() throws InterruptedException{
 		Thread.sleep(5000);
+		logger.info("Current url is "+driver.getCurrentUrl());
 		return driver.getCurrentUrl();
 	}
 

@@ -3,6 +3,7 @@ package com.rf.pages.website;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -10,6 +11,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
@@ -41,7 +43,8 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 
 	public int getTotalBillingAddressesDisplayed(){
 		driver.waitForElementPresent(TOTAL_BILLING_ADDRESSES_LOC);
-		List<WebElement> totalBillingAddressesDisplayed = driver.findElements(TOTAL_BILLING_ADDRESSES_LOC);		
+		List<WebElement> totalBillingAddressesDisplayed = driver.findElements(TOTAL_BILLING_ADDRESSES_LOC);
+		logger.info("Total Billing Profiles On UI are "+totalBillingAddressesDisplayed.size());		
 		return totalBillingAddressesDisplayed.size();
 	}
 
@@ -51,11 +54,21 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
 	}
 	
-	public boolean isDefaultBillingAddressSelected(String address1) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@name='bill-card' and @checked='checked']/ancestor::li[1]/p[1]"));
-		Thread.sleep(2000);
-		String defaultAddressUI = driver.findElement(By.xpath("//input[@name='bill-card' and @checked='checked']/ancestor::li[1]/p[1]")).getText(); 
-		return defaultAddressUI.contains(address1);
+	public boolean isDefaultBillingAddressSelected(String firstName) throws InterruptedException{
+		try{
+			driver.waitForElementPresent(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input"));
+			Thread.sleep(2000);
+			return driver.findElement(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input")).isSelected();
+			
+		}catch(NoSuchElementException e){
+			try{
+				return driver.findElement(By.xpath("//span[text()='"+firstName.toLowerCase()+"']/ancestor::li[1]/form//input")).isSelected();				
+			}
+			catch(NoSuchElementException e1){
+				return false;
+			}			
+		}	 
+		
 	}
 
 	public String getDefaultBillingAddress(){

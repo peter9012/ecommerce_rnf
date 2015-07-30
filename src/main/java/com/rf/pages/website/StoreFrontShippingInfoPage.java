@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.test.website.storeFront.autoship.AutoshipTest;
 
 public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
@@ -71,16 +70,20 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressName(String name){
+		driver.waitForElementPresent(By.id("new-attention"));
+		driver.findElement(By.id("new-attention")).clear();
 		driver.findElement(By.id("new-attention")).sendKeys(name);
 		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
 		logger.info("New Shipping Address is "+addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
+		driver.findElement(By.id("townCity")).clear();
 		driver.findElement(By.id("townCity")).sendKeys(city);
 		logger.info("New Shipping City is "+city);
 	}
@@ -91,10 +94,12 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.findElement(By.id("postcode")).clear();
 		driver.findElement(By.id("postcode")).sendKeys(postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
 	}
 
@@ -115,6 +120,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressSecurityCode(String securityCode){
+		driver.findElement(By.id("security-code")).clear();
 		driver.findElement(By.id("security-code")).sendKeys(securityCode);
 	}
 
@@ -141,6 +147,15 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			catch(NoSuchElementException e1){
 				return false;
 			}			
+		}
+	}
+	
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		try{
+			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
 		}
 	}
 

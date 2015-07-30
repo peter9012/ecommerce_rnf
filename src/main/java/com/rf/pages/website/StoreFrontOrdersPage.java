@@ -48,12 +48,14 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public boolean verifyOrderNumber(String orderNum){
 		driver.waitForElementPresent(ORDER_NUMBER_LOC);
+		logger.info("Order Number from UI is "+driver.findElement(ORDER_NUMBER_LOC).getText());
 		return driver.findElement(ORDER_NUMBER_LOC).getText().equalsIgnoreCase(orderNum);
 	}
 
 	public boolean verifyScheduleDate(String schDate){
 		driver.waitForElementPresent(ORDER_SCHEDULE_DATE_LOC);
 		schDate = convertDBDateFormatToUIFormat(schDate);
+		logger.info("Order Schedule date from UI "+schDate);
 		return driver.findElement(ORDER_SCHEDULE_DATE_LOC).getText().equalsIgnoreCase(schDate);
 	}
 
@@ -64,11 +66,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		else{
 			grandTotal = "$"+grandTotal;
 		}		
+		logger.info("Order Grand total from UI is "+driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
 		return grandTotal.contains(driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
 	}
 
 	public boolean verifyOrderStatus(String status){
 		driver.waitForElementPresent(ORDER_STATUS_LOC);
+		logger.info("Order Status from UI "+driver.findElement(ORDER_STATUS_LOC).getText());
 		return driver.findElement(ORDER_STATUS_LOC).getText().equalsIgnoreCase(status);
 	}
 
@@ -86,7 +90,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyCRPAutoShipHeader(){
-		System.out.println(driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
+		logger.info(driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
 		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: CRP #"+autoShipOrderNumber);
 	}
 
@@ -226,8 +230,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	//	}
 
 	public StoreFrontReportOrderComplaintPage clickOnActions(){
+		driver.waitForElementPresent(ACTIONS_BUTTON_LOC);
 		driver.findElement(ACTIONS_BUTTON_LOC).click();
-		driver.findElement(ACTIONS_DROPDOWN_LOC).click();	 
+		logger.info("Action drop down clicked for first order");
+		driver.waitForElementPresent(ACTIONS_DROPDOWN_LOC);
+		driver.findElement(ACTIONS_DROPDOWN_LOC).click();
+		logger.info("Report Problems link clicked for first order");
 		return new StoreFrontReportOrderComplaintPage(driver);
 	}
 

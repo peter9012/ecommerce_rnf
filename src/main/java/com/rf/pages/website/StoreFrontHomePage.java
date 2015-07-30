@@ -3,9 +3,8 @@ package com.rf.pages.website;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.test.website.storeFront.account.AddShippingTest;
+
 
 public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private static final Logger logger = LogManager
@@ -34,9 +33,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
-		driver.waitForElementPresent(LOGIN_LINK_LOC);
-		driver.click(LOGIN_LINK_LOC);
-		logger.info("login link clicked");
+		try{
+			driver.waitForElementPresent(LOGIN_LINK_LOC);
+			driver.click(LOGIN_LINK_LOC);
+			logger.info("login link clicked");
+		}catch(Exception e){
+			logger.info("login linked not present");
+		}
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is: "+username);
@@ -47,9 +50,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public StoreFrontRCUserPage loginAsRCUser(String username,String password){
-		driver.waitForElementPresent(LOGIN_LINK_LOC);
-		driver.click(LOGIN_LINK_LOC);
-		logger.info("login link clicked");
+		try{
+			driver.waitForElementPresent(LOGIN_LINK_LOC);
+			driver.click(LOGIN_LINK_LOC);
+			logger.info("login link clicked");
+		}catch(Exception e){
+			logger.info("login linked not present");
+		}
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
@@ -59,9 +66,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return new StoreFrontRCUserPage(driver);
 	}
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
-		driver.waitForElementPresent(LOGIN_LINK_LOC);
-		driver.click(LOGIN_LINK_LOC);		
-		logger.info("login link clicked");
+		try{
+			driver.waitForElementPresent(LOGIN_LINK_LOC);
+			driver.click(LOGIN_LINK_LOC);		
+			logger.info("login link clicked");
+		}catch(Exception e){
+			logger.info("login linked not present");
+		}
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
@@ -72,11 +83,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void openConsultantPWS(String pwsURL){
+		logger.info("User PWS is "+pwsURL);
 		driver.get(pwsURL);		
 	}
 
 	public boolean isCurrentURLShowsError() throws InterruptedException{
 		Thread.sleep(5000);
+		logger.info("Curremt URL is "+driver.getCurrentUrl());
 		return driver.getCurrentUrl().contains("login?error=true");
 	}
 

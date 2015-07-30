@@ -41,7 +41,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	// Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
-	@Test
+	@Test(enabled=false)
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -68,7 +68,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Test Case Hybris Phase 2-3719 :: Version : 1 :: Perform PC Account termination through my account
-	@Test
+	@Test(enabled=false)
 	public void testAccountTerminationPageForPCUser_3719() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -88,7 +88,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-2228 :: Version : 1 :: Perform RC Account termination through my account
-	@Test
+	@Test(enabled=false)
 	public void testAccountTerminationPageForRCUser_2228() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -109,7 +109,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
 		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
-		storeFrontHomePage.loginAsConsultant(rcUserEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
+		storeFrontHomePage.loginAsRCUser(rcUserEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
 		s_assert.assertAll();
 
@@ -122,7 +122,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
@@ -156,65 +156,78 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderStatusList =  null;
 		List<Map<String, Object>> orderGrandTotalList =  null;
 		List<Map<String, Object>> orderDateList =  null;
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailAddress = null;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_RC_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
+		rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+
 
 		String orderNumberDB = null;
 		String orderStatusDB = null;
 		String orderGrandTotalDB = null;
 		String orderDateDB = null;
-		String rcUserUsername = null;
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		rcUserUsername = TestConstants.RCUSER_USERNAME_TST4;
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(TestConstants.RCUSER_EMAIL_ID_TST4, TestConstants.RCUSER_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserUsername),"RC User Page doesn't contain Welcome User Message");
+		//rcUserUsername = TestConstants.RCUSER_USERNAME_TST4;
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, TestConstants.RCUSER_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailAddress),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
 		// assert for order number with RFL
-		orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, TestConstants.RCUSER_EMAIL_ID_TST4),RFL_DB); 
+		orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, rcUserEmailAddress),RFL_DB); 
 		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber"); 
-		if(assertTrueDB("Order Number on UI is different from DB",storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),RFL_DB)==false){
+		logger.info("Order Number from RFL DB is "+orderNumberDB);
+		if(assertTrueDB("Order Number on UI is different from RFL DB",storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),RFL_DB)==false){
 			//assert for order number with RFO
-			orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  TestConstants.RCUSER_EMAIL_ID_TST4),RFO_DB);
+			orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
 			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-			assertTrue("Order Number on UI is different from DB",storeFrontOrdersPage.verifyOrderNumber(orderNumberDB));
+			logger.info("Order Number from RFO DB is "+orderNumberDB);
+			s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");
 		}
 		// assert for order status with RFL
-		orderStatusList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFL, TestConstants.RCUSER_EMAIL_ID_TST4),RFL_DB);
+		orderStatusList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFL, rcUserEmailAddress),RFL_DB);
 		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
-		if(assertTrueDB("Order status is not as expected for this User",storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),RFL_DB)==false){
+		logger.info("Order Status from RFL DB is "+orderStatusDB);
+		if(assertTrueDB("Order Status on UI is different from RFL DB",storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),RFL_DB)==false){
 			//assert for order status with RFO
-			orderStatusList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, TestConstants.RCUSER_EMAIL_ID_TST4),RFO_DB);
+			orderStatusList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
 			orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
-			assertTrue("Order status is not as expected for this User", storeFrontOrdersPage.verifyOrderStatus(orderStatusDB));
+			logger.info("Order Status from RFO DB is "+orderStatusDB);
+			s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),"Order Status on UI is different from RFO DB");
 		}
 		// assert for grand total with RFL
-		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFL, TestConstants.RCUSER_EMAIL_ID_TST4),RFL_DB);
+		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFL, rcUserEmailAddress),RFL_DB);
 		DecimalFormat df = new DecimalFormat("#.00");
-		orderGrandTotalDB = df.format((Number) getValueFromQueryResult(orderGrandTotalList, "GrandTotal")); 
-		if(assertTrueDB("Grand total is not as expected for this User",storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),RFL_DB)==false){
+		orderGrandTotalDB = df.format((Number) getValueFromQueryResult(orderGrandTotalList, "GrandTotal"));
+		logger.info("Order GrandTotal from RFL DB is "+orderGrandTotalDB);
+		if(assertTrueDB("Grand total on UI is different from RFL DB",storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),RFL_DB)==false){
 			//assert for grand total with RFO
-			orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  TestConstants.RCUSER_EMAIL_ID_TST4),RFO_DB);
+			orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
 			DecimalFormat dff = new DecimalFormat("#.00");
 			orderGrandTotalDB = dff.format((Number) getValueFromQueryResult(orderGrandTotalList, "AmountToBeAuthorized")); 
-			assertTrue("Grand total is not as expected for this User",storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB));
+			logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
+			s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
 		}
 		// assert for order date with RFL
-		orderDateList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFL, TestConstants.RCUSER_EMAIL_ID_TST4),RFL_DB);
+		orderDateList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFL, rcUserEmailAddress),RFL_DB);
 		orderDateDB = String.valueOf(getValueFromQueryResult(orderDateList, "StartDate"));
-		if(assertTrueDB("Scheduled date is not as expected for this User",storeFrontOrdersPage.verifyScheduleDate(orderDateDB),RFL_DB)==false){
+		logger.info("Order Scheduled Date from RFL DB is "+orderDateDB);
+		if(assertTrueDB("Scheduled date on UI is different from RFL DB",storeFrontOrdersPage.verifyScheduleDate(orderDateDB),RFL_DB)==false){
 			//assert for order date with RFO
-			orderDateList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  TestConstants.RCUSER_EMAIL_ID_TST4),RFO_DB);
+			orderDateList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
 			orderDateDB = String.valueOf (getValueFromQueryResult(orderDateList, "CompletionDate"));
-			assertTrue("Scheduled date is not as expected for this User",storeFrontOrdersPage.verifyScheduleDate(orderDateDB));
+			logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
+			s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 		}
 		logout();
 		s_assert.assertAll();		
 	}
 
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
-	@Test
+	@Test(enabled=false)
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO(); 
@@ -258,7 +271,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			genderDB = "female";
 		}
 		dobDB  = (String) getValueFromQueryResult(accountNameDetailsList, "Birthday");
-		System.out.println("Birtthday ++++++"+ dobDB);
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
 		addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "Address1");
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "City");

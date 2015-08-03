@@ -33,13 +33,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
-		try{
-			driver.waitForElementPresent(LOGIN_LINK_LOC);
-			driver.click(LOGIN_LINK_LOC);
-			logger.info("login link clicked");
-		}catch(Exception e){
-			logger.info("login linked not present");
-		}
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is: "+username);
@@ -50,13 +46,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public StoreFrontRCUserPage loginAsRCUser(String username,String password){
-		try{
-			driver.waitForElementPresent(LOGIN_LINK_LOC);
-			driver.click(LOGIN_LINK_LOC);
-			logger.info("login link clicked");
-		}catch(Exception e){
-			logger.info("login linked not present");
-		}
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
@@ -66,13 +58,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return new StoreFrontRCUserPage(driver);
 	}
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
-		try{
-			driver.waitForElementPresent(LOGIN_LINK_LOC);
-			driver.click(LOGIN_LINK_LOC);		
-			logger.info("login link clicked");
-		}catch(Exception e){
-			logger.info("login linked not present");
-		}
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);		
+		logger.info("login link clicked");
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);

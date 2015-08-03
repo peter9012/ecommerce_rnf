@@ -30,6 +30,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+	private StoreFrontOrdersPage storeFrontOrdersPage;
 
 	private String RFL_DB = null;
 	private String RFO_DB = null;
@@ -38,45 +39,59 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();		
+		RFO_DB = driver.getDBNameRFO();	
+
 		int totalShippingAddressesFromDB = 0;
 		List<Map<String, Object>> shippingAddressCountList =  null;
 		List<Map<String, Object>> defaultShippingAddressList =  null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		String address1=null;
+		String shippingAddressName=null;
 		String consultantEmailID = null;
-		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		consultantEmailID = "sharonvdk@msn.com";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
-		// assert with RFL
+		//------------------The same number of shipping addresses is shown in RFL and Front end----------------------------------------------------------------------------------------------------------------------------
 		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
 		totalShippingAddressesFromDB = (Integer) getValueFromQueryResult(shippingAddressCountList, "count");		
 		if(assertEqualsDB("Shipping Addresses count on UI is different from DB", totalShippingAddressesFromDB,storeFrontShippingInfoPage.getTotalShippingAddressesDisplayed(),RFL_DB)==false){
-			//assert with RFO
+
+			//------------------The same number of billing addresses is shown in RFO and Front end----------------------------------------------------------------------------------------------------------------------------
 			shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 			totalShippingAddressesFromDB = (Integer) getValueFromQueryResult(shippingAddressCountList, "count");			
 			assertEquals("Shipping Addresses count on UI is different from DB", totalShippingAddressesFromDB,storeFrontShippingInfoPage.getTotalShippingAddressesDisplayed());			
 		}
 
+		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		if(totalShippingAddressesFromDB > 1){
 			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_SHIPPING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
-			address1 = (String) getValueFromQueryResult(defaultShippingAddressList, "Address1");
-			//assert with RFL
-			if(assertTrueDB("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(address1),RFL_DB)==false){
-				//assert with RFO
+			shippingAddressName = (String) getValueFromQueryResult(defaultShippingAddressList, "Name");
+			shippingAddressName = shippingAddressName.split(" ")[0];
+
+			//-------------------------------------Radio button is checked for the default shipping address on Front end as per RFL--------------------------------------------------------------------------------------------
+			if(assertTrueDB("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(shippingAddressName),RFL_DB)==false){
+
+				//---------------------------------Radio button is checked for the default shipping address on Front end as per RFO--------------------------------------------------------------------------------------------
 				defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
-				address1 = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
-				assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(address1));
+				shippingAddressName = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
+				assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(shippingAddressName));
 			}
 		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		logout();
 		s_assert.assertAll();
 	}
@@ -84,19 +99,24 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
 	@Test
-	public void testEditShippingAddressOnShippingProfilePage() throws InterruptedException{
+	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		consultantEmailID = "sharonvdk@msn.com";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+						consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------		
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -106,28 +126,108 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAdrressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
-		storeFrontShippingInfoPage.selectNewShippingAddressState(TestConstants.NEW_ADDRESS_STATE_US);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
 		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
+
+		//--------------- Verify that Newly added Shipping is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAdrressName), "New Shipping address is not selected listed on Shipping profile page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
+
 		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAdrressName), "Autoship order text not present under the new Shipping Address");
-//		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
-//		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-//		storeFrontUpdateCartPage.clickOnEditShipping();
-//		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAdrressName), "New Shipping address NOT added to update cart");
-//		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		s_assert.assertAll();
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+
+		//---------------Verify that the new added shipping address is displayed in 'Shipment' section on update autoship cart page------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAdrressName), "New Shipping address NOT added to update cart");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		logout();
+		s_assert.assertAll();
 
 	}
 
-	//  Hybris Phase 2-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
-	public void testEditShippingAddressDuringCRPEnrollmentMyAccount(){
-		// TODO
-	}
+	//Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	@Test
+	public void testEditShippingProfileMyAccountFutureAutoshipNotSelected() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
 
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------		
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontShippingInfoPage.clickOnEditForFirstAddress();
+		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String lastName = "test";
+		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.selectFirstCardNumber();
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
+
+		//--------------- Verify that Newly edited Shipping is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the newly edited shipping profile address by verifying by name------------------------------------------------------------		
+
+		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address contains the new shipping address even when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly created shipping profile address by verifying by name------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address contains new shipping address even when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		logout();
+		s_assert.assertAll();
+	}
+	
 }

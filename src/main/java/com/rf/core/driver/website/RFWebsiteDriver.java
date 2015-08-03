@@ -121,6 +121,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 10);
 			logger.info("waiting for locator " + locator);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			logger.info("Element found");
 		} catch (Exception e) {
 			e.getStackTrace();
 		}

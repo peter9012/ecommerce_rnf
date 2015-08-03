@@ -23,7 +23,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	private String RFL_DB = null;
 
 	//Consultant with PWS - Corporate site - Her own .com PWS
-	@Test
+	@Test(enabled=false)
 	public void testConsultantWithPWSLoginFromCorp(){
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -40,11 +40,10 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		s_assert.assertTrue(!consultantPWSURL.contains(".biz"),"Consultant is not on her own .com PWS");
 		logout();	
 		s_assert.assertAll();
-
 	}
 
 	//Consultant with PWS - Her own PWS - Her own PWS
-	@Test
+	@Test(enabled=false)
 	public void testConsultantWithPWSLoginFromOwnPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -64,7 +63,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 	//Consultant with PWS -Someone else’s PWS - Her own PW
-	@Test
+	@Test(enabled=false)
 	public void testConsultantWithPWSLoginFromOthersPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -94,7 +93,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//Consultant W/O PWS - Corporate site - Corporate site
-	@Test
+	@Test(enabled=false)
 	public void testConsultantWithoutPWSLoginFromCorp() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -110,7 +109,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//Consultant W/O PWS - Someone else’s PWS - Corporate site
-	@Test
+	@Test(enabled=false)
 	public void testConsultantWithoutPWSLoginFromOthersPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -136,7 +135,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//RC - someone's PWS - someone's PWS
-	@Test
+	@Test(enabled=false)
 	public void testRetailCustomerLoginFromOthersPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomRCList =  null;
@@ -161,7 +160,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//RC - corporate site - Corporate Site
-	@Test
+	@Test(enabled=false)
 	public void testRetailCustomerLoginFromCorp() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomRCList =  null;
@@ -180,7 +179,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, whose Sponsor has PWS - Sponsor’s PWS - Sponsor’s PWS
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromSponsorsPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
@@ -201,7 +200,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, whose Sponsor has PWS - Not Sponsor’s PWS - Sponsor’s PWS
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromOtherSponsorsPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
@@ -230,7 +229,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, whose Sponsor has PWS - Corporate Site - Sponsor’s PWS
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromCorp() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
@@ -254,7 +253,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, whose Sponsor has No PWS - someone's PWS - Corporate Site
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerWithNoPWSSponsorLoginFromOtherPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithSponsorNoPWSList =  null;
@@ -278,7 +277,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, whose Sponsor has No PWS - Corporate Site - Corporate Site
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerWithNoPWSSponsorLoginFromCorp() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithSponsorNoPWSList =  null;
@@ -297,7 +296,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//PC, with no sponsor - someone's site - Corporate Site 
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerNoSponsorLoginFromOthersPWS() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithNoSponsorList =  null;
@@ -321,7 +320,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 	//PC, with no sponsor - corporate site - Corporate Site
-	@Test
+	@Test(enabled=false)
 	public void testPreferredCustomerNoSponsorLoginFromCorp() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithNoSponsorList =  null;

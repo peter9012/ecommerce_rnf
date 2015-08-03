@@ -27,6 +27,7 @@ public class StoreFrontReportOrderComplaintPage extends RFWebsiteBasePage {
 
 	}
 	public boolean VerifyOrderNumberOnReportPage(){
+		driver.waitForElementPresent(REPORT_PAGE_HEADER_LOC);
 		String header = driver.findElement(REPORT_PAGE_HEADER_LOC).getText();
 		if(header.contains(StoreFrontOrdersPage.orderNumberOfOrderHistory)){
 			return true;

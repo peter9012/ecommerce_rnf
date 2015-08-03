@@ -236,6 +236,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyValidationMessageOfPhoneNumber(String validationMessage){
+		driver.waitForElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC);
 		if(driver.isElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC)){
 			String validationMessageFromUI = driver.findElement(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC).getText();
 			if(validationMessageFromUI.equalsIgnoreCase(validationMessage)){

@@ -31,7 +31,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private final By USE_THIS_BILLING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_BILLING_PROFILE_SAVE_BTN_LOC = By.id("submitButton");
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//ul[@id='multiple-billing-profiles']//li[1]/p[1]/span[@class='font-bold']");
-	
+
 	public StoreFrontBillingInfoPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
@@ -53,13 +53,13 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input"));
 		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
 	}
-	
+
 	public boolean isDefaultBillingAddressSelected(String firstName) throws InterruptedException{
 		try{
 			driver.waitForElementPresent(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input"));
 			Thread.sleep(2000);
 			return driver.findElement(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input")).isSelected();
-			
+
 		}catch(NoSuchElementException e){
 			try{
 				return driver.findElement(By.xpath("//span[text()='"+firstName.toLowerCase()+"']/ancestor::li[1]/form//input")).isSelected();				
@@ -68,7 +68,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 				return false;
 			}			
 		}	 
-		
+
 	}
 
 	public String getDefaultBillingAddress(){
@@ -101,11 +101,11 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_EXP_MONTH_LOC);
 		Select cardExpirationMonthDD = new Select(driver.findElement(ADD_NEW_BILLING_CARD_EXP_MONTH_LOC));
 		Select cardExpirationYearDD = new Select(driver.findElement(ADD_NEW_BILLING_CARD_EXP_YEAR_LOC));
-		cardExpirationMonthDD.selectByVisibleText(month.toUpperCase());
+		cardExpirationMonthDD.selectByValue(month.toUpperCase());
 		logger.info("new billing month selected as "+month.toUpperCase());
 		cardExpirationYearDD.selectByVisibleText(year);
 		logger.info("new billing year selected as "+year);
-		
+
 	}
 
 	public void enterNewBillingSecurityCode(String securityCode){
@@ -136,16 +136,38 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		logger.info("save billing profile button clicked");
 	}
 	
+	public void makeBillingProfileDefault(String firstName) throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
+		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input")).click();
+		logger.info("default billing profile selected has the name "+firstName);
+		Thread.sleep(20000); // application taking too long,will remove this in sometime
+	}
+
 	public void clickOnEditBillingProfile() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::p[1]/a"));
 		driver.findElement(By.xpath("//input[@checked='checked']/preceding::p[1]/a")).click();
 		Thread.sleep(3000);
 		logger.info("Edit billing profile link clicked");
 	}
-	
+
 	public String getBillingProfileName(){
 		driver.waitForElementPresent(BILLING_PROFILE_NAME_LOC);
 		logger.info("new billing profile name is "+driver.findElement(BILLING_PROFILE_NAME_LOC).getText());
 		return driver.findElement(BILLING_PROFILE_NAME_LOC).getText();
 	}
+
+	public boolean isTheBillingAddressPresentOnPage(String firstName){
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']/li"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//ul[@id='multiple-billing-profiles']/li"));		
+		for(int i=1;i<=allBillingProfiles.size();i++){			
+			isFirstNamePresent = driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){	
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 }

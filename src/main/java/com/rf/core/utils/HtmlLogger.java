@@ -70,6 +70,10 @@ public class HtmlLogger
 					sb.append("<font color='#DF7401'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}
+				else if (line.contains("VERIFICATION FAILED")){
+					sb.append("<font color='#DF7401'>" + "<" + "br" + "/><b>"
+							+ line + "</b></font><br/>");
+				}
 
 				else {
 					if (count == 1)

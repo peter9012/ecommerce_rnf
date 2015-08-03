@@ -127,7 +127,7 @@ public class TestConstants {
 	/*
 	 * US tst4 
 	 */
-	//public static final String CONSULTANT_EMAIL_ID_TST4 = "smstone77@gmail.com";
+	public static final String CONSULTANT_EMAIL_ID_TST4 = "anneginsberg@hotmail.com";
 	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
 	public static final String RC_PASSWORD_TST4 = "abcde";
 	public static final String CONSULTANT_PASSWORD_RFL = "abcde";

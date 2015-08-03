@@ -7,7 +7,6 @@
 	<test name="RegressionTest">	    
 		<packages>
 		    <package name="com.rf.test.website.storeFront.*"></package>
-		</packages>
-		
+		</packages>				
 	</test>
 </suite>

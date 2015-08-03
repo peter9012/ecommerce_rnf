@@ -2,6 +2,7 @@ package com.rf.pages.website;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -39,9 +40,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
 	}
 
-	public boolean isDefaultShippingAddressSelected(String address1) throws InterruptedException{
+	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
 		Thread.sleep(2000);
-		return driver.findElement(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]")).getText().contains(address1);
+		driver.waitForElementPresent(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]"));
+		return driver.findElement(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]")).getText().contains(name);
 	}	
 
 
@@ -88,9 +90,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		logger.info("New Shipping City is "+city);
 	}
 
-	public void selectNewShippingAddressState(String state){
-		Select stateDD = new Select(driver.findElement(By.id("state")));
-		stateDD.selectByValue(state);
+	public void selectNewShippingAddressState(){
+		driver.findElement(By.xpath("//select[@id='state']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+		driver.findElement(By.xpath("//select[@id='state']/option[2]")).click();
+		logger.info("State/Province selected");
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
@@ -133,26 +137,44 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		Thread.sleep(5000);
 		logger.info("New Shipping prifile save button clicked");
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
+			driver.findElement(By.xpath("//input[@id='QAS_AcceptOriginal']")).click();
+		}catch(NoSuchElementException e){
+			
+		}
+		
+	}
+	
+	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
+		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]")).click();
+		logger.info("Default shipping profile selected is having name "+firstName);
+		Thread.sleep(4000);
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
+			driver.findElement(By.xpath("//input[@class='shippingAddresspopup']")).click();
+		}catch(NoSuchElementException e){
+			
+		}
 	}
 
-	public boolean isShippingAddressPresentOnShippingPage(String name){
-		try{
-			driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li//span[@class='font-bold'][contains(text(),'"+name+"')]"));
-			return true;
-		}catch(NoSuchElementException e){
-			try{
-				driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li//span[@class='font-bold'][contains(text(),'"+name.toLowerCase()+"')]"));
+	public boolean isShippingAddressPresentOnShippingPage(String firstName){
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']/li"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//ul[@id='multiple-billing-profiles']/li"));		
+		for(int i=1;i<=allBillingProfiles.size();i++){			
+			isFirstNamePresent = driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){				
 				return true;
 			}
-			catch(NoSuchElementException e1){
-				return false;
-			}			
 		}
+		return false;
 	}
 	
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
 		try{
-			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			driver.findElement(By.xpath("//span[contains(text(),'"+StringUtils.uncapitalize(firstName)+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
 			return true;
 		}catch(NoSuchElementException e){
 			return false;

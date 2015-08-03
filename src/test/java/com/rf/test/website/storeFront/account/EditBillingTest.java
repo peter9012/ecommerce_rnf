@@ -26,7 +26,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			.getLogger(EditBillingTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
-	private StoreFrontConsultantPage storeFrontConsulatantPage;
+	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
@@ -40,20 +40,25 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
+
 		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String, Object>> defaultBillingAddressList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		consultantEmailID = "sharonvdk@msn.com";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
 		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
@@ -64,76 +69,324 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 
-		defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
-		newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "Name");
-		newBillingProfileName = newBillingProfileName.split(" ")[0];
-		//assert with RFL
-		if(assertTrueDB("Default Billing Address radio button as per RFL DB is not selected on UI", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),RFL_DB)==false){
-			//assert with RFO
-			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
-			newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressProfileName");
-			newBillingProfileName = newBillingProfileName.split(" ")[0];
-			s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Default Billing Address radio button as per RFO DB is not selected on UI");
-		}
+		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited Billing profile is NOT listed on the page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"autoship order payment name is not as expected");
-		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
+
+		//------------------ Verify that autoship template contains the newly edited billing profile------------------------------------------------------------		
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly edited billing profile when future autoship checkbox is selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly edited billing profile ------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains the newly edited billing profile when future autoship checkbox is selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"New Billing Address is not selected by default");
-		storeFrontConsulatantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage = storeFrontConsulatantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		storeFrontBillingInfoPage.clickOnEditBillingProfile();
-		storeFrontBillingInfoPage.enterNewBillingNameOnCard(initialBillingProfileName);
-		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontBillingInfoPage.selectNewBillingCardAddress();
-		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 		logout();
 		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
-	@Test(enabled=false)
+	@Test
 	public void testEditBillingProfileInAutoshipTemplate_2049() throws InterruptedException, SQLException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		consultantEmailID = "sharonvdk@msn.com";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontCartAutoShipPage = storeFrontConsulatantPage.clickNextCRP();
+	
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		String initialBillingProfileName =  storeFrontUpdateCartPage.getBillingProfileName();
+		String initialBillingProfileName =  storeFrontUpdateCartPage.getDefaultBillingProfileName();
 		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
-		System.out.println("initialBillingProfileName= "+initialBillingProfileName);
+
 		storeFrontUpdateCartPage.clickOnEditBillingProfile(initialBillingProfileName);
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		// Verify that The profile should have been saved and should be listed in payment section having 'bill to this card' radio button selected
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontConsulatantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(TestConstants.FIRST_NAME_NEW_BILLING_ADDRESS),"autoship order payment name is not as expected");
+
+		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly added billing profile ------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains the newly added billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		logout();
+		s_assert.assertAll();
+	}
+
+
+	// EDIT a billing profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	@Test
+	public void testEditBillingProfileMyACcountFutureAutoshipNotChecked_2342() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
+		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+		storeFrontBillingInfoPage.clickOnEditBillingProfile();
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+
+		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited Billing profile is NOT listed on the page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the newly edited billing profile------------------------------------------------------------		
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly edited billing profile when future autoship checkbox is not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly edited billing profile ------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains the newly edited billing profile when future autoship checkbox is not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		logout();
+		s_assert.assertAll();
+
+	}
+
+	
+	// EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	@Test
+	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected() throws InterruptedException{		
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
+		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		String initialBillingProfileName =  storeFrontUpdateCartPage.getDefaultBillingProfileName();
+		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+
+		storeFrontUpdateCartPage.clickOnEditBillingProfile(initialBillingProfileName);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickBillingEditAfterSave();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template contains the newly created billing profile------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method doesn't contains new billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		logout();
+		s_assert.assertAll();
+	}
+	
+	//EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box CHECKED:
+	@Test
+	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+
+		//------------------------------- Random Users part is commented for now-----------------------------------------------	
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
+		//---------------------------------------------------------------------------------------------------------------------
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
+		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		String initialBillingProfileName =  storeFrontUpdateCartPage.getDefaultBillingProfileName();
+		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+
+		storeFrontUpdateCartPage.clickOnEditBillingProfile(initialBillingProfileName);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickBillingEditAfterSave();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template contains the newly created billing profile------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method doesn't contains new billing profile");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		logout();
 		s_assert.assertAll();
 	}

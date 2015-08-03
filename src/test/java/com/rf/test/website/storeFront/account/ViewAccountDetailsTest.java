@@ -39,7 +39,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4178:View Account Information with active templates
-	@Test
+	@Test(enabled=false)
 	public void testAccountDetailsForAccountInfo() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -214,7 +214,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4184:Enrolled Consultant, Has CRP/ No Pulse, No Orders, No Downlines, InActive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPNoOrdersACTIVE_4184() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -230,7 +230,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4186:Enrolled Consultant, No CRP/ Has Pulse, No Orders, No Downlines, InActive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantNoCRPHasPulseNoOrdersINACTIVE_4186() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -245,7 +245,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4188:Enrolled Consultant, Has CRP/ Has Pulse, No Orders, No Downlines, InActive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPHasPulseNoOrdersINACTIVE_4188() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -312,7 +312,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4190:Enrolled Consultant, Has CRP/ Has Pulse, Failed Orders, No Downlines, Inactive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPHasPulseFailedOrdersINACTIVE_4190() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -327,7 +327,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4192:Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, No Downlines, Inactive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPHasPulseSubmittedOrdersINACTIVE_4192() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -367,33 +367,9 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 	}
 
-	// Hybris Phase 2-4195 :: Version : 1 :: Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, Has Downlines, Active 
-	@Test
-	public void testEnrolledConsultantHasCRPHasPulseHasSubmittedOrdersOrdersACTIVE_4195() throws InterruptedException{
-		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFL_4195,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
-		storeFrontAccountInfoPage = storeFrontAccountInfoPage.clickOnAccountInfoFromLeftPanel();
-		storeFrontOrdersAutoshipStatusPage = storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
-		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
-		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
-		s_assert.assertAll();
-
-	}
-
+	
 	// Hybris Phase 2-4194:Enrolled Consultant, Has CRP/ Has Pulse, Has Failed Order, Has Downlines, Inactive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPHasPulseHasFailedOrdersINACTIVE_4194() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -408,7 +384,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4196:Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, Has Downlines, Inactive
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledConsultantHasCRPHasPulseHasSubmittedOrdersINACTIVE_4196() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -463,45 +439,45 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//	// Hybris Phase 2-4195 : Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders
-	//	@Test
-	//	public void testEnrolledConsultantHasCRPPULSESubmittedOrders_HP2_4195() throws InterruptedException, SQLException{
-	//		RFL_DB = driver.getDBNameRFL();
-	//		RFO_DB = driver.getDBNameRFO();
-	//		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-	//		List<Map<String, Object>> orderNumberList =  null;		
-	//		String orderNumberDB = null;
-	//		String consultantEmail = null;
-	//		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL,RFL_DB);
-	//		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "UserName");
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
-	//		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-	//		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-	//
-	//		orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
-	//		//assert on RFL
-	//		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-	//		if(assertTrueDB("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB),RFL_DB)==false){
-	//			//assert On RFO
-	//			orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
-	//			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-	//			assertTrue("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB));	
-	//		}		
-	//		storeFrontAccountInfoPage = storeFrontOrdersPage.clickOnAccountInfoFromLeftPanel();
-	//		storeFrontOrdersAutoshipStatusPage = storeFrontAccountInfoPage.clickOnAutoShipStatus();
-	//		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
-	//		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
-	//		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-	//		logout();
-	//		s_assert.assertAll();
-	//	}
+	// Hybris Phase 2-4195 : Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders
+	@Test
+	public void testEnrolledConsultantHasCRPPULSESubmittedOrders_HP2_4195() throws InterruptedException, SQLException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantEmailIdList =  null;
+		List<Map<String, Object>> orderNumberList =  null;		
+		String orderNumberDB = null;
+		String consultantEmail = null;
+		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL,RFL_DB);
+		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "UserName");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+
+		orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
+		//assert on RFL
+		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+		if(assertTrueDB("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB),RFL_DB)==false){
+			//assert On RFO
+			orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
+			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+			assertTrue("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB));	
+		}		
+		storeFrontAccountInfoPage = storeFrontOrdersPage.clickOnAccountInfoFromLeftPanel();
+		storeFrontOrdersAutoshipStatusPage = storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
+		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
+		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
+		logout();
+		s_assert.assertAll();
+	}
 
 
 	//Hybris Phase 2-4205 : Enrolled PC, Has CRP/ Has Pulse, Has Submitted Orders
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledPCHasCRPPULSESubmittedOrders_HP2_4205() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -557,6 +533,5 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.enterConfimedPassword(newPassword);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 	}
-
 
 }

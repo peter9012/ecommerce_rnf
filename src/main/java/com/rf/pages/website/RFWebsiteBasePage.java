@@ -80,6 +80,5 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("All products link clicked "+"//a[@title='All Products']");
 	}
 
-
 }
 

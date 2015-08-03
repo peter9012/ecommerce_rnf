@@ -23,7 +23,17 @@ public class DBQueries {
 	public static String GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select CompletionDate from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc)";
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
+	public static String GET_SHIPPING_ADDRESS_DETAILS_FOR_CONSULTANT_RFL_4289 = "SELECT  os.* "+
+			   "FROM    dbo.OrderShipments AS os "+
+			   "WHERE   os.OrderID = '%s'";
 
+			 public static String GET_ORDER_DETAILS_FOR_CONSULTANT_RFL_4289 = "SELECT  oc.* "+
+			"FROM    dbo.Orders AS o "+
+			"JOIN    dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			"WHERE   o.OrderID = '%s'";
+			 
+			 public static String GET_SHIPPING_METHOD_FOR_CONSULTANT_RFL_4289 = "select * from dbo.ShippingMethods where ShippingMethodID='%s'";
+	
 	public static String GET_SHIPPING_ADDRESS_QUERY_RFO = "select * from RFO_Accounts.Addresses where "+ 
 			"(IsDefault='1' and EndDate IS NULL and AddressId in "+
 			"(select top 1 addressid from RFO_Accounts.AccountContactAddresses where AccountContactId IN "+
@@ -87,7 +97,13 @@ public class DBQueries {
 	public static String GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select top 1 StartDate from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc";
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select top 1 GrandTotal from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select Name from dbo.OrderStatus where OrderStatusID IN (select top 1 OrderStatusID from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc)";
-
+	public static String GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL ="select top 20 * from dbo.Orders"+
+			   " join dbo.OrderCustomers ON dbo.OrderCustomers.OrderID = dbo.Orders.OrderID"+
+			   " join dbo.OrderShipments ON dbo.OrderShipments.OrderID = dbo.Orders.OrderID"+
+			   " join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
+			   " join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID"+
+			   " where dbo.Orders.OrderTypeID=7 and dbo.Orders.OrderNumber='%s'";
+	public static String GET_SHIPPING_METHOD_QUERY_RFL="select * from dbo.ShippingMethods where ShippingMethodID = '%S'";
 	public static String GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select * from dbo.Accounts where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AddressTypeId='1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
@@ -1267,7 +1283,7 @@ STEP #1
 					"ORDER BY NEWID()";
 
 	public static String GET_ACCOUNTS_WITH_NULL_EMAIL_ADDRESS =
-			"SELECT TOP 1000 a.AccountID "+
+			"SELECT TOP 1 a.AccountID "+
 					", [as].UserName "+
 					"FROM dbo.Accounts AS a "+
 					"JOIN dbo.AccountSecurity AS [as] ON [as].AccountID=a.AccountID "+
@@ -1423,6 +1439,22 @@ STEP #1
 			 "AND ao.AutoshipScheduleID = 3 "+ /*Pulse Monthly Subscription*/
 			 "AND o.OrderStatusID=7) "+/*Submitted Template*/ 
 			 "ORDER BY NEWID()";
+
+	public static String GET_RANDOM_CONSULTANT_FAILED_ORDERID_AND_ACCOUNT_ID_RFL_4294 = 
+
+			"SELECT TOP 1 o.OrderID "+
+					",oc.AccountID "+
+					"FROM dbo.Orders AS o "+
+					"JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+					"WHERE o.OrderTypeID = 7 "+
+					"AND o.OrderStatusID = 2 "+
+					"AND NOT EXISTS ( "+
+					"SELECT 1 "+
+					"FROM dbo.Accounts AS a "+
+					"WHERE a.Active = 0 "+
+					"AND a.StatusID = 2 "+
+					"AND a.AccountID = oc.AccountID) "+ 
+					"ORDER BY NEWID() ";
 
 
 	/**

@@ -18,6 +18,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//p[@id='selectedPaymentInfo']/span[1]");
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
+	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 
 
 	public StoreFrontUpdateCartPage(RFWebsiteDriver driver) {
@@ -33,6 +34,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEditPaymentBillingProfile(){
+		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
 		driver.findElement(PAYMENT_BILLING_EDIT_BTN_LOC).click();
 	}
 
@@ -52,23 +54,31 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
-		driver.click(By.linkText("Add a new billing profile»"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add a new billing profile')]"));
 		Thread.sleep(2000);
+		driver.findElement(By.xpath("//a[contains(text(),'Add a new billing profile')]")).click();
+		Thread.sleep(2000);
+		logger.info("Add New Billing Profile link clicked");
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
+		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
-		driver.type(By.id("card-name"), nameOnCard);
+		driver.waitForElementPresent(By.xpath("//input[@id='card-name']"));
+		driver.findElement(By.xpath("//input[@id='card-name']")).clear();
+		driver.findElement(By.xpath("//input[@id='card-name']")).sendKeys(nameOnCard);
 	}
 
-	public void selectNewBillingCardExpirationDate(String month,String year){
-		Select cardExpirationMonthDD = new Select(driver.findElement(By.id("expiryMonth")));
-		Select cardExpirationYearDD = new Select(driver.findElement(By.id("expiryYear")));
-		cardExpirationMonthDD.selectByVisibleText(month.toUpperCase());
-		cardExpirationYearDD.selectByVisibleText(year);		
+	public void selectNewBillingCardExpirationDate(){
+		driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.findElement(By.xpath("//select[@id='expiryMonth']/option[10]")).click();
+		driver.findElement(By.xpath("//select[@id='expiryYear']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
+		driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")).click();
 	}
 
 	public void enterNewBillingSecurityCode(String securityCode){
@@ -92,12 +102,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnSaveBillingProfile() throws InterruptedException{
 		driver.waitForElementPresent(By.id("submitButton"));
 		driver.click(By.id("submitButton"));
-		Thread.sleep(10000);
+		Thread.sleep(30000);
 		logger.info("Save billing profile button clicked");
 	}
 
-	public String getBillingProfileName(){
-		return driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]/p[1]/span[@class='font-bold']")).getText();
+	public String getDefaultBillingProfileName(){
+		return driver.findElement(By.xpath("//input[@name='bill-card' and @checked='checked']/ancestor::ul[@id='multiple-billing-profiles']//li[1]/p[1]/span[@class='font-bold']")).getText();
 	}
 
 	public void clickOnNextStepBtn() throws InterruptedException{
@@ -117,9 +127,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		Thread.sleep(2000);
 	}
 
-	public void clickOnEditBillingProfile(String billingProfileName){
+	public void clickOnEditBillingProfile(String billingProfileName) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a"));
+		driver.waitForElementToBeClickable(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a"), 20);
 		driver.findElement(By.xpath("//span[text()='"+billingProfileName+"']/ancestor::li//a")).click();
+		Thread.sleep(4000);
 		logger.info("Edit link for "+billingProfileName+"clicked");
 	}
 
@@ -144,7 +156,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEditShipping() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));		
 		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")).click();
 		logger.info("Edit Shipping link clicked "+"//div[@id='checkout_summary_deliverymode_div']//a");
 		Thread.sleep(3000);
@@ -152,6 +164,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public boolean isShippingAddressPresent(String name){
 		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/ul//span[@class='font-bold'][contains(text(),'"+name+"')]"));
 			driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul//span[@class='font-bold'][contains(text(),'"+name+"')]"));
 			return true;
 		}
@@ -162,6 +175,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void enterNewShippingAddressName(String name){
 		driver.waitForElementPresent(By.id("new-attention"));
+		driver.findElement(By.id("new-attention")).clear();
 		driver.findElement(By.id("new-attention")).sendKeys(name);
 		logger.info("New Shipping Address name is "+name);
 	}
@@ -174,9 +188,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("townCity")).sendKeys(city);
 	}
 
-	public void selectNewShippingAddressState(String state){
-		Select stateDD = new Select(driver.findElement(By.id("state")));
-		stateDD.selectByValue(state);
+	public void selectNewShippingAddressState(){
+		driver.findElement(By.xpath("//select[@id='state']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+		driver.findElement(By.xpath("//select[@id='state']/option[2]")).click();
+		logger.info("State/Province selected");
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
@@ -192,9 +208,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@id='autoShipShippingAddr']"));
 		Thread.sleep(5000);
 		logger.info("Save shipping profile button clicked");
-	}
-
-	public void acceptNewShippingAddress() throws InterruptedException{
 		try{
 			Thread.sleep(2000);
 			driver.waitForElementPresent(By.xpath("//input[@id='QAS_RefineBtn']"));
@@ -204,8 +217,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}catch(NoSuchElementException e){
 
 		}
-
-	}
+	}	
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
 		try{
@@ -300,9 +312,18 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		Thread.sleep(10000);
+		driver.waitForElementToBeClickable(	driver.findElement(By.xpath("//div[@id='payment-next-button']/input")), 30);
 		driver.findElement(By.xpath("//div[@id='payment-next-button']/input")).click();
 		logger.info("Next button on billing profile clicked");
 		Thread.sleep(3000);
+	}
+
+	public void clickBillingEditAfterSave(){
+		driver.waitForElementPresent(By.xpath("//a[@id='editBillingInfo']"));
+		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//a[@id='editBillingInfo']")), 30);
+		driver.findElement(By.xpath("//a[@id='editBillingInfo']")).click();
+		logger.info("Clicked on edit Billing link");
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
@@ -310,6 +331,68 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.findElement(By.xpath("//input[@id='placeOrderButton']")).click();
 		Thread.sleep(3000);
 		logger.info("Place order button clicked");
+	}
+
+	public String getOrderNumberAfterPlaceOrder(){
+		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']"));
+		logger.info("Order Number after placing order is "+driver.findElement(By.xpath("//div[@id='order-confirm']")).getText().split(":")[1].trim());
+		return driver.findElement(By.xpath("//div[@id='order-confirm']")).getText().split(":")[1].trim();
+	}
+
+	public void editShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/ul/li[1]/p[2]/a[text()='Edit']"));
+		driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul/li[1]/p[2]/a[text()='Edit']")).click();
+	}
+
+	public void clickOnSaveShippingProfileAfterEdit(){
+		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
+		driver.findElement(By.id("saveShippingAddreessId")).click();
+	}
+
+	public boolean isUseThisShippingProfileFutureAutoshipChkboxVisible(){
+
+		try{
+			driver.findElement(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+
+	}
+
+	public void enterNewBillingAddressName(String name){
+		driver.waitForElementPresent(By.id("billingAddressattention"));
+		driver.findElement(By.id("billingAddressattention")).sendKeys(name);
+		logger.info("New Billing Address name is "+name);
+	}
+
+	public void enterNewBillingAddressLine1(String addressLine1){
+		driver.findElement(By.id("billingAddressline1")).sendKeys(addressLine1);
+	}
+
+	public void enterNewBillingAddressCity(String city){
+		driver.findElement(By.id("billingAddresstownCity")).sendKeys(city);
+	}
+
+	public void selectNewBillingAddressState() throws InterruptedException{
+		Thread.sleep(3500);
+		driver.findElement(By.xpath("//select[@id='addressState']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='addressState']/option[3]"));
+		driver.findElement(By.xpath("//select[@id='addressState']/option[3]")).click();
+		logger.info("State/Province selected");
+	}
+
+	public void enterNewBillingAddressPostalCode(String postalCode){
+		driver.findElement(By.id("billingAddresspostcode")).sendKeys(postalCode);
+	}
+
+	public void enterNewBillingAddressPhoneNumber(String phoneNumber){
+		driver.findElement(By.id("billingAddressPhonenumber")).sendKeys(phoneNumber);
+	}
+
+	public void clickAddANewAddressLink()
+	{
+		driver.findElement(By.xpath("//a[@class='add-new-billing-address']")).click();
 	}
 
 }

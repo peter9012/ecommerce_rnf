@@ -80,5 +80,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("All products link clicked "+"//a[@title='All Products']");
 	}
 
-}
+	public StoreFrontUpdateCartPage clickOnQuickShopImage(){
+		driver.waitForElementToBeVisible(By.xpath("//a[@href='/us/quick-shop/quickShop' and @title='']"), 30);
+		driver.waitForElementPresent(By.xpath("//a[@href='/us/quick-shop/quickShop' and @title='']"));
+		driver.findElement(By.xpath("//a[@href='/us/quick-shop/quickShop' and @title='']")).click();
+		logger.info("Quick shop Img link clicked "+"//a[@href='/us/quick-shop/quickShop' and @title='']");
+		return new StoreFrontUpdateCartPage(driver);
 
+	}
+}

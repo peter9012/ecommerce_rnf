@@ -214,7 +214,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4184:Enrolled Consultant, Has CRP/ No Pulse, No Orders, No Downlines, InActive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPNoOrdersACTIVE_4184() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -230,7 +230,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4186:Enrolled Consultant, No CRP/ Has Pulse, No Orders, No Downlines, InActive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantNoCRPHasPulseNoOrdersINACTIVE_4186() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -245,7 +245,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4188:Enrolled Consultant, Has CRP/ Has Pulse, No Orders, No Downlines, InActive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPHasPulseNoOrdersINACTIVE_4188() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -312,7 +312,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4190:Enrolled Consultant, Has CRP/ Has Pulse, Failed Orders, No Downlines, Inactive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPHasPulseFailedOrdersINACTIVE_4190() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -327,7 +327,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4192:Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, No Downlines, Inactive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPHasPulseSubmittedOrdersINACTIVE_4192() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -369,7 +369,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 	
 	// Hybris Phase 2-4194:Enrolled Consultant, Has CRP/ Has Pulse, Has Failed Order, Has Downlines, Inactive
-	@Test(enabled=false)
+	@Test(enabled=false)// NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPHasPulseHasFailedOrdersINACTIVE_4194() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -384,7 +384,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4196:Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, Has Downlines, Inactive
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledConsultantHasCRPHasPulseHasSubmittedOrdersINACTIVE_4196() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -418,7 +418,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		int totalBillingAddressesFromDB = 0;
 		String userEmailId = null;
 		randomEmailList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFL,RFL_DB);
-		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "UserName");
+		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailId, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -477,7 +477,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Phase 2-4205 : Enrolled PC, Has CRP/ Has Pulse, Has Submitted Orders
-	@Test(enabled=false)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledPCHasCRPPULSESubmittedOrders_HP2_4205() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -489,7 +489,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontOrdersPage.clickOnAccountInfoFromLeftPanel();
+		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersAutoshipStatusPage = storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
@@ -509,7 +509,10 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		rcUserEmail = (String) getValueFromQueryResult(randomRCUserEmailIdList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.isOrderOfRequiredTypePresentInHistory("FAILED"), "Failed order is not present in order history");
+		
 	}
 
 	// Hybris Phase 2-3009 :: Version : 1 :: Reset the password from the storefront and check login with new password 

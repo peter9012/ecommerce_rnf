@@ -116,18 +116,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	// Hybris Phase 2-2045 :: Version : 1 :: Add billing address during consultant enrollment
-	public void testAddBillingAddressDuringConsultantEnrollment(){
-		//TODO
-	}
-
-	// Hybris Phase 2-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account
-	public void testAddBillingProfileDuringCRPEnrollmentMyAccount(){
-		//TODO
-	}
-
+	
 	//Hybris Phase 2-4327:View new billing profile on 'Billing Profile' page	
-	@Test(enabled=false)
+	@Test
 	public void testViewNewBillingProfile_HP2_4327() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();		
@@ -385,9 +376,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	// ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	// Hybris Project-4466 ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
-	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected() throws InterruptedException{		
+	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected_4466() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
@@ -455,9 +446,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-	// ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
+	//Hybris Project-4467 ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
 	@Test
-	public void testAddBillingAutoshipCartFutureCheckboxNotSelected() throws InterruptedException{		
+	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();

@@ -182,7 +182,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	}
 
 
-	// EDIT a billing profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	// Hybris Phase 2-2342 EDIT a billing profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
 	public void testEditBillingProfileMyACcountFutureAutoshipNotChecked_2342() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -249,9 +249,9 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	}
 
 	
-	// EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	// Hybris Project-4468 EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
-	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected() throws InterruptedException{		
+	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
@@ -320,7 +320,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-	//EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box CHECKED:
+	//Hybris Phase 2-2048 Edit billing profile during checkout
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

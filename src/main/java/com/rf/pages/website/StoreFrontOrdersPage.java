@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
+
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -285,7 +287,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAutoShipTemplateTax(String taxDB){
-		String subTotal = driver.findElement(By.xpath("//li[@id='module-hst']/span")).getText();
+		String subTotal = driver.findElement(By.xpath("//span[@id='totalTax']")).getText();
 		return subTotal.trim().substring(1).contains(taxDB);
 	}
 
@@ -333,8 +335,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isShippingAddressContainsName(String name){
+		String uncapitalizeName = WordUtils.uncapitalize(name);
+		String lowerCaseName = name.toLowerCase();
 		driver.waitForElementPresent(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]"));
-		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(name);
+		return (driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(name)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(uncapitalizeName)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(lowerCaseName));
 	}
 
 	public boolean verifyShippingAddress(String shippingAddress){
@@ -342,6 +346,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAdhocOrderTemplateSubtotal(String subTotal){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span"));
 		System.out.println("subtotal from DB "+subTotal);
 		System.out.println("subtotal from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText().contains(subTotal);

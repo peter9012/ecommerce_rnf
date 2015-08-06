@@ -34,7 +34,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		// Get Consultant with PWS from database
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "SiteName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(!consultantPWSURL.contains(".biz"),"Consultant is not on her own .com PWS");
@@ -54,7 +54,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		// Get Consultant with PWS from database
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "SiteName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
@@ -74,14 +74,14 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		// Get Consultant with PWS from database
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 
 		// Get consultant's PWS from database.
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "SiteName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
 		// Get another PWS from database
 		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "SiteName");
+		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
@@ -148,7 +148,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		// Get another PWS from database
 		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "SiteName");
+		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
@@ -214,10 +214,10 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "UserName");
 
 		//sponsorPWSList = DBUtil.performDatabaseQuery(,RFL_DB);
-		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "SiteName");
+		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
 		otherPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "SiteName");
+		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
@@ -241,7 +241,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "UserName");
 
 		//sponsorPWSList = DBUtil.performDatabaseQuery(,RFL_DB);
-		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "SiteName");
+		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
@@ -265,7 +265,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "UserName");
 
 		otherPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "SiteName");
+		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
@@ -284,7 +284,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String pcEmailID = null;
 
 		randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS,RFL_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "EmailAddress");
+		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "UserName");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
@@ -308,7 +308,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "UserName");
 
 		otherPWSList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_WITH_PWS_RFL,RFL_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "SiteName");
+		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);

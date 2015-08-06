@@ -66,8 +66,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
-		driver.waitForElementPresent(By.cssSelector("li[id='account-info-button']"));
-		driver.findElement(By.cssSelector("li[id='account-info-button']")).click();
+		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']"));
+		driver.findElement(By.xpath("//li[@id='account-info-button']")).click();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {

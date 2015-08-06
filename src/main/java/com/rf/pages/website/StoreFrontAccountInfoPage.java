@@ -1,8 +1,12 @@
 package com.rf.pages.website;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
@@ -11,7 +15,7 @@ import com.rf.core.website.constants.TestConstants;
 public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountInfoPage.class.getName());
-	
+
 	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Account info')]");
 	private final By TERMINATE_MY_ACCOUNT = By.xpath("//a[text()='Terminate My Account']");
 	private final By ACCOUNT_INFO_FIRST_NAME_LOC = By.xpath("//input[@id='first-name']");
@@ -35,6 +39,9 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
+	private final By CANCEL_MY_CRP_LOC = By.xpath("//p[@id='crp-status']/a[contains(text(),'Cancel my CRP')]");
+	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//input[@id='cancel-crp-button']");
+	private final By ENROLL_IN_CRP_LOC = By.xpath("//input[@id='crp-enroll']");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -78,7 +85,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH)));
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_GENDER_LOC,TestConstants.CONSULTANT_GENDER)));
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
-		driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		try{
+			driver.waitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+			driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		}
+		catch(NoSuchElementException e){
+
+		}
 		Thread.sleep(5000);
 		return new StoreFrontAccountInfoPage(driver);
 	}
@@ -270,6 +283,42 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
 		logger.info("Account inof link from left panel clicked "+LEFT_MENU_ACCOUNT_INFO_LOC);
 		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	public StoreFrontAccountInfoPage clickOnCancelMyCRP() throws InterruptedException{
+		Thread.sleep(5000);
+		driver.waitForElementPresent(CANCEL_MY_CRP_LOC);
+		driver.click(CANCEL_MY_CRP_LOC);
+		driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
+		driver.click(CANCEL_MY_CRP_NOW_LOC);
+		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	public boolean verifyCRPCancelled(){
+		logger.info("Asserting Cancel CRP");
+		try{
+			driver.findElement(ENROLL_IN_CRP_LOC);
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+	public void clickOnEnrollInCRP() throws InterruptedException{
+		Thread.sleep(5000);
+		driver.waitForElementToBeClickable(ENROLL_IN_CRP_LOC, 5000);
+		driver.waitForElementPresent(ENROLL_IN_CRP_LOC);
+		driver.click(ENROLL_IN_CRP_LOC);
+	}
+
+	public boolean isOrderOfRequiredTypePresentInHistory(String orderType){
+		List<WebElement> allOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']/tbody/tr"));
+		for(int i=2;i<=allOrders.size();i++){
+			if(driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr["+i+"]/td[4]")).getText().contains(orderType.toUpperCase())||driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr["+i+"]/td[4]")).getText().contains(orderType.toLowerCase())){
+				return true;
+			}
+		}
+		return false;
 	}
 }
 

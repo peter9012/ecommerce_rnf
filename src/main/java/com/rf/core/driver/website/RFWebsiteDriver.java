@@ -19,6 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -60,12 +61,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver();
-		if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
+		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new ChromeDriver(capabilities);
+		}
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
+			driver = new HtmlUnitDriver(true);
 		}
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

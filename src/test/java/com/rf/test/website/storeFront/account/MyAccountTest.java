@@ -9,11 +9,14 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
+
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontAccountTerminationPage;
+import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -21,6 +24,7 @@ import com.rf.pages.website.StoreFrontPCUserPage;
 import com.rf.pages.website.StoreFrontRCUserPage;
 import com.rf.pages.website.StoreFrontReportOrderComplaintPage;
 import com.rf.pages.website.StoreFrontReportProblemConfirmationPage;
+import com.rf.pages.website.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class MyAccountTest extends RFWebsiteBaseTest{
@@ -28,7 +32,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			.getLogger(MyAccountTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
-	private StoreFrontConsultantPage storeFrontConsulatantPage;
+	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
@@ -36,12 +40,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontReportOrderComplaintPage storeFrontReportOrderComplaintPage;
 	private StoreFrontReportProblemConfirmationPage storeFrontReportProblemConfirmationPage;
+	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 
 	private String RFL_DB = null;
 	private String RFO_DB = null;
 
 	// Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
-	@Test(enabled=false)
+	@Test
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -50,11 +56,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
@@ -68,7 +74,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Test Case Hybris Phase 2-3719 :: Version : 1 :: Perform PC Account termination through my account
-	@Test(enabled=false)
+	@Test
 	public void testAccountTerminationPageForPCUser_3719() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -120,18 +126,20 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testOrdersReportProblems_1980() throws SQLException, InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
-		
+
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
+		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsulatantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.orderNumberForOrderHistory();
 		storeFrontReportOrderComplaintPage = storeFrontOrdersPage.clickOnActions();
@@ -140,7 +148,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontReportOrderComplaintPage.verifyCountOfDropDownOptionsOnReportPage(),"DropDown Options are not present as expected");
 		storeFrontReportOrderComplaintPage.selectOptionFromDropDown();
 		storeFrontReportProblemConfirmationPage = storeFrontReportOrderComplaintPage.enterYourProblemAndSubmit(TestConstants.TELL_US_ABOUT_YOUR_PROBLEM);
-		
+
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyHeaderAtReportConfirmationPage("REPORT A PROBLEM"),"Report a problem is not present at header");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyThankYouTagAtReportConfirmationPage("THANK YOU"),"Thank you tag is not present on the page");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
@@ -230,7 +238,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
-	@Test(enabled=false)
+	@Test
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO(); 
@@ -252,14 +260,16 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//String stateDB = null;
 
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
+		//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+
+		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
 		storeFrontAccountInfoPage.updateAccountInformation(TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION);
 
@@ -278,9 +288,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "Address1");
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "City");
 		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "State");
-		/*if(state.equalsIgnoreCase("TX")){
-	   stateDB = "Texas"; 
-	  }*/
+
 		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
 		mainPhoneNumberDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PhoneNumber");
 
@@ -321,9 +329,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			// assert State with RFO
 			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
-			/*if(provinceFromDB.equalsIgnoreCase("TX")){
-	    provinceDB = "Texas"; 
-	   }*/
 			assertTrue("Province on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB));
 		}
 
@@ -350,13 +355,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
 		}
 
-		// assert BirthDay with RFL
-		if(assertTrueDB("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB), RFL_DB) == false){
-			// assert BirthDay with RFO
-			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-			dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
-			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB));
-		}  
 		logout();
 		s_assert.assertAll();
 	}
@@ -376,20 +374,146 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//---------------------------------------------------------------------------------------------------------------------
 
 		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A Hard Coded User
-			
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
-		s_assert.assertTrue(storeFrontConsulatantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);			
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		
-		storeFrontConsulatantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsulatantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_INVALID_11_DIGIT_MAIN_PHONE_NUMBER);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has not been displayed ");
 		storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER);
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has been displayed");
-		
+
+		logout();
+		s_assert.assertAll();
+	}
+
+	//Hybris Phase 2-2232:Verify that user can cancel CRP subscription through my account.
+	@Test
+	public void testCancelCRPSubscriptionForConsultant_2232() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+
+		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		//s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		logout();
+		s_assert.assertAll();
+	}
+
+	//Hybris Phase 2-2046:Add billing profile during CRP enrollment through my account
+	@Test(dependsOnMethods="testCancelCRPSubscriptionForConsultant_2232")
+	public void testAddBillingProfileDuringCRPEnrollment_2046() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+
+		String consultantEmailID = null;
+		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		//s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnAddToCRPButton();
+		storeFrontUpdateCartPage.clickOnCRPCheckout();
+
+
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickOnSetupCRPAccountBtn();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
+
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
+		logout();
+		s_assert.assertAll();
+	}
+
+	//Hybris Phase 2-2040:Edit shipping address during CRP enrollment through my account
+	@Test(dependsOnMethods="testCancelCRPSubscriptionForConsultant_2232")
+	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String lastName = "test";
+
+		String consultantEmailID = null;
+		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		//s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnAddToCRPButton();
+		storeFrontUpdateCartPage.clickOnCRPCheckout();
+		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyEditShippingAddressNameSlectedOnUpdateCart(newShippingAddressName), "Shipping address is not updated");
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		storeFrontUpdateCartPage.clickOnNextStepButtonAfterEditingDefaultShipping(); 
+		storeFrontUpdateCartPage.clickOnSetupCRPAccountBtn();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName), "Autoship Template Shipping Address doesn't contains the updated shipping address profile");
 		logout();
 		s_assert.assertAll();
 	}

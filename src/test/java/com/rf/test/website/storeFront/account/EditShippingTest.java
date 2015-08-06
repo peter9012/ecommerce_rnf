@@ -163,9 +163,9 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
+	//Hybris Project-4465 Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
-	public void testEditShippingProfileMyAccountFutureAutoshipNotSelected() throws InterruptedException{
+	public void testEditShippingProfileMyAccountFutureAutoshipNotSelected_4465() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();

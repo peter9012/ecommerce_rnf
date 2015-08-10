@@ -169,9 +169,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
-		
+
 		String rcUserEmailID = "kaseylpeterson@gmail.com";// Hard Coded
-		
+
 		//	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		//	  String lastName = "lN";
 
@@ -221,8 +221,110 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		logout();
 		s_assert.assertAll();
+	}	
 
-
+	//Hybris Project 1878-Mini Regression-Create Adhoc Orders for Consultant
+	@Test(enabled=false)
+	public void testCreateAdhocOrderConsultantReg() throws InterruptedException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = "con0708@yopmail.com";
+		String consultantPassword="test1234";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, consultantPassword);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		String subtotal = storeFrontUpdateCartPage.getSubtotal();
+		System.out.println("subtotal ="+subtotal);
+		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
+		System.out.println("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		System.out.println("handlingCharges ="+handlingCharges);
+		String tax = storeFrontUpdateCartPage.getTax();
+		System.out.println("tax ="+tax);
+		String total = storeFrontUpdateCartPage.getTotal();
+		System.out.println("total ="+total);
+		String totalSV = storeFrontUpdateCartPage.getTotalSV();
+		System.out.println("totalSV ="+totalSV);
+		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+		System.out.println("shippingMethod ="+shippingMethod);
+		storeFrontUpdateCartPage.waitForSaveShippingInfoBtn();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+		System.out.println("BillingAddress ="+BillingAddress);
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		//select newly created adhoc order and verify the details
+		storeFrontOrdersPage.clickOnFirstAdhocOrder();
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_getSubTotal().trim().equalsIgnoreCase(subtotal), "subTotal should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_ShippingCharges().trim().equalsIgnoreCase(deliveryCharges), "shipping charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_HandlingCharges().trim().equalsIgnoreCase(handlingCharges), "Handling charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_grandTotal().trim().equalsIgnoreCase(total), "Grand Total charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_getTax().trim().equalsIgnoreCase(tax), " Tax charges should be same");
+		s_assert.assertTrue(shippingMethod.trim().contains(storeFrontOrdersPage.orderDetails_getShippingMethodName().trim()), "shipping Method name should match");
+		logout();
+		s_assert.assertAll();
+	}
+	//Hybris Project 1878-Mini Regression-Create Adhoc Orders for PC User
+	@Test
+	public void testCreateAdhocOrderPCReg() throws InterruptedException{
+		RFL_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String pcEmailID = "pcuser02@abc.com";
+		String pcPassword="test1234";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, pcPassword);
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnShopLink();
+		storeFrontPCUserPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		String subtotal = storeFrontUpdateCartPage.getSubtotal();
+		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
+		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		String tax = storeFrontUpdateCartPage.getTax();
+		String total = storeFrontUpdateCartPage.getTotal();
+		String totalSV = storeFrontUpdateCartPage.getTotalSV();
+		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+		storeFrontUpdateCartPage.waitForSaveShippingInfoBtn();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+		storeFrontUpdateCartPage.waitForpaymentNextBtn();  
+		Thread.sleep(3500);
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		//select newly created adhoc order and verify the details
+		storeFrontOrdersPage.clickOnFirstAdhocOrder();
+		//s_assert.assertTrue(storeFrontOrdersPage.orderDetails_getTotalSV().equalsIgnoreCase(totalSV), "TotalSV should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_getSubTotal().trim().equalsIgnoreCase(subtotal), "subTotal should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_ShippingCharges().trim().equalsIgnoreCase(deliveryCharges), "shipping charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_HandlingCharges().trim().equalsIgnoreCase(handlingCharges), "Handling charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_grandTotal().trim().equalsIgnoreCase(total), "Grand Total charges should be same");
+		s_assert.assertTrue(storeFrontOrdersPage.orderDetails_getTax().trim().equalsIgnoreCase(tax), " Tax charges should be same");
+		s_assert.assertTrue(shippingMethod.trim().contains(storeFrontOrdersPage.orderDetails_getShippingMethodName().trim()), "shipping Method name should match");
+		logout();
+		s_assert.assertAll();
 	}
 
 }

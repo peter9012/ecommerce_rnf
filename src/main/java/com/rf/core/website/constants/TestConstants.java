@@ -19,7 +19,7 @@ public class TestConstants {
 	public static final String CITY = "Bonnyville";
 	public static final String PROVINCE = "Alberta";
 	public static final String POSTAL_CODE = "T9N 2H4";
-	public static final String PHONE_NUMBER = "(234) 234-2342";
+	public static final String PHONE_NUMBER = "8067736419";
 	public static final String CARD_NUMBER = "4111111111111111";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
@@ -161,8 +161,10 @@ public class TestConstants {
 	 * 
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
+	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
 
 }
+
 
 
 

@@ -529,4 +529,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.findElement(By.xpath("//input[@class='paymentnext']")).click();
 	}
 
+	public WebElement waitForSaveShippingInfoBtn()	 {
+		return  driver.waitForElementToBeClickable(By.xpath("//div[@id='payment-next-button']/input"), 15);
+	}
+
+	public WebElement waitForpaymentNextBtn()	 {
+		return  driver.waitForElementToBeClickable(By.xpath("//div[@id='payment-next-button']/input"), 15);
+	}
+
 }

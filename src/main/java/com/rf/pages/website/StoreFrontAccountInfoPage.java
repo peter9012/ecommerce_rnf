@@ -42,6 +42,9 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By CANCEL_MY_CRP_LOC = By.xpath("//p[@id='crp-status']/a[contains(text(),'Cancel my CRP')]");
 	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//input[@id='cancel-crp-button']");
 	private final By ENROLL_IN_CRP_LOC = By.xpath("//input[@id='crp-enroll']");
+	private final By DAY_OF_BIRTH_FOR_4178_LOC = By.xpath("//select[@id='dayOfBirth']//option[@selected='selected'][2]");
+	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
+	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -224,6 +227,66 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String finalDateForAssertionFromUI = month+" "+day+","+" "+year;
 			String finalDateForAssertionFromDB = splittedMonth+" "+completeDate[1]+" "+completeDate[2];
 
+			if(finalDateForAssertionFromUI.equalsIgnoreCase(finalDateForAssertionFromDB)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean verifyBirthDateFromUIAccountInfoForCheckAccountInfo(String dob){
+		if(dob == null){
+			return false;
+		}else{
+			logger.info("Asserting Date of Birth");
+			dob = convertDBDateFormatToUIFormat(dob);
+			String completeDate[] = dob.split(" ");
+			String splittedMonth = completeDate[0].substring(0,3);
+			String day =driver.findElement(DAY_OF_BIRTH_FOR_4178_LOC).getAttribute("value");
+			String month = driver.findElement(MONTH_OF_BIRTH_4178_LOC).getText();
+
+			switch (Integer.parseInt(month)) {  
+			case 1:
+				month="Jan";
+				break;
+			case 2:
+				month="Feb";
+				break;
+			case 3:
+				month="Mar";
+				break;
+			case 4:
+				month="Apr";
+				break;
+			case 5:
+				month="May";
+				break;
+			case 6:
+				month="Jun";
+				break;
+			case 7:
+				month="Jul";
+				break;
+			case 8:
+				month="Aug";
+				break;
+			case 9:
+				month="Sep";
+				break;
+			case 10:
+				month="Oct";
+				break;
+			case 11:
+				month="Nov";
+				break;
+			case 12:
+				month="Dec";
+				break;  
+			}
+
+			String year = driver.findElement(YEAR_OF_BIRTH_4178_LOC).getAttribute("value");
+			String finalDateForAssertionFromUI = month+" "+day+","+" "+year;
+			String finalDateForAssertionFromDB = splittedMonth+" "+completeDate[1]+" "+completeDate[2];
 			if(finalDateForAssertionFromUI.equalsIgnoreCase(finalDateForAssertionFromDB)){
 				return true;
 			}

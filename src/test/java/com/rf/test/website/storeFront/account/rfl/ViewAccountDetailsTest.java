@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.account;
+package com.rf.test.website.storeFront.account.rfl;
 
 import java.sql.SQLException;
 import java.util.List;

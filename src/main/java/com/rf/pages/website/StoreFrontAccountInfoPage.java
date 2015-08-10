@@ -289,6 +289,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		Thread.sleep(5000);
 		driver.waitForElementPresent(CANCEL_MY_CRP_LOC);
 		driver.click(CANCEL_MY_CRP_LOC);
+		Thread.sleep(3000);
 		driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
 		driver.click(CANCEL_MY_CRP_NOW_LOC);
 		return new StoreFrontAccountInfoPage(driver);

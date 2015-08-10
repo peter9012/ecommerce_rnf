@@ -61,7 +61,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']")).click();
 		logger.info("First Address Edit link clicked");
-		
+
 	}
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
@@ -112,11 +112,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		try{
 			driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']"));
 			driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']")).click();
-			
+
 		}catch(WebDriverException e){
 			Actions action = new Actions(RFWebsiteDriver.driver);
 			action.moveToElement(driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']"))).click().build().perform();
-			
+
 		}
 		Thread.sleep(2000);
 		driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']/option[2]")).click();
@@ -141,11 +141,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
 			driver.findElement(By.xpath("//input[@id='QAS_AcceptOriginal']")).click();
 		}catch(NoSuchElementException e){
-			
+
 		}
-		
+
 	}
-	
+
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]")).click();
@@ -155,8 +155,9 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
 			driver.findElement(By.xpath("//input[@class='shippingAddresspopup']")).click();
 		}catch(NoSuchElementException e){
-			
+
 		}
+		Thread.sleep(40000); // env taking too long,will remove this
 	}
 
 	public boolean isShippingAddressPresentOnShippingPage(String firstName){
@@ -171,7 +172,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-	
+
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
 		try{
 			driver.findElement(By.xpath("//span[contains(text(),'"+StringUtils.uncapitalize(firstName)+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			

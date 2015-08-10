@@ -5,10 +5,10 @@
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 	</listeners>
 	<test name="RegressionTest">
-		<packages>
-			<package name="com.rf.test.website.storeFront.order"></package>
-		</packages>
-		<!-- <classes> <class name="com.rf.test.website.storeFront.account.MyAccountTest"></class> 
-			</classes> -->
+		<!-- <packages> <package name="com.rf.test.website.storeFront.order"></package> 
+			</packages> -->
+		<classes>
+			<class name="com.rf.test.website.storeFront.account.rfl.ViewAccountDetailsTest"></class>
+		</classes>
 	</test>
 </suite>

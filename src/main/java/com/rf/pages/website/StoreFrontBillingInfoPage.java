@@ -140,7 +140,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input")).click();
 		logger.info("default billing profile selected has the name "+firstName);
-		Thread.sleep(3000); 
+		Thread.sleep(60000);  // action taking too long,will remove later
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{

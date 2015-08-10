@@ -23,6 +23,137 @@ public class DBQueries {
 	public static String GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select CompletionDate from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc)";
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
+	public static String GET_RANDOM_RC_RFO = 
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO =
+
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username , "+
+					"'http://' + S2.SitePrefix + '.' + SD2.Name AS Sponsor_PWS "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN    RFO_Accounts.AccountBase AS AB2 ON AB2.AccountID = ar.SponsorId "+
+					"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI2 ON CPI2.AccountId = AB2.AccountID "+
+					"JOIN    Hybris.Sites AS S2 ON S2.AccountID = AB2.AccountID "+
+					"JOIN    Hybris.SiteURLs AS SUL2 ON SUL2.SiteID = S2.SiteID "+
+					"JOIN    Hybris.SiteDomain AS SD2 ON SD2.SiteDomainID = SUL2.SiteDomainID "+
+					"WHERE   ab.CountryID = 236 "+
+					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
+					/*Active Account*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS AR2 "+
+					"WHERE  AR2.AccountID = ar.AccountID "+
+					"AND ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL ) "+
+					"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO =
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username , "+
+					"ar.SponsorId "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = 236 "+
+					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
+					/*No PWS sponsor*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountBase AS AB2 "+
+					"JOIN   RFO_Accounts.ConsultantPWSInfo AS CPI2 ON CPI2.AccountId = AB2.AccountID "+
+					"JOIN   Hybris.Sites AS S2 ON S2.AccountID = AB2.AccountID "+
+					"WHERE  AB2.AccountID = ar.SponsorId ) "+
+					/*Active Account*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS AR2 "+
+					"WHERE  AR2.AccountID = ar.AccountID "+
+					"AND ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL ) "+
+					"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_PC_WITH_NO_SPONSOR_RFO = 
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = 236 "+
+					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
+					/*No Sponsor*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountBase AS AB2 "+
+					"WHERE  AB2.AccountID = ar.SponsorId ) "+
+					/*Active Account*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS AR2 "+
+					"WHERE  AR2.AccountID = ar.AccountID "+
+					"AND ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL ) "+
+					"ORDER BY NEWID()";
+
+
+	public static String GET_ORDER_ID_ACCOUNT_ID_4286_RFO =
+			"SELECT TOP 1 "+
+					"O.OrderID , "+
+					"AB.AccountID "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+					"WHERE   O.OrderTypeID = 10 "+/*Consultant Auto-ship*/
+					"AND O.OrderStatusID = 2 "+ /*Submitted*/
+					"AND AB.CountryID = 236 "+
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = AB.AccountID ) "+
+					"ORDER BY NEWID() ";
+
+	public static String GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO =
+			"SELECT  Username "+
+					"FROM    RFOperations.[Security].[AccountSecurity] "+
+					"WHERE   AccountID ='%s' ";
+
+	public static String GET_ORDER_DETAILS_FOR_4286_RFO =  
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID ='%s' ";
+	public static String GET_SHIPPING_COST_HANDLING_COST_FOR_4286_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";
+
 	public static String GET_SHIPPING_ADDRESS_DETAILS_FOR_CONSULTANT_RFL_4289 = "SELECT  os.* "+
 			"FROM    dbo.OrderShipments AS os "+
 			"WHERE   os.OrderID = '%s'";
@@ -31,6 +162,327 @@ public class DBQueries {
 			"FROM    dbo.Orders AS o "+
 			"JOIN    dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
 			"WHERE   o.OrderID = '%s'";
+
+	public static String GET_SHIPPING_METHOD_QUERY_RFO = 
+			"select * from RFO_Reference.ShippingMethod where shippingmethodid='%s' ";
+
+
+	public static String GET_ORDER_ID_ACCOUNT_ID_4287_RFO =
+			"SELECT TOP 1 "+
+					"O.OrderID , "+
+					"AB.AccountID "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+					"WHERE   O.OrderTypeID = 3 "+/*Consultant*/
+					"AND AB.CountryID = 236 "+
+					"AND O.OrderStatusID = 2 "+ /*Submitted*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = AB.AccountID ) "+
+					"ORDER BY NEWID() ";
+
+	public static String GET_ORDER_ID_ACCOUNT_ID_4292_RFO = 
+			"SELECT TOP 1 "+
+					"O.OrderID , "+
+					"AB.AccountID "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    Hybris.Autoship AS A ON A.AutoshipID = O.AutoShipID "+
+					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+					"WHERE   AB.CountryID = 236 "+
+					"AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
+					"AND O.OrderStatusID = 2 "+ /*Submitted*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = AB.AccountID ) "+
+					"ORDER BY NEWID() ";
+	public static String GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";
+	public static String GET_ORDER_DETAILS_FOR_4292_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' ";
+
+	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4292_RFO = 
+			"SELECT  Username "+
+					"FROM    RFOperations.[Security].[AccountSecurity] "+
+					"WHERE   AccountID ='%s' ";
+
+	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO =
+			"SELECT  Username "+
+					"FROM    RFOperations.[Security].[AccountSecurity] "+
+					"WHERE   AccountID ='%s' ";
+
+	public static String GET_ORDER_DETAILS_FOR_4287_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' "; 
+
+	public static String GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";
+
+	public static String GET_ORDER_ID_ACCOUNT_ID_4291_RFO = 
+			"SELECT TOP 1 "+
+					"O.OrderID , "+
+					"AB.AccountID "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    Hybris.Autoship AS A ON A.AutoshipID = O.AutoShipID "+
+					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+					"WHERE   AB.CountryID = 236 "+
+					"AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
+					"AND O.OrderStatusID = 2 "+ /*Submitted*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = AB.AccountID ) "+
+					"ORDER BY NEWID() ";
+
+	public static String GET_ACCOUNT_ID_4289_RFO =
+
+			"USE RFOperations "+
+
+		       "SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+		     "BEGIN TRANSACTION "+
+
+		     "DECLARE @AutoshipID BIGINT "+
+
+		     "SELECT TOP 1 "+
+		     "@AutoshipID = A.AutoshipID "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "WHERE   A.CountryID = 236 "+
+		     "AND A.Active = 1 "+
+		     "AND A.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
+		     "ORDER BY NEWID() "+
+		     "SELECT  * "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "WHERE   A.AutoshipID = @AutoshipID "+
+
+		     "SELECT  AI.* , "+
+		     "PB.* "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "JOIN Hybris.AutoshipItem AS AI ON AI.AutoshipId = A.AutoshipID "+
+		     "LEFT JOIN Hybris.ProductBase AS PB ON PB.productID = AI.ProductID "+
+		     "WHERE   A.AutoshipID = @AutoshipID "+
+
+		     "SELECT  * "+
+		     "FROM    Hybris.AutoshipShipment AS ASH "+
+		     "JOIN Hybris.AutoshipShippingAddress AS ASA ON ASA.AutoShipID = ASH.AutoshipID "+
+		     "WHERE   ASH.AutoshipID = @AutoshipID "+
+		     "SELECT  * "+
+		     "FROM    Hybris.AutoshipPayment AS AP "+
+		     "JOIN Hybris.AutoshipPaymentAddress AS APA ON APA.AutoShipID = AP.AutoshipID "+
+		     "WHERE   AP.AutoshipID = @AutoshipID ";
+
+	public static String GET_CONSULTANT_HAVING_SUBMITTED_ORDER_4289_RFO =
+			"SELECT  Username "+ 
+					"FROM    RFOperations.[Security].[AccountSecurity] "+ 
+					"WHERE   AccountID = '%s' ";
+
+	public static String GET_SHIPPING_ADDRESS_QUERY_4289_RFO = "";
+	public static String GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4289_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.Autoship AS A "+
+					"WHERE   A.AutoshipID ='%s' ";
+	public static String GET_AUTOSHIP_ORDER_DETAILS_QUERY_4289_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.AutoshipShipment AS ASH "+
+					"JOIN Hybris.AutoshipShippingAddress AS ASA ON ASA.AutoShipID = ASH.AutoshipID "+
+					"WHERE   ASH.AutoshipID = '%s' ";
+
+	public static String GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4291_RFO = 
+			"SELECT  Username "+
+					"FROM    RFOperations.[Security].[AccountSecurity] "+
+					"WHERE   AccountID = '%s' ";
+
+	public static String GET_ORDER_DETAILS_FOR_4291_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' ";
+	public static String GET_SHIPPING_COST_HANDLING_COST_FOR_4291_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";
+
+	public static String GET_ORDER_ID_ACCOUNT_ID_4293_RFO =
+			"SELECT TOP 1 "+
+					"O.OrderID , "+
+					"AB.AccountID "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+					"WHERE   AB.CountryID = 236 "+
+					"AND O.OrderTypeID = 1 "+/*Retail*/
+					"AND O.OrderStatusID = 2 "+ /*Submitted*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = AB.AccountID ) "+
+					"ORDER BY NEWID() ";
+
+	public static String GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4293_RFO = 
+			"SELECT  Username "+
+					"FROM    RFOperations.[Security].[AccountSecurity] "+
+					"WHERE   AccountID = '%s' ";
+
+	public static String GET_ORDER_DETAILS_FOR_4293_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' "; 
+
+	public static String GET_SHIPPING_COST_HANDLING_COST_FOR_4293_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";
+
+	public static String GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO =
+
+			"USE RFOperations "+
+
+			   "SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			   "BEGIN TRANSACTION "+
+
+			   "SELECT TOP 1 "+
+			   "ab.AccountID , "+
+			   "AT.Name AS AccountType , "+
+			   "[as].Username "+
+			   "FROM    RFO_Accounts.AccountBase AS ab "+
+			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 1 "+
+			   /*Active Accounts*/
+			   "AND NOT EXISTS ( SELECT 1 "+
+			   "FROM   RFO_Accounts.AccountRF AS ar "+
+			   "WHERE  ar.Active = 0 "+
+			   "AND ar.HardTerminationDate IS NOT NULL "+
+			   "AND ar.AccountID = ab.AccountID ) "+
+			   /*Active Template*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Autoship AS A "+
+			   "WHERE  A.AccountID = ab.AccountID "+
+			   "AND A.Active = 1 ) "+
+			   /*Submitted orders*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Orders AS O "+
+			   "WHERE  O.AccountID = ab.AccountID "+
+			   "AND O.OrderStatusID = 2) "+ /*Submitted*/ 
+			   /*Failed orders*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Orders AS O "+
+			   "WHERE  O.AccountID = ab.AccountID "+
+			   "AND O.OrderStatusID = 1) "+ /*Failed*/ 
+			   "ORDER BY NEWID() ";
+
+	public static String GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO = 
+			"USE RFOperations "+
+
+			   "SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			   "BEGIN TRANSACTION "+
+
+			   "SELECT TOP 1 "+
+			   "ab.AccountID , "+
+			   "AT.Name AS AccountType , "+
+			   "[as].Username "+
+			   "FROM    RFO_Accounts.AccountBase AS ab "+
+			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 2 "+
+			   /*Active Accounts*/
+			   "AND NOT EXISTS ( SELECT 1 "+
+			   "FROM   RFO_Accounts.AccountRF AS ar "+
+			   "WHERE  ar.Active = 0 "+
+			   "AND ar.HardTerminationDate IS NOT NULL "+
+			   "AND ar.AccountID = ab.AccountID ) "+
+			   /*Active Template*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Autoship AS A "+
+			   "WHERE  A.AccountID = ab.AccountID "+
+			   "AND A.Active = 1 ) "+
+			   /*Submitted orders*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Orders AS O "+
+			   "WHERE  O.AccountID = ab.AccountID "+
+			   "AND O.OrderStatusID = 2) "+ /*Submitted*/ 
+			   /*Failed orders*/
+			   "AND EXISTS ( SELECT 1 "+
+			   "FROM   Hybris.Orders AS O "+
+			   "WHERE  O.AccountID = ab.AccountID "+
+			   "AND O.OrderStatusID = 1) "+ /*Failed*/ 
+			   "ORDER BY NEWID() ";
+
+	public static String GET_ACCOUNT_ID_4300_RFO =
+
+			"USE RFOperations "+
+
+		       "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+
+		     "BEGIN TRANSACTION "+
+
+		     "DECLARE @AutoshipID BIGINT "+
+
+		     "SELECT TOP 1 "+
+		     "@AutoshipID = A.AutoshipID "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "WHERE   A.CountryID = 236 "+
+		     "AND A.Active = 1 "+
+		     "AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
+		     "ORDER BY NEWID() "+
+
+		     "SELECT  * "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "WHERE   A.AutoshipID = @AutoshipID "+
+
+		     "SELECT  AI.* , "+
+		     "PB.* "+
+		     "FROM    Hybris.Autoship AS A "+
+		     "JOIN Hybris.AutoshipItem AS AI ON AI.AutoshipId = A.AutoshipID "+
+		     "LEFT JOIN Hybris.ProductBase AS PB ON PB.productID = AI.ProductID "+
+		     "WHERE   A.AutoshipID = @AutoshipID "+
+
+		     "SELECT  * "+
+		     "FROM    Hybris.AutoshipShipment AS ASH "+
+		     "JOIN Hybris.AutoshipShippingAddress AS ASA ON ASA.AutoShipID = ASH.AutoshipID "+
+		     "WHERE   ASH.AutoshipID = @AutoshipID "+
+
+		     "SELECT  * "+
+		     "FROM    Hybris.AutoshipPayment AS AP "+
+		     "JOIN Hybris.AutoshipPaymentAddress AS APA ON APA.AutoShipID = AP.AutoshipID "+
+		     "WHERE   AP.AutoshipID = @AutoshipID ";
+
+	public static String GET_PC_USER_HAVING_AUTOSHIP_ORDER_4300_RFO =
+			"SELECT  Username "+ 
+					"FROM    RFOperations.[Security].[AccountSecurity] "+ 
+					"WHERE   AccountID = '%s' ";
+	public static String GET_SHIPPING_ADDRESS_QUERY_4300_RFO = 
+			"SELECT  * "+
+					"FROM    Hybris.AutoshipPayment AS AP "+
+					"JOIN Hybris.AutoshipPaymentAddress AS APA ON APA.AutoShipID = AP.AutoshipID "+
+					"WHERE   AP.AutoshipID = '%s' ";
+	public static String GET_AUTOSHIP_ORDER_DETAILS_QUERY_4300_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.AutoshipShipment AS ASH "+
+					"JOIN Hybris.AutoshipShippingAddress AS ASA ON ASA.AutoShipID = ASH.AutoshipID "+
+					"WHERE   ASH.AutoshipID = '%s' ";
+	public static String GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4300_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Autoship AS A "+
+					"WHERE   A.AutoshipID = '%s' ";
 
 	public static String GET_SHIPPING_METHOD_FOR_CONSULTANT_RFL_4289 = "select * from dbo.ShippingMethods where ShippingMethodID='%s'";
 
@@ -97,7 +549,7 @@ public class DBQueries {
 	public static String GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select top 1 StartDate from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc";
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select top 1 GrandTotal from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFL = "select Name from dbo.OrderStatus where OrderStatusID IN (select top 1 OrderStatusID from dbo.Orders where OrderID IN (select OrderID from dbo.orderCustomers where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')) order by OrderID desc)";
-	public static String GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL ="select top 20 * from dbo.Orders"+
+	public static String GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL ="select top 1 * from dbo.Orders"+
 			" join dbo.OrderCustomers ON dbo.OrderCustomers.OrderID = dbo.Orders.OrderID"+
 			" join dbo.OrderShipments ON dbo.OrderShipments.OrderID = dbo.Orders.OrderID"+
 			" join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
@@ -854,6 +1306,47 @@ STEP #1
 			"AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
 			"AND o.OrderStatusID = 7) "+ /*Submitted Template*/
 			"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
+
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username , "+
+			"'http://' + S.SitePrefix + '.' + SD.Name AS URL "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI ON CPI.AccountId = ab.AccountID "+
+			"JOIN    Hybris.Sites AS S ON S.AccountID = ab.AccountID "+
+			"JOIN    Hybris.SiteURLs AS SUL ON SUL.SiteID = S.SiteID "+
+			"JOIN    Hybris.SiteDomain AS SD ON SD.SiteDomainID = SUL.SiteDomainID "+
+			"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+
+			/*Pulse*/
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Autoship AS a "+
+			"WHERE  a.AccountID = ab.AccountID "+
+			"AND a.AutoshipTypeID = 3 "+
+			"AND a.Active = 1 ) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
+			""; // Waiting for query
+
+
+
+
+
 
 
 
@@ -1649,6 +2142,10 @@ STEP #1
 					"join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID "+
 					"join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID "+
 					"where dbo.Orders.OrderTypeID=5 and dbo.Orders.OrderNumber='%s'";
+
+	public static String GET_ORDER_DETAILS_FOR_FAILED_ORDER_FOR_RC_RFL_ = "SELECT * "+
+			"FROM dbo.Orders AS o "+
+			"WHERE o.OrderID = '%s'";
 
 
 	/**

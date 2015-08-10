@@ -34,6 +34,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		driver.waitForElementToBeClickable(WELCOME_USER_DD_LOC, 15);
 		driver.findElement(WELCOME_USER_DD_LOC).click();
 		Thread.sleep(2000);
 		logger.info("clicked on welcome drop down");

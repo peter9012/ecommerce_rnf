@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.autoship;
+package com.rf.test.website.storeFront.autoship.rfl;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -324,22 +324,22 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 
 		shippingAddressFromDB = firstName+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase()+"\n";
-		if(assertTrueDB("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB), RFL_DB)== false){
-			// Assert for Schedule Date with RFO
-			shippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_QUERY_RFO, pcEmailID), RFO_DB);
-
-			firstName = String.valueOf(getValueFromQueryResult(shippingAddressList, "AddressProfileName"));
-			addressLine1 = String.valueOf(getValueFromQueryResult(shippingAddressList, "AddressLine1"));
-			postalCode = String.valueOf(getValueFromQueryResult(shippingAddressList, "PostalCode"));
-			locale = String.valueOf(getValueFromQueryResult(shippingAddressList, "Locale"));
-			region = String.valueOf(getValueFromQueryResult(shippingAddressList, "Region"));
-			country = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
-			if(country.equals("236")){
-				country = "United States"; 
-			}
-			shippingAddressFromDB = addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase()+"\n";
-			assertTrue("Shipping Address is not as expected",storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
-		}
+//		if(assertTrueDB("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB), RFL_DB)== false){
+//			// Assert for Schedule Date with RFO
+//			shippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_QUERY_RFO, pcEmailID), RFO_DB);
+//
+//			firstName = String.valueOf(getValueFromQueryResult(shippingAddressList, "AddressProfileName"));
+//			addressLine1 = String.valueOf(getValueFromQueryResult(shippingAddressList, "AddressLine1"));
+//			postalCode = String.valueOf(getValueFromQueryResult(shippingAddressList, "PostalCode"));
+//			locale = String.valueOf(getValueFromQueryResult(shippingAddressList, "Locale"));
+//			region = String.valueOf(getValueFromQueryResult(shippingAddressList, "Region"));
+//			country = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
+//			if(country.equals("236")){
+//				country = "United States"; 
+//			}
+//			shippingAddressFromDB = addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase()+"\n";
+//			assertTrue("Shipping Address is not as expected",storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
+//		}
 
 		// assert for shipping Method with RFL
 		shippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_SHIPPING_METHOD_QUERY_TST4, autoshipNumber), RFL_DB);
@@ -354,14 +354,6 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		// Assert for Card type with RFL
 		autoShipPaymentDetialsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_PAYMENT_DETAILS_QUERY_TST4, pcEmailID), RFL_DB);
-		cardTypeDB = (String) getValueFromQueryResult(autoShipPaymentDetialsList, "AccountName");
-		if(assertTrueDB("Card Type is not as expected", storeFrontOrdersPage.verifyCardType(cardTypeDB), RFO_DB)== false){
-			// assert for Card Type with RFO
-			autoShipPaymentDetialsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_CARD_TYPE_QUERY_RFO, pcEmailID), RFO_DB);
-			cardTypeDB = (String) getValueFromQueryResult(autoShipPaymentDetialsList, "Name");
-			assertTrue("Card Type is not as expected",storeFrontOrdersPage.verifyCardType(cardTypeDB));
-		}
-
 		autoShipItemDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_ORDER_DETAILS_QUERY_TST4, autoshipNumber), RFL_DB);
 		subTotalDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "Subtotal"));
 		shippingDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "ShippingAmount"));

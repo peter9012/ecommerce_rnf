@@ -23,6 +23,7 @@ public class DBQueries {
 	public static String GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select CompletionDate from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc)";
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
+
 	public static String GET_RANDOM_RC_RFO = 
 			"USE RFOperations "+
 					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -578,6 +579,7 @@ public class DBQueries {
 			    "AND ar.HardTerminationDate IS NOT NULL "+
 			    "AND ar.AccountID = ab.AccountID ) "+
 			    "ORDER BY NEWID() ";
+
 
 	public static String GET_RANDOM_CONSULTANT_INACTIVE_RFO_4179= "SELECT TOP 1 ab.AccountID,[as].Username "+
 			"FROM RFO_Accounts.AccountBase AS ab "+
@@ -1887,20 +1889,14 @@ STEP #1
 
 
 	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFL =
-
 			"USE RodanFieldsLive "+
 					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
 					"BEGIN TRANSACTION "+
 
-			/*********************************************************************************************
-			STEP #1
-			    Return 1 random active consultant accounts with PWS
-			 **********************************************************************************************/
-
 			"SELECT TOP 1 "+
 			"A.AccountID , "+
 			"[as].UserName , "+
-			"SUL.URL "+
+			"REPLACE(SUL.URL, 'myrandf', 'myrfotst4') + '/us' AS URL "+
 			"FROM    dbo.Accounts AS A "+
 			"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = A.AccountID "+
 			"JOIN    dbo.AccountContactInfo AS ACI ON ACI.AccountID = A.AccountID "+
@@ -1922,41 +1918,51 @@ STEP #1
 			"WHERE  oc.AccountID = A.AccountID "+
 			"AND o.OrderTypeID = 5 "+/*Consultant Auto-ship Template*/
 			"AND ao.AutoshipScheduleID = 3 "+/*Pulse Monthly Subscription*/
-			"AND o.OrderStatusID = 7) "+ /*Submitted Template*/
+			"AND o.OrderStatusID = 7 ) "+/*Submitted Template*/
 			"ORDER BY NEWID()";
 
-	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
 
+
+
+
+
+
+
+	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
 			"USE RFOperations "+
 					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
 					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username , "+
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'myrandf','myrfotst4') + '/ca' AS URL "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI ON CPI.AccountId = ab.AccountID "+
+					"JOIN    Hybris.Sites AS S ON S.AccountID = ab.AccountID "+
+					"JOIN    Hybris.SiteURLs AS SUL ON SUL.SiteID = S.SiteID "+
+					"JOIN    Hybris.SiteDomain AS SD ON SD.SiteDomainID = SUL.SiteDomainID "+
+					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+					/*Pulse*/
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+
+					"AND a.AutoshipTypeID = 3 "+
+					"AND a.Active = 1 ) "+
+					"ORDER BY NEWID()";
 
-			"SELECT TOP 1 "+
-			"ab.AccountID , "+
-			"[as].Username , "+
-			"'http://' + S.SitePrefix + '.' + SD.Name AS URL "+
-			"FROM    RFO_Accounts.AccountBase AS ab "+
-			"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
-			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI ON CPI.AccountId = ab.AccountID "+
-			"JOIN    Hybris.Sites AS S ON S.AccountID = ab.AccountID "+
-			"JOIN    Hybris.SiteURLs AS SUL ON SUL.SiteID = S.SiteID "+
-			"JOIN    Hybris.SiteDomain AS SD ON SD.SiteDomainID = SUL.SiteDomainID "+
-			"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
-			/*Active Accounts*/
-			"AND NOT EXISTS ( SELECT 1 "+
-			"FROM   RFO_Accounts.AccountRF AS ar "+
-			"WHERE  ar.Active = 0 "+
-			"AND ar.HardTerminationDate IS NOT NULL "+
-			"AND ar.AccountID = ab.AccountID ) "+
-			/*Pulse*/
-			"AND EXISTS ( SELECT 1 "+
-			"FROM   Hybris.Autoship AS a "+
-			"WHERE  a.AccountID = ab.AccountID "+
-			"AND a.AutoshipTypeID = 3 "+
-			"AND a.Active = 1 ) "+
-			"ORDER BY NEWID()";
+
+
+
+
 
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
 			""; // Waiting for query
@@ -1975,14 +1981,14 @@ STEP #1
 					"SELECT TOP 1 "+
 					"A.AccountID , "+
 					"[as].UserName , "+
-					"SUL2.URL AS Sponsor_PWS "+
+					"REPLACE(SUL2.URL, 'myrandf', 'myrfotst4') + '/us' AS URL "+
 					"FROM    dbo.Accounts AS A "+
 					"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = A.AccountID "+
 					"JOIN    dbo.Accounts AS A2 ON A2.AccountID = A.SponsorID "+
 					"JOIN    dbo.AccountContactInfo AS ACI2 ON ACI2.AccountID = A2.AccountID "+
 					"JOIN    dbo.Sites AS S2 ON S2.DistributorID = A2.AccountID "+
 					"JOIN    dbo.SiteURLs AS SUL2 ON SUL2.SiteID = S2.SiteID "+
-					"WHERE   A.AccountTypeID = 2 "+/*Preferred Customer*/ 
+					"WHERE   A.AccountTypeID = 2 "+/*Preferred Customer*/
 					/*Active Account*/
 					"AND NOT EXISTS ( SELECT 1 "+
 					"FROM   dbo.Accounts AS A2 "+
@@ -1990,7 +1996,6 @@ STEP #1
 					"AND A2.Active = 0 "+
 					"AND A2.StatusID = 2 ) "+
 					"ORDER BY NEWID()";
-
 
 	public static String GET_RANDOM_PC_WITH_NO_SPONSOR = 
 			"USE RodanFieldsLive "+
@@ -2136,7 +2141,79 @@ STEP #1
 					"AND a.AccountTypeID = 1 "+
 					"ORDER BY NEWID()";
 
+	public static String GET_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL_4287 = 
+			
+			"USE RodanFieldsLive "+
+			   /*
+			   STEP #1
 
+			       Pick a random Consultant order, for an active user
+			    */
+
+			   "DECLARE @Orderid INT "+
+
+			   "DECLARE @Accountid INT "+
+
+			   "SELECT TOP 1 @Orderid = o.OrderID "+
+			   ",@Accountid = oc.AccountID "+
+			   "FROM dbo.Orders AS o "+
+			   "JOIN dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+
+			   "WHERE o.OrderTypeID = 3 "+
+			   "AND o.OrderStatusID = 4 "+
+			   "AND NOT EXISTS ( "+
+			   "SELECT 1 "+
+			   "FROM dbo.Accounts AS a "+
+			   "WHERE a.Active = 0 "+
+			   "AND a.StatusID = 2 "+
+			   "AND a.AccountID = oc.AccountID) "+ 
+			   "ORDER BY NEWID() "+
+
+			   /*
+			   STEP #2
+			       Return login to use
+			    */
+			    "SELECT Username "+
+			    ",[Password] "+
+			    "FROM RFOperations.[Security].[AccountSecurity] "+
+			    "WHERE AccountID = @Accountid "+
+
+			   /*
+			   STEP #3
+			       Return order header details
+			    */
+			    "SELECT * "+
+			    "FROM dbo.Orders AS o "+
+			    "WHERE o.OrderID = @Orderid "+
+
+			   "SELECT * "+
+			   "FROM dbo.OrderCustomers AS oc "+
+			   "WHERE oc.OrderID = @Orderid "+
+
+			   /*
+			   STEP #4
+			       Return order items details
+			    */
+			    "SELECT oi.* "+
+			    "FROM dbo.OrderCustomers AS oc "+
+			    "JOIN dbo.OrderItems AS oi ON oi.OrderCustomerID = oc.OrderCustomerID "+
+			    "WHERE oc.OrderID = @Orderid "+
+
+			   /*
+			   STEP #4
+			       Return order shipment details
+			    */
+			    "SELECT * "+
+			    "FROM dbo.OrderShipments AS os "+
+			    "WHERE os.OrderID = @Orderid "+
+
+			   /*
+			   STEP #5
+			       Return order shipment items details
+			    */
+			    "SELECT osi.* "+
+			    "FROM dbo.OrderShipments AS os "+
+			    "JOIN dbo.OrderShipmentItems AS osi ON osi.OrderShipmentID = os.OrderShipmentID "+
+			    "WHERE os.OrderID = @Orderid";
 
 
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFL_4192 =

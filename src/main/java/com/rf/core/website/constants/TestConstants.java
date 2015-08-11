@@ -9,7 +9,8 @@ public class TestConstants {
 	public static final String CID = "06362865";
 	public static final String KIT_PRICE = "CAD$ 445";
 	public static final String REGIMEN_NAME = "Redefine";
-	public static final String ENROLLMENT_OPTION = "Express Enrollment";
+	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
+	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
 
 	public static final String FIRST_NAME = "rfTestUser";
 	public static final String LAST_NAME = FIRST_NAME;		
@@ -24,7 +25,7 @@ public class TestConstants {
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
 	public static final String SECURITY_CODE = "123";
-	public static final String SECURITY_INSURANCE_NUMBER = "556677900";
+	public static final String SECURITY_INSURANCE_NUMBER = "864092986";
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 
 	/*

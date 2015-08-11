@@ -384,5 +384,15 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
+
+	public boolean verifyCurrentCRPStatus() throws InterruptedException{
+		Thread.sleep(5000);
+		logger.info("Asserting Current CRP Status");
+		driver.waitForElementPresent(By.xpath("//p[@id='crp-status']/span[1]"));
+		if(driver.findElement(By.xpath("//p[@id='crp-status']/span[1]")).getText().equalsIgnoreCase("Enrolled")){
+			return true;
+		}
+		return false;
+	}
 }
 

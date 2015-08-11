@@ -113,6 +113,34 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Buy Now button clicked");
 	}
 
+	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
+			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]")).click();
+		}catch(NoSuchElementException e){
+
+		}
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
+		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).click();
+		logger.info("Add To CRP button clicked");
+	}
+
+	public void addQuantityOfProduct(String qty) throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
+		driver.findElement(By.xpath("//input[@id='quantity0']")).clear();
+		driver.findElement(By.xpath("//input[@id='quantity0']")).sendKeys(qty);
+		driver.findElement(By.xpath("//a[@class='updateLink']")).click();
+		Thread.sleep(5000);
+	}
+	
+	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
+		driver.waitForElementPresent(By.id("submitForm)"));
+		driver.findElement(By.id("submitForm")).click();
+		Thread.sleep(5000);
+	}
+
 	public boolean isCartPageDisplayed(){
 		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/h1"));
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='left-shopping']/h1")));
@@ -285,6 +313,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Next button on billing profile clicked");
 		Thread.sleep(3000);
 	}
+	
+	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
+		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//input[@class='positive right pad_right ']"));
+		driver.findElement(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div")).click();
+		driver.findElement(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div")).click();
+		driver.findElement(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div")).click();
+		driver.findElement(By.xpath("//input[@class='positive right pad_right ']")).click();
+		logger.info("Next button on billing profile clicked");
+		Thread.sleep(3000);
+	}
+
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='placeOrderButton']"));
@@ -292,7 +332,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		Thread.sleep(3000);
 		logger.info("Place order button clicked");
 	}
-	
+
 	public void clickOnRodanAndFieldsLogo(){
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
 		driver.findElement(RODAN_AND_FIELDS_IMG_LOC).click();
@@ -315,7 +355,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]/following::li[1]/form/div")).click();
 		Thread.sleep(5000);
 	}
-	
+
 	public boolean verifyPCPerksTermsAndConditionsPopup() throws InterruptedException{
 		boolean isPCPerksTermsAndConditionsPopup = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='pcperktermsconditions']//input[@value='Ok']"));
@@ -327,11 +367,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		return false;
 	}
-	
+
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		driver.waitForElementToBeClickable(By.xpath("//input[@id='Terms2']/.."), 15);
 		driver.findElement(By.xpath("//input[@id='Terms2']/..")).click();
 		driver.findElement(By.xpath("//input[@id='Terms3']/..")).click();
 	}
-	
+
 }

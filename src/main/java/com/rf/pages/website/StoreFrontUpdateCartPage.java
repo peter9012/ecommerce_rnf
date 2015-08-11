@@ -309,6 +309,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnCheckoutButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
 		driver.findElement(By.xpath("//input[@value='checkout']")).click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.info("checkout button clicked");
 	}
 
@@ -362,17 +368,17 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@id='saveShippingInfo']"));
 		action.moveToElement(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).click(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).build().perform();
 		logger.info("Next button on shipping address clicked");
-		Thread.sleep(5000);
+		Thread.sleep(40000); // env taking too long,will remove later
 	}
 
 	public String getSelectedBillingAddress(){
+		driver.waitForElementPresent(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]/p[1]"));
 		return driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]/p[1]")).getText();
 	}
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
 		Thread.sleep(10000);
-		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//div[@id='payment-next-button']/input")), 30);
 		driver.findElement(By.xpath("//div[@id='payment-next-button']/input")).click();
 		logger.info("Next button on billing profile clicked");
 		Thread.sleep(3000);
@@ -493,7 +499,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnNextButtonAfterSelectingSponsor() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='saveAccountAddress']"));
 		driver.findElement(By.xpath("//input[@id='saveAccountAddress']")).click();
-		Thread.sleep(10000);
+		Thread.sleep(40000);
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{

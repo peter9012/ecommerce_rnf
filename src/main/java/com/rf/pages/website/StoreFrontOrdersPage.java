@@ -75,7 +75,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean verifyOrderStatus(String status){
 		driver.waitForElementPresent(ORDER_STATUS_LOC);
 		logger.info("Order Status from UI "+driver.findElement(ORDER_STATUS_LOC).getText());
-		return driver.findElement(ORDER_STATUS_LOC).getText().equalsIgnoreCase(status);
+		return driver.findElement(ORDER_STATUS_LOC).getText().toLowerCase().contains(status.toLowerCase());
 	}
 
 	public void clickAutoshipOrderNumber(){		
@@ -128,6 +128,22 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(SCHEDULE_DATE_TEXT_LOC);
 		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
 		if(scheduleDateText.contains("SCHEDULE DATE")){
+			isScheduleDateTextPresent = true;
+		}
+		return isScheduleDateTextPresent;
+	}
+
+	public boolean verifyPCPerksOrderPageHeader(){
+		return driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: ORDER");
+	}
+	
+	public boolean verifyPresenceOfOrderDateText() throws InterruptedException{
+		Thread.sleep(3000);
+		boolean isScheduleDateTextPresent = false;
+		driver.waitForElementPresent(SCHEDULE_DATE_TEXT_LOC);
+		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
+		System.out.println("oRDER DATE IS "+scheduleDateText);
+		if(scheduleDateText.contains("ORDER DATE")){
 			isScheduleDateTextPresent = true;
 		}
 		return isScheduleDateTextPresent;
@@ -242,257 +258,257 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 
-public StoreFrontReportOrderComplaintPage clickOnActions(){
-	driver.waitForElementPresent(ACTIONS_BUTTON_LOC);
-	driver.findElement(ACTIONS_BUTTON_LOC).click();
-	logger.info("Action drop down clicked for first order");
-	driver.waitForElementPresent(ACTIONS_DROPDOWN_LOC);
-	driver.findElement(ACTIONS_DROPDOWN_LOC).click();
-	logger.info("Report Problems link clicked for first order");
-	return new StoreFrontReportOrderComplaintPage(driver);
-}
-
-public void orderNumberForOrderHistory(){
-	orderNumberOfOrderHistory = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText();
-}
-
-public void clickOnFirstAdHocOrder(){
-	driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-	driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).click();		
-}
-
-public String getFirstOrderNumberFromOrderHistory(){
-	String firstOrderNumber = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText(); 
-	return  firstOrderNumber;
-}
-
-public boolean isPaymentMethodContainsName(String name){
-	driver.waitForElementPresent(ORDER_PAYMENT_METHOD_LOC);
-	System.out.println("############## "+name.toLowerCase());
-	System.out.println("*********** UI"+driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase());
-	return driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase().contains(name.toLowerCase());
-}
-
-public void clickOrderNumber(String orderNumber){
-	driver.waitForElementPresent(By.linkText(orderNumber));
-	driver.click(By.linkText(orderNumber));
-	logger.info("Order number clicked "+orderNumber);
-}
-
-public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
-	String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[1]/span")).getText();
-	return subTotal.substring(1).contains(subTotalDB);
-}
-
-public boolean verifyAutoShipTemplateShipping(String shippingDB){
-	String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[2]/span")).getText();
-	return subTotal.substring(1).contains(shippingDB);
-}
-
-public boolean verifyAutoShipTemplateHandling(String handlingDB){
-	String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[3]/span")).getText();
-	return subTotal.substring(1).contains(handlingDB);
-}
-
-public boolean verifyOrderHistoryTax(String taxDB){
-	String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
-	return subTotal.trim().substring(1).contains(taxDB);
-}
-
-public boolean verifyAutoShipTemplateTax(String taxDB){
-	String subTotal = driver.findElement(By.xpath("//span[@id='totalTax']")).getText();
-	return subTotal.trim().substring(1).contains(taxDB);
-}
-
-//	public boolean verifyPayeeName(String payeeNameDB){
-//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
-//	}
-
-public boolean verifyCardType(String cardTypeDB){	
-	String cardType = cardTypeDB.toLowerCase();
-	if(cardType.contains("master")){		
-		try{
-			driver.findElement(By.xpath("//span[@class='cardType mastercard']"));				
-			return true;
-		}
-		catch(NoSuchElementException e){
-			return false;
-		}
+	public StoreFrontReportOrderComplaintPage clickOnActions(){
+		driver.waitForElementPresent(ACTIONS_BUTTON_LOC);
+		driver.findElement(ACTIONS_BUTTON_LOC).click();
+		logger.info("Action drop down clicked for first order");
+		driver.waitForElementPresent(ACTIONS_DROPDOWN_LOC);
+		driver.findElement(ACTIONS_DROPDOWN_LOC).click();
+		logger.info("Report Problems link clicked for first order");
+		return new StoreFrontReportOrderComplaintPage(driver);
 	}
-	else if(cardType.contains("visa")){
-		try{
-			driver.findElement(By.xpath("//span[@class='cardType visa']"));
-			return true;
-		}
-		catch(NoSuchElementException e){
-			return false;
-		}
+
+	public void orderNumberForOrderHistory(){
+		orderNumberOfOrderHistory = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText();
 	}
-	return false;
-}
 
-public boolean verifyReturnOrderNumber(String returnOrderNumber){
-	return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[1]/a")).getText().equals(returnOrderNumber);
-}
+	public void clickOnFirstAdHocOrder(){
+		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
+		driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).click();		
+	}
 
-public boolean verifyReturnOrderGrandTotal(String total){
-	return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[3]")).getText().contains(total);
-}
+	public String getFirstOrderNumberFromOrderHistory(){
+		String firstOrderNumber = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText(); 
+		return  firstOrderNumber;
+	}
 
-public boolean verifyReturnOrderStatus(String status){
-	return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[4]")).getText().equalsIgnoreCase(status);
-}
+	public boolean isPaymentMethodContainsName(String name){
+		driver.waitForElementPresent(ORDER_PAYMENT_METHOD_LOC);
+		System.out.println("############## "+name.toLowerCase());
+		System.out.println("*********** UI"+driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase());
+		return driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase().contains(name.toLowerCase());
+	}
 
-public String getShippingAddress(){
-	return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).getText();
-}
+	public void clickOrderNumber(String orderNumber){
+		driver.waitForElementPresent(By.linkText(orderNumber));
+		driver.click(By.linkText(orderNumber));
+		logger.info("Order number clicked "+orderNumber);
+	}
 
-public boolean isShippingAddressContainsName(String name){
-	String uncapitalizeName = WordUtils.uncapitalize(name);
-	String lowerCaseName = name.toLowerCase();
-	driver.waitForElementPresent(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]"));
-	return (driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(name)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(uncapitalizeName)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(lowerCaseName));
-}
+	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[1]/span")).getText();
+		return subTotal.substring(1).contains(subTotalDB);
+	}
 
-public boolean verifyShippingAddress(String shippingAddress){
-	return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).getText().equalsIgnoreCase(shippingAddress);
-}
+	public boolean verifyAutoShipTemplateShipping(String shippingDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[2]/span")).getText();
+		return subTotal.substring(1).contains(shippingDB);
+	}
 
-public boolean verifyAdhocOrderTemplateSubtotal(String subTotal){
-	driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span"));
-	System.out.println("subtotal from DB "+subTotal);
-	System.out.println("subtotal from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
-	return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText().contains(subTotal);
-}
+	public boolean verifyAutoShipTemplateHandling(String handlingDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[3]/span")).getText();
+		return subTotal.substring(1).contains(handlingDB);
+	}
 
-public boolean verifyAdhocOrderTemplateShippingCharges(String shippingCharges){
-	System.out.println("shippingCharges from DB "+shippingCharges);
-	System.out.println("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
-	return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText().contains(shippingCharges);
-}
+	public boolean verifyOrderHistoryTax(String taxDB){
+		String subTotal = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
+		return subTotal.trim().substring(1).contains(taxDB);
+	}
 
-public boolean verifyAdhocOrderTemplateHandlingCharges(String handlingCharges){
-	System.out.println("handlingCharges from DB "+handlingCharges);
-	System.out.println("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
-	return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText().contains(handlingCharges);
-}
+	public boolean verifyAutoShipTemplateTax(String taxDB){
+		String subTotal = driver.findElement(By.xpath("//span[@id='totalTax']")).getText();
+		return subTotal.trim().substring(1).contains(taxDB);
+	}
 
-public boolean verifyAdhocOrderTemplateTax(String tax){
-	System.out.println("tax from DB "+tax);
-	System.out.println("tax from UI "+driver.findElement(By.xpath("//span[@id='totalTax']")).getText());
-	return driver.findElement(By.xpath("//span[@id='totalTax']")).getText().contains(tax);
-}
+	//	public boolean verifyPayeeName(String payeeNameDB){
+	//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
+	//	}
 
-public boolean verifyAdhocOrderTemplateTotal(String total){
-	System.out.println("total from DB "+total);
-	System.out.println("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
-	return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText().contains(total);
-}
-
-public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {
-	Thread.sleep(5000);
-	driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-	int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-	for(int i=1; i<=sizeOfOrders; i++){
-		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-		if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-			String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-			clickOrderNumber(failedOrderNumber);
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-			if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER DETAILS: CRP #")==true){
-				return failedOrderNumber;
-			}else{
-				driver.navigate().back();
+	public boolean verifyCardType(String cardTypeDB){	
+		String cardType = cardTypeDB.toLowerCase();
+		if(cardType.contains("master")){		
+			try{
+				driver.findElement(By.xpath("//span[@class='cardType mastercard']"));				
+				return true;
+			}
+			catch(NoSuchElementException e){
+				return false;
 			}
 		}
-	}
-	return null;
-}
-
-
-public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForPC() throws InterruptedException {
-	Thread.sleep(5000);
-	driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-	int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-	for(int i=1; i<=sizeOfOrders; i++){
-		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-		if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-			String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-			clickOrderNumber(failedOrderNumber);
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-			if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("AUTOSHIPMENT")==true){
-				return failedOrderNumber;
-			}else{
-				driver.navigate().back();
+		else if(cardType.contains("visa")){
+			try{
+				driver.findElement(By.xpath("//span[@class='cardType visa']"));
+				return true;
+			}
+			catch(NoSuchElementException e){
+				return false;
 			}
 		}
+		return false;
 	}
-	return null;
-}
 
-public String getOrderNumberFromOrderHistoryForFailedAdhocOrdersForRC() throws InterruptedException {
-	Thread.sleep(5000);
-	driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-	int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-	for(int i=1; i<=sizeOfOrders; i++){
+	public boolean verifyReturnOrderNumber(String returnOrderNumber){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[1]/a")).getText().equals(returnOrderNumber);
+	}
+
+	public boolean verifyReturnOrderGrandTotal(String total){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[3]")).getText().contains(total);
+	}
+
+	public boolean verifyReturnOrderStatus(String status){
+		return driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]//table[@class='orders-table']/tbody/tr[1]/td[4]")).getText().equalsIgnoreCase(status);
+	}
+
+	public String getShippingAddress(){
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).getText();
+	}
+
+	public boolean isShippingAddressContainsName(String name){
+		String uncapitalizeName = WordUtils.uncapitalize(name);
+		String lowerCaseName = name.toLowerCase();
+		driver.waitForElementPresent(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]"));
+		return (driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(name)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(uncapitalizeName)||driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p/span[1]")).getText().contains(lowerCaseName));
+	}
+
+	public boolean verifyShippingAddress(String shippingAddress){
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).getText().equalsIgnoreCase(shippingAddress);
+	}
+
+	public boolean verifyAdhocOrderTemplateSubtotal(String subTotal){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span"));
+		System.out.println("subtotal from DB "+subTotal);
+		System.out.println("subtotal from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText().contains(subTotal);
+	}
+
+	public boolean verifyAdhocOrderTemplateShippingCharges(String shippingCharges){
+		System.out.println("shippingCharges from DB "+shippingCharges);
+		System.out.println("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText().contains(shippingCharges);
+	}
+
+	public boolean verifyAdhocOrderTemplateHandlingCharges(String handlingCharges){
+		System.out.println("handlingCharges from DB "+handlingCharges);
+		System.out.println("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText().contains(handlingCharges);
+	}
+
+	public boolean verifyAdhocOrderTemplateTax(String tax){
+		System.out.println("tax from DB "+tax);
+		System.out.println("tax from UI "+driver.findElement(By.xpath("//span[@id='totalTax']")).getText());
+		return driver.findElement(By.xpath("//span[@id='totalTax']")).getText().contains(tax);
+	}
+
+	public boolean verifyAdhocOrderTemplateTotal(String total){
+		System.out.println("total from DB "+total);
+		System.out.println("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText().contains(total);
+	}
+
+	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {
 		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-		if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+		for(int i=1; i<=sizeOfOrders; i++){
 			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-			String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-			clickOrderNumber(failedOrderNumber);
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-			if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER")==true){
-				return failedOrderNumber;
-			}else{
-				driver.navigate().back();
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+				clickOrderNumber(failedOrderNumber);
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER DETAILS: CRP #")==true){
+					return failedOrderNumber;
+				}else{
+					driver.navigate().back();
+				}
 			}
 		}
+		return null;
 	}
-	return null;
-}
 
-public void clickOnFirstAdhocOrder() throws InterruptedException {
-	driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a")).click();
-	Thread.sleep(2000);
-}
 
-public String orderDetails_getTotalSV()	{
-	return driver.findElement(By.xpath("//LI[text()='Total SV:']/span")).getText();
-}
+	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForPC() throws InterruptedException {
+		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+		for(int i=1; i<=sizeOfOrders; i++){
+			Thread.sleep(5000);
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+				clickOrderNumber(failedOrderNumber);
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("AUTOSHIPMENT")==true){
+					return failedOrderNumber;
+				}else{
+					driver.navigate().back();
+				}
+			}
+		}
+		return null;
+	}
 
-public String orderDetails_getSubTotal() {
-	return driver.findElement(By.xpath("//LI[text()='Subtotal:']/span")).getText();
-}
+	public String getOrderNumberFromOrderHistoryForFailedAdhocOrdersForRC() throws InterruptedException {
+		Thread.sleep(5000);
+		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+		for(int i=1; i<=sizeOfOrders; i++){
+			Thread.sleep(5000);
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+				clickOrderNumber(failedOrderNumber);
+				Thread.sleep(5000);
+				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER")==true){
+					return failedOrderNumber;
+				}else{
+					driver.navigate().back();
+				}
+			}
+		}
+		return null;
+	}
 
-public String orderDetails_ShippingCharges() {
-	return driver.findElement(By.xpath("//LI[text()='Shipping:']/span")).getText();
-}
+	public void clickOnFirstAdhocOrder() throws InterruptedException {
+		driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a")).click();
+		Thread.sleep(2000);
+	}
 
-public String orderDetails_HandlingCharges(){
-	return driver.findElement(By.xpath("//li[contains(text(),'Handl')]/span")).getText();
-}
+	public String orderDetails_getTotalSV()	{
+		return driver.findElement(By.xpath("//LI[text()='Total SV:']/span")).getText();
+	}
 
-public String orderDetails_grandTotal()	{
-	return driver.findElement(By.xpath("//li[@class='grand-total']/span")).getText();
-}
+	public String orderDetails_getSubTotal() {
+		return driver.findElement(By.xpath("//LI[text()='Subtotal:']/span")).getText();
+	}
 
-public String orderDetails_getTax() {
-	return driver.findElement(By.xpath("//li[@id='module-hst']/span")).getText();
-}
+	public String orderDetails_ShippingCharges() {
+		return driver.findElement(By.xpath("//LI[text()='Shipping:']/span")).getText();
+	}
 
-public String orderDetails_getShippingMethodName()	{
-	return driver.findElement(By.xpath("//p[span/strong[contains(text(),'Shi')]]/br")).getText();
-}
+	public String orderDetails_HandlingCharges(){
+		return driver.findElement(By.xpath("//li[contains(text(),'Handl')]/span")).getText();
+	}
+
+	public String orderDetails_grandTotal()	{
+		return driver.findElement(By.xpath("//li[@class='grand-total']/span")).getText();
+	}
+
+	public String orderDetails_getTax() {
+		return driver.findElement(By.xpath("//li[@id='module-hst']/span")).getText();
+	}
+
+	public String orderDetails_getShippingMethodName()	{
+		return driver.findElement(By.xpath("//p[span/strong[contains(text(),'Shi')]]/br")).getText();
+	}
 
 }

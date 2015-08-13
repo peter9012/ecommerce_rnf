@@ -11,8 +11,8 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -46,7 +46,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//pcUserEmailID = TestConstants.PC_USER_EMAIL_ID_RFO;	
 		//---------------------------------------------------------------------------------------------------------------------		
 
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -87,7 +87,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//---------------------------------------------------------------------------------------------------------------------		
 
 
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -152,11 +152,11 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String,Object>> subTotalAndGrandTotalList = null;
 		DecimalFormat df = new DecimalFormat("#.00");
 
-		autoshipIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ACCOUNT_ID_4289_RFO,RFO_DB);
+		autoshipIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACCOUNT_ID_4289_RFO,RFO_DB);
 		autoshipId = String.valueOf( getValueFromQueryResult(autoshipIdAccountIdDetailsList,"AutoshipID"));
 		accountId = String.valueOf( getValueFromQueryResult(autoshipIdAccountIdDetailsList, "AccountID"));
 		System.out.println("account id from database is"+accountId);
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_CONSULTANT_HAVING_SUBMITTED_ORDER_4289_RFO,accountId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_HAVING_SUBMITTED_ORDER_4289_RFO,accountId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		System.out.println("Pc user email id from database is"+randomConsultantList);
 
@@ -181,7 +181,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//verify shipping address in RFO
 
 		//QUERY FOR SHIPPING ADDRESS LIST GIVES 5 RESULT SO UNABLE TO PROCEED FURTHER.
-		shippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_QUERY_4289_RFO, autoshipId), RFO_DB);
+		shippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_QUERY_4289_RFO, autoshipId), RFO_DB);
 		firstName = String.valueOf(getValueFromQueryResult(shippingAddressList, "FirstName"));
 		addressLine1 = String.valueOf(getValueFromQueryResult(shippingAddressList, "Address1"));
 		postalCode = String.valueOf(getValueFromQueryResult(shippingAddressList, "PostalCode"));
@@ -196,18 +196,18 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//shippingAddressFromDB = addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase()+"\n";
 		//assert shipping method in RFO
 		//assertTrue("Shipping Address is not as expected",  storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
-		subTotalAndGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4289_RFO, autoshipId), RFO_DB);
+		subTotalAndGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4289_RFO, autoshipId), RFO_DB);
 		subTotalDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "Subtotal"));
 		taxDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "TotalTax"));
 		grandTotalDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "Total"));
 
-		autoShipItemDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_ORDER_DETAILS_QUERY_4289_RFO, autoshipId), RFO_DB);
+		autoShipItemDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ORDER_DETAILS_QUERY_4289_RFO, autoshipId), RFO_DB);
 		shippingDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "ShippingCost"));
 		handlingDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "HandlingCost"));
 		shippingMethodId = String.valueOf(getValueFromQueryResult(autoShipItemDetailsList, "ShippingMethodID"));
 
 		//assert the shipping method in RFO
-		shippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+		shippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 		shippingMethodDB = (String) getValueFromQueryResult(shippingMethodList, "Name");
 		assertTrue("Shipping Method is not as expected", storeFrontOrdersPage.verifyShippingMethod(shippingMethodDB));
 
@@ -278,11 +278,11 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList = null;
 		DecimalFormat df = new DecimalFormat("#.00");
 
-		autoshipIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ACCOUNT_ID_4300_RFO,RFO_DB);
+		autoshipIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACCOUNT_ID_4300_RFO,RFO_DB);
 		autoshipId = String.valueOf( getValueFromQueryResult(autoshipIdAccountIdDetailsList,"AutoshipID"));
 		accountId = String.valueOf( getValueFromQueryResult(autoshipIdAccountIdDetailsList, "AccountID"));
 		System.out.println("account id from database is"+accountId);
-		randomPCList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_PC_USER_HAVING_AUTOSHIP_ORDER_4300_RFO,accountId),RFO_DB);
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_PC_USER_HAVING_AUTOSHIP_ORDER_4300_RFO,accountId),RFO_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 		System.out.println("Pc user email id from database is"+pcEmailID);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -300,7 +300,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//
 		//			shippingAddressFromDB = firstName+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase()+"\n";
 
-		shippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_QUERY_4300_RFO, autoshipId), RFO_DB);
+		shippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_QUERY_4300_RFO, autoshipId), RFO_DB);
 		firstName = String.valueOf(getValueFromQueryResult(shippingAddressList, "FirstName"));
 		addressLine1 = String.valueOf(getValueFromQueryResult(shippingAddressList, "Address1"));
 		postalCode = String.valueOf(getValueFromQueryResult(shippingAddressList, "PostalCode"));
@@ -319,18 +319,18 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//			if(shippingMethodDB.equalsIgnoreCase("FedEx Grnd")){
 		//				shippingMethodDB = "FedEx Ground (HD)";
 		//			}
-		subTotalAndGrandTotalList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4300_RFO, autoshipId), RFO_DB);
+		subTotalAndGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ORDER_DETAILS_SUBTOTAL_4300_RFO, autoshipId), RFO_DB);
 		subTotalDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "Subtotal"));
 		taxDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "TotalTax"));
 		grandTotalDB = df.format((Number) getValueFromQueryResult(subTotalAndGrandTotalList, "Total"));
 
-		autoShipItemDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_AUTOSHIP_ORDER_DETAILS_QUERY_4300_RFO, autoshipId), RFO_DB);
+		autoShipItemDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ORDER_DETAILS_QUERY_4300_RFO, autoshipId), RFO_DB);
 		shippingDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "ShippingCost"));
 		handlingDB = df.format((Number) getValueFromQueryResult(autoShipItemDetailsList, "HandlingCost"));
 		shippingMethodId = String.valueOf(getValueFromQueryResult(autoShipItemDetailsList, "ShippingMethodID"));
 
 		//assert the shipping method in RFO
-		shippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+		shippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 		shippingMethodDB = (String) getValueFromQueryResult(shippingMethodList, "Name");
 		assertTrue("Shipping Method is not as expected", storeFrontOrdersPage.verifyShippingMethod(shippingMethodDB));
 

@@ -128,10 +128,48 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			logger.info("Element found");
 		} catch (Exception e) {
 			e.getStackTrace();
+		}	
+		waitForElementTobeEnabled(locator);
+	}
+	
+	public void waitForElementNotPresent(By locator) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
+			logger.info("waiting for locator " + locator);
+			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
+			logger.info("Element found");
+		} catch (Exception e) {
+			e.getStackTrace();
+		}		
+	}
+	
+	public void waitForLoadingImageToDisappear(){
+		By locator = By.xpath("//div[@id='blockUIBody']");
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
+			logger.info("waiting for locator " + locator);
+			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
+			logger.info("Element found");
+		} catch (Exception e) {
+			e.getStackTrace();
 		}
-		// driver.findElements((By) element).size()
+	}
+
+	public void waitForElementTobeEnabled(By locator){
+		for(int time=1;time<=30;time++){
+			if(driver.findElement(locator).isEnabled()==true){
+				break;
+			}		
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 	}
+
 
 
 	public void moveToELement(By locator) {

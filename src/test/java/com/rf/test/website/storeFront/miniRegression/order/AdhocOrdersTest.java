@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -36,7 +36,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -90,7 +90,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFO,RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_USER_EMAIL_ID_RFO,RFO_DB);
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -140,7 +140,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	   RFO_DB = driver.getDBNameRFO();
 	  List<Map<String, Object>> randomRCUserList =  null;
 	  String rcuserEmailId = null;
-	  randomRCUserList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_USER_EMAIL_ID_RFO,RFO_DB);
+	  randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_USER_EMAIL_ID_RFO,RFO_DB);
 	  rcuserEmailId = (String) getValueFromQueryResult(randomRCUserList, "Username");
 	  storeFrontHomePage = new StoreFrontHomePage(driver);
 	  storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);

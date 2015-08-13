@@ -394,5 +394,22 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
+
+	public void enterUserName(String username) throws InterruptedException	{
+		driver.findElement(By.xpath("//input[@id='username-account']")).clear();
+		driver.findElement(By.xpath("//input[@id='username-account']")).sendKeys(username);
+		Thread.sleep(2000);
+	}
+
+	
+	public String getErrorMessage()	{
+		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		return errorMessage;
+	}
+
+	public boolean checkErrorMessage()	{
+		Boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+		return status;
+	}
 }
 

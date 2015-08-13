@@ -11,7 +11,9 @@ public class TestConstants {
 	public static final String REGIMEN_NAME = "Redefine";
 	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
 	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
-
+	public static final String KIT_PRICE_BUSINESS = "CAD$ 1,145";
+	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
+	
 	public static final String FIRST_NAME = "rfTestUser";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
@@ -27,7 +29,19 @@ public class TestConstants {
 	public static final String SECURITY_CODE = "123";
 	public static final String SECURITY_INSURANCE_NUMBER = "864092986";
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
-
+	public static final String PROVINCECA = "Yukon Territory";
+	public static final String CIDCA = "989828";
+	
+	public static final String CONSULTANT_EMAIL_ID_STAG2="con0708@yopmail.com";
+	public static final String PC_EMAIL_ID_STAG2="pcuser02@abc.com";
+	
+	 public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
+	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";
+	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
+	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
+	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_NUMBERS="123456789";
+	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHABETS="abcdefghi";
+	
 	/*
 	 * Consultant User Details
 	 */

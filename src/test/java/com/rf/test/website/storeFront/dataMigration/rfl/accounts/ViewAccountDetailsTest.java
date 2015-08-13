@@ -9,8 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -61,7 +62,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);   
@@ -72,7 +73,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 
 
-		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
+		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
 		firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
 		lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
 		String genderId = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderID"));
@@ -84,7 +85,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		}
 		dobDB  = (String) getValueFromQueryResult(accountNameDetailsList, "Birthday");
 
-		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
+		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL, consultantEmailID), RFL_DB);
 		addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "Address1");
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "City");
 		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "State");
@@ -94,7 +95,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		/*// assert First Name with RFL
 	  if(assertTrueDB("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), RFL_DB) == false){
 	   //assert First Name with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 	   firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
 	   assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
 	  }
@@ -102,7 +103,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	  //assert Last Name with RFL
 	  if(assertTrueDB("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), RFL_DB) == false){
 	   // assert Last Name with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 	   lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
 	   assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
 	  }
@@ -110,7 +111,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		//assert Address Line 1 with RFL
 		if(assertTrueDB("Address Line 1 on UI is different from DB", storeFrontAccountInfoPage.verifyAddressLine1FromUIForAccountInfo(addressLine1DB), RFL_DB) == false){
 			// assert Address Line 1 with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			addressLine1DB = (String) getValueFromQueryResult(accountAddressDetailsList, "AddressLine1");
 			assertTrue("Address Line 1 on UI is different from DB", storeFrontAccountInfoPage.verifyAddressLine1FromUIForAccountInfo(addressLine1DB));
 		}
@@ -118,7 +119,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		// assert City with RFL
 		if(assertTrueDB("City on UI is different from DB", storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB), RFL_DB) == false){
 			// assert City with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Locale");
 			assertTrue("City on UI is different from DB", storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB));
 		}
@@ -126,7 +127,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		// assert State with RFL
 		if(assertTrueDB("State on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB), RFL_DB) == false){
 			// assert State with RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
 			/*if(provinceFromDB.equalsIgnoreCase("TX")){
 	    provinceDB = "Texas"; 
@@ -137,7 +138,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		// assert Postal Code with RFL
 		if(assertTrueDB("", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB), RFL_DB) == false){
 			//assert Postal Code eith RFO
-			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
+			accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 			postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
 			assertTrue("Postal Code on UI is different from DB", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB));
 		}
@@ -145,7 +146,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		// assert Main Phone Number with RFL
 		if(assertTrueDB("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB), RFL_DB) == false){
 			// assert Main Phone Number with RFO
-			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
 			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
 			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 		}
@@ -153,7 +154,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		/*// assert Gender with RFL
 	  if(assertTrueDB("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB), RFL_DB) == false){
 	   // assert Gender Id with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 	   genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
 	   assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
 	  }
@@ -161,7 +162,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	  // assert BirthDay with RFL
 	  if(assertTrueDB("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB), RFL_DB) == false){
 	   // assert BirthDay with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 	   dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 	   assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB));
 	  }  
@@ -176,7 +177,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4179,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4179,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -191,7 +192,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4181,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4181,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -206,7 +207,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO(); 
 		String userEmailID = null;
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182, RFL_DB);
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182, RFL_DB);
 		userEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -221,7 +222,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4184,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_INACTIVE_RFL_4184,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -237,7 +238,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULATNT_NOCRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4186,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULATNT_NOCRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4186,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -252,7 +253,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4188,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4188,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -268,7 +269,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4189,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4189,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -293,7 +294,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4189,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4189,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -319,7 +320,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4190,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFL_4190,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -334,7 +335,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFL_4192,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFL_4192,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -350,7 +351,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFL_4193,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFL_4193,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -376,7 +377,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4194,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFL_4194,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -391,7 +392,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFL_4196,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFL_4196,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);
@@ -404,7 +405,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	public void testAccountWithNullEmailAddress_4227() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> userWithNoEmailAddressIDList =  null;		
-		userWithNoEmailAddressIDList = DBUtil.performDatabaseQuery(DBQueries.GET_ACCOUNTS_WITH_NULL_EMAIL_ADDRESS,RFL_DB);
+		userWithNoEmailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_ACCOUNTS_WITH_NULL_EMAIL_ADDRESS,RFL_DB);
 		s_assert.assertTrue(userWithNoEmailAddressIDList.size()==0,"Account with NULL email Address exist");			
 		s_assert.assertAll();
 	}	
@@ -418,7 +419,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> billingAddressCountList =  null;
 		int totalBillingAddressesFromDB = 0;
 		String userEmailId = null;
-		randomEmailList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFL,RFL_DB);
+		randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFL,RFL_DB);
 		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailId, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -428,11 +429,11 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 
 		// assert with RFL
-		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,userEmailId),RFL_DB);
+		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,userEmailId),RFL_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
 		if(assertEqualsDB("Billing Addresses count on UI is different from DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
 			//assert with RFO
-			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,userEmailId),RFO_DB);
+			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,userEmailId),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
 			s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");			
 		}
@@ -449,7 +450,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderNumberList =  null;		
 		String orderNumberDB = null;
 		String consultantEmail = null;
-		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL,RFL_DB);
+		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL,RFL_DB);
 		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -458,12 +459,12 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
-//		orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
+//		orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
 //		//assert on RFL
 //		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
 //		if(assertTrueDB("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB),RFL_DB)==false){
 //			//assert On RFO
-//			orderNumberList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
+//			orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
 //			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
 //			assertTrue("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB));	
 //		}		
@@ -485,7 +486,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		String pcUserEmail = null;
-		randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_PC_HAS_CRP_PULSE_SUBMITTED_ORDERS_RFL_4205,RFL_DB);
+		randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PC_HAS_CRP_PULSE_SUBMITTED_ORDERS_RFL_4205,RFL_DB);
 		pcUserEmail = (String) getValueFromQueryResult(randomPCUserEmailIdList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -507,7 +508,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		String rcUserEmail = null;
-		randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_ENROLLED_RC_USER_HAS_FAILED_ORDER_RFL_4200,RFL_DB);
+		randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ENROLLED_RC_USER_HAS_FAILED_ORDER_RFL_4200,RFL_DB);
 		rcUserEmail = (String) getValueFromQueryResult(randomRCUserEmailIdList, "UserName");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmail, TestConstants.CONSULTANT_PASSWORD_TST4);

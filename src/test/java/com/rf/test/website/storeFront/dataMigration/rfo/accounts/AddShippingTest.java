@@ -41,7 +41,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_TST4,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_TST4,RFO_DB);
 //			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_TST4,RFO_DB);
+		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_TST4,RFO_DB);
 //			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
 		//---------------------------------------------------------------------------------------------------------------------		
 
@@ -157,7 +157,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-	/* randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+	/* randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -231,7 +231,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 

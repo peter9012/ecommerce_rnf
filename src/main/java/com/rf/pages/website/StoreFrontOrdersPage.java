@@ -134,9 +134,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyPCPerksOrderPageHeader(){
-		return driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: ORDER");
+		return driver.findElement(ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS");
 	}
-	
+
 	public boolean verifyPresenceOfOrderDateText() throws InterruptedException{
 		Thread.sleep(3000);
 		boolean isScheduleDateTextPresent = false;
@@ -209,7 +209,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyShippingMethod(String shippingMethodDB){
-		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().contains(shippingMethodDB);
+		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
+		logger.info("Shipping Method from UI is "+shippingMethodUI);
+		return shippingMethodUI.contains(shippingMethodDB);
 	}
 
 	public boolean verifyPCPerksAutoShipHeader(){
@@ -376,33 +378,34 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public boolean verifyAdhocOrderTemplateSubtotal(String subTotal){
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span"));
-		System.out.println("subtotal from DB "+subTotal);
-		System.out.println("subtotal from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
+		logger.info("subtotal from UI is "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText().contains(subTotal);
 	}
 
 	public boolean verifyAdhocOrderTemplateShippingCharges(String shippingCharges){
-		System.out.println("shippingCharges from DB "+shippingCharges);
-		System.out.println("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
+		logger.info("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText().contains(shippingCharges);
 	}
 
 	public boolean verifyAdhocOrderTemplateHandlingCharges(String handlingCharges){
-		System.out.println("handlingCharges from DB "+handlingCharges);
-		System.out.println("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
+		logger.info("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText().contains(handlingCharges);
 	}
 
 	public boolean verifyAdhocOrderTemplateTax(String tax){
-		System.out.println("tax from DB "+tax);
-		System.out.println("tax from UI "+driver.findElement(By.xpath("//span[@id='totalTax']")).getText());
-		return driver.findElement(By.xpath("//span[@id='totalTax']")).getText().contains(tax);
+		logger.info("tax from UI "+driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText());
+		return driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText().contains(tax);
 	}
 
 	public boolean verifyAdhocOrderTemplateTotal(String total){
-		System.out.println("total from DB "+total);
-		System.out.println("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
+		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText().contains(total);
+	}
+	
+	public boolean verifyAdhocOrderTemplateTotalSV(String totalSV){
+		String absoluteTotalSV = totalSV.split("\\.")[0];
+		logger.info("total SV from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[5]/span")).getText());
+		return (driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[5]/span")).getText().contains(totalSV)||(driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[5]/span")).getText().contains(absoluteTotalSV)));
 	}
 
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {

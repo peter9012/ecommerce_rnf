@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
-import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
@@ -46,7 +44,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -119,7 +117,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -191,7 +189,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -257,7 +255,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 
@@ -325,7 +323,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------
 

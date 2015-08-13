@@ -3,17 +3,14 @@ package com.rf.test.website.storeFront.dataMigration.rfl.accounts;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -27,7 +24,6 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			.getLogger(AddBillingTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
-	//private StoreFrontConsultantPage storeFrontConsulatantPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
@@ -46,16 +42,15 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
+		String accountID = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user		
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -118,7 +113,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 	
 	//Hybris Phase 2-4327:View new billing profile on 'Billing Profile' page	
-	@Test
+	@Test // will fail because of isDefault checkbox issue
 	public void testViewNewBillingProfile_HP2_4327() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();		
@@ -129,13 +124,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = null;
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -148,13 +143,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		//------------------The same number of billing addresses is shown in RFL and Front end----------------------------------------------------------------------------------------------------------------------------
 
-		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
+		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_BILLING_ADDRESS_COUNT_QUERY_TST4,consultantEmailID),RFL_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
 		logger.info("Total Billing Profiles from RFL DB are "+totalBillingAddressesFromDB);		
 		if(assertEqualsDB("Billing Addresses count on UI is different from RFL DB", totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),RFL_DB)==false){
 
 			//------------------The same number of billing addresses is shown in RFO and Front end----------------------------------------------------------------------------------------------------------------------------
-			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
+			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
 			logger.info("Total Billing Profiles from RFO DB are "+totalBillingAddressesFromDB);
 			s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from RFO DB");
@@ -166,13 +161,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		if(totalBillingAddressesFromDB > 1){
 
 			//-------------------------------------Radio button is checked for the default billing address on Front end as per RFL--------------------------------------------------------------------------------------------
-			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
+			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_DEFAULT_BILLING_ADDRESS_QUERY_TST4,consultantEmailID),RFL_DB);
 			newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "Name");
 			newBillingProfileName = newBillingProfileName.split(" ")[0];			
 			if(assertTrueDB("Default Billing Address radio button as per RFL DB is not selected on UI", storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),RFL_DB)==false){
 
 				//-------------------------------------Radio button is checked for the default billing address on Front end as per RFO--------------------------------------------------------------------------------------------
-				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
 				newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressProfileName");
 				newBillingProfileName = newBillingProfileName.split(" ")[0];
 				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Default Billing Address radio button as per RFO DB is not selected on UI");
@@ -197,13 +192,12 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -241,7 +235,6 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 		logout();
 		s_assert.assertAll();
 
@@ -259,13 +252,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -288,7 +281,6 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -330,12 +322,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -388,12 +381,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -458,12 +452,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -514,12 +509,12 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFL,RFL_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);

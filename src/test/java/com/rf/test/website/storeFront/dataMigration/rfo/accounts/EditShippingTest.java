@@ -10,8 +10,8 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -50,7 +50,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		//------------------------------- Hard coded Users part is commented for now-----------------------------------------------	
 		//consultantEmailID = "sharonvdk@msn.com";
 		//---------------------------------------------------------------------------------------------------------------------
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -63,7 +63,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
 		//------------------The same number of billing addresses is shown in RFO and Front end----------------------------------------------------------------------------------------------------------------------------
-		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
+		shippingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
 		totalShippingAddressesFromDB = (Integer) getValueFromQueryResult(shippingAddressCountList, "count");			
 		assertEquals("Shipping Addresses count on UI is different from DB", totalShippingAddressesFromDB,storeFrontShippingInfoPage.getTotalShippingAddressesDisplayed());			
 
@@ -72,7 +72,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		if(totalShippingAddressesFromDB > 1){
 
 			//---------------------------------Radio button is checked for the default shipping address on Front end as per RFO--------------------------------------------------------------------------------------------
-			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
 			shippingAddressName = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
 			assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(shippingAddressName));
 		}
@@ -92,7 +92,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
+		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
 		//---------------------------------------------------------------------------------------------------------------------		
 
@@ -158,7 +158,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 
 		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
+		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
 		//---------------------------------------------------------------------------------------------------------------------		
 

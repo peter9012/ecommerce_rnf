@@ -150,14 +150,14 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]")).click();
 		logger.info("Default shipping profile selected is having name "+firstName);
-		Thread.sleep(4000);
+		driver.waitForLoadingImageToDisappear();
 		try{
 			driver.waitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
 			driver.findElement(By.xpath("//input[@class='shippingAddresspopup']")).click();
 		}catch(NoSuchElementException e){
 
 		}
-		Thread.sleep(40000); // env taking too long,will remove this
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isShippingAddressPresentOnShippingPage(String firstName){

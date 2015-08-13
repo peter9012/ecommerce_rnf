@@ -3,8 +3,10 @@ package com.rf.pages.website;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -86,9 +88,19 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_NAME_LOC);
-		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC, cardNumber);
-		logger.info("New Billing card number enterd as "+cardNumber);
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//td[@id='credit-cards']"));		
+		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
+		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
+		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
@@ -144,9 +156,9 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::p[1]/a"));
-		driver.findElement(By.xpath("//input[@checked='checked']/preceding::p[1]/a")).click();
-		Thread.sleep(3000);
+		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
+		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a")).click();
+		driver.waitForPageLoad();
 		logger.info("Edit billing profile link clicked");
 	}
 

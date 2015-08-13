@@ -81,8 +81,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAllProductsLink(){
-		driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
-		driver.findElement(By.xpath("//a[@title='All Products']")).click();
+		try{
+			driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
+			driver.findElement(By.xpath("//a[@title='All Products']")).click();
+		}catch(NoSuchElementException e){
+			logger.info("All products link was not present");
+			driver.findElement(By.xpath("//div[@id='dropdown-menu']//a[@href='/us/quick-shop/quickShop']")).click();
+		}
 		logger.info("All products link clicked "+"//a[@title='All Products']");
 	}
 
@@ -134,7 +139,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//a[@class='updateLink']")).click();
 		Thread.sleep(5000);
 	}
-	
+
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
 		driver.waitForElementPresent(By.id("submitForm)"));
 		driver.findElement(By.id("submitForm")).click();
@@ -313,7 +318,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Next button on billing profile clicked");
 		Thread.sleep(3000);
 	}
-	
+
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		Thread.sleep(5000);
 		driver.waitForElementPresent(By.xpath("//input[@class='positive right pad_right ']"));

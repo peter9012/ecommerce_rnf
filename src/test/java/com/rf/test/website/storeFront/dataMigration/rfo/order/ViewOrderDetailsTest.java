@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -66,10 +66,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	        List<Map<String,Object>> getOtherDetailValuesList = null;
 	        DecimalFormat df = new DecimalFormat("#.00");
 	        
-	        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ORDER_ID_ACCOUNT_ID_4286_RFO,RFO_DB);
+	        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4286_RFO,RFO_DB);
 	        orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
 	        accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO,accountId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO,accountId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		
 
@@ -85,7 +85,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			String orderHistoryNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
 			storeFrontOrdersPage.clickAutoshipOrderNumber();
 			
-//			verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_AUTOSHIP_ORDER_RFL, orderHistoryNumber), RFL_DB);
+//			verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_AUTOSHIP_ORDER_RFL, orderHistoryNumber), RFL_DB);
 //			firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
 //			lastName =  (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
 //			addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
@@ -101,11 +101,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			// assert shipping Address with RFO
 			//assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
 						
-			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_FOR_4286_RFO,orderId),RFO_DB);
+			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4286_RFO,orderId),RFO_DB);
 			subTotalDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
 			taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
 			grandTotalDB = String.valueOf(df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total")));
-			shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_COST_HANDLING_COST_FOR_4286_RFO,orderId),RFO_DB);
+			shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4286_RFO,orderId),RFO_DB);
 			shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
 			handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 			shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
@@ -125,7 +125,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			// assert Handling Value with RFO
 			assertTrue("Handling Value is not as expected", storeFrontOrdersPage.verifyAutoShipTemplateHandling(handlingDB));
 						
-			verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+			verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 			String methodName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "Name"));	
 			
 			// assert for shipping Method with RFO
@@ -180,10 +180,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	        List<Map<String,Object>> getOtherDetailValuesList = null;
 	        DecimalFormat df = new DecimalFormat("#.00");
 	        
-	        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ORDER_ID_ACCOUNT_ID_4287_RFO,RFO_DB);
+	        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4287_RFO,RFO_DB);
 	        orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
 	        accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO,accountId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO,accountId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 			
 		
@@ -200,7 +200,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 			
 			
-//			verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL, orderHistoryNumber), RFL_DB);
+//			verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_ACTIVE_CONSULTANT_USER_HAVING_ADHOC_ORDER_RFL, orderHistoryNumber), RFL_DB);
 //			firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "BillingFirstName");
 //			addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
 //			city = (String) getValueFromQueryResult(verifyAllDetailsList, "City");
@@ -216,14 +216,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 //			assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
 		
 			
-			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_FOR_4287_RFO,orderId),RFO_DB);
+			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4287_RFO,orderId),RFO_DB);
 			subTotalDB = df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "SubTotal"));
 			
 			taxDB = df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax"));
 			
 			grandTotalDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total"));
 			
-			shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO,orderId),RFO_DB);
+			shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO,orderId),RFO_DB);
 			shippingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 			
 			handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
@@ -241,7 +241,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		 // assert Handling Value with RFO
 			assertTrue("Handling Value is not as expected", storeFrontOrdersPage.verifyAutoShipTemplateHandling(handlingDB));
 			
-			verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+			verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 			String methodName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "Name"));
 			
 		 // assert for shipping Method with RFL
@@ -289,12 +289,12 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
         List<Map<String,Object>> getOtherDetailValuesList = null;
         DecimalFormat df = new DecimalFormat("#.00");
         
-        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ORDER_ID_ACCOUNT_ID_4292_RFO,RFO_DB);
+        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4292_RFO,RFO_DB);
         orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
        
         accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
         
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4292_RFO,accountId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4292_RFO,accountId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		
 		
@@ -313,7 +313,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfScheduleDateText(),"Schedule Date Text is not present on the Page");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderStatusText(),"Order Status Text is not present on the Page");
 
-//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ADDRESS_DETAILS_FOR_4292_RFL, orderHistoryNumber), RFL_DB);
+//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ADDRESS_DETAILS_FOR_4292_RFL, orderHistoryNumber), RFL_DB);
 //		firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
 //		lastName = (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
 //		addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
@@ -329,14 +329,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		// assert shipping Address with RFO
 //		assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
 	
-		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_FOR_4292_RFO,orderId),RFO_DB);
+		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4292_RFO,orderId),RFO_DB);
 		subTotalDB = df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "SubTotal"));
 		
 		taxDB = df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax"));
 	
 		grandTotalDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total"));
 		
-		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO,orderId),RFO_DB);
+		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO,orderId),RFO_DB);
 		shippingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 		
 		handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
@@ -360,7 +360,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		assertTrue("Handling Value is not as expected", storeFrontOrdersPage.verifyAutoShipTemplateHandling(handlingDB));
 			
 		// assert for shipping Method with RFO
-		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 		String methodName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "Name"));
 //		String methodShortName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "ShortName"));
 //				if(methodName.equalsIgnoreCase("FedEx Grnd")){
@@ -415,11 +415,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
         List<Map<String,Object>> shippingCostAndHandlingCostList = null;
         List<Map<String,Object>> getOtherDetailValuesList = null;
         DecimalFormat df = new DecimalFormat("#.00");
-        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ORDER_ID_ACCOUNT_ID_4291_RFO,RFO_DB);
+        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4291_RFO,RFO_DB);
         orderId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));       
         accountId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
         
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4291_RFO,accountId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4291_RFO,accountId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		
 		
@@ -438,7 +438,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfScheduleDateText(),"Schedule Date Text is not present on the Page");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderStatusText(),"Order Status Text is not present on the Page");
 
-//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ADDRESS_DETAILS_FOR_RFL, autoshipOrderNumber), RFL_DB);
+//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ADDRESS_DETAILS_FOR_RFL, autoshipOrderNumber), RFL_DB);
 //		firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
 //		lastName = (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
 //		addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
@@ -455,14 +455,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 //		assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
 		
 
-		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_FOR_4291_RFO,orderId),RFO_DB);
+		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4291_RFO,orderId),RFO_DB);
 		subTotalDB =df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "SubTotal"));
 		
 		taxDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "TotalTax"));
 		
 		grandTotalDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total"));
 		
-		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_COST_HANDLING_COST_FOR_4291_RFO,orderId),RFO_DB);
+		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4291_RFO,orderId),RFO_DB);
 		shippingDB = df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 		
 		handlingDB = df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
@@ -486,7 +486,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		assertTrue("Handling Value is not as expected", storeFrontOrdersPage.verifyAutoShipTemplateHandling(handlingDB));
 
 		// assert for shipping Method with RFO
-		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 		String methodName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "Name"));
 //		String methodShortName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "ShortName"));
 //		if(methodName.equalsIgnoreCase("FedEx Grnd")){
@@ -539,12 +539,12 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
         List<Map<String,Object>> shippingCostAndHandlingCostList = null;
         List<Map<String,Object>> getOtherDetailValuesList = null;
         DecimalFormat df = new DecimalFormat("#.00");
-        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries.GET_ORDER_ID_ACCOUNT_ID_4293_RFO,RFO_DB);
+        orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4293_RFO,RFO_DB);
         orderId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
         
         accountId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
        
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4293_RFO,accountId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4293_RFO,accountId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 	
 		
@@ -560,7 +560,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
-//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ADDRESS_DETAILS_FOR_RFL, orderHistoryNumber), RFL_DB);
+//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ADDRESS_DETAILS_FOR_RFL, orderHistoryNumber), RFL_DB);
 //		firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
 //		lastName = (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
 //		addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
@@ -577,14 +577,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	//	assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
 		
 
-		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_ORDER_DETAILS_FOR_4293_RFO,orderId),RFO_DB);
+		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4293_RFO,orderId),RFO_DB);
 		subTotalDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "SubTotal"));
 		
 		taxDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "TotalTax"));
 		
 		grandTotalDB = df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total"));
 		
-		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_COST_HANDLING_COST_FOR_4293_RFO,orderId),RFO_DB);
+		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4293_RFO,orderId),RFO_DB);
 		shippingDB = df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 		
 		handlingDB = df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
@@ -609,7 +609,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			
 
 		// assert for shipping Method with RFO
-		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries.callQueryWithArguement(DBQueries.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
+		verifyShippingMethodList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_METHOD_QUERY_RFO, shippingMethodId), RFO_DB);
 		String methodName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "Name"));
 //		String methodShortName = String.valueOf(getValueFromQueryResult(verifyShippingMethodList, "ShortName"));
 //		if(methodName.equalsIgnoreCase("FedEx Grnd")){

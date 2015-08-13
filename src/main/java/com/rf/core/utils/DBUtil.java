@@ -50,7 +50,7 @@ public class DBUtil {
 	public static List<Map<String, Object>> performDatabaseQuery(String sQuery,String databaseName){
 		JdbcTemplate jdbcTemplate;
 		jdbcTemplate = new JdbcTemplate(getDataSource(databaseName));
-		logger.info("QUERY TRIGGERED IS "+sQuery);
+		logger.info("QUERY TRIGGERED IS "+sQuery+"\n");
 		ColumnMapRowMapper rowMapper = new ColumnMapRowMapper();		
 		List<Map<String, Object>> userDataList = jdbcTemplate.query(sQuery,rowMapper);		
 		return userDataList;

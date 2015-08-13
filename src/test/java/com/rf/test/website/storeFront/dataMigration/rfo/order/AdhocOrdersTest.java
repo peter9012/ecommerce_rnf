@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.DBQueries;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -45,7 +44,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random User part is commented for now-----------------------------------------------	
-		 /*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
+		 /*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
 		//---------------------------------------------------------------------------------------------------------------------
         
@@ -110,7 +109,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 
 		//------------------------------- Random  User part is commented for now-----------------------------------------------	
-		/*randomPCList = DBUtil.performDatabaseQuery(DBQueries.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
+		/*randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");*/
 		//---------------------------------------------------------------------------------------------------------------------
 		

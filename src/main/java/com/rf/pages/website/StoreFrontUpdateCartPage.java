@@ -350,12 +350,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnCheckoutButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
 		driver.findElement(By.xpath("//input[@value='checkout']")).click();
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		driver.waitForLoadingImageToDisappear();
 		logger.info("checkout button clicked");
 	}
 

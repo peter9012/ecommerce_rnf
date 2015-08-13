@@ -36,7 +36,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
 	@Test
-	public void testCreateAdhocOrderConsultant() throws InterruptedException{
+	public void testCreateAdhocOrderConsultant_1878() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
@@ -110,7 +110,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
-	public void testCreateAdhocOrderPC() throws InterruptedException{
+	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
@@ -184,7 +184,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	//	Hybris Phase 2-1879 :: Version : 1 :: Create Adhoc Order For The Retail Customer
 	@Test
-	public void testCreateAdhocOrderRC() throws InterruptedException {
+	public void testCreateAdhocOrderRC_1879() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
@@ -223,8 +223,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
 		logger.info("Total while creating order is "+total);
-		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		logger.info("Total SV while creating order is "+totalSV);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
@@ -250,8 +248,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"Handling charges on AdHoc Orders Template is NOT "+handlingCharges);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"Tax on AdHoc Orders Template is NOT "+tax);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"Total SV on AdHoc Orders Template is NOT "+totalSV);
-
+		
 		logout();
 		s_assert.assertAll();
 	}	

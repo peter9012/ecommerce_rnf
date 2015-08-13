@@ -801,7 +801,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4294:Verify details of failed consultant autoship orders.
 	@Test
-	public void testDetailsOfFailedConsultantAutoshipOrder() throws InterruptedException{
+	public void testDetailsOfFailedConsultantAutoshipOrder_4294() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 
@@ -955,7 +955,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4295:Verify details of failed pc autoship orders.
 	@Test
-	public void testDetilsOfFailedAutoshipOrdersForPC() throws InterruptedException{
+	public void testDetilsOfFailedAutoshipOrdersForPC_4295() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 

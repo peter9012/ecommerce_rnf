@@ -6,7 +6,7 @@
 	</listeners>
 	<test name="DataMigrationTest">		
 		<classes>
-		    <!--------------------------------------ACCOUNTS TESTS ------------------------------------------------------>
+		  					 <!-- ACCOUNTS -->
 		   	<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddBillingTest"></class>
 		    <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddShippingTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.EditBillingTest"></class>
@@ -14,15 +14,15 @@
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.MyAccountTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.ViewAccountDetailsTest"></class>
 			
-			<!--------------------------------------AUTOSHIPS TESTS ------------------------------------------------------>
+							<!-- AUTOSHIPS -->			
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.autoships.AutoshipTest"></class>
 			
-			<!--------------------------------------ORDERS TESTS ------------------------------------------------------>
+							<!-- ORDERS -->			
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.order.AdhocOrdersTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.order.ViewOrderDetailsTest"></class>
 			
-			<!--------------------------------------PWS TESTS ------------------------------------------------------>
-			<class name="com.rf.test.website.storeFront.dataMigration.rfl.pws.Test"></class>
+							<!-- PWS -->
+			<class name="com.rf.test.website.storeFront.dataMigration.rfl.pws.PWSLoginTest"></class>
 			
 		</classes>
 	</test>

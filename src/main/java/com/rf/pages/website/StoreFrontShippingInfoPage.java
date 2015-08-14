@@ -67,7 +67,6 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
 		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
-		Thread.sleep(2000);
 		logger.info("Add new shipping profile link clicked");
 	}
 

@@ -27,7 +27,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	
 	public boolean verifyConsultantPage() throws InterruptedException{
-		Thread.sleep(5000);
+		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a"));
 		return driver.findElement(By.xpath("//li[@id='account-info-button']/a")).getText().contains("Welcome");		
 	}
@@ -36,7 +36,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.waitForElementToBeClickable(WELCOME_USER_DD_LOC, 15);
 		driver.findElement(WELCOME_USER_DD_LOC).click();
-		Thread.sleep(2000);
 		logger.info("clicked on welcome drop down");
 	}
 

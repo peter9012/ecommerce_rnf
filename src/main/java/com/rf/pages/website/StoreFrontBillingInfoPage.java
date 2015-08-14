@@ -83,7 +83,6 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(ADD_NEW_BILLING_LINK_LOC);
 		driver.click(ADD_NEW_BILLING_LINK_LOC);
-		Thread.sleep(2000);
 		logger.info("Add new billing profile link clicked");
 	}
 
@@ -92,12 +91,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//td[@id='credit-cards']"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		driver.pauseExecutionFor(2000);
 		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
 		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);		
@@ -144,7 +138,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	public void clickOnSaveBillingProfile() throws InterruptedException{
 		driver.waitForElementPresent(NEW_BILLING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_BILLING_PROFILE_SAVE_BTN_LOC);
-		Thread.sleep(5000);
+		driver.waitForLoadingImageToDisappear();
 		logger.info("save billing profile button clicked");
 	}
 	

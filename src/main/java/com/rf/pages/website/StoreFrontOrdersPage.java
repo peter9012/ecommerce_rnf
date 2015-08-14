@@ -286,8 +286,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public boolean isPaymentMethodContainsName(String name){
 		driver.waitForElementPresent(ORDER_PAYMENT_METHOD_LOC);
-		System.out.println("############## "+name.toLowerCase());
-		System.out.println("*********** UI"+driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase());
 		return driver.findElement(ORDER_PAYMENT_METHOD_LOC).getText().toLowerCase().contains(name.toLowerCase());
 	}
 

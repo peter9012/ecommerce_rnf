@@ -22,7 +22,7 @@ public class StoreFrontCartAutoShipPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(UPDATE_MORE_INFO_LINK_LOC);
 		driver.click(UPDATE_MORE_INFO_LINK_LOC);
 		logger.info("Update More Info Link Clicked "+UPDATE_MORE_INFO_LINK_LOC);
-		Thread.sleep(5000);
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontUpdateCartPage(driver);
 	}
 }

@@ -92,22 +92,22 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
 		mainPhoneNumberDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PhoneNumber");
 
-		/*// assert First Name with RFL
-	  if(assertTrueDB("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), RFL_DB) == false){
-	   //assert First Name with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-	   firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
-	   assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
-	  }
+		// assert First Name with RFL
+		if(assertTrueDB("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), RFL_DB) == false){
+			//assert First Name with RFO
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+			assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
+		}
 
-	  //assert Last Name with RFL
-	  if(assertTrueDB("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), RFL_DB) == false){
-	   // assert Last Name with RFO
-	   accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-	   lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
-	   assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
-	  }
-		 */
+		//assert Last Name with RFL
+		if(assertTrueDB("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), RFL_DB) == false){
+			// assert Last Name with RFO
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+			assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
+		}
+
 		//assert Address Line 1 with RFL
 		if(assertTrueDB("Address Line 1 on UI is different from DB", storeFrontAccountInfoPage.verifyAddressLine1FromUIForAccountInfo(addressLine1DB), RFL_DB) == false){
 			// assert Address Line 1 with RFO
@@ -150,7 +150,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
 			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 		}
-		
+
 		/*// assert Gender with RFL
 	  if(assertTrueDB("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB), RFL_DB) == false){
 	   // assert Gender Id with RFO
@@ -459,15 +459,15 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
-//		orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
-//		//assert on RFL
-//		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-//		if(assertTrueDB("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB),RFL_DB)==false){
-//			//assert On RFO
-//			orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
-//			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-//			assertTrue("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB));	
-//		}		
+		//		orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFL, consultantEmail),RFL_DB);
+		//		//assert on RFL
+		//		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+		//		if(assertTrueDB("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB),RFL_DB)==false){
+		//			//assert On RFO
+		//			orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO, consultantEmail),RFO_DB);
+		//			orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+		//			assertTrue("Status of Order Number is not found as Submitted",storeFrontOrdersPage.verifyOrderStatusToBeSubmitted(orderNumberDB));	
+		//		}		
 		s_assert.assertTrue(storeFrontOrdersPage.verifyForSubmittedAdhocOrders(),"Submitted Orders NOT present");
 		storeFrontAccountInfoPage = storeFrontOrdersPage.clickOnAccountInfoFromLeftPanel();
 		storeFrontOrdersAutoshipStatusPage = storeFrontAccountInfoPage.clickOnAutoShipStatus();

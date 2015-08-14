@@ -92,6 +92,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyCRPAutoShipHeader(){
+		driver.waitForElementPresent(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC);
 		logger.info(driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
 		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: CRP #"+autoShipOrderNumber);
 	}
@@ -123,7 +124,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyPresenceOfScheduleDateText() throws InterruptedException{
-		Thread.sleep(3000);
+		driver.pauseExecutionFor(3000);
 		boolean isScheduleDateTextPresent = false;
 		driver.waitForElementPresent(SCHEDULE_DATE_TEXT_LOC);
 		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
@@ -399,7 +400,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText().contains(total);
 	}
-	
+
 	public boolean verifyAdhocOrderTemplateTotalSV(String totalSV){
 		String absoluteTotalSV = totalSV.split("\\.")[0];
 		logger.info("total SV from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[5]/span")).getText());
@@ -407,75 +408,88 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {
-		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-		for(int i=1; i<=sizeOfOrders; i++){
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-				clickOrderNumber(failedOrderNumber);
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER DETAILS: CRP #")==true){
-					return failedOrderNumber;
-				}else{
-					driver.navigate().back();
+		driver.pauseExecutionFor(5000);
+		boolean isNextLinkPresent =  false;
+		do{
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+			int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+			for(int i=1; i<=sizeOfOrders; i++){
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+				if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+					clickOrderNumber(failedOrderNumber);
+					driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER DETAILS: CRP #")==true){
+						return failedOrderNumber;
+					}else{
+						driver.navigate().back();
+					}
 				}
+			}   
+			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+				isNextLinkPresent = true;
+				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
-		}
+		}while(isNextLinkPresent==true);
 		return null;
 	}
 
 
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForPC() throws InterruptedException {
-		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-		for(int i=1; i<=sizeOfOrders; i++){
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-				clickOrderNumber(failedOrderNumber);
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("AUTOSHIPMENT")==true){
-					return failedOrderNumber;
-				}else{
-					driver.navigate().back();
+		driver.pauseExecutionFor(5000);
+		boolean isNextLinkPresent =  false;
+		do{
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+			int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+			for(int i=1; i<=sizeOfOrders; i++){
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+				if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+					clickOrderNumber(failedOrderNumber);
+					driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("AUTOSHIPMENT")==true){
+						return failedOrderNumber;
+					}else{
+						driver.navigate().back();
+					}
 				}
 			}
-		}
+			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+				isNextLinkPresent = true;
+				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+			}
+		}while(isNextLinkPresent==true);
 		return null;
 	}
 
 	public String getOrderNumberFromOrderHistoryForFailedAdhocOrdersForRC() throws InterruptedException {
-		Thread.sleep(5000);
-		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
-		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
-		for(int i=1; i<=sizeOfOrders; i++){
-			Thread.sleep(5000);
-			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
-			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
-				String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
-				clickOrderNumber(failedOrderNumber);
-				Thread.sleep(5000);
-				driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
-				if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER")==true){
-					return failedOrderNumber;
-				}else{
-					driver.navigate().back();
+		driver.pauseExecutionFor(5000);
+		boolean isNextLinkPresent =  false;
+		do{
+			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
+			int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
+			for(int i=1; i<=sizeOfOrders; i++){
+				driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
+				if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]//td[text()='FAILED']/preceding::td[3]")).getText();
+					clickOrderNumber(failedOrderNumber);
+					driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span"));
+					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText().contains("ORDER")==true){
+						return failedOrderNumber;
+					}else{
+						driver.navigate().back();
+					}
 				}
 			}
-		}
+			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+				isNextLinkPresent = true;
+				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+			}
+			
+		}while(isNextLinkPresent==true);
 		return null;
 	}
 

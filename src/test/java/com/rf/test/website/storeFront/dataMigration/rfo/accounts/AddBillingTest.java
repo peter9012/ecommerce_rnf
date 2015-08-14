@@ -23,13 +23,11 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			.getLogger(AddBillingTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
-	//private StoreFrontConsultantPage storeFrontConsulatantPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
-	private String RFL_DB = null;
 	private String RFO_DB = null;
 
 
@@ -41,15 +39,15 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
+		String accountID = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -110,8 +108,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
+
 	//Hybris Phase 2-4327:View new billing profile on 'Billing Profile' page	
-	@Test(enabled=true)
+	@Test // will fail because of isDefault checkbox issue
 	public void testViewNewBillingProfile_HP2_4327() throws InterruptedException, SQLException{
 		RFO_DB = driver.getDBNameRFO();		
 
@@ -121,13 +120,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = null;
+		String accountID = null;
 
-		
-		//------------------------------- Hard coded Users part is commented for now-----------------------------------------------	
-		//consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
-		//-------------------------------------------------------------------------------------------------------------------------
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -137,23 +136,20 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 
-			//------------------The same number of billing addresses is shown in RFO and Front end----------------------------------------------------------------------------------------------------------------------------
-			billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
-			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
-			logger.info("Total Billing Profiles from RFO DB are "+totalBillingAddressesFromDB);
-			s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from RFO DB");
+		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
+		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
+		logger.info("Total Billing Profiles from RFO DB are "+totalBillingAddressesFromDB);
+		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from RFO DB");		
 
-		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		if(totalBillingAddressesFromDB > 1){
+			//-------------------------------------Radio button is checked for the default billing address on Front end as per RFO--------------------------------------------------------------------------------------------
+			defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+			newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressProfileName");
+			newBillingProfileName = newBillingProfileName.split(" ")[0];
+			s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Default Billing Address radio button as per RFO DB is not selected on UI");
 
-				//-------------------------------------Radio button is checked for the default billing address on Front end as per RFO--------------------------------------------------------------------------------------------
-				defaultBillingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
-				newBillingProfileName = (String) getValueFromQueryResult(defaultBillingAddressList, "AddressProfileName");
-				newBillingProfileName = newBillingProfileName.split(" ")[0];
-				s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Default Billing Address radio button as per RFO DB is not selected on UI");
-
-			}
+		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -163,7 +159,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-2042 :: Version : 1 :: Add billing profile during checkout 
 	@Test
-	public void testAddBillingProfileDuringCheckout() throws InterruptedException{
+	public void testAddBillingProfileDuringCheckout_2042() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
@@ -171,13 +167,12 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_TST4,RFO_DB);
-		            consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -215,12 +210,12 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 		logout();
 		s_assert.assertAll();
 
 	}
-    //Hybris Phase 2-2341:Add new billing profile | My Account | checkbox UN-CHECKED
+
+	// Hybris Phase 2-2341:Add new billing profile | My Account | checkbox UN-CHECKED
 	@Test
 	public void testAddBillingProfileMyAccountFutureAutoshipCheckboxNotChecked_2341() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -231,13 +226,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -260,7 +255,6 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -287,7 +281,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();	
 
 	}
-	//Hybris Phase 2-2108:Automatically update billing profile for autoship as well on changing default selection
+
+
+	// Hybris Phase 2-2108:Automatically update billing profile for autoship as well on changing default selection
 	@Test
 	public void testMakeDefaultBillingProfile_2108() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -299,12 +295,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -345,10 +342,9 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	// ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
-	// Hybris Project-4466:ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future au
+	// Hybris Project-4466 ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
-	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected() throws InterruptedException{		
+	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected_4466() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
@@ -357,12 +353,13 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -414,11 +411,10 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		logout();
 		s_assert.assertAll();
 	}
-	
-	// ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
-	//Hybris Project-4467:ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future
+
+	//Hybris Project-4467 ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
 	@Test
-	public void testAddBillingAutoshipCartFutureCheckboxNotSelected() throws InterruptedException{		
+	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
@@ -427,18 +423,19 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
-		
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-	
+
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -464,10 +461,11 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
+
 		logout();
 		s_assert.assertAll();
 	}	
+
 
 
 	//Hybris Phase 2-2043:Add billing profile in autoship template
@@ -481,18 +479,18 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-			/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------
+		String accountID = null;
 
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4; // A hard code user
-		
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-	
+
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -519,7 +517,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
+
 		logout();
 		s_assert.assertAll();
 	}	

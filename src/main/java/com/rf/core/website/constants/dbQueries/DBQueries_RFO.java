@@ -24,7 +24,70 @@ public class DBQueries_RFO {
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
-	
+	public static String GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO =
+			/*********************************************************************************************
+			Query on RFO having active (i.e statusId =’1’ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
+			 **********************************************************************************************/
+			"USE RFOperations "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+ 
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+
+			"WHERE  o.AccountID = ab.AccountID "+
+			"AND o.OrderTypeID = 2 "+/*PC*/
+			"AND o.OrderStatusID = 2 ) "+ 
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Autoship AS a "+
+			"WHERE  a.AccountID = ab.AccountID "+
+			"AND a.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
+			"AND a.Active = 1 ) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
+			/*********************************************************************************************
+			Need a query on RFO having active (i.e statusId =’1’ ) RC only  having pending/submitted adhoc orders.
+			 **********************************************************************************************/
+			"USE RFOperations "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+ 
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+
+			"WHERE  o.AccountID = ab.AccountID "+
+			"AND o.OrderTypeID = 1 "+/*PC*/
+			"AND o.OrderStatusID = 2 ) "+ 
+			"ORDER BY NEWID()";
+
 	public static String GET_RANDOM_RC_RFO = 
 			"USE RFOperations "+
 					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -1145,11 +1208,52 @@ public class DBQueries_RFO {
 			   "WHERE  O.AccountID = ab.AccountID "+
 			   "AND O.OrderStatusID = 1) "+  /*Failed*/ 
 			   "ORDER BY NEWID() ";
-	
+
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
 			""; // Waiting for query
 
 	public static String GET_SHIPPING_ADDRESS_QUERY_FOR_ALL_RFO = "select * from Hybris.OrderShippingAddress where OrderID='%s'";
+
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
+			/*********************************************************************************************
+			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
+			Author: Adrian Calvo
+			Date:   2015-08-13 
+			 **********************************************************************************************/
+			"USE RFOperations "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 1 "+/*Consultant*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+ 
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+
+			"WHERE  o.AccountID = ab.AccountID "+
+			"AND o.OrderTypeID = 3 "+/*Consultant*/
+			"AND o.OrderStatusID = 2 ) "+ 
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Autoship AS a "+
+			"WHERE  a.AccountID = ab.AccountID "+
+			"AND a.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
+			"AND a.Active = 1 ) "+
+			"ORDER BY NEWID()";
+
+
+
+
 
 	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
 			"USE RFOperations "+

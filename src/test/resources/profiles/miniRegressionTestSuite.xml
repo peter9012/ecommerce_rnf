@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="miniRegressionTestSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="miniRegressionTest">		
+		<classes>		  									
+			<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
+			<class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class>						
+		</classes>
+	</test>
+</suite>

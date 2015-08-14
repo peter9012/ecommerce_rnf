@@ -307,12 +307,20 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.type(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC, mainPhoneNumber);
 		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.pauseExecutionFor(2000);
 		logger.info("Save account info button clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
+	
+	public void clickOnSubscribeToPulseBtn(){
+		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
+		driver.findElement(By.id("subscribe_pulse_button_new")).click();
+		driver.waitForElementPresent(By.id("pulse-enroll"));
+		driver.findElement(By.id("pulse-enroll")).click();
+		driver.waitForPageLoad();
+	}
 
 	public boolean verifyValidationMessageOfPhoneNumber(String validationMessage){
-		driver.waitForElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC);
 		if(driver.isElementPresent(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC)){
 			String validationMessageFromUI = driver.findElement(VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC).getText();
 			if(validationMessageFromUI.equalsIgnoreCase(validationMessage)){

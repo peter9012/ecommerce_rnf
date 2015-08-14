@@ -138,7 +138,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//---------------Verify that the new added shipping address is displayed in 'Shipment' section on update autoship cart page------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAddressName), "New Shipping address NOT selected in update cart under shipping section");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAddressName), "New Shipping address NOT present in update cart under shipping section");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

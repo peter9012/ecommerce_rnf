@@ -206,7 +206,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));		
 		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")).click();
 		logger.info("Edit Shipping link clicked "+"//div[@id='checkout_summary_deliverymode_div']//a");
-		Thread.sleep(3000);
+		driver.pauseExecutionFor(3000);
 	}
 
 	public boolean isShippingAddressPresent(String name){
@@ -405,6 +405,27 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.findElement(By.xpath("//div[@id='payment-next-button']/input")).click();
 		logger.info("Next button on billing profile clicked");
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnSubscribePulseTermsAndConditionsChkbox(){
+		driver.waitForElementPresent(By.xpath("//input[@id='termsCheck']/.."));
+		driver.findElement(By.xpath("//input[@id='termsCheck']/..")).click();
+	}
+
+	public void clickSubscribePulseBtn(){
+		driver.findElement(By.xpath("//input[@value='Subscribe']")).click();
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyPulseOrderCreatedMsg(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Your pulse order has been created')]"));
+		try{
+			driver.findElement(By.xpath("//span[contains(text(),'Your pulse order has been created')]"));
+			return true;		
+		}catch(Exception e){
+			return false;
+		}
 	}
 
 	public void clickBillingEditAfterSave(){

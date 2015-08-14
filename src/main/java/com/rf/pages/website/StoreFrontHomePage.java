@@ -87,9 +87,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.getCurrentUrl().contains("login?error=true");
 	}
 
-	public void searchCID(String cid) throws InterruptedException{
+	public void searchCID() throws InterruptedException{
 		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
 		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys("test");
+		driver.findElement(By.cssSelector("input[id='search-sponsor-button']")).click();
+		Thread.sleep(3000);
+	}
+
+	public void searchCID(String cid) throws InterruptedException{
+		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
+		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys(cid);
 		driver.findElement(By.cssSelector("input[id='search-sponsor-button']")).click();
 		Thread.sleep(3000);
 	}
@@ -211,7 +218,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
 		driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/..")).click();
 		driver.findElement(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input/..")).click();
-		Thread.sleep(2000);
+		driver.pauseExecutionFor(3000);
 	}
 
 
@@ -229,6 +236,28 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterNameOnCard(String nameOnCard){
 		driver.findElement(By.cssSelector("input[id='card-name']")).sendKeys(nameOnCard);
+	}
+
+	public boolean validateInvalidCreditCardMessage(){
+		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter a valid')]")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean validateEmptyCreditCardMessage(){
+		if(driver.findElement(By.xpath("//div[contains(text(),'This field')]")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void clearCreditCardNumber(){
+		driver.findElement(By.xpath("//input[@id='card-nr']")).clear();
 	}
 
 	public void selectExpirationDate(String month,String year){
@@ -271,6 +300,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.findElement(By.xpath("//input[@id='terms-check']/..")).click();		
 	}
 
+	public void clickOnEnrollmentNextButton(){
+		driver.waitForElementPresent(By.xpath("//*[@id='enrollment-next-button']"));
+		driver.findElement(By.xpath("//*[@id='enrollment-next-button']")).click(); 
+	}
 	public boolean verifyPopUpForPoliciesAndProcedures() throws InterruptedException{
 		boolean isPopForTermsAndConditionsVisible = false;
 		Thread.sleep(3000);

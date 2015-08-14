@@ -11,9 +11,16 @@ public class TestConstants {
 	public static final String REGIMEN_NAME = "Redefine";
 	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
 	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
-	public static final String KIT_PRICE_BUSINESS = "CAD$ 1,145";
+	public static final String KIT_PRICE_EXPRESS = "CAD$ 1,145";
+	public static final String KIT_PRICE_BIG_BUSINESS = "CAD$ 795";
+	public static final String KIT_PRICE_PERSONAL = "CAD$ 445";
+	public static final String KIT_PRICE_PORTFOLIO = "CAD$ 52";
+
 	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
-	
+	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
+	public static final String REGIMEN_NAME_SOOTHE = "SOOTHE";
+	public static final String REGIMEN_NAME_UNBLEMISH = "UNBLEMISH";
+
 	public static final String FIRST_NAME = "rfTestUser";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
@@ -31,22 +38,22 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	
-	public static final String CONSULTANT_EMAIL_ID_STAG2="con0708@yopmail.com";
-	public static final String PC_EMAIL_ID_STAG2="pcuser02@abc.com";
-	
-	 public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
-	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";
-	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
-	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
-	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_NUMBERS="123456789";
-	 public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHABETS="abcdefghi";
-	
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
+	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
+
+
+	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_8_NUMBERS="123456789";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHABETS="abcdefghi";
+
 	/*
 	 * Consultant User Details
 	 */
-	public static final String CONSULTANT_EMAIL_ID_STG2 = "rfTestUser730240@xyz.com";
-	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "rftestuser596824@xyz.com";
+	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
+	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
 	public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
@@ -60,9 +67,8 @@ public class TestConstants {
 	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
 	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
 
-	// Conslutant Details For Account Info
-
-	// Conslutant Details For Update Account Info
+	public static final String PC_EMAIL_ID_STG2="pcuser02@abc.com";
+	// Consultant Details For Update Account Info
 
 	public static final String CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION="smstone";
 	public static final String CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION="smstone1234";
@@ -157,8 +163,8 @@ public class TestConstants {
 	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
 	public static final String RCUSER_PASSWORD_TST4 = "abcde";
 	public static final String RCUSER_USERNAME_TST4 = "Kasey";
-	
-	
+
+
 
 	/*
 	 * New Shipping Address US
@@ -171,7 +177,7 @@ public class TestConstants {
 	public static final String NEW_ADDRESS_POSTAL_CODE_US = "02025-4001";
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US = "9178873219";
 	public static final String NEW_ADDRESS_SECURITY_NUMBER_US = "123";
-	
+
 	/**
 	 * 
 	 */

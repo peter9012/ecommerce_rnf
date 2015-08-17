@@ -89,6 +89,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.xpath("//div[@id='dropdown-menu']//a[@href='/us/quick-shop/quickShop']")).click();
 		}
 		logger.info("All products link clicked "+"//a[@title='All Products']");
+		driver.waitForPageLoad();
 	}
 
 	public StoreFrontUpdateCartPage clickOnQuickShopImage(){
@@ -105,17 +106,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]")).click();
-		}catch(NoSuchElementException e){
-
-		}
+		//		try{
+		//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
+		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select")).click();
+		//			Thread.sleep(2000);
+		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]")).click();
+		//		}catch(NoSuchElementException e){
+		//
+		//		}
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).click();
 		logger.info("Buy Now button clicked");
+		driver.waitForPageLoad();
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
@@ -155,17 +157,19 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]"));
 		driver.findElement(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]")).click();
 		logger.info("Continue shopping link clicked");
-		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select"));
-			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select/option[2]")).click();
-		}catch(NoSuchElementException e){
-
-		}
+		driver.waitForPageLoad();
+//		try{
+//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select"));
+//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select")).click();
+//			Thread.sleep(2000);
+//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select/option[2]")).click();
+//		}catch(NoSuchElementException e){
+//
+//		}		
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']")).click();
 		logger.info("Buy Now button clicked and another product selected");
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyNumberOfProductsInCart(String numberOfProductsInCart){
@@ -177,6 +181,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
 		driver.findElement(By.xpath("//input[@value='checkout']")).click();
 		logger.info("checkout button clicked");
+		driver.waitForPageLoad();
 	}
 
 	public boolean isLoginOrCreateAccountPageDisplayed(){
@@ -192,11 +197,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//input[@id='first-Name']")).sendKeys(firstName);
 		driver.findElement(By.xpath("//input[@id='last-name']")).sendKeys(lastName);
 		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(emailAddress+"\t");
-		Thread.sleep(5000);
+		driver.waitForLoadingImageToDisappear();
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.findElement(By.xpath("//input[@id='the-password-again']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);		
 		driver.findElement(By.xpath("//input[@id='next-button']")).click();		
-		logger.info("Create New Account button clicked");		
+		logger.info("Create New Account button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void enterNewPCDetails() throws InterruptedException{
@@ -378,5 +385,19 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//input[@id='Terms2']/..")).click();
 		driver.findElement(By.xpath("//input[@id='Terms3']/..")).click();
 	}
+	
+	 public boolean selectNewBillingCardExpirationDateAsExpiredDate()
+	 {
+	  driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
+	  driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+	  driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
+	  driver.findElement(By.xpath("//select[@id='expiryYear']")).click();
+	  driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
+	  driver.findElement(By.xpath("//select[@id='expiryYear']/option[1]")).click();
+	  driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
+	  driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+	  //driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
+	  return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
+	 }
 
 }

@@ -266,10 +266,12 @@ public class DBQueries_RFO {
 					"FROM    Hybris.Orders AS O "+
 					"WHERE   O.OrderID = '%s' ";
 
-	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4292_RFO = 
+	public static String GET_USERNAME_BY_ACCOUNT_ID_RFO = 
 			"SELECT  Username "+
 					"FROM    RFOperations.[Security].[AccountSecurity] "+
 					"WHERE   AccountID ='%s' ";
+	
+	public static String GET_ORDERID_RFO = "select OrderID from Hybris.orders where OrderNumber = '%S'";
 
 	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO =
 			"SELECT  Username "+
@@ -1217,9 +1219,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
 			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
-			Author: Adrian Calvo
-			Date:   2015-08-13 
-			 **********************************************************************************************/
+			**********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
 			"BEGIN TRANSACTION "+

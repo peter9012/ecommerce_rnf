@@ -151,7 +151,20 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
 			logger.info("Element found");
 		} catch (Exception e) {
-			e.getStackTrace();
+			waitForSpinImageToDisappear();
+		}
+		
+	}
+	
+	public void waitForSpinImageToDisappear(){
+		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: none;')]");
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
+			logger.info("waiting for locator " + locator);
+			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			logger.info("Element found");
+		} catch (Exception e) {
+			
 		}
 	}
 
@@ -169,8 +182,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-
-
 
 	public void moveToELement(By locator) {
 		Actions build = new Actions(driver);

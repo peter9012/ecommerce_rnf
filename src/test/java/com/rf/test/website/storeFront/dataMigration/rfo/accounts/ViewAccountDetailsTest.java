@@ -34,12 +34,10 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 
-	private String RFL_DB = null;
 	private String RFO_DB = null;
 	// Hybris Phase 2-4178:View Account Information with active templates
 	@Test
 	public void testAccountDetailsForAccountInfo() throws InterruptedException{
-		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 
 		List<Map<String, Object>> accountNameDetailsList = null;
@@ -59,9 +57,13 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 		String consultantEmailID = null;
-		//	  randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
-		//	  consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "phinney.ashley@gmail.com";
+		String accountID = null;
+
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_TST4);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -130,8 +132,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-	//**************************************************************************************
 	// Hybris Phase 2-4179:Enrolled Consultant, No CRP/Pulse, No Orders, No Downlines, Inctive
 	@Test
 	public void testEnrolledConsultantNoCRPNoPulseNoOrdersINACTIVE_4179() throws InterruptedException{
@@ -159,7 +159,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();
 	}
-
 
 	// Hybris Phase 2-4182:Inactive Account should have no autoship template	 
 	@Test
@@ -341,7 +340,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFO_4196,RFL_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFO_4196,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -449,31 +448,5 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();
 	}
-
-	// Hybris Phase 2-3009 :: Version : 1 :: Reset the password from the storefront and check login with new password 
-	@Test(enabled=false)
-	public void testResetPasswordAndLoginFromNewPassword() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-		String consultantEmail = null;
-		String newPassword="test12345";
-		//------------------------------- Random  User part is commented for now-----------------------------------------------	
-		/*randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
-			consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "Username");
-		 */
-		//---------------------------------------------------------------------------------------------------------------------
-		consultantEmail = TestConstants.CONSULTANT_EMAIL_ID_TST4;//hard coded user
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmail, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
-		storeFrontAccountInfoPage.enterOldPassword(TestConstants.CONSULTANT_PASSWORD_TST4);
-		storeFrontAccountInfoPage.enterNewPassword(newPassword);
-		storeFrontAccountInfoPage.enterConfimedPassword(newPassword);
-		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-	}
-
-
+	
 }

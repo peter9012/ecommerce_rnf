@@ -104,16 +104,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 
-
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");

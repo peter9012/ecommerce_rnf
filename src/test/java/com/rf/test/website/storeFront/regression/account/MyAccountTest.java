@@ -315,5 +315,40 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
 		s_assert.assertAll();
 	}
+	
+	// Hybris Project-1368:Enroll as consultant using Expired Date card
+	 @Test(enabled=false)
+	 public void testEnrollAsConsultantUsingExpiredDataCard() throws InterruptedException	 {
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  storeFrontHomePage.clickOnOurBusinessLink();
+	  storeFrontHomePage.clickOnOurEnrollNowLink(); 
+	  storeFrontHomePage.searchCID(TestConstants.CIDCA);
+	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	  storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+	  storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+	  storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+	  storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
+	  storeFrontHomePage.enterCity(TestConstants.CITY);
+	  storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
+	  storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
+	  storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+	  String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+	  storeFrontHomePage.enterEmailAddress(consultantEmailID);
+	  storeFrontHomePage.clickEnrollmentNextBtn();
+	  storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+	  //Enter the expired date at billing section and validate the error message
+	  storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	  s_assert.assertTrue(!storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate(), "User should not be able to select an expired date in Expiration date Drop down list");
+	  storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontHomePage.selectNewBillingCardAddress();
+	  //  storeFrontHomePage.clickOnSaveBillingProfile();
+	  s_assert.assertAll(); 
+	 }
 }
 

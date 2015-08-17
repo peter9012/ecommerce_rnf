@@ -31,8 +31,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
-
-	private String RFL_DB = null;
 	private String RFO_DB = null;
 
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
@@ -46,12 +44,12 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String shippingAddressName=null;
 		String consultantEmailID = null;
+		String accountID = null;
 
-		//------------------------------- Hard coded Users part is commented for now-----------------------------------------------	
-		//consultantEmailID = "sharonvdk@msn.com";
-		//---------------------------------------------------------------------------------------------------------------------
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -90,13 +88,13 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");*/
-		//---------------------------------------------------------------------------------------------------------------------		
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4;//hard coded user
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -131,7 +129,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
@@ -156,13 +153,12 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
+		String accountID = null;
 
-		//------------------------------- Random Users part is commented for now-----------------------------------------------	
-		/*	randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");*/
-		//---------------------------------------------------------------------------------------------------------------------		
-
-		consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_TST4;//hard coded user		
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");

@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.bizConsultantEnrollment;
+package com.rf.test.website.storeFront.regression.standardEnrollment;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,15 +9,15 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class PersonalResultsKitTest extends RFWebsiteBaseTest{
+public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
-			.getLogger(PersonalResultsKitTest.class.getName());
+			.getLogger(RFExpressBusinessKitTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
 
-	//Hybris Project-77 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
+	// Hybris Project-69 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN 
 	@Test
-	public void testStandardEnrollmentPerosnalResultsKitRedefineRegimen_77() throws InterruptedException{
+	public void testStandardEnrollmentBusinessKitRedefineRegimen_69() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -25,7 +25,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL, TestConstants.REGIMEN_NAME_REDEFINE);		
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_REDEFINE);		
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -68,9 +68,9 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-78 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
+	//Hybris Project-70 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
 	@Test
-	public void testStandardEnrollmentPersonalRegimenKitUnblemishRegimen_78() throws InterruptedException{
+	public void testStandardEnrollmentBusinessKitUnblemishRegimen_70() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -78,7 +78,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL, TestConstants.REGIMEN_NAME_UNBLEMISH);		
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_UNBLEMISH);		
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -121,9 +121,9 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-79 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
+	//Hybris Project-71 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN 
 	@Test
-	public void testStandardEnrollmentPersonalResultsKitReverseRegimen_79() throws InterruptedException{
+	public void testStandardEnrollmentBusinessKitReverseRegimen_71() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -131,7 +131,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL, TestConstants.REGIMEN_NAME_REVERSE);		
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_REVERSE);		
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -174,9 +174,9 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-80 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
+	//Hybris Project-72 :: Version : 1 :: Standard Enrollment 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
-	public void testStandardEnrollmentPersonalKitSootheRegimen_80() throws InterruptedException{
+	public void testStandardEnrollmentBusinessKitSootheRegimen_72() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -184,7 +184,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL, TestConstants.REGIMEN_NAME_SOOTHE);		
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_SOOTHE);		
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);

@@ -56,8 +56,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	}
 	public void clickCancelTerminationButton() throws InterruptedException{
 		driver.waitForElementPresent(POPUP_CANCEL_TERMINATION_BUTTON);
-		driver.findElement(POPUP_CANCEL_TERMINATION_BUTTON).click();
-		Thread.sleep(3000);
+		driver.findElement(POPUP_CANCEL_TERMINATION_BUTTON).click();		
 	}
 
 	public void selectTerminationReason() throws InterruptedException{
@@ -75,7 +74,6 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 
 	public void selectCheckBoxForVoluntarilyTerminate() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='volunteerTermination']"));
-		Thread.sleep(3000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));
 		actions.click(driver.findElement(By.xpath("//div[@class='repaired-checkbox']"))).build().perform();

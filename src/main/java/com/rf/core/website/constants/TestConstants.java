@@ -20,6 +20,9 @@ public class TestConstants {
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
 	public static final String REGIMEN_NAME_SOOTHE = "SOOTHE";
 	public static final String REGIMEN_NAME_UNBLEMISH = "UNBLEMISH";
+	public static final String PASSWORD_BELOW_6CHARS = "test1";
+	public static final String SPOUSE_FIRST_NAME = "Mary";
+	public static final String SPOUSE_LAST_NAME = "Stone";
 
 	public static final String FIRST_NAME = "rfTestUser";
 	public static final String LAST_NAME = FIRST_NAME;		

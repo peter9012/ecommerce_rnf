@@ -51,7 +51,6 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstNameDB) throws InterruptedException{
-		Thread.sleep(2000);
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input"));
 		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
 	}
@@ -59,7 +58,6 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	public boolean isDefaultBillingAddressSelected(String firstName) throws InterruptedException{
 		try{
 			driver.waitForElementPresent(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input"));
-			Thread.sleep(2000);
 			return driver.findElement(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input")).isSelected();
 
 		}catch(NoSuchElementException e){
@@ -124,7 +122,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC);
 		driver.findElement(ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC).click();
 		logger.info("New billing card address drop down clicked");
-		Thread.sleep(3000);
+		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC);
 		driver.findElement(ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC).click();
 		logger.info("New billing card address selected");
 	}
@@ -146,7 +144,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
 		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input")).click();
 		logger.info("default billing profile selected has the name "+firstName);
-		Thread.sleep(60000);  // action taking too long,will remove later
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{

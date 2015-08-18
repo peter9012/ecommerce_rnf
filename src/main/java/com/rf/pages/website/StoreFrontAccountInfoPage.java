@@ -59,7 +59,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.findElement(TERMINATE_MY_ACCOUNT).click();
-		Thread.sleep(3000);
 		return new StoreFrontAccountTerminationPage(driver);
 
 	}
@@ -95,7 +94,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		catch(NoSuchElementException e){
 
 		}
-		Thread.sleep(5000);
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
@@ -357,10 +355,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontAccountInfoPage clickOnCancelMyCRP() throws InterruptedException{
-		Thread.sleep(5000);
 		driver.waitForElementPresent(CANCEL_MY_CRP_LOC);
 		driver.click(CANCEL_MY_CRP_LOC);
-		Thread.sleep(3000);
 		driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
 		driver.click(CANCEL_MY_CRP_NOW_LOC);
 		return new StoreFrontAccountInfoPage(driver);
@@ -377,7 +373,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEnrollInCRP() throws InterruptedException{
-		Thread.sleep(5000);
 		driver.waitForElementToBeClickable(ENROLL_IN_CRP_LOC, 5000);
 		driver.waitForElementPresent(ENROLL_IN_CRP_LOC);
 		driver.click(ENROLL_IN_CRP_LOC);
@@ -394,7 +389,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyCurrentCRPStatus() throws InterruptedException{
-		Thread.sleep(5000);
 		logger.info("Asserting Current CRP Status");
 		driver.waitForElementPresent(By.xpath("//p[@id='crp-status']/span[1]"));
 		if(driver.findElement(By.xpath("//p[@id='crp-status']/span[1]")).getText().equalsIgnoreCase("Enrolled")){
@@ -405,8 +399,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public void enterUserName(String username) throws InterruptedException	{
 		driver.findElement(By.xpath("//input[@id='username-account']")).clear();
-		driver.findElement(By.xpath("//input[@id='username-account']")).sendKeys(username);
-		Thread.sleep(2000);
+		driver.findElement(By.xpath("//input[@id='username-account']")).sendKeys(username);		
 	}
 
 	

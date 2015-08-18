@@ -25,7 +25,6 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyRCUserPage(String username) throws InterruptedException{
-		Thread.sleep(2000);
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);
 
@@ -58,7 +57,6 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
-		Thread.sleep(3000);
 		logger.info("Account info link from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}

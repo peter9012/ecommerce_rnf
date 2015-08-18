@@ -270,7 +270,7 @@ public class DBQueries_RFO {
 			"SELECT  Username "+
 					"FROM    RFOperations.[Security].[AccountSecurity] "+
 					"WHERE   AccountID ='%s' ";
-	
+
 	public static String GET_ORDERID_RFO = "select OrderID from Hybris.orders where OrderNumber = '%S'";
 
 	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO =
@@ -591,6 +591,180 @@ public class DBQueries_RFO {
 	public static String GET_ORDER_STATUS_QUERY = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ORDER_GRAND_TOTAL_QUERY = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_DATE_QUERY = "select CompletionDate from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc)";
+
+
+	public static String GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_4294_RFO = 
+			"USE RFOperations "+
+
+				"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED "+
+
+				"BEGIN TRANSACTION "+
+				"DECLARE @Orderid BIGINT "+
+
+				"DECLARE @Accountid BIGINT "+
+
+				"SELECT TOP 1 "+
+				"@Orderid = O.OrderID , "+
+				"@Accountid = AB.AccountID "+
+				"FROM    Hybris.Orders AS O "+
+				"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+				"WHERE   AB.CountryID = 236 "+
+				"AND O.OrderTypeID = 10 "+/*Consultant Auto-ship*/
+				"AND O.OrderStatusID = 1 "+ /*Failed*/
+				/*Active Accounts*/
+				"AND NOT EXISTS ( SELECT 1 "+
+				"FROM   RFO_Accounts.AccountRF AS ar "+
+				"WHERE  ar.Active = 0 "+
+				"AND ar.HardTerminationDate IS NOT NULL "+
+				"AND ar.AccountID = AB.AccountID ) "+
+				"ORDER BY NEWID() "+
+				"SELECT  Username "+
+				"FROM    RFOperations.[Security].[AccountSecurity] "+
+				"WHERE   AccountID = @Accountid "+
+				"SELECT  * "+
+				"FROM    Hybris.Orders AS O "+
+				"WHERE   O.OrderID = @Orderid "+
+				"SELECT  OI.* , "+
+				"PB.* "+
+				"FROM    Hybris.Orders AS O "+
+				"JOIN    Hybris.OrderItem AS OI ON OI.OrderId = O.OrderID "+
+				"JOIN    Hybris.ProductBase AS PB ON PB.productID = OI.ProductID "+
+				"WHERE   O.OrderID = @Orderid "+
+
+								"SELECT  * "+
+								"FROM    Hybris.OrderShipment AS OS "+
+								"WHERE   OS.OrderID = @Orderid "+
+
+								"SELECT  * "+
+								"FROM    Hybris.OrderShipmentPackageItem AS OSPI "+
+								"WHERE   OSPI.OrderID = @Orderid ";
+
+	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4294_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%S' ";
+
+	public static String GET_SHIPPING_HANDLING_SHIPPINGMETHODID_DETAILS_FOR_4294_RFO =	
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";	
+
+
+
+	public static String GET_PC_USER_FOR_FAILED_AUTOSHIP_ORDER_RFO = 
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED "+
+
+	"BEGIN TRANSACTION "+
+
+	"DECLARE @Orderid BIGINT "+
+
+	"DECLARE @Accountid BIGINT "+
+
+	"SELECT TOP 1 "+
+	"@Orderid = O.OrderID , "+
+	"@Accountid = AB.AccountID "+
+	"FROM    Hybris.Orders AS O "+
+	"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+	"WHERE   AB.CountryID = 236 "+
+	"AND O.OrderTypeID = 9 "+/*PC Auto-ship*/
+	"AND O.OrderStatusID = 1 "+ /*Failed*/
+	/*Active Accounts*/
+	"AND NOT EXISTS ( SELECT 1 "+
+	"FROM   RFO_Accounts.AccountRF AS ar "+
+	"WHERE  ar.Active = 0 "+
+	"AND ar.HardTerminationDate IS NOT NULL "+
+	"AND ar.AccountID = AB.AccountID ) "+
+	"ORDER BY NEWID() "+
+	"SELECT  Username "+
+	"FROM    RFOperations.[Security].[AccountSecurity] "+
+	"WHERE   AccountID = @Accountid "+
+
+					"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = @Orderid "+
+					"SELECT  OI.* , "+
+					"PB.* "+
+					"FROM    Hybris.Orders AS O "+
+					"JOIN    Hybris.OrderItem AS OI ON OI.OrderId = O.OrderID "+
+					"JOIN    Hybris.ProductBase AS PB ON PB.productID = OI.ProductID "+
+					"WHERE   O.OrderID = @Orderid "+
+
+					"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = @Orderid "+
+					"SELECT  * "+
+					"FROM    Hybris.OrderShipmentPackageItem AS OSPI "+
+					"WHERE   OSPI.OrderID = @Orderid ";
+
+	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4295_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' ";
+
+	public static String GET_SHIPPING_HANDLING_SHIPPINGMETHODID_DETAILS_FOR_4295_RFO =	
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";		
+
+
+	public static String GET_ACTIVE_RC_USER_HAVING_FAILED_ORDERS_RFO = 
+
+			"USE RFOperations "+
+
+				"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED "+
+
+				"BEGIN TRANSACTION "+
+
+				"DECLARE @Orderid BIGINT "+
+
+				"DECLARE @Accountid BIGINT "+
+
+				"SELECT TOP 1 "+
+				"@Orderid = O.OrderID , "+
+				"@Accountid = AB.AccountID "+
+				"FROM    Hybris.Orders AS O "+
+				"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
+				"WHERE   AB.CountryID = 236 "+
+				"AND O.OrderTypeID = 1 "+/*Retail*/
+				"AND O.OrderStatusID = 1 "+ /*Failed*/
+				/*Active Accounts*/
+				"AND NOT EXISTS ( SELECT 1 "+
+				"FROM   RFO_Accounts.AccountRF AS ar "+
+				"WHERE  ar.Active = 0 "+
+				"AND ar.HardTerminationDate IS NOT NULL "+
+				"AND ar.AccountID = AB.AccountID ) "+
+				"ORDER BY NEWID() "+
+				"SELECT  Username "+
+				"FROM    RFOperations.[Security].[AccountSecurity] "+
+				"WHERE   AccountID = @Accountid "+
+				"SELECT  * "+
+				"FROM    Hybris.Orders AS O "+
+				"WHERE   O.OrderID = @Orderid "+
+
+								"SELECT  OI.* , "+
+								"PB.* "+
+								"FROM    Hybris.Orders AS O "+
+								"JOIN    Hybris.OrderItem AS OI ON OI.OrderId = O.OrderID "+
+								"JOIN    Hybris.ProductBase AS PB ON PB.productID = OI.ProductID "+
+								"WHERE   O.OrderID = @Orderid "+
+								"SELECT  * "+
+								"FROM    Hybris.OrderShipment AS OS "+
+								"WHERE   OS.OrderID = @Orderid "+
+
+								"SELECT  * "+
+								"FROM    Hybris.OrderShipmentPackageItem AS OSPI "+
+								"WHERE   OSPI.OrderID = @Orderid ";
+
+	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4296_RFO =
+			"SELECT  * "+
+					"FROM    Hybris.Orders AS O "+
+					"WHERE   O.OrderID = '%s' ";
+
+	public static String GET_SHIPPING_HANDLING_SHIPPINGMETHODID_DETAILS_FOR_4296_RFO =	
+			"SELECT  * "+
+					"FROM    Hybris.OrderShipment AS OS "+
+					"WHERE   OS.OrderID = '%s' ";							
 
 	public static String GET_ORDERID_FOR_ALL_RFO = "select top 1 * from hybris.orders where OrderNumber='%S'";
 
@@ -1219,7 +1393,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
 			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
-			**********************************************************************************************/
+			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
 			"BEGIN TRANSACTION "+

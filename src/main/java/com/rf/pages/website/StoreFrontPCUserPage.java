@@ -29,14 +29,12 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{	
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		Thread.sleep(4000);
 		driver.findElement(WELCOME_USER_DD_LOC).click();	
 		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		Thread.sleep(3000);
 		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
 		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
 		return new StoreFrontOrdersPage(driver);
@@ -45,7 +43,6 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
-		Thread.sleep(3000);
 		logger.info("Account info linked from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}

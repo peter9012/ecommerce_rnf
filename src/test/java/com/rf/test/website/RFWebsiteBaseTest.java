@@ -42,6 +42,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
 		driver.loadApplication();
+		logger.info("Application loaded");
 		driver.setDBConnectionString();		
 	}
 
@@ -60,20 +61,13 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		new HtmlLogger().createHtmlLogFile();
-		System.out.println("tearDown Method");
+		new HtmlLogger().createHtmlLogFile();		
 		driver.quit();
 	}
 
 	public void logout(){
-		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']"));
 		driver.findElement(By.xpath("//li[@id='account-info-button']")).click();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.findElement(By.linkText("Log out")).click();
 		logger.info("Logout");		
 	}

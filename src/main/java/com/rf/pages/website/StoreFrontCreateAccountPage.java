@@ -35,8 +35,7 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
-		driver.findElement(By.id("email-account")).sendKeys("\t");
-		Thread.sleep(3000);
+		driver.findElement(By.id("email-account")).sendKeys("\t");		
 		try{
 			driver.findElement(By.xpath("//div[text()='Please fix this field.']"));
 			return true;
@@ -131,7 +130,7 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 
 	public StoreFrontConsultantEnrollmentConfirmationPage clickOnConfirmAutomaticPayment() throws InterruptedException{
 		//driver.waitForElementToBeClickable(By.cssSelector("input[id='enroll']"), 10);
-		Thread.sleep(2000);
+		driver.waitForElementPresent(By.cssSelector("input[id='enroll']"));
 		driver.findElement(By.cssSelector("input[id='enroll']")).click();
 		return new StoreFrontConsultantEnrollmentConfirmationPage(driver);
 

@@ -26,15 +26,13 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	
-	public boolean verifyConsultantPage() throws InterruptedException{
-		driver.waitForPageLoad();
+	public boolean verifyConsultantPage() throws InterruptedException{		
 		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a"));
 		return driver.findElement(By.xpath("//li[@id='account-info-button']/a")).getText().contains("Welcome");		
 	}
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.waitForElementToBeClickable(WELCOME_USER_DD_LOC, 15);
 		driver.findElement(WELCOME_USER_DD_LOC).click();
 		logger.info("clicked on welcome drop down");
 	}
@@ -45,8 +43,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
-		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();
-		Thread.sleep(3000);
+		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();		
 		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
 	}
@@ -62,19 +59,19 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
 		driver.findElement(WELCOME_DD_BILLING_INFO_LINK_LOC).click();
 		logger.info("User has clicked on billing link from welcome drop down");
+		driver.waitForPageLoad();
 		return new StoreFrontBillingInfoPage(driver);
 	}
 
 	public String getCurrentURL() throws InterruptedException{
-		Thread.sleep(5000);
+		driver.waitForPageLoad();
 		logger.info("Current url is "+driver.getCurrentUrl());
 		return driver.getCurrentUrl();
 	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
-		Thread.sleep(3000);
+		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();		
 		logger.info("User has clicked on account link from welcome drop down");
 		return new StoreFrontAccountInfoPage(driver);
 	}
@@ -83,6 +80,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(NEXT_CRP_IMG_LOC);
 		driver.click(NEXT_CRP_IMG_LOC);
 		logger.info("Next CRP link clicked");
+		driver.waitForPageLoad();
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 

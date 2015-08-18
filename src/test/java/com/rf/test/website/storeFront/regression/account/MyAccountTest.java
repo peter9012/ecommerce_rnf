@@ -315,40 +315,157 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
 		s_assert.assertAll();
 	}
-	
+
 	// Hybris Project-1368:Enroll as consultant using Expired Date card
-	 @Test(enabled=false)
-	 public void testEnrollAsConsultantUsingExpiredDataCard() throws InterruptedException	 {
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontHomePage.clickOnOurBusinessLink();
-	  storeFrontHomePage.clickOnOurEnrollNowLink(); 
-	  storeFrontHomePage.searchCID(TestConstants.CIDCA);
-	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	  storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-	  storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-	  storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-	  storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-	  storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-	  storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-	  storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
-	  storeFrontHomePage.enterCity(TestConstants.CITY);
-	  storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
-	  storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
-	  storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
-	  String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
-	  storeFrontHomePage.enterEmailAddress(consultantEmailID);
-	  storeFrontHomePage.clickEnrollmentNextBtn();
-	  storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
-	  //Enter the expired date at billing section and validate the error message
-	  storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	  s_assert.assertTrue(!storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate(), "User should not be able to select an expired date in Expiration date Drop down list");
-	  storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontHomePage.selectNewBillingCardAddress();
-	  //  storeFrontHomePage.clickOnSaveBillingProfile();
-	  s_assert.assertAll(); 
-	 }
+	@Test(enabled=false)
+	public void testEnrollAsConsultantUsingExpiredDataCard() throws InterruptedException	 {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink(); 
+		storeFrontHomePage.searchCID(TestConstants.CIDCA);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
+		storeFrontHomePage.enterCity(TestConstants.CITY);
+		storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
+		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
+		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		//Enter the expired date at billing section and validate the error message
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		s_assert.assertTrue(!storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate(), "User should not be able to select an expired date in Expiration date Drop down list");
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		//  storeFrontHomePage.clickOnSaveBillingProfile();
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-1274:9. Express enrollment -fields validation
+	@Test(enabled=false)
+	public void testExpressEnrollmentFieldsValidation() throws InterruptedException
+	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink(); 
+		storeFrontHomePage.searchCID(TestConstants.CIDCA);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		//validate with password(<6 chars)
+		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+		storeFrontHomePage.enterPassword(TestConstants.PASSWORD_BELOW_6CHARS);
+		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
+		s_assert.assertTrue(storeFrontHomePage.validatePasswordFieldMessage(), "Please enter 6 characters or more, with at least 1 number and 1 character message should be displayed");
+		storeFrontHomePage.clearPasswordField();
+		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterCity(TestConstants.CITY);
+		storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
+		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
+		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		//validate that the user is able to see the section for 'Recurring monthly charges' with the ability to enter their PWS prefix
+		s_assert.assertTrue(storeFrontHomePage.recurringMonthlyChargesSection(), "Recurring Monthly Charges Section should be displayed ");
+		s_assert.assertTrue(storeFrontHomePage.pulseSubscriptionTextbox(), "user can enter their PWS prefix");
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickOnAllowMySpouseOrDomesticPartnerCheckbox();
+		storeFrontHomePage.enterSpouseFirstName(TestConstants.SPOUSE_FIRST_NAME);
+		storeFrontHomePage.enterSpouseLastName(TestConstants.SPOUSE_LAST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		//validate the error message 
+		s_assert.assertTrue(storeFrontHomePage.validateErrorMessageWithoutSelectingAllCheckboxes(), "A proper error message should be displayed when continuining without selecting all the checkboxes");
+		storeFrontHomePage.closePopUp();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll(); 
+	}
+
+	// Hybris Project-82- Version : 1 :: Allow my Spouse through Enrollment 
+	@Test(enabled=true)
+	public void testAllowMySpouseThroughEnrollment() throws InterruptedException
+	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink(); 
+		storeFrontHomePage.searchCID(TestConstants.CIDCA);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
+		storeFrontHomePage.enterCity(TestConstants.CITY);
+		storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
+		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
+		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickOnAllowMySpouseOrDomesticPartnerCheckbox();
+		storeFrontHomePage.enterSpouseFirstName(TestConstants.SPOUSE_FIRST_NAME);
+		storeFrontHomePage.enterSpouseLastName(TestConstants.SPOUSE_LAST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.acceptTheProvideAccessToSpousePopup();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		//validate the error message 
+		s_assert.assertTrue(storeFrontHomePage.validateErrorMessageWithoutSelectingAllCheckboxes(), "A proper error message should be displayed when continuining without selecting all the checkboxes");
+		storeFrontHomePage.closePopUp();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll(); 
+	}
+
 }
 

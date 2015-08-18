@@ -36,12 +36,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstNameDB) throws InterruptedException{
-		Thread.sleep(2000);
 		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
 	}
 
 	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
-		Thread.sleep(2000);
 		driver.waitForElementPresent(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]"));
 		return driver.findElement(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]")).getText().contains(name);
 	}	
@@ -107,7 +105,6 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectFirstCardNumber() throws InterruptedException{
-		Thread.sleep(2000);
 		try{
 			driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']"));
 			driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']")).click();
@@ -117,7 +114,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			action.moveToElement(driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']"))).click().build().perform();
 
 		}
-		Thread.sleep(2000);
+		driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']/option[2]"));
 		driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']/option[2]")).click();
 		logger.info("First Card number selected from drop down");
 	}
@@ -134,7 +131,6 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public void clickOnSaveShippingProfile() throws InterruptedException{
 		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
-		Thread.sleep(5000);
 		logger.info("New Shipping prifile save button clicked");
 		try{
 			driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));

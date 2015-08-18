@@ -42,7 +42,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 30;
+	private static int DEFAULT_TIMEOUT = 50;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -71,11 +71,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);
 		}
-
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
+		logger.info("Window is maximized");
 		// for clearing cookies
 		driver.manage().deleteAllCookies();
+		logger.info("All cookies deleted");
 		//	driver.get(propertyFile.getProperty("baseUrl"));
 	}
 
@@ -92,6 +93,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		dbDomain = propertyFile.getProperty("dbDomain");		 
 		authentication = propertyFile.getProperty("authentication");
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
+		logger.info("DB connections are set");
 	}
 
 	public String getURL() {
@@ -121,20 +123,39 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 
 	public void waitForElementPresent(By locator) {
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 10);
-			logger.info("waiting for locator " + locator);
-			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-			logger.info("Element found");
-		} catch (Exception e) {
-			e.getStackTrace();
-		}	
+		int timeout = 30;
+		turnOffImplicitWaits();
+		for(int i=1;i<=timeout;i++){			
+			if(driver.findElements(locator).size()==0){
+				pauseExecutionFor(1000);
+				continue;
+			}else{
+				turnOnImplicitWaits();
+				break;
+			}			
+			
+		}
 		waitForElementTobeEnabled(locator);
 	}
 	
+	public void quickWaitForElementPresent(By locator){
+		int timeout = 10;
+		turnOffImplicitWaits();
+		for(int i=1;i<=timeout;i++){			
+			if(driver.findElements(locator).size()==0){
+				pauseExecutionFor(1000);
+				continue;
+			}else{
+				turnOnImplicitWaits();
+				break;
+			}			
+			
+		}
+	}
+		
 	public void waitForElementNotPresent(By locator) {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
+			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
 			logger.info("waiting for locator " + locator);
 			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
 			logger.info("Element found");
@@ -144,26 +165,32 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 	
 	public void waitForLoadingImageToDisappear(){
+		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
-			logger.info("waiting for locator " + locator);
-			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
-			logger.info("Element found");
-		} catch (Exception e) {
-			waitForSpinImageToDisappear();
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+			if(driver.findElements(locator).size()==1){
+				pauseExecutionFor(1000);
+				continue;
+			}else{
+				turnOnImplicitWaits();
+				break;
+			}			
+			
 		}
 		
 	}
 	
 	public void waitForSpinImageToDisappear(){
+		turnOffImplicitWaits();
 		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: none;')]");
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 40);
-			logger.info("waiting for locator " + locator);
-			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-			logger.info("Element found");
-		} catch (Exception e) {
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
+			if(driver.findElements(locator).size()==1){
+				pauseExecutionFor(1000);
+				continue;
+			}else{
+				turnOnImplicitWaits();
+				break;
+			}			
 			
 		}
 	}
@@ -487,7 +514,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void turnOnImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 	}
 
 	public void clickByJS(WebDriver driver, WebElement element) {

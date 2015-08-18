@@ -55,7 +55,6 @@ public class StoreFrontReportOrderComplaintPage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(REPORT_PAGE_DROPDOWN_SELECT_LOC);
 		driver.findElement(REPORT_PAGE_DROPDOWN_SELECT_LOC).click();
 		logger.info("Report Page dropdown clicked");
-		Thread.sleep(2000);
 		driver.waitForElementPresent(REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC);
 		driver.click(REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC);
 		logger.info("Report Page dropdown option selected");

@@ -82,13 +82,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnAllProductsLink(){
 		try{
-			driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
+			//driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
 			driver.findElement(By.xpath("//a[@title='All Products']")).click();
 		}catch(NoSuchElementException e){
 			logger.info("All products link was not present");
 			driver.findElement(By.xpath("//div[@id='dropdown-menu']//a[@href='/us/quick-shop/quickShop']")).click();
 		}
-		logger.info("All products link clicked "+"//a[@title='All Products']");
+		logger.info("All products link clicked "+"//a[@title='All Products']");	
 		driver.waitForPageLoad();
 	}
 
@@ -106,14 +106,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		//		try{
-		//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select")).click();
-		//			Thread.sleep(2000);
-		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]")).click();
-		//		}catch(NoSuchElementException e){
-		//
-		//		}
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).click();
 		logger.info("Buy Now button clicked");
@@ -124,7 +116,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		try{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
 			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select")).click();
-			Thread.sleep(2000);
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
 			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]")).click();
 		}catch(NoSuchElementException e){
 
@@ -138,8 +130,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
 		driver.findElement(By.xpath("//input[@id='quantity0']")).clear();
 		driver.findElement(By.xpath("//input[@id='quantity0']")).sendKeys(qty);
-		driver.findElement(By.xpath("//a[@class='updateLink']")).click();
-		Thread.sleep(5000);
+		driver.findElement(By.xpath("//a[@class='updateLink']")).click();		
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
@@ -158,14 +149,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]")).click();
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
-//		try{
-//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select"));
-//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select")).click();
-//			Thread.sleep(2000);
-//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select/option[2]")).click();
-//		}catch(NoSuchElementException e){
-//
-//		}		
+		//		try{
+		//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select"));
+		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select")).click();
+		//			Thread.sleep(2000);
+		//			driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//select/option[2]")).click();
+		//		}catch(NoSuchElementException e){
+		//
+		//		}		
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
 		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']")).click();
 		logger.info("Buy Now button clicked and another product selected");
@@ -385,19 +376,61 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.xpath("//input[@id='Terms2']/..")).click();
 		driver.findElement(By.xpath("//input[@id='Terms3']/..")).click();
 	}
+
+	public boolean selectNewBillingCardExpirationDateAsExpiredDate()	 {
+		driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+		driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
+		driver.findElement(By.xpath("//select[@id='expiryYear']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
+		driver.findElement(By.xpath("//select[@id='expiryYear']/option[1]")).click();
+		driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+		//driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
+		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
+	}
+
 	
-	 public boolean selectNewBillingCardExpirationDateAsExpiredDate()
-	 {
-	  driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
-	  driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-	  driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
-	  driver.findElement(By.xpath("//select[@id='expiryYear']")).click();
-	  driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
-	  driver.findElement(By.xpath("//select[@id='expiryYear']/option[1]")).click();
-	  driver.findElement(By.xpath("//select[@id='expiryMonth']")).click();
-	  driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-	  //driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).click();
-	  return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
-	 }
+	public boolean validatePasswordFieldMessage(){
+		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter 6')]")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public void clearPasswordField(){
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).clear();
+	}
+
+	public boolean recurringMonthlyChargesSection() {
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Recurring Monthly Charges')]"));
+		return driver.findElement(By.xpath("//h3[contains(text(),'Recurring Monthly Charges')]")).isDisplayed();
+	}
+
+	public boolean pulseSubscriptionTextbox() {
+		driver.waitForElementPresent(By.xpath("//input[@id='webSitePrefix']"));
+		return driver.findElement(By.xpath("//input[@id='webSitePrefix']")).isEnabled();
+	}
+
+	public void clickOnAllowMySpouseOrDomesticPartnerCheckbox() {
+		//driver.waitForElementToBeVisible(By.xpath("//input[@id='spouse-check']"), 15);
+		boolean status=driver.findElement(By.xpath("//input[@id='spouse-check']/..")).isSelected();
+		if(status==false){
+			driver.findElement(By.xpath("//input[@id='spouse-check']/..")).click();
+		}
+	}
+
+	public void enterSpouseFirstName(String firstName){
+		driver.waitForElementPresent(By.id("spouse-first"));
+		driver.findElement(By.id("spouse-first")).sendKeys(firstName);
+		logger.info("Spouse first name entered as "+firstName);
+	}
+
+	public void enterSpouseLastName(String firstName){
+		driver.waitForElementPresent(By.id("spouse-last"));
+		driver.findElement(By.id("spouse-last")).sendKeys(firstName);
+		logger.info("Spouse last name entered as "+firstName);
+	}
 
 }

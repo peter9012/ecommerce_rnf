@@ -140,7 +140,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyPresenceOfOrderDateText() throws InterruptedException{
-		Thread.sleep(3000);
 		boolean isScheduleDateTextPresent = false;
 		driver.waitForElementPresent(SCHEDULE_DATE_TEXT_LOC);
 		String scheduleDateText = driver.findElement(SCHEDULE_DATE_TEXT_LOC).getText();
@@ -275,11 +274,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyForSubmittedAdhocOrders() throws InterruptedException {
-		Thread.sleep(5000);
 		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
 		int sizeOfOrders = driver.findElements(By.xpath("//table[@id='history-orders-table']//tr")).size();
 		for(int i=1; i<=sizeOfOrders; i++){
-			Thread.sleep(5000);
 			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]"));
 			if(driver.findElement(By.xpath("//table[@id='history-orders-table']//tr["+i+"]/td[4]")).getText().contains("SUBMITTED")){
 				return true;	     
@@ -491,7 +488,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		 }
 	
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {
-		driver.pauseExecutionFor(5000);
 		boolean isNextLinkPresent =  false;
 		do{
 			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
@@ -520,7 +516,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForPC() throws InterruptedException {
-		driver.pauseExecutionFor(5000);
 		boolean isNextLinkPresent =  false;
 		do{
 			driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']//tr"));
@@ -577,8 +572,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnFirstAdhocOrder() throws InterruptedException {
-		driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a")).click();
-		Thread.sleep(2000);
+		driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a")).click();		
 	}
 
 	public String orderDetails_getTotalSV()	{

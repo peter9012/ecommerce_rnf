@@ -24,6 +24,28 @@ public class DBQueries_RFO {
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
+	public static String GET_AUTOSHIP_ID_FOR_RFO = "SELECT * "+
+			"FROM Hybris.Autoship AS A "+
+			"WHERE A.AutoshipNumber='%s'";
+
+	public static String GET_SHIPPING_ADDRESS_FOR_AUTOSHIP_TEMPLATE_RFO = "SELECT  * "+
+			"FROM    Hybris.AutoshipShippingAddress AS ASA "+
+			"WHERE   ASA.AutoShipID = '%s'";
+
+	public static String GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO = "SELECT  SM.Name AS ShippingMethod , "+
+			"ASH.* "+
+			"FROM    Hybris.AutoshipShipment AS ASH "+
+			"JOIN    RFO_Reference.ShippingMethod AS SM ON SM.ShippingMethodID = ASH.ShippingMethodID "+
+			"WHERE   ASH.AutoshipID = '%s'";
+
+	public static String GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO = "SELECT  AST.Name AS AutoShipType , "+
+			"AST2.Name AS AutoshipStatus , "+
+			"A.* "+
+			"FROM    Hybris.Autoship AS A "+
+			"JOIN    RFO_Reference.AutoShipType AS AST ON AST.AutoShipTypeID = A.AutoshipTypeID "+
+			"JOIN    RFO_Reference.AutoshipStatus AS AST2 ON AST2.AutoshipStatusId = A.AutoshipStatusID "+
+			"WHERE   A.AutoshipID = '%s'";
+
 	public static String GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
 			Query on RFO having active (i.e statusId =’1’ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.

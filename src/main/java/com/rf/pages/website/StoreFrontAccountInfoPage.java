@@ -296,7 +296,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ACCOUNT_AUTOSHIP_STATUS_LOC);
 		driver.click(ACCOUNT_AUTOSHIP_STATUS_LOC);
 		logger.info("Autoship status clicked "+ACCOUNT_AUTOSHIP_STATUS_LOC);
+		driver.pauseExecutionFor(3000);
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontOrdersAutoshipStatusPage(driver);
+		
 	}
 
 	public StoreFrontAccountInfoPage enterMainPhoneNumber(String mainPhoneNumber){
@@ -313,6 +316,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public void clickOnSubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
 		driver.findElement(By.id("subscribe_pulse_button_new")).click();
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.id("pulse-enroll"));
 		driver.findElement(By.id("pulse-enroll")).click();
 		driver.waitForPageLoad();
@@ -338,7 +342,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(newPassword);
 	}
 
-	public void enterConfimedPassword(String newPassword){
+	public void enterConfirmedPassword(String newPassword){
 		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(newPassword);
 	}
 
@@ -376,6 +380,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementToBeClickable(ENROLL_IN_CRP_LOC, 5000);
 		driver.waitForElementPresent(ENROLL_IN_CRP_LOC);
 		driver.click(ENROLL_IN_CRP_LOC);
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isOrderOfRequiredTypePresentInHistory(String orderType){

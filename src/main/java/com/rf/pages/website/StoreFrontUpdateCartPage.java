@@ -386,11 +386,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@id='termsCheck']/.."));
 		driver.findElement(By.xpath("//input[@id='termsCheck']/..")).click();
 	}
-
-	public void clickSubscribePulseBtn(){
+	
+	public void clickOnSubscribeBtn(){
+		driver.waitForElementPresent(By.xpath("//input[@value='Subscribe']"));
 		driver.findElement(By.xpath("//input[@value='Subscribe']")).click();
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
 	}
 
 	public boolean verifyPulseOrderCreatedMsg(){
@@ -535,8 +535,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public boolean verifyEditShippingAddressNameSlectedOnUpdateCart(String name){
 		logger.info("Asserting Update Shipping Address from default selected");
-		System.out.println("Address by Created**"+name+"**" );
-		System.out.println("Address From UI**"+driver.findElement(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::li[1]/p[1]/span[1]")).getText()+"**" );
 		if(driver.findElement(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::li[1]/p[1]/span[1]")).getText().contains(name)){
 			return true;
 		}
@@ -551,8 +549,5 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public WebElement waitForSaveShippingInfoBtn()	 {
 		return  driver.waitForElementToBeClickable(By.xpath("//div[@id='payment-next-button']/input"), 15);
 	}
-
-	public WebElement waitForpaymentNextBtn()	 {
-		return  driver.waitForElementToBeClickable(By.xpath("//div[@id='payment-next-button']/input"), 15);
-	}
+	
 }

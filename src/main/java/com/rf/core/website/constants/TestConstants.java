@@ -7,14 +7,14 @@ public class TestConstants {
 	 * Consultant User Creation Details
 	 */
 	public static final String CID = "06362865";
-	public static final String KIT_PRICE = "CAD$ 445";
+	public static final String KIT_PRICE_CA = "CAD$ 445";
 	public static final String REGIMEN_NAME = "Redefine";
 	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
 	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
-	public static final String KIT_PRICE_EXPRESS = "CAD$ 1,145";
-	public static final String KIT_PRICE_BIG_BUSINESS = "CAD$ 795";
-	public static final String KIT_PRICE_PERSONAL = "CAD$ 445";
-	public static final String KIT_PRICE_PORTFOLIO = "CAD$ 52";
+	public static final String KIT_PRICE_EXPRESS_CA = "CAD$ 1,145";
+	public static final String KIT_PRICE_BIG_BUSINESS_CA = "CAD$ 795";
+	public static final String KIT_PRICE_PERSONAL_CA = "CAD$ 445";
+	public static final String KIT_PRICE_PORTFOLIO_CA = "CAD$ 52";
 
 	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
@@ -28,10 +28,10 @@ public class TestConstants {
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 	public static final String PASSWORD = "test1234";
-	public static final String ADDRESS_LINE_1 = "5502 - 54th Street";
-	public static final String CITY = "Bonnyville";
-	public static final String PROVINCE = "Alberta";
-	public static final String POSTAL_CODE = "T9N 2H4";
+	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
+	public static final String CITY_CA = "Bonnyville";
+	public static final String PROVINCE_CA = "Alberta";
+	public static final String POSTAL_CODE_CA = "T9N 2H4";
 	public static final String PHONE_NUMBER = "8067736419";
 	public static final String CARD_NUMBER = "4111111111111111";
 	public static final String CARD_EXP_MONTH = "12";
@@ -60,10 +60,10 @@ public class TestConstants {
 	public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
-	public static final String CONSULTANT_ADDRESS_LINE_1 = "5502 54 St";
-	public static final String CONSULTANT_CITY = "Bonnyville";
-	public static final String CONSULTANT_POSTAL_CODE = "T9N 2N8";
-	public static final String CONSULTANT_COUNTRY = "CANADA";
+	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";
+	public static final String CONSULTANT_CITY_CA = "Bonnyville";
+	public static final String CONSULTANT_POSTAL_CODE_CA = "T9N 2N8";
+	public static final String CONSULTANT_COUNTRY_CA = "CANADA";
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
 
@@ -91,7 +91,7 @@ public class TestConstants {
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
-	public static final String CONSULTANT1_PWS_URL = "http://rrftestuser1.myrfostg2.biz/ca/";
+	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
 	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
 	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
 
@@ -108,7 +108,7 @@ public class TestConstants {
 	public static final String RCUSER_USERNAME = "RFTest1706";
 	public static final String RCUSER_ORDER_NUMBER = "2100018433";
 	public static final String RCUSER_SCHEDULED_DATE = "July 8, 2015";
-	public static final String RCUSER_GRAND_TOTAL = "CAD$ 668.33";
+	public static final String RCUSER_GRAND_TOTAL_CA = "CAD$ 668.33";
 	public static final String RCUSER_AUTOSHIP_STATUS = "SUBMITTED";
 
 	/**

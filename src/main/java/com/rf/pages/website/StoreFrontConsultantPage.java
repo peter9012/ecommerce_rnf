@@ -73,6 +73,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();		
 		logger.info("User has clicked on account link from welcome drop down");
+		driver.pauseExecutionFor(3000);
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

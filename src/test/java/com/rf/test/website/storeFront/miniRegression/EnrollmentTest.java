@@ -33,22 +33,28 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	public void testExpressEnrollmentLoginAfterLogout() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE, TestConstants.REGIMEN_NAME);		
-		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
-		storeFrontHomePage.enterCity(TestConstants.CITY);
-		storeFrontHomePage.selectProvince(TestConstants.PROVINCE);
-		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
-		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		if(country.equalsIgnoreCase("CA")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}
+		else{
+			// to do the US part
+		}
 		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -118,22 +124,28 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	public void testExpressEnrollmentBusinessKitReverseRegimen() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_REVERSE);		
-		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
-		storeFrontHomePage.enterCity(TestConstants.CITY);
-		storeFrontHomePage.selectProvince(TestConstants.PROVINCE);
-		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
-		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		if(country.equalsIgnoreCase("CA")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_CA, TestConstants.REGIMEN_NAME_REVERSE);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}
+		else{
+			//todo the US part
+		}
 		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -168,22 +180,28 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	public void ccsCAConsultantExpressEnrollmentWithUSSponsor() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();	
 		storeFrontHomePage.searchCID(TestConstants.CIDCA);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS, TestConstants.REGIMEN_NAME_REVERSE);		
-		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
-		storeFrontHomePage.enterCity(TestConstants.CITY);
-		storeFrontHomePage.selectProvince(TestConstants.PROVINCECA);
-		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
-		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		if(country.equalsIgnoreCase("CA")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_CA, TestConstants.REGIMEN_NAME_REVERSE);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}
+		else{
+			//todo US part
+		}
 		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -343,27 +361,30 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		logout();
 		s_assert.assertAll();	
 	}
-	
+
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
 	public void testEnrollPulsefromMyAmount_135() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE, TestConstants.REGIMEN_NAME);		
-		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
-		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1);
-		storeFrontHomePage.enterCity(TestConstants.CITY);
-		storeFrontHomePage.selectProvince(TestConstants.PROVINCE);
-		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE);
-		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		if(country.equalsIgnoreCase("CA")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}
 		storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
@@ -391,13 +412,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
-		storeFrontUpdateCartPage.clickSubscribePulseBtn();
+		storeFrontUpdateCartPage.clickOnSubscribeBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyPulseOrderCreatedMsg(), "Pulse order created msg is NOT present,Pulse might NOT be subscribed successfully");
 		logout();
 		s_assert.assertAll();
 	}
-	
 }

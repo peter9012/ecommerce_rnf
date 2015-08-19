@@ -108,6 +108,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return propertyFile.getProperty("databaseNameRFO");
 	}
 
+	public String getCountry(){
+		return propertyFile.getProperty("country");
+	}
 
 	/**
 	 * @param locator
@@ -167,12 +170,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
+		logger.info("Waiting for loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
 			if(driver.findElements(locator).size()==1){
 				pauseExecutionFor(1000);
 				continue;
 			}else{
 				turnOnImplicitWaits();
+				logger.info("loading image disappears");
 				break;
 			}			
 			

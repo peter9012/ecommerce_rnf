@@ -2,11 +2,7 @@ package com.rf.test.website.storeFront.dataMigration.rfo.pws;
 
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
@@ -15,9 +11,7 @@ import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class RFPWSLoginTest extends RFWebsiteBaseTest {
-	private static final Logger logger = LogManager
-			.getLogger(RFPWSLoginTest.class.getName());
-
+	
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsulatantPage;
 	private String RFO_DB = null;
@@ -205,7 +199,6 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
 		List<Map<String, Object>> otherPWSList =  null;
-		List<Map<String, Object>> sponsorPWSList =  null;
 		String pcEmailID = null;
 		String sponsorsPWS = null;
 		String otherPWS = null;		
@@ -233,7 +226,6 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	public void testPreferredCustomerWithPWSSponsorLoginFromCorp() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
-		List<Map<String, Object>> sponsorPWSList =  null;
 		String pcEmailID = null;
 		String sponsorsPWS = null;
 

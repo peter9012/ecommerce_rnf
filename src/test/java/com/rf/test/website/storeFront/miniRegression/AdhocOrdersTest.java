@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -73,9 +72,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Total while creating order is "+total);
 			String totalSV = storeFrontUpdateCartPage.getTotalSV();
 			logger.info("Total SV while creating order is "+totalSV);
-			String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+			//String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
 			storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-			String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+			//String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
 
 			storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -145,9 +144,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Total while creating order is "+total);
 			String totalSV = storeFrontUpdateCartPage.getTotalSV();
 			logger.info("Total SV while creating order is "+totalSV);
-			String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+			//String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
 			storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-			String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+			//String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
 
 			storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -217,9 +216,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Tax while creating order is "+tax);
 			String total = storeFrontUpdateCartPage.getTotal();
 			logger.info("Total while creating order is "+total);
-			String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+			//String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
 			storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-			String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+			//String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
 
 			storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);

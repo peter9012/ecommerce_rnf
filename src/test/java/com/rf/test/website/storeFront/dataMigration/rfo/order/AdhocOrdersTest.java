@@ -2,16 +2,13 @@ package com.rf.test.website.storeFront.dataMigration.rfo.order;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -28,9 +25,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	private StoreFrontConsultantPage storeFrontConsultantPage;	
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
-	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
-	private String RFL_DB = null;
 	private String RFO_DB = null;
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer

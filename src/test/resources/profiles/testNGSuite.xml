@@ -8,7 +8,7 @@
 		<classes>
 		  					 <!-- ACCOUNTS -->
 		   	<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddBillingTest"></class>
-		   <!--  <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddShippingTest"></class>
+		    <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddShippingTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.EditBillingTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.EditShippingTest"></class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.MyAccountTest"></class>
@@ -22,7 +22,7 @@
 			<class name="com.rf.test.website.storeFront.dataMigration.rfl.order.ViewOrderDetailsTest"></class>
 			
 							PWS
-			<class name="com.rf.test.website.storeFront.dataMigration.rfl.pws.PWSLoginTest"></class>  -->
+			<class name="com.rf.test.website.storeFront.dataMigration.rfl.pws.PWSLoginTest"></class> 
 			
 		</classes>
 	</test>

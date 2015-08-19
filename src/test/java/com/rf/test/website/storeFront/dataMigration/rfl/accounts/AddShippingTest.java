@@ -47,7 +47,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			consultantEmailID = "Kline.nicole@gmail.com";
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -122,7 +121,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			consultantEmailID = "Kline.nicole@gmail.com";
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -186,7 +184,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			consultantEmailID = "Kline.nicole@gmail.com";
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -273,7 +270,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			consultantEmailID = "Kline.nicole@gmail.com";
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -350,7 +346,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			consultantEmailID = "Kline.nicole@gmail.com";
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 

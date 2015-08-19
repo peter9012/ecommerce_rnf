@@ -57,6 +57,7 @@ public class RFBaseTest{
 			logger.info("Environment properties are not provided by the user ... loading the default properties");
 			logger.info("Default Browser is  ------ "+propertyFile.getProperty("browser"));
 			logger.info("Default URL is  ------ "+propertyFile.getProperty("baseUrl"));
+			logger.info("Default Country is  ------ "+propertyFile.getProperty("country"));
 			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
 			logger.info("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));

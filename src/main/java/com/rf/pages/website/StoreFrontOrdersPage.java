@@ -187,7 +187,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-	
+
 	public String getGrandTotalFromAutoshipTemplate(){
 		driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
 		String autoshipGrandTotalPrice = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText();
@@ -214,11 +214,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean verifyShippingAddressDetails(String shippingAddressDB){		
 		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().contains(shippingAddressDB);		
 	}
-	
+
 	public String getShippingAddressFromAutoshipTemplate(){
 		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
 	}
-	
+
 	public String getShippingAddressFromAdhocTemplate(){
 		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
 	}
@@ -228,7 +228,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
 		return shippingMethodUI.contains(shippingMethodDB);
 	}
-	
+
 	public String getShippingMethodFromAdhocOrderTemplate(){
 		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
@@ -356,7 +356,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		String tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
 		return tax.trim().substring(1).contains(taxDB);
 	}
-	
+
 	public String getTaxAmountFromAdhocOrderTemplate(){
 		String tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
 		return tax.trim().substring(1);
@@ -366,7 +366,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		String tax = driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText();
 		return tax.trim().substring(1).contains(taxDB);
 	}
-	
+
 	public String getTaxAmountFromAutoshipTemplate(){
 		String tax = driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText();
 		return tax.trim().substring(1);
@@ -431,7 +431,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("subtotal from UI is "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText().contains(subTotal);
 	}
-	
+
 	public String getSubTotalFromAdhocOrderTemplate(){
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span"));
 		logger.info("subtotal from UI is "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[1]/span")).getText());
@@ -442,7 +442,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText().contains(shippingCharges);
 	}
-	
+
 	public String getShippingAmountFromAdhocOrderTemplate(){
 		logger.info("shippingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[2]/span")).getText();
@@ -452,7 +452,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText().contains(handlingCharges);
 	}
-	
+
 	public String getHandlingAmountFromAdhocOrderTemplate(){
 		logger.info("handlingCharges from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[3]/span")).getText();
@@ -467,7 +467,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText().contains(total);
 	}
-	
+
 	public String getGrandTotalFromAdhocOrderTemplate(){
 		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText();
@@ -480,13 +480,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyShippingMethodOnTemplateAfterOrderCreation(String shippingMethodDB){
-		  String[] shippingMethod = shippingMethodDB.split(" ");
-		  shippingMethodDB = shippingMethod[0]+" "+shippingMethod[1]+" "+shippingMethod[2];
-		  String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
-		  logger.info("Shipping Method from UI is "+shippingMethodUI);
-		  return shippingMethodUI.contains(shippingMethodDB);
-		 }
-	
+		String[] shippingMethod = shippingMethodDB.split(" ");
+		shippingMethodDB = shippingMethod[0]+" "+shippingMethod[1]+" "+shippingMethod[2];
+		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
+		logger.info("Shipping Method from UI is "+shippingMethodUI);
+		return shippingMethodUI.contains(shippingMethodDB);
+	}
+
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForConsultant() throws InterruptedException {
 		boolean isNextLinkPresent =  false;
 		do{
@@ -601,6 +601,46 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public String orderDetails_getShippingMethodName()	{
 		return driver.findElement(By.xpath("//p[span/strong[contains(text(),'Shi')]]/br")).getText();
+	}
+
+	public String convertShippingMethodNameAsOnUI(String shippingMethodID){
+
+		String methodId = shippingMethodID;
+		String shippingMethodName = null;
+		switch (Integer.parseInt(methodId)) {  
+		case 1:
+			shippingMethodName="FedEx 2Day";
+			break;
+
+		case 2:
+			shippingMethodName="FedEx 2Day";
+			break;
+
+		case 3:
+			shippingMethodName="FedEx Ground (HD)";
+			break;
+
+		case 4:
+			shippingMethodName="USPS 1Day";
+			break;
+
+		case 5:
+			shippingMethodName="USPS 2Day";
+			break;
+
+		case 6:
+			shippingMethodName="USPS Grnd";
+			break;
+
+		case 7:
+			shippingMethodName="Point of Sale";
+			break;
+
+		case 8:
+			shippingMethodName="POS Drop-Ship";
+			break;
+		}
+		return shippingMethodName;
 	}
 
 }

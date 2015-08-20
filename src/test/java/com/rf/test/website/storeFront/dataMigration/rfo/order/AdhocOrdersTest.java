@@ -95,7 +95,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"AdHoc Orders Template Total SV vakue is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterOrderCreation(shippingMethod),"AdHoc Orders Template Shipping Method is not as expected for this order");
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -170,7 +170,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		  s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"AdHoc Orders Template Total SV vakue is not as expected for this order");
 		  s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterOrderCreation(shippingMethod),"AdHoc Orders Template Shipping Method is not as expected for this order");
 
-		  logout();
+		  
 		  s_assert.assertAll();
 	}
 

@@ -97,7 +97,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -178,7 +178,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyOrderNumberAtReportConfirmationPage(),"Order number not present as expected");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyBackToOrderButtonAtReportConfirmationPage(),"Back To Order button is not present");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -233,7 +233,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		orderDateDB = String.valueOf (getValueFromQueryResult(orderDateList, "CompletionDate"));
 		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
-		logout();
+		
 		s_assert.assertAll();		
 	}
 
@@ -329,7 +329,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 		assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB));  
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -370,7 +370,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER);
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has been displayed");
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 

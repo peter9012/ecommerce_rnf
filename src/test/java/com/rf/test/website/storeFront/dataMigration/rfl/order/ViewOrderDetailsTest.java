@@ -180,7 +180,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			grandTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "Total")));
 			s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP Autoship GrandTotal on RFO is "+grandTotalDB+" \n and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		}
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -328,7 +328,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethod),"Adhoc Order template shipping method on RFO is "+shippingMethod+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());
 		}
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -472,7 +472,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"PC Autoship template grand total amount on RFO is "+grandTotalDB+" \n and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		}
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -617,7 +617,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"PC Adhoc Order template shipping method on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());
 		}
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -759,7 +759,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"RC Adhoc Order Template grand total on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());
 		}
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -901,7 +901,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP failed autoship template shipping method on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		}
 
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -1045,7 +1045,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"PC failed autoship shipping method on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		}
 
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -1187,7 +1187,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"Retail failed adhoc order shipping method on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB));
 		}
-		logout();
+		
 		s_assert.assertAll();
 
 	}

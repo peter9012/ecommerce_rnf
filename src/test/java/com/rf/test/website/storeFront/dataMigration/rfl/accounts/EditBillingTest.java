@@ -115,7 +115,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -199,7 +199,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -277,7 +277,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -360,7 +360,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 	
@@ -442,7 +442,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 

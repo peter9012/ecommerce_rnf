@@ -1,10 +1,6 @@
 package com.rf.pages.website;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +28,7 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{	
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.findElement(WELCOME_USER_DD_LOC).click();
+		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("welcome drop down clicked");
 	}
 
@@ -42,21 +38,21 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 
 	public StoreFrontShippingInfoPage clickShoppingLinkPresentOnWelcomeDropDown(){
 		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
-		driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC).click();
+		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
 		logger.info("Shipping link from welcome drop down clicked");
 		return new StoreFrontShippingInfoPage(driver);
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown(){
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
+		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
 		logger.info("Orders link from welcome drop down clicked");
 		return new StoreFrontOrdersPage(driver);
 	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
+		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
 		logger.info("Account info link from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}

@@ -86,7 +86,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupCancelTerminationButton(),"Account termination page Pop up cancel termination button is not present");
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupConfirmTerminationButton(),"Account termination Page Pop Up Confirm termination button is not present");
 		storeFrontAccountTerminationPage.clickCancelTerminationButton();
-		logout();
+
 		s_assert.assertAll();			
 	}
 
@@ -102,7 +102,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 		logger.info("Account Id of the user is "+accountID);		
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
 		logger.info("login is successful");
@@ -110,7 +110,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -122,12 +122,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomRCList =  null;
 		String rcUserEmailID = null;
 		String accountID = null;
-		
+
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS,RFL_DB);
 		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 		logger.info("Account ID of the user is "+accountID);
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, TestConstants.RC_PASSWORD_TST4);
 		logger.info("login is successful");
@@ -193,7 +193,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyOrderNumberAtReportConfirmationPage(),"Order number not present as expected");
 		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyBackToOrderButtonAtReportConfirmationPage(),"Back To Order button is not present");
-		//logout(); // not working
+		// // not working
 		s_assert.assertAll();
 	}
 
@@ -208,18 +208,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderDateList =  null;
 		List<Map<String, Object>> randomRCList =  null;
 		String rcUserEmailAddress = null;
-
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_RC_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
-		rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
-
-
 		String orderNumberDB = null;
 		String orderStatusDB = null;
 		String orderGrandTotalDB = null;
 		String orderDateDB = null;
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, TestConstants.RCUSER_PASSWORD_TST4);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_RC_HAVING_SUBMITTED_ORDERS_RFL,RFL_DB);
+			rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, TestConstants.RCUSER_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailAddress);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailAddress),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
@@ -272,7 +278,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 			s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 		}
-		logout();
+
 		s_assert.assertAll();		
 	}
 
@@ -376,7 +382,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 		assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB));  
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -419,7 +425,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER);
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has been displayed");
 
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -501,7 +507,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -541,7 +547,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName), "Autoship Template Shipping Address doesn't contains the updated shipping address profile");
-		logout();
+
 		s_assert.assertAll();
 	}
 

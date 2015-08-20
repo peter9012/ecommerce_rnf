@@ -67,7 +67,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		assertTrue("shipping method is not as expected", storeFrontOrdersPage.verifyShippingMethod(selectedShippingMethod));
-		logout();
+		
 		s_assert.assertAll();
 	}
 	/*This Script is getting failed on "selectAndGetShippingMethodName Method, 
@@ -107,7 +107,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		assertTrue("shipping method is not as expected", storeFrontOrdersPage.verifyShippingMethod(selectedShippingMethod));
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -214,7 +214,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+"and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -322,7 +322,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		  // assert for shipping Method with RFO
 		  s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"PC autoship template shipping method is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
-		  logout();
+		  
 		  s_assert.assertAll();
 	}
 }

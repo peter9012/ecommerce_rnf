@@ -1,6 +1,5 @@
 package com.rf.pages.website;
 
-
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -37,7 +36,7 @@ public class StoreFrontReportOrderComplaintPage extends RFWebsiteBasePage {
 
 	public void clickOnCheckBox(){
 		driver.waitForElementPresent(REPORT_PAGE_CHECKBOX_LOC);
-		driver.findElement(REPORT_PAGE_CHECKBOX_LOC).click();
+		driver.click(REPORT_PAGE_CHECKBOX_LOC);
 		logger.info("Report page checkbox clicked");
 	}
 
@@ -53,7 +52,7 @@ public class StoreFrontReportOrderComplaintPage extends RFWebsiteBasePage {
 	}
 	public void selectOptionFromDropDown() throws InterruptedException{
 		driver.waitForElementPresent(REPORT_PAGE_DROPDOWN_SELECT_LOC);
-		driver.findElement(REPORT_PAGE_DROPDOWN_SELECT_LOC).click();
+		driver.click(REPORT_PAGE_DROPDOWN_SELECT_LOC);
 		logger.info("Report Page dropdown clicked");
 		driver.waitForElementPresent(REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC);
 		driver.click(REPORT_PAGE_DROPDOWN_SELECT_OPTION_LOC);

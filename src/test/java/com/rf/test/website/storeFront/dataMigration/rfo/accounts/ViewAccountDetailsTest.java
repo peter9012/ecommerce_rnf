@@ -63,7 +63,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("Account Id of the user is "+accountID);
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_TST4);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -109,10 +109,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
 		assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 
-		/*// assert Gender with RFL
-	   if(assertTrueDB("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB), RFL_DB) == false){
-	    // assert Gender Id with RFO..
-		 */
 		// assert Gender Id with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
@@ -128,7 +124,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 		assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB));
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -236,7 +232,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+
 		s_assert.assertAll();
 
 	}
@@ -260,7 +256,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+
 		s_assert.assertAll();
 
 	}
@@ -314,7 +310,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+
 		s_assert.assertAll();
 
 	}
@@ -378,7 +374,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,userEmailId),RFO_DB);
 		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
 		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");			
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -409,13 +405,13 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+
 		s_assert.assertAll();
 	}
 
 
 	//Hybris Phase 2-4205 : Enrolled PC, Has CRP/ Has Pulse, Has Submitted Orders
-	@Test(enabled=true)
+	@Test(enabled=false) // NO DATA FROM DATABASE
 	public void testEnrolledPCHasCRPPULSESubmittedOrders_HP2_4205() throws InterruptedException, SQLException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
@@ -431,7 +427,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -448,5 +444,5 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();
 	}
-	
+
 }

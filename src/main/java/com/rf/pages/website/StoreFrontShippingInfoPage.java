@@ -57,7 +57,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public void clickOnEditForFirstAddress(){
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
-		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']")).click();
+		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
 		logger.info("First Address Edit link clicked");
 
 	}
@@ -88,9 +88,9 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.findElement(By.xpath("//select[@id='state']")).click();
+		driver.click(By.xpath("//select[@id='state']"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-		driver.findElement(By.xpath("//select[@id='state']/option[2]")).click();
+		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}
 
@@ -107,7 +107,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public void selectFirstCardNumber() throws InterruptedException{
 		try{
 			driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']"));
-			driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']")).click();
+			driver.click(By.xpath("//select[@id='cardDropDowndropdown']"));
 
 		}catch(WebDriverException e){
 			Actions action = new Actions(RFWebsiteDriver.driver);
@@ -115,7 +115,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 		}
 		driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']/option[2]"));
-		driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']/option[2]")).click();
+		driver.click(By.xpath("//select[@id='cardDropDowndropdown']/option[2]"));
 		logger.info("First Card number selected from drop down");
 	}
 
@@ -125,7 +125,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
-		driver.findElement(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC).click();
+		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
@@ -133,23 +133,23 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		logger.info("New Shipping prifile save button clicked");
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
-			driver.findElement(By.xpath("//input[@id='QAS_AcceptOriginal']")).click();
+			driver.quickWaitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
+			driver.click(By.xpath("//input[@id='QAS_AcceptOriginal']"));
 		}catch(NoSuchElementException e){
 
 		}
-
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
-		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]")).click();
+		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
 		logger.info("Default shipping profile selected is having name "+firstName);
 		driver.waitForLoadingImageToDisappear();
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
-			driver.findElement(By.xpath("//input[@class='shippingAddresspopup']")).click();
-		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
+			driver.click(By.xpath("//input[@class='shippingAddresspopup']"));
+		}catch(Exception e){
 
 		}
 		driver.waitForLoadingImageToDisappear();

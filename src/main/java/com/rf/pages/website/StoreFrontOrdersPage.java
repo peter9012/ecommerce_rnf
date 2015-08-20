@@ -78,8 +78,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return driver.findElement(ORDER_STATUS_LOC).getText().toLowerCase().contains(status.toLowerCase());
 	}
 
-	public void clickAutoshipOrderNumber(){		
-		getAutoshipOrderNumber();
+	public void clickAutoshipOrderNumber(){
+		driver.waitForElementPresent(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		getAutoshipOrderNumber();		
 		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 	}
@@ -289,10 +290,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public StoreFrontReportOrderComplaintPage clickOnActions(){
 		driver.waitForElementPresent(ACTIONS_BUTTON_LOC);
-		driver.findElement(ACTIONS_BUTTON_LOC).click();
+		driver.click(ACTIONS_BUTTON_LOC);
 		logger.info("Action drop down clicked for first order");
 		driver.waitForElementPresent(ACTIONS_DROPDOWN_LOC);
-		driver.findElement(ACTIONS_DROPDOWN_LOC).click();
+		driver.click(ACTIONS_DROPDOWN_LOC);
 		logger.info("Report Problems link clicked for first order");
 		return new StoreFrontReportOrderComplaintPage(driver);
 	}
@@ -303,7 +304,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public void clickOnFirstAdHocOrder(){
 		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).click();		
+		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
+		logger.info("First order from the order history clicked");
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
@@ -572,7 +574,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnFirstAdhocOrder() throws InterruptedException {
-		driver.findElement(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a")).click();		
+		driver.click(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));		
 	}
 
 	public String orderDetails_getTotalSV()	{

@@ -29,13 +29,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clickOnOurBusinessLink(){
 		driver.waitForElementPresent(BUSINESS_LINK_LOC);
-		driver.findElement(BUSINESS_LINK_LOC).click();
+		driver.click(BUSINESS_LINK_LOC);
 		logger.info("Our business Link clicked");
 	}
 
 	public StoreFrontEnrollNowPage clickOnOurEnrollNowLink(){
 		driver.waitForElementPresent(ENROLL_NOW_LINK_LOC);
-		driver.findElement(ENROLL_NOW_LINK_LOC).click();
+		driver.click(ENROLL_NOW_LINK_LOC);
 		logger.info("Enroll Now Link clicked");
 		return new StoreFrontEnrollNowPage(driver);
 	}
@@ -96,7 +96,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
 		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys("test");
 		driver.waitForElementPresent(By.cssSelector("input[id='search-sponsor-button']"));
-		driver.findElement(By.cssSelector("input[id='search-sponsor-button']")).click();
+		driver.click(By.cssSelector("input[id='search-sponsor-button']"));
 		logger.info("Sponsor entered as 'test' and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -105,7 +105,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
 		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys(cid);
 		driver.waitForElementPresent(By.cssSelector("input[id='search-sponsor-button']"));
-		driver.findElement(By.cssSelector("input[id='search-sponsor-button']")).click();		
+		driver.click(By.cssSelector("input[id='search-sponsor-button']"));		
 	}
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
@@ -121,13 +121,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		logger.info("Enrollment Kit is selected as "+kitPrice);
-		driver.findElement(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]")).click();
+		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
-		driver.findElement(By.xpath("//div[@class='regimen-name' and text()='"+regimenName+"']")).click();
+		driver.click(By.xpath("//div[@class='regimen-name' and text()='"+regimenName+"']"));
 		driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
-		driver.findElement(By.cssSelector("input[value='Next']")).click();
+		driver.click(By.cssSelector("input[value='Next']"));
 		logger.info("Next button clicked after selected Kit and regimen");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -136,14 +136,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		option = option.toUpperCase();
 		if(option.equalsIgnoreCase("EXPRESS ENROLLMENT")){
 			driver.waitForElementPresent(By.id("express-enrollment"));
-			driver.findElement(By.id("express-enrollment")).click();
+			driver.click(By.id("express-enrollment"));
 		}
 		else{
 			driver.waitForElementPresent(By.id("standard-enrollment"));
-			driver.findElement(By.id("standard-enrollment")).click();
+			driver.click(By.id("standard-enrollment"));
 		}
 		logger.info("Enrollment Type is selected as "+option);
-		driver.findElement(By.cssSelector("input[value='Next']")).click();
+		driver.click(By.cssSelector("input[value='Next']"));
 		logger.info("Next button is clicked after selecting enrollment type");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -164,7 +164,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void closePopUp(){
-		driver.findElement(By.cssSelector("a[title='Close']")).click();
+		driver.click(By.cssSelector("a[title='Close']"));
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
@@ -209,7 +209,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickEnrollmentNextBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("enrollment-next-button")).click();
+		driver.click(By.id("enrollment-next-button"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
@@ -236,8 +236,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
-		driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/..")).click();
-		driver.findElement(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input/..")).click();
+		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/.."));
+		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input/.."));
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -245,7 +245,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
 		driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
-		driver.findElement(By.xpath("//input[@id='QAS_AcceptOriginal']")).click();		
+		driver.click(By.xpath("//input[@id='QAS_AcceptOriginal']"));		
 	}
 
 	public void enterCardNumber(String cardNumber){
@@ -301,11 +301,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void checkThePoliciesAndProceduresCheckBox() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='policies-check']/.."));
-		driver.findElement(By.xpath("//input[@id='policies-check']/..")).click();
+		driver.click(By.xpath("//input[@id='policies-check']/.."));
 	}
 
 	public void checkTheIAcknowledgeCheckBox(){
-		driver.findElement(By.xpath("//input[@id='acknowledge-check']/..")).click();
+		driver.click(By.xpath("//input[@id='acknowledge-check']/.."));
 	}
 
 	public boolean isTheTermsAndConditionsCheckBoxDisplayed(){
@@ -315,19 +315,19 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void checkTheTermsAndConditionsCheckBox(){
 		driver.waitForElementPresent(By.xpath("//input[@id='terms-check']/.."));
-		driver.findElement(By.xpath("//input[@id='terms-check']/..")).click();		
+		driver.click(By.xpath("//input[@id='terms-check']/.."));		
 	}
 
 	public void clickOnEnrollmentNextButton(){
 		driver.waitForElementPresent(By.xpath("//*[@id='enrollment-next-button']"));
-		driver.findElement(By.xpath("//*[@id='enrollment-next-button']")).click(); 
+		driver.click(By.xpath("//*[@id='enrollment-next-button']")); 
 	}
 	public boolean verifyPopUpForPoliciesAndProcedures() throws InterruptedException{
 		boolean isPopForTermsAndConditionsVisible = false;		
 		driver.waitForElementPresent(By.xpath("//div[@class='popup-standard']/h2[text()='Please review and accept all policies and procedures.']"));
 		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-standard']/h2[text()='Please review and accept all policies and procedures.']")));
 		if(isPopForTermsAndConditionsVisible==true){
-			driver.findElement(By.xpath("//div[@class='popup-standard']/h2[text()='Please review and accept all policies and procedures.']/following::a[@title='Close']")).click();
+			driver.click(By.xpath("//div[@class='popup-standard']/h2[text()='Please review and accept all policies and procedures.']/following::a[@title='Close']"));
 			driver.pauseExecutionFor(1000);
 			return true;
 		}
@@ -335,12 +335,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void checkTheIAgreeCheckBox(){
-		driver.findElement(By.xpath("//input[@id='electronically-check']/..")).click();
+		driver.click(By.xpath("//input[@id='electronically-check']/.."));
 	}
 
 	public void clickOnChargeMyCardAndEnrollMeBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.cssSelector("input[id='enroll-button']"));
-		driver.findElement(By.cssSelector("input[id='enroll-button']")).click();
+		driver.click(By.cssSelector("input[id='enroll-button']"));
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -350,7 +350,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
 		driver.waitForElementPresent(By.cssSelector("input[id='enroll']"));
-		driver.findElement(By.cssSelector("input[id='enroll']")).click();
+		driver.click(By.cssSelector("input[id='enroll']"));
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -361,21 +361,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']/following::div[2]/div[1]/div[2]//input[@value='Add to crp']"));
-		driver.findElement(By.xpath("//div[@id='quick-refine']/following::div[2]/div[1]/div[2]//input[@value='Add to crp']")).click();
+		driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[1]/div[2]//input[@value='Add to crp']"));
 		logger.info("Add to CRP button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnCRPCheckout(){
 		driver.waitForElementPresent(By.xpath("//input[@id='crpCheckoutButton']"));
-		driver.findElement(By.xpath("//input[@id='crpCheckoutButton']")).click();
+		driver.click(By.xpath("//input[@id='crpCheckoutButton']"));
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address']"));
-		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).doubleClick().build().perform();		
+		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();		
 		action.moveToElement(driver.findElement(By.xpath("//input[@class='use_address']"))).click(driver.findElement(By.xpath("//input[@class='use_address']"))).build().perform();
 		logger.info("Next button on shipping update cart clicked");	
 		driver.waitForLoadingImageToDisappear();
@@ -408,7 +408,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void acceptTheProvideAccessToSpousePopup(){
 		if(driver.findElement(By.xpath("//input[@id='acceptSpouse']")).isDisplayed()){
-			driver.findElement(By.xpath("//input[@id='acceptSpouse']")).click();
+			driver.click(By.xpath("//input[@id='acceptSpouse']"));
 		}
 	}
 

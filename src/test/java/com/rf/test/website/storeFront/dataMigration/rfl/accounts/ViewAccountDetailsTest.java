@@ -166,7 +166,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	   dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
 	   assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB));
 	  }  
-		 */  logout();
+		 */  
 		 s_assert.assertAll();
 	}
 
@@ -282,7 +282,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -307,7 +307,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -364,7 +364,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -437,7 +437,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 			totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
 			s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");			
 		}
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -474,7 +474,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -497,7 +497,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipStatusHeader(),"Autoship status header is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipCRPStatus(),"AutoShip CRP Status is not as expected");
 		s_assert.assertTrue(storeFrontOrdersAutoshipStatusPage.verifyAutoShipPulseSubscriptionStatus(),"AutoShip Pulse Subscription Status is not as expected");
-		logout();
+		
 		s_assert.assertAll();
 	}
 

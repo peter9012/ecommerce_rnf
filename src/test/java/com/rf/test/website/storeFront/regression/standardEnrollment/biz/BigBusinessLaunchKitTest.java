@@ -7,7 +7,7 @@ import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
-	
+
 	private StoreFrontHomePage storeFrontHomePage;
 
 	// Hybris Project-73 :: Version : 1 :: Standard Enrollment USD 695 Big Business Launch Kit, Personal Regimen REDEFINE REGIMEN  
@@ -16,6 +16,11 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
@@ -74,6 +79,11 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
@@ -133,6 +143,11 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
@@ -192,6 +207,11 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();

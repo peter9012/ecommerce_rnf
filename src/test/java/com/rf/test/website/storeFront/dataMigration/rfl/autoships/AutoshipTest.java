@@ -44,14 +44,24 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList =  null;
 		String pcUserEmailID = null;
 		String accountID = null;
+		while(true){
+			
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+			logger.info("The Account ID of the user is "+accountID);
 
-		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
-		accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
-		logger.info("The Account ID of the user is "+accountID);
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+storeFrontPCUserPage);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();
 		storeFrontPCUserPage.clickOnAllProductsLink();
@@ -73,7 +83,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(selectedShippingMethod),"shipping method on autoship template is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()+" NOT "+selectedShippingMethod);
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -87,13 +97,23 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		logger.info("Account Id of the user is "+accountID);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -112,7 +132,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(selectedShippingMethod),"shipping method on autoship template is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()+" NOT "+selectedShippingMethod);
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -140,7 +160,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String lastName = null;
 		String shippingMethodId = null;
-
+		String accountID = null;
+		
 		List<Map<String, Object>> autoShipItemDetailsList = null;
 		List<Map<String, Object>> shippingAddressList = null;
 		List<Map<String, Object>> shippingMethodList = null;
@@ -150,11 +171,22 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String,Object>> getOtherDetailValuesList = null;
 		List<Map<String, Object>> verifyShippingMethodList = null;
 
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -261,7 +293,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			grandTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "Total")));
 			s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP Autoship GrandTotal on RFO is "+grandTotalDB+" \n and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		}
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -407,7 +439,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"PC Autoship template grand total amount on RFO is "+grandTotalDB+" \n and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		}
 
-		logout();
+
 		s_assert.assertAll();
 	}
 }

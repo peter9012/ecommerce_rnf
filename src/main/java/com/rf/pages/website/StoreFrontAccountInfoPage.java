@@ -58,7 +58,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
-		driver.findElement(TERMINATE_MY_ACCOUNT).click();
+		driver.click(TERMINATE_MY_ACCOUNT);
 		return new StoreFrontAccountTerminationPage(driver);
 
 	}
@@ -315,10 +315,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	
 	public void clickOnSubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
-		driver.findElement(By.id("subscribe_pulse_button_new")).click();
+		driver.click(By.id("subscribe_pulse_button_new"));
 		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.id("pulse-enroll"));
-		driver.findElement(By.id("pulse-enroll")).click();
+		driver.click(By.id("pulse-enroll"));
 		driver.waitForPageLoad();
 	}
 

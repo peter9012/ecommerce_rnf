@@ -104,7 +104,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		logout();
 		s_assert.assertAll();		
 	}
 
@@ -167,7 +166,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -252,7 +250,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		logout();
 		s_assert.assertAll();		
 	}
 
@@ -323,8 +320,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-		logout();
 		s_assert.assertAll();		
 	}
 
@@ -394,7 +389,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address doesnot contain new shipping address");
 
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -447,8 +441,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewAddressGetsAssociatedWithTheDefaultBillingProfile(newBillingAddressLine1), "New Address has not got associated with the billing profile");
-
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -525,7 +517,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		logout();
 		s_assert.assertAll();	
 	}
 
@@ -594,8 +585,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address contains new shipping address when future autoship checkbox not selected");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		logout();
+		
 		s_assert.assertAll();
 
 	}

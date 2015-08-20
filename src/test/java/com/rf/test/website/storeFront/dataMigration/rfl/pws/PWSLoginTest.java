@@ -37,7 +37,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		consultantPWSURL = consultantPWSURL.toLowerCase();
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(".com"),"Consultant is not on her own .com PWS");
-		logout();	
+			
 		s_assert.assertAll();
 	}
 
@@ -58,7 +58,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(consultantPWSURL),"Consultant is not on her own PWS");
-		logout();	
+			
 		s_assert.assertAll();			
 	}
 
@@ -87,7 +87,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(consultantPWSURL),"Consultant is not on her own PWS");
-		logout();	
+			
 		s_assert.assertAll();
 	}
 
@@ -103,7 +103,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"Consultant is not on corporate site");
-		logout();
+		
 		s_assert.assertAll();		
 	}
 
@@ -129,7 +129,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"Consultant is not on corporate site");
-		logout();
+		
 		s_assert.assertAll();				
 	}
 
@@ -154,7 +154,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, TestConstants.RC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(otherPWSURL),"RC is not on someone's PWS");
-		logout();
+		
 		s_assert.assertAll();		
 	}
 
@@ -172,7 +172,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, TestConstants.RC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"RC is not on corporate site");
-		logout();
+		
 		s_assert.assertAll();				
 	}
 
@@ -194,7 +194,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(sponsorsPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS.toLowerCase()),"PC is not on Sponsor's PWS");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -222,7 +222,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -245,7 +245,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -270,7 +270,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"PC is not on Corporate");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -288,7 +288,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"PC is not on Corporate");
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -313,7 +313,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage.openConsultantPWS(otherPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"PC is not on Corporate");
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -331,7 +331,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().toLowerCase().contains(driver.getURL().toLowerCase()),"PC is not on Corporate");
-		logout();
+		
 		s_assert.assertAll();
 	}
 

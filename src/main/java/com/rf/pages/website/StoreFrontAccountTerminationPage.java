@@ -28,7 +28,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	}
 	public void clickSubmitToTerminateAccount(){
 		driver.waitForElementPresent(SUBMIT_BOX_LOC);
-		driver.findElement(SUBMIT_BOX_LOC).click();
+		driver.click(SUBMIT_BOX_LOC);
 		logger.info("Submit to terminate account button clicked "+SUBMIT_BOX_LOC);
 	}
 	public boolean verifyPopupHeader(){
@@ -56,7 +56,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	}
 	public void clickCancelTerminationButton() throws InterruptedException{
 		driver.waitForElementPresent(POPUP_CANCEL_TERMINATION_BUTTON);
-		driver.findElement(POPUP_CANCEL_TERMINATION_BUTTON).click();		
+		driver.click(POPUP_CANCEL_TERMINATION_BUTTON);		
 	}
 
 	public void selectTerminationReason() throws InterruptedException{

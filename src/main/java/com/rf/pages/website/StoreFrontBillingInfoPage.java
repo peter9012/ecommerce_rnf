@@ -120,16 +120,16 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 
 	public void selectNewBillingCardAddress() throws InterruptedException{
 		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC);
-		driver.findElement(ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC).click();
+		driver.click(ADD_NEW_BILLING_CARD_ADDRESS_DD_LOC);
 		logger.info("New billing card address drop down clicked");
 		driver.waitForElementPresent(ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC);
-		driver.findElement(ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC).click();
+		driver.click(ADD_NEW_BILLING_CARD_ADDRESS_DD_FIRST_VALUE_LOC);
 		logger.info("New billing card address selected");
 	}
 
 	public void selectUseThisBillingProfileFutureAutoshipChkbox(){
 		driver.waitForElementPresent(USE_THIS_BILLING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
-		driver.findElement(USE_THIS_BILLING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC).click();
+		driver.click(USE_THIS_BILLING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 		logger.info("Checkbox for Use this billing profile for future autoship selected");
 	}
 
@@ -142,14 +142,14 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	
 	public void makeBillingProfileDefault(String firstName) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
-		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input")).click();
+		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
 		logger.info("default billing profile selected has the name "+firstName);
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
-		driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a")).click();
+		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
 		driver.waitForPageLoad();
 		logger.info("Edit billing profile link clicked");
 	}

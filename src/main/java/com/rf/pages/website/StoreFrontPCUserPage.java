@@ -29,27 +29,27 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{	
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.findElement(WELCOME_USER_DD_LOC).click();	
+		driver.click(WELCOME_USER_DD_LOC);	
 		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.findElement(WELCOME_DD_ORDERS_LINK_LOC).click();
+		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
 		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
 		return new StoreFrontOrdersPage(driver);
 	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC).click();
+		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
 		logger.info("Account info linked from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']"));
-		driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']")).click();
+		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']"));
 		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to PC Perks']");
 		return new StoreFrontCartAutoShipPage(driver);
 	}

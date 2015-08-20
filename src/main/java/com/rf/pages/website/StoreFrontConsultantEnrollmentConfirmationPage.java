@@ -13,7 +13,7 @@ public class StoreFrontConsultantEnrollmentConfirmationPage extends RFWebsiteBas
 	}
 
 	public StoreFrontConsultantPage clickOnRodanFieldsImage(){
-		driver.findElement(RODAN_AND_FIELDS_IMG_LOC).click();
+		driver.click(RODAN_AND_FIELDS_IMG_LOC);
 		return new StoreFrontConsultantPage(driver);
 	}
 }

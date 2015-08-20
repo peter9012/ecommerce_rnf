@@ -31,7 +31,7 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void closePopUp(){
-		driver.findElement(By.cssSelector("a[title='Close']")).click();
+		driver.click(By.cssSelector("a[title='Close']"));
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
@@ -74,11 +74,11 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void clickEnrollmentNextBtn(){
-		driver.findElement(By.id("enrollment-next-button")).click();
+		driver.click(By.id("enrollment-next-button"));
 	}
 
 	public void acceptTheVerifyYourShippingAddressPop(){
-		driver.findElement(By.cssSelector("input[id='QAS_RefineBtn']")).click();
+		driver.click(By.cssSelector("input[id='QAS_RefineBtn']"));
 	}
 
 	public void enterCardNumber(String cardNumber){
@@ -109,29 +109,29 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void checKThePoliciesAndProceduresCheckBox(){
-		driver.findElement(By.xpath("//input[@id='policies-check']/..")).click();
+		driver.click(By.xpath("//input[@id='policies-check']/.."));
 	}
 
 	public void checKTheIAcknowledgeCheckBox(){
-		driver.findElement(By.xpath("//input[@id='acknowledge-check']/..")).click();
+		driver.click(By.xpath("//input[@id='acknowledge-check']/.."));
 	}
 
 	public void checKTheTermsAndConditionsCheckBox(){
-		driver.findElement(By.xpath("//input[@id='terms-check']/..")).click();
+		driver.click(By.xpath("//input[@id='terms-check']/.."));
 	}
 
 	public void checKTheIAgreeCheckBox(){
-		driver.findElement(By.xpath("//input[@id='electronically-check']/..")).click();
+		driver.click(By.xpath("//input[@id='electronically-check']/.."));
 	}
 
 	public void clickOnChargeMyCardAndEnrollMeBtn(){
-		driver.findElement(By.cssSelector("input[id='enroll-button']")).click();
+		driver.click(By.cssSelector("input[id='enroll-button']"));
 	}
 
 	public StoreFrontConsultantEnrollmentConfirmationPage clickOnConfirmAutomaticPayment() throws InterruptedException{
 		//driver.waitForElementToBeClickable(By.cssSelector("input[id='enroll']"), 10);
 		driver.waitForElementPresent(By.cssSelector("input[id='enroll']"));
-		driver.findElement(By.cssSelector("input[id='enroll']")).click();
+		driver.click(By.cssSelector("input[id='enroll']"));
 		return new StoreFrontConsultantEnrollmentConfirmationPage(driver);
 
 	}

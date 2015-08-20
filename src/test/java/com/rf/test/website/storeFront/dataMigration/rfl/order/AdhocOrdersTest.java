@@ -103,7 +103,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"Total SV on AdHoc Orders Template is NOT "+totalSV);
 
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -177,7 +177,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"Total SV on AdHoc Orders Template is NOT "+totalSV);
 
-		logout();
+		
 		s_assert.assertAll();
 
 	}
@@ -249,7 +249,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"Tax on AdHoc Orders Template is NOT "+tax);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
 		
-		logout();
 		s_assert.assertAll();
 	}	
 

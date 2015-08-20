@@ -128,34 +128,40 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForElementPresent(By locator) {
 		int timeout = 30;
 		turnOffImplicitWaits();
-		for(int i=1;i<=timeout;i++){			
-			if(driver.findElements(locator).size()==0){
-				pauseExecutionFor(1000);
+		for(int i=1;i<=timeout;i++){		
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
 				continue;
-			}else{
-				turnOnImplicitWaits();
-				break;
-			}			
-			
+			}
 		}
-		waitForElementTobeEnabled(locator);
+
 	}
-	
+
 	public void quickWaitForElementPresent(By locator){
 		int timeout = 10;
 		turnOffImplicitWaits();
-		for(int i=1;i<=timeout;i++){			
-			if(driver.findElements(locator).size()==0){
-				pauseExecutionFor(1000);
+		for(int i=1;i<=timeout;i++){
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
 				continue;
-			}else{
-				turnOnImplicitWaits();
-				break;
-			}			
-			
+			}
 		}
 	}
-		
+
 	public void waitForElementNotPresent(By locator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
@@ -166,37 +172,43 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			e.getStackTrace();
 		}		
 	}
-	
+
 	public void waitForLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		logger.info("Waiting for loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
-			if(driver.findElements(locator).size()==1){
-				pauseExecutionFor(1000);
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("loading image disappears");
+					break;
+				}			
+			}catch(Exception e){
 				continue;
-			}else{
-				turnOnImplicitWaits();
-				logger.info("loading image disappears");
-				break;
-			}			
-			
+			}
 		}
-		
+
 	}
-	
+
 	public void waitForSpinImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: none;')]");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
-			if(driver.findElements(locator).size()==1){
-				pauseExecutionFor(1000);
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
 				continue;
-			}else{
-				turnOnImplicitWaits();
-				break;
-			}			
-			
+			}
 		}
 	}
 
@@ -225,8 +237,13 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void click(By locator) {		
-		waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
-		findElement(locator).click();
+		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
+		try{
+			findElement(locator).click();
+			pauseExecutionFor(1000);
+		}catch(Exception e){
+			retryingFindClick(locator);
+		}
 	}
 
 	public void type(By locator, String input) {
@@ -485,7 +502,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public boolean retryingFindClick(By by) {
 		boolean result = false;
 		int attempts = 0;
-		while (attempts < 3) {
+		while (attempts < 5) {
 			try {
 				driver.findElement(by).click();
 				result = true;
@@ -493,6 +510,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			} catch (StaleElementReferenceException e) {
 			}
 			attempts++;
+			pauseExecutionFor(1000);
 		}
 		return result;
 	}

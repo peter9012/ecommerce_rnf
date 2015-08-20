@@ -20,7 +20,7 @@ public class StoreFrontEnrollNowPage extends RFWebsiteBasePage{
 	public void searchCID(String cid){
 		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
 		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys(cid);
-		driver.findElement(By.cssSelector("input[id='search-sponsor-button']")).click();
+		driver.click(By.cssSelector("input[id='search-sponsor-button']"));
 	}
 	
 	public void mouseHoverSponsorDataAndClickContinue(){
@@ -30,21 +30,21 @@ public class StoreFrontEnrollNowPage extends RFWebsiteBasePage{
 	
 	public void selectEnrollmentKitPage(String kitPrice,String regimenName){
 		kitPrice =  kitPrice.toUpperCase();
-		driver.findElement(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]")).click();
+		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		regimenName = regimenName.toUpperCase();
-		driver.findElement(By.xpath("//div[@class='regimen-name' and text()='"+regimenName+"']")).click();
-		driver.findElement(By.cssSelector("input[value='Next']")).click();
+		driver.click(By.xpath("//div[@class='regimen-name' and text()='"+regimenName+"']"));
+		driver.click(By.cssSelector("input[value='Next']"));
 	}
 	
 	public StoreFrontCreateAccountPage chooseEnrollmentOption(String option){
 		option = option.toUpperCase();
 		if(option.equalsIgnoreCase("EXPRESS ENROLLMENT")){
-			driver.findElement(By.id("express-enrollment")).click();
+			driver.click(By.id("express-enrollment"));
 		}
 		else{
 			// to do
 		}
-		driver.findElement(By.cssSelector("input[value='Next']")).click();
+		driver.click(By.cssSelector("input[value='Next']"));
 		return new StoreFrontCreateAccountPage(driver);
 	}
 }

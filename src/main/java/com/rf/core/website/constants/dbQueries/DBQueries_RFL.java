@@ -4,6 +4,7 @@ public class DBQueries_RFL {
 
 
 	//RFL Queries
+	public static String GET_EMAILID_FROM_ACCOUNTID = "select top 1 * from dbo.Accounts where accountID='%s'";
 	public static String GET_ACCOUNT_DETAILS_QUERY_TST4 = "select top 1 * from dbo.Accounts where emailAddress = '%s'";
 	public static String GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4 = "select count(*) as count from dbo.AccountAddresses where addressTypeId = '2' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_BILLING_ADDRESS_COUNT_QUERY_TST4 = "select count(*) as count from dbo.AccountAddresses where addressTypeId = '3' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";

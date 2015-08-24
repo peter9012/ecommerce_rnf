@@ -34,7 +34,8 @@ public class ExcelReader {
 
 			ExcelWBook = new XSSFWorkbook(ExcelFile);
 
-			ExcelWSheet = ExcelWBook.getSheet(SheetName);
+			//ExcelWSheet = ExcelWBook.getSheet(SheetName);
+			ExcelWSheet = ExcelWBook.getSheetAt(0);
 
 			int startRow = 1;
 

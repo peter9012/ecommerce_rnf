@@ -28,7 +28,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private final By ORDER_GRAND_TOTAL_BOTTOM_LOC = By.xpath("//li[@class='grand-total']/span");
 	private final By SKU_VALUE_OF_ITEM_IN_ORDER_LOC = By.xpath("//td[text()='Items In Order']//following::img[1]//ancestor::td/span");
 	private final By ITEM_ORDER_DESCRIPTION_LOC = By.xpath("//td[text()='Items In Order']//following::img[1]//ancestor::td");
-	private final By SHIPPING_ADDRESS_LOC = By.xpath("//strong[text()='Shipping Address:']/following::p[1]");
 	private final By ORDERS_PAGE_PCPERKS_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Order details:')]");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
@@ -44,6 +43,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyOrdersPageIsDisplayed(){
+		driver.waitForPageLoad();
 		driver.waitForElementPresent(ORDERS_PAGE_TEMPLATE_HEADER_LOC);
 		return driver.getCurrentUrl().contains(TestConstants.ORDERS_PAGE_SUFFIX_URL);
 	}
@@ -365,12 +365,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyAutoShipTemplateTax(String taxDB){
-		String tax = driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText();
+		String tax = driver.findElement(By.id("crpTotalTax")).getText();
 		return tax.trim().substring(1).contains(taxDB);
 	}
 
 	public String getTaxAmountFromAutoshipTemplate(){
-		String tax = driver.findElement(By.xpath("//span[@id='crpTotalTax']")).getText();
+		String tax = driver.findElement(By.id("crpTotalTax")).getText();
 		return tax.trim().substring(1);
 	}
 

@@ -32,14 +32,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 
 	private String RFL_DB = null;
-	private String RFO_DB = null;		
-	
+		
 	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 	
 	@Test
 	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -112,7 +110,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testAddShippingAddressInAutoshipTemplate_2031() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -174,7 +171,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testAddShippingProfileMyAccountFutureAutoshipNotSelected_4461() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -259,7 +255,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testChangeDefaultShippingProfile_2094() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -298,6 +293,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
 		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
 		//--------------- Verify that Newly added Shipping is listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
@@ -327,7 +323,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditShippingProfileAdhocCheckoutNoCheckbox_4462() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -397,7 +392,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testEditCheckoutBillingProfileAndAddNewBillingAddressNotCard_4464() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -449,7 +443,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testSelectOtherShippingInfoBySelectingRadioButton_4463() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
@@ -525,7 +518,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	public void testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
@@ -553,7 +545,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -562,7 +553,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-
 		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();

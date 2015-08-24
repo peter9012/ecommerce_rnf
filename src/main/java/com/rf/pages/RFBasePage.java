@@ -1,7 +1,5 @@
 package com.rf.pages;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -10,9 +8,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class RFBasePage {
 	public WebDriver webdriver;
-	private static final Logger logger = LogManager
-			.getLogger(RFBasePage.class.getName());
-
+	
 	public RFBasePage(WebDriver driver) {
 		webdriver = driver;
 	}

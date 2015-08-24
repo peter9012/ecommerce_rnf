@@ -733,50 +733,30 @@ public class DBQueries_RFO {
 	public static String GET_ACTIVE_RC_USER_HAVING_FAILED_ORDERS_RFO = 
 
 			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
 
-				"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED "+
+				   "BEGIN TRANSACTION "+
 
-				"BEGIN TRANSACTION "+
-
-				"DECLARE @Orderid BIGINT "+
-
-				"DECLARE @Accountid BIGINT "+
-
-				"SELECT TOP 1 "+
-				"@Orderid = O.OrderID , "+
-				"@Accountid = AB.AccountID "+
-				"FROM    Hybris.Orders AS O "+
-				"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
-				"WHERE   AB.CountryID = 236 "+
-				"AND O.OrderTypeID = 1 "+/*Retail*/
-				"AND O.OrderStatusID = 1 "+ /*Failed*/
-				/*Active Accounts*/
-				"AND NOT EXISTS ( SELECT 1 "+
-				"FROM   RFO_Accounts.AccountRF AS ar "+
-				"WHERE  ar.Active = 0 "+
-				"AND ar.HardTerminationDate IS NOT NULL "+
-				"AND ar.AccountID = AB.AccountID ) "+
-				"ORDER BY NEWID() "+
-				"SELECT  Username "+
-				"FROM    RFOperations.[Security].[AccountSecurity] "+
-				"WHERE   AccountID = @Accountid "+
-				"SELECT  * "+
-				"FROM    Hybris.Orders AS O "+
-				"WHERE   O.OrderID = @Orderid "+
-
-								"SELECT  OI.* , "+
-								"PB.* "+
-								"FROM    Hybris.Orders AS O "+
-								"JOIN    Hybris.OrderItem AS OI ON OI.OrderId = O.OrderID "+
-								"JOIN    Hybris.ProductBase AS PB ON PB.productID = OI.ProductID "+
-								"WHERE   O.OrderID = @Orderid "+
-								"SELECT  * "+
-								"FROM    Hybris.OrderShipment AS OS "+
-								"WHERE   OS.OrderID = @Orderid "+
-
-								"SELECT  * "+
-								"FROM    Hybris.OrderShipmentPackageItem AS OSPI "+
-								"WHERE   OSPI.OrderID = @Orderid ";
+				   "SELECT TOP 1 "+
+				   "ab.AccountID , "+
+				   "[as].Username "+
+				   "FROM    RFO_Accounts.AccountBase AS ab "+
+				   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+				   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+				   "WHERE   ab.CountryID = 236 "+
+				   "AND ab.AccountTypeID = 3 "+
+				   "AND NOT EXISTS ( SELECT 1 "+
+				   "FROM   RFO_Accounts.AccountRF AS ar "+
+				   "WHERE  ar.Active = 0 "+
+				   "AND ar.HardTerminationDate IS NOT NULL "+
+				   "AND ar.AccountID = ab.AccountID )  "+
+				   /*Pending/Submitted Orders */
+				   "AND EXISTS ( SELECT 1 "+
+				   "FROM   Hybris.Orders AS o "+
+				   "WHERE  o.AccountID = ab.AccountID "+
+				   "AND o.OrderTypeID = 1 "+ /*Retail*/
+				   "AND o.OrderStatusID = 1) "+ 
+				   "ORDER BY NEWID()";
 
 	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4296_RFO =
 			"SELECT  * "+
@@ -1369,43 +1349,27 @@ public class DBQueries_RFO {
 			   "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO = 
-			"USE RFOperations "+
-
-
-			   "SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-
-			   "BEGIN TRANSACTION "+
-			   "SELECT TOP 1 "+
-			   "ab.AccountID , "+
-			   "AT.Name AS AccountType , "+
-			   "[as].Username "+
-			   "FROM    RFO_Accounts.AccountBase AS ab "+
-			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
-			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 3 "+
-			   /*Active Accounts*/
-			   "AND NOT EXISTS ( SELECT 1 "+
-			   "FROM   RFO_Accounts.AccountRF AS ar "+
-			   "WHERE  ar.Active = 0 "+
-			   "AND ar.HardTerminationDate IS NOT NULL "+
-			   "AND ar.AccountID = ab.AccountID ) "+
-			   /*Active Template*/
-			   "AND EXISTS ( SELECT 1 "+
-			   "FROM   Hybris.Autoship AS A "+
-			   "WHERE  A.AccountID = ab.AccountID "+
-			   "AND A.Active = 1 ) "+
-			   /*Submitted orders*/
-			   "AND EXISTS ( SELECT 1 "+
-			   "FROM   Hybris.Orders AS O "+
-			   "WHERE  O.AccountID = ab.AccountID "+
-			   "AND O.OrderStatusID = 2) "+  /*Submitted*/ 
-			   /*Failed orders*/
-			   "AND EXISTS ( SELECT 1 "+
-			   "FROM   Hybris.Orders AS O "+
-			   "WHERE  O.AccountID = ab.AccountID "+
-			   "AND O.OrderStatusID = 1) "+  /*Failed*/ 
-			   "ORDER BY NEWID() ";
+			"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = 236 "+
+					"AND ab.AccountTypeID = 3  "+
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+					/*Pending/Submitted Orders */
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Orders AS o "+
+					"WHERE  o.AccountID = ab.AccountID "+
+					"AND o.OrderTypeID = 1 "+ 
+					"AND o.OrderStatusID = 1 /*Failed*/) "+ 
+					"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
 			""; // Waiting for query

@@ -13,8 +13,7 @@ public class StoreFrontCartAutoShipPage extends RFWebsiteBasePage{
 	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//input[@value='Update more info']");
 	
 	public StoreFrontCartAutoShipPage(RFWebsiteDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
+		super(driver);		
 	}
 
 	

@@ -8,18 +8,11 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.annotations.AfterGroups;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.asserts.IAssert;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.core.utils.DBUtil;
 import com.rf.core.utils.HtmlLogger;
-import com.rf.core.utils.SoftAssert;
 import com.rf.test.base.RFBaseTest;
 
 /**

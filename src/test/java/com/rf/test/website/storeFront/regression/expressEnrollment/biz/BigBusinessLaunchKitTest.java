@@ -6,7 +6,7 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
+public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 	private StoreFrontHomePage storeFrontHomePage;
 
@@ -24,8 +24,7 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_CA, TestConstants.REGIMEN_NAME_REDEFINE);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -35,7 +34,7 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{
@@ -51,22 +50,19 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -84,8 +80,8 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		
+		
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_REVERSE);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
@@ -95,7 +91,7 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}
@@ -112,25 +108,19 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -148,8 +138,8 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		
+		
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_UNBLEMISH);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -159,7 +149,7 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{
@@ -175,25 +165,19 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -210,9 +194,8 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.clickOnOurEnrollNowLink();		
+		
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_SOOTHE);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -222,7 +205,7 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{
@@ -238,25 +221,19 @@ public class BigBusinessLaunchTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
+		
 		s_assert.assertAll();
 	}
 

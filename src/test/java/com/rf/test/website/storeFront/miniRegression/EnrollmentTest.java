@@ -48,7 +48,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}
@@ -87,18 +87,64 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	//Hybris Project-3920 :: Version : 1 :: Verify creating crp autoship from My Account under .biz site 
 	@Test
 	public void testCreatingCRPAutoshipUnderBizSite_3920() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String consultantBizURL = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantBizURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.PASSWORD);  
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		driver.get(consultantBizURL);		
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		if(country.equalsIgnoreCase("CA")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}
+		else if(country.equalsIgnoreCase("US")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_US, TestConstants.REGIMEN_NAME);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+			storeFrontHomePage.enterCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		}
+		storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+			
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -115,7 +161,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnAccountInfoLinkLeftSidePannel();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -139,7 +184,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}
@@ -184,7 +229,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();	
-		storeFrontHomePage.searchCID(TestConstants.CIDCA);
+		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_CA, TestConstants.REGIMEN_NAME_REVERSE);		
@@ -195,7 +240,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}
@@ -363,9 +408,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
+	@Test
 	public void testEnrollPulsefromMyAmount_135() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
@@ -381,7 +428,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}

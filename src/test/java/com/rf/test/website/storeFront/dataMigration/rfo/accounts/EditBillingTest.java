@@ -270,7 +270,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	// EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	// Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future a
 	@Test
-	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected() throws InterruptedException{		
+	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();

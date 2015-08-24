@@ -448,7 +448,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
 		List<Map<String, Object>> orderNumberList =  null;		
-		String orderNumberDB = null;
 		String consultantEmail = null;
 		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFL,RFL_DB);
 		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "UserName");

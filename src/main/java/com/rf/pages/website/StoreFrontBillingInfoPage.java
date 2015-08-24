@@ -1,14 +1,11 @@
 package com.rf.pages.website;
 
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +15,6 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
-	private final By DEFAULT_ADDRESS_RADIO_BTN_LOC = By.cssSelector("ul[id='multiple-billing-profiles']>li:nth-child(1) input[name='bill-card']");
 	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and text()='Billing info']");
 	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By DEFAULT_BILLING_ADDRESSES_LOC = By.xpath("//input[@class='paymentAddress' and @checked='checked']/ancestor::li[1]/p[1]");
@@ -86,7 +82,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 
 	public void enterNewBillingCardNumber(String cardNumber){
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//td[@id='credit-cards']"));		
+		driver.waitForElementPresent(By.id("credit-cards"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);

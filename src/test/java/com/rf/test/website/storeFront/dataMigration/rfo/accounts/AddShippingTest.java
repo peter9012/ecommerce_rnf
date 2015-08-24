@@ -12,6 +12,7 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -131,7 +132,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -293,6 +294,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
 		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
 		//--------------- Verify that Newly added Shipping is listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
@@ -317,6 +319,268 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();		
 	}
+
+	//Hybris Project-4464 EDIT the billing profile and add a new billing address (not card)	
+	@Test
+	public void testEditCheckoutBillingProfileAndAddNewBillingAddressNotCard_4464() throws InterruptedException {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		String newBillingAddressLine1 = TestConstants.NEW_ADDRESS_LINE1_US+randomNum;
+		String lastName = "ln";
+		storeFrontUpdateCartPage.enterNewBillingAddressName(TestConstants.NEW_ADDRESS_NAME_US+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingAddressLine1(newBillingAddressLine1);
+		storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontUpdateCartPage.selectNewBillingAddressState();
+		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewAddressGetsAssociatedWithTheDefaultBillingProfile(newBillingAddressLine1), "New Address has not got associated with the billing profile");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4462 ADD/EDIT a shipping profile from AD-HOC CHECKOUT page. (There is NO checkbox.)
+	@Test
+	public void testEditShippingProfileAdhocCheckoutNoCheckbox_4462() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFL();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		storeFrontUpdateCartPage.editShippingAddress();
+		s_assert.assertFalse(storeFrontUpdateCartPage.isUseThisShippingProfileFutureAutoshipChkboxVisible(),"Autoship Checkbox Present");
+
+		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String lastName = "test";
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address doesnot contain new shipping address");
+
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4463 select any other shipping info by selecting radio button 'ship to this address'
+	@Test
+	public void testSelectOtherShippingInfoBySelectingRadioButton_4463() throws InterruptedException	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "ln";
+		String accountID = null;
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+
+		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the default shipping profile address by verifying by name------------------------------------------------------------		
+
+		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address contains the default shipping address");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+
+		//------------------ Verify that adhoc orders template contains the newly created shipping profile address by verifying by name------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address doesn't contains new shipping address when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		s_assert.assertAll();	
+	}
+
+	//select any other shipping info by selecting radio button 'ship to this address' via Next CRP
+	@Test
+	public void testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp() throws InterruptedException {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "ln";
+		String accountID = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+
+		logger.info("login is successful"); 
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template contains the default shipping profile address by verifying by name------------------------------------------------------------		
+
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address doesn't contains the default shipping address");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't  contains the newly created shipping profile address by verifying by name------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address contains new shipping address when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		s_assert.assertAll();
+
+	}
+
 
 }
 

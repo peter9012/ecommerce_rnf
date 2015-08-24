@@ -75,9 +75,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnShopLink(){
-		driver.waitForElementPresent(By.xpath("//a[@id='our-products']"));
-		driver.click(By.xpath("//a[@id='our-products']"));
-		logger.info("Shop link clicked "+"//a[@id='our-products']");
+		driver.waitForElementPresent(By.id("our-products"));
+		driver.click(By.id("our-products"));
+		logger.info("Shop link clicked ");
 	}
 
 	public void clickOnAllProductsLink(){
@@ -121,17 +121,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
-		driver.findElement(By.xpath("//input[@id='quantity0']")).clear();
-		driver.findElement(By.xpath("//input[@id='quantity0']")).sendKeys(qty);
+		driver.waitForElementPresent(By.id("quantity0"));
+		driver.findElement(By.id("quantity0")).clear();
+		driver.findElement(By.id("quantity0")).sendKeys(qty);
+		logger.info("quantity added is "+qty);
 		driver.click(By.xpath("//a[@class='updateLink']"));
 		logger.info("Update button clicked after adding quantity");
 		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='submitForm']"));
-		driver.click(By.xpath("//input[@id='submitForm']"));
+		driver.waitForElementPresent(By.id("submitForm"));
+		driver.click(By.id("submitForm"));
 		logger.info("Next button after adding quantity clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -174,13 +175,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 		String firstName="RCUser";
 		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
-		driver.findElement(By.xpath("//input[@id='first-Name']")).sendKeys(firstName);
-		driver.findElement(By.xpath("//input[@id='last-name']")).sendKeys(lastName);
-		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(emailAddress+"\t");
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.xpath("//input[@id='password']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.xpath("//input[@id='the-password-again']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);		
-		driver.click(By.xpath("//input[@id='next-button']"));		
+		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.click(By.id("next-button"));		
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -191,13 +197,19 @@ public class RFWebsiteBasePage extends RFBasePage{
 		String firstName="PCUser";
 		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
-		driver.findElement(By.xpath("//input[@id='first-Name']")).sendKeys(firstName);
-		driver.findElement(By.xpath("//input[@id='last-name']")).sendKeys(lastName);
-		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(emailAddress+"\t");
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.xpath("//input[@id='password']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.xpath("//input[@id='the-password-again']")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
 		logger.info("Create New Account button clicked");		
 	}
@@ -220,44 +232,61 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void enterMainAccountInfo(){
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.findElement(By.xpath("//input[@id='address.line1']")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
-			driver.findElement(By.xpath("//input[@id='address.townCity']")).sendKeys(TestConstants.CITY_CA);
-			Select select = new Select(driver.findElement(By.xpath("//form[@id='addressForm']//select[@id='state']")));
-			select.selectByVisibleText(TestConstants.PROVINCE_CA);
-			driver.findElement(By.xpath("//input[@id='address.postcode']")).sendKeys(TestConstants.POSTAL_CODE_CA);
-			driver.findElement(By.xpath("//input[@id='address.phonenumber']")).sendKeys(TestConstants.PHONE_NUMBER);
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
+			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA);
+			logger.info("City entered is "+TestConstants.CITY_CA);
+			driver.click(By.id("state"));
+			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+			driver.click(By.xpath("//select[@id='state']/option[2]"));
+			logger.info("state selected");
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_CA);
+			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_CA);
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER);
+			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER);
 		}
-		else{
-			//TODO the US part
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.NEW_ADDRESS_LINE1_US);
+			logger.info("Address line 1 entered is "+TestConstants.NEW_ADDRESS_LINE1_US);
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.NEW_ADDRESS_CITY_US);
+			driver.click(By.id("state"));
+			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+			driver.click(By.xpath("//select[@id='state']/option[2]"));
+			logger.info("state selected");
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			logger.info("postal code entered is "+TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+			logger.info("phone number entered is "+TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
+
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//a[@id='continue-no-sponsor']"));
-		driver.click(By.xpath("//a[@id='continue-no-sponsor']"));	
+		driver.waitForElementPresent(By.id("continue-no-sponsor"));
+		driver.click(By.id("continue-no-sponsor"));	
+		logger.info("continue without sponsor link clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnNextButtonAfterSelectingSponsor() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='saveAccountAddress']"));
-		driver.click(By.xpath("//input[@id='saveAccountAddress']"));
+		driver.waitForElementPresent(By.id("saveAccountAddress"));
+		driver.click(By.id("saveAccountAddress"));
+		logger.info("Next button after selecting sponsor is clicked");
 		driver.waitForLoadingImageToDisappear();
-
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
-			driver.click(By.xpath("//input[@id='QAS_AcceptOriginal']"));
-
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept as original button clicked");
+			driver.waitForLoadingImageToDisappear();
 		}catch(NoSuchElementException e){
 
-		}
-
-		driver.waitForLoadingImageToDisappear();
+		}		
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.xpath("//input[@id='saveShippingInfo']"));
-		action.moveToElement(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).click(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).build().perform();
+		driver.waitForElementPresent(By.id("saveShippingInfo"));
+		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -265,30 +294,34 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void enterNewBillingCardNumber(String cardNumber){
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
+		logger.info("Billing card number entered is "+cardNumber);
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
-		driver.waitForElementPresent(By.xpath("//input[@id='card-name']"));
-		driver.findElement(By.xpath("//input[@id='card-name']")).clear();
-		driver.findElement(By.xpath("//input[@id='card-name']")).sendKeys(nameOnCard);
+		driver.waitForElementPresent(By.id("card-name"));
+		driver.findElement(By.id("card-name")).clear();
+		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
+		logger.info("card name entered is "+nameOnCard);
 	}
 
 	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.xpath("//select[@id='expiryMonth']"));
+		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.xpath("//select[@id='expiryYear']"));
+		driver.click(By.id("expiryYear"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		logger.info("expiration date is selected");
 	}
 
 	public void enterNewBillingSecurityCode(String securityCode){
 		driver.type(By.id("security-code"), securityCode);
+		logger.info("security code entered is "+securityCode);
 	}
 
 	public void selectNewBillingCardAddress() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//*[@id='addressBookdropdown']"));
-		driver.click(By.xpath("//*[@id='addressBookdropdown']"));
+		driver.waitForElementPresent(By.id("addressBookdropdown"));
+		driver.click(By.id("addressBookdropdown"));
 		driver.click(By.xpath("//*[@id='addressBookdropdown']/option[1]"));
 		logger.info("New Billing card address selected");
 	}
@@ -320,8 +353,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='placeOrderButton']"));
-		driver.click(By.xpath("//input[@id='placeOrderButton']"));
+		driver.waitForElementPresent(By.id("placeOrderButton"));
+		driver.click(By.id("placeOrderButton"));
 		logger.info("Place order button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();		
@@ -348,6 +381,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]"));
 		driver.click(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]"));
 		driver.click(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]/following::li[1]/form/div"));
+		logger.info("filter done for low to high price");
 	}
 
 	public boolean verifyPCPerksTermsAndConditionsPopup() throws InterruptedException{
@@ -369,15 +403,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean selectNewBillingCardExpirationDateAsExpiredDate()	 {
-		driver.click(By.xpath("//select[@id='expiryMonth']"));
+		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		driver.click(By.xpath("//select[@id='expiryYear']"));
+		driver.click(By.id("expiryYear"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
-		driver.click(By.xpath("//select[@id='expiryMonth']"));
+		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		//driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).;
 		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
 	}
 
@@ -391,7 +424,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 	}
 	public void clearPasswordField(){
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).clear();
+		driver.findElement(By.id("new-password-account")).clear();
+		logger.info("password field cleared");
 	}
 
 	public boolean recurringMonthlyChargesSection() {
@@ -400,8 +434,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean pulseSubscriptionTextbox() {
-		driver.waitForElementPresent(By.xpath("//input[@id='webSitePrefix']"));
-		return driver.findElement(By.xpath("//input[@id='webSitePrefix']")).isEnabled();
+		driver.waitForElementPresent(By.id("webSitePrefix"));
+		return driver.findElement(By.id("webSitePrefix")).isEnabled();
 	}
 
 	public void clickOnAllowMySpouseOrDomesticPartnerCheckbox() {
@@ -429,10 +463,32 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@value='Request a sponsor']"));
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public void clickOKOnSponsorInformationPopup(){
 		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
 		driver.waitForElementPresent(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
 		driver.click(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
+	}
+
+	public void clickYesIWantToJoinPCPerksCB(){
+		driver.waitForElementPresent(By.id("pc-customer2-div-order-summary"));
+		driver.click(By.id("pc-customer2-div-order-summary"));
+	}
+
+	public void checkIAcknowledgePCAccountCheckBox(){
+		driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
+		driver.click(By.xpath("//input[@id='Terms2']/.."));  
+		logger.info("I Acknowledge PC Account Checkbox selected");
+	}
+
+	public void checkPCPerksTermsAndConditionsCheckBox(){
+		driver.waitForElementPresent(By.xpath("//input[@id='Terms3']/.."));
+		driver.click(By.xpath("//input[@id='Terms3']/.."));  
+		logger.info("PC Perks terms and condition checkbox selected");
+	}
+
+	public boolean isWelcomePCPerksMessageDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]")));
 	}
 }

@@ -19,7 +19,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL_CA, TestConstants.REGIMEN_NAME_REDEFINE);		
@@ -30,7 +30,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{
@@ -73,7 +73,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL_CA, TestConstants.REGIMEN_NAME_REVERSE);		
@@ -84,7 +84,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{
@@ -127,8 +127,8 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		
+		
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PERSONAL_CA, TestConstants.REGIMEN_NAME_UNBLEMISH);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -138,7 +138,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
 			storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-			storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
 		}else{

@@ -8,6 +8,7 @@ public class TestConstants {
 	 */
 	public static final String CID = "06362865";
 	public static final String KIT_PRICE_CA = "CAD$ 445";
+	public static final String KIT_PRICE_US = "$395";
 	public static final String REGIMEN_NAME = "Redefine";
 	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
 	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
@@ -15,6 +16,12 @@ public class TestConstants {
 	public static final String KIT_PRICE_BIG_BUSINESS_CA = "CAD$ 795";
 	public static final String KIT_PRICE_PERSONAL_CA = "CAD$ 445";
 	public static final String KIT_PRICE_PORTFOLIO_CA = "CAD$ 52";
+	
+	public static final String KIT_PRICE_EXPRESS_US = "$995";
+	public static final String KIT_PRICE_BIG_BUSINESS_US = "$695";
+	public static final String KIT_PRICE_PERSONAL_US = "$395";
+	public static final String KIT_PRICE_PORTFOLIO_US = "$45";
+	
 
 	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
@@ -43,7 +50,18 @@ public class TestConstants {
 	public static final String CIDCA = "989828";
 	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
-
+	
+	public static final String PROVINCE_YUKON = "Yukon";
+	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
+	public static final String PROVINCE_PRINCE_EDWARD_ISLAND = "Prince Edward Island";
+	public static final String PROVINCE_NEW_BRUNSWICK = "New Brunswick";
+	public static final String PROVINCE_NOVA_SCOTIA = "Nova Scotia";
+	public static final String PROVINCE_ONTARIO     = "Ontario";
+	public static final String PROVINCE_MANITOBA = "Manitoba";
+	public static final String PROVINCE_SASKATCHEWAN = "Saskatchewan";
+	public static final String PROVINCE_ALBERTA = "Alberta";
+	public static final String PROVINCE_BRITISH_COULMBIA = "British Columbia";
+	
 
 	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";

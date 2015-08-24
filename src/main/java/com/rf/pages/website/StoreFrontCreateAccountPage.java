@@ -78,34 +78,34 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void acceptTheVerifyYourShippingAddressPop(){
-		driver.click(By.cssSelector("input[id='QAS_RefineBtn']"));
+		driver.click(By.id("QAS_RefineBtn"));
 	}
 
 	public void enterCardNumber(String cardNumber){
-		driver.findElement(By.cssSelector("input[id='card-nr']")).sendKeys(cardNumber);
+		driver.findElement(By.id("card-nr")).sendKeys(cardNumber);
 	}
 
 	public void enterNameOnCard(String nameOnCard){
-		driver.findElement(By.cssSelector("input[id='card-name']")).sendKeys(nameOnCard);
+		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
 	}
 
 	public void selectExpirationDate(String month,String year){
-		Select monthDD = new Select(driver.findElement(By.cssSelector("select[id='expiryMonth']")));
-		Select yearDD = new Select(driver.findElement(By.cssSelector("select[id='expiryYear']")));
+		Select monthDD = new Select(driver.findElement(By.id("expiryMonth")));
+		Select yearDD = new Select(driver.findElement(By.id("expiryYear")));
 		monthDD.selectByVisibleText(month.toUpperCase());
 		yearDD.selectByVisibleText(year);		
 	}
 
 	public void enterSecurityCode(String securityCode){
-		driver.findElement(By.cssSelector("input[id='security-code']")).sendKeys(securityCode);
+		driver.findElement(By.id("security-code")).sendKeys(securityCode);
 	}
 
 	public void enterSocialInsuranceNumber(String sin){
-		driver.findElement(By.cssSelector("input[id='S-S-N']")).sendKeys(sin);
+		driver.findElement(By.id("S-S-N")).sendKeys(sin);
 	}
 
 	public void enterNameAsItAppearsOnCard(String nameOnCard){
-		driver.findElement(By.cssSelector("input[id='name-on-card']")).sendKeys(nameOnCard);
+		driver.findElement(By.id("name-on-card")).sendKeys(nameOnCard);
 	}
 
 	public void checKThePoliciesAndProceduresCheckBox(){
@@ -125,13 +125,13 @@ public class StoreFrontCreateAccountPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnChargeMyCardAndEnrollMeBtn(){
-		driver.click(By.cssSelector("input[id='enroll-button']"));
+		driver.click(By.id("enroll-button"));
 	}
 
 	public StoreFrontConsultantEnrollmentConfirmationPage clickOnConfirmAutomaticPayment() throws InterruptedException{
 		//driver.waitForElementToBeClickable(By.cssSelector("input[id='enroll']"), 10);
-		driver.waitForElementPresent(By.cssSelector("input[id='enroll']"));
-		driver.click(By.cssSelector("input[id='enroll']"));
+		driver.waitForElementPresent(By.id("enroll"));
+		driver.click(By.id("enroll"));
 		return new StoreFrontConsultantEnrollmentConfirmationPage(driver);
 
 	}

@@ -3,24 +3,19 @@ package com.rf.pages.website;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import com.rf.core.driver.website.RFWebsiteDriver;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class StoreFrontEnrollNowPage extends RFWebsiteBasePage{
-	private static final Logger logger = LogManager
-			.getLogger(StoreFrontEnrollNowPage.class.getName());
-	
+		
 	private Actions actions;
 	
 	public StoreFrontEnrollNowPage(RFWebsiteDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
+		super(driver);		
 	}
 
 	public void searchCID(String cid){
-		driver.waitForElementPresent(By.cssSelector("input[id='sponserparam']"));
-		driver.findElement(By.cssSelector("input[id='sponserparam']")).sendKeys(cid);
-		driver.click(By.cssSelector("input[id='search-sponsor-button']"));
+		driver.waitForElementPresent(By.id("sponserparam"));
+		driver.findElement(By.id("sponserparam")).sendKeys(cid);
+		driver.click(By.id("search-sponsor-button"));
 	}
 	
 	public void mouseHoverSponsorDataAndClickContinue(){

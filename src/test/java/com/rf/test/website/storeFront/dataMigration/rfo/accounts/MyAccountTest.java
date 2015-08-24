@@ -224,7 +224,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//assert for grand total with RFO
 		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
 		DecimalFormat dff = new DecimalFormat("#.00");
-		orderGrandTotalDB = dff.format((Number) getValueFromQueryResult(orderGrandTotalList, "AmountToBeAuthorized")); 
+		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(orderGrandTotalList, "AmountToBeAuthorized"))); 
 		logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
 

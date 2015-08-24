@@ -7,12 +7,12 @@
 	<test name="RegressionTest">
 		<classes>
 			<!-- ACCOUNTS -->
-			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class>
+			<!-- <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class> -->
 			
-			<!-- bizConsultantEnrollment -->
-			<class name="com.rf.test.website.storeFront.regression.bizConsultantEnrollment.BigBusinessLaunchKitTest"></class>
-			<class name="com.rf.test.website.storeFront.regression.bizConsultantEnrollment.PersonalResultsKitTest"></class>
-			<class name="com.rf.test.website.storeFront.regression.bizConsultantEnrollment.RFExpressBusinessKitTest"></class>
+			<!-- express enrollment biz-->
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"></class>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"></class>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"></class>
 		</classes>
 	</test>
 </suite>

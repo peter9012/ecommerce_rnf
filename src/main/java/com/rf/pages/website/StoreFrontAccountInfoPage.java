@@ -25,11 +25,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private String ACCOUNT_INFO_PROVINCE_LOC = "//select[@id='state']//option[text()='%s']";
 	private final By ACCOUNT_INFO_POSTAL_CODE_LOC = By.xpath("//input[@id='postal-code']");
 	private final By ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC = By.xpath("//input[@id='phonenumber']");
-	private final By ACCOUNT_USERNAME_LOC = By.xpath("//input[@id='username-account']");
 	private final By ACCOUNT_SAVE_BUTTON_LOC = By.xpath("//input[@id='saveAccountInfo']");
 	private final By ACCOUNT_INFO_VERIFY_ADDRESS_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
-	private String ACCOUNT_INFO_PROVINCE_LOC_FOR_REUPDATE ="//select[@id='state']//option[text()='%s']";
-	private final By ACCOUNT_INFO_GENDER_LOC_FEMALE= By.xpath("//input[@id='female']");
 	private String ACCOUNT_INFO_DAY_OF_BIRTH_LOC = "//select[@id='dayOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_GENDER_LOC = "//label[@for='%s']";
 	private String ACCOUNT_INFO_MONTH_OF_BIRTH_LOC = "//select[@id='monthOfBirth']//option[@value='%s']";
@@ -335,15 +332,15 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterOldPassword(String oldPassword){
-		driver.findElement(By.xpath("//input[@id='old-password-account']")).sendKeys(oldPassword);
+		driver.findElement(By.id("old-password-account")).sendKeys(oldPassword);
 	}
 
 	public void enterNewPassword(String newPassword){
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(newPassword);
+		driver.findElement(By.id("new-password-account")).sendKeys(newPassword);
 	}
 
 	public void enterConfirmedPassword(String newPassword){
-		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(newPassword);
+		driver.findElement(By.id("new-password-account2")).sendKeys(newPassword);
 	}
 
 	public void clickSaveAccountPageInfo(){
@@ -403,8 +400,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterUserName(String username) throws InterruptedException	{
-		driver.findElement(By.xpath("//input[@id='username-account']")).clear();
-		driver.findElement(By.xpath("//input[@id='username-account']")).sendKeys(username);		
+		driver.findElement(By.id("username-account")).clear();
+		driver.findElement(By.id("username-account")).sendKeys(username);		
 	}
 
 	

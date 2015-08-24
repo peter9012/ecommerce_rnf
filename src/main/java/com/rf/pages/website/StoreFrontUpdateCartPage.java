@@ -25,8 +25,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 
 	public StoreFrontUpdateCartPage(RFWebsiteDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
+		super(driver);		
 	}
 
 	public void clickUpdateCartBtn() throws InterruptedException{
@@ -65,7 +64,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void enterNewBillingCardNumber(String cardNumber){
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//td[@id='credit-cards']"));		
+		driver.waitForElementPresent(By.id("credit-cards"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
@@ -75,16 +74,16 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
-		driver.waitForElementPresent(By.xpath("//input[@id='card-name']"));
-		driver.findElement(By.xpath("//input[@id='card-name']")).clear();
-		driver.findElement(By.xpath("//input[@id='card-name']")).sendKeys(nameOnCard);
+		driver.waitForElementPresent(By.id("card-name"));
+		driver.findElement(By.id("card-name")).clear();
+		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
 	}
 
 	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.xpath("//select[@id='expiryMonth']"));
+		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.xpath("//select[@id='expiryYear']"));
+		driver.click(By.id("expiryYear"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 	}
@@ -94,8 +93,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewBillingCardAddress() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//*[@id='addressBookdropdown']"));
-		driver.click(By.xpath("//*[@id='addressBookdropdown']"));
+		driver.waitForElementPresent(By.id("addressBookdropdown"));
+		driver.click(By.id("addressBookdropdown"));
 		driver.waitForElementPresent(By.xpath("//*[@id='addressBookdropdown']/option[1]"));
 		driver.click(By.xpath("//*[@id='addressBookdropdown']/option[1]"));
 		logger.info("New Billing card address selected");
@@ -132,10 +131,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnUpdateCartShippingNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.xpath("//input[@id='use_address']"));
+		driver.waitForElementPresent(By.id("use_address"));
 		driver.pauseExecutionFor(2000);
 		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();		
-		action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).click(driver.findElement(By.xpath("//input[@id='use_address']"))).build().perform();
+		action.moveToElement(driver.findElement(By.id("use_address"))).click(driver.findElement(By.id("use_address"))).build().perform();
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
@@ -233,7 +232,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.click(By.xpath("//select[@id='state']"));
+		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
@@ -248,12 +247,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='autoShipShippingAddr']"));
-		driver.click(By.xpath("//input[@id='autoShipShippingAddr']"));
+		driver.waitForElementPresent(By.id("autoShipShippingAddr"));
+		driver.click(By.id("autoShipShippingAddr"));
 		logger.info("Save shipping profile button clicked");
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@id='QAS_RefineBtn']"));
-			driver.click(By.xpath("//input[@id='QAS_RefineBtn']"));
+			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
 
@@ -309,8 +308,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnCRPCheckout(){
-		driver.waitForElementPresent(By.xpath("//input[@id='crpCheckoutButton']"));
-		driver.click(By.xpath("//input[@id='crpCheckoutButton']"));
+		driver.waitForElementPresent(By.id("crpCheckoutButton"));
+		driver.click(By.id("crpCheckoutButton"));
 	}
 
 	public void clickOnCheckoutButton(){
@@ -366,8 +365,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.xpath("//input[@id='saveShippingInfo']"));
-		action.moveToElement(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).click(driver.findElement(By.xpath("//input[@id='saveShippingInfo']"))).build().perform();
+		driver.waitForElementPresent(By.id("saveShippingInfo"));
+		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");	
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -407,23 +406,23 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickBillingEditAfterSave(){
-		driver.waitForElementPresent(By.xpath("//a[@id='editBillingInfo']"));
-		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//a[@id='editBillingInfo']")), 30);
-		driver.click(By.xpath("//a[@id='editBillingInfo']"));
+		driver.waitForElementPresent(By.id("editBillingInfo"));
+		driver.waitForElementToBeClickable(driver.findElement(By.id("editBillingInfo")), 30);
+		driver.click(By.id("editBillingInfo"));
 		logger.info("Clicked on edit Billing link");
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='placeOrderButton']"));
-		driver.click(By.xpath("//input[@id='placeOrderButton']"));
+		driver.waitForElementPresent(By.id("placeOrderButton"));
+		driver.click(By.id("placeOrderButton"));
 		logger.info("Place order button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();		
 	}
 
 	public String getOrderNumberAfterPlaceOrder(){
-		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']"));
-		logger.info("Order Number after placing order is "+driver.findElement(By.xpath("//div[@id='order-confirm']")).getText().split(":")[1].trim());
+		driver.waitForElementPresent(By.id("order-confirm"));
+		logger.info("Order Number after placing order is "+driver.findElement(By.id("order-confirm")).getText().split(":")[1].trim());
 		return driver.findElement(By.xpath("//div[@id='order-confirm']")).getText().split(":")[1].trim();
 	}
 
@@ -465,7 +464,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewBillingAddressState() throws InterruptedException{
-		driver.click(By.xpath("//select[@id='addressState']"));
+		driver.click(By.id("addressState"));
 		driver.waitForElementPresent(By.xpath("//select[@id='addressState']/option[3]"));
 		driver.click(By.xpath("//select[@id='addressState']/option[3]"));
 		logger.info("State/Province selected");
@@ -512,8 +511,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//a[@id='continue-no-sponsor']"));
-			driver.click(By.xpath("//a[@id='continue-no-sponsor']"));				
+			driver.quickWaitForElementPresent(By.id("continue-no-sponsor"));
+			driver.click(By.id("continue-no-sponsor"));				
 		}catch(NoSuchElementException e){
 			logger.info("Sponsor is already selected");
 		}
@@ -521,8 +520,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnNextButtonAfterSelectingSponsor() throws InterruptedException{
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForElementPresent(By.xpath("//input[@id='saveAccountAddress']"));
-		driver.click(By.xpath("//input[@id='saveAccountAddress']"));
+		driver.waitForElementPresent(By.id("saveAccountAddress"));
+		driver.click(By.id("saveAccountAddress"));
 		driver.waitForLoadingImageToDisappear();
 	}
 

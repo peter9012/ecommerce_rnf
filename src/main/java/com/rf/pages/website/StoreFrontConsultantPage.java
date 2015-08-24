@@ -17,7 +17,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//div[@id='account-info']//a[text()='Orders']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
-	private final By LEFT_PANE_TEXT_LOC = By.xpath("//p[@class='left']"); 
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By NEXT_CRP_IMG_LOC = By.xpath("//div[contains(text(),'Next CRP')]");
 
@@ -27,8 +26,8 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	
 	public boolean verifyConsultantPage() throws InterruptedException{		
-		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a"));
-		return driver.findElement(By.xpath("//li[@id='account-info-button']/a")).getText().contains("Welcome");		
+		driver.waitForElementPresent(WELCOME_USER_LOC);
+		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{

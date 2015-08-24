@@ -10,8 +10,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -88,7 +86,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.click(By.xpath("//select[@id='state']"));
+		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
@@ -106,12 +104,12 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public void selectFirstCardNumber() throws InterruptedException{
 		try{
-			driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']"));
-			driver.click(By.xpath("//select[@id='cardDropDowndropdown']"));
+			driver.waitForElementPresent(By.id("cardDropDowndropdown"));
+			driver.click(By.id("cardDropDowndropdown"));
 
 		}catch(WebDriverException e){
 			Actions action = new Actions(RFWebsiteDriver.driver);
-			action.moveToElement(driver.findElement(By.xpath("//select[@id='cardDropDowndropdown']"))).click().build().perform();
+			action.moveToElement(driver.findElement(By.id("cardDropDowndropdown"))).click().build().perform();
 
 		}
 		driver.waitForElementPresent(By.xpath("//select[@id='cardDropDowndropdown']/option[2]"));
@@ -133,8 +131,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		logger.info("New Shipping prifile save button clicked");
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@id='QAS_AcceptOriginal']"));
-			driver.click(By.xpath("//input[@id='QAS_AcceptOriginal']"));
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
 		}catch(NoSuchElementException e){
 
 		}

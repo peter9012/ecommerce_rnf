@@ -24,22 +24,14 @@ public class LoginTest extends RFWebsiteBaseTest{
 	public void testLogin(String accountID,String fName,String mName,String lName,String password, String customerType ,String accountType,String active, String asignedUsers) throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		logger.info("AccountID= "+accountID);
-		System.out.println("Account id from sheet is "+accountID);
 		List<Map<String, Object>> emailIdList =  null;
 		String emailID = null;
-		System.out.println("Before query");
 		emailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_EMAILID_FROM_ACCOUNTID,accountID),RFL_DB);
-		System.out.println("After Query");
-		System.out.println("emailIDLIst size = "+emailIdList.size());
 		emailID = (String) getValueFromQueryResult(emailIdList, "EmailAddress");
-		System.out.println("emailID = "+emailID);
 		logger.info("EmailID= "+emailID);
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, password);
-		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true"),"login failed for the user "+emailID+" with accountID = "+accountID+" url is "+storeFrontConsultantPage.getCurrentURL());
-		//assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login failed for the user "+emailID+" with accountID = "+accountID);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login failed for the user "+emailID+" with accountID = "+accountID);
+		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true")||storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("sitenotfound"),"login failed for the user "+emailID+" with accountID = "+accountID+" url is "+storeFrontConsultantPage.getCurrentURL());//
 		
 	}
 }

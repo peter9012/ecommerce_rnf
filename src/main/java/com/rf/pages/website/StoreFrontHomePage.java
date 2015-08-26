@@ -134,6 +134,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("Next button clicked after selected Kit and regimen");
 		driver.waitForLoadingImageToDisappear();
 	}
+	
+	public void selectEnrollmentKitPage(String kitPrice){
+		driver.waitForLoadingImageToDisappear();
+		kitPrice =  kitPrice.toUpperCase();
+		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
+		logger.info("Enrollment Kit is selected as "+kitPrice);
+		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
+		logger.info("Next button clicked after selected Kit");
+		driver.waitForLoadingImageToDisappear();
+	}
 
 	public void chooseEnrollmentOption(String option){
 		option = option.toUpperCase();
@@ -260,7 +270,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifySubsribeToPulseCheckBoxIsSelected() throws InterruptedException{		
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input[@checked='checked']"));
-		return driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input")).isSelected();
+		return driver.isElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input[@checked='checked']"));
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
@@ -270,7 +280,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifyEnrollToCRPCheckBoxIsSelected(){
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input[@checked='checked']"));
-		return driver.findElement(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input")).isSelected();
+		return driver.isElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input[@checked='checked']"));
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsNotSelected(){

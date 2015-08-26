@@ -598,8 +598,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-1296:12.Standard Enrollment switch to Express Enrollment - Step 5
 	@Test
-	public void testStandardEnrollmentSwitchToExpresEnrollmentStep5() throws InterruptedException
-	{
+	public void testStandardEnrollmentSwitchToExpresEnrollmentStep5() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();

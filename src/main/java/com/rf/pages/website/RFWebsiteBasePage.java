@@ -491,4 +491,50 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]"));
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]")));
 	}
+
+	public String createNewPC() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName="PCUser";
+		String lastName = "Test";
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(2000);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		logger.info("check box for PC user checked");
+		driver.click(By.xpath("//input[@id='next-button']"));  
+		logger.info("Create New Account button clicked"); 
+		return emailAddress;
+	}
+
+	public String createNewRC(){	
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName="RCUser";
+		String lastName = "Test";
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(2000);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.click(By.id("next-button"));  
+		logger.info("Create New Account button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return emailAddress;
+	}
 }

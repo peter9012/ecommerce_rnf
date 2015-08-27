@@ -11,7 +11,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private StoreFrontHomePage storeFrontHomePage;
 
 	// Hybris Project-48 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentPerosnalResultsKitRedefineRegimen_48() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -78,7 +78,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-49 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN   
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentPersonalRegimenKitUnblemishRegimen_49() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -145,7 +145,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-79 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentPersonalResultsKitReverseRegimen_79() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -212,7 +212,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-51 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN  
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentPersonalKitSootheRegimen_51() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

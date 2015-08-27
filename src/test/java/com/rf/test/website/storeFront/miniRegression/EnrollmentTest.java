@@ -30,17 +30,18 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-3218 :: Version : 1 :: Consultant login after being logout.
 	@Test
-	public void testExpressEnrollmentLoginAfterLogout() throws InterruptedException{
+	public void testExpressEnrollmentLoginAfterLogout_3218() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		String emailId = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		if(country.equalsIgnoreCase("CA")){
-			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);		
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_REDEFINE);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
 			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -51,12 +52,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}else if(country.equalsIgnoreCase("US")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_US, TestConstants.REGIMEN_NAME_REDEFINE);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+			storeFrontHomePage.enterCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
-		else{
-			// to do the US part
-		}
-		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
-		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.enterEmailAddress(emailId);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -70,14 +79,17 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
 		logout();
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.PASSWORD);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, TestConstants.PASSWORD);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		logout();
@@ -93,8 +105,14 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
@@ -123,7 +141,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-			
+
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -166,15 +184,19 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-54 :: Version : 1 :: Express Enrollment USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN
 	@Test
-	public void testExpressEnrollmentBusinessKitReverseRegimen() throws InterruptedException{
+	public void testExpressEnrollmentRFExpressBusinessKitReverseRegimen_54() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
+		}else{
+			//TODO for the US
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+
 		if(country.equalsIgnoreCase("CA")){
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_CA, TestConstants.REGIMEN_NAME_REVERSE);		
 			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -187,12 +209,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.selectProvince();
 			storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		}else if(country.equalsIgnoreCase("US")){
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_EXPRESS_US, TestConstants.REGIMEN_NAME_REVERSE);		
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+			storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+			storeFrontHomePage.enterAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+			storeFrontHomePage.enterCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			storeFrontHomePage.enterPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
-		else{
-			//todo the US part
-		}
-		String consultantEmailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
-		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -206,17 +236,15 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.PASSWORD);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		logout();
+
 		s_assert.assertAll();
 	}
 
@@ -341,9 +369,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3617 CCS PC Enrollment under US Sponsor
-	@Test
-	public void ccsPCEnrollmentUnderUSSponsor() throws InterruptedException 
-	{
+	@Test(enabled=false)
+	public void ccsPCEnrollmentUnderUSSponsor() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
@@ -375,7 +402,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the User information and DO check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails();
 		//In the Cart page add one more product
-		Thread.sleep(6000);;
+		
 		//Pop for PC threshold validation
 		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
 		storeFrontHomePage.addAnotherProduct();
@@ -387,7 +414,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		Thread.sleep(4500);
+		
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -408,7 +435,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test
+	@Test(enabled=false)
 	public void testEnrollPulsefromMyAmount_135() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

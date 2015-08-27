@@ -12,7 +12,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	private StoreFrontHomePage storeFrontHomePage;
 
 	//Hybris Project-41 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentExpressBusinessKitUnblemishRegimen_41() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -79,7 +79,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-42 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN 
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentExpressBusinessKitReverseRegimen_42() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -146,7 +146,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-43 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN 
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentExpressBusinessKitSootheRegimen_43() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

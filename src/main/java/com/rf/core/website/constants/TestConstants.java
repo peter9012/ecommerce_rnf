@@ -6,7 +6,7 @@ public class TestConstants {
 	/*
 	 * Consultant User Creation Details
 	 */
-	public static final String CID = "06362865";
+	public static final String CID = "1687162";
 	public static final String KIT_PRICE_CA = "CAD$ 445";
 	public static final String KIT_PRICE_US = "$395";
 	public static final String REGIMEN_NAME = "Redefine";
@@ -50,6 +50,7 @@ public class TestConstants {
 	public static final String CIDCA = "989828";
 	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
+	 
 	
 	public static final String PROVINCE_YUKON = "Yukon";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
@@ -116,12 +117,13 @@ public class TestConstants {
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
+	
 
 	/**
 	 * Retail Customer Details
 	 */
 
-	public static final String RCUSER_EMAIL_ID = "rftestrc1706@yopmail.com";
+	public static final String RCUSER_EMAIL_ID = "Retail29@mailinator.com";
 	public static final String RCUSER_PASSWORD = "test1234";
 	public static final String RCUSER_USERNAME = "RFTest1706";
 	public static final String RCUSER_ORDER_NUMBER = "2100018433";

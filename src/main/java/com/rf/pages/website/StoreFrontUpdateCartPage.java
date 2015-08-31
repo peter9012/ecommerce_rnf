@@ -471,7 +471,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewBillingAddressPostalCode(String postalCode){
-		driver.findElement(By.id("billingAddresspostcode")).sendKeys(postalCode);
+		driver.findElement(By.id("billingAddresspostcode")).sendKeys(postalCode+"\t");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterNewBillingAddressPhoneNumber(String phoneNumber){

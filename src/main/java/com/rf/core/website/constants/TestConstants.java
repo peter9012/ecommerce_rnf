@@ -40,6 +40,7 @@ public class TestConstants {
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2H4";
 	public static final String PHONE_NUMBER = "8067736419";
+	public static final String PHONE_NUMBER_CA = "8067736419";
 	public static final String CARD_NUMBER = "4111111111111111";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
@@ -111,6 +112,7 @@ public class TestConstants {
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
 	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
+	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
 	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
 	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
 

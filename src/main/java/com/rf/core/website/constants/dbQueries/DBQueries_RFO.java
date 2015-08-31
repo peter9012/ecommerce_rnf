@@ -1411,10 +1411,6 @@ public class DBQueries_RFO {
 			"AND a.Active = 1 ) "+
 			"ORDER BY NEWID()";
 
-
-
-
-
 	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
 			"USE RFOperations "+
 					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+

@@ -1108,5 +1108,226 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-2199 :: Version : 1 :: Verify Existing Preferred Customer popup during RC registration.
+	@Test
+	public void testExistingPCPopUpDuringRCRegistration() throws InterruptedException
+	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("pc"), "Existing PC PopUp is not displayed");
+
+		//validate 'send mail to reset my password' functionality
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityPC(), "send mail functionality is not working properly");
+		//validate cancel enrollment functionality
+		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionalityPC(), "cancel enrollment functionality is not working properly");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2200 :: Version : 1 :: Verify Existing Retail Customer popup during RC registration
+	@Test
+	public void testExistingRetailCustomerPopupDuringRCRegistration() throws InterruptedException
+	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc"), "Existing RC PopUp is not displayed");
+
+		//validate 'send mail to reset my password' functionality
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(), "send mail functionality is not working properly");
+		//validate cancel enrollment functionality
+		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionalityRC(), "cancel enrollment functionality is not working properly");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2201 :: Version : 1 :: Verify Existing Consultant popup during RC registration
+	@Test
+	public void testExistingConsultantPopupDuringRCRegistration() throws InterruptedException
+	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Validate Existing Consulatnt popup during RC Registration by entering existing consultant mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant"), "Existing RC PopUp is not displayed");
+
+		//validate 'send mail to reset my password' functionality
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityConsultant(), "send mail functionality is not working properly");
+		//validate cancel enrollment functionality
+		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionalityConsultant(), "cancel enrollment functionality is not working properly");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2198 :: Version : 1 :: Switch from RC to PC (Under Same Consultant) 
+	@Test
+	public void testSwitchFromRCToPCUnderSameConsultant() throws InterruptedException	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DONOT  check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails();
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		storeFrontHomePage.enterMainAccountInfo();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
+		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Validate welcome PC Perks Message
+		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+		s_assert.assertAll(); 
+	}
+	
+	 // Hybris Project-4155 :: Version : 1 :: Verify special characters are not allowing
+	 @Test
+	 public void testVerifySpecialCharactersAreNotAllowed() throws InterruptedException{
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  storeFrontHomePage.clickOnOurBusinessLink();
+	  storeFrontHomePage.clickOnOurEnrollNowLink();
+	  storeFrontHomePage.searchCID();
+	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	  storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PORTFOLIO_CA);  
+	  //storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+	  storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+	  storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+	  storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+	  storeFrontHomePage.selectProvince();
+	  storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+	  storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+	  storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	  storeFrontHomePage.clickEnrollmentNextBtn();
+	  storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.selectNewBillingCardExpirationDate();
+	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+	  storeFrontHomePage.clickEnrollmentNextBtn();
+	  s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+	  s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
+	  storeFrontHomePage.clickEnrollmentNextBtn();  
+	  storeFrontHomePage.selectProductAndProceedToAddToCRP();
+	  storeFrontHomePage.addQuantityOfProduct("5");
+	  storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
+	  storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+	  storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+	  storeFrontHomePage.checkTheIAgreeCheckBox();
+	  storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+	  storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+	  storeFrontHomePage.clickOnConfirmAutomaticPayment();
+	  s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	  storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+	  storeFrontConsultantPage.clickOnWelcomeDropDown();
+	  storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+	  storeFrontConsultantPage.clickOnAutoshipStatusLink();
+	  storeFrontConsultantPage.subscribeToPulse();
+	  s_assert.assertTrue(storeFrontConsultantPage.validateErrorMessageWithSpclCharsOnPulseSubscription(), "Error/Warning message is not displayed ");
+	  s_assert.assertAll(); 
+	 }
 }
 

@@ -18,6 +18,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			.getLogger(RFWebsiteBasePage.class.getName());
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
+	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info']//a[contains(text(),'Edit')]");
 	protected RFWebsiteDriver driver;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
 		super(driver);
@@ -536,5 +537,97 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return emailAddress;
+	}
+
+	public StoreFrontCartAutoShipPage clickEditCrpLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
+		driver.click(WELCOME_DD_EDIT_CRP_LINK_LOC);
+		logger.info("User has clicked on edit Crp link from welcome drop down");
+		driver.waitForPageLoad();
+		return new StoreFrontCartAutoShipPage(driver);
+	}
+
+	public boolean validateExistingUserPopUp(String userid){
+		String firstName="RCUser";
+		String lastName = "Test";
+		String pcmailid="autopc@xyz.com";
+		String rcmailid="Retail29@mailinator.com";
+		String consultantmailid="con0708@yopmail.com";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		if(userid.equalsIgnoreCase("pc")){
+			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
+			logger.info("email entered as "+pcmailid);
+		}else if(userid.equalsIgnoreCase("rc")){
+			driver.findElement(By.id("email-account")).sendKeys(rcmailid);
+			logger.info("email entered as "+rcmailid);
+		}else{
+			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
+			logger.info("email entered as "+consultantmailid);
+		}
+		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		boolean flag=false;
+		if(driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='fancybox-inner']//h2[contains(text(),'E')]")))){
+			return !flag;
+		}else{
+			driver.navigate().refresh();
+			driver.waitForPageLoad();
+			if(userid.equalsIgnoreCase("pc")){
+				driver.findElement(By.id("email-account")).sendKeys(pcmailid);
+				logger.info("email entered as "+pcmailid);
+			}else if(userid.equalsIgnoreCase("rc")){
+				driver.findElement(By.id("email-account")).sendKeys(rcmailid);
+				logger.info("email entered as "+rcmailid);
+			}else{
+				driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
+				logger.info("email entered as "+consultantmailid);
+			}
+			driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+			driver.waitForLoadingImageToDisappear();
+			driver.pauseExecutionFor(2000);
+			return driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='fancybox-inner']//h2[contains(text(),'E')]")));
+		}
+	}
+
+	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
+		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']")));
+	}
+	public boolean validateCancelEnrollmentFunctionalityPC(){
+		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
+		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
+	}
+
+	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
+		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']")));
+	}
+
+	public boolean validateCancelEnrollmentFunctionalityRC(){
+		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
+		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
+	}
+
+	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
+		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+	}
+
+	public boolean validateCancelEnrollmentFunctionalityConsultant(){
+		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
+		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
 	}
 }

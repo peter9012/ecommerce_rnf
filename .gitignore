@@ -4,6 +4,7 @@
 .settings/
 target/
 bin/
+output/
 test-output/
 *.log
 *.DS_Store

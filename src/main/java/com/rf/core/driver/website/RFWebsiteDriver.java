@@ -1,6 +1,7 @@
 package com.rf.core.driver.website;
 
 import java.io.File;
+
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -124,7 +125,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
-		int timeout = 30;
+		int timeout = 10;
 		turnOffImplicitWaits();
 		for(int i=1;i<=timeout;i++){		
 			try{

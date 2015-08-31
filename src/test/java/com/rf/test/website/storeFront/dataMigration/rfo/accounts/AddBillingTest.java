@@ -103,7 +103,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 
@@ -495,7 +496,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
@@ -559,7 +561,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();

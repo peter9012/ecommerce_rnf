@@ -34,30 +34,23 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private String RFL_DB = null;
 
 	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 	
-	@Test
-	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
+	@Test(dataProvider="rfTestData")
+	public void testAddNewShippingAddressOnShippingProfilePage_2029(String accountID,String fName,String mName,String lName,String password, String customerType ,String accountType,String active, String asignedUsers) throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String lastName = "ln";
+		logger.info("Account Id of the user is "+accountID);
+		List<Map<String, Object>> emailIdList =  null;
+		String emailID = null;
+		emailIdList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_EMAILID_FROM_ACCOUNTID,accountID),RFL_DB);
+		emailID = (String) getValueFromQueryResult(emailIdList, "EmailAddress");
+		logger.info("EmailID= "+emailID);
+		logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, password);
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -66,8 +59,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
-		String lastName = "ln";
+
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
@@ -76,14 +68,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
 		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
-		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
+		//storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
 		//--------------- Verify that Newly added Shipping is listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
 
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
 
-		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		/*//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
 
@@ -102,7 +94,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		s_assert.assertAll();		
+		 */		s_assert.assertAll();		
 	}
 
 	//Hybris Phase 2-2031:Add shipping address in autoship template

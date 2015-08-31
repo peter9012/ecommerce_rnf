@@ -24,7 +24,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		super(driver);		
 	}
 
-	
+
 	public boolean verifyConsultantPage() throws InterruptedException{		
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);		
@@ -90,6 +90,30 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		logger.info("Add product to CRP button clicked");
 		return new StoreFrontCartAutoShipPage(driver);
 	} 
+
+	public void clickOnAutoshipStatusLink(){
+		driver.waitForElementPresent(By.xpath("//a[@href='/ca/my-account/autoship-status']"));
+		driver.click(By.xpath("//a[@href='/ca/my-account/autoship-status']"));
+		logger.info("Autoship status link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void subscribeToPulse(){
+		if(driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")).isDisplayed()){
+			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+			driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+		}
+		driver.click(By.xpath("//input[@id='subscribe_pulse_button_new']"));
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean validateErrorMessageWithSpclCharsOnPulseSubscription(){
+		driver.findElement(By.xpath("//input[@id='webSitePrefix']")).sendKeys("!@");
+		driver.click(By.id("pulse-enroll"));
+		return (driver.findElement(By.xpath("//img[@id='prefixIsAvailableImage']")).isDisplayed()||driver.findElement(By.xpath("//span[@class='prefix unavailable']")).isDisplayed());
+	}
 
 }
 

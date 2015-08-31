@@ -37,7 +37,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 	
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
-	@Test
+	@Test(enabled=false)
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();	
@@ -168,7 +168,8 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 

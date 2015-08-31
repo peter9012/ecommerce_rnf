@@ -8,6 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.website.constants.TestConstants;
 
 
 public class StoreFrontHomePage extends RFWebsiteBasePage {
@@ -134,7 +135,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("Next button clicked after selected Kit and regimen");
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public void selectEnrollmentKitPage(String kitPrice){
 		driver.waitForLoadingImageToDisappear();
 		kitPrice =  kitPrice.toUpperCase();
@@ -538,6 +539,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickSwitchToExpressEnrollmentOnRecurringMonthlyChargesSection(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Express')]"));
 		driver.findElement(By.xpath("//a[contains(text(),'Switch to Express')]")).click();
+	}
+
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName, regimenName);		
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
 }

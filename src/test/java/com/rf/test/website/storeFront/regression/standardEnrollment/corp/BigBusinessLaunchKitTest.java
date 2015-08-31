@@ -26,7 +26,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -85,7 +85,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -144,7 +144,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;

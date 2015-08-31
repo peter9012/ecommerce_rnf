@@ -58,6 +58,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add a new billing profile')]"));
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[contains(text(),'Add a new billing profile')]"));
 		logger.info("Add New Billing Profile link clicked");
 	}
@@ -332,6 +333,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
 		driver.click(By.xpath("//input[@value='OK']"));
 		logger.info("Confirmation OK button clicked");
+		driver.waitForPageLoad();
 	}
 
 	public String getSubtotal(){
@@ -368,8 +370,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");	
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();		
 	}
 
 	public String getSelectedBillingAddress(){
@@ -487,6 +488,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public String clickOnNewShipToThisAddressRadioButtonAndReturnProfileName(){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/ul/li"));
 		List<WebElement> allShippingAddresses = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/ul/li"));
+		logger.info("Total shipping addresses listed are "+allShippingAddresses.size());
 		for(int i =1;i<=allShippingAddresses.size();i++ ) {
 			if(driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]//input[@type='radio']")).isSelected()==false){
 				driver.click(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]//span[@class='radio-button shiptothis']"));

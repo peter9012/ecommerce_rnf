@@ -32,7 +32,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 
 	private String RFL_DB = null;
-		
+
 	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 	
 	@Test
 	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
@@ -351,7 +351,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		} 
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -398,7 +398,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
@@ -415,7 +415,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		} 
-		
+
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
 		storeFrontConsultantPage.clickOnAllProductsLink();
@@ -452,7 +452,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String lastName = "ln";
 		String accountID = null;
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
@@ -469,7 +469,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		} 
-		
+
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
 		storeFrontConsultantPage.clickOnAllProductsLink();
@@ -478,6 +478,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
+		
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
@@ -542,7 +543,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		} 
-		
+
 		logger.info("login is successful"); 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
@@ -579,7 +580,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address contains new shipping address when future autoship checkbox not selected");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
+
 		s_assert.assertAll();
 
 	}

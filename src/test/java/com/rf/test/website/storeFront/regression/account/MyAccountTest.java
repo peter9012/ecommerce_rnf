@@ -1275,59 +1275,59 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
 		s_assert.assertAll(); 
 	}
-	
-	 // Hybris Project-4155 :: Version : 1 :: Verify special characters are not allowing
-	 @Test
-	 public void testVerifySpecialCharactersAreNotAllowed() throws InterruptedException{
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontHomePage.clickOnOurBusinessLink();
-	  storeFrontHomePage.clickOnOurEnrollNowLink();
-	  storeFrontHomePage.searchCID();
-	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	  storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PORTFOLIO_CA);  
-	  //storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-	  storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-	  storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-	  storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
-	  storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
-	  storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
-	  storeFrontHomePage.enterCity(TestConstants.CITY_CA);
-	  storeFrontHomePage.selectProvince();
-	  storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
-	  storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
-	  storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
-	  storeFrontHomePage.clickEnrollmentNextBtn();
-	  storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
-	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	  storeFrontHomePage.selectNewBillingCardExpirationDate();
-	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-	  storeFrontHomePage.clickEnrollmentNextBtn();
-	  s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-	  s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-	  storeFrontHomePage.clickEnrollmentNextBtn();  
-	  storeFrontHomePage.selectProductAndProceedToAddToCRP();
-	  storeFrontHomePage.addQuantityOfProduct("5");
-	  storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-	  storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-	  storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-	  storeFrontHomePage.checkTheIAgreeCheckBox();
-	  storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-	  storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-	  storeFrontHomePage.clickOnConfirmAutomaticPayment();
-	  s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	  storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
-	  storeFrontConsultantPage.clickOnWelcomeDropDown();
-	  storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-	  storeFrontConsultantPage.clickOnAutoshipStatusLink();
-	  storeFrontConsultantPage.subscribeToPulse();
-	  s_assert.assertTrue(storeFrontConsultantPage.validateErrorMessageWithSpclCharsOnPulseSubscription(), "Error/Warning message is not displayed ");
-	  s_assert.assertAll(); 
-	 }
+
+	// Hybris Project-4155 :: Version : 1 :: Verify special characters are not allowing
+	@Test
+	public void testVerifySpecialCharactersAreNotAllowed() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_PORTFOLIO_CA);  
+		//storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+		storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+		storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+		storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+		storeFrontHomePage.selectProvince();
+		storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+		storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+		storeFrontHomePage.enterEmailAddress(TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
+		storeFrontHomePage.clickEnrollmentNextBtn();  
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.addQuantityOfProduct("5");
+		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		storeFrontConsultantPage.subscribeToPulse();
+		s_assert.assertTrue(storeFrontConsultantPage.validateErrorMessageWithSpclCharsOnPulseSubscription(), "Error/Warning message is not displayed ");
+		s_assert.assertAll(); 
+	}
 }
 

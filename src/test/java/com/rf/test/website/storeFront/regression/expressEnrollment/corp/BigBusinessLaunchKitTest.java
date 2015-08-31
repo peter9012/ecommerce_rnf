@@ -7,7 +7,7 @@ import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
-	
+
 	private StoreFrontHomePage storeFrontHomePage;
 	private String kitName = null;
 	private String regimenName = null;
@@ -26,7 +26,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -80,7 +80,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -126,7 +126,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-	
+
 	//Hybris Project-23 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen SOOTHE REGIMEN  
 	@Test
 	public void testExpressEnrollmentBigBusinessKitSootheRegimen_23() throws InterruptedException{
@@ -135,7 +135,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;

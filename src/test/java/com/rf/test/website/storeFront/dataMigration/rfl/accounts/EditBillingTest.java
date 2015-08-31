@@ -32,13 +32,13 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private String RFL_DB = null;
-		
+
 	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page 
 	@Test
 	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		
+
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -69,7 +69,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		
+
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -115,7 +115,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 
-		
+
 		s_assert.assertAll();
 	}
 
@@ -125,7 +125,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
-		
+
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
@@ -152,7 +152,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-	
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -200,7 +200,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		
+
 		s_assert.assertAll();
 	}
 
@@ -210,7 +210,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	public void testEditBillingProfileMyACcountFutureAutoshipNotChecked_2342() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
-		
+
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -276,19 +276,19 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains the newly edited billing profile when future autoship checkbox is not selected");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+
 		s_assert.assertAll();
 
 	}
 
-	
+
 	// Hybris Project-4468 EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFL_DB = driver.getDBNameRFL();
-		
+
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
@@ -355,10 +355,10 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method doesn't contains new billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+
 		s_assert.assertAll();
 	}
-	
+
 	//Hybris Phase 2-2048 Edit billing profile during checkout
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
@@ -370,7 +370,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		String accountID = null;
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
@@ -432,7 +432,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		
+
 		s_assert.assertAll();
 	}
 

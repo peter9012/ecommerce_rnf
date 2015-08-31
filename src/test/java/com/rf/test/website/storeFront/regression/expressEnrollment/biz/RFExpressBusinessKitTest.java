@@ -26,7 +26,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
@@ -80,7 +80,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
@@ -134,7 +134,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 

@@ -144,7 +144,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-	
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -195,7 +195,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-    //Hybris Phase 2-2342:Edit billing profile | My Account | check
+	//Hybris Phase 2-2342:Edit billing profile | My Account | check
 	@Test
 	public void testEditBillingProfileMyACcountFutureAutoshipNotChecked_2342() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -299,7 +299,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
@@ -351,7 +351,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		
+
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -377,7 +377,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();

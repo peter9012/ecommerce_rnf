@@ -19,7 +19,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	// Hybris Project-69 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN 
+	// Hybris Project-69 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN 
 	@Test
 	public void testStandardEnrollmentBusinessKitRedefineRegimen_69() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -78,7 +78,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-70 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
+	//Hybris Project-70 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
 	@Test
 	public void testStandardEnrollmentBusinessKitUnblemishRegimen_70() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -138,7 +138,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-71 :: Version : 1 :: Standard Enrollment USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN 
+	//Hybris Project-71 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN 
 	@Test
 	public void testStandardEnrollmentBusinessKitReverseRegimen_71() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -197,7 +197,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-72 :: Version : 1 :: Standard Enrollment 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN 
+	//Hybris Project-72 :: Version : 1 :: Standard EnrollmentTest 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
 	public void testStandardEnrollmentBusinessKitSootheRegimen_72() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

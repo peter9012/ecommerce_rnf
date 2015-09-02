@@ -18,7 +18,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	// Hybris Project-53 :: Version : 1 :: Express Enrollment USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN  
+	// Hybris Project-53 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testExpressEnrollmentRFExpressKitRedefineRegimen_53() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -72,7 +72,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-55 :: Version : 1 :: Express Enrollment USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN 
+	//Hybris Project-55 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN 
 	@Test
 	public void testExpressEnrollmentRFExpressBusinessKitUnblemishRegimen_55() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -126,7 +126,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-56 :: Version : 1 :: Express Enrollment USD 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN  
+	// Hybris Project-56 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN  
 	@Test
 	public void testExpressEnrollmentRFExpressKitSootheRegimen_56() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

@@ -39,8 +39,11 @@ public class TestConstants {
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2H4";
+	public static final String POSTAL_CODE_QUEBEC = "G1R 4S9";
 	public static final String PHONE_NUMBER = "8067736419";
 	public static final String PHONE_NUMBER_CA = "8067736419";
+	public static final String ADDRESS_LINE_1_QUEBEC = "2 Rue des Jardins";
+	public static final String CITY_QUEBEC = "Quebec";
 	public static final String CARD_NUMBER = "4111111111111111";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
@@ -63,6 +66,10 @@ public class TestConstants {
 	public static final String PROVINCE_SASKATCHEWAN = "Saskatchewan";
 	public static final String PROVINCE_ALBERTA = "Alberta";
 	public static final String PROVINCE_BRITISH_COULMBIA = "British Columbia";
+	public static final String PROVINCE_NUNAVUT = "Nunavut";
+	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
+	public static final String PROVINCE_QUEBEC = "Quebec";
+	
 	
 
 	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";

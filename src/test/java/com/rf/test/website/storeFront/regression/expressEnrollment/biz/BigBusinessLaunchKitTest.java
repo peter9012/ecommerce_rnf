@@ -18,7 +18,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	// Hybris Project-61 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen REDEFINE REGIMEN  
+	// Hybris Project-61 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testExpressEnrollmentBusinessKitRedefineRegimen_61() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -72,7 +72,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-62 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN
+	//Hybris Project-62 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN
 	@Test
 	public void testExpressEnrollmentBusinessKitReverseRegimen_62() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -126,7 +126,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-63 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH REGIMEN  
+	//Hybris Project-63 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH REGIMEN  
 	@Test
 	public void testExpressEnrollmentBigBusinessKitUnblemishRegimen_63() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -181,7 +181,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-64 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen SOOTHE REGIMEN 
+	//Hybris Project-64 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
 	public void testExpressEnrollmentBigBusinessKitSootheRegimen_64() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

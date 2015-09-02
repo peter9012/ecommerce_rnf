@@ -142,10 +142,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
-		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address']"));
-		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();		
-		action.moveToElement(driver.findElement(By.xpath("//input[@class='use_address']"))).click(driver.findElement(By.xpath("//input[@class='use_address']"))).build().perform();
+		driver.click(By.xpath("//input[@class='use_address']"));
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -295,20 +293,25 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnAddToCRPButtonDuringEnrollment() throws InterruptedException{
-		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
-		}catch(NoSuchElementException e){
-
-		}
-		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
-		driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
+		//  try{
+		//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
+		//   driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
+		//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
+		//   driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
+		//  }catch(NoSuchElementException e){
+		//
+		//  }
+		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
+		driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
 		logger.info("Add to CRP button clicked");
 	}
 
+
 	public void clickOnCRPCheckout(){
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
+		driver.findElement(By.xpath("//input[@id='quantity0']")).clear();
+		driver.findElement(By.xpath("//input[@id='quantity0']")).sendKeys("5");
+		driver.click(By.xpath("//form[@id='updateCartForm0']/a"));
 		driver.waitForElementPresent(By.id("crpCheckoutButton"));
 		driver.click(By.id("crpCheckoutButton"));
 	}
@@ -529,11 +532,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@class='positive right pad_right ']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
-		driver.click(By.xpath("//input[@class='positive right pad_right ']"));
+		driver.click(By.xpath("////input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");		
 	}
 
@@ -553,6 +556,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnNextStepButtonAfterEditingDefaultShipping() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@class='paymentnext']"));
 		driver.click(By.xpath("//input[@class='paymentnext']"));
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public WebElement waitForSaveShippingInfoBtn()	 {

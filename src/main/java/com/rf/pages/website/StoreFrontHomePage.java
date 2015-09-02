@@ -124,7 +124,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
-		logger.info("Enrollment Kit is selected as "+kitPrice);
+		logger.info("EnrollmentTest Kit is selected as "+kitPrice);
 		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
@@ -140,7 +140,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
-		logger.info("Enrollment Kit is selected as "+kitPrice);
+		logger.info("EnrollmentTest Kit is selected as "+kitPrice);
 		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		logger.info("Next button clicked after selected Kit");
 		driver.waitForLoadingImageToDisappear();
@@ -151,12 +151,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		if(option.equalsIgnoreCase("EXPRESS ENROLLMENT")){
 			driver.waitForElementPresent(By.id("express-enrollment"));
 			driver.click(By.id("express-enrollment"));
-			logger.info("Express Enrollment is clicked");
+			logger.info("Express EnrollmentTest is clicked");
 		}
 		else{
 			driver.waitForElementPresent(By.id("standard-enrollment"));
 			driver.click(By.id("standard-enrollment"));
-			logger.info("Standard Enrollment is clicked");
+			logger.info("Standard EnrollmentTest is clicked");
 		}
 
 		driver.click(By.cssSelector("input[value='Next']"));
@@ -224,6 +224,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		logger.info("state selected");
 	}
+	
+	public boolean verifyQuebecProvinceIsDisabled(){
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_QUEBEC+"')]"));
+		return !(driver.findElement(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_QUEBEC+"')]")).isEnabled());
+	}
 
 	public void enterPostalCode(String postalCode){
 		driver.findElement(By.id("postcode")).sendKeys(postalCode);
@@ -239,7 +245,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
-		logger.info("Enrollment Next Button clicked");
+		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		//		try{
@@ -256,7 +262,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
-		logger.info("Enrollment Next Button clicked");
+		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		try{
@@ -554,6 +560,62 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName, regimenName);		
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince(province);
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	public void clickOnSwitchToStandardEnrollmentLink(){
+		driver.waitForElementPresent(By.xpath("//a[@href='/ca/enrollment/express/switch-to-standard']"));
+		driver.click(By.xpath("//a[@href='/ca/enrollment/express/switch-to-standard']"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateErrorMessageForActivePC(){
+		String ActivePC="autopc@xyz.com";
+		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActivePC);
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
+		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+		}
+		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+		return status;
+	}
+
+	public boolean validateErrorMessageForActiveConsultant(){
+		String ActiveConsultant="con0708@yopmail.com";
+		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveConsultant);
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
+		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+		}
+		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+		return status;
+	}
+	public boolean validateErrorMessageForActiveRC(){
+		String ActiveRC="Retail29@mailinator.com";
+		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
+		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+		}
+		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+		return status;
 	}
 
 }

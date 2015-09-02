@@ -132,7 +132,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();
-		storeFrontPCUserPage.clickOnQuickShopImage();
+		storeFrontPCUserPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
@@ -176,7 +176,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"Tax on AdHoc Orders Template is NOT "+tax);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"Total SV on AdHoc Orders Template is NOT "+totalSV);
-
 		
 		s_assert.assertAll();
 
@@ -207,7 +206,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnShopLink();
-		storeFrontRCUserPage.clickOnQuickShopImage();	  
+		storeFrontRCUserPage.clickOnAllProductsLink();	  
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnContinueWithoutSponsorLink();

@@ -3,12 +3,15 @@ package com.rf.test.base;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -72,8 +75,46 @@ public class RFBaseTest{
 			e.printStackTrace();
 		}
 	}
-	
-		
+
+	@AfterSuite(alwaysRun=true)
+	public void afterSuite(){
+
+		// create a time stamp to be added to new logs,output and test-output folders
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+		String timeStamp = String.valueOf(dateFormat.format(date));
+
+		// set the location of the source directories of logs,output and test-output folder
+		String srcLogsDirectory = System.getProperty("user.dir")+"\\logs";
+		String srcOutputDirectory = System.getProperty("user.dir")+"\\output";
+		String srcTestOutputDirectory = System.getProperty("user.dir")+"\\test-output";
+
+		// set the location of the destination directories of logs,output and test-output folder under buildHistory folder
+		String destinationLogsDirectory = System.getProperty("user.dir")+"\\buildHistory\\logs\\logs-"+timeStamp;
+		String destinationOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\output\\output-"+timeStamp;
+		String destinationTestOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\test-output\\test-output-"+timeStamp;
+
+		// create new folders for logs,output and test-output directories
+		try {
+			FileUtils.forceMkdir(new File(destinationLogsDirectory));
+			FileUtils.forceMkdir(new File(destinationOutputDirectory));
+			FileUtils.forceMkdir(new File(destinationTestOutputDirectory));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// copy the latest data to logs,output and test-output directories
+		try {
+			FileUtils.copyDirectory(new File(srcLogsDirectory), new File(destinationLogsDirectory));
+			FileUtils.copyDirectory(new File(srcOutputDirectory), new File(destinationOutputDirectory));
+			FileUtils.copyDirectory(new File(srcTestOutputDirectory), new File(destinationTestOutputDirectory));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * @throws Exception
@@ -83,9 +124,9 @@ public class RFBaseTest{
 		String sheetName = testMethod.getName();
 		String filePath = "src/test/resources/"
 				+ testMethod
-						.getDeclaringClass()
-						.getName()
-						.replace(TestConstants.DOT, TestConstants.FORWARD_SLASH)
+				.getDeclaringClass()
+				.getName()
+				.replace(TestConstants.DOT, TestConstants.FORWARD_SLASH)
 				+ ".xlsx";
 		System.out.println("Test data is loaded from file " + filePath
 				+ " and the sheet is " + sheetName);
@@ -99,6 +140,6 @@ public class RFBaseTest{
 	public SoftAssert getSoftAssert() {
 		return s_assert;
 	}
-	
-	
+
+
 }

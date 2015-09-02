@@ -734,11 +734,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}
 
 		// Assert Tax with RFL
-		if(assertTrueDB("RC Adhoc Order Template tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate(), storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),RFL_DB)==false){
+		if(assertTrueDB("RC Adhoc Order Template tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate(), storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),RFL_DB)==false){
 			// assert Tax with RFO
 			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_RFO,orderId),RFO_DB);
 			taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
-			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),"RC Adhoc Order Template tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"RC Adhoc Order Template tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 		}
 
 		// Assert Grand Total with RFL
@@ -876,11 +876,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}
 
 		// Assert Tax with RFL
-		if(assertTrueDB("CRP failed autoship template tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate(), storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),RFL_DB)==false){
+		if(assertTrueDB("CRP failed autoship template tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate(), storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),RFL_DB)==false){
 			// assert Tax with RFO
 			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_RFO,orderId),RFO_DB);
 			taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
-			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),"CRP failed autoship template tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP failed autoship template tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 		}
 
 		// Assert Grand Total with RFL
@@ -1020,11 +1020,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}
 
 		// Assert Tax with RFL
-		if(assertTrueDB("PC failed autoship tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate(), storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),RFL_DB)==false){
+		if(assertTrueDB("PC failed autoship tax amount on RFL is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate(), storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),RFL_DB)==false){
 			// assert Tax with RFO
 			getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_RFO,orderId),RFO_DB);
 			taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
-			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),"PC failed autoship tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+			s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"PC failed autoship tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 		}
 
 		// Assert Grand Total with RFL

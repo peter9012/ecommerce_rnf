@@ -497,9 +497,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template doesn't contains the default shipping profile address by verifying by name------------------------------------------------------------		
+		//------------------ Verify that autoship template contains the default shipping profile address by verifying by name------------------------------------------------------------		
 
-		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address contains the default shipping address");
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address doesn't contains the default shipping address");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

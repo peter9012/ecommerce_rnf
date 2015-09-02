@@ -18,7 +18,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	//Hybris Project-65 :: Version : 1 :: Express Enrollment USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
+	//Hybris Project-65 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testExpressEnrollmentPerosnalResultsKitRedefineRegimen_65() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -72,7 +72,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-66 :: Version : 1 :: Express Enrollment USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
+	//Hybris Project-66 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
 	@Test
 	public void testExpressEnrollmentPersonalRegimenKitReverseRegimen_66() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -126,7 +126,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-67 :: Version : 1 :: Express Enrollment USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
+	//Hybris Project-67 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
 	@Test
 	public void testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -180,7 +180,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-68 :: Version : 1 :: Express Enrollment USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
+	//Hybris Project-68 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
 	public void testExpressEnrollmentPersonalKitSootheRegimen_68() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

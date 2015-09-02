@@ -45,7 +45,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String pcUserEmailID = null;
 		String accountID = null;
 		while(true){
-			
+
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
@@ -113,11 +113,12 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			else
 				break;
 		} 
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickNextCRP();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		String selectedShippingMethod = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
@@ -161,7 +162,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String lastName = null;
 		String shippingMethodId = null;
 		String accountID = null;
-		
+
 		List<Map<String, Object>> autoShipItemDetailsList = null;
 		List<Map<String, Object>> shippingAddressList = null;
 		List<Map<String, Object>> shippingMethodList = null;

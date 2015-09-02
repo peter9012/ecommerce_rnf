@@ -182,7 +182,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-54 :: Version : 1 :: Express Enrollment USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN
+	// Hybris Project-54 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen REVERSE REGIMEN
 	@Test
 	public void testExpressEnrollmentRFExpressBusinessKitReverseRegimen_54() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -248,7 +248,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-3619 CCS CA Consultant Express Enrollment
+	//Hybris Project-3619 CCS CA Consultant Express EnrollmentTest
 	@Test(enabled=false)
 	public void ccsCAConsultantExpressEnrollmentWithUSSponsor() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -304,7 +304,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-3618 CCS RC Enrollment under US Sponsor
+	//Hybris Project-3618 CCS RC EnrollmentTest under US Sponsor
 	@Test(enabled=false)
 	public void ccsRCEnrollmentUnderUSSponsor() throws InterruptedException
 	{
@@ -368,7 +368,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
-	//Hybris Project-3617 CCS PC Enrollment under US Sponsor
+	//Hybris Project-3617 CCS PC EnrollmentTest under US Sponsor
 	@Test(enabled=false)
 	public void ccsPCEnrollmentUnderUSSponsor() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		

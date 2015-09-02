@@ -43,6 +43,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	private StoreFrontReportProblemConfirmationPage storeFrontReportProblemConfirmationPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
+	private String consultantWithCancelledCRP = null;
 
 	private String RFL_DB = null;
 	private String RFO_DB = null;
@@ -295,7 +296,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
-
+		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> accountNameDetailsList = null;
 		List<Map<String, Object>> accountAddressDetailsList = null;
 		List<Map<String, Object>> mainPhoneNumberList = null;
@@ -445,12 +446,29 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		//String consultantEmailID = null;
+		String accountID = null;
 
-		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User ,will remove soon 
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+			consultantWithCancelledCRP = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithCancelledCRP, TestConstants.CONSULTANT_PASSWORD_TST4);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantWithCancelledCRP);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithCancelledCRP, TestConstants.CONSULTANT_PASSWORD_TST4);  
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -458,22 +476,20 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.clickOnCancelMyCRP();
-		s_assert.assertFalse(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
 		s_assert.assertAll();
 	}
 
 	//Hybris Phase 2-2046:Add billing profile during CRP enrollment through my account
-	@Test//(dependsOnMethods="testCancelCRPSubscriptionForConsultant_2232")
+	@Test(dependsOnMethods="testCancelCRPSubscriptionForConsultant_2232")
 	public void testAddBillingProfileDuringCRPEnrollment_2046() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
 		String consultantEmailID = null;
-		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User ,will remove soon  
+		consultantEmailID =consultantWithCancelledCRP;   
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -526,12 +542,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
 		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
 		String lastName = "test";
-
 		String consultantEmailID = null;
-		consultantEmailID ="samanthapetersen15@yahoo.com"; // A Hard Code User ,will remove soon  
+		consultantEmailID =consultantWithCancelledCRP;   
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);  
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -549,6 +563,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEditDuringEnrollment();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyEditShippingAddressNameSlectedOnUpdateCart(newShippingAddressName), "Shipping address is not updated");
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
 		storeFrontUpdateCartPage.clickOnNextStepButtonAfterEditingDefaultShipping(); 
 		storeFrontUpdateCartPage.clickOnSetupCRPAccountBtn();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();

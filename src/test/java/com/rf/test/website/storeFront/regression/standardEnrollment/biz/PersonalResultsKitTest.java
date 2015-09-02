@@ -18,7 +18,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	//Hybris Project-77 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
+	//Hybris Project-77 :: Version : 1 :: Standard EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testStandardEnrollmentPerosnalResultsKitRedefineRegimen_77() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -77,7 +77,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-78 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
+	//Hybris Project-78 :: Version : 1 :: Standard EnrollmentTest USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
 	@Test
 	public void testStandardEnrollmentPersonalRegimenKitUnblemishRegimen_78() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -136,7 +136,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-79 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
+	//Hybris Project-79 :: Version : 1 :: Standard EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
 	@Test
 	public void testStandardEnrollmentPersonalResultsKitReverseRegimen_79() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -195,7 +195,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-80 :: Version : 1 :: Standard Enrollment USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
+	//Hybris Project-80 :: Version : 1 :: Standard EnrollmentTest USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
 	public void testStandardEnrollmentPersonalKitSootheRegimen_80() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

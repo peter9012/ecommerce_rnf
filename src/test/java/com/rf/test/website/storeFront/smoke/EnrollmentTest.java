@@ -30,7 +30,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC Enrollment 
+	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC EnrollmentTest 
 	@Test
 	public void testRCEnrollment_1307() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -96,7 +96,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	}
 
-	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC Enrollment  
+	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
 	@Test
 	public void testPCEnrollment_1308() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
@@ -169,7 +169,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-1288 :: Version : 1 :: 2. Terms and Conditions - Standard Enrollment with both CRP and Pulse
+	//Hybris Project-1288 :: Version : 1 :: 2. Terms and Conditions - Standard EnrollmentTest with both CRP and Pulse
 	@Test
 	public void testStandardEnrollmentTermsAndConditions_1288() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -228,7 +228,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Test Case Hybris Project-3255 :: Version : 1 :: Standard Enrollment without CRP and Pulse
+	//Test Case Hybris Project-3255 :: Version : 1 :: Standard EnrollmentTest without CRP and Pulse
 	@Test
 	public void testStandardEnrollmentWithoutCRPAndPulse_3255() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

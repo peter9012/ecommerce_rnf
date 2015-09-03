@@ -78,8 +78,7 @@ public class RFBaseTest{
 
 	@AfterSuite(alwaysRun=true)
 	public void afterSuite(){
-
-		// create a time stamp to be added to new logs,output and test-output folders
+		//create a time stamp to be added to new logs,output and test-output folders
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
 		String timeStamp = String.valueOf(dateFormat.format(date));

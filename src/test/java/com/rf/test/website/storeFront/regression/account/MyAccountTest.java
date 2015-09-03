@@ -52,27 +52,33 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Will just verify till termination popup and NOT terminate the account
 	@Test
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
+//		RFO_DB = driver.getDBNameRFO();
+//		List<Map<String, Object>> randomConsultantList =  null;
+//		String consultantEmailID = null;
+//		String accountID = null;
+//
+//		while(true){
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
+//
+//			storeFrontHomePage = new StoreFrontHomePage(driver);
+//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+//			if(isSiteNotFoundPresent){
+//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+//				driver.get(driver.getURL());
+//			}
+//			else
+//				break;
+//		} 
+		
+		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.PASSWORD);			
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -93,26 +99,30 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	//Test Case Hybris Phase 2-3719 :: Version : 1 :: Perform PC Account termination through my account
 	@Test
 	public void testAccountTerminationPageForPCUser_3719() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomPCUserList =  null;
-		String pcUserEmailID = null;
-		String accountID = null;
-		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);		
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
+//		RFO_DB = driver.getDBNameRFO();
+//		List<Map<String, Object>> randomPCUserList =  null;
+//		String pcUserEmailID = null;
+//		String accountID = null;
+//		while(true){
+//			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+//			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);		
+//
+//			storeFrontHomePage = new StoreFrontHomePage(driver);
+//			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+//			if(isSiteNotFoundPresent){
+//				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+//				driver.get(driver.getURL());
+//			}
+//			else
+//				break;
+//		}
+		String pcUserEmailID = TestConstants.PC_EMAIL_ID_STG2;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID,TestConstants.PASSWORD);			
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -127,26 +137,32 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testOrdersReportProblems_1980() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+//		List<Map<String, Object>> randomConsultantList =  null;
+//		String consultantEmailID = null;
+//		String accountID = null;
+//
+//		while(true){
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
+//
+//			storeFrontHomePage = new StoreFrontHomePage(driver);
+//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+//			if(isSiteNotFoundPresent){
+//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+//				driver.get(driver.getURL());
+//			}
+//			else
+//				break;
+//		}
+		
+		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.PASSWORD);			
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -176,7 +192,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testPhoneNumberFieldValidationForConsultant_2241() throws InterruptedException{
 		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_ACC_TERMINATION_PASSWORD_TST4);			
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.PASSWORD);			
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -196,7 +212,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testVerifyLogoutwithValidCredentials_1977() throws InterruptedException{
 		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_ACC_TERMINATION_PASSWORD_TST4);			
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.PASSWORD);			
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		
@@ -208,7 +224,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testUsernameValidations_2512() throws InterruptedException	{
 		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_RFL);   
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,TestConstants.CONSULTANT_PASSWORD_STG2);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();

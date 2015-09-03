@@ -16,12 +16,12 @@ public class TestConstants {
 	public static final String KIT_PRICE_BIG_BUSINESS_CA = "CAD$ 795";
 	public static final String KIT_PRICE_PERSONAL_CA = "CAD$ 445";
 	public static final String KIT_PRICE_PORTFOLIO_CA = "CAD$ 52";
-	
+
 	public static final String KIT_PRICE_EXPRESS_US = "$995";
 	public static final String KIT_PRICE_BIG_BUSINESS_US = "$695";
 	public static final String KIT_PRICE_PERSONAL_US = "$395";
 	public static final String KIT_PRICE_PORTFOLIO_US = "$45";
-	
+
 
 	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
@@ -54,8 +54,8 @@ public class TestConstants {
 	public static final String CIDCA = "989828";
 	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
-	 
-	
+
+
 	public static final String PROVINCE_YUKON = "Yukon";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
 	public static final String PROVINCE_PRINCE_EDWARD_ISLAND = "Prince Edward Island";
@@ -69,8 +69,8 @@ public class TestConstants {
 	public static final String PROVINCE_NUNAVUT = "Nunavut";
 	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
 	public static final String PROVINCE_QUEBEC = "Quebec";
-	
-	
+
+
 
 	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";
@@ -98,6 +98,9 @@ public class TestConstants {
 	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
 
 	public static final String PC_EMAIL_ID_STG2="pcuser02@abc.com";
+	public static final String EMAIL_ACTIVE_PC_USER="rftest2506PC@yopmail.com";
+	public static final String EMAIL_ACTIVE_RC_USER="rftest2506rc@yopmail.com";
+	
 	// Consultant Details For Update Account Info
 
 	public static final String CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION="smstone";
@@ -126,7 +129,7 @@ public class TestConstants {
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
-	
+
 
 	/**
 	 * Retail Customer Details

@@ -225,7 +225,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForSpinImageToDisappear(){
 		turnOffImplicitWaits();
-		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: none;')]");
+		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: inline;')]");
 		logger.info("Waiting for sping image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
 			try{

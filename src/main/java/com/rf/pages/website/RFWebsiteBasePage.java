@@ -182,7 +182,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
 		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
 		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
@@ -204,7 +205,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
 		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
 		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
@@ -260,6 +262,22 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("phone number entered is "+TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
 
+	}
+
+	public void enterMainAccountInfo(String address1,String city,String province,String postalCode,String phoneNumber){
+		driver.findElement(By.id("address.line1")).sendKeys(address1);
+		logger.info("Address Line 1 entered is "+address1);
+		driver.findElement(By.id("address.townCity")).sendKeys(city);
+		logger.info("City entered is "+city);
+		driver.click(By.id("state"));
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		logger.info("state selected");
+		driver.findElement(By.id("address.postcode")).sendKeys(postalCode);
+		logger.info("postal code entered is "+postalCode);
+		driver.findElement(By.id("address.phonenumber")).sendKeys(phoneNumber);
+		logger.info("phone number entered is "+phoneNumber);
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{

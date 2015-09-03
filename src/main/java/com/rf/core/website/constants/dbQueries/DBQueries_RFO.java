@@ -1442,6 +1442,63 @@ public class DBQueries_RFO {
 					"AND a.Active = 1 ) "+
 					"ORDER BY NEWID()";
 
+	public static String GET_INACTIVE_CONSULTANT_LESS_THAN_6_MONTH_RFO = 
+			"USE RFOperations "+
+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 1 /*Consultant*/ "+
+			"AND ar.HardTerminationDate > DATEADD(MONTH, -6,CONVERT(DATE, GETDATE())) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_INACTIVE_CONSULTANT_MORE_THAN_6_MONTH_RFO =
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 1 /*Consultant*/ "+
+			"AND ar.HardTerminationDate < DATEADD(MONTH, -6,CONVERT(DATE, GETDATE())) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_INACTIVE_PC_LESS_THAN_90_DAYS_RFO ="";
+	// waiting for query
+
+	public static String GET_INACTIVE_PC_MORE_THAN_90_DAYS_RFO ="USE RFOperations "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 2 /*Preferred Customer*/ "+
+			"AND ar.HardTerminationDate < DATEADD(DAY, -90,CONVERT(DATE, GETDATE())) "+
+			"ORDER BY NEWID()";
+
+	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";
+
+	public static String GET_EMAIL_ADDRESS_ID_RFO = "select top 1 * from RFO_Accounts.AccountEmails where AccountContactId = '%s'";
+
+	public static String GET_EMAIL_ID_RFO = "select top 1 * from RFO_Accounts.EmailAddresses WHERE EmailAddressID = '%S'";
+
 
 	/**
 	 * 

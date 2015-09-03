@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontAccountTerminationPage;
@@ -347,7 +346,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	public void testStandardEnrollmentWithoutCRPAndPulseWithInvalidCardAsConsultant_3718() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		country = driver.getCountry();
-		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
@@ -1429,25 +1428,104 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 	
-	 // Hybris Project-1276 :: Version : 1 :: Email field validation for Active/Inactive users
+	// Hybris Project-1276:Email field validation for Active/Inactive users
 	 @Test
-	 public void testEmailFieldValidationForActiveInactiveUsers_1276() throws InterruptedException {
-	   storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+	 public void testEmailValidationsDuringEnroll() throws InterruptedException{
+	  RFO_DB = driver.getDBNameRFO();
+	  List<Map<String, Object>> consultantEmailList =  null;
+	  List<Map<String, Object>> pcEmailList =  null;
+	  List<Map<String, Object>> accountIDList =  null;
+	  List<Map<String, Object>> accountContactIDList =  null;
+	  List<Map<String, Object>> emailAddressIDList =  null;
+
+	  String consultantEmailID = null;
+	  String pcEmailID= null;
+	  String accountID = null;
+	  String accountContactID = null;
+	  String emailAddressID = null;
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
 	  storeFrontHomePage.clickOnOurBusinessLink();
 	  storeFrontHomePage.clickOnOurEnrollNowLink();
-	  storeFrontHomePage.searchCID();
+	  storeFrontHomePage.searchCID(TestConstants.CID);
 	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 	  storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);  
-	  storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT); 
-	  //Enter active pc and validate error message
-	  s_assert.assertTrue(storeFrontHomePage.validateErrorMessageForActivePC(), "Error Message is not visible");
-	  //Enter active consultant and validate error message
-	  s_assert.assertTrue(storeFrontHomePage.validateErrorMessageForActiveConsultant(), "Error Message is not visible");
-	  //Enter active RC user and validtae error message
-	  s_assert.assertTrue(storeFrontHomePage.validateErrorMessageForActiveRC(), "Error Message is not visible");
+	  storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
+	  storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+	  storeFrontHomePage.enterPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterConfirmPassword(TestConstants.PASSWORD);
+	  storeFrontHomePage.enterAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+	  storeFrontHomePage.enterCity(TestConstants.CITY_CA);
+	  storeFrontHomePage.selectProvince(TestConstants.PROVINCE_CA);
+	  storeFrontHomePage.enterPostalCode(TestConstants.POSTAL_CODE_CA);
+	  storeFrontHomePage.enterPhoneNumber(TestConstants.PHONE_NUMBER);
+
+	  //Code for email field validation
+	  // assertion for Inactive consultant less than 6 month
+	  accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_INACTIVE_CONSULTANT_LESS_THAN_6_MONTH_RFO,RFO_DB);
+	  accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
+
+	  accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
+	  accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 	  
-	  s_assert.assertAll(); 
+	  emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
+	  emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
+	  
+	  consultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
+	  consultantEmailID = String.valueOf(getValueFromQueryResult(consultantEmailList, "EmailAddress"));
+	  
+	  storeFrontHomePage.enterEmailAddress(consultantEmailID);
+	  s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveCCLessThan6Month() , "Existing Active Consultant User email id should not be acceptable");
+
+	  // assertion for Active PC
+	  storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_ACTIVE_PC_USER);
+	  logger.info(TestConstants.EMAIL_ACTIVE_PC_USER);
+	  s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActivePC() , "Existing Active PC User email id should not be acceptable");
+
+	  // assertion for Active RC
+	  storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_ACTIVE_RC_USER);
+	  logger.info(TestConstants.EMAIL_ACTIVE_RC_USER);
+	  s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveRC() , "Existing Active RC User email id should not be acceptable");
+
+	  // assertion for Inactive PC less than 90 days
+	  /* storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_INACTIVE_PC_USER_LESS_THAN_90_DAYS_USER);
+	    s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days() , "Existing Inactive PC User email id before 90 days should not be acceptable");*/
+	  
+	  // assertion for Inactive PC greater than 90 days
+	  accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_INACTIVE_PC_MORE_THAN_90_DAYS_RFO,RFO_DB);
+	  accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
+	  
+	  accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
+	  accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
+	  
+	  emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
+	  emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
+	  
+	  pcEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
+	  pcEmailID = String.valueOf(getValueFromQueryResult(pcEmailList, "EmailAddress"));
+	  storeFrontHomePage.enterEmailAddress(pcEmailID);
+	  s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days(), "Existing Inactive PC User email id After 90 days should be acceptable");
+
+	  // assertion for Inactive consultant greater than 6 month
+	  accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_INACTIVE_CONSULTANT_MORE_THAN_6_MONTH_RFO,RFO_DB);
+	  accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
+	  
+	  accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
+	  accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
+	  
+	  emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
+	  emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
+	  
+	  consultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
+	  consultantEmailID = String.valueOf(getValueFromQueryResult(consultantEmailList, "EmailAddress"));
+	  
+	  storeFrontHomePage.enterEmailAddress(consultantEmailID);
+	  s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactiveCC180Days() , "Existing Inactive Consultant User email id before 180 days should not be acceptable");
+
+	  s_assert.assertAll();
+
+
 	 }
 }
 

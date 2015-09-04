@@ -281,14 +281,20 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnBuyNowButton() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnAddToCRPButton() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']"));
 		logger.info("Add to CRP button clicked");
 	}
 
@@ -369,9 +375,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
-		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
-		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
 		driver.waitForLoadingImageToDisappear();		
 	}
@@ -495,6 +500,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		for(int i =1;i<=allShippingAddresses.size();i++ ) {
 			if(driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]//input[@type='radio']")).isSelected()==false){
 				driver.click(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]//span[@class='radio-button shiptothis']"));
+				driver.waitForLoadingImageToDisappear();
 				logger.info("New Address Name is "+ driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]/p[1]/span[1]")).getText());
 				return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/ul/li["+i+"]/p[1]/span[1]")).getText();
 			}
@@ -505,7 +511,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnPaymentNextStepBtn() throws InterruptedException	{
 		driver.waitForElementPresent(By.xpath("//input[@class='paymentnext']"));
 		driver.click(By.xpath("//input[@class='paymentnext']"));
-		logger.info("Next button on payment section clicked");		
+		logger.info("Next button on payment section clicked");	
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnEditDefaultBillingProfile(){

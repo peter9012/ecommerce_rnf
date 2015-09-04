@@ -296,7 +296,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(3000);
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontOrdersAutoshipStatusPage(driver);
-		
+
 	}
 
 	public StoreFrontAccountInfoPage enterMainPhoneNumber(String mainPhoneNumber){
@@ -309,7 +309,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		logger.info("Save account info button clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
-	
+
 	public void clickOnSubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
 		driver.click(By.id("subscribe_pulse_button_new"));
@@ -404,7 +404,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("username-account")).sendKeys(username);		
 	}
 
-	
+
 	public String getErrorMessage()	{
 		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
 		return errorMessage;
@@ -413,6 +413,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean checkErrorMessage()	{
 		Boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
 		return status;
+	}
+
+	public String getUserName(){
+		return driver.findElement(By.xpath(".//input[@id='username-account']")).getText();
 	}
 }
 

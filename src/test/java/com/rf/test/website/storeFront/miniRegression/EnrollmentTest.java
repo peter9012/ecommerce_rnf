@@ -244,7 +244,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		storeFrontHomePage.searchCID(TestConstants.SPONSOR_ID_US);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -318,8 +318,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
+		storeFrontHomePage.searchCID(TestConstants.SPONSOR_ID_US);
 
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -340,8 +341,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-3617 CCS PC EnrollmentTest under US Sponsor
 	@Test
-	public void ccsPCEnrollmentUnderUSSponsor() throws InterruptedException	{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+	public void ccsPCEnrollmentUnderUSSponsor() throws InterruptedException {
+		;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -381,7 +383,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.searchCID(TestConstants.SPONSOR_ID_US);
+
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 
@@ -401,7 +405,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		logout();
-		s_assert.assertAll();	
+		s_assert.assertAll(); 
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th

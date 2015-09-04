@@ -54,7 +54,7 @@ public class TestConstants {
 	public static final String CIDCA = "989828";
 	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
-
+	public static final String SPONSOR_ID_US="1686295";
 
 	public static final String PROVINCE_YUKON = "Yukon";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
@@ -72,7 +72,7 @@ public class TestConstants {
 
 
 
-	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smsto";
+	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smspo";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto abcde";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
@@ -85,6 +85,7 @@ public class TestConstants {
 	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
 	public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
+	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";
@@ -93,6 +94,7 @@ public class TestConstants {
 	public static final String CONSULTANT_COUNTRY_CA = "CANADA";
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
+	public static final String CONSULTANT_NEW_EMAIL_ID_STG2 = "con0708111@yopmail.com";
 
 	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
 	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";

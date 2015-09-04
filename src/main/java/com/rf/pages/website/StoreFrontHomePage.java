@@ -573,6 +573,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
+	//method overloaded,no need for enrollment type if kit is portfolio
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName);		
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	// method overloaded, parameter for province is there
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		chooseEnrollmentOption(enrollmentType);
@@ -686,6 +702,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else{
 			return false;
 		}
+	}
 
+	public boolean validateIncorrectLogin(){
+		return driver.findElement(By.xpath("//p[text()='Your username or password was incorrect.']")).isDisplayed();
 	}
 }

@@ -272,7 +272,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 	
 	//Hybris Project-2189 :: Version : 1 :: Enrolling PC living in Quebec 
-	@Test(enabled=false)
+	@Test
 	public void testQuebecPCEnrollment_2189() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;

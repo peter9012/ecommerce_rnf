@@ -182,7 +182,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
 		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
 		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
@@ -204,7 +205,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
 		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
 		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
 		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
@@ -260,6 +262,23 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("phone number entered is "+TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
 
+	}
+
+	public void enterMainAccountInfo(String address1,String city,String province,String postalCode,String phoneNumber){
+		driver.waitForElementPresent(By.id("address.line1"));
+		driver.findElement(By.id("address.line1")).sendKeys(address1);
+		logger.info("Address Line 1 entered is "+address1);
+		driver.findElement(By.id("address.townCity")).sendKeys(city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(By.id("state"));
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		logger.info("state selected");
+		driver.findElement(By.id("address.postcode")).sendKeys(postalCode);
+		logger.info("postal code entered is "+postalCode);
+		driver.findElement(By.id("address.phonenumber")).sendKeys(phoneNumber);
+		logger.info("phone number entered is "+phoneNumber);
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
@@ -595,39 +614,49 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']")));
+		driver.findElement(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']")).click();
+		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
 	}
+
 	public boolean validateCancelEnrollmentFunctionalityPC(){
-		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
 		driver.click(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
-		driver.waitForPageLoad();
-		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
+		return validateHomePage();
 	}
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']")));
+		driver.findElement(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']")).click();
+		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityRC(){
-		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
 		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
 		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
-		driver.waitForPageLoad();
-		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
+		return validateHomePage();
 	}
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+		driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
-		String baseurl="http://www.corprfo.stg2.rodanandfields.com/ca/";
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
 		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		return validateHomePage();
+	}
+
+	public boolean validateHomePage(){
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		return driver.getCurrentUrl().equalsIgnoreCase(baseurl);
+		String url = driver.getURL();
+		return url.contains(driver.getCurrentUrl());
+	}
+
+	public void navigateToBackPage(){
+		driver.waitForPageLoad();
+		driver.navigate().back();
 	}
 }

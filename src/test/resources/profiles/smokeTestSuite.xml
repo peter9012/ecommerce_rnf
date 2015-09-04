@@ -6,8 +6,8 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-		    <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class>
-			<!-- <class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"></class> -->		
+		    <!-- <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class> -->
+			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"></class>		
 		</classes>
 	</test>
 </suite>

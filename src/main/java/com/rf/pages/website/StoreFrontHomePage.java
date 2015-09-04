@@ -22,6 +22,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='Log in']");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
+	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
@@ -175,7 +176,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterEmailAddress(String emailAddress){		
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress);	
+		driver.type(By.id("email-account"), emailAddress+"\t");
 		driver.waitForSpinImageToDisappear();
 	}
 
@@ -224,7 +225,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		logger.info("state selected");
 	}
-	
+
 	public boolean verifyQuebecProvinceIsDisabled(){
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_QUEBEC+"')]"));
@@ -309,6 +310,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
 		driver.click(By.id("QAS_AcceptOriginal"));
 		logger.info("accept the original button clicked");
+	}
+
+	public boolean verifySuggesstionsForEnteredAddressPop(){
+		try{
+			driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
 	}
 
 	public void enterCardNumber(String cardNumber){
@@ -562,6 +573,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
+	//method overloaded,no need for enrollment type if kit is portfolio
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName);		
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	// method overloaded, parameter for province is there
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		chooseEnrollmentOption(enrollmentType);
@@ -606,6 +633,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
 		return status;
 	}
+
 	public boolean validateErrorMessageForActiveRC(){
 		String ActiveRC="Retail29@mailinator.com";
 		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
@@ -618,4 +646,65 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return status;
 	}
 
+	public boolean verifyPopUpForExistingActivePC() throws InterruptedException{
+		boolean isPopForExistingAccountVisible = false;
+		//Thread.sleep(5000);
+		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='activePCPopup']/div/div")).isDisplayed();
+		if(isPopForExistingAccountVisible==true){
+			driver.findElement(By.xpath("//a[contains(@class, 'fancybox-close')]")).click();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPopUpForExistingActiveCCLessThan6Month() throws InterruptedException{
+		boolean isPopForExistingAccountVisible = false;
+		driver.waitForElementPresent(CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH);
+		isPopForExistingAccountVisible = driver.findElement(CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH).isDisplayed();
+		if(isPopForExistingAccountVisible==true){
+			driver.findElement(By.xpath("//a[contains(@class, 'fancybox-close')]")).click();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPopUpForExistingActiveRC() throws InterruptedException{
+		boolean isPopForExistingAccountVisible = false;
+		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='activeRetailPopup']/div/div")).isDisplayed();
+		if(isPopForExistingAccountVisible==true){
+			driver.findElement(By.xpath("//a[contains(@class, 'fancybox-close')]")).click();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPopUpForExistingInactivePC90Days() throws InterruptedException{
+		boolean isPopForExistingAccountVisible = false;
+		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='inactivePc90Popup']/div/div")).isDisplayed();
+		if(isPopForExistingAccountVisible==true){
+			driver.findElement(By.xpath("//a[contains(@class, 'fancybox-close')]")).click();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPopUpForExistingInactiveCC180Days() throws InterruptedException{
+		boolean isPopForExistingAccountVisible = false;
+		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='inactiveConsultant180Popup']/div/div")).isDisplayed();
+		if(isPopForExistingAccountVisible==true){
+			driver.findElement(By.xpath("//a[contains(@class, 'fancybox-close')]")).click();
+
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean validateIncorrectLogin(){
+		return driver.findElement(By.xpath("//p[text()='Your username or password was incorrect.']")).isDisplayed();
+	}
 }

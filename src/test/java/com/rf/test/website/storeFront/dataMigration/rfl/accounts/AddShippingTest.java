@@ -337,9 +337,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-			consultantEmailID = "jusher@everestkc.net";//(String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			//accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			//logger.info("Account Id of the user is "+accountID);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -455,7 +455,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-			consultantEmailID = "maritza.smith@live.com";//(String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -478,7 +478,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
-
+		
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
@@ -494,6 +494,16 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the default shipping profile address by verifying by name------------------------------------------------------------		
+
+		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address contains the default shipping address");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
@@ -519,9 +529,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-			consultantEmailID ="stewarthollee13@gmail.com"; //(String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			//accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			//logger.info("Account Id of the user is "+accountID);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
@@ -538,7 +548,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-		storeFrontUpdateCartPage.clickOnEditShipping();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();

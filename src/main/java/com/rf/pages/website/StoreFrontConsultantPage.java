@@ -3,6 +3,7 @@ package com.rf.pages.website;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -11,7 +12,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontConsultantPage.class.getName());
 
-
+	Actions actions;
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
 	private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']"); 
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
@@ -113,6 +114,13 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.findElement(By.xpath("//input[@id='webSitePrefix']")).sendKeys("!@");
 		driver.click(By.id("pulse-enroll"));
 		return (driver.findElement(By.xpath("//img[@id='prefixIsAvailableImage']")).isDisplayed()||driver.findElement(By.xpath("//span[@class='prefix unavailable']")).isDisplayed());
+	}
+
+	public boolean validateNextCRPMiniCart() {
+		actions=new Actions(RFWebsiteDriver.driver);
+		//actions.moveToElement(driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']"))).build().perform();
+		//driver.waitForElementPresent(By.xpath("//h2[contains(text(),'YOUR CRP CART')]"));
+		return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
 	}
 
 }

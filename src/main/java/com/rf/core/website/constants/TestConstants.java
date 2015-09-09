@@ -30,11 +30,13 @@ public class TestConstants {
 	public static final String PASSWORD_BELOW_6CHARS = "test1";
 	public static final String SPOUSE_FIRST_NAME = "Mary";
 	public static final String SPOUSE_LAST_NAME = "Stone";
+	public static final String SPONSOR_ID_FOR_PC = "Test";
 
-	public static final String FIRST_NAME = "rfTestUser";
+	public static final String FIRST_NAME = "auto";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 	public static final String PASSWORD = "test1234";
+	public static final String PASS = "111maiden";
 	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
@@ -120,15 +122,15 @@ public class TestConstants {
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 
-	//PWS STAGING
-	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
-	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
-	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
-	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
-	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
-	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
-
-	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
+//	//PWS STAGING
+//	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
+//	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
+//	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
+//	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
+//	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
+//	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
+//
+//	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
 

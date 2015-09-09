@@ -1,5 +1,6 @@
 package com.rf.test.website;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
-		driver.get(driver.getURL());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		try{
 			logout();
 		}catch(NoSuchElementException e){
@@ -186,6 +187,17 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			value = map.get(column);			
 		}
 		return value;
+	}
+	
+	public List<String> getValuesFromQueryResult(List<Map<String, Object>> userDataList,String column){
+		List<String> allReturnedValuesFromQuery = new ArrayList<String>();
+		Object value = null;
+		for (Map<String, Object> map : userDataList) {
+			logger.info("query result:" + map.get(column));
+			value = map.get(column);
+			allReturnedValuesFromQuery.add(String.valueOf(value));
+		}
+		return allReturnedValuesFromQuery;
 	}
 
 }

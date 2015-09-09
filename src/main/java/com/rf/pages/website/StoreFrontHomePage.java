@@ -707,4 +707,40 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean validateIncorrectLogin(){
 		return driver.findElement(By.xpath("//p[text()='Your username or password was incorrect.']")).isDisplayed();
 	}
+
+	public boolean verifySwitchPCToUnderDifferentConsultant(){
+		boolean flag = false;
+		if(driver.findElement(By.id("inactivePc90Form")).isDisplayed()){
+			flag = true;
+			return flag;
+		}else{
+			return flag;
+		}
+	}
+
+	public void mouseHoverSponsorDataAndClickContinueForPC() throws InterruptedException{
+		actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).click().build().perform();
+		logger.info("First result of sponsor has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void enterSponsorIdDuringCreationOfPC(String sponsorID){
+		driver.waitForElementPresent(By.id("sponsor-name-id"));
+		driver.findElement(By.id("sponsor-name-id")).sendKeys(sponsorID);
+		driver.findElement(By.xpath("//input[@class='submitSponser']")).click();
+	}
+
+	public boolean validateMiniCart() {
+		actions=new Actions(RFWebsiteDriver.driver);
+		return driver.findElement(By.xpath("//a[@id='shopping-cart']")).isDisplayed();
+	}
+
+	public boolean clickMiniCartAndValidatePreaddedProductsOnCartPage(){
+		driver.waitForElementPresent(By.xpath("//a[@id='shopping-cart']"));
+		driver.click(By.xpath("//a[@id='shopping-cart']"));
+		driver.waitForPageLoad();
+		return driver.findElement(By.xpath("//div[@id='left-shopping']")).isDisplayed();
+	}
 }

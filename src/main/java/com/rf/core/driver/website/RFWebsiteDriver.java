@@ -109,6 +109,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getCountry(){
 		return propertyFile.getProperty("country");
 	}
+	
+	public String getEnvironment(){
+		return propertyFile.getProperty("environment");
+	}
 
 	/**
 	 * @param locator

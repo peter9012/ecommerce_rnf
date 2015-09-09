@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
@@ -15,6 +17,8 @@ import com.rf.core.website.constants.TestConstants;
 public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountInfoPage.class.getName());
+	
+	Actions actions;
 
 	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Account info')]");
 	private final By TERMINATE_MY_ACCOUNT = By.xpath("//a[text()='Terminate My Account']");
@@ -417,6 +421,39 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public String getUserName(){
 		return driver.findElement(By.xpath(".//input[@id='username-account']")).getText();
+	}
+
+	public void checkAllowMySpouseCheckBox(){
+		if(!driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).isSelected()){
+			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+		}
+	}
+
+	public boolean validateEnterSpouseDetailsAndAccept(){
+		actions = new Actions(RFWebsiteDriver.driver);
+		String spouseFirstName="Mary";
+		String spouseLastName="Rose";
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
+		actions.sendKeys(Keys.TAB).build().perform();
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//input[@id='acceptSpouse']"));
+		driver.pauseExecutionFor(1500);
+		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+	}
+
+	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
+		String spouseFirstName="Mary";
+		String spouseLastName="Rose";
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
+		actions.sendKeys(Keys.TAB).build().perform();
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//input[@id='cancelSpouse']"));
+		driver.pauseExecutionFor(1500);
+		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 }
 

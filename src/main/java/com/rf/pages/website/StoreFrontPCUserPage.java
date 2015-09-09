@@ -62,11 +62,12 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public void clickPleaseCancelMyPcPerksActBtn(){
-		driver.waitForElementPresent(By.xpath("//input[@id='cancel-pc-perks-button']"));
-		driver.click(By.xpath("//input[@id='cancel-pc-perks-button']"));
+		driver.waitForElementPresent(By.id("cancel-pc-perks-button"));
+		driver.click(By.id("cancel-pc-perks-button"));
 	}
 
 	public StoreFrontHomePage cancelMyPCPerksAct(){
+		driver.waitForElementPresent(By.id("problemType"));
 		driver.click(By.id("problemType"));
 		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.click(By.xpath("//select[@id='problemType']/option[6]"));
@@ -80,5 +81,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForPageLoad();
 		return new StoreFrontHomePage(driver);
 	}
+	
+	public boolean validateNextPCPerksMiniCart() {  
+		  return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
+		 }
 }
 

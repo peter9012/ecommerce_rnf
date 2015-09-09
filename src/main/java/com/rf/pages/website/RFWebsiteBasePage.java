@@ -1,7 +1,11 @@
 package com.rf.pages.website;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -9,7 +13,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.RFBasePage;
 
 
@@ -20,6 +26,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info']//a[contains(text(),'Edit')]");
 	protected RFWebsiteDriver driver;
+	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
 		super(driver);
 		this.driver = driver;
@@ -219,8 +226,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean isPopUpForPCThresholdPresent() throws InterruptedException{
 		boolean isPopUpForPCThresholdPresent=false;
-		driver.waitForElementPresent(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products in your PC cart greater than the threshold CAD $90')]"));
-		isPopUpForPCThresholdPresent = driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products in your PC cart greater than the threshold CAD $90')]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products')]"));
+		isPopUpForPCThresholdPresent = driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products')]")));
 		if(isPopUpForPCThresholdPresent==true){
 			driver.click(By.xpath("//div[@id='popup-content']//input"));
 			return true;
@@ -659,4 +666,72 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		driver.navigate().back();
 	}
+
+	public void clickOnAllowMySpouseOrDomesticPartnerCheckboxForUncheck() {
+		//driver.waitForElementToBeVisible(By.xpath("//input[@id='spouse-check']"), 15);
+		boolean status=driver.findElement(By.xpath("//input[@id='spouse-check']/..")).isSelected();
+		if(status==true){
+			driver.click(By.xpath("//input[@id='spouse-check']/.."));
+		}
+	}
+
+	public void cancelTheProvideAccessToSpousePopup(){
+		driver.pauseExecutionFor(6000);
+		if(driver.findElement(By.id("cancelSpouse")).isDisplayed()){
+			driver.click(By.id("cancelSpouse"));
+			driver.pauseExecutionFor(3000);
+		}
+	}
+
+	public boolean verifyAllowMySpouseCheckBoxIsSelectedOrNot(){
+		logger.info("Checkbox status "+driver.findElement(By.id("spouse-check")).isSelected());
+		driver.waitForElementPresent(By.id("spouse-check"));
+		if(driver.findElement(By.id("spouse-check")).getAttribute("class").equalsIgnoreCase("checked")){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
+		Object value = null;
+		for (Map<String, Object> map : userDataList) {
+			logger.info("query result:" + map.get(column));
+			value = map.get(column);			
+		}
+		return value;
+	}
+
+	public String getBizPWS(String country,String env){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomActiveSitePrefixList =  null;
+		String activeSitePrefix = null;
+		String PWS = null;
+		String countryID =null;
+
+		if(country.equalsIgnoreCase("ca")){
+			countryID="40";
+		}
+		else if(country.equalsIgnoreCase("us")){
+			countryID="236";
+		} 
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);
+		return PWS;
+	}
+
+	public void openPWSSite(String country,String env){
+		while(true){
+			driver.get(getBizPWS(country, env));
+			driver.waitForPageLoad();
+			if(driver.getCurrentUrl().contains("sitenotfound"))
+				continue;
+			else
+				break;
+		}	
+	}
+
 }

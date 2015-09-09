@@ -1499,7 +1499,10 @@ public class DBQueries_RFO {
 
 	public static String GET_EMAIL_ID_RFO = "select top 1 * from RFO_Accounts.EmailAddresses WHERE EmailAddressID = '%S'";
 
+	public static String GET_RANDOM_100_USERS_RFO = "select top 100 * from RFO_Accounts.EmailAddresses order by NEWID()";
 
+	public static String GET_RANDOM_ACTIVE_SITE_PREFIX_RFO = "select top 1 SitePrefix from Hybris.Sites where accountID IN (select top 1 accountID from RFO_Accounts.AccountBase where countryID=%s and AccountStatusID=1 and AccountTypeID=1 order by newId())";
+	
 	/**
 	 * 
 	 * @param query

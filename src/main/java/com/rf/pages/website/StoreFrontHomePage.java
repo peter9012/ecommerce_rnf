@@ -129,7 +129,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
-		driver.click(By.xpath("//div[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
+	//	driver.click(By.xpath("//div[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
 		driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
 		driver.click(By.cssSelector("input[value='Next']"));
@@ -167,12 +167,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterFirstName(String firstName){
 		driver.waitForElementPresent(By.id("first-name"));
-		driver.findElement(By.id("first-name")).sendKeys(firstName);
+		driver.type(By.id("first-name"), firstName);
 		logger.info("first name entered as "+firstName);
 	}
 
 	public void enterLastName(String lastName){
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 	}
 
 	public void enterEmailAddress(String emailAddress){		
@@ -182,6 +182,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void closePopUp(){
 		driver.click(By.cssSelector("a[title='Close']"));
+		driver.pauseExecutionFor(2000);
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
@@ -195,20 +196,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterPassword(String password){
-		driver.findElement(By.id("new-password-account")).sendKeys(password);
+		driver.type(By.id("new-password-account"),password);
 	}
 
 	public void enterConfirmPassword(String password){
-		driver.findElement(By.id("new-password-account2")).sendKeys(password);
+		driver.type(By.id("new-password-account2"),password);
 	}
 
 	public void enterAddressLine1(String addressLine1){
-		driver.findElement(By.id("address-1")).sendKeys(addressLine1);
+		driver.type(By.id("address-1"),addressLine1);
 		logger.info("Address Line 1 entered is "+addressLine1);
 	}
 
 	public void enterCity(String city){
-		driver.findElement(By.id("city")).sendKeys(city);
+		driver.type(By.id("city"),city);
 		logger.info("City entered is "+city);
 	}
 
@@ -233,12 +234,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterPostalCode(String postalCode){
-		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+		driver.type(By.id("postcode"),postalCode);
 		logger.info("postal code entered is "+postalCode);
 	}
 
 	public void enterPhoneNumber(String phnNum){
-		driver.findElement(By.id("phonenumber")).sendKeys(phnNum);
+		driver.type(By.id("phonenumber"),phnNum);
 		logger.info("phone number entered is "+phnNum);
 	}
 
@@ -324,7 +325,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterCardNumber(String cardNumber){
 		driver.waitForElementPresent(By.id("card-nr"));
-		driver.findElement(By.id("card-nr")).sendKeys(cardNumber);
+		driver.findElement(By.id("card-nr")).sendKeys(cardNumber+"\t");
 		logger.info("card number entered as "+cardNumber);
 	}
 
@@ -343,7 +344,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateEmptyCreditCardMessage(){
-		if(driver.findElement(By.xpath("//div[contains(text(),'This field')]")).isDisplayed()){
+		if(driver.findElement(By.xpath("//div[contains(text(),'This field is required')]")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -573,6 +574,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
+	//Method Overloaded without Kit and Regimen
+	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
 	//method overloaded,no need for enrollment type if kit is portfolio
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName);		
@@ -743,4 +758,44 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//div[@id='left-shopping']")).isDisplayed();
 	}
+
+	public void clickOnReviewAndConfirmShippingEditBtn(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Shipping info')]/a[text()='Edit']"));
+		driver.click(By.xpath("//h3[contains(text(),'Shipping info')]/a[text()='Edit']"));
+	}
+
+	public boolean isReviewAndConfirmPageContainsShippingAddress(String shippingAddress){
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]"));
+		return driver.findElement(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]")).getText().contains(shippingAddress);
+	}
+
+	public boolean isReviewAndConfirmPageContainsFirstAndLastName(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]/span"));
+		return driver.findElement(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]/span")).getText().toLowerCase().contains(name.toLowerCase());
+	}
+
+	public boolean validateUserLandsOnPWSbizSite(){
+		return driver.getCurrentUrl().contains("biz");
+	}
+
+	public void cancelPulseSubscription(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public boolean validatePWS(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-logo']"));
+		return driver.findElement(By.xpath("//div[@id='header-logo']")).isDisplayed();
+	}
+
+	public void clickOnUSAtWelcomePage(){
+		driver.click(By.xpath("//a[text()='United States']"));
+	}
+
 }
+
+

@@ -542,7 +542,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 		RFO_DB = driver.getDBNameRFO();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "test";
 		String consultantEmailID = null;
 		consultantEmailID =consultantWithCancelledCRP;   

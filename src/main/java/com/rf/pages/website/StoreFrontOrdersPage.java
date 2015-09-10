@@ -645,4 +645,22 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return shippingMethodName;
 	}
 
+	public void clickDetailsUnderActionsForFirstOrderUnderOrderHistory(){
+		String firstOrderNumber=getFirstOrderNumberFromOrderHistory();
+		driver.waitForElementPresent(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.findElement(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]")).click();
+		driver.click(By.linkText("Details"));
+		driver.waitForPageLoad();
+	}
+
+	public String validateOrderDetailsPageIsDisplayedForSimilarOrderNo(){
+		return driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText();
+	}
+
+	public boolean validateOrderDetails(){
+		driver.pauseExecutionFor(2000);
+		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
+				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
+				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
+	}
 }

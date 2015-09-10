@@ -123,5 +123,14 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
 	}
 
+	public void cancelPulseSubscription(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+	
 }
 

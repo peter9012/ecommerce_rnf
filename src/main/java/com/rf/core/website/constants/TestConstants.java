@@ -38,6 +38,7 @@ public class TestConstants {
 	public static final String PASSWORD = "test1234";
 	public static final String PASS = "111maiden";
 	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
+	public static final String NEW_ADDRESS_LINE_1_CA = "5503 - 54th Street";
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2H4";
@@ -86,7 +87,7 @@ public class TestConstants {
 	 */
 	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
-	public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
+	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
@@ -209,13 +210,14 @@ public class TestConstants {
 	 * New Shipping Address US
 	 * 
 	 */
-	public static final String NEW_ADDRESS_NAME_US = "newSAName";
-	public static final String NEW_ADDRESS_LINE1_US = "10 Hemlock Way";
-	public static final String NEW_ADDRESS_CITY_US = "Cohasset";
-	public static final String NEW_ADDRESS_STATE_US = "MA";
-	public static final String NEW_ADDRESS_POSTAL_CODE_US = "02025-4001";
-	public static final String NEW_ADDRESS_PHONE_NUMBER_US = "9178873219";
-	public static final String NEW_ADDRESS_SECURITY_NUMBER_US = "123";
+	public static final String ADDRESS_NAME_US = "newSAName";
+	public static final String ADDRESS_LINE_1_US = "10 Hemlock Way";
+	public static final String NEW_ADDRESS_LINE_1_US = "11 Hemlock Way";
+	public static final String CITY_US = "Cohasset";
+	public static final String STATE_US = "MA";
+	public static final String POSTAL_CODE_US = "02025-4001";
+	public static final String PHONE_NUMBER_US = "9178873219";
+	public static final String SECURITY_NUMBER_US = "123";
 
 	/**
 	 * 

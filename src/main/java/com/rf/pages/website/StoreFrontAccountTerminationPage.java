@@ -9,10 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
-	
+
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountTerminationPage.class.getName());
-	
+
 	private final By ACCOUNT_TERMINATION_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),' Account termination')]");
 	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='submit']");
 	private final By ACCOUNT_TERMINATION_PAGE_POPUP_HEADER = By.xpath("//div[@id='popup-content']//h2");
@@ -78,5 +78,29 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		actions.moveToElement(driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));
 		actions.click(driver.findElement(By.xpath("//div[@class='repaired-checkbox']"))).build().perform();
 		logger.info("Checkbox for voluntarily terminate selected");
+	}
+
+	public void fillTheEntriesAndClickOnSubmitDuringTermination(){
+		driver.waitForElementPresent(By.id("reason"));
+		driver.click(By.id("reason"));
+		driver.click(By.xpath("//select[@id='reason']/option[contains(text(),'Other')]"));
+		driver.type(By.id("terminationComments"), "I want to terminate my account");
+		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
+		driver.click(By.xpath("//input[@class='fancybox']"));
+		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
+		driver.waitForLoadingImageToDisappear();
+		driver.click(By.xpath("//input[@value='Close window']"));
+	}
+
+	public boolean verifyAccountTerminationIsConfirmedPopup(){
+		if(driver.findElement(By.xpath("//div[@id='consultantTerminatePopup']")).isDisplayed()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickOnCloseWindowAfterTermination(){
+		driver.click(By.xpath("//input[@value='Close window']"));
 	}
 }

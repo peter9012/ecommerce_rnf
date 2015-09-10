@@ -191,10 +191,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+		logger.info("password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
+		logger.info("confirm password entered as "+TestConstants.PASS);
 		driver.click(By.id("next-button"));		
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -214,10 +214,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+		logger.info("password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
+		logger.info("confirm password entered as "+TestConstants.PASS);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
@@ -256,17 +256,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER);
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.NEW_ADDRESS_LINE1_US);
-			logger.info("Address line 1 entered is "+TestConstants.NEW_ADDRESS_LINE1_US);
-			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.NEW_ADDRESS_CITY_US);
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
 			logger.info("state selected");
-			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-			logger.info("postal code entered is "+TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
-			logger.info("phone number entered is "+TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		}
 
 	}
@@ -441,7 +441,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
 	}
 
-
 	public boolean validatePasswordFieldMessage(){
 		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter 6')]")).isDisplayed()){
 			return true;
@@ -531,10 +530,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+		logger.info("password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
+		logger.info("confirm password entered as "+TestConstants.PASS);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));  
@@ -554,10 +553,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+		logger.info("password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
+		logger.info("confirm password entered as "+TestConstants.PASS);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -574,26 +573,41 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateExistingUserPopUp(String userid){
+		RFO_DB = driver.getDBNameRFO();
+		String pcmailid=null;
+		String rcmailid=null;
+		String consultantmailid=null;
+
+		List<Map<String, Object>> randomPCUserEmailIdList =  null;
+		List<Map<String, Object>> randomRCUserEmailIdList =  null;
+		List<Map<String, Object>> randomConsultantEmailIdList =  null;
+
 		String firstName="RCUser";
 		String lastName = "Test";
-		String pcmailid="autopc@xyz.com";
-		String rcmailid="Retail29@mailinator.com";
-		String consultantmailid="con0708@yopmail.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
+			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
+
 			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
 			logger.info("email entered as "+pcmailid);
 		}else if(userid.equalsIgnoreCase("rc")){
+			randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "Username"));
+
 			driver.findElement(By.id("email-account")).sendKeys(rcmailid);
 			logger.info("email entered as "+rcmailid);
 		}else{
+
+			randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "Username"));
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 			logger.info("email entered as "+consultantmailid);
 		}
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		boolean flag=false;
@@ -612,7 +626,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 				driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 				logger.info("email entered as "+consultantmailid);
 			}
-			driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+			driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(2000);
 			return driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='fancybox-inner']//h2[contains(text(),'E')]")));
@@ -656,10 +670,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateHomePage(){
-		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		String url = driver.getURL();
-		return url.contains(driver.getCurrentUrl());
+		return driver.getCurrentUrl().contains(url);
 	}
 
 	public void navigateToBackPage(){
@@ -732,6 +745,21 @@ public class RFWebsiteBasePage extends RFBasePage{
 			else
 				break;
 		}	
+	}
+
+	public void switchToChildWindow(){
+		driver.switchWindow();
+	}
+
+	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
+		driver.click(By.xpath("//a[text()='Check My Pulse']"));
+		driver.pauseExecutionFor(3000);
+	}
+
+	public boolean validatePulseHomePage(){
+		String pulseHomePageURL="https://www.pulserfo.stg2.rodanandfields.com/Home";
+		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
 	}
 
 }

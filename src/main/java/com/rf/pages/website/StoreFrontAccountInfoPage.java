@@ -410,6 +410,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 
 	public String getErrorMessage()	{
+		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
 		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
 		return errorMessage;
 	}

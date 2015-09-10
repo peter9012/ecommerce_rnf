@@ -5,6 +5,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -109,7 +110,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getCountry(){
 		return propertyFile.getProperty("country");
 	}
-	
+
 	public String getEnvironment(){
 		return propertyFile.getProperty("environment");
 	}
@@ -203,21 +204,21 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-	
+
 	public void waitForLoadingImageToAppear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		int timeout = 3;
-		
+
 		for(int i=1;i<=timeout;i++){			
 			try{
 				if(driver.findElements(locator).size()==0){
 					pauseExecutionFor(1000);
-		
+
 					continue;
 				}else{
 					turnOnImplicitWaits();
-		
+
 					break;
 				}			
 			}catch(Exception e){
@@ -637,6 +638,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			System.err.println(e);
 		}
 		return sDateTime;
+	}
+
+	public void switchWindow(){
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		String parentWindowID=it.next();
+		String childWindowID=it.next();
+		driver.switchTo().window(childWindowID); 
 	}
 
 }

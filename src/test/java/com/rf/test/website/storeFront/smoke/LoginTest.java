@@ -21,7 +21,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private String RFL_DB = null;
 
-//	@Test(dataProvider="rfTestData")
+	@Test//(dataProvider="rfTestData")
 	public void testLogin(String accountID,String emailID,String accNumber,String sid,String name, String hasOrder ,String sourceName) throws InterruptedException{
 //		RFL_DB = driver.getDBNameRFL();
 //		logger.info("AccountID= "+accountID);

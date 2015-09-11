@@ -33,7 +33,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	//contains the common methods useful for all the pages inherited
-
+		
 	public static String convertDBDateFormatToUIFormat(String DBDate){
 		String UIMonth=null;
 		String[] splittedDate = DBDate.split(" ");
@@ -178,10 +178,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='content-full-page']/h1[text()='Log in or create an account']")));
 	}
 
-	public void enterNewRCDetails() throws InterruptedException{
+	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="RCUser";
-		String lastName = "Test";
+//		String firstName="RCUser";
+//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -191,20 +191,20 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
-		logger.info("password entered as "+TestConstants.PASS);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
-		logger.info("confirm password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));		
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
-	public void enterNewPCDetails() throws InterruptedException{
+	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="PCUser";
-		String lastName = "Test";
+//		String firstName="PCUser";
+//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -214,10 +214,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
-		logger.info("password entered as "+TestConstants.PASS);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
-		logger.info("confirm password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
@@ -518,10 +518,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]")));
 	}
 
-	public String createNewPC() throws InterruptedException{
+	public String createNewPC(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="PCUser";
-		String lastName = "Test";
+//		String firstName="PCUser";
+//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -530,10 +530,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
-		logger.info("password entered as "+TestConstants.PASS);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
-		logger.info("confirm password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));  
@@ -541,10 +541,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return emailAddress;
 	}
 
-	public String createNewRC(){	
+	public String createNewRC(String firstName,String lastName,String password){	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="RCUser";
-		String lastName = "Test";
+//		String firstName="RCUser";
+//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -553,10 +553,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
-		logger.info("password entered as "+TestConstants.PASS);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.PASS);
-		logger.info("confirm password entered as "+TestConstants.PASS);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -572,7 +572,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
-	public boolean validateExistingUserPopUp(String userid){
+	public boolean validateExistingUserPopUp(String userid,String firstName,String lastName,String password){
 		RFO_DB = driver.getDBNameRFO();
 		String pcmailid=null;
 		String rcmailid=null;
@@ -582,8 +582,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
 
-		String firstName="RCUser";
-		String lastName = "Test";
+//		String firstName="RCUser";
+//		String lastName = "Test";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
@@ -607,7 +607,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 			logger.info("email entered as "+consultantmailid);
 		}
-		driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+		driver.findElement(By.id("password")).sendKeys(password);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		boolean flag=false;
@@ -626,7 +626,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 				driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 				logger.info("email entered as "+consultantmailid);
 			}
-			driver.findElement(By.id("password")).sendKeys(TestConstants.PASS);
+			driver.findElement(By.id("password")).sendKeys(password);
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(2000);
 			return driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='fancybox-inner']//h2[contains(text(),'E')]")));

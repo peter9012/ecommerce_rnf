@@ -625,41 +625,41 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 	}
 
-	public boolean validateErrorMessageForActivePC(){
-		String ActivePC="autopc@xyz.com";
-		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActivePC);
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
-		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-		}
-		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-		return status;
-	}
+//	public boolean validateErrorMessageForActivePC(){
+//		String ActivePC="autopc@xyz.com";
+//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActivePC);
+//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+//		}
+//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+//		return status;
+//	}
 
-	public boolean validateErrorMessageForActiveConsultant(){
-		String ActiveConsultant="con0708@yopmail.com";
-		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveConsultant);
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
-		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-		}
-		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-		return status;
-	}
+//	public boolean validateErrorMessageForActiveConsultant(){
+//		String ActiveConsultant="con0708@yopmail.com";
+//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveConsultant);
+//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+//		}
+//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+//		return status;
+//	}
 
-	public boolean validateErrorMessageForActiveRC(){
-		String ActiveRC="Retail29@mailinator.com";
-		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.PASSWORD);   
-		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-		}
-		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-		return status;
-	}
+//	public boolean validateErrorMessageForActiveRC(){
+//		String ActiveRC="Retail29@mailinator.com";
+//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
+//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+//		}
+//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+//		return status;
+//	}
 
 	public boolean verifyPopUpForExistingActivePC() throws InterruptedException{
 		boolean isPopForExistingAccountVisible = false;

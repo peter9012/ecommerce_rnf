@@ -23,6 +23,7 @@ import com.rf.test.base.RFBaseTest;
  */
 public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
+	protected String password =null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -36,6 +37,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
 		driver.loadApplication();
+		password = driver.getPassword();
 		logger.info("Application loaded");
 		driver.setDBConnectionString();		
 	}

@@ -342,6 +342,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
 		driver.click(By.xpath("//input[@value='OK']"));
 		logger.info("Confirmation OK button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
@@ -520,6 +521,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]//a[text()='Edit']")), 30);
 		driver.click(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]//a[text()='Edit']"));
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{

@@ -114,6 +114,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getEnvironment(){
 		return propertyFile.getProperty("environment");
 	}
+	
+	public String getPassword(){
+		return propertyFile.getProperty("password");
+	}
 
 	/**
 	 * @param locator

@@ -30,7 +30,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		s_assert.assertTrue(!consultantPWSURL.contains(".biz"),"Consultant is not on her own .com PWS");
 			
 		s_assert.assertAll();
@@ -50,7 +50,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
 			
 		s_assert.assertAll();			
@@ -79,7 +79,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
 			
 		s_assert.assertAll();
@@ -95,7 +95,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"Consultant is not on corporate site");
 		
 		s_assert.assertAll();		
@@ -121,7 +121,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);		
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"Consultant is not on corporate site");
 		
 		s_assert.assertAll();				
@@ -146,7 +146,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, TestConstants.RC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(otherPWSURL),"RC is not on someone's PWS");
 		
 		s_assert.assertAll();		
@@ -164,7 +164,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, TestConstants.RC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"RC is not on corporate site");
 		
 		s_assert.assertAll();				
@@ -186,7 +186,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(sponsorsPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 		
 		s_assert.assertAll();
@@ -214,7 +214,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 		
 		s_assert.assertAll();
@@ -236,7 +236,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 		
 		s_assert.assertAll();
@@ -261,7 +261,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
 		
 		s_assert.assertAll();
@@ -279,7 +279,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
 		
 		s_assert.assertAll();
@@ -304,7 +304,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
 		
 		s_assert.assertAll();
@@ -322,7 +322,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
 		
 		s_assert.assertAll();

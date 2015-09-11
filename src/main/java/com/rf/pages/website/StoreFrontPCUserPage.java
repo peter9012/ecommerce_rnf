@@ -45,9 +45,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']"));
-		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']");
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[3]//form[2]/input[@value='Add to PC Perks']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[3]//form[2]/input[@value='Add to PC Perks']"));
+		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[3]//form[2]/input[@value='Add to PC Perks']");
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 

@@ -35,8 +35,8 @@ public class TestConstants {
 	public static final String FIRST_NAME = "auto";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
-	public static final String PASSWORD = "test1234";
-	public static final String PASS = "111maiden";
+	//public static final String PASSWORD = "test1234";
+	//public static final String PASS = "111maiden";
 	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
 	public static final String NEW_ADDRESS_LINE_1_CA = "5503 - 54th Street";
 	public static final String CITY_CA = "Bonnyville";
@@ -99,8 +99,8 @@ public class TestConstants {
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
 	public static final String CONSULTANT_NEW_EMAIL_ID_STG2 = "con0708111@yopmail.com";
 
-	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
-	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
+//	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
+//	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
 
 	public static final String PC_EMAIL_ID_STG2="pcuser02@abc.com";
 	public static final String EMAIL_ACTIVE_PC_USER="rftest2506PC@yopmail.com";
@@ -132,7 +132,7 @@ public class TestConstants {
 //	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
 //
 //	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
-	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
+	//public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
 
 
@@ -141,7 +141,7 @@ public class TestConstants {
 	 */
 
 	public static final String RCUSER_EMAIL_ID = "Retail29@mailinator.com";
-	public static final String RCUSER_PASSWORD = "test1234";
+//	public static final String RCUSER_PASSWORD = "test1234";
 	public static final String RCUSER_USERNAME = "RFTest1706";
 	public static final String RCUSER_ORDER_NUMBER = "2100018433";
 	public static final String RCUSER_SCHEDULED_DATE = "July 8, 2015";
@@ -154,15 +154,15 @@ public class TestConstants {
 
 	public static final String PCUSER_NO_SPONSOR_EMAIL_ID = "pcuserwithoutsponsor@stg2.com";
 	public static final String PCUSER_EMAIL_ID_FOR_ACCOUNTINFO = "pcusersponserpws@stg2.com";
-	public static final String PCUSER_PASSWORD = "test1234";
-	public static final String PCUSER_NO_SPONSOR_PASSWORD = "test1234";
+	//public static final String PCUSER_PASSWORD = "test1234";
+	//public static final String PCUSER_NO_SPONSOR_PASSWORD = "test1234";
 	public static final String PCUSER_NO_SPONSOR_USERNAME = "pcuserwithoutsponsor";
 
 	public static final String PCUSER_SPONSOR_NO_PWS_EMAIL_ID = "nopwspc@yopmail.com";
-	public static final String PCUSER_SPONSOR_NO_PWS_PASSWORD = "test1234";
+//	public static final String PCUSER_SPONSOR_NO_PWS_PASSWORD = "test1234";
 
 	public static final String PCUSER_SPONSOR_PWS_EMAIL_ID = "pcusersponserpws@stg2.com";
-	public static final String PCUSER_SPONSOR_PWS_PASSWORD = "test1234";
+	//public static final String PCUSER_SPONSOR_PWS_PASSWORD = "test1234";
 
 	/**
 	 * 
@@ -189,19 +189,19 @@ public class TestConstants {
 	 * US tst4 
 	 */
 	public static final String CONSULTANT_EMAIL_ID_TST4 = "anneginsberg@hotmail.com";
-	public static final String CONSULTANT_PASSWORD_TST4 = "abcde";
-	public static final String RC_PASSWORD_TST4 = "abcde";
-	public static final String CONSULTANT_PASSWORD_RFL = "abcde";
-	public static final String PC_USER_PASSWORD_RFL = "abcde";
+	//public static final String CONSULTANT_PASSWORD_TST4 = "111maiden";
+	//public static final String RC_PASSWORD_TST4 = "111maiden";
+	//public static final String CONSULTANT_PASSWORD_RFL = "111maiden";
+	//public static final String PC_USER_PASSWORD_RFL = "111maiden";
 	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";
 	public static final String CONSULTANT_ACC_TERMINATION_PASSWORD_TST4 = "test1234";
 
 
 	public static final String PC_EMAIL_ID_TST4 = "wigginsk@comcast.net";
-	public static final String PC_PASSWORD_TST4 = "abcde";
+	//public static final String PC_PASSWORD_TST4 = "abcde";
 
 	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
-	public static final String RCUSER_PASSWORD_TST4 = "abcde";
+	//public static final String RCUSER_PASSWORD_TST4 = "abcde";
 	public static final String RCUSER_USERNAME_TST4 = "Kasey";
 
 

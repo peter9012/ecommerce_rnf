@@ -41,7 +41,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 	}
 	
 	
-	@Test (invocationCount = 1)
+	@Test (invocationCount = 10)
 	public void testLoginDynamic() throws InterruptedException {//String accountID,String emailID,String accNumber,String sid,String name, String hasOrder ,String sourceName) throws InterruptedException{
 		String sRandNum = RandomStringUtils.randomNumeric(5);
 		System.out.println(sRandNum);

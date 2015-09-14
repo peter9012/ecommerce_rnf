@@ -149,11 +149,10 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String shippingAddressFromDB =null;
 		String city = null;
 		String state = null;
-		String phoneNumber = null;
 		String subTotalDB = null;
 		String shippingDB = null;
 		String handlingDB = null;
-		String taxDB = null; 
+		String taxDB = null;	
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
 		String consultantEmailID = null;
@@ -163,7 +162,6 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String shippingMethodId =null;
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String, Object>> verifyShippingMethodList = null;
 		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
@@ -172,14 +170,12 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4286_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO,accountId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -189,6 +185,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
+		
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -230,15 +227,15 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 
 		//assert shipping Address with RFO
-		assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template subtotal on RFO is"+shippingAddressFromDB+"and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
 
-		//assert Subtotal with RFO
+		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"CRP autoship template subTotal on RFO is "+subTotalDB+"and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 
-		// assert Tax with RFO
+		// Assert Tax with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP autoship template tax amount on RFO is "+taxDB+"and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 
-		// assert Grand Total with RFO
+		// Assert Grand Total with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP autoship template grand total on RFO is "+grandTotalDB+"and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
 		// assert shipping amount with RFO
@@ -249,7 +246,6 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+"and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-
 
 		s_assert.assertAll();
 	}

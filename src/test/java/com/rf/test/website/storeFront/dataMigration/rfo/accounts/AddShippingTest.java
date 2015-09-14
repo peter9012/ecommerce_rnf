@@ -256,7 +256,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Phase 2:2094 Pop up to update autoship shipping profile on changing default selection
 	//At Shipping info page, on changing default shipping profile (by selecting radio button),  and confirming the pop up message
 	@Test
-	public void testChangeDefaultShippingProfile() throws InterruptedException{
+	public void testChangeDefaultShippingProfile_2094() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -359,6 +359,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		String newBillingAddressLine1 = TestConstants.ADDRESS_LINE_1_US+randomNum;
 		String lastName = "ln";

@@ -360,7 +360,14 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getTaxAmountFromAdhocOrderTemplate(){
-		String tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
+		String tax = null;
+		try{
+			driver.turnOffImplicitWaits();
+			tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
+		}catch(NoSuchElementException e){
+			tax = driver.findElement(By.id("crpTotalTax")).getText();			
+		}
+		driver.turnOnImplicitWaits();
 		return tax.trim().substring(1);
 	}
 

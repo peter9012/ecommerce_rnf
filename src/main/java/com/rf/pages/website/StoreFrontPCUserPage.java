@@ -74,6 +74,7 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
 		driver.findElement(By.xpath("//textarea[@id='terminationComments']")).sendKeys("test");
 		driver.click(By.xpath("//input[@id='pcperkTerminationConfirm']"));
+		driver.waitForElementPresent(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));

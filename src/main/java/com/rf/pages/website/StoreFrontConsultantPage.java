@@ -94,8 +94,8 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	} 
 
 	public void clickOnAutoshipStatusLink(){
-		driver.waitForElementPresent(By.xpath("//a[@href='/ca/my-account/autoship-status']"));
-		driver.click(By.xpath("//a[@href='/ca/my-account/autoship-status']"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Autoship Status')]"));
+		driver.click(By.xpath("//a[contains(text(),'Autoship Status')]"));
 		logger.info("Autoship status link clicked");
 		driver.waitForPageLoad();
 	}

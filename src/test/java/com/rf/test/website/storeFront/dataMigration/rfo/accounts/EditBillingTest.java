@@ -68,10 +68,11 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
-		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
@@ -93,6 +94,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOnFirstAdHocOrder();
@@ -109,7 +111,6 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-
 		s_assert.assertAll();
 	}
 
@@ -234,8 +235,8 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
-		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+//		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
+//		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);

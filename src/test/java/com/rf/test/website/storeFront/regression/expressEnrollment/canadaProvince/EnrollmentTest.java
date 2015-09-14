@@ -71,7 +71,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1699 :: Version : 1 :: Express Enrollment for Nunavut province and tryto ship adhoc order at quebec address. 
-	@Test(enabled =false) //WIP
+	@Test
 	public void testExpressEnrollmentNunavutProvince_1699() throws InterruptedException{
 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -136,7 +136,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1698 :: Version : 1 :: Express Enrollment for Northwest territories province and adding qubec address and make it default.
-	@Test(enabled=false) //WIP
+	@Test
 	public void testExpressEnrollmentNorthWestProvince_1698() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -180,7 +180,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1292 :: Version : 1 :: Customer living in Quebec cannot be enrolled as consultant. 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testCustomerLivingInQuebecCannotEnroll_1292() throws InterruptedException{
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
@@ -202,7 +202,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2190 :: Version : 1 :: Enrolling RC living in Quebec 
-	@Test(enabled =false) //WIP
+	@Test
 	public void testQuebecRCEnrollment_2190() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -350,7 +350,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2193 :: Version : 1 :: Verify if QAS gives quebec address suggestions for address entered during consultant enrollment.
-	@Test(enabled =false) //WIP
+	@Test
 	public void testQASGivesSuggestionsForQuebecAddress_2193() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;

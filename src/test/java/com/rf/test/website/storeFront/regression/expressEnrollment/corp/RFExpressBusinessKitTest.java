@@ -79,7 +79,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		//regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_PRICE_PORTFOLIO_CA;			 
@@ -100,7 +100,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName,enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -110,19 +110,24 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.addQuantityOfProduct("5");
+		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-
 		s_assert.assertAll();
 	}
 	

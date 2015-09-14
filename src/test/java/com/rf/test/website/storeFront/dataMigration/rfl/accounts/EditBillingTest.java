@@ -241,8 +241,8 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
-		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+//		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
+//		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);

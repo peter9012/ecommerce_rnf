@@ -33,7 +33,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	//contains the common methods useful for all the pages inherited
-		
+
 	public static String convertDBDateFormatToUIFormat(String DBDate){
 		String UIMonth=null;
 		String[] splittedDate = DBDate.split(" ");
@@ -180,8 +180,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String firstName="RCUser";
-//		String lastName = "Test";
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -203,8 +203,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String firstName="PCUser";
-//		String lastName = "Test";
+		//		String firstName="PCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -429,16 +429,23 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@id='Terms3']/.."));
 	}
 
-	public boolean selectNewBillingCardExpirationDateAsExpiredDate()	 {
+	public boolean selectNewBillingCardExpirationDateAsExpiredDate(){
+		boolean flag  = false;
+		String value = null;
 		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
 		driver.click(By.id("expiryYear"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[2]"));
 		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		value = driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='02']")).getAttribute("disabled");
+		if(value.equalsIgnoreCase("true")){
+			flag = true;
+			return flag;
+		}else
+			return flag;
 	}
 
 	public boolean validatePasswordFieldMessage(){
@@ -520,8 +527,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public String createNewPC(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String firstName="PCUser";
-//		String lastName = "Test";
+		//		String firstName="PCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -543,8 +550,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public String createNewRC(String firstName,String lastName,String password){	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String firstName="RCUser";
-//		String lastName = "Test";
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -582,8 +589,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
 
-//		String firstName="RCUser";
-//		String lastName = "Test";
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);

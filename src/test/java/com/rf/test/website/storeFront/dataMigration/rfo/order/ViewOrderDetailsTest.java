@@ -64,14 +64,11 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4286_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO,accountId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
+
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -81,6 +78,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
+		
 
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -185,12 +183,9 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4287_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO,accountId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -285,12 +280,12 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String taxDB = null; 
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
-		String pcEmailID = null;
+		String pcUserEmailID = null;
 		String lastName = null;
 		String orderId = null;
 		String accountId = null;
 		String shippingMethodId =null;
-		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
 		List<Map<String, Object>> verifyAllDetailsList = null;
 		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
@@ -300,26 +295,22 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4292_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USERNAME_BY_ACCOUNT_ID_RFO,accountId),RFO_DB);
-			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
-			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcEmailID);
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
 				break;
-		}
+		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -392,7 +383,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-4291 :: Version : 1 :: Verify PC autoship order. 
 	@Test
-	public void testOrderDetailsForAutoshipOrdersForPC() throws InterruptedException{
+	public void testOrderDetailsForAutoshipOrdersForPC_4291() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String firstName = null;
 		String addressLine1 = null;
@@ -407,12 +398,12 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String taxDB = null;	
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
-		String pcEmailID = null;
+		String pcUserEmailID = null;
 		String lastName = null;
 		String orderId = null;
 		String accountId = null;
 		String shippingMethodId = null;
-		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
 		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
@@ -420,25 +411,21 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4291_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USERNAME_BY_ACCOUNT_ID_RFO,accountId),RFO_DB);
-			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
-			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcEmailID);
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
 				break;
-		}
-
+		}	
+		
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
@@ -509,7 +496,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 	//Hybris Phase 2-4293 :: Version : 1 :: Verify details of retail order. 
 	@Test
-	public void testOrderDetailsForAdhocOrdersForRC() throws InterruptedException{
+	public void testOrderDetailsForAdhocOrdersForRC_4293() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 
 		String firstName = null;
@@ -531,7 +518,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String orderId = null;
 		String accountId = null;
 		String shippingMethodId = null;
-		String rcEmailID = null;
+		String rcUserEmailID = null;
 		List<Map<String, Object>> randomRCList =  null;
 		List<Map<String, Object>> verifyAllDetailsList = null;
 		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
@@ -541,26 +528,22 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4293_RFO,RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-			randomRCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USERNAME_BY_ACCOUNT_ID_RFO,accountId),RFO_DB);
-			rcEmailID= (String) getValueFromQueryResult(randomRCList, "Username");
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
-			storeFrontRCUserPage= storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcEmailID);
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
 				break;
-		}
+		}	
 
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcEmailID),"Consultant Page doesn't contain Welcome User Message");
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -855,7 +838,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4296::Verify details of failed retail orders.
-	@Test(enabled=true)
+	@Test
 	public void testDetailsOfFailedAdhocOrdersForRC_4296() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 
@@ -898,7 +881,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcEmailID),"Consultant Page doesn't contain Welcome User Message");
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

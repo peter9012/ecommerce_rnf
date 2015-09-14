@@ -39,13 +39,26 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
+		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		
+		
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
@@ -106,17 +119,29 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
-		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
-
+		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();
@@ -178,23 +203,33 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomRCList =  null;
 
 		String rcUserEmailID = null;
-		String accountID = null;
+		String accountId = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-		logger.info("Account ID of the user is "+accountID);
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
+		
 		storeFrontRCUserPage.clickOnShopLink();
-		storeFrontRCUserPage.clickOnQuickShopImage();   
+		storeFrontRCUserPage.clickOnAllProductsLink();   
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnContinueWithoutSponsorLink();

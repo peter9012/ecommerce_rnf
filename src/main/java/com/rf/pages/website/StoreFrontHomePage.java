@@ -120,6 +120,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+	
+	public void mouseHoverOtherSponsorDataAndClickContinue() throws InterruptedException{
+		actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(By.xpath("//div[@class='the-search-results']/form[3]/div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
+		logger.info("Second result of sponsor has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
 
 	public void selectEnrollmentKitPage(String kitPrice,String regimenName){
 		driver.waitForLoadingImageToDisappear();
@@ -129,7 +137,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
-	//	driver.click(By.xpath("//div[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
+		driver.click(By.xpath("//div[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
 		driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
 		driver.click(By.cssSelector("input[value='Next']"));
@@ -620,46 +628,46 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnSwitchToStandardEnrollmentLink(){
-		driver.waitForElementPresent(By.xpath("//a[@href='/ca/enrollment/express/switch-to-standard']"));
-		driver.click(By.xpath("//a[@href='/ca/enrollment/express/switch-to-standard']"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
+		driver.click(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
 		driver.waitForPageLoad();
 	}
 
-//	public boolean validateErrorMessageForActivePC(){
-//		String ActivePC="autopc@xyz.com";
-//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActivePC);
-//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
-//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-//		}
-//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-//		return status;
-//	}
+	//	public boolean validateErrorMessageForActivePC(){
+	//		String ActivePC="autopc@xyz.com";
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActivePC);
+	//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+	//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+	//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+	//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+	//		}
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+	//		return status;
+	//	}
 
-//	public boolean validateErrorMessageForActiveConsultant(){
-//		String ActiveConsultant="con0708@yopmail.com";
-//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveConsultant);
-//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
-//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-//		}
-//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-//		return status;
-//	}
+	//	public boolean validateErrorMessageForActiveConsultant(){
+	//		String ActiveConsultant="con0708@yopmail.com";
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveConsultant);
+	//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+	//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+	//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+	//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+	//		}
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+	//		return status;
+	//	}
 
-//	public boolean validateErrorMessageForActiveRC(){
-//		String ActiveRC="Retail29@mailinator.com";
-//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
-//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
-//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
-//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
-//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
-//		}
-//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
-//		return status;
-//	}
+	//	public boolean validateErrorMessageForActiveRC(){
+	//		String ActiveRC="Retail29@mailinator.com";
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).sendKeys(ActiveRC);
+	//		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(password);   
+	//		boolean status=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed();
+	//		if(driver.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).isDisplayed()){
+	//			driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+	//		}
+	//		driver.findElement(By.xpath("//input[@id='email-account']")).clear();
+	//		return status;
+	//	}
 
 	public boolean verifyPopUpForExistingActivePC() throws InterruptedException{
 		boolean isPopForExistingAccountVisible = false;
@@ -796,6 +804,44 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//a[text()='United States']"));
 	}
 
+	public String navigateToCommercialWebsite(String bizURL){
+		return bizURL.replaceFirst("biz", "com");
+	}
+
+	//	public void enterSponsorIdDuringCreationOfPC(String sponsorID){
+	//		driver.waitForElementPresent(By.id("sponsor-name-id"));
+	//		driver.findElement(By.id("sponsor-name-id")).sendKeys(sponsorID);
+	//		driver.findElement(By.xpath("//input[@class='submitSponser']")).click();
+	//	}
+	//
+	//	public void mouseHoverSponsorDataAndClickContinueForPC() throws InterruptedException{
+	//		actions =  new Actions(RFWebsiteDriver.driver);
+	//		actions.moveToElement(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).click().build().perform();
+	//		logger.info("First result of sponsor has been clicked");
+	//		driver.waitForLoadingImageToDisappear();
+	//		driver.waitForPageLoad();
+	//	}
+
+	public boolean validateShippingMethodDisclaimersForUPSGroundHD(){
+		Select sel=new Select(driver.findElement(By.xpath("//select[@id='selectDeliveryModeForCRP']/../select")));
+		sel.selectByValue("UPS Standard Overnight");
+		driver.waitForLoadingImageToDisappear();
+		return sel.getFirstSelectedOption().getText().contains("Overnight");
+	}
+
+	public boolean validatePCPerksCheckBoxIsDisplayed(){
+		if(driver.findElement(By.xpath("//div[@id='pc-customer2-div-order-summary']")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void clickOnNotYourSponsorLink(){
+		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
+		driver.click(By.xpath("//a[@id='not-your-sponsor']"));
+	}
 }
 
 

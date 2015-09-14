@@ -431,7 +431,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-52 :: Version : 1 :: BIZ:Standard Enroll Kit USD $45 Business Portfolio (CRP:Y P:Y) 
-	@Test(enabled=false)//wip
+	@Test
 	public void testStandardEnrollmentBusinessPortfolio_52() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -644,7 +644,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2304 :: Version : 1 :: check Cart from Mini cart after adding product
 	@Test
-	public void testCheckCartFromMiniCartAfterAddingProduct() throws InterruptedException	{
+	public void testCheckCartFromMiniCartAfterAddingProduct_2304() throws InterruptedException	{
 		//Navigate to the website
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
@@ -669,7 +669,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2327 :: Version : 1 :: check Mini Cart - Not Logged In user
 	@Test
-	public void testCheckMiniCartForNotLoggedInUser() throws InterruptedException	{
+	public void testCheckMiniCartForNotLoggedInUser_2327() throws InterruptedException	{
 		//Navigate to the website
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//validate no mini cart is shown for not logged in user
@@ -693,7 +693,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2329 :: Version : 1 :: check Mini Cart - Consultant 
 	@Test
-	public void testCheckMiniCartForConsultant() throws InterruptedException	 {
+	public void testCheckMiniCartForConsultant_2329() throws InterruptedException	 {
 		//Login as consultant and validate the 'Next CRP' mini cart in the header section
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -739,7 +739,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2328 :: Version : 1 :: check Mini Cart - PC 
 	@Test
-	public void testCheckMiniCartForPC() throws InterruptedException	{
+	public void testCheckMiniCartForPC_2328() throws InterruptedException	{
 		//Login as consultant and validate the 'Next PC PERKS' mini cart in the header section
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -854,7 +854,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-1982:Order >>Actions >>Details
 	@Test
-	public void testCheckOrdersDetailsFromActionsTab() throws InterruptedException{
+	public void testCheckOrdersDetailsFromActionsTab_1982() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -893,7 +893,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4156:Consultant who cancels the pulse subscription should have their prefix active (only for the month)
 	@Test
-	public void testConsultantCancelPulseSubscriptionPrefixActive() throws InterruptedException	 {
+	public void testConsultantCancelPulseSubscriptionPrefixActive_4156() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
@@ -955,8 +955,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}	 	 
 
-	//Hybris Project-4281 :: Version : 1 :: Terminate USer and Login with USer Name
-	@Test(enabled=false)
+	//Hybris Project-4281 :: Version : 1 :: Terminate User and Login with User Name
+	@Test(enabled=false) //WIP
 	public void terminateUserAndLoginWithSameUsername_4281() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -995,8 +995,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1976 :: Version : 1 :: Autoship Module. Check My Pulse UI 
-	@Test(enabled=false)
-	public void testAutoshipModuleCheckMyPulseUI() throws InterruptedException	 {
+	@Test(enabled=false) //WIP
+	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException	 {
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -1030,4 +1030,160 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.validatePulseHomePage(),"Home Page for pulse is not displayed");
 		s_assert.assertAll();
 	}
+	
+	//Hybris Project-4161 :: Version : 1 :: During enrollment customer not opt for pulse but they still able to access the pws as a trial version 
+	@Test(enabled=false) //WIP
+	 public void testCustomerEnrollWithoutPulseCanAccessPws_4161() throws InterruptedException{
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	  country = driver.getCountry();
+	  enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+	  regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+
+	  if(country.equalsIgnoreCase("CA")){
+	   kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	   city = TestConstants.CITY_CA;
+	   postalCode = TestConstants.POSTAL_CODE_CA;
+	   phoneNumber = TestConstants.PHONE_NUMBER_CA;
+	  }else{
+	   kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	   city = TestConstants.CITY_US;
+	   postalCode = TestConstants.POSTAL_CODE_US;
+	   phoneNumber = TestConstants.PHONE_NUMBER_US;
+	  }
+
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  //storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+	  storeFrontHomePage.clickOnOurBusinessLink();
+	  storeFrontHomePage.clickOnOurEnrollNowLink();
+	  storeFrontHomePage.searchCID();
+	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	  storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+	  storeFrontHomePage.clickNextButton();
+	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.selectNewBillingCardExpirationDate();
+	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+	  storeFrontHomePage.clickEnrollmentNextBtn();
+	  storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+	  storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+	  storeFrontHomePage.checkTheIAgreeCheckBox();
+	  storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+	  storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+	  storeFrontHomePage.clickOnConfirmAutomaticPayment();
+	  s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+	  //validate on the confirmation page user lands on .biz site
+	  s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
+	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	  //Fetch the PWS url
+	  String currentPWSUrl=driver.getCurrentUrl();
+	  s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	  logout();
+	  //validate with the current PWSUrl on .com site
+	  driver.get(storeFrontHomePage.navigateToCommercialWebsite(currentPWSUrl));
+	  s_assert.assertTrue(storeFrontHomePage.validatePWS(), "PWS is not active");  
+	  s_assert.assertAll();
+	 }
+	 
+	// Hybris Project-1306 :: Version : 1 :: Biz: PC Enroll- Not my sponsor link 
+	 @Test(enabled=false) //WIP
+	 public void testPCEnrollNotMySponsorLink_1306() throws InterruptedException	 {
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	  String lastName = "lN";
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  // Click on our product link that is located at the top of the page and then click in on quick shop
+	  storeFrontHomePage.clickOnShopLink();
+	  storeFrontHomePage.clickOnAllProductsLink();
+	  // Products are displayed?
+	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	  logger.info("Quick shop products are displayed");
+	  storeFrontHomePage.selectProductAndProceedToBuy();
+	  //Cart page is displayed?
+	  s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	  logger.info("Cart page is displayed");
+
+	  //Click on Check out
+	  storeFrontHomePage.clickOnCheckoutButton();
+	  //Log in or create an account page is displayed?
+	  s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	  logger.info("Login or Create Account page is displayed");
+	  //Enter the User information and DO check the "Become a Preferred Customer" checkbox and click the create account button
+	  storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+	  storeFrontHomePage.enterMainAccountInfo();
+	  storeFrontHomePage.clickOnRequestASponsorBtn();
+	  storeFrontHomePage.clickOnNotYourSponsorLink();
+	  storeFrontHomePage.clickOKOnSponsorInformationPopup();
+	  storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_US);
+	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
+	  
+	  storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	  storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	  //Enter Billing Profile
+	  storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	  storeFrontHomePage.selectNewBillingCardExpirationDate();
+	  storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontHomePage.selectNewBillingCardAddress();
+	  storeFrontHomePage.clickOnSaveBillingProfile();
+	  storeFrontHomePage.clickOnBillingNextStepBtn();
+	  s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed());
+	  storeFrontHomePage.clickPlaceOrderBtn();
+	  s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	  logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+	  storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	  storeFrontHomePage.clickPlaceOrderBtn();
+	  s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	  s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	  s_assert.assertAll(); 
+	 }
+	 
+	// Hybris Project-2153 :: Version : 1 :: Check the shipping method disclaimers for " UPS Standard Overnight/FedEx Standard Overnight" 
+	 @Test(enabled=false) //WIP
+	 public void testCheckShippingMethodDisclaimersForUPSStandardOvernight_2153() throws InterruptedException	 {
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	  country = driver.getCountry();
+	  enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+	  regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+
+	  if(country.equalsIgnoreCase("CA")){
+	   kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	   city = TestConstants.CITY_CA;
+	   postalCode = TestConstants.POSTAL_CODE_CA;
+	   phoneNumber = TestConstants.PHONE_NUMBER_CA;
+	  }else{
+	   kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	   city = TestConstants.CITY_US;
+	   postalCode = TestConstants.POSTAL_CODE_US;
+	   phoneNumber = TestConstants.PHONE_NUMBER_US;
+	  }
+
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  //storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+	  storeFrontHomePage.clickOnOurBusinessLink();
+	  storeFrontHomePage.clickOnOurEnrollNowLink();
+	  storeFrontHomePage.searchCID();
+	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	  storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+	  storeFrontHomePage.clickNextButton();
+	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	  storeFrontHomePage.selectNewBillingCardExpirationDate();
+	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+	  storeFrontHomePage.clickEnrollmentNextBtn(); 
+	  // Check the shipping method disclaimers for " UPS Ground (HD)/FedEx Standard Overnight" as Consultant on Checkout screen>>Shipment section
+	  s_assert.assertTrue(storeFrontHomePage.validateShippingMethodDisclaimersForUPSGroundHD());
+	  s_assert.assertAll(); 
+	 }
 }
+

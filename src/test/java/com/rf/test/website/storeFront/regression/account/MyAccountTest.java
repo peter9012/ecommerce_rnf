@@ -453,7 +453,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//Enter the expired date at billing section and validate the error message
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		s_assert.assertTrue(!storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate(), "User should not be able to select an expired date in Expiration date Drop down list");
+		s_assert.assertTrue(storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate(), "User should not be able to select an expired date in Expiration date Drop down list");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		//  storeFrontHomePage.clickOnSaveBillingProfile();
@@ -942,7 +942,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//Proceed with consultant enrollment, following pc to consultant flow
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink(); 
-		storeFrontHomePage.searchCID();
+		storeFrontHomePage.searchCID("cid");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		if(country.equalsIgnoreCase("CA"))
 			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_REVERSE);

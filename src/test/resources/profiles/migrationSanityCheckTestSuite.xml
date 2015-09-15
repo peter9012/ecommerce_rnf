@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="smokeTestSuite">
+<suite name="migrationSanityCheckTestSuite">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 	</listeners>
-	<test name="SmokeTest">
+	<test name="MigrationSanityCheck">
 		<classes>
+			<class name="com.rf.test.website.storeFront.smoke.LoginTest">
+			<methods>
+ 					<include name="testLogin"/>
+ 				</methods> 
+ 			</class>
 			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
 				<methods>
 					<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043"/>
@@ -63,6 +68,11 @@
 				<methods>
 					<include name="testOrderDetailsForAutoshipOrdersForPC_4291"/>															
 					<include name="testOrdersDetailsOfConsultant_HP2_4287"/>					
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.RFPWSLoginTest">
+				<methods>
+					<include name="testConsultantWithPWSLoginFromOthersPWS_4395"/>
 				</methods>
 			</class>
 		</classes>

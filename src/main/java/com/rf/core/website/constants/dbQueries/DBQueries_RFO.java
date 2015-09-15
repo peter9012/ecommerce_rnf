@@ -1424,7 +1424,7 @@ public class DBQueries_RFO {
 					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username , "+
-					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'myrandf','myrfotst4') + '/us' AS URL "+
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'stgmyrandf','myrfostg') + '/us' AS URL "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+

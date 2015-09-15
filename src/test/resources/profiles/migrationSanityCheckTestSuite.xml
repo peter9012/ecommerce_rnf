@@ -70,6 +70,11 @@
 					<include name="testOrdersDetailsOfConsultant_HP2_4287"/>					
 				</methods>
 			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.RFPWSLoginTest">
+				<methods>
+					<include name="testConsultantWithPWSLoginFromOthersPWS_4395"/>
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

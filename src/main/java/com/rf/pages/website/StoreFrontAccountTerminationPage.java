@@ -102,5 +102,6 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 
 	public void clickOnCloseWindowAfterTermination(){
 		driver.click(By.xpath("//input[@value='Close window']"));
+		driver.pauseExecutionFor(2000);
 	}
 }

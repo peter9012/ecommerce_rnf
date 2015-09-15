@@ -47,10 +47,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
 		logger.info("login link clicked");
-		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is: "+username);
 		logger.info("login password is: "+password);
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
@@ -120,7 +120,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-	
+
 	public void mouseHoverOtherSponsorDataAndClickContinue() throws InterruptedException{
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//div[@class='the-search-results']/form[3]/div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
@@ -800,8 +800,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.findElement(By.xpath("//div[@id='header-logo']")).isDisplayed();
 	}
 
-	public void clickOnUSAtWelcomePage(){
-		driver.click(By.xpath("//a[text()='United States']"));
+	public void clickOnCountryAtWelcomePage(){
+		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//a[text()='Canada']"));
+			driver.click(By.xpath("//a[text()='Canada']"));
+
+		}else{
+			driver.waitForElementPresent(By.xpath("//a[text()='United States']"));
+			driver.click(By.xpath("//a[text()='United States']"));
+		}
 	}
 
 	public String navigateToCommercialWebsite(String bizURL){
@@ -841,6 +849,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickOnNotYourSponsorLink(){
 		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
 		driver.click(By.xpath("//a[@id='not-your-sponsor']"));
+	}
+
+	public boolean validateInvalidSponsor(){
+		return driver.findElement(By.xpath("//span[contains(text(),'No result found')]")).isDisplayed();
+	}
+
+	public void clickSearchAgain(){
+		driver.waitForElementPresent(By.xpath("//a[@id='sponsor_search_again']"));
+		driver.click(By.xpath("//a[@id='sponsor_search_again']"));
+		driver.findElement(By.id("sponsor-name-id")).clear();
+	}
+
+	public void checkPCPerksCheckBox(){
+		driver.findElement(By.xpath("//div[@id='pc-customer2-div-order-summary']")).click(); 
+		driver.pauseExecutionFor(2000);
 	}
 }
 

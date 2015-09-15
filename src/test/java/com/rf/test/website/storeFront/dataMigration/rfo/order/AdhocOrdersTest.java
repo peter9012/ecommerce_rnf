@@ -32,7 +32,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
 	@Test
-	public void testCreateAdhocOrderConsultant() throws InterruptedException{
+	public void testCreateAdhocOrderConsultant_1878() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -69,22 +69,22 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
-		System.out.println("subtotal ="+subtotal);
+		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-		System.out.println("deliveryCharges ="+deliveryCharges);
+		logger.info("deliveryCharges ="+deliveryCharges);
 		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		System.out.println("handlingCharges ="+handlingCharges);
+		logger.info("handlingCharges ="+handlingCharges);
 		String tax = storeFrontUpdateCartPage.getTax();
-		System.out.println("tax ="+tax);
+		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
-		System.out.println("total ="+total);
+		logger.info("total ="+total);
 		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		System.out.println("totalSV ="+totalSV);
+		logger.info("totalSV ="+totalSV);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		System.out.println("shippingMethod ="+shippingMethod);
+		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		System.out.println("BillingAddress ="+BillingAddress);
+		logger.info("BillingAddress ="+BillingAddress);
 
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -96,11 +96,14 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
@@ -115,7 +118,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
-	public void testCreateAdhocOrderPC() throws InterruptedException{
+	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
@@ -152,22 +155,22 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
-		System.out.println("subtotal ="+subtotal);
+		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-		System.out.println("deliveryCharges ="+deliveryCharges);
+		logger.info("deliveryCharges ="+deliveryCharges);
 		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		System.out.println("handlingCharges ="+handlingCharges);
+		logger.info("handlingCharges ="+handlingCharges);
 		String tax = storeFrontUpdateCartPage.getTax();
-		System.out.println("tax ="+tax);
+		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
-		System.out.println("total ="+total);
+		logger.info("total ="+total);
 		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		System.out.println("totalSV ="+totalSV);
+		logger.info("totalSV ="+totalSV);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		System.out.println("shippingMethod ="+shippingMethod);
+		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		System.out.println("BillingAddress ="+BillingAddress);
+		logger.info("BillingAddress ="+BillingAddress);
 
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -179,11 +182,13 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
@@ -260,7 +265,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		logger.info("Order Number after placing the order is "+orderNumber);
-
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+		
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

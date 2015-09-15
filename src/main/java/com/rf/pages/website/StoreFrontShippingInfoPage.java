@@ -137,6 +137,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 		}
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{

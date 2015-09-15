@@ -23,7 +23,7 @@ import com.rf.test.base.RFBaseTest;
  */
 public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
-	protected String password =null;
+	protected String password = null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -36,15 +36,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();
-		password = driver.getPassword();
-		logger.info("Application loaded");
+		driver.loadApplication();		
+		logger.info("Application loaded");				
 		driver.setDBConnectionString();		
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		driver.get(driver.getURL()+"/"+driver.getCountry());
+		setPassword(driver.getPassword());
 		try{
 			logout();
 		}catch(NoSuchElementException e){
@@ -61,6 +61,10 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.quit();
 	}
 
+	public void setPassword(String pass){
+		password=pass;
+	}
+	
 	public void logout(){
 		driver.findElement(By.xpath("//li[@id='account-info-button']")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));

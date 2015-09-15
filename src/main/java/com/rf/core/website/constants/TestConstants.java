@@ -31,6 +31,10 @@ public class TestConstants {
 	public static final String SPOUSE_FIRST_NAME = "Mary";
 	public static final String SPOUSE_LAST_NAME = "Stone";
 	public static final String SPONSOR_ID_FOR_PC = "Test";
+	public static final String INVALID_SPONSOR_ID="00001111";
+	public static final String INVALID_SPONSOR_NAME="invalidSponsor";
+	public static final String SPONSOR_ID_US_STG1="06371149";
+	
 
 	public static final String FIRST_NAME = "auto";
 	public static final String LAST_NAME = FIRST_NAME;		

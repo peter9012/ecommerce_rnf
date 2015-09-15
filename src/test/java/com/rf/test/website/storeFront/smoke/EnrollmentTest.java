@@ -988,7 +988,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
 		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
-		storeFrontHomePage.clickOnUSAtWelcomePage();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
 		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Terminated User doesn't get Login failed");  
 		s_assert.assertAll();
@@ -1030,160 +1030,287 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.validatePulseHomePage(),"Home Page for pulse is not displayed");
 		s_assert.assertAll();
 	}
-	
+
 	//Hybris Project-4161 :: Version : 1 :: During enrollment customer not opt for pulse but they still able to access the pws as a trial version 
 	@Test(enabled=false) //WIP
-	 public void testCustomerEnrollWithoutPulseCanAccessPws_4161() throws InterruptedException{
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	  country = driver.getCountry();
-	  enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-	  regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+	public void testCustomerEnrollWithoutPulseCanAccessPws_4161() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 
-	  if(country.equalsIgnoreCase("CA")){
-	   kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	   city = TestConstants.CITY_CA;
-	   postalCode = TestConstants.POSTAL_CODE_CA;
-	   phoneNumber = TestConstants.PHONE_NUMBER_CA;
-	  }else{
-	   kitName = TestConstants.KIT_PRICE_EXPRESS_US;
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	   city = TestConstants.CITY_US;
-	   postalCode = TestConstants.POSTAL_CODE_US;
-	   phoneNumber = TestConstants.PHONE_NUMBER_US;
-	  }
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  //storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
-	  storeFrontHomePage.clickOnOurBusinessLink();
-	  storeFrontHomePage.clickOnOurEnrollNowLink();
-	  storeFrontHomePage.searchCID();
-	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	  storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-	  storeFrontHomePage.clickNextButton();
-	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	  storeFrontHomePage.selectNewBillingCardExpirationDate();
-	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-	  storeFrontHomePage.clickEnrollmentNextBtn();
-	  storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-	  storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-	  storeFrontHomePage.checkTheIAgreeCheckBox();
-	  storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-	  storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-	  storeFrontHomePage.clickOnConfirmAutomaticPayment();
-	  s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-	  //validate on the confirmation page user lands on .biz site
-	  s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
-	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	  //Fetch the PWS url
-	  String currentPWSUrl=driver.getCurrentUrl();
-	  s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	  logout();
-	  //validate with the current PWSUrl on .com site
-	  driver.get(storeFrontHomePage.navigateToCommercialWebsite(currentPWSUrl));
-	  s_assert.assertTrue(storeFrontHomePage.validatePWS(), "PWS is not active");  
-	  s_assert.assertAll();
-	 }
-	 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		//validate on the confirmation page user lands on .biz site
+		s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Fetch the PWS url
+		String currentPWSUrl=driver.getCurrentUrl();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		logout();
+		//validate with the current PWSUrl on .com site
+		driver.get(storeFrontHomePage.navigateToCommercialWebsite(currentPWSUrl));
+		s_assert.assertTrue(storeFrontHomePage.validatePWS(), "PWS is not active");  
+		s_assert.assertAll();
+	}
+
 	// Hybris Project-1306 :: Version : 1 :: Biz: PC Enroll- Not my sponsor link 
-	 @Test(enabled=false) //WIP
-	 public void testPCEnrollNotMySponsorLink_1306() throws InterruptedException	 {
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
-	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-	  String lastName = "lN";
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  // Click on our product link that is located at the top of the page and then click in on quick shop
-	  storeFrontHomePage.clickOnShopLink();
-	  storeFrontHomePage.clickOnAllProductsLink();
-	  // Products are displayed?
-	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	  logger.info("Quick shop products are displayed");
-	  storeFrontHomePage.selectProductAndProceedToBuy();
-	  //Cart page is displayed?
-	  s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	  logger.info("Cart page is displayed");
+	@Test(enabled=false) //WIP
+	public void testPCEnrollNotMySponsorLink_1306() throws InterruptedException	 {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
 
-	  //Click on Check out
-	  storeFrontHomePage.clickOnCheckoutButton();
-	  //Log in or create an account page is displayed?
-	  s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-	  logger.info("Login or Create Account page is displayed");
-	  //Enter the User information and DO check the "Become a Preferred Customer" checkbox and click the create account button
-	  storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-	  storeFrontHomePage.enterMainAccountInfo();
-	  storeFrontHomePage.clickOnRequestASponsorBtn();
-	  storeFrontHomePage.clickOnNotYourSponsorLink();
-	  storeFrontHomePage.clickOKOnSponsorInformationPopup();
-	  storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_US);
-	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
-	  
-	  storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-	  storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-	  //Enter Billing Profile
-	  storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-	  storeFrontHomePage.selectNewBillingCardExpirationDate();
-	  storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontHomePage.selectNewBillingCardAddress();
-	  storeFrontHomePage.clickOnSaveBillingProfile();
-	  storeFrontHomePage.clickOnBillingNextStepBtn();
-	  s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed());
-	  storeFrontHomePage.clickPlaceOrderBtn();
-	  s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-	  logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-	  storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-	  storeFrontHomePage.clickPlaceOrderBtn();
-	  s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-	  storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	  s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	  s_assert.assertAll(); 
-	 }
-	 
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+		//Enter the User information and DO check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+		storeFrontHomePage.enterMainAccountInfo();
+		storeFrontHomePage.clickOnRequestASponsorBtn();
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		storeFrontHomePage.clickOKOnSponsorInformationPopup();
+		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_US);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
+
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed());
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertAll(); 
+	}
+
 	// Hybris Project-2153 :: Version : 1 :: Check the shipping method disclaimers for " UPS Standard Overnight/FedEx Standard Overnight" 
-	 @Test(enabled=false) //WIP
-	 public void testCheckShippingMethodDisclaimersForUPSStandardOvernight_2153() throws InterruptedException	 {
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	  country = driver.getCountry();
-	  enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-	  regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+	@Test(enabled=false) //WIP
+	public void testCheckShippingMethodDisclaimersForUPSStandardOvernight_2153() throws InterruptedException	 {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 
-	  if(country.equalsIgnoreCase("CA")){
-	   kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	   city = TestConstants.CITY_CA;
-	   postalCode = TestConstants.POSTAL_CODE_CA;
-	   phoneNumber = TestConstants.PHONE_NUMBER_CA;
-	  }else{
-	   kitName = TestConstants.KIT_PRICE_EXPRESS_US;
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	   city = TestConstants.CITY_US;
-	   postalCode = TestConstants.POSTAL_CODE_US;
-	   phoneNumber = TestConstants.PHONE_NUMBER_US;
-	  }
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  //storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
-	  storeFrontHomePage.clickOnOurBusinessLink();
-	  storeFrontHomePage.clickOnOurEnrollNowLink();
-	  storeFrontHomePage.searchCID();
-	  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	  storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-	  storeFrontHomePage.clickNextButton();
-	  storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	  storeFrontHomePage.selectNewBillingCardExpirationDate();
-	  storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-	  storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-	  storeFrontHomePage.clickEnrollmentNextBtn(); 
-	  // Check the shipping method disclaimers for " UPS Ground (HD)/FedEx Standard Overnight" as Consultant on Checkout screen>>Shipment section
-	  s_assert.assertTrue(storeFrontHomePage.validateShippingMethodDisclaimersForUPSGroundHD());
-	  s_assert.assertAll(); 
-	 }
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn(); 
+		// Check the shipping method disclaimers for " UPS Ground (HD)/FedEx Standard Overnight" as Consultant on Checkout screen>>Shipment section
+		s_assert.assertTrue(storeFrontHomePage.validateShippingMethodDisclaimersForUPSGroundHD());
+		s_assert.assertAll(); 
+	}
+
+	// Hybris Project-1305:From Corporate user should able to change sponsor RC
+	@Test(enabled=false)
+	public void testCorporateUserShouldAbleToChangeSponsorRC_1305() throws InterruptedException	 {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.clickOnShopLink();
+		storeFrontHomePage.clickOnAllProductsLink();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+		storeFrontHomePage.enterMainAccountInfo();
+		//Enter Invalid sponsor id & name and validate error message
+		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.INVALID_SPONSOR_ID);
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor());
+		storeFrontHomePage.clickSearchAgain();
+
+		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.INVALID_SPONSOR_NAME);
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor());
+		storeFrontHomePage.clickSearchAgain();
+
+		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_US_STG1);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
+
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		//validate pc perks terms and condition check box is displayed
+		s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed());
+		//check the check box
+		storeFrontHomePage.checkPCPerksCheckBox();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2489:Verify if Consultant can use same prefix, when he is subscribing to pulse. ( Consultant's trial version)
+	@Test(enabled=false)
+	public void testVerifyConsultantCanUseSamePrefixWhenSubscribingToPulse_2489() throws InterruptedException	  {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontHomePage.clickOnOurBusinessLink();
+		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		// storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		//validate on the confirmation page user lands on .biz site
+		//s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Fetch the PWS url
+		//String currentPWSUrl=driver.getCurrentUrl();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//goto .com site and navigate to Account Info->Autoship tatus->Cancel pulse subscription
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		storeFrontConsultantPage.subscribeToPulse();
+		//verify default pulse prefix suggestions
+		s_assert.assertTrue(storeFrontConsultantPage.validatePulsePrefixSuggestionsAvailable(), "pulse prefix suggestions are not available");
+		s_assert.assertAll(); 
+	}
 }
 

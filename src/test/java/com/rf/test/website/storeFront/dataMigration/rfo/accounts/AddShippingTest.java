@@ -36,7 +36,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 	
 	@Test
-	public void testAddNewShippingAddressOnShippingProfilePage() throws InterruptedException, SQLException{
+	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -173,7 +173,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	// ADD a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	//Hybris Project-4461:ADD a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship"
 	@Test
-	public void testAddShippingProfileMyAccountFutureAutoshipNotSelected() throws InterruptedException{
+	public void testAddShippingProfileMyAccountFutureAutoshipNotSelected_4461() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;

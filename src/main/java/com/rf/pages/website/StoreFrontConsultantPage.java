@@ -87,8 +87,8 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontCartAutoShipPage addProductToCRP(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to crp']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//form[2]/input[@value='Add to crp']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[3]//input[@value='Add to crp']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[3]//input[@value='Add to crp']"));
 		logger.info("Add product to CRP button clicked");
 		return new StoreFrontCartAutoShipPage(driver);
 	} 
@@ -101,7 +101,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	public void subscribeToPulse(){
-		if(driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")).isDisplayed()){
+		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
 			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 			driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
 			driver.waitForLoadingImageToDisappear();
@@ -132,6 +132,11 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-	
+
+	public boolean validatePulsePrefixSuggestionsAvailable(){
+		driver.pauseExecutionFor(1000);
+		return driver.findElement(By.xpath("//p[@id='prefix-validation']")).isDisplayed();
+	}
+
 }
 

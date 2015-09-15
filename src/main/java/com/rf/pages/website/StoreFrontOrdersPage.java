@@ -217,11 +217,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getShippingAddressFromAutoshipTemplate(){
-		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
+		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
 	public String getShippingAddressFromAdhocTemplate(){
-		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
+		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
 	public boolean verifyShippingMethod(String shippingMethodDB){

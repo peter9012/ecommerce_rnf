@@ -56,8 +56,8 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		s_assert.assertAll();			
 	}
 
-	//Hybris Phase 2-4395 Consultant with PWS -Someone else’s PWS - Her own PW
-	@Test(enabled=false)
+	//Hybris Phase 2-4395 Consultant with PWS -Someone elseï¿½s PWS - Her own PW
+	@Test(enabled=true)
 	public void testConsultantWithPWSLoginFromOthersPWS_4395() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -102,7 +102,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 
-	//Hybris Phase 2-4397 Consultant W/O PWS - Someone else’s PWS - Corporate site
+	//Hybris Phase 2-4397 Consultant W/O PWS - Someone elseï¿½s PWS - Corporate site
 	@Test(enabled=false)
 	public void testConsultantWithoutPWSLoginFromOthersPWS_4397() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
@@ -172,7 +172,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 
-	//Hybris Phase 2-4399 PC, whose Sponsor has PWS - Sponsor’s PWS - Sponsor’s PWS
+	//Hybris Phase 2-4399 PC, whose Sponsor has PWS - Sponsorï¿½s PWS - Sponsorï¿½s PWS
 	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromSponsorsPWS_4399() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
@@ -193,7 +193,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 
-	//Hybris Phase 2-4400 PC, whose Sponsor has PWS - Not Sponsor’s PWS - Sponsor’s PWS
+	//Hybris Phase 2-4400 PC, whose Sponsor has PWS - Not Sponsorï¿½s PWS - Sponsorï¿½s PWS
 	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromOtherSponsorsPWS_4400() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
@@ -221,7 +221,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 
-	//Hybris Phase 2-4401 PC, whose Sponsor has PWS - Corporate Site - Sponsor’s PWS
+	//Hybris Phase 2-4401 PC, whose Sponsor has PWS - Corporate Site -ï¿½Sponsorï¿½s PWS
 	@Test(enabled=false)
 	public void testPreferredCustomerWithPWSSponsorLoginFromCorp_4401() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
@@ -244,7 +244,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 
 
-	//Hybris Phase 2-4402 PC, whose Sponsor has No PWS - someone's PWS - Corporate Site
+	//Hybris Phase 2-4402 PC, whose Sponsor has No PWS - someone's PWS -ï¿½Corporate Site
 	@Test(enabled=false)
 	public void testPreferredCustomerWithNoPWSSponsorLoginFromOtherPWS_4402() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		
@@ -268,7 +268,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 
-	//Hybris Phase 2-4403 PC, whose Sponsor has No PWS - Corporate Site - Corporate Site
+	//Hybris Phase 2-4403 PC, whose Sponsor has No PWS -ï¿½Corporate Site -ï¿½Corporate Site
 	@Test(enabled=false)
 	public void testPreferredCustomerWithNoPWSSponsorLoginFromCorp_4403() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		

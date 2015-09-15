@@ -4,50 +4,71 @@
 
 
 
-//package com.rf.test.website.storeFront.smoke;
-//
-//import java.lang.reflect.Method;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Map;
-//
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-//import org.testng.annotations.DataProvider;
-//import org.testng.annotations.Test;
-//
-//import com.rf.core.utils.DBUtil;
-//import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-//import com.rf.pages.website.StoreFrontConsultantPage;
-//import com.rf.pages.website.StoreFrontHomePage;
-//import com.rf.test.website.RFWebsiteBaseTest;
-//
-//public class LoginTest extends RFWebsiteBaseTest{
-//	private static final Logger logger = LogManager
-//			.getLogger(LoginTest.class.getName());
-//	private StoreFrontHomePage storeFrontHomePage;
-//	private StoreFrontConsultantPage storeFrontConsultantPage;
-//	private String RFO_DB = null;
-//
-//	@Test(dataProvider="rfTestDataQuery")
-//	public void testLogin(String emailID) throws InterruptedException{
-//		
-//		//	logger.info("AccountID= "+accountID);
-//
-//		String password = "111maiden";
-//
-//		logger.info("EmailID= "+emailID);
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, password);
-//		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true")||storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("sitenotfound"),"login failed for the user "+emailID+" url is "+storeFrontConsultantPage.getCurrentURL());
-//		if((storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("j_spring_security_check"))==true){
-//			logger.info("ERROR !! SECURITY CHECK ERROR");
-//			storeFrontHomePage.navigateToBackPage();
-//		}
-//		assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-//
-//	}	
-//
+package com.rf.test.website.storeFront.smoke;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.rf.core.utils.DBUtil;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.StoreFrontConsultantPage;
+import com.rf.pages.website.StoreFrontHomePage;
+import com.rf.test.website.RFWebsiteBaseTest;
+
+public class LoginTest extends RFWebsiteBaseTest{
+	private static final Logger logger = LogManager
+			.getLogger(LoginTest.class.getName());
+	private StoreFrontHomePage storeFrontHomePage;
+	private StoreFrontConsultantPage storeFrontConsultantPage;
+	private String RFO_DB = null;
+	public String emailID=null;
+	
+	@Test(enabled=false)
+	public void testLogin_original(String emailID) throws InterruptedException{
+		
+		//	logger.info("AccountID= "+accountID);
+
+		String password = "111maiden";
+
+		logger.info("EmailID= "+emailID);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, password);
+		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true")||storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("sitenotfound"),"login failed for the user "+emailID+" url is "+storeFrontConsultantPage.getCurrentURL());
+		if((storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("j_spring_security_check"))==true){
+			logger.info("ERROR !! SECURITY CHECK ERROR");
+			storeFrontHomePage.navigateToBackPage();
+		}
+		assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+
+	}	
+
+	@Test (invocationCount=10)
+	public void testLogin() throws InterruptedException {//String accountID,String emailID,String accNumber,String sid,String name, String hasOrder ,String sourceName) throws InterruptedException{
+		String sRandNum = RandomStringUtils.randomNumeric(5);
+		System.out.println(sRandNum);
+		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE vgar.active= 1 and vgar.AccountTypeID=1 AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
+	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
+	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
+		    System.out.println (emailID);
+		    System.out.println(" ");
+		   
+		String password = "111maiden";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID,password);
+		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true")||storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("sitenotfound"),"login failed for the user "+emailID+" url is "+storeFrontConsultantPage.getCurrentURL());//
+		assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		
+	}
+}
+
 //	@DataProvider(name = "rfTestDataQuery")
 //	public Object[][] rfDataProviderQuery(Method testMethod) throws Exception {
 //		RFO_DB = driver.getDBNameRFO();

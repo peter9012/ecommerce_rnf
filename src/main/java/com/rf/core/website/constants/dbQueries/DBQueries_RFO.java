@@ -48,7 +48,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active (i.e statusId =’1’ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active (i.e statusId =ï¿½1ï¿½ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -83,7 +83,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
 			/*********************************************************************************************
-			Need a query on RFO having active (i.e statusId =’1’ ) RC only  having pending/submitted adhoc orders.
+			Need a query on RFO having active (i.e statusId =ï¿½1ï¿½ ) RC only  having pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -1378,7 +1378,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active(i.e statusId =ï¿½1ï¿½ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -1418,7 +1418,7 @@ public class DBQueries_RFO {
 					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username , "+
-					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'myrandf','myrfotst4') + '/us' AS URL "+
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'stgmyrandf','myrfostg') + '/us' AS URL "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+

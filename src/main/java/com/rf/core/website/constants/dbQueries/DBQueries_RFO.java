@@ -48,7 +48,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active (i.e statusId =’1’ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active (i.e statusId =ï¿½1ï¿½ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -82,30 +82,36 @@ public class DBQueries_RFO {
 			"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
+
+
+			/*********************************************************************************************
+			Need a query on RFO having active (i.e statusId =ï¿½1ï¿½ ) RC only  having pending/submitted adhoc orders.
+			 **********************************************************************************************/
+
 			"USE RFOperations "+
-					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-					"BEGIN TRANSACTION "+
-					"SELECT TOP 1 "+
-					"ab.AccountID , "+
-					"[as].Username "+
-					"FROM    RFO_Accounts.AccountBase AS ab "+
-					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-					"WHERE   ab.CountryID = 236 "+
-					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
-					/*Active Accounts*/
-					"AND NOT EXISTS ( SELECT 1 "+
-					"FROM   RFO_Accounts.AccountRF AS ar "+
-					"WHERE  ar.Active = 0 "+
-					"AND ar.HardTerminationDate IS NOT NULL "+
-					"AND ar.AccountID = ab.AccountID ) "+ 
-					/*Pending/Submitted Orders */
-					"AND EXISTS ( SELECT 1 "+
-					"FROM   Hybris.Orders AS o "+
-					"WHERE  o.AccountID = ab.AccountID "+
-					"AND o.OrderTypeID = 1 "+/*RC*/
-					"AND o.OrderStatusID IN (1,2) ) "+ 
-					"ORDER BY NEWID()";
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = 236 "+
+			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+
+			"FROM   RFO_Accounts.AccountRF AS ar "+
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+
+			"AND ar.AccountID = ab.AccountID ) "+ 
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+
+			"WHERE  o.AccountID = ab.AccountID "+
+			"AND o.OrderTypeID = 1 "+/*RC*/
+			"AND o.OrderStatusID IN (1,2) ) "+ 
+			"ORDER BY NEWID()";
 
 
 
@@ -1384,7 +1390,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active(i.e statusId =ï¿½1ï¿½ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -1424,7 +1430,7 @@ public class DBQueries_RFO {
 					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username , "+
-					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'myrandf','myrfotst4') + '/us' AS URL "+
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'stgmyrandf','myrfostg') + '/us' AS URL "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+

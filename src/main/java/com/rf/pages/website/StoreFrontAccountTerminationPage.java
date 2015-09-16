@@ -88,8 +88,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
 		driver.click(By.xpath("//input[@class='fancybox']"));
 		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
-		driver.waitForLoadingImageToDisappear();
-		driver.click(By.xpath("//input[@value='Close window']"));
+		driver.waitForLoadingImageToDisappear();		
 	}
 
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
@@ -101,6 +100,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnCloseWindowAfterTermination(){
+		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
 		driver.click(By.xpath("//input[@value='Close window']"));
 		driver.pauseExecutionFor(2000);
 	}

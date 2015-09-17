@@ -33,7 +33,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		kitName = TestConstants.KIT_NAME_PERSONAL;			 
 		addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 		city = TestConstants.CITY_CA;
 		postalCode = TestConstants.POSTAL_CODE_CA;
@@ -78,7 +78,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		kitName = TestConstants.KIT_NAME_PERSONAL;			 
 		addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
 		city = TestConstants.CITY_QUEBEC;
 		postalCode = TestConstants.POSTAL_CODE_QUEBEC;
@@ -142,7 +142,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		kitName = TestConstants.KIT_NAME_PERSONAL;			 
 		addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 		city = TestConstants.CITY_CA;
 		postalCode = TestConstants.POSTAL_CODE_CA;
@@ -184,7 +184,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	public void testCustomerLivingInQuebecCannotEnroll_1292() throws InterruptedException{
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		kitName = TestConstants.KIT_NAME_PERSONAL;			 
 		addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
 		city = TestConstants.CITY_QUEBEC;
 		postalCode = TestConstants.POSTAL_CODE_QUEBEC;
@@ -355,7 +355,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		kitName = TestConstants.KIT_NAME_PERSONAL;			 
 		addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
 		city = TestConstants.CITY_QUEBEC;
 		postalCode = TestConstants.POSTAL_CODE_QUEBEC;

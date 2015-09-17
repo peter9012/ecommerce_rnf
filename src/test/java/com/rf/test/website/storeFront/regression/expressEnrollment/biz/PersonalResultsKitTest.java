@@ -29,14 +29,14 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -83,14 +83,14 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -137,14 +137,14 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -191,14 +191,14 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;

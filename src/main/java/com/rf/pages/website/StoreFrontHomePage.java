@@ -115,36 +115,41 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
 		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@class='the-search-results']/form[1]/div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
+		actions.moveToElement(driver.findElement(By.xpath("//div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
-	public void selectEnrollmentKitPage(String kitPrice,String regimenName){
+	public void selectEnrollmentKitPage(String kitName,String regimenName){
 		driver.waitForLoadingImageToDisappear();
-		kitPrice =  kitPrice.toUpperCase();
-		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
-		logger.info("EnrollmentTest Kit is selected as "+kitPrice);
-		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
+		//kitPrice =  kitPrice.toUpperCase();
+		driver.waitForElementPresent(By.xpath("//div[@class='imageClass']//[@title='"+kitName+"']"));
+		//logger.info("EnrollmentTest Kit is selected as "+kitPrice);
+		driver.pauseExecutionFor(500);
+		System.out.println(kitName);
+		//driver.click(By.xpath("//div[@class='imageCLass' and contains(text(),'"+kitPrice+"')]"));
+		driver.click(By.xpath("//img[@title='"+kitName+"']"));
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
-		driver.click(By.xpath("//div[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
+		//****next line span = div for old UI****
+		driver.click(By.xpath("//span[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
 		driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
-		driver.click(By.cssSelector("input[value='Next']"));
+		driver.click (By.id("next-button")); // - old UI (By.cssSelector("input[value='Next']"));
 		logger.info("Next button clicked after selected Kit and regimen");
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	public void selectEnrollmentKitPage(String kitPrice){
+	public void selectPortfolioEnrollmentKitPage(String kitName){
 		driver.waitForLoadingImageToDisappear();
-		kitPrice =  kitPrice.toUpperCase();
-		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
-		logger.info("EnrollmentTest Kit is selected as "+kitPrice);
-		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
-		logger.info("Next button clicked after selected Kit");
-		driver.waitForLoadingImageToDisappear();
+		kitName =  kitName.toUpperCase();
+		driver.click(By.xpath("//img[@title='"+kitName+"']"));
+//		driver.waitForElementPresent(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
+//		logger.info("EnrollmentTest Kit is selected as "+kitPrice);
+//		driver.click(By.xpath("//div[@class='kit-price' and contains(text(),'"+kitPrice+"')]"));
+//		logger.info("Next button clicked after selected Kit");
+//		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void chooseEnrollmentOption(String option){
@@ -563,6 +568,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
 		enterLastName(lastName);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 		enterPassword(password);
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
@@ -570,7 +576,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		selectProvince();
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+		
 	}
 
 	//method overloaded,no need for enrollment type if kit is portfolio

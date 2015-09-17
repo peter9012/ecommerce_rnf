@@ -319,13 +319,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -360,13 +360,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -401,13 +401,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -438,13 +438,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -482,13 +482,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -546,13 +546,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -644,13 +644,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -698,13 +698,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -882,7 +882,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink(); 
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_REVERSE);  
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -998,7 +998,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink(); 
 		storeFrontHomePage.searchCID(TestConstants.CID);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_BIG_BUSINESS_CA, TestConstants.REGIMEN_NAME_REVERSE);  
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
@@ -1390,13 +1390,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -1452,13 +1452,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -1518,7 +1518,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID(TestConstants.CID);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_PRICE_CA, TestConstants.REGIMEN_NAME);  
+		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_PERSONAL, TestConstants.REGIMEN_NAME);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);

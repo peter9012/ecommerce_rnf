@@ -28,13 +28,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -87,13 +87,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -146,13 +146,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -205,13 +205,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -264,13 +264,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;

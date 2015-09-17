@@ -28,13 +28,13 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
+			kitName = TestConstants.KIT_NAME_EXPRESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -82,13 +82,13 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PORTFOLIO_CA;			 
+			kitName = TestConstants.KIT_NAME_PORTFOLIO;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PORTFOLIO_US;
+			kitName = TestConstants.KIT_NAME_PORTFOLIO;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -136,13 +136,13 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PORTFOLIO_CA;			 
+			kitName = TestConstants.KIT_NAME_PORTFOLIO;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PORTFOLIO_US;
+			kitName = TestConstants.KIT_NAME_PORTFOLIO;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;

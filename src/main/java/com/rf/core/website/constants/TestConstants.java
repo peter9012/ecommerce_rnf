@@ -9,7 +9,7 @@ public class TestConstants {
 	public static final String CID = "1687162";
 	public static final String KIT_PRICE_CA = "CAD$ 445";
 	public static final String KIT_PRICE_US = "$395";
-	public static final String REGIMEN_NAME = "Redefine";
+	public static final String REGIMEN_NAME = "REDEFINE";
 	public static final String EXPRESS_ENROLLMENT = "Express Enrollment";
 	public static final String STANDARD_ENROLLMENT = "Standard Enrollment";
 	public static final String KIT_PRICE_EXPRESS_CA = "CAD$ 1,145";
@@ -17,6 +17,11 @@ public class TestConstants {
 	public static final String KIT_PRICE_PERSONAL_CA = "CAD$ 445";
 	public static final String KIT_PRICE_PORTFOLIO_CA = "CAD$ 52";
 
+	public static final String KIT_NAME_EXPRESS = "RFx Express Business Kit";
+	public static final String KIT_NAME_BIG_BUSINESS = "Big Business Launch Kit";
+	public static final String KIT_NAME_PERSONAL = "Personal Results Kit";
+	public static final String KIT_NAME_PORTFOLIO = "BUSINESS PORTFOLIO";
+	
 	public static final String KIT_PRICE_EXPRESS_US = "$995";
 	public static final String KIT_PRICE_BIG_BUSINESS_US = "$695";
 	public static final String KIT_PRICE_PERSONAL_US = "$395";
@@ -123,10 +128,10 @@ public class TestConstants {
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "111maiden";
-	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
-	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
-	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
-	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
+	public static final String CONSULTANT1_PWS_URL_CA = "http://astoner.myrfotst2.biz/ca/";
+	public static final String CONSULATNT1_PWS_URL_US = "http://astoner.myrfotst2.biz/us/";
+	public static final String CONSULTANT1_PWS_COM_URL = "http://astoner.myrfotst2.com/ca/";
+	public static final String CONSULTANT2_PWS_URL = "http://astoner.myrfotst2.biz/ca";
 
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "111maiden";

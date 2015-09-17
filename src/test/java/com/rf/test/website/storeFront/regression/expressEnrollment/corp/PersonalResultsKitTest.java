@@ -21,7 +21,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-36 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN   
 	@Test
-	public void testExpressEnrollmentPerosnalResultsKitRedefineRegimen_36() throws InterruptedException{
+	public void testExpressEnrollmentPersonalResultsKitRedefineRegimen_36() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
@@ -29,13 +29,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			kitName = "Personal Results Kit";//TestConstants.KIT_PRICE_PERSONAL_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			kitName = "Personal Results Kit";// TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -81,15 +81,16 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		kitName = TestConstants.KIT_NAME_PERSONAL;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		//	kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			//kitName = TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;

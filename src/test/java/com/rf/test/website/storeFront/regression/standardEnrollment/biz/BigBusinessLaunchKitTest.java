@@ -28,14 +28,8 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-<<<<<<< HEAD
-		env = driver.getEnvironment();		
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openPWSSite(country, env);
-=======
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
 
->>>>>>> seandev
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
@@ -54,11 +48,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-<<<<<<< HEAD
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-=======
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
->>>>>>> seandev
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -97,14 +87,10 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-<<<<<<< HEAD
 		env = driver.getEnvironment();		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
-=======
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
-
->>>>>>> seandev
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
@@ -123,11 +109,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-<<<<<<< HEAD
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-=======
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
->>>>>>> seandev
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -166,15 +148,10 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
-<<<<<<< HEAD
 		env = driver.getEnvironment();		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
-		
-=======
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
-
->>>>>>> seandev
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
@@ -193,11 +170,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-<<<<<<< HEAD
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-=======
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
->>>>>>> seandev
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -236,15 +209,10 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-<<<<<<< HEAD
 		env = driver.getEnvironment();		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
-		
-=======
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
-
->>>>>>> seandev
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
@@ -263,11 +231,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-<<<<<<< HEAD
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-=======
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
->>>>>>> seandev
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

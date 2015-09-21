@@ -29,38 +29,20 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-<<<<<<< HEAD
-
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-=======
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openPWSSite(country, env);
-		
-		if(country.equalsIgnoreCase("CA")){			
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
->>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-<<<<<<< HEAD
 		}else{
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
-			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-=======
-		}else{			
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
->>>>>>> automation-dev
 		}
 
 		
@@ -101,37 +83,21 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
-<<<<<<< HEAD
 
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-=======
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openPWSSite(country, env);
-		
-		if(country.equalsIgnoreCase("CA")){			
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
->>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-=======
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
->>>>>>> automation-dev
 		}
 
 		storeFrontHomePage.clickOnOurBusinessLink();
@@ -174,31 +140,19 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 		if(country.equalsIgnoreCase("CA")){
-<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-=======
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
->>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-=======
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
->>>>>>> automation-dev
 		}
 
 		storeFrontHomePage.clickOnOurBusinessLink();
@@ -242,31 +196,19 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 		if(country.equalsIgnoreCase("CA")){
-<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-=======
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
->>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-=======
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
->>>>>>> automation-dev
 		}
 
 		storeFrontHomePage.clickOnOurBusinessLink();

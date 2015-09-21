@@ -121,9 +121,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 	}
 
-<<<<<<< HEAD
-	public void selectEnrollmentKitPage(String kitName,String regimenName){
-=======
+
 	public void mouseHoverOtherSponsorDataAndClickContinue() throws InterruptedException{
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//div[@class='the-search-results']/form[3]/div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
@@ -132,8 +130,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 	}
 
-	public void selectEnrollmentKitPage(String kitPrice,String regimenName){
->>>>>>> automation-dev
+	public void selectEnrollmentKitPage(String kitName,String regimenName){
 		driver.waitForLoadingImageToDisappear();
 		//kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//div[@class='imageClass']//[@title='"+kitName+"']"));
@@ -608,7 +605,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	//method overloaded,no need for enrollment type if kit is portfolio
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
-		selectEnrollmentKitPage(kitName);		
+		selectEnrollmentKitPage(kitName, regimenName);		
 		enterFirstName(firstName);
 		enterLastName(lastName);
 		enterPassword(password);

@@ -290,7 +290,12 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
-
+	
+	public static final String NEW_ADDRESS_LINE1_US = "123 J street";
+	public static final String NEW_ADDRESS_CITY_US="San Francisco";
+	public static final String NEW_ADDRESS_POSTAL_CODE_US="99294";
+	public static final String NEW_ADDRESS_PHONE_NUMBER_US="4155555555";
+	
 }
 
 

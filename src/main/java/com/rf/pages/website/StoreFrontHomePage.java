@@ -581,7 +581,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	//method overloaded,no need for enrollment type if kit is portfolio
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
-		selectEnrollmentKitPage(kitName);		
+		selectEnrollmentKitPage(kitName, regimenName);		
 		enterFirstName(firstName);
 		enterLastName(lastName);
 		enterPassword(password);

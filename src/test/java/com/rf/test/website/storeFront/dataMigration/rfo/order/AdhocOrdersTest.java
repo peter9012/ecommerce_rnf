@@ -32,20 +32,33 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
 	@Test
-	public void testCreateAdhocOrderConsultant() throws InterruptedException{
+	public void testCreateAdhocOrderConsultant_1878() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
+		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		
+		
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
@@ -56,22 +69,22 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
-		System.out.println("subtotal ="+subtotal);
+		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-		System.out.println("deliveryCharges ="+deliveryCharges);
+		logger.info("deliveryCharges ="+deliveryCharges);
 		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		System.out.println("handlingCharges ="+handlingCharges);
+		logger.info("handlingCharges ="+handlingCharges);
 		String tax = storeFrontUpdateCartPage.getTax();
-		System.out.println("tax ="+tax);
+		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
-		System.out.println("total ="+total);
+		logger.info("total ="+total);
 		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		System.out.println("totalSV ="+totalSV);
+		logger.info("totalSV ="+totalSV);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		System.out.println("shippingMethod ="+shippingMethod);
+		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		System.out.println("BillingAddress ="+BillingAddress);
+		logger.info("BillingAddress ="+BillingAddress);
 
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -83,11 +96,14 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
@@ -102,21 +118,33 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
-	public void testCreateAdhocOrderPC() throws InterruptedException{
+	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
-		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
-
+		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_PASSWORD_TST4);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();
@@ -127,22 +155,22 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
-		System.out.println("subtotal ="+subtotal);
+		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-		System.out.println("deliveryCharges ="+deliveryCharges);
+		logger.info("deliveryCharges ="+deliveryCharges);
 		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		System.out.println("handlingCharges ="+handlingCharges);
+		logger.info("handlingCharges ="+handlingCharges);
 		String tax = storeFrontUpdateCartPage.getTax();
-		System.out.println("tax ="+tax);
+		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
-		System.out.println("total ="+total);
+		logger.info("total ="+total);
 		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		System.out.println("totalSV ="+totalSV);
+		logger.info("totalSV ="+totalSV);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		System.out.println("shippingMethod ="+shippingMethod);
+		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		System.out.println("BillingAddress ="+BillingAddress);
+		logger.info("BillingAddress ="+BillingAddress);
 
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -154,11 +182,13 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
@@ -178,23 +208,33 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomRCList =  null;
 
 		String rcUserEmailID = null;
-		String accountID = null;
+		String accountId = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-		logger.info("Account ID of the user is "+accountID);
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
+		
 		storeFrontRCUserPage.clickOnShopLink();
-		storeFrontRCUserPage.clickOnQuickShopImage();   
+		storeFrontRCUserPage.clickOnAllProductsLink();   
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnContinueWithoutSponsorLink();
@@ -225,7 +265,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		logger.info("Order Number after placing the order is "+orderNumber);
-
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+		
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

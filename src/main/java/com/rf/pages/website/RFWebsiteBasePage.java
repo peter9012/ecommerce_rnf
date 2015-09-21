@@ -1,7 +1,11 @@
 package com.rf.pages.website;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -9,7 +13,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.RFBasePage;
 
 
@@ -20,6 +26,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info']//a[contains(text(),'Edit')]");
 	protected RFWebsiteDriver driver;
+	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
 		super(driver);
 		this.driver = driver;
@@ -108,16 +115,23 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
 		logger.info("Buy Now button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
-		logger.info("Add To CRP button clicked for first product");
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']"));
+		logger.info("Add to CRP button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -171,10 +185,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='content-full-page']/h1[text()='Log in or create an account']")));
 	}
 
-	public void enterNewRCDetails() throws InterruptedException{
+	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="RCUser";
-		String lastName = "Test";
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -184,20 +198,20 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));		
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
-	public void enterNewPCDetails() throws InterruptedException{
+	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="PCUser";
-		String lastName = "Test";
+		//		String firstName="PCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -207,10 +221,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
@@ -219,8 +233,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean isPopUpForPCThresholdPresent() throws InterruptedException{
 		boolean isPopUpForPCThresholdPresent=false;
-		driver.waitForElementPresent(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products in your PC cart greater than the threshold CAD $90')]"));
-		isPopUpForPCThresholdPresent = driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products in your PC cart greater than the threshold CAD $90')]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products')]"));
+		isPopUpForPCThresholdPresent = driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='popup-content']//p[contains(text(),'Please add products')]")));
 		if(isPopUpForPCThresholdPresent==true){
 			driver.click(By.xpath("//div[@id='popup-content']//input"));
 			return true;
@@ -249,17 +263,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER);
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.NEW_ADDRESS_LINE1_US);
-			logger.info("Address line 1 entered is "+TestConstants.NEW_ADDRESS_LINE1_US);
-			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.NEW_ADDRESS_CITY_US);
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
 			logger.info("state selected");
-			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-			logger.info("postal code entered is "+TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
-			logger.info("phone number entered is "+TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		}
 
 	}
@@ -422,18 +436,24 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@id='Terms3']/.."));
 	}
 
-	public boolean selectNewBillingCardExpirationDateAsExpiredDate()	 {
+	public boolean selectNewBillingCardExpirationDateAsExpiredDate(){
+		boolean flag  = false;
+		String value = null;
 		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
 		driver.click(By.id("expiryYear"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[1]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[2]"));
 		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='01']"));
-		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='01']")).isEnabled();
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		value = driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='02']")).getAttribute("disabled");
+		if(value.equalsIgnoreCase("true")){
+			flag = true;
+			return flag;
+		}else
+			return flag;
 	}
-
 
 	public boolean validatePasswordFieldMessage(){
 		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter 6')]")).isDisplayed()){
@@ -512,10 +532,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='Congrats']/h1[contains(text(),'PC')]")));
 	}
 
-	public String createNewPC() throws InterruptedException{
+	public String createNewPC(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="PCUser";
-		String lastName = "Test";
+		//		String firstName="PCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -524,10 +544,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));  
@@ -535,10 +555,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return emailAddress;
 	}
 
-	public String createNewRC(){	
+	public String createNewRC(String firstName,String lastName,String password){	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName="RCUser";
-		String lastName = "Test";
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -547,10 +567,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
-		driver.findElement(By.id("the-password-again")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
-		logger.info("confirm password entered as "+TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -566,27 +586,42 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
-	public boolean validateExistingUserPopUp(String userid){
-		String firstName="RCUser";
-		String lastName = "Test";
-		String pcmailid="autopc@xyz.com";
-		String rcmailid="Retail29@mailinator.com";
-		String consultantmailid="con0708@yopmail.com";
+	public boolean validateExistingUserPopUp(String userid,String firstName,String lastName,String password){
+		RFO_DB = driver.getDBNameRFO();
+		String pcmailid=null;
+		String rcmailid=null;
+		String consultantmailid=null;
+
+		List<Map<String, Object>> randomPCUserEmailIdList =  null;
+		List<Map<String, Object>> randomRCUserEmailIdList =  null;
+		List<Map<String, Object>> randomConsultantEmailIdList =  null;
+
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
+			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
+
 			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
 			logger.info("email entered as "+pcmailid);
 		}else if(userid.equalsIgnoreCase("rc")){
+			randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "Username"));
+
 			driver.findElement(By.id("email-account")).sendKeys(rcmailid);
 			logger.info("email entered as "+rcmailid);
 		}else{
+
+			randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "Username"));
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 			logger.info("email entered as "+consultantmailid);
 		}
-		driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+		driver.findElement(By.id("password")).sendKeys(password);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		boolean flag=false;
@@ -605,7 +640,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 				driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 				logger.info("email entered as "+consultantmailid);
 			}
-			driver.findElement(By.id("password")).sendKeys(TestConstants.CONSULTANT_PASSWORD_STG2);
+			driver.findElement(By.id("password")).sendKeys(password);
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(2000);
 			return driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='fancybox-inner']//h2[contains(text(),'E')]")));
@@ -649,14 +684,96 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateHomePage(){
-		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		String url = driver.getURL();
-		return url.contains(driver.getCurrentUrl());
+		return driver.getCurrentUrl().contains(url);
 	}
 
 	public void navigateToBackPage(){
 		driver.waitForPageLoad();
 		driver.navigate().back();
 	}
+
+	public void clickOnAllowMySpouseOrDomesticPartnerCheckboxForUncheck() {
+		//driver.waitForElementToBeVisible(By.xpath("//input[@id='spouse-check']"), 15);
+		boolean status=driver.findElement(By.xpath("//input[@id='spouse-check']/..")).isSelected();
+		if(status==true){
+			driver.click(By.xpath("//input[@id='spouse-check']/.."));
+		}
+	}
+
+	public void cancelTheProvideAccessToSpousePopup(){
+		driver.pauseExecutionFor(6000);
+		if(driver.findElement(By.id("cancelSpouse")).isDisplayed()){
+			driver.click(By.id("cancelSpouse"));
+			driver.pauseExecutionFor(3000);
+		}
+	}
+
+	public boolean verifyAllowMySpouseCheckBoxIsSelectedOrNot(){
+		logger.info("Checkbox status "+driver.findElement(By.id("spouse-check")).isSelected());
+		driver.waitForElementPresent(By.id("spouse-check"));
+		if(driver.findElement(By.id("spouse-check")).getAttribute("class").equalsIgnoreCase("checked")){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
+		Object value = null;
+		for (Map<String, Object> map : userDataList) {
+			logger.info("query result:" + map.get(column));
+			value = map.get(column);			
+		}
+		return value;
+	}
+
+	public String getBizPWS(String country,String env){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomActiveSitePrefixList =  null;
+		String activeSitePrefix = null;
+		String PWS = null;
+		String countryID =null;
+
+		if(country.equalsIgnoreCase("ca")){
+			countryID="40";
+		}
+		else if(country.equalsIgnoreCase("us")){
+			countryID="236";
+		} 
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);
+		return PWS;
+	}
+
+	public void openPWSSite(String country,String env){
+		while(true){
+			driver.get(getBizPWS(country, env));
+			driver.waitForPageLoad();
+			if(driver.getCurrentUrl().contains("sitenotfound"))
+				continue;
+			else
+				break;
+		}	
+	}
+
+	public void switchToChildWindow(){
+		driver.switchWindow();
+	}
+
+	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
+		driver.click(By.xpath("//a[text()='Check My Pulse']"));
+		driver.pauseExecutionFor(3000);
+	}
+
+	public boolean validatePulseHomePage(){
+		String pulseHomePageURL="https://www.pulserfo.stg2.rodanandfields.com/Home";
+		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
+	}
+
 }

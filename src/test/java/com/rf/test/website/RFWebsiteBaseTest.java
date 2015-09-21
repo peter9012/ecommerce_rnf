@@ -1,5 +1,6 @@
 package com.rf.test.website;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.rf.test.base.RFBaseTest;
  */
 public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
+	protected String password = null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -34,14 +36,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();
-		logger.info("Application loaded");
+		driver.loadApplication();		
+		logger.info("Application loaded");				
 		driver.setDBConnectionString();		
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
-		driver.get(driver.getURL());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		setPassword(driver.getPassword());
 		try{
 			logout();
 		}catch(NoSuchElementException e){
@@ -58,6 +61,10 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.quit();
 	}
 
+	public void setPassword(String pass){
+		password=pass;
+	}
+	
 	public void logout(){
 		driver.findElement(By.xpath("//li[@id='account-info-button']")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
@@ -182,10 +189,26 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
 		Object value = null;
 		for (Map<String, Object> map : userDataList) {
+
 			//logger.info("query result:" + map.get(column));
+
+		//	logger.info("query result:" + map.get(column));
+
 			value = map.get(column);			
 		}
+		logger.info("Data returned by query: "+ value);
 		return value;
+	}
+	
+	public List<String> getValuesFromQueryResult(List<Map<String, Object>> userDataList,String column){
+		List<String> allReturnedValuesFromQuery = new ArrayList<String>();
+		Object value = null;
+		for (Map<String, Object> map : userDataList) {
+			logger.info("query result:" + map.get(column));
+			value = map.get(column);
+			allReturnedValuesFromQuery.add(String.valueOf(value));
+		}
+		return allReturnedValuesFromQuery;
 	}
 
 }

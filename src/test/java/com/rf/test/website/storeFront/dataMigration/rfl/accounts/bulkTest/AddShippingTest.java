@@ -39,7 +39,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();
 
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "ln";
 		logger.info("Account Id of the user is "+accountID);
 		List<Map<String, Object>> emailIdList =  null;
@@ -61,13 +61,13 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
 
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
 		//storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -113,7 +113,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -130,14 +130,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "ln";
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.CITY_US);
 		storeFrontUpdateCartPage.selectNewShippingAddressState();
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
@@ -174,7 +174,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -191,16 +191,16 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "ln";
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
 
@@ -258,7 +258,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -275,16 +275,16 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "ln";
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.NEW_ADDRESS_SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -332,7 +332,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -354,7 +354,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.editShippingAddress();
 		s_assert.assertFalse(storeFrontUpdateCartPage.isUseThisShippingProfileFutureAutoshipChkboxVisible(),"Autoship Checkbox Present");
 
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "test";
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
@@ -395,7 +395,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("EmailID= "+emailID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID, password);
 
 			logger.info("login is successful");
 			storeFrontConsultantPage.clickOnShopLink();
@@ -408,14 +408,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 			storeFrontUpdateCartPage.clickAddANewAddressLink();
 			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			String newBillingAddressLine1 = TestConstants.NEW_ADDRESS_LINE1_US+randomNum;
+			String newBillingAddressLine1 = TestConstants.ADDRESS_LINE_1_US+randomNum;
 			String lastName = "ln";
-			storeFrontUpdateCartPage.enterNewBillingAddressName(TestConstants.NEW_ADDRESS_NAME_US+" "+lastName);
+			storeFrontUpdateCartPage.enterNewBillingAddressName(TestConstants.ADDRESS_NAME_US+" "+lastName);
 			storeFrontUpdateCartPage.enterNewBillingAddressLine1(newBillingAddressLine1);
-			storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.CITY_US);
 			storeFrontUpdateCartPage.selectNewBillingAddressState();
-			storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-			storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+			storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.POSTAL_CODE_US);
+			storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 			s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewAddressGetsAssociatedWithTheDefaultBillingProfile(newBillingAddressLine1), "New Address has not got associated with the billing profile");
 			s_assert.assertAll();
@@ -441,7 +441,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -504,7 +504,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);

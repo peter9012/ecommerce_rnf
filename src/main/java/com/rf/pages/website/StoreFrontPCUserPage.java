@@ -45,9 +45,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']"));
-		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//form[2]/input[@value='Add to PC Perks']");
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[3]//input[@value='Add to PC Perks']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[3]//input[@value='Add to PC Perks']"));
+		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to PC Perks']");
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
@@ -62,17 +62,19 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public void clickPleaseCancelMyPcPerksActBtn(){
-		driver.waitForElementPresent(By.xpath("//input[@id='cancel-pc-perks-button']"));
-		driver.click(By.xpath("//input[@id='cancel-pc-perks-button']"));
+		driver.waitForElementPresent(By.id("cancel-pc-perks-button"));
+		driver.click(By.id("cancel-pc-perks-button"));
 	}
 
 	public StoreFrontHomePage cancelMyPCPerksAct(){
+		driver.waitForElementPresent(By.id("problemType"));
 		driver.click(By.id("problemType"));
 		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.click(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
 		driver.findElement(By.xpath("//textarea[@id='terminationComments']")).sendKeys("test");
 		driver.click(By.xpath("//input[@id='pcperkTerminationConfirm']"));
+		driver.waitForElementPresent(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
@@ -80,5 +82,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForPageLoad();
 		return new StoreFrontHomePage(driver);
 	}
+	
+	public boolean validateNextPCPerksMiniCart() {  
+		  return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
+		 }
 }
 

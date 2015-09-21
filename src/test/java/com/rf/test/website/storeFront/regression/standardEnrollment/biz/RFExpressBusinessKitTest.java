@@ -18,6 +18,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	private String postalCode = null;
 	private String phoneNumber = null;
 	private String country = null;
+	private String env = null;
 
 	// Hybris Project-69 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen REDEFINE REGIMEN 
 	@Test
@@ -27,27 +28,41 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		env = driver.getEnvironment();		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
 
 		if(country.equalsIgnoreCase("CA")){
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
+>>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -86,27 +101,41 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-
+		env = driver.getEnvironment();		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		
 		if(country.equalsIgnoreCase("CA")){
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
+>>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -146,27 +175,41 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
-
+		env = driver.getEnvironment();		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		
 		if(country.equalsIgnoreCase("CA")){
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
+>>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -205,27 +248,41 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-
+		env = driver.getEnvironment();		
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		
 		if(country.equalsIgnoreCase("CA")){
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_CA;			 
+>>>>>>> automation-dev
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			driver.get(TestConstants.CONSULATNT1_PWS_URL_US);
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_EXPRESS_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

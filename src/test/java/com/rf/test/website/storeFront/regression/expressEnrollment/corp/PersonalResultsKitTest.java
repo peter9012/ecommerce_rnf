@@ -35,11 +35,19 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			kitName = "Personal Results Kit";// TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -47,7 +55,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -90,11 +98,19 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
+<<<<<<< HEAD
 			//kitName = TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+=======
+			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+>>>>>>> automation-dev
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -102,7 +118,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -145,10 +161,10 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
-			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -156,7 +172,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -199,10 +215,10 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
-			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -210,7 +226,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

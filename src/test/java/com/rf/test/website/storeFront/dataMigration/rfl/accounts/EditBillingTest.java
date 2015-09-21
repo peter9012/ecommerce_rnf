@@ -53,7 +53,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -140,7 +140,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -225,7 +225,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -241,8 +241,8 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
-		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
+//		String initialBillingProfileName =  storeFrontBillingInfoPage.getBillingProfileName();
+//		initialBillingProfileName = WordUtils.uncapitalize(initialBillingProfileName);
 		storeFrontBillingInfoPage.clickOnEditBillingProfile();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -303,7 +303,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -378,7 +378,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);

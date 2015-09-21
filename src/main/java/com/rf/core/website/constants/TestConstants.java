@@ -35,12 +35,23 @@ public class TestConstants {
 	public static final String PASSWORD_BELOW_6CHARS = "test1";
 	public static final String SPOUSE_FIRST_NAME = "Mary";
 	public static final String SPOUSE_LAST_NAME = "Stone";
+	public static final String SPONSOR_ID_FOR_PC = "Test";
+	public static final String INVALID_SPONSOR_ID="00001111";
+	public static final String INVALID_SPONSOR_NAME="invalidSponsor";
+	public static final String SPONSOR_ID_US_STG1="06371149";
+	
 
-	public static final String FIRST_NAME = "rfTestUser";
+	public static final String FIRST_NAME = "auto";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
+
+	//public static final String PASSWORD = "test1234";
+	//public static final String PASS = "111maiden";
+
 	public static final String PASSWORD = "111maiden";
+
 	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
+	public static final String NEW_ADDRESS_LINE_1_CA = "5503 - 54th Street";
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2H4";
@@ -89,8 +100,13 @@ public class TestConstants {
 	 */
 	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
+
+	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
+	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
+
 	public static final String CONSULTANT_PASSWORD_STG2 = "111maiden";
 	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "11maiden5";
+
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";
@@ -101,8 +117,13 @@ public class TestConstants {
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
 	public static final String CONSULTANT_NEW_EMAIL_ID_STG2 = "con0708111@yopmail.com";
 
+
+//	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
+//	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
+
 	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
 	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "111maiden";
+
 
 	public static final String PC_EMAIL_ID_STG2="pcuser02@abc.com";
 	public static final String EMAIL_ACTIVE_PC_USER="rftest2506PC@yopmail.com";
@@ -125,6 +146,18 @@ public class TestConstants {
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 
+
+//	//PWS STAGING
+//	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
+//	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
+//	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
+//	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
+//	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
+//	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
+//
+//	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
+	//public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "test1234";
+
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "111maiden";
@@ -135,6 +168,7 @@ public class TestConstants {
 
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "111maiden";
+
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
 
 
@@ -143,7 +177,11 @@ public class TestConstants {
 	 */
 
 	public static final String RCUSER_EMAIL_ID = "Retail29@mailinator.com";
+
+//	public static final String RCUSER_PASSWORD = "test1234";
+
 	public static final String RCUSER_PASSWORD = "111maiden";
+
 	public static final String RCUSER_USERNAME = "RFTest1706";
 	public static final String RCUSER_ORDER_NUMBER = "2100018433";
 	public static final String RCUSER_SCHEDULED_DATE = "July 8, 2015";
@@ -156,6 +194,17 @@ public class TestConstants {
 
 	public static final String PCUSER_NO_SPONSOR_EMAIL_ID = "pcuserwithoutsponsor@stg2.com";
 	public static final String PCUSER_EMAIL_ID_FOR_ACCOUNTINFO = "pcusersponserpws@stg2.com";
+
+	//public static final String PCUSER_PASSWORD = "test1234";
+	//public static final String PCUSER_NO_SPONSOR_PASSWORD = "test1234";
+	//public static final String PCUSER_NO_SPONSOR_USERNAME = "pcuserwithoutsponsor";
+
+	//public static final String PCUSER_SPONSOR_NO_PWS_EMAIL_ID = "nopwspc@yopmail.com";
+//	public static final String PCUSER_SPONSOR_NO_PWS_PASSWORD = "test1234";
+
+	//public static final String PCUSER_SPONSOR_PWS_EMAIL_ID = "pcusersponserpws@stg2.com";
+	//public static final String PCUSER_SPONSOR_PWS_PASSWORD = "test1234";
+
 	public static final String PCUSER_PASSWORD = "111maiden";
 	public static final String PCUSER_NO_SPONSOR_PASSWORD = "111maiden";
 	public static final String PCUSER_NO_SPONSOR_USERNAME = "pcuserwithoutsponsor";
@@ -165,6 +214,7 @@ public class TestConstants {
 
 	public static final String PCUSER_SPONSOR_PWS_EMAIL_ID = "pcusersponserpws@stg2.com";
 	public static final String PCUSER_SPONSOR_PWS_PASSWORD = "111maiden";
+
 
 	/**
 	 * 
@@ -191,19 +241,33 @@ public class TestConstants {
 	 * US tst4 
 	 */
 	public static final String CONSULTANT_EMAIL_ID_TST4 = "anneginsberg@hotmail.com";
+
+	//public static final String CONSULTANT_PASSWORD_TST4 = "111maiden";
+	//public static final String RC_PASSWORD_TST4 = "111maiden";
+	//public static final String CONSULTANT_PASSWORD_RFL = "111maiden";
+	//public static final String PC_USER_PASSWORD_RFL = "111maiden";
+
 	public static final String CONSULTANT_PASSWORD_TST4 = "111maiden";
 	public static final String RC_PASSWORD_TST4 = "111maiden";
 	public static final String CONSULTANT_PASSWORD_RFL = "111maiden";
 	public static final String PC_USER_PASSWORD_RFL = "111maiden";
+
 	public static final String CONSULTANT_ACC_TERMINATION_EMAIL_ID_TST4 = "consauto2007.tst4@rf.com";
 	public static final String CONSULTANT_ACC_TERMINATION_PASSWORD_TST4 = "111maiden";
 
 
 	public static final String PC_EMAIL_ID_TST4 = "wigginsk@comcast.net";
-	public static final String PC_PASSWORD_TST4 = "111maiden";
+
+	//public static final String PC_PASSWORD_TST4 = "abcde";
 
 	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
+	//public static final String RCUSER_PASSWORD_TST4 = "abcde";
+
+	public static final String PC_PASSWORD_TST4 = "111maiden";
+
+//	public static final String RCUSER_EMAIL_ID_TST4 = "kaseylpeterson@gmail.com";
 	public static final String RCUSER_PASSWORD_TST4 = "111maiden";
+
 	public static final String RCUSER_USERNAME_TST4 = "Kasey";
 
 
@@ -212,13 +276,14 @@ public class TestConstants {
 	 * New Shipping Address US
 	 * 
 	 */
-	public static final String NEW_ADDRESS_NAME_US = "newSAName";
-	public static final String NEW_ADDRESS_LINE1_US = "10 Hemlock Way";
-	public static final String NEW_ADDRESS_CITY_US = "Cohasset";
-	public static final String NEW_ADDRESS_STATE_US = "MA";
-	public static final String NEW_ADDRESS_POSTAL_CODE_US = "02025-4001";
-	public static final String NEW_ADDRESS_PHONE_NUMBER_US = "9178873219";
-	public static final String NEW_ADDRESS_SECURITY_NUMBER_US = "123";
+	public static final String ADDRESS_NAME_US = "newSAName";
+	public static final String ADDRESS_LINE_1_US = "10 Hemlock Way";
+	public static final String NEW_ADDRESS_LINE_1_US = "11 Hemlock Way";
+	public static final String CITY_US = "Cohasset";
+	public static final String STATE_US = "MA";
+	public static final String POSTAL_CODE_US = "02025-4001";
+	public static final String PHONE_NUMBER_US = "9178873219";
+	public static final String SECURITY_NUMBER_US = "123";
 
 	/**
 	 * 

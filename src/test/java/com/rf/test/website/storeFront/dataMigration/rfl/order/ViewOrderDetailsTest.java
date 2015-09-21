@@ -73,7 +73,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -217,7 +217,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -366,7 +366,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList =DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 		String pcEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -510,7 +510,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
@@ -655,7 +655,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		rcUser = (String) getValueFromQueryResult(randomRCList, "UserName");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUser, TestConstants.RC_PASSWORD_TST4);
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUser, password);
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -797,7 +797,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -941,7 +941,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		PCEmailID = String.valueOf(getValueFromQueryResult(randomPCList, "Username"));
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(PCEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(PCEmailID, password);
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
@@ -1085,7 +1085,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		RCEmailID = String.valueOf(getValueFromQueryResult(randomRCList, "Username"));
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(RCEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(RCEmailID, password);
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

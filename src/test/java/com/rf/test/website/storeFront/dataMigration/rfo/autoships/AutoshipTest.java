@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -39,17 +38,30 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	public void testChangeShippingMethodOnPCAutoShip_130() throws InterruptedException{
 
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomPCUserList =  null;
-		String pcUserEmailID = null;
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
 		//------------------------------- Hard coded User part is commented for now-----------------------------------------------	
 		//pcUserEmailID = TestConstants.PC_USER_EMAIL_ID_RFO;	
 		//---------------------------------------------------------------------------------------------------------------------		
 
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "Username");
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_PASSWORD_TST4);
+
+		while(true){
+
+			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
+			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
+
+			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();		
 		storeFrontPCUserPage.clickOnAllProductsLink();
@@ -70,8 +82,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-	/*This Script is getting failed on "selectAndGetShippingMethodName Method, 
-	 *due to the Radio Button Not present on UI*/
+	
 
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
 	@Test
@@ -86,13 +97,25 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		//---------------------------------------------------------------------------------------------------------------------		
 
 
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_EMAIL_ID_HAVING_ACTIVE_ORDERS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);		
+
+		while(true){
+
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");		
+		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -126,11 +149,10 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String shippingAddressFromDB =null;
 		String city = null;
 		String state = null;
-		String phoneNumber = null;
 		String subTotalDB = null;
 		String shippingDB = null;
 		String handlingDB = null;
-		String taxDB = null; 
+		String taxDB = null;	
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
 		String consultantEmailID = null;
@@ -140,21 +162,30 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String shippingMethodId =null;
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String, Object>> verifyShippingMethodList = null;
 		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
 		DecimalFormat df = new DecimalFormat("#.00");
 
-		orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4286_RFO,RFO_DB);
-		orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
-		accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_USER_WITH_ACTIVE_CRP_AUTOSHIP_4286_RFO,accountId),RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+	
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -180,8 +211,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		if(country.equals("236")){
 			country = "United States"; 
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase()+"\n";
-
+		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
@@ -195,26 +226,25 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 
 		//assert shipping Address with RFO
-		assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
 
-		//assert Subtotal with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"CRP autoship template subTotal on RFO is "+subTotalDB+"and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		//Assert Subtotal with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"CRP autoship template subTotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 
-		// assert Tax with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP autoship template tax amount on RFO is "+taxDB+"and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
+		// Assert Tax with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP autoship template tax amount on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 
-		// assert Grand Total with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP autoship template grand total on RFO is "+grandTotalDB+"and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		// Assert Grand Total with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP autoship template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
 		// assert shipping amount with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+"and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+"and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+"and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
 	}
@@ -236,12 +266,12 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String taxDB = null; 
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
-		String consultantEmailID = null;
+		String pcEmailID = null;
 		String lastName = null;
 		String orderId = null;
 		String accountId = null;
 		String shippingMethodId = null;
-		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCList =  null;
 		List<Map<String, Object>> verifyAllDetailsList = null;
 		List<Map<String, Object>> verifyShippingMethodList = null;
 		List<Map<String, Object>> verifyOrderDetailsList = null;
@@ -249,20 +279,31 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
 		DecimalFormat df = new DecimalFormat("#.00");
-		orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4291_RFO,RFO_DB);
-		orderId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));       
-		accountId = String.valueOf( getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
-
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_AUTOSHIP_ORDER_4291_RFO,accountId),RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		while(true){
+
+			orderIdAccountIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ORDER_ID_ACCOUNT_ID_4291_RFO,RFO_DB);
+			orderId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "OrderID"));
+			accountId = String.valueOf(getValueFromQueryResult(orderIdAccountIdDetailsList, "AccountID"));
+
+			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USERNAME_BY_ACCOUNT_ID_RFO,accountId),RFO_DB);
+			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
 		// Get Order Number
@@ -287,7 +328,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		if(country.equals("236")){
 			country = "United States"; 
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase()+"\n";
+		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
@@ -302,7 +344,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 
 		//assert shipping Address with RFO
-		assertTrue("Shipping Address is not as expected", storeFrontOrdersPage.verifyShippingAddressDetails(shippingAddressFromDB));
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
 
 		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"PC autoship template subTotal is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());

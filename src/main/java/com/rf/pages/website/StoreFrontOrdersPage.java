@@ -217,11 +217,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getShippingAddressFromAutoshipTemplate(){
-		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
+		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
 	public String getShippingAddressFromAdhocTemplate(){
-		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText();
+		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
 	public boolean verifyShippingMethod(String shippingMethodDB){
@@ -360,7 +360,14 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getTaxAmountFromAdhocOrderTemplate(){
-		String tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
+		String tax = null;
+		try{
+			driver.turnOffImplicitWaits();
+			tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
+		}catch(NoSuchElementException e){
+			tax = driver.findElement(By.id("crpTotalTax")).getText();			
+		}
+		driver.turnOnImplicitWaits();
 		return tax.trim().substring(1);
 	}
 
@@ -645,4 +652,22 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return shippingMethodName;
 	}
 
+	public void clickDetailsUnderActionsForFirstOrderUnderOrderHistory(){
+		String firstOrderNumber=getFirstOrderNumberFromOrderHistory();
+		driver.waitForElementPresent(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.findElement(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]")).click();
+		driver.click(By.linkText("Details"));
+		driver.waitForPageLoad();
+	}
+
+	public String validateOrderDetailsPageIsDisplayedForSimilarOrderNo(){
+		return driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText();
+	}
+
+	public boolean validateOrderDetails(){
+		driver.pauseExecutionFor(2000);
+		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
+				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
+				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
+	}
 }

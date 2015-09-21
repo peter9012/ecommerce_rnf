@@ -52,7 +52,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			logger.info("The Account ID of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, TestConstants.PC_USER_PASSWORD_RFL);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+storeFrontPCUserPage);
@@ -104,7 +104,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -179,7 +179,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
@@ -334,7 +334,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList =DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 		String pcEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, TestConstants.PC_PASSWORD_TST4);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

@@ -280,11 +280,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		else
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -296,6 +296,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		else
 			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']"));
 		logger.info("Add to CRP button clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnAddToCRPButtonDuringEnrollment() throws InterruptedException{
@@ -342,6 +343,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
 		driver.click(By.xpath("//input[@value='OK']"));
 		logger.info("Confirmation OK button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
@@ -520,6 +522,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]//a[text()='Edit']")), 30);
 		driver.click(By.xpath("//input[@name='bill-card'][@checked='checked']/ancestor::li[1]//a[text()='Edit']"));
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
@@ -570,4 +573,14 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return  driver.waitForElementToBeClickable(By.xpath("//div[@id='payment-next-button']/input"), 15);
 	}
 
+	public boolean verifyOrderPlacedConfirmationMessage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/h1"));
+		String orderPlacedMessage = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/h1")).getText();
+		System.out.println("Message from UI is  "+orderPlacedMessage);
+		if(orderPlacedMessage.equalsIgnoreCase("Thank you for your order")){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

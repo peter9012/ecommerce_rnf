@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.dataMigration.rfo.accounts;
+package com.rf.test.website.storeFront.dataMigration.rfo.accounts.bulkTest;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -92,7 +92,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
 	@Test
-	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
+	public void testEditShippingAddressOnShippingProfilePage() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -167,7 +167,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	//Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	//Hybris Project-4465:Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship"
 	@Test
-	public void testEditShippingProfileMyAccountFutureAutoshipNotSelected_4465() throws InterruptedException{
+	public void testEditShippingProfileMyAccountFutureAutoshipNotSelected() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;

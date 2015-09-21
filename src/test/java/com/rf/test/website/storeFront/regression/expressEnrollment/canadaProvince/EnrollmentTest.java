@@ -44,7 +44,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city,province, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,province, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -71,7 +71,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1699 :: Version : 1 :: Express Enrollment for Nunavut province and tryto ship adhoc order at quebec address. 
-	@Test(enabled =false) //WIP
+	@Test
 	public void testExpressEnrollmentNunavutProvince_1699() throws InterruptedException{
 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -89,7 +89,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -116,7 +116,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.NEW_ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
 		String lastName = "ln";
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_QUEBEC);
@@ -136,7 +136,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1698 :: Version : 1 :: Express Enrollment for Northwest territories province and adding qubec address and make it default.
-	@Test(enabled=false) //WIP
+	@Test
 	public void testExpressEnrollmentNorthWestProvince_1698() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -153,7 +153,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city,TestConstants.PROVINCE_NORTHWEST_TERRITORIES, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NORTHWEST_TERRITORIES, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -180,7 +180,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1292 :: Version : 1 :: Customer living in Quebec cannot be enrolled as consultant. 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testCustomerLivingInQuebecCannotEnroll_1292() throws InterruptedException{
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
@@ -202,7 +202,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2190 :: Version : 1 :: Enrolling RC living in Quebec 
-	@Test(enabled =false) //WIP
+	@Test
 	public void testQuebecRCEnrollment_2190() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -243,7 +243,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewRCDetails();
+		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
 
 		//CheckoutPage is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
@@ -311,7 +311,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewPCDetails();
+		storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
 
 		//Pop for PC threshold validation
 		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
@@ -350,7 +350,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2193 :: Version : 1 :: Verify if QAS gives quebec address suggestions for address entered during consultant enrollment.
-	@Test(enabled =false) //WIP
+	@Test
 	public void testQASGivesSuggestionsForQuebecAddress_2193() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
@@ -366,7 +366,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, TestConstants.PASSWORD, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifySuggesstionsForEnteredAddressPop(), "QAS pop up for Quebec address suggestions has NOT appeared");
 

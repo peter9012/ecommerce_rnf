@@ -36,7 +36,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 		
 		//	logger.info("AccountID= "+accountID);
 
-		String password = "111maiden";
+		String password = "111Maiden$";
 
 		logger.info("EmailID= "+emailID);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -60,7 +60,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 		    System.out.println (emailID);
 		    System.out.println(" ");
 		   
-		String password = "111maiden";
+		String password = "111Maiden$";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailID,password);
 		assertFalse(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("error=true")||storeFrontConsultantPage.getCurrentURL().toLowerCase().contains("sitenotfound"),"login failed for the user "+emailID+" url is "+storeFrontConsultantPage.getCurrentURL());//

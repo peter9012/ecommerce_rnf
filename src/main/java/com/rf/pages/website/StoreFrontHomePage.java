@@ -93,6 +93,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
+		dismissPolicyPopup();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontPCUserPage(driver);
@@ -801,8 +802,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"));
+		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
 		driver.waitForLoadingImageToDisappear();

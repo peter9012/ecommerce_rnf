@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -42,7 +43,19 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontEnrollNowPage(driver);
 	}
-
+	public StoreFrontConsultantPage dismissPolicyPopup(){
+		try {	
+			driver.waitForElementPresent(By.id("agree"));
+			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
+			we.click();
+			driver.click(By.xpath("//input[@value='Continue']"));
+		}
+		catch (IndexOutOfBoundsException e) {
+		
+			System.out.println("Policy Popup Dialog not seen.");
+		}
+		return null;
+	} 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -52,6 +65,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
+		dismissPolicyPopup();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontConsultantPage(driver);

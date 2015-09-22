@@ -51,7 +51,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -107,7 +107,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -142,13 +142,13 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+		//	kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			//kitName = TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
@@ -162,7 +162,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -194,16 +194,17 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
+		kitName = TestConstants.KIT_NAME_PERSONAL;
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
+			//kitName = TestConstants.KIT_PRICE_PERSONAL_CA;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_PERSONAL_US;
+			//kitName = TestConstants.KIT_PRICE_PERSONAL_US;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
@@ -217,7 +218,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();

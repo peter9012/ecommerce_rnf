@@ -23,7 +23,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBasePage.class.getName());
 
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info']//a[contains(text(),'Edit')]");
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
@@ -407,8 +407,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean verifyWelcomeDropdownToCheckUserRegistered(){		
-		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a"));
-		return driver.findElement(By.xpath("//li[@id='account-info-button']/a")).getText().contains("Welcome");
+		driver.waitForElementPresent(By.xpath("//div[@id='account-info-button']/a"));
+		return driver.isElementPresent(By.xpath("//div[@id='account-info-button']/a"));
+		//driver.findElement(By.xpath("//div[@id='account-info-button']/a")).getText().contains("Welcome");
 	}
 
 	public void applyPriceFilterLowToHigh() throws InterruptedException{

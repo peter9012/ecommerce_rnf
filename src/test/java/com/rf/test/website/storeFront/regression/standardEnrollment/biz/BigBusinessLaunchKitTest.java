@@ -29,7 +29,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
-
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		if(country.equalsIgnoreCase("CA")){
 			driver.get(TestConstants.CONSULTANT1_PWS_URL_CA);
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
@@ -50,7 +50,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -111,7 +111,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -172,7 +172,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -233,7 +233,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();

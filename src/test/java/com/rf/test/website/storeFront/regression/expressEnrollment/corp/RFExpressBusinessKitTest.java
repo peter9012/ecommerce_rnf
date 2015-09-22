@@ -27,16 +27,15 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		kitName = TestConstants.KIT_NAME_EXPRESS;
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
 
-		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+		if(country.equalsIgnoreCase("CA")){					 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		}else{
-			kitName = TestConstants.KIT_NAME_EXPRESS;
+		}else{			
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -50,7 +49,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -82,16 +81,15 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		kitName = TestConstants.KIT_NAME_PORTFOLIO;
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_PORTFOLIO;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_NAME_PORTFOLIO;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
@@ -105,7 +103,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -166,7 +164,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();

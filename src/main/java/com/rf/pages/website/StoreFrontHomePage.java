@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -16,7 +17,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			.getLogger(StoreFrontHomePage.class.getName());
 	private Actions actions;
 
-	private final By BUSINESS_LINK_LOC = By.cssSelector("a[id='corp-opp']"); 
+	private final By BUSINESS_LINK_LOC = By.cssSelector("li[id='BusinessSystemBar']"); 
 	private final By ENROLL_NOW_LINK_LOC = By.cssSelector("a[title='Enroll Now']");	
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='Log in']");
@@ -31,12 +32,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clickOnOurBusinessLink(){
 		driver.waitForElementPresent(BUSINESS_LINK_LOC);
-		driver.click(BUSINESS_LINK_LOC);
-		logger.info("Our business Link clicked");
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		WebElement becomeAConsultant  = driver.findElement(BUSINESS_LINK_LOC);		
+		actions.moveToElement(becomeAConsultant);
+		driver.pauseExecutionFor(1000);
+		actions.click(becomeAConsultant).build().perform();
+		logger.info("Become a consultant clicked");
+		driver.pauseExecutionFor(2000);
 	}
 
 	public StoreFrontEnrollNowPage clickOnOurEnrollNowLink(){
 		driver.waitForElementPresent(ENROLL_NOW_LINK_LOC);
+		driver.waitForElementToBeVisible(ENROLL_NOW_LINK_LOC, 5);
 		driver.click(ENROLL_NOW_LINK_LOC);
 		logger.info("Enroll Now Link clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -264,14 +271,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
-		//		try{
-		//			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-		//			driver.click(By.id("QAS_AcceptOriginal"));
-		//			logger.info("Accept the original button clicked");
-		//		}
-		//		catch(Exception e){
-		//			logger.info("Accept the original pop up was NOT present");
-		//		}
+		try{
+			driver.turnOffImplicitWaits();
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept the original button clicked");
+		}
+		catch(Exception e){
+			logger.info("Accept the original pop up was NOT present");
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 	}
 
 	public void clickNextButton(){
@@ -282,12 +293,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		try{
+			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
 			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
 			logger.info("Accept the original pop up was NOT present");
+		}
+		finally{
+			driver.turnOnImplicitWaits();
 		}
 	}
 

@@ -3,6 +3,8 @@ package com.rf.pages.website;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -14,9 +16,9 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	Actions actions;
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
-	private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']"); 
+	private final By WELCOME_USER_DD_LOC = By.xpath("//span[@class='caret hidden-xs hidden-sm']"); 
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
-	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//div[@id='account-info']//a[text()='Orders']");
+	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//div[@id='account-info-dropdown']//a[text()='Orders']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By NEXT_CRP_IMG_LOC = By.xpath("//li[@id='mini-shopping-special-button']//div[contains(text(),'Next')]");
@@ -24,7 +26,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public StoreFrontConsultantPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-
 
 	public boolean verifyConsultantPage() throws InterruptedException{		
 		driver.waitForElementPresent(WELCOME_USER_LOC);
@@ -136,6 +137,29 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public boolean validatePulsePrefixSuggestionsAvailable(){
 		driver.pauseExecutionFor(1000);
 		return driver.findElement(By.xpath("//p[@id='prefix-validation']")).isDisplayed();
+	}
+
+	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		driver.pauseExecutionFor(2000);
+		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		actions.moveToElement(allProducts).pause(1000).build().perform();
+		while(true){
+			try{
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+				driver.pauseExecutionFor(2000);
+				break;
+			}catch(Exception e){
+				System.out.println("element not clicked..trying again");
+				actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+				driver.pauseExecutionFor(2000);
+			}
+		}
+		logger.info("All products link clicked "); 
+		driver.waitForPageLoad();
 	}
 
 }

@@ -17,7 +17,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontShippingInfoPage.class.getName());
 
-	private final By SHIPPING_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and text()='Shipping info']");  
+	private final By SHIPPING_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']/div[text()='Shipping info']");  
 	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
@@ -33,8 +33,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		return driver.getCurrentUrl().contains(TestConstants.SHIPPING_PAGE_SUFFIX_URL);
 	}
 
-	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstNameDB) throws InterruptedException{
-		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
+	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstName) throws InterruptedException{
+		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input")).isSelected();
 	}
 
 	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
@@ -54,8 +54,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEditForFirstAddress(){
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
-		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//li[1]//a[text()='Edit']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		logger.info("First Address Edit link clicked");
 
 	}
@@ -141,13 +141,13 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
-		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::form[@id='setDefaultAddressForm'][1]/span[1]"));
 		logger.info("Default shipping profile selected is having name "+firstName);
 		driver.waitForLoadingImageToDisappear();
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@class='shippingAddresspopup']"));
-			driver.click(By.xpath("//input[@class='shippingAddresspopup']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='YES, UPDATE MY AUTO-SHIP']"));
+			driver.click(By.xpath("//input[@value='YES, UPDATE MY AUTO-SHIP']"));
 		}catch(Exception e){
 
 		}
@@ -156,10 +156,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public boolean isShippingAddressPresentOnShippingPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']/li"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//ul[@id='multiple-billing-profiles']/li"));		
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));		
 		for(int i=1;i<=allBillingProfiles.size();i++){			
-			isFirstNamePresent = driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 			if(isFirstNamePresent == true){				
 				return true;
 			}
@@ -169,7 +169,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
 		try{
-			driver.findElement(By.xpath("//span[contains(text(),'"+StringUtils.uncapitalize(firstName)+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
 			return true;
 		}catch(NoSuchElementException e){
 			return false;

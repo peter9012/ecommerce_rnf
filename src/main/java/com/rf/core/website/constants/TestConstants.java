@@ -107,7 +107,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PASSWORD_STG2 = "111maiden";
 	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "11maiden5";
 
-	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
+	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";
 	public static final String CONSULTANT_CITY_CA = "Bonnyville";
@@ -290,7 +290,8 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
-	
+	public static final String ADDRESS_NAME = "newSAName";
+	public static final String SECURITY_NUMBER = "123";
 	public static final String NEW_ADDRESS_LINE1_US = "123 J street";
 	public static final String NEW_ADDRESS_CITY_US="San Francisco";
 	public static final String NEW_ADDRESS_POSTAL_CODE_US="99294";

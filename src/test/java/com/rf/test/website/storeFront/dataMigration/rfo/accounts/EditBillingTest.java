@@ -38,31 +38,33 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
+		String accountID = null;
+
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		String accountID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -118,34 +120,33 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditBillingProfileInAutoshipTemplate_2049() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "lN";
-
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -201,35 +202,35 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Phase 2-2342:Edit billing profile | My Account | check
 	@Test
-	public void testEditBillingProfileMyACcountFutureAutoshipNotChecked_2342() throws InterruptedException{
+	public void testEditBillingProfileMyAccountFutureAutoshipNotChecked_2342() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
-
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "lN";
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -279,37 +280,37 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
+		String accountID = null;
+
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		String accountID = null;
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
@@ -356,35 +357,37 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();		
+		RFO_DB = driver.getDBNameRFO(); 
+
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
+		String accountID = null;
+
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		String accountID = null;
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");

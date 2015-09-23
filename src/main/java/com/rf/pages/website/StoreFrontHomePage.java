@@ -20,10 +20,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By BUSINESS_LINK_LOC = By.cssSelector("li[id='BusinessSystemBar']"); 
 	private final By ENROLL_NOW_LINK_LOC = By.cssSelector("a[title='Enroll Now']");	
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
-	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='Log in']");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
+	private final By LOGIN_BTN_LOC = By.xpath("//div[@id='header']//form[@id='loginForm']//input[@class='btn btn-primary']");
 
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
@@ -34,9 +34,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(BUSINESS_LINK_LOC);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		WebElement becomeAConsultant  = driver.findElement(BUSINESS_LINK_LOC);		
-		actions.moveToElement(becomeAConsultant);
-		driver.pauseExecutionFor(1000);
-		actions.click(becomeAConsultant).build().perform();
+		actions.moveToElement(becomeAConsultant).pause(1000).click(becomeAConsultant).build().perform();
 		logger.info("Become a consultant clicked");
 		driver.pauseExecutionFor(2000);
 	}

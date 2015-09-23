@@ -38,45 +38,59 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
 		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
-		String lastName = "ln";
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -103,7 +117,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		s_assert.assertAll();		
 	}
 
@@ -111,30 +124,44 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAddShippingAddressInAutoshipTemplate_2031() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
 		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -142,17 +169,17 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
-		String lastName = "ln";
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.CITY_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
 		storeFrontUpdateCartPage.selectNewShippingAddressState();
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
-		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		//storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 
@@ -175,47 +202,61 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAddShippingProfileMyAccountFutureAutoshipNotSelected_4461() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
 		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
-		String lastName = "ln";
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
-
 
 		//--------------- Verify that Newly added Shipping is listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
 
@@ -253,49 +294,65 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();		
 	}
+	
 	//Hybris Phase 2:2094 Pop up to update autoship shipping profile on changing default selection
 	//At Shipping info page, on changing default shipping profile (by selecting radio button),  and confirming the pop up message
 	@Test
 	public void testChangeDefaultShippingProfile_2094() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
 		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
-		String lastName = "ln";
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;		
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
+		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -326,32 +383,47 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testEditCheckoutBillingProfileAndAddNewBillingAddressNotCard_4464() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
@@ -361,14 +433,13 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		String newBillingAddressLine1 = TestConstants.ADDRESS_LINE_1_US+randomNum;
-		String lastName = "ln";
-		storeFrontUpdateCartPage.enterNewBillingAddressName(TestConstants.ADDRESS_NAME_US+" "+lastName);
+		String newBillingAddressLine1 = addressLine1+randomNum;
+		storeFrontUpdateCartPage.enterNewBillingAddressName(TestConstants.ADDRESS_NAME+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingAddressLine1(newBillingAddressLine1);
-		storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.CITY_US);
+		storeFrontUpdateCartPage.enterNewBillingAddressCity(city);
 		storeFrontUpdateCartPage.selectNewBillingAddressState();
-		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.POSTAL_CODE_US);
-		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
+		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewAddressGetsAssociatedWithTheDefaultBillingProfile(newBillingAddressLine1), "New Address has not got associated with the billing profile");
 		s_assert.assertAll();
@@ -377,48 +448,58 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-4462 ADD/EDIT a shipping profile from AD-HOC CHECKOUT page. (There is NO checkbox.)
 	@Test
 	public void testEditShippingProfileAdhocCheckoutNoCheckbox_4462() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
-		storeFrontUpdateCartPage.editShippingAddress();
+		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
 		s_assert.assertFalse(storeFrontUpdateCartPage.isUseThisShippingProfileFutureAutoshipChkboxVisible(),"Autoship Checkbox Present");
 
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
-		String lastName = "test";
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		String newBillingProfileName = newShippingAddressName;
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
@@ -432,11 +513,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		//storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
 		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address doesnot contain new shipping address");
 
 		s_assert.assertAll();
@@ -446,34 +528,48 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSelectOtherShippingInfoBySelectingRadioButton_4463() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "ln";
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME;
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
@@ -492,11 +588,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		//storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
 
 		//------------------ Verify that adhoc orders template contains the newly created shipping profile address by verifying by name------------------------------------------------------------
 
@@ -511,30 +608,47 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFL();
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "ln";
+		String consultantEmailID = "autocon@xyz.com";
 		String accountID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
+		String lastName = "lN";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME;
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		logger.info("login is successful"); 
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();

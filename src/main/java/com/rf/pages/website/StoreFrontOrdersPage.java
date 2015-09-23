@@ -19,7 +19,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private final By ORDER_SCHEDULE_DATE_LOC = By.cssSelector("table[class='orders-table']>tbody>tr:nth-child(2) td:nth-child(2)");
 	private final By ORDER_GRAND_TOTAL_LOC = By.cssSelector("table[class='orders-table']>tbody>tr:nth-child(2) td:nth-child(3)");
 	private final By ORDER_STATUS_LOC = By.cssSelector("table[class='orders-table']>tbody>tr:nth-child(2) td:nth-child(4)");
-	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//table[contains(@id,'autoship-orders-table')]/tbody/tr[1]/td/a");
+	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[2]//div[@class='ref-values text-center col-xs-6 col-sm-12']//a");
 	private final By ORDER_AUTOSHIP_ADDRESS_LOC = By.xpath("//ul[@class='order-detail-list']/li[1]/p");
 	private final By SCHEDULE_DATE_TEXT_LOC = By.xpath("//div[@class='order-summary-left']/span/h3");
 	private final By ORDER_STATUS_TEXT_LOC = By.xpath("//div[@class='order-summary-left']/h3");
@@ -33,7 +33,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
 	private final By ACTIONS_BUTTON_LOC = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[5]/span/img");
 	private final By ACTIONS_DROPDOWN_LOC = By.xpath("//table[@id='history-orders-table']//tr[2]/td[5]/ul/li[2]/a");
-	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td[1]/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/a");
 
 	String autoShipOrderNumber = null;
 	static String  orderNumberOfOrderHistory = null;
@@ -580,9 +580,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return null;
 	}
 
-	public void clickOnFirstAdhocOrder() throws InterruptedException {
-		driver.click(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));		
-	}
+//	public void clickOnFirstAdhocOrder() throws InterruptedException {
+//		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));
+//		driver.click(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));		
+//	}
 
 	public String orderDetails_getTotalSV()	{
 		return driver.findElement(By.xpath("//LI[text()='Total SV:']/span")).getText();

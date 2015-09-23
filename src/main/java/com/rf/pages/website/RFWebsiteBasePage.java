@@ -24,7 +24,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			.getLogger(RFWebsiteBasePage.class.getName());
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
-	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info']//a[contains(text(),'Edit')]");
+	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info-dropdown']//a[contains(text(),'Edit')]");
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		

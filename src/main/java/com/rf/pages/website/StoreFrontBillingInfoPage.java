@@ -15,7 +15,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
-	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and text()='Billing info']");
+	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top row']/span[text()='Billing info']");
 	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By DEFAULT_BILLING_ADDRESSES_LOC = By.xpath("//input[@class='paymentAddress' and @checked='checked']/ancestor::li[1]/p[1]");
 	private final By ADD_NEW_BILLING_LINK_LOC = By.linkText("Add a new billing profile»");
@@ -135,7 +135,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 		logger.info("save billing profile button clicked");
 	}
-	
+
 	public void makeBillingProfileDefault(String firstName) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
 		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
@@ -144,8 +144,8 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
-		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
 		driver.waitForPageLoad();
 		logger.info("Edit billing profile link clicked");
 	}
@@ -158,16 +158,14 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']/li"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//ul[@id='multiple-billing-profiles']/li"));		
-		for(int i=1;i<=allBillingProfiles.size();i++){			
-			isFirstNamePresent = driver.findElement(By.xpath("//ul[@id='multiple-billing-profiles']/li["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){	
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){ 
 				return true;
 			}
 		}
 		return false;
 	}
-
-
 }

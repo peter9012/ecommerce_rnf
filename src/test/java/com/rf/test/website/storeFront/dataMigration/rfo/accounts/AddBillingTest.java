@@ -35,32 +35,33 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAddNewBillingProfileOnBillingProfilePage_2041() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-		
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -86,7 +87,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template contains the newly created billing profile ------------------------------------------------------------		
+		//------------------ Verify that autoship template contains the newly created billing profile ------------------------------------------------------------  
 
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the new billing profile even when future autoship checkbox is selected");
 
@@ -115,7 +116,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		s_assert.assertAll();		
+		s_assert.assertAll();  
 	}
 
 
@@ -148,7 +149,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -183,38 +184,44 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountID = null;
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		/*storeFrontConsultantPage.clickOnShopLink();
+	  storeFrontConsultantPage.clickOnAllProductsLink();*/
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		//storeFrontUpdateCartPage.clickOnUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		//storeFrontUpdateCartPage.clickOnUpdateCartButton();
+
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -247,33 +254,36 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	@Test
 	public void testAddBillingProfileMyAccountFutureAutoshipCheckboxNotChecked_2341() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-		
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
+
+	  s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -285,7 +295,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontBillingInfoPage.selectNewBillingCardAddress();		
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();  
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
@@ -298,7 +308,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template doesn't contains the newly created billing profile ------------------------------------------------------------		
+		//------------------ Verify that autoship template doesn't contains the newly created billing profile ------------------------------------------------------------  
 
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the new billing profile even when future autoship checkbox not selected");
 
@@ -315,43 +325,45 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		s_assert.assertAll();	
+		s_assert.assertAll(); 
 
 	}
-
 
 	// Hybris Phase 2-2108:Automatically update billing profile for autoship as well on changing default selection
 	@Test
 	public void testMakeDefaultBillingProfile_2108() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
 		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	  s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		 */  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -379,51 +391,56 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template contains the newly created billing profile ------------------------------------------------------------		
+		//------------------ Verify that autoship template contains the newly created billing profile ------------------------------------------------------------  
 
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the default billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		s_assert.assertAll();		
+		s_assert.assertAll();  
 	}
+
 
 	// Hybris Project-4466 ADD a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	@Test
-	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected_4466() throws InterruptedException{		
+	public void testAddBillingAdhocCheckoutFutureChecboxNotSelected_4466() throws InterruptedException{  
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountID = null;
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			logger.info("Email of the user is "+consultantEmailID);
-	
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+	   logger.info("Email of the user is "+consultantEmailID);
+
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
+
+	  s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");*/
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
+		/*storeFrontConsultantPage.clickOnShopLink();
+	  storeFrontConsultantPage.clickOnAllProductsLink();*/
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
@@ -447,7 +464,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
 
@@ -468,34 +485,37 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4467 ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
 	@Test
-	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{		
+	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{  
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
+		String consultantEmailID = "autocon@xyz.com";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
 		String accountID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	  s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -519,19 +539,18 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		s_assert.assertAll();
-	}	
-
+	}
 
 
 	//Hybris Phase 2-2043:Add billing profile in autoship template
-	@Test
+	@Test(enabled=false)
 	public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
@@ -590,7 +609,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+
 		s_assert.assertAll();
 	}	
 

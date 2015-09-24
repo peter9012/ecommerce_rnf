@@ -10,3 +10,4 @@ test-output/
 *.log
 *.DS_Store
 *.exe
+logs/rf-info.html

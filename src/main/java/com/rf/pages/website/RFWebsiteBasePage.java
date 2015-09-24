@@ -94,7 +94,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnAllProductsLink(){
 		try{
 			//driver.waitForElementPresent(By.xpath("//a[@title='All Products']"));
-			driver.click(By.xpath("//a[@title='All Products']"));
+			//driver.click(By.xpath("//a[@title='All Products']"));
+			driver.moveToELement(By.xpath("//*[@id='header']//A[@id='our-products']"));
+			//driver.waitForElementPresent(By.xpath("//A[contains(text(),'All Products')]"));
+			driver.moveToELement(By.xpath("//A[contains(text(),'All Products')]"));
+			driver.click(By.xpath("//A[contains(text(),'All Products')]"));
 		}catch(NoSuchElementException e){
 			logger.info("All products link was not present");
 			driver.click(By.xpath("//div[@id='dropdown-menu']//a[@href='/us/quick-shop/quickShop']"));

@@ -6,9 +6,9 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  {
 
-	private final By REPORT_CONFIRMATION_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']");
-	private final By REPORT_CONFIRMATION_EMAIL_ADD_LOC = By.xpath("//li[text()='E-mail Address:']/following::li[1]");
-	private final By REPORT_CONFIRMATION_ORDER_NUM_LOC = By.xpath("//li[contains(text(),'Order Number')]/following::li[1]");
+	private final By REPORT_CONFIRMATION_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top pt1 text-uppercase']");
+	private final By REPORT_CONFIRMATION_EMAIL_ADD_LOC = By.xpath("//div[text()='E-mail Address:']/following::div[1]");
+	private final By REPORT_CONFIRMATION_ORDER_NUM_LOC = By.xpath("//div[contains(text(),'Order Number')]/following::div[1]");
 	private final By REPORT_CONFIRMATION_THANK_U_MSG_LOC = By.xpath("//div[@id='main-content']//h3[contains(text(),'Thank you')]");
 	private final By REPORT_CONFIRMATION_BACK_BUTTON_LOC = By.xpath("//input[@value='Back to orders']");
 

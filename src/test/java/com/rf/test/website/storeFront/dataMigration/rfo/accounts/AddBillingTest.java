@@ -129,28 +129,33 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> billingAddressCountList =  null;
 		List<Map<String, Object>> defaultBillingAddressList =  null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO(); 
+
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		/*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }*/
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -184,7 +189,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountID = null;
@@ -232,7 +237,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickBillingEditAfterSave();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
@@ -257,7 +262,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -336,7 +341,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -408,7 +413,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountID = null;
@@ -456,7 +461,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickBillingEditAfterSave();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
@@ -490,7 +495,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
@@ -550,68 +555,69 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Phase 2-2043:Add billing profile in autoship template
-	@Test(enabled=false)
-	public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{		
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	 @Test
+	 public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{  
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "lN";
+	  RFO_DB = driver.getDBNameRFO();
+	  List<Map<String, Object>> randomConsultantList =  null;
+	  String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+	  String lastName = "lN";
 
-		String accountID = null;
+	  String accountID = null;
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  /*while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+	   storeFrontHomePage = new StoreFrontHomePage(driver);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
 
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
+	  s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+	  
+	  storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	  logger.info("login is successful");
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+	  storeFrontConsultantPage.clickOnWelcomeDropDown();
+	  storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
+	  storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+	  storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+	  storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+	  storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	  storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+	  storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontUpdateCartPage.selectNewBillingCardAddress();
+	  storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+	  storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+	  storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+	  storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+	  s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+	  storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+	  storeFrontUpdateCartPage.clickUpdateCartBtn();
+	  storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+	  storeFrontConsultantPage.clickOnWelcomeDropDown();
+	  storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+	  storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
-		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.selectNewBillingCardAddress();
-		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
-		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
-		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
-		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickAutoshipOrderNumber();
+	  //------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
-		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+	  s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
 
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
+	  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		s_assert.assertAll();
-	}	
-
-
+	  s_assert.assertAll();
+	 }
+	 
 }

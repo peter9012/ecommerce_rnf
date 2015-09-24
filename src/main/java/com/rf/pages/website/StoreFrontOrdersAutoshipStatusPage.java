@@ -5,9 +5,9 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 	
-	private final By AUTOSHIP_PAGE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[@class='gray-container-info-top']");
-	private final By AUTOSHIP_CRP_STATUS_LOC = By.xpath("//p[@id='crp-status']");
-	private final By AUTOSHIP_PULSE_STATUS_LOC = By.xpath("//p[@id='pulse-status']");
+	private final By AUTOSHIP_PAGE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[@class='gray-container-info-top pt1 text-uppercase']");
+	private final By AUTOSHIP_CRP_STATUS_LOC = By.xpath("//div[@id='crp-status']/div[1]/span");
+	private final By AUTOSHIP_PULSE_STATUS_LOC = By.xpath("//div[@id='pulse-status']/div[1]/span");
 
 
 	public StoreFrontOrdersAutoshipStatusPage(RFWebsiteDriver driver) {

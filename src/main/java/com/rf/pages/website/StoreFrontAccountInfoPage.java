@@ -17,7 +17,7 @@ import com.rf.core.website.constants.TestConstants;
 public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountInfoPage.class.getName());
-	
+
 	Actions actions;
 
 	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Account info')]");
@@ -26,7 +26,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By ACCOUNT_INFO_LAST_NAME_LOC = By.xpath("//input[@id='last-name']");
 	private final By ACCOUNT_INFO_ADDRESS_LINE_1_LOC = By.xpath("//input[@id='address-1']");
 	private final By ACCOUNT_INFO_CITY_LOC = By.xpath("//input[@id='city']");
-	private String ACCOUNT_INFO_PROVINCE_LOC = "//select[@id='state']//option[text()='%s']";
+	private final By ACCOUNT_INFO_PROVINCE_LOC=By.xpath("//select[@id='state']/option[1]");
 	private final By ACCOUNT_INFO_POSTAL_CODE_LOC = By.xpath("//input[@id='postal-code']");
 	private final By ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC = By.xpath("//input[@id='phonenumber']");
 	private final By ACCOUNT_SAVE_BUTTON_LOC = By.xpath("//input[@id='saveAccountInfo']");
@@ -46,7 +46,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By DAY_OF_BIRTH_FOR_4178_LOC = By.xpath("//select[@id='dayOfBirth']//option[@selected='selected'][2]");
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
 	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
-
+	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
+	
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
 
@@ -78,7 +79,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.type(ACCOUNT_INFO_ADDRESS_LINE_1_LOC, addressLine1);
 		driver.clear(ACCOUNT_INFO_CITY_LOC);
 		driver.type(ACCOUNT_INFO_CITY_LOC, city);
-		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION)));
+		//driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION)));
+		driver.click(ACCOUNT_INFO_PROVINCE_LOC);
 		driver.clear(ACCOUNT_INFO_POSTAL_CODE_LOC);
 		driver.type(ACCOUNT_INFO_POSTAL_CODE_LOC, postalCode);
 		driver.clear(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
@@ -95,9 +97,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		catch(NoSuchElementException e){
 
 		}
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 		return new StoreFrontAccountInfoPage(driver);
 	}
-
 
 	public boolean verifyFirstNameFromUIForAccountInfo(String firstName){
 		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
@@ -455,6 +458,11 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+	}
+
+	public void clickOnYourAccountDropdown(){
+		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
 	}
 }
 

@@ -44,7 +44,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -130,7 +130,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -208,7 +208,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -306,7 +306,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -389,7 +389,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -455,7 +455,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
@@ -534,7 +534,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME;
@@ -614,7 +614,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String city = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = "autocon@xyz.com";
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String accountID = null;
 		String lastName = "lN";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME;
@@ -653,7 +653,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
-		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
+		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileNameUsingEditCRP();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);

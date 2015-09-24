@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -24,7 +25,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 			.getLogger(RFWebsiteBasePage.class.getName());
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
-	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info-dropdown']//a[contains(text(),'Edit')]");
+	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
+	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
+	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -775,6 +778,42 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public boolean validatePulseHomePage(){
 		String pulseHomePageURL="https://www.pulserfo.stg2.rodanandfields.com/Home";
 		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
+	}
+
+	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		actions.moveToElement(allProducts).pause(1000).build().perform();
+		while(true){
+			try{
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+				
+				break;
+			}catch(Exception e){
+				System.out.println("element not clicked..trying again");
+				actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+				
+			}
+		}
+		logger.info("All products link clicked "); 
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.click(WELCOME_USER_DD_LOC);
+		logger.info("clicked on welcome drop down");		
+	}
+
+	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
+		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+		logger.info("User has clicked on orders link from welcome drop down");
+		return new StoreFrontOrdersPage(driver);
 	}
 
 }

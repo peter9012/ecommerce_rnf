@@ -11,9 +11,8 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 			.getLogger(StoreFrontRCUserPage.class.getName());
 
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
-	private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']");
+	//private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
-	private final By WELCOME_DD_ORDERS_LINK_LOC = By.linkText("Orders");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 
 	public StoreFrontRCUserPage(RFWebsiteDriver driver) {
@@ -26,11 +25,11 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 
 	}
 
-	public void clickOnWelcomeDropDown() throws InterruptedException{	
-		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.click(WELCOME_USER_DD_LOC);
-		logger.info("welcome drop down clicked");
-	}
+//	public void clickOnWelcomeDropDown() throws InterruptedException{	
+//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+//		driver.click(WELCOME_USER_DD_LOC);
+//		logger.info("welcome drop down clicked");
+//	}
 
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
 		return driver.isElementPresent(By.linkText(link));
@@ -43,13 +42,7 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 		return new StoreFrontShippingInfoPage(driver);
 	}
 
-	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown(){
-		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
-		logger.info("Orders link from welcome drop down clicked");
-		return new StoreFrontOrdersPage(driver);
-	}
-
+	
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);

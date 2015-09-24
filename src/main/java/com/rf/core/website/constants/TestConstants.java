@@ -297,6 +297,10 @@ public class TestConstants {
 	public static final String NEW_ADDRESS_POSTAL_CODE_US="99294";
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US="4155555555";
 	
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
+	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
+	
 }
 
 

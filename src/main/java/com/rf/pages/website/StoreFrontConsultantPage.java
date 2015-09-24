@@ -16,9 +16,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	Actions actions;
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
-	private final By WELCOME_USER_DD_LOC = By.xpath("//span[@class='caret hidden-xs hidden-sm']"); 
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
-	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//div[@id='account-info-dropdown']//a[text()='Orders']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By NEXT_CRP_IMG_LOC = By.xpath("//li[@id='mini-shopping-special-button']//div[contains(text(),'Next')]");
@@ -32,13 +30,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
 
-	public void clickOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.pauseExecutionFor(2000);
-		driver.click(WELCOME_USER_DD_LOC);
-		logger.info("clicked on welcome drop down");		
-	}
-
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
 		return driver.isElementPresent(By.linkText(link));
 	}
@@ -48,13 +39,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);		
 		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
-	}
-
-	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
-		logger.info("User has clicked on orders link from welcome drop down");
-		return new StoreFrontOrdersPage(driver);
 	}
 
 	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
@@ -139,28 +123,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//p[@id='prefix-validation']")).isDisplayed();
 	}
 
-	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.id("our-products")); 
-		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-		driver.pauseExecutionFor(2000);
-		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
-		actions.moveToElement(allProducts).pause(1000).build().perform();
-		while(true){
-			try{
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
-				driver.pauseExecutionFor(2000);
-				break;
-			}catch(Exception e){
-				System.out.println("element not clicked..trying again");
-				actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-				driver.pauseExecutionFor(2000);
-			}
-		}
-		logger.info("All products link clicked "); 
-		driver.waitForPageLoad();
-	}
-
+	
 }
 

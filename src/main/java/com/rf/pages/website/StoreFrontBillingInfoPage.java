@@ -15,8 +15,8 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
-	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top row']/span[text()='Billing info']");
-	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//ul[@id='multiple-billing-profiles']/li");
+	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'Billing info')]");
+	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'col-sm-4')]");
 	private final By DEFAULT_BILLING_ADDRESSES_LOC = By.xpath("//input[@class='paymentAddress' and @checked='checked']/ancestor::li[1]/p[1]");
 	private final By ADD_NEW_BILLING_LINK_LOC = By.linkText("Add a new billing profile»");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
@@ -47,8 +47,8 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstNameDB) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input"));
-		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/ancestor::li[1]/form/span/input")).isSelected();
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/following::span[@class='radio-button billtothis'][1]/input"));
+		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstNameDB+"')]/following::span[@class='radio-button billtothis'][1]/input")).isSelected();
 	}
 
 	public boolean isDefaultBillingAddressSelected(String firstName) throws InterruptedException{
@@ -137,8 +137,8 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void makeBillingProfileDefault(String firstName) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
-		driver.click(By.xpath("//ul[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input/.."));
+		driver.click(By.xpath("//span[contains(text(),'"+firstName+"')]/following::span[@class='radio-button billtothis'][1]/input/.."));
 		logger.info("default billing profile selected has the name "+firstName);
 		driver.waitForLoadingImageToDisappear();
 	}

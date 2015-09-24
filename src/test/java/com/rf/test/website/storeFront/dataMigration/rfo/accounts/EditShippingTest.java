@@ -24,7 +24,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EditShippingTest.class.getName());
 
-
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
@@ -251,7 +250,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickOnEditForFirstAddress();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);

@@ -339,7 +339,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
-
+		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-4196:Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, Has Downlines, Inactive
@@ -368,7 +368,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Phase 2-4223 :: Version : 1 :: Account with multiple payment profiles
-	@Test
+	@Test(enabled=false)
 	public void testBillingInfoPageDetails_4223() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomEmailList =  null;

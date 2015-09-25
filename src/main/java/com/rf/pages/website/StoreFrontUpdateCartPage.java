@@ -38,6 +38,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnEditPaymentBillingProfile(){
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
 		driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public boolean isNewBillingProfileIsSelectedByDefault(String profileName){

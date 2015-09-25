@@ -346,7 +346,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-2108:Automatically update billing profile for autoship as well on changing default selection
-	@Test
+	@Test(enabled=false)
 	public void testMakeDefaultBillingProfile_2108() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFL_DB = driver.getDBNameRFL();

@@ -27,7 +27,7 @@ public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 	public boolean verifyAutoShipCRPStatus(){
 		driver.waitForElementPresent(AUTOSHIP_CRP_STATUS_LOC);
 		String autoShipCRPStatusText = driver.findElement(AUTOSHIP_CRP_STATUS_LOC).getText();
-		if(autoShipCRPStatusText.contains("Current CRP Status: Enrolled")){
+		if(autoShipCRPStatusText.contains("Enrolled")){
 			return true;
 		}
 		return false;
@@ -36,7 +36,7 @@ public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 	public boolean verifyAutoShipPulseSubscriptionStatus(){
 		driver.waitForElementPresent(AUTOSHIP_PULSE_STATUS_LOC);
 		String autoShipPulseStatusText = driver.findElement(AUTOSHIP_PULSE_STATUS_LOC).getText();
-		if(autoShipPulseStatusText.contains("Current Subscription status: Enrolled")){
+		if(autoShipPulseStatusText.contains("Enrolled")){
 			return true;
 		}
 		return false;

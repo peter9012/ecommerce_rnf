@@ -56,7 +56,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		s_assert.assertAll();			
 	}
 
-	//Hybris Phase 2-4395 Consultant with PWS -Someone else�s PWS - Her own PW
+	//Hybris Phase 2-4395 Consultant with PWS -Someone else PWS - Her own PW
 	@Test(enabled=true)
 	public void testConsultantWithPWSLoginFromOthersPWS_4395() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();		

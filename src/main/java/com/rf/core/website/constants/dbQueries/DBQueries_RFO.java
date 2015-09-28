@@ -82,15 +82,6 @@ public class DBQueries_RFO {
 			"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
-<<<<<<< HEAD
-
-
-			/*********************************************************************************************
-			Need a query on RFO having active (i.e statusId =�1� ) RC only  having pending/submitted adhoc orders.
-			 **********************************************************************************************/
-
-=======
->>>>>>> master
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
 			"BEGIN TRANSACTION "+

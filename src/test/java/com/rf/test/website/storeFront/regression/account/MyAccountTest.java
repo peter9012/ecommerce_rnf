@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
@@ -28,7 +27,7 @@ import com.rf.test.website.RFWebsiteBaseTest;
 public class MyAccountTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(MyAccountTest.class.getName());
-	public String emailID=null;
+
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
@@ -49,59 +48,72 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	// Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
+	// Will just verify till termination popup and NOT terminate the account
 	@Test
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
-
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL and vgar.AccountTypeID=1 AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-
-		consultantEmailID = emailID;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);	
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
-		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
-		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
-		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
-		storeFrontHomePage.clickOnCountryAtWelcomePage();
-		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Terminated User doesn't get Login failed");  
-		s_assert.assertAll();	
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupCancelTerminationButton(),"Account termination page Pop up cancel termination button is not present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupConfirmTerminationButton(),"Account termination Page Pop Up Confirm termination button is not present");
+		storeFrontAccountTerminationPage.clickCancelTerminationButton();
+
+		s_assert.assertAll();			
 	}
 
 	//Test Case Hybris Phase 2-3719 :: Version : 1 :: Perform PC Account termination through my account
 	@Test
 	public void testAccountTerminationPageForPCUser_3719() throws InterruptedException{
-
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String accountID = null;
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 and vgar.AccountTypeID=2  AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-		pcUserEmailID = emailID;//TestConstants.PC_EMAIL_ID_STG2;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);		
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -114,63 +126,28 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-1980 :: Version : 1 :: Order >>Actions >>Report problems
 	@Test
 	public void testOrdersReportProblems_1980() throws SQLException, InterruptedException{
-
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-
-		RFO_DB = driver.getDBNameRFO();
-
-		//		List<Map<String, Object>> randomConsultantList =  null;
-		//		String consultantEmailID = null;
-		//		String accountID = null;
-		//
-		//		while(true){
-		//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-		//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		//			logger.info("Account Id of the user is "+accountID);
-		//
-		//			storeFrontHomePage = new StoreFrontHomePage(driver);
-		//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, TestConstants.CONSULTANT_PASSWORD_TST4);
-		//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-		//			if(isSiteNotFoundPresent){
-		//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-		//				driver.get(driver.getURL());
-		//			}
-		//			else
-		//				break;
-		//		}
-
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 and vgar.AccountTypeID=1  AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-		consultantEmailID = emailID;//TestConstants.CONSULTANT_EMAIL_ID_STG2;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-//		while(true){
-//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//
-//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-//			if(isSiteNotFoundPresent){
-//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-//				driver.get(driver.getURL());
-//			}
-//			else
-//				break;
-//		}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -201,34 +178,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-		consultantEmailID = emailID;// TestConstants.CONSULTANT_EMAIL_ID_STG2;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-//		while(true){
-//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//
-//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-//			if(isSiteNotFoundPresent){
-//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-//				driver.get(driver.getURL());
-//			}
-//			else
-//				break;
-//		}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -246,42 +213,28 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-1977 :: verify with Valid credentials and Logout.
 	@Test
 	public void testVerifyLogoutwithValidCredentials_1977() throws InterruptedException{
-
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-		
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 and vgar.AccountTypeID=1  AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-		    
-		consultantEmailID = emailID;// TestConstants.CONSULTANT_EMAIL_ID_STG2;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-//
-//		while(true){
-//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//
-//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-//			if(isSiteNotFoundPresent){
-//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-//				driver.get(driver.getURL());
-//			}
-//			else
-//				break;
-//		}
 
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -296,35 +249,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-
-		String sRandNum = RandomStringUtils.randomNumeric(5);
-		System.out.println(sRandNum);
-		String sQuery="select top "+sRandNum+" emailaddress FROM  RFO_Accounts.vw_GetAccount_Reporting vgar WITH (NOEXPAND ) JOIN Hybris.Sites s ON SponsorId = s.AccountID WHERE   vgar.active= 1 AND SoftTerminationDate IS NULL AND HardTerminationDate IS NULL AND CountryID = 236 AND s.SitePrefix IS NOT NULL AND s.Active IS NULL";
-	    List<Map<String, Object>> sEmail = DBUtil.performDatabaseQuery(sQuery, "RFOperations");
-	 	emailID = (String) getValueFromQueryResult(sEmail, "EmailAddress");
-		    System.out.println (emailID);
-		    logger.info(emailID);
-		    System.out.println(" ");
-		consultantEmailID = emailID;// TestConstants.CONSULTANT_EMAIL_ID_STG2;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-//		while(true){
-//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//
-//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-//			if(isSiteNotFoundPresent){
-//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-//				driver.get(driver.getURL());
-//			}
-//			else
-//				break;
-//		}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -1596,8 +1538,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-
-	
 
 }
 

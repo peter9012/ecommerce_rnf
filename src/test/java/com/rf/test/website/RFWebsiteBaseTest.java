@@ -189,6 +189,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public Object getValueFromQueryResult(List<Map<String, Object>> userDataList,String column){
 		Object value = null;
 		for (Map<String, Object> map : userDataList) {
+<<<<<<< HEAD
 
 			//logger.info("query result:" + map.get(column));
 
@@ -197,6 +198,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			value = map.get(column);			
 		}
 		logger.info("Data returned by query: "+ value);
+=======
+	//		logger.info("query result:" + map.get(column));
+			value = map.get(column);			
+		}
+		logger.info(value);
+>>>>>>> master
 		return value;
 	}
 	

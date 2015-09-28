@@ -48,7 +48,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active (i.e statusId =ï¿½1ï¿½ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active (i.e statusId =’1’ ) pc only with active pc-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -82,12 +82,15 @@ public class DBQueries_RFO {
 			"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
+<<<<<<< HEAD
 
 
 			/*********************************************************************************************
 			Need a query on RFO having active (i.e statusId =ï¿½1ï¿½ ) RC only  having pending/submitted adhoc orders.
 			 **********************************************************************************************/
 
+=======
+>>>>>>> master
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
 			"BEGIN TRANSACTION "+
@@ -1390,7 +1393,7 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO =
 			/*********************************************************************************************
-			Query on RFO having active(i.e statusId =ï¿½1ï¿½ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
+			Query on RFO having active(i.e statusId =’1’ ) consultant only with active consultant-autoship template with pending autoship and pending/submitted adhoc orders.
 			 **********************************************************************************************/
 			"USE RFOperations "+
 			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+

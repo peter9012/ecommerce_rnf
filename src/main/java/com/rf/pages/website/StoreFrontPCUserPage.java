@@ -88,9 +88,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
 	}
 
-	public void clickOnYourAccountDropdown(){
-		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-	}
+//	public void clickOnYourAccountDropdown(){
+//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
+//	}
 }
 

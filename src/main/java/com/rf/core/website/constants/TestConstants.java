@@ -161,8 +161,8 @@ public class TestConstants {
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "111maiden";
-	public static final String CONSULTANT1_PWS_URL_CA = "http://astoner.myrfotst2.biz/ca/";
-	public static final String CONSULATNT1_PWS_URL_US = "http://astoner.myrfotst2.biz/us/";
+//	public static final String CONSULTANT1_PWS_URL_CA = "http://astoner.myrfotst2.biz/ca/";
+//	public static final String CONSULATNT1_PWS_URL_US = "http://astoner.myrfotst2.biz/us/";
 	public static final String CONSULTANT1_PWS_COM_URL = "http://astoner.myrfotst2.com/ca/";
 	public static final String CONSULTANT2_PWS_URL = "http://astoner.myrfotst2.biz/ca";
 

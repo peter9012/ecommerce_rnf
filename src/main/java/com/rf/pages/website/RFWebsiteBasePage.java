@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -25,10 +26,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBasePage.class.getName());
 
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
+	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
+
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -123,11 +126,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		else
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[@class='product-shop-buttons']//button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -166,12 +169,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void addAnotherProduct() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']//p/a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath("//div[@id='left-shopping']//p/a[contains(text(),'Continue shopping')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		logger.info("Buy Now button clicked and another product selected");
 		driver.waitForPageLoad();
 	}
@@ -184,13 +187,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnCheckoutButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
 		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
-		logger.info("Place Order button clicked");
+		logger.info("checkout button clicked");
 		driver.waitForPageLoad();
 	}
 
 	public boolean isLoginOrCreateAccountPageDisplayed(){
-		driver.waitForElementPresent(By.xpath("//div[@id='content-full-page']//h1[text()='Log in or register']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='content-full-page']//h1[text()='Log in or register']")));
+		driver.waitForElementPresent(By.xpath("//h1[text()='Log in or register']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//h1[text()='Log in or register']")));
 	}
 
 	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
@@ -386,11 +389,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@class='positive right pad_right ']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
-		driver.click(By.xpath("//input[@class='positive right pad_right ']"));
+		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");
 
 	}
@@ -418,8 +421,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean isOrderPlacedSuccessfully(){
-		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/h1[text()='Thank you for your order']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/h1[text()='Thank you for your order']")));
+		driver.waitForElementPresent(By.xpath("//h1[text()='Thank you for your order']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//h1[text()='Thank you for your order']")));
 	}
 
 	public boolean verifyWelcomeDropdownToCheckUserRegistered(){		
@@ -429,12 +432,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void applyPriceFilterLowToHigh() throws InterruptedException{
-		driver.waitForElementPresent(By.id("sortOptions"));
-		driver.click(By.id("sortOptions"));
-		driver.click(By.xpath("//select[@id='sortOptions']/option[contains(text(),'Price: low to high')]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']/option[3]"));
 		logger.info("filter done for low to high price");
 	}
-
 
 	public boolean verifyPCPerksTermsAndConditionsPopup() throws InterruptedException{
 		boolean isPCPerksTermsAndConditionsPopup = false;
@@ -454,7 +456,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@id='Terms3']/.."));
 	}
 
-	public boolean selectNewBillingCardExpirationDateAsExpiredDate(){
+	public void selectNewBillingCardExpirationDateAsExpiredDate(){
 		boolean flag  = false;
 		String value = null;
 		driver.click(By.id("expiryMonth"));
@@ -462,15 +464,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
 		driver.click(By.id("expiryYear"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[2]"));
-		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
-		value = driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@value='02']")).getAttribute("disabled");
-		if(value.equalsIgnoreCase("true")){
-			flag = true;
-			return flag;
-		}else
-			return flag;
+		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
 	}
 
 	public boolean validatePasswordFieldMessage(){
@@ -666,9 +660,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
-		driver.findElement(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']")).click();
-		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+			driver.waitForLoadingImageToDisappear();
+			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		}catch(NoSuchElementException e){
+			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+		}
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityPC(){
@@ -678,21 +679,37 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']"));
-		driver.findElement(By.xpath("//div[@id='activeRetailPopup']//input[@class='resetPasswordEmail']")).click();
-		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+			driver.waitForLoadingImageToDisappear();
+			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		}catch(NoSuchElementException e){
+			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+		}
 	}
 
+
 	public boolean validateCancelEnrollmentFunctionalityRC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
-		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment btn btn-primary']"));
+		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment btn btn-primary']"));
 		return validateHomePage();
 	}
 
+
 	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
-		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
-		driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
-		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+			driver.waitForLoadingImageToDisappear();
+			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		}catch(NoSuchElementException e){
+			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+		}
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
@@ -816,6 +833,28 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
+	public void hoverOnShopLinkAndClickAllProductsLinks(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		actions.moveToElement(allProducts).pause(1000).build().perform();
+		while(true){
+			try{
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+
+				break;
+			}catch(Exception e){
+				System.out.println("element not clicked..trying again");
+				actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+
+			}
+		}
+		logger.info("All products link clicked "); 
+		driver.waitForPageLoad();
+	}
+
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.pauseExecutionFor(2000);
@@ -828,6 +867,25 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
 		logger.info("User has clicked on orders link from welcome drop down");
 		return new StoreFrontOrdersPage(driver);
+	}
+
+	public void clickOnYourAccountDropdown(){
+		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
+	}
+
+	public void clickOnPlaceOrderButton(){
+		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
+		logger.info("Place order button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnUserNameForHomePage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		logger.info("Rodan and Fields logo clicked"); 
+		driver.waitForPageLoad();
 	}
 
 }

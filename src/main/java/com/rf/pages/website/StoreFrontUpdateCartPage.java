@@ -176,8 +176,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnDefaultBillingProfileEdit() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::p[1]/a"));
-		driver.click(By.xpath("//input[@checked='checked']/preceding::p[1]/a"));
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		driver.click(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
 		driver.waitForLoadingImageToDisappear();
 	}
 

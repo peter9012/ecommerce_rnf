@@ -15,7 +15,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 			.getLogger(StoreFrontConsultantPage.class.getName());
 
 	Actions actions;
-	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
+	private final By WELCOME_USER_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
@@ -88,7 +88,8 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public void subscribeToPulse(){
 		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
 			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-			driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+			driver.pauseExecutionFor(2500);
+			driver.click(By.xpath("//a[@id='cancel-pulse-button']"));
 			driver.waitForLoadingImageToDisappear();
 			driver.waitForPageLoad();
 		}
@@ -123,6 +124,11 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//p[@id='prefix-validation']")).isDisplayed();
 	}
 
-	
+	public String getUserNameAForVerifyLogin(String profileName){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
+		String userName = driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]")).getText();
+		return userName;
+	}
+
 }
 

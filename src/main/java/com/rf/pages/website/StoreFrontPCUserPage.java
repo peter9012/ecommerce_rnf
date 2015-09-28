@@ -18,24 +18,25 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	//private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']"); 
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//div[@id='account-info']//a[text()='Orders']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
-
+	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
+	
 	public boolean verifyPCUserPage(){
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
 
-//	public void clickOnWelcomeDropDown() throws InterruptedException{	
-//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-//		driver.click(WELCOME_USER_DD_LOC);	
-//		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
-//	}
+	//	public void clickOnWelcomeDropDown() throws InterruptedException{	
+	//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+	//		driver.click(WELCOME_USER_DD_LOC);	
+	//		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
+	//	}
 
-//	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
-//		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-//		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
-//		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
-//		return new StoreFrontOrdersPage(driver);
-//	}
+	//	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
+	//		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
+	//		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+	//		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
+	//		return new StoreFrontOrdersPage(driver);
+	//	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
@@ -85,6 +86,11 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 
 	public boolean validateNextPCPerksMiniCart() {  
 		return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
+	}
+
+	public void clickOnYourAccountDropdown(){
+		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
 	}
 }
 

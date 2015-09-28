@@ -1,5 +1,6 @@
 package com.rf.pages.website;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBasePage.class.getName());
 
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
@@ -122,11 +123,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
 		else
-			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Buy now']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[@class='product-shop-buttons']//button"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -165,12 +166,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void addAnotherProduct() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']//p/a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath("//div[@id='left-shopping']//p/a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
+		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[@class='product-shop-buttons']//button"));
 		logger.info("Buy Now button clicked and another product selected");
 		driver.waitForPageLoad();
 	}
@@ -181,15 +182,15 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
-		driver.click(By.xpath("//input[@value='checkout']"));
-		logger.info("checkout button clicked");
+		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
+		logger.info("Place Order button clicked");
 		driver.waitForPageLoad();
 	}
 
 	public boolean isLoginOrCreateAccountPageDisplayed(){
-		driver.waitForElementPresent(By.xpath("//div[@id='content-full-page']/h1[text()='Log in or create an account']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='content-full-page']/h1[text()='Log in or create an account']")));
+		driver.waitForElementPresent(By.xpath("//div[@id='content-full-page']//h1[text()='Log in or register']"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='content-full-page']//h1[text()='Log in or register']")));
 	}
 
 	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
@@ -255,6 +256,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterMainAccountInfo(){
+		driver.pauseExecutionFor(5000);
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
@@ -401,6 +403,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();		
 	}
 
+	public void switchToPreviousTab(){
+		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1));
+		driver.close();
+		driver.switchTo().window(tabs.get(0));
+	}
+
 	public void clickOnRodanAndFieldsLogo(){
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
 		driver.click(RODAN_AND_FIELDS_IMG_LOC);
@@ -420,11 +429,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void applyPriceFilterLowToHigh() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]"));
-		driver.click(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]"));
-		driver.click(By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]/following::li[1]/form/div"));
+		driver.waitForElementPresent(By.id("sortOptions"));
+		driver.click(By.id("sortOptions"));
+		driver.click(By.xpath("//select[@id='sortOptions']/option[contains(text(),'Price: low to high')]"));
 		logger.info("filter done for low to high price");
 	}
+
 
 	public boolean verifyPCPerksTermsAndConditionsPopup() throws InterruptedException{
 		boolean isPCPerksTermsAndConditionsPopup = false;
@@ -544,7 +554,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		//		String firstName="PCUser";
 		//		String lastName = "Test";
-		String emailAddress = firstName+randomNum+"@xyz.com";
+		String emailAddress = firstName+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
@@ -794,12 +804,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 		while(true){
 			try{
 				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
-				
+
 				break;
 			}catch(Exception e){
 				System.out.println("element not clicked..trying again");
 				actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-				
+
 			}
 		}
 		logger.info("All products link clicked "); 

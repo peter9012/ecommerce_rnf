@@ -86,9 +86,10 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//select[@id='reason']/option[contains(text(),'Other')]"));
 		driver.type(By.id("terminationComments"), "I want to terminate my account");
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
-		driver.click(By.xpath("//input[@class='fancybox']"));
+		//driver.click(By.xpath("//input[@class='fancybox']"));
+		driver.click(By.xpath("//input[@class='fancybox btn btn-primary']"));
 		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
-		driver.waitForLoadingImageToDisappear();		
+		driver.waitForLoadingImageToDisappear();  
 	}
 
 	public boolean verifyAccountTerminationIsConfirmedPopup(){

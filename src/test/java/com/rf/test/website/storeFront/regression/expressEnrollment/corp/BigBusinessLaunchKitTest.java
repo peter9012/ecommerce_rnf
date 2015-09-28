@@ -45,8 +45,8 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -100,8 +100,8 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -155,8 +155,8 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -212,13 +212,13 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+//		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();

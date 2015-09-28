@@ -6,7 +6,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontConsultantEnrollmentConfirmationPage extends RFWebsiteBasePage {
 
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.cssSelector("img[title='Rodan+Fields']");
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	
 	public StoreFrontConsultantEnrollmentConfirmationPage(RFWebsiteDriver driver) {
 		super(driver);		

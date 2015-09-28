@@ -46,7 +46,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By DAY_OF_BIRTH_FOR_4178_LOC = By.xpath("//select[@id='dayOfBirth']//option[@selected='selected'][2]");
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
 	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
-	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
+	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -460,9 +460,11 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
-	public void clickOnYourAccountDropdown(){
-		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-	}
+//	public void clickOnYourAccountDropdown(){
+//		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
+//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
+//	}	
+	
 }
 

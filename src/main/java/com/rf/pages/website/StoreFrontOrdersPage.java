@@ -243,6 +243,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public String getShippingMethodFromAutoshipTemplate(){
 		driver.waitForElementPresent(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]"));
 		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
+		String shippinMethodLabel = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]/span")).getText();
+		shippingMethodUI = shippingMethodUI.split(shippinMethodLabel)[1].trim();
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
 		return shippingMethodUI;
 	}
@@ -312,6 +314,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
+		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
 		String firstOrderNumber = driver.findElement(ORDER_NUM_OF_ORDER_HISTORY).getText(); 
 		return  firstOrderNumber;
 	}
@@ -691,8 +694,5 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return svValue;
 	}
 
-	public void clickOnYourAccountDropdown(){
-		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-	}
+	
 }

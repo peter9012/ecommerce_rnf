@@ -40,13 +40,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,province, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -85,13 +85,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -149,13 +149,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NORTHWEST_TERRITORIES, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -191,8 +191,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
@@ -362,8 +362,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.clickOnOurBusinessLink();
-		storeFrontHomePage.clickOnOurEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);

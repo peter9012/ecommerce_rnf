@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="none">
+  <test name="Test">
+    <classes>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
+      <class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.order.ViewOrderDetailsTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.autoships.AutoshipTest"/>
+      <class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"/>
+      <!--class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.AddBillingTest"/-->
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.MyAccountTest"/>
+      <class name="com.rf.core.utils.HtmlLogger"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest"/>
+      <class name="com.rf.test.website.RFWebsiteBaseTest"/>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest"/>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.PersonalResultsKitTest"/>
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest"/>
+      <!--class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.ViewAccountDetailsTest"/ -->
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.ViewAccountDetailsTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.EditBillingTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.order.AdhocOrdersTest"/>
+      <!--class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.AddShippingTest"/ -->
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.order.ViewOrderDetailsTest"/>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/>
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"/>
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest"/>
+      <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddShippingTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.order.AdhocOrdersTest"/>
+      <!--class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.EditShippingTest"/ -->
+      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
+      <!-- class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.MyAccountTest"/ -->
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddBillingTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest"/>
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.RFPWSLoginTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.EditShippingTest"/>
+      <!--class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.EditBillingTest"/ -->
+      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
+      <class name="com.rf.test.website.storeFront.smoke.LoginTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfl.pws.PWSLoginTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest"/>
+      <class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"/>
+      <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

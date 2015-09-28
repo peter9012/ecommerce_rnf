@@ -121,7 +121,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section')]"));
 	}
 
-	public void selectProductAndProceedToBuy() throws InterruptedException{
+/*	public void selectProductAndProceedToBuy() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']")).isEnabled()==true)
 			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
@@ -131,7 +131,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-
+*/
+	public void selectProductAndProceedToBuy() throws InterruptedException{
+			driver.waitForElementPresent(By.xpath("//P[contains(text(),'Show all REDEFINE Products')]"));
+			driver.click(By.xpath("//P[contains(text(),'Show all REDEFINE Products')]"));
+			logger.info("Show all REVERSE Products");
+			driver.waitForElementPresent(By.xpath("//*[contains(text(),'Night Renewing Serum')]/parent::h3/parent::div//button"));
+			driver.click(By.xpath("//*[contains(text(),'Night Renewing Serum')]/parent::h3/parent::div//button"));
+			logger.info("Add To Bag clicked");
+			driver.waitForPageLoad();
+	}
+	
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)

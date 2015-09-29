@@ -47,7 +47,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
 	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
-	
+
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
 
@@ -354,8 +354,9 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
 		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
+		driver.pauseExecutionFor(2000);
 	}
-
+	
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
 		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
 		logger.info("Account inof link from left panel clicked "+LEFT_MENU_ACCOUNT_INFO_LOC);
@@ -399,8 +400,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public boolean verifyCurrentCRPStatus() throws InterruptedException{
 		logger.info("Asserting Current CRP Status");
-		driver.waitForElementPresent(By.xpath("//p[@id='crp-status']/span[1]"));
-		if(driver.findElement(By.xpath("//p[@id='crp-status']/span[1]")).getText().equalsIgnoreCase("Enrolled")){
+		driver.waitForElementPresent(By.xpath(".//div[@id='crp-status']/div[1]/span"));
+		if(driver.findElement(By.xpath(".//div[@id='crp-status']/div[1]/span")).getText().equalsIgnoreCase("Enrolled")){
 			return true;
 		}
 		return false;
@@ -424,7 +425,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public String getUserName(){
-		return driver.findElement(By.xpath(".//input[@id='username-account']")).getText();
+		return driver.findElement(By.xpath(".//input[@id='username-account']")).getAttribute("value");
 	}
 
 	public void checkAllowMySpouseCheckBox(){
@@ -460,11 +461,11 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
-//	public void clickOnYourAccountDropdown(){
-//		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
-//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-//	}	
-	
+	//	public void clickOnYourAccountDropdown(){
+	//		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
+	//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
+	//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
+	//	}	
+
 }
 

@@ -676,12 +676,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText();
 	}
 
-	public boolean validateOrderDetails(){
-		driver.pauseExecutionFor(2000);
-		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
-				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
-				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
-	}
+	//	public boolean validateOrderDetails(){
+	//		driver.pauseExecutionFor(2000);
+	//		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
+	//				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
+	//				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
+	//	}
 
 	public String getTotalSV(){
 		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'SV')]/following::div[1]/span")).getText().substring(0,3);
@@ -694,5 +694,26 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return svValue;
 	}
 
-	
+	public boolean validateOrderDetails(){
+		driver.pauseExecutionFor(2000);
+		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
+				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0; 
+
+	}
+
+	public Boolean validateGranTotalText(){
+		driver.pauseExecutionFor(2000);
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]")).getText().contains("Grand Total");   
+	}
+
+	public boolean validateCurrency(){
+		driver.pauseExecutionFor(2000);
+		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("ca")){
+			return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]/following::div[1]")).getText().contains("CAD$");
+		}else 
+			return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]/following::div[1]")).getText().contains("US$");
+	}
+
 }
+

@@ -414,8 +414,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
-		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-		driver.click(RODAN_AND_FIELDS_IMG_LOC);
+		try{
+			driver.turnOffImplicitWaits();
+			driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+			driver.click(RODAN_AND_FIELDS_IMG_LOC);
+		}catch(NoSuchElementException e){
+			driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 		logger.info("Rodan and Fields logo clicked");	
 		driver.waitForPageLoad();
 	}
@@ -451,7 +459,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		driver.waitForElementToBeClickable(By.xpath("//input[@id='Terms2']/.."), 15);
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//input[@id='Terms2']/.."));
 		driver.click(By.xpath("//input[@id='Terms3']/.."));
 	}
@@ -517,9 +525,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOKOnSponsorInformationPopup(){
+		driver.pauseExecutionFor(2000);
 		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
-		driver.waitForElementPresent(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
-		driver.click(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+		driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
 	}
 
 	public void clickYesIWantToJoinPCPerksCB(){
@@ -807,8 +816,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validatePulseHomePage(){
-		String pulseHomePageURL="https://www.pulserfo.stg2.rodanandfields.com/Home";
-		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
+		return driver.getCurrentUrl().contains("pulse");
 	}
 
 	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){

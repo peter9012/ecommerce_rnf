@@ -30,23 +30,23 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		super(driver);		
 	}
 
-//	public void clickOnOurBusinessLink(){
-//		driver.waitForElementPresent(BUSINESS_LINK_LOC);
-//		Actions actions = new Actions(RFWebsiteDriver.driver);
-//		WebElement becomeAConsultant  = driver.findElement(BUSINESS_LINK_LOC);		
-//		actions.moveToElement(becomeAConsultant).pause(1000).click(becomeAConsultant).build().perform();
-//		logger.info("Become a consultant clicked");
-//		driver.pauseExecutionFor(2000);
-//	}
-//
-//	public StoreFrontEnrollNowPage clickOnOurEnrollNowLink(){
-//		driver.waitForElementPresent(ENROLL_NOW_LINK_LOC);
-//		driver.waitForElementToBeVisible(ENROLL_NOW_LINK_LOC, 5);
-//		driver.click(ENROLL_NOW_LINK_LOC);
-//		logger.info("Enroll Now Link clicked");
-//		driver.waitForLoadingImageToDisappear();
-//		return new StoreFrontEnrollNowPage(driver);
-//	}
+	//	public void clickOnOurBusinessLink(){
+	//		driver.waitForElementPresent(BUSINESS_LINK_LOC);
+	//		Actions actions = new Actions(RFWebsiteDriver.driver);
+	//		WebElement becomeAConsultant  = driver.findElement(BUSINESS_LINK_LOC);		
+	//		actions.moveToElement(becomeAConsultant).pause(1000).click(becomeAConsultant).build().perform();
+	//		logger.info("Become a consultant clicked");
+	//		driver.pauseExecutionFor(2000);
+	//	}
+	//
+	//	public StoreFrontEnrollNowPage clickOnOurEnrollNowLink(){
+	//		driver.waitForElementPresent(ENROLL_NOW_LINK_LOC);
+	//		driver.waitForElementToBeVisible(ENROLL_NOW_LINK_LOC, 5);
+	//		driver.click(ENROLL_NOW_LINK_LOC);
+	//		logger.info("Enroll Now Link clicked");
+	//		driver.waitForLoadingImageToDisappear();
+	//		return new StoreFrontEnrollNowPage(driver);
+	//	}
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
@@ -356,11 +356,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 
-//	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
-//		driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
-//		driver.click(By.id("QAS_AcceptOriginal"));
-//		logger.info("accept the original button clicked");
-//	}
+	//	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
+	//		driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
+	//		driver.click(By.id("QAS_AcceptOriginal"));
+	//		logger.info("accept the original button clicked");
+	//	}
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){
 		try{
@@ -816,13 +816,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean isReviewAndConfirmPageContainsShippingAddress(String shippingAddress){
-		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]"));
-		return driver.findElement(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]")).getText().contains(shippingAddress);
+		driver.waitForElementPresent(By.xpath(".//div[@id='summarySection']/div[2]/div[6]/div[3]"));
+		return driver.findElement(By.xpath(".//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText().contains(shippingAddress);
 	}
 
 	public boolean isReviewAndConfirmPageContainsFirstAndLastName(String name){
-		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]/span"));
-		return driver.findElement(By.xpath("//div[@id='summarySection']/div[2]//ul[1]/li[1]/p[1]/span")).getText().toLowerCase().contains(name.toLowerCase());
+		driver.waitForElementPresent(By.xpath(".//div[@id='summarySection']/div[2]/div[6]/div[3]/span[1]"));
+		return driver.findElement(By.xpath(".//div[@id='summarySection']/div[2]/div[6]/div[3]/span[1]")).getText().toLowerCase().contains(name.toLowerCase());
 	}
 
 	public boolean validateUserLandsOnPWSbizSite(){
@@ -895,7 +895,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidSponsor(){
-		return driver.findElement(By.xpath("//span[contains(text(),'No result found')]")).isDisplayed();
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'No result found')]"));
 	}
 
 	public void clickSearchAgain(){

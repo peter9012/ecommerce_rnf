@@ -25,8 +25,8 @@ import com.rf.pages.RFBasePage;
 public class RFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBasePage.class.getName());
-
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
+/*	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");*/	
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");

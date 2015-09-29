@@ -388,13 +388,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.openPWSSite(country, env);
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;

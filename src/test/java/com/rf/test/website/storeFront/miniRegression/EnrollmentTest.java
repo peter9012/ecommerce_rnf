@@ -145,7 +145,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//storeFrontHomePage.clickOnRodanAndFieldsLogo(); added the below script
+		storeFrontHomePage.clickOnUserNameForHomePage();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -153,8 +154,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		storeFrontAccountInfoPage.clickOnEnrollInCRP();
-
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();;
 		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
 		storeFrontHomePage.clickOnCRPCheckout();
 		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
@@ -418,7 +418,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 			storeFrontHomePage.clickPlaceOrderBtn();
 			storeFrontHomePage.switchToPreviousTab();
-			storeFrontHomePage.switchToPreviousTab();
+			//storeFrontHomePage.switchToPreviousTab(); 
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 			logout();

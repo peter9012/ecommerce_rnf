@@ -37,7 +37,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 	// Hybris Phase 2-4178:View Account Information with active templates
 	@Test
-	public void testAccountDetailsForAccountInfo() throws InterruptedException{
+	public void testAccountDetailsForAccountInfo_4178() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 
 		List<Map<String, Object>> accountNameDetailsList = null;

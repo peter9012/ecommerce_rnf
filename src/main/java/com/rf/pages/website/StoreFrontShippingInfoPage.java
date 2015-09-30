@@ -21,7 +21,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
-	private final By ADD_NEW_SHIPPING_LINK_LOC = By.linkText("Add a new shipping address»");
+	private final By ADD_NEW_SHIPPING_LINK_LOC  = By.linkText("Add a new shipping address");
 
 
 	public StoreFrontShippingInfoPage(RFWebsiteDriver driver) {

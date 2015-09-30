@@ -26,7 +26,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteBasePage.class.getName());
 
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");
+	//private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");//fixed
+	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
@@ -125,17 +126,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section')]"));
 	}
 
-	
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//P[contains(text(),'Show all REDEFINE Products')]"));
-		driver.click(By.xpath("//P[contains(text(),'Show all REDEFINE Products')]"));
-		logger.info("Show all REVERSE Products");
-		driver.waitForElementPresent(By.xpath("//*[contains(text(),'Night Renewing Serum')]/parent::h3/parent::div//button"));
-		driver.click(By.xpath("//*[contains(text(),'Night Renewing Serum')]/parent::h3/parent::div//button"));
-		logger.info("Add To Bag clicked");
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+		logger.info("Buy Now button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-	
+
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)
@@ -414,8 +415,20 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
-		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-		driver.click(RODAN_AND_FIELDS_IMG_LOC);
+		try{
+			driver.turnOffImplicitWaits();
+			driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+			driver.click(RODAN_AND_FIELDS_IMG_LOC);
+		}catch(NoSuchElementException e){
+			try{
+				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+			}catch(NoSuchElementException e1){
+				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+			}
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 		logger.info("Rodan and Fields logo clicked");	
 		driver.waitForPageLoad();
 	}
@@ -426,8 +439,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean verifyWelcomeDropdownToCheckUserRegistered(){		
-		driver.waitForElementPresent(By.xpath("//div[@id='account-info-button']/a"));
-		return driver.isElementPresent(By.xpath("//div[@id='account-info-button']/a"));
+		driver.waitForElementPresent(By.id("account-info-button"));
+		return driver.isElementPresent(By.id("account-info-button"));
 		//driver.findElement(By.xpath("//div[@id='account-info-button']/a")).getText().contains("Welcome");
 	}
 
@@ -451,9 +464,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		driver.waitForElementToBeClickable(By.xpath("//input[@id='Terms2']/.."), 15);
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//input[@id='Terms2']/.."));
 		driver.click(By.xpath("//input[@id='Terms3']/.."));
+
 	}
 
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
@@ -517,9 +531,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOKOnSponsorInformationPopup(){
+		driver.pauseExecutionFor(2000);
 		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
-		driver.waitForElementPresent(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
-		driver.click(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+		driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
 	}
 
 	public void clickYesIWantToJoinPCPerksCB(){
@@ -797,18 +812,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void switchToChildWindow(){
-		driver.switchWindow();
+		driver.switchToSecondWindow();
 	}
 
 	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
 		driver.click(By.xpath("//a[text()='Check My Pulse']"));
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(5000);
 	}
 
 	public boolean validatePulseHomePage(){
-		String pulseHomePageURL="https://www.pulserfo.stg2.rodanandfields.com/Home";
-		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
+		System.out.println("current url is "+driver.getCurrentUrl());
+		return driver.getCurrentUrl().contains("pulse");
 	}
 
 	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
@@ -881,11 +896,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
-	public void clickOnUserNameForHomePage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
-		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
-		logger.info("Rodan and Fields logo clicked"); 
-		driver.waitForPageLoad();
-	}
+//	public void clickOnUserNameForHomePage(){
+//		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+//		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+//		logger.info("Rodan and Fields logo clicked"); 
+//		driver.waitForPageLoad();
+//	}
 
 }

@@ -105,7 +105,7 @@ public class TestConstants {
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
 	public static final String CONSULTANT_PASSWORD_STG2 = "111maiden";
-	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "11maiden5";
+	public static final String CONSULTANT_NEW_PASSWORD = "11maiden5";
 
 	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
@@ -115,8 +115,8 @@ public class TestConstants {
 	public static final String CONSULTANT_COUNTRY_CA = "CANADA";
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";
-	public static final String CONSULTANT_NEW_EMAIL_ID_STG2 = "con0708111@yopmail.com";
-
+	public static final String CONSULTANT_NEW_EMAIL_ID = "con0708111@yopmail.com";
+	
 
 //	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
 //	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";

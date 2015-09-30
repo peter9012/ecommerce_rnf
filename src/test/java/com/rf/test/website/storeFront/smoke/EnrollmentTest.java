@@ -430,7 +430,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		storeFrontHomePage.clickOnUserNameForHomePage();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added

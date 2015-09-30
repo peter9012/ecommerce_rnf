@@ -749,8 +749,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();		
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -1000,9 +999,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
-
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
@@ -1069,7 +1067,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");

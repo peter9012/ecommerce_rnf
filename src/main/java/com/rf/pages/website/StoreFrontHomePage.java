@@ -899,6 +899,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickSearchAgain(){
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//a[@id='sponsor_search_again']"));
 		driver.click(By.xpath("//a[@id='sponsor_search_again']"));
 		driver.findElement(By.id("sponsor-name-id")).clear();
@@ -926,14 +927,23 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 	}
 
-	public String getUserNameAForVerifyLogin(String profileName){
-		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
-		String userName = driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]")).getText();
-		return userName;
-	}
+	//	public String getUserNameAForVerifyLogin(String profileName){
+	//		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
+	//		String userName = driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]")).getText();
+	//		return userName;
+	//	}
 
 	public boolean validateExpiredDateMessage(){
 		return driver.isElementPresent(By.xpath("//div[@class='tipsy-inner'][contains(text(),'Must be a valid Expiration Date')]"));
+	}
+
+	public void clickEnrollmentNextButtonWithoutPopupHandled() throws InterruptedException{
+		driver.waitForElementPresent(By.id("enrollment-next-button"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.id("enrollment-next-button"));
+		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 }
 

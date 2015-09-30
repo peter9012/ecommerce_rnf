@@ -106,8 +106,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll();	
 
 	}
@@ -176,16 +176,16 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
+		/*storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
-		storeFrontHomePage.switchToPreviousTab();
-		storeFrontHomePage.switchToPreviousTab();
+		//storeFrontHomePage.switchToPreviousTab();
+		storeFrontHomePage.switchToPreviousTab(); 
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll();	
 
 	}
@@ -245,8 +245,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();
 
 	}
@@ -301,9 +301,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+//		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll();
 	}
 
@@ -317,7 +317,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			kitName = TestConstants.KIT_NAME_EXPRESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -354,13 +354,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.clickOnEnrollInCRP();
 		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
@@ -371,15 +371,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
 		storeFrontHomePage.clickOnGoToMyAccountToCheckStatusOfCRP();
 		storeFrontHomePage.clickOnYourAccountDropdown();
-		storeFrontHomePage.clickOnAccountInfoLinkLeftSidePannel();
-		storeFrontHomePage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-3921 :: Version : 1 :: Verify subscribing to Pulse from My Account under .biz site 
-	@Test
+	@Test(enabled=false)
 	public void testSubscribingPulseMyAccount_3921() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -391,13 +389,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.openPWSSite(country, env);
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			kitName = TestConstants.KIT_NAME_EXPRESS;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
@@ -429,9 +427,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
@@ -499,13 +498,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();
 	}
 
 	// Hybris Project-3009 :: Version : 1 :: Reset the password from the storefront and check login with new password
-	@Test 
+	@Test(enabled=false)
 	public void testResetPasswordFromStorefrontAndRecheckLogin_3009() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -514,10 +513,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -565,10 +564,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -614,7 +613,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-86 :: Version : 1 :: Edit Allow my spouse in My Account  
-	@Test
+	@Test(enabled=false)
 	public void testEditAllowMySpouseInMyAccount() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -623,10 +622,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -659,8 +658,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		//Add a item to the cart and validate the mini cart in the header section
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
@@ -685,9 +684,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//validate no mini cart is shown for not logged in user
 		s_assert.assertFalse(storeFrontHomePage.validateMiniCart(), "mini cart is displayed for not registered user");
 		//Add a item to the cart and validate the mini cart in the header section
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
-
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
@@ -713,10 +711,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -760,10 +758,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);  
+//			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+//			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+//			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);  
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser("autorfpc@xyz.com", password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -859,7 +857,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		//storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();
 	}
@@ -952,11 +950,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		//validate on the confirmation page user lands on .biz site
 		s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//Fetch the PWS url
 		String currentPWSUrl=driver.getCurrentUrl();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		//goto .com site and navigate to Account Info->Autoship tatus->Cancel pulse subscription
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -972,7 +970,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}	 	 
 
 	//Hybris Project-4281 :: Version : 1 :: Terminate User and Login with User Name
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)
 	public void terminateUserAndLoginWithSameUsername_4281() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1012,7 +1010,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1976 :: Version : 1 :: Autoship Module. Check My Pulse UI 
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException	 {
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1045,6 +1043,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.switchToChildWindow();
 		//validate home page for pulse
 		s_assert.assertTrue(storeFrontConsultantPage.validatePulseHomePage(),"Home Page for pulse is not displayed");
+		storeFrontConsultantPage.switchToPreviousTab();
 		s_assert.assertAll();
 	}
 
@@ -1095,11 +1094,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		//validate on the confirmation page user lands on .biz site
 		s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//Fetch the PWS url
 		String currentPWSUrl=driver.getCurrentUrl();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		logout();
 		//validate with the current PWSUrl on .com site
 		driver.get(storeFrontHomePage.navigateToCommercialWebsite(currentPWSUrl));
@@ -1160,8 +1159,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll(); 
 	}
 
@@ -1208,7 +1207,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1305:From Corporate user should able to change sponsor RC
-	@Test
+	@Test(enabled=false) //WIP
 	public void testCorporateUserShouldAbleToChangeSponsorRC_1305() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -1271,13 +1270,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll(); 
 	}
 
 	//Hybris Project-2489:Verify if Consultant can use same prefix, when he is subscribing to pulse. ( Consultant's trial version)
-	@Test
+	@Test(enabled=false) //WIP
 	public void testVerifyConsultantCanUseSamePrefixWhenSubscribingToPulse_2489() throws InterruptedException	  {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -1325,11 +1324,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		//validate on the confirmation page user lands on .biz site
 		//s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//Fetch the PWS url
 		//String currentPWSUrl=driver.getCurrentUrl();
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		//goto .com site and navigate to Account Info->Autoship tatus->Cancel pulse subscription
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();

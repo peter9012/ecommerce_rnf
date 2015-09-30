@@ -41,7 +41,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,province, postalCode, phoneNumber);
@@ -86,7 +86,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
@@ -150,7 +150,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NORTHWEST_TERRITORIES, postalCode, phoneNumber);
@@ -192,7 +192,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
@@ -211,11 +211,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		city = TestConstants.CITY_QUEBEC;
 		postalCode = TestConstants.POSTAL_CODE_QUEBEC;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -245,9 +244,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
 
-		//CheckoutPage is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
-		logger.info("Checkout page has displayed");
+		//		//CheckoutPage is displayed?
+		//		s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
+		//		logger.info("Checkout page has displayed");
 
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_QUEBEC, postalCode, phoneNumber);
@@ -270,7 +269,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();	
 	}
-	
+
 	//Hybris Project-2189 :: Version : 1 :: Enrolling PC living in Quebec 
 	@Test
 	public void testQuebecPCEnrollment_2189() throws InterruptedException{
@@ -281,11 +280,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		city = TestConstants.CITY_QUEBEC;
 		postalCode = TestConstants.POSTAL_CODE_QUEBEC;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
+		//			storeFrontHomePage.clickOnShopLink();
+		//			storeFrontHomePage.clickOnAllProductsLink();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -339,10 +339,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.switchToPreviousTab();
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();	
@@ -363,7 +365,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);

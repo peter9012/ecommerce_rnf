@@ -86,7 +86,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 
-		logout();
+		
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, password);
 		s_assert.assertTrue(storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName).contains(profileName),"Profile Name After Login"+profileName+" and on UI is "+storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName));
 		logger.info("login is successful");
@@ -95,7 +95,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3920 :: Version : 1 :: Verify creating crp autoship from My Account under .biz site 
-	@Test
+	@Test(enabled=false)
 	public void testCreatingCRPAutoshipUnderBizSite_3920() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -145,7 +145,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -153,8 +153,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		storeFrontAccountInfoPage.clickOnEnrollInCRP();
-
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();;
 		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
 		storeFrontHomePage.clickOnCRPCheckout();
 		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
@@ -275,12 +274,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
+		
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		s_assert.assertTrue(storeFrontConsultantPage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontConsultantPage.getUserNameAForVerifyLogin(firstName));
 		logger.info("login is successful");
-		logout();
+		
 		s_assert.assertAll();
 	}
 
@@ -345,9 +344,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		logout();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		
 		s_assert.assertAll();	
 	}
 
@@ -362,6 +361,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		/*storeFrontHomePage.clickOnShopLink();
 			storeFrontHomePage.clickOnAllProductsLink();*/
+
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 
 		// Products are displayed?
@@ -418,8 +418,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		logout();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		
 		s_assert.assertAll(); 
 	}
 
@@ -429,6 +429,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
@@ -445,6 +447,67 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
+
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+
+			//Select a product with the price less than $80 and proceed to buy it
+			storeFrontHomePage.applyPriceFilterLowToHigh();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+
+			//Cart page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+			logger.info("Cart page is displayed");
+
+			//1 product is in the Shopping Cart?
+			s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+			logger.info("1 product is successfully added to the cart");
+			//Click on Check out
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			//Enter the User information and DO check the "Become a Preferred Customer" checkbox and click the create account button
+			storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+			//In the Cart page add one more product
+
+			//Pop for PC threshold validation
+			s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
+			storeFrontHomePage.addAnotherProduct();
+			//Click on Check out
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+			storeFrontHomePage.enterMainAccountInfo();
+			logger.info("Main account details entered");
+			storeFrontHomePage.searchCIDForPCAndRC();
+
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+			//Enter Billing Profile
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			/*storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+			logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
+			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			storeFrontHomePage.switchToPreviousTab();
+			//storeFrontHomePage.switchToPreviousTab(); 
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			
+			s_assert.assertAll(); 
+
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -474,9 +537,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnUserNameForHomePage();
-		s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -489,7 +552,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
 		storeFrontUpdateCartPage.clickOnSubscribeBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyPulseOrderCreatedMsg(), "Pulse order created msg is NOT present,Pulse might NOT be subscribed successfully");
-		logout();
+		
 		s_assert.assertAll();
 	}
 }

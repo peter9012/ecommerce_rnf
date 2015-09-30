@@ -15,7 +15,11 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 	private static final Logger logger = LogManager
 			.getLogger(SoftAssert.class.getName());
 
-	private final Map<AssertionError, IAssert>	m_errors	= Maps.newHashMap();
+	private final Map<AssertionError, IAssert>	m_errors;
+	
+	public SoftAssert() {
+		m_errors = Maps.newHashMap();
+	}
 
 	@Override
 	public void executeAssert(IAssert a)
@@ -87,5 +91,10 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 			flag = true;
 		}
 		return flag;
+	}
+	
+	public void clearSoftAssertMap(){
+		m_errors.clear();
+		logger.info("Soft Assert map cleaned");
 	}
 }

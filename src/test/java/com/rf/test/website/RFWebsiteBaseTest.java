@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
+import com.rf.core.utils.SoftAssert;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -43,6 +44,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
+		SoftAssert sftAsrt = new SoftAssert();
+		sftAsrt.clearSoftAssertMap();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		setPassword(driver.getPassword());
 		try{

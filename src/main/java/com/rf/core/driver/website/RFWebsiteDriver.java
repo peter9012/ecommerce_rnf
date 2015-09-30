@@ -4,6 +4,7 @@ import java.io.File;
 
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -114,7 +115,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getEnvironment(){
 		return propertyFile.getProperty("environment");
 	}
-	
+
 	public String getPassword(){
 		return propertyFile.getProperty("password");
 	}
@@ -644,12 +645,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return sDateTime;
 	}
 
-	public void switchWindow(){
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
-		String parentWindowID=it.next();
-		String childWindowID=it.next();
-		driver.switchTo().window(childWindowID); 
+	public void switchToSecondWindow(){
+		Set<String> allWindows = driver.getWindowHandles();
+		Iterator itr = allWindows.iterator();
+		while(itr.hasNext()){
+			driver.switchTo().window((String) itr.next());
+			break;
+		}
+		logger.info("Switched to second window");
 	}
 
 }

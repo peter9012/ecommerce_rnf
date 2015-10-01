@@ -24,6 +24,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='SIGN IN']");
+	private String addressLine1=null;
+	private String city=null;
+	private String postalCode=null;
 
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
@@ -944,6 +947,32 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
+	}
+
+	public boolean validateSetUpAccountPageIsDisplayed(){
+		return driver.getTitle().contains("Account");
+	}
+
+	public boolean validateUpdatedMainAccountInfo(){
+		return driver.findElement(By.xpath(".//div[@id='summarySection']/div[4]/div[3]/p/br[1]")).getText().contains(addressLine1)
+				&&  driver.findElement(By.xpath(".//div[@id='summarySection']/div[4]/div[3]/p/br[2]")).getText().contains(city)
+				&& driver.findElement(By.xpath(".//div[@id='summarySection']/div[4]/div[3]/p/br[2]")).getText().contains(postalCode);
+	}
+
+	public void reEnterContactInfoAndPassword(){
+		driver.findElement(By.xpath("//input[@id='address-1']")).clear();
+		driver.findElement(By.xpath("//input[@id='address-1']")).sendKeys(TestConstants.RE_ENTER_ADDRESS_LINE_1);
+		driver.findElement(By.xpath("//input[@id='city']")).clear();
+		driver.findElement(By.xpath("//input[@id='city']")).sendKeys(TestConstants.RE_ENTER_CITY);
+		driver.findElement(By.xpath("//input[@id='postcode']")).clear();
+		driver.findElement(By.xpath("//input[@id='postcode']")).sendKeys(TestConstants.RE_ENTER_POSTALCODE);
+		addressLine1=driver.findElement(By.xpath("//input[@id='address-1']")).getText();
+		city=driver.findElement(By.xpath("//input[@id='city']")).getText();
+		postalCode=driver.findElement(By.xpath("//input[@id='postcode']")).getText();
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.RE_ENTER_PASSWORD1);
+		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(TestConstants.RE_ENTER_PASSWORD2);
+		clickNextButton();
+		driver.waitForLoadingImageToDisappear();
 	}
 }
 

@@ -84,8 +84,8 @@ public void clickRenewLater()  {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
-		clickRenewLater();
 		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontConsultantPage(driver);
@@ -114,6 +114,7 @@ public void clickRenewLater()  {
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
 		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontPCUserPage(driver);

@@ -30,7 +30,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
-
+	
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.pauseExecutionFor(2000);

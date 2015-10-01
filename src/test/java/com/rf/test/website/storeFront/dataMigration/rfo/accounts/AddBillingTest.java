@@ -548,6 +548,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
+			//******USE FOLLOWING FOR MIGRATION DEBUGGING AS SHE NEEDS RENEWAL *****
+			//			consultantEmailID = "maryrob17@gmail.com";
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -557,7 +559,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-
+		
+		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 

@@ -47,8 +47,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		try {	
 			driver.waitForElementPresent(By.id("agree"));
 			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
-			we.click();
-			driver.click(By.xpath("//input[@value='Continue']"));
+			if (we.isDisplayed()){
+				we.click();
+				driver.click(By.xpath("//input[@value='Continue']"));
+			}
+					//do nothing
+						
 		}
 		catch (IndexOutOfBoundsException e) {
 		
@@ -56,6 +60,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 		return null;
 	} 
+public void clickRenewLater()  {
+		
+		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
+		driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		try{
+			driver.click(By.xpath("//input[@value='Renew Later']"));
+		} finally{
+			System.out.println ("No renewal popup for this consultant");
+		}
+			
+		
+	}
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -65,6 +81,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
+		clickRenewLater();
 		dismissPolicyPopup();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();

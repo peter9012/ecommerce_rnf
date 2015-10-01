@@ -7,6 +7,7 @@
 	<test name="Regression_Suite">
 		<classes>
 			<!-- ACCOUNTS -->
+<!-- TEST COMMENT -->
 			<!-- <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class> -->
 			
 			<!-- express enrollment biz-->

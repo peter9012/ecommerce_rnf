@@ -172,7 +172,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		regimenName = regimenName.toUpperCase();
 		driver.pauseExecutionFor(500);
 		//****next line span = div for old UI****
-		driver.click(By.xpath("//span[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
+		driver.click(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"));
 		driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
 		driver.click (By.id("next-button")); // - old UI (By.cssSelector("input[value='Next']"));

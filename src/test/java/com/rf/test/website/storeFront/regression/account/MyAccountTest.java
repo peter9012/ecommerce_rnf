@@ -1000,7 +1000,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		
+
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
@@ -1516,5 +1516,113 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+
+	// Hybris Project-1982:Order >>Actions >>Details
+	@Test
+	public void testCheckOrdersDetailsFromActionsTab_1982() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		/*while(true){
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+					logger.info("Account Id of the user is "+accountID);
+
+					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+					boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+					if(isSiteNotFoundPresent){
+						logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+						driver.get(driver.getURL());
+					}
+					else
+						break;
+				}
+
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		logger.info("login is successful");
+		//goto orders page
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage=storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//select details under Actions tab on the side of the first order no.
+		String firstOrderNo=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickDetailsUnderActionsForFirstOrderUnderOrderHistory();
+		//validate product details,payment method,address,status,total,currency on the order details page
+		s_assert.assertTrue(storeFrontOrdersPage.validateOrderDetailsPageIsDisplayedForSimilarOrderNo().contains(firstOrderNo),"order details page is not displayed for the similar order no.");
+		s_assert.assertTrue(storeFrontOrdersPage.validateOrderDetails(),"order details are not displayed properly on orderdetails page");
+		s_assert.assertTrue(storeFrontOrdersPage.validateGranTotalText(),"Grand Total Text are not displayed properly on orderdetails page");
+		s_assert.assertTrue(storeFrontOrdersPage.validateCurrency(),"Currency is not displayed properly on orderdetails page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4156:Consultant who cancels the pulse subscription should have their prefix active (only for the month)
+	@Test(enabled=false)
+	public void testConsultantCancelPulseSubscriptionPrefixActive_4156() throws InterruptedException	 {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		//validate on the confirmation page user lands on .biz site
+		s_assert.assertTrue(storeFrontHomePage.validateUserLandsOnPWSbizSite(), "user didn't land on PWS .biz site");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Fetch the PWS url
+		String currentPWSUrl=driver.getCurrentUrl();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		//goto .com site and navigate to Account Info->Autoship tatus->Cancel pulse subscription
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnYourAccountDropdown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		storeFrontConsultantPage.cancelPulseSubscription();
+		logout();
+		//driver.close();
+		//validate with the current PWSUrl
+		driver.get(currentPWSUrl);
+		s_assert.assertTrue(storeFrontHomePage.validatePWS(), "PWS is not active");  
+		s_assert.assertAll();
+	}	 	 
+
 }
 

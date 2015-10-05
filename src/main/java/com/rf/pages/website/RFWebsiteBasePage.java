@@ -127,14 +127,26 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		else
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
-		logger.info("Buy Now button clicked");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+			
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+			
+		}
+
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
@@ -175,9 +187,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		logger.info("Buy Now button clicked and another product selected");
-		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+
 	}
 
 	public boolean verifyNumberOfProductsInCart(String numberOfProductsInCart){

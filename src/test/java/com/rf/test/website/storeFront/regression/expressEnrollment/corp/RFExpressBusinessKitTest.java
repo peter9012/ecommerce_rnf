@@ -99,7 +99,8 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.selectPortfolioEnrollmentKitPage(kitName);
+		storeFrontHomePage.enterUserInformationForEnrollment(TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

@@ -1060,6 +1060,76 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementNotPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY);
 	}
+
+	public void clickOnUserName(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+	}
+
+	public boolean verifyJoinMyTeamLinkPresent(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//a[@class='joinMe']"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public void openPWS(String pws){
+		driver.get(pws);
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnPersonalizeMyProfileLink(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+	}
+
+	public String convertBizToComPWS(String pws){
+		String com  = "com";
+		String comPws = pws.replaceAll("biz",com);
+		return comPws;
+	}
+
+	public boolean verifyContinueWithoutSponserLinkPresent(){
+		return driver.isElementPresent(By.id("continue-no-sponsor"));
+	}
+
+	public boolean verifyRequestASponsorBtn(){
+		return driver.isElementPresent(By.xpath("//input[@value='Request a sponsor']"));
+	}
+
+	public void searchCIDForSponserHavingPulseSubscribed(String sponserName){
+		driver.waitForElementPresent(By.id("sponsor-name-id"));
+		driver.findElement(By.id("sponsor-name-id")).sendKeys(sponserName);
+		driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
+		driver.click(By.xpath("//input[@value='Search']"));
+		logger.info("Sponsor entered as 'test' and search button clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean verifyPWSAfterSuccessfulEnrollment(String actualPWS,String newPWS){
+		if(actualPWS.equalsIgnoreCase(newPWS)){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	public boolean verifyPCUserIsOnSponserPWSAfterSuccessfulEnrollment(String sponserPWS,String newPWS){
+		if(sponserPWS.equalsIgnoreCase(newPWS)){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	public boolean verifyPCUserIsOnCorpSiteAfterSuccessfulEnrollment(String corpUrl,String newPWS){
+		if(corpUrl.equalsIgnoreCase(newPWS)){
+			return true;
+		}
+		else
+			return false;
+	}
 }
 
 

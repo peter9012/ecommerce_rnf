@@ -112,6 +112,15 @@ public class TestConstants {
 	public static final String CONSULTANT_NEW_PASSWORD = "11maiden5";
 
 	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
+	public static final String CONSULTANT_BIZ_URL = "http://atst1.myrfotst2.biz/ca/";
+	public static final String CONSULTANT_COM_URL = "http://atst1.myrfotst2.com/ca/";
+	public static final String SPONSER_PWS="https://mduartestucky.myrfotst2.biz/ca/";
+	public static final String CANADIAN_SPONSER_HAVING_PULSE = "auto161213 auto";
+	public static final String BIZ_PWS_CA="https://mduartestucky.myrfotst2.biz/ca/";
+	public static final String SPONSER_PWS_HAVING_PULSE_DOT_COM_CA="http://aauto3.myrfotst2.com/ca/";
+	public static final String SPONSER_PWS_WITHOUT_PULSE_DOT_COM_CA="http://aauto4.myrfotst2.com/ca/";
+	public static final String CANADIAN_SPONSER_HAVING_PULSE_CA= "auto66677 auto";
+	public static final String CANADIAN_SPONSER_WITHOUT_PULSE_CA = "auto77766 auto";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String PC_USERNAME = "autopc@rnf.com";
 	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";

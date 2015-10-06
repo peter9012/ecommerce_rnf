@@ -432,6 +432,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.switchTo().window(tabs.get(1));
 		driver.close();
 		driver.switchTo().window(tabs.get(0));
+		driver.pauseExecutionFor(1000);
 	}
 
 	public void clickOnRodanAndFieldsLogo(){

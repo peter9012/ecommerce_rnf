@@ -15,10 +15,10 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 	private static final Logger logger = LogManager
 			.getLogger(SoftAssert.class.getName());
 
-	private final Map<AssertionError, IAssert>	m_errors;
-	
+	private final Map<AssertionError, IAssert>	m_errors= Maps.newHashMap();
+
 	public SoftAssert() {
-		m_errors = Maps.newHashMap();
+		m_errors.clear();
 	}
 
 	@Override
@@ -49,22 +49,23 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 			}
 
 			throw new AssertionError(sb.toString());
+
 		}
 	}
 
-//	@Override
-//	public void onAfterAssert(IAssert a)
-//	{
-//		logger.info("Expected: " + a.getExpected());
-//		logger.info("Actual: " + a.getActual());
-//		super.onAfterAssert(a);
-//	}
-//
-//	@Override
-//	public void onBeforeAssert(IAssert a)
-//	{
-//		//Reporter.log("Test Case Desciption: " + a.getMessage());
-//	}
+	//	@Override
+	//	public void onAfterAssert(IAssert a)
+	//	{
+	//		logger.info("Expected: " + a.getExpected());
+	//		logger.info("Actual: " + a.getActual());
+	//		super.onAfterAssert(a);
+	//	}
+	//
+	//	@Override
+	//	public void onBeforeAssert(IAssert a)
+	//	{
+	//		//Reporter.log("Test Case Desciption: " + a.getMessage());
+	//	}
 
 	@Override
 	public void onAssertFailure(IAssert a, AssertionError ex)
@@ -75,7 +76,7 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 			logger.info("Actual: " + a.getActual());			
 			String sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
 			logger.info("Snapshot Path :<a href='" + sScreenshotPath + "'>"+ sScreenshotPath+"</a>\n");
-			
+			m_errors.put(ex, a);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,7 +93,7 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 		}
 		return flag;
 	}
-	
+
 	public void clearSoftAssertMap(){
 		m_errors.clear();
 		logger.info("Soft Assert map cleaned");

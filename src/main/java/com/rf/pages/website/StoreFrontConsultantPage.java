@@ -130,5 +130,44 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return userName;
 	}
 
+	public String getHomtownNamePresentOnAfterClickonPersinalizeLink(){
+		driver.waitForPageLoad();
+		String homeTown = driver.findElement(By.xpath("//input[@id='homeTown']")).getAttribute("value");
+		return homeTown;
+	}
+
+	public String  getConsultantSinceTextPresentAfterClickonPersinalizeLink(){
+		return driver.findElement(By.xpath("//span[contains(text(),'Consultant since')]")).getText();
+	}
+
+	public String getFavoriteProductNameIsPresentAfterClickonPersinalizeLink(){
+		return driver.findElement(By.xpath("//span[contains(text(),'Favorite products')]")).getText();
+
+	}
+
+	public boolean verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[contains(@class,'consultant-biodata-right')]/p[1]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public boolean verifyBlockOfProductsOnMeetYourConsultantPage(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[contains(@class,'consultant-biodata-right')]/p[1]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public boolean verifyBlockOfBusinessOnMeetYourConsultantPage(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[contains(@class,'consultant-biodata-right')]/p[1]"))){
+			return true;
+		}else
+			return false;
+	}
+
 }
 

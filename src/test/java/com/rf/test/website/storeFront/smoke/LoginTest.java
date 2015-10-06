@@ -44,7 +44,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 	}
 
 
-	@Test (invocationCount = 10)
+	//@Test (invocationCount = 10)
 	public void testLoginDynamic() throws InterruptedException {//String accountID,String emailID,String accNumber,String sid,String name, String hasOrder ,String sourceName) throws InterruptedException{
 		String sRandNum = RandomStringUtils.randomNumeric(5);
 		System.out.println(sRandNum);
@@ -62,5 +62,6 @@ public class LoginTest extends RFWebsiteBaseTest{
 		assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 
 	}
+			
 }
 

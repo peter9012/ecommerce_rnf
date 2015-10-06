@@ -37,7 +37,7 @@ public class RFBaseTest{
 	protected PropertyFile propertyFile = new PropertyFile();
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
-	protected SoftAssert s_assert = new SoftAssert();
+	protected SoftAssert s_assert;
 
 	/**
 	 * @param envproperties

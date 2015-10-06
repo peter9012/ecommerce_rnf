@@ -646,11 +646,21 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void switchToSecondWindow(){
+//		Set<String> allWindows = driver.getWindowHandles();
+//		Iterator itr = allWindows.iterator();
+//		while(itr.hasNext()){
+//			driver.switchTo().window((String) itr.next());
+//			break;
+//		}
+		
 		Set<String> allWindows = driver.getWindowHandles();
-		Iterator itr = allWindows.iterator();
-		while(itr.hasNext()){
-			driver.switchTo().window((String) itr.next());
-			break;
+		String parentWindow = driver.getWindowHandle();
+		for(String allWin : allWindows){
+			if(!allWin.equalsIgnoreCase(parentWindow)){
+				driver.switchTo().window(allWin);
+				break;
+			}
+			
 		}
 		logger.info("Switched to second window");
 	}

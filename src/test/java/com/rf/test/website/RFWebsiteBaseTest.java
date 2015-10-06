@@ -44,8 +44,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
-		SoftAssert sftAsrt = new SoftAssert();
-		sftAsrt.clearSoftAssertMap();
+		s_assert = new SoftAssert();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		setPassword(driver.getPassword());
 		try{

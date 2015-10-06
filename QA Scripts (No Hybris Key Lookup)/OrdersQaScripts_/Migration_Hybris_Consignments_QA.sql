@@ -42,7 +42,6 @@ FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN Hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderShipmentPackageItem oi ON oi.OrderID = o.OrderID
                                                               AND ri.OrderItemID = oi.OrderItemId --o.OrderID
-        INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.OrderNumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.AutoshipID IS NULL
@@ -73,66 +72,46 @@ SELECT  'OrderShipmentPackageItems' ,
 -- MISSING KEYS
 -------------------------------------------------------------
 
-IF OBJECT_ID('DataMigration.Migration.MissingConsignment') IS NOT NULL
-    DROP TABLE DataMigration.Migration.MissingConsignment;
+IF OBJECT_ID('Datamigration.migration.Diff_consignment') IS NOT NULL
+    DROP TABLE Datamigration.migration.Diff_consignment;
 -----------------------------------------------------------------------------------
 
 
 
-SELECT  OrderShipmentPackageItemID AS RFO_ShipmentID ,
-        PK AS Hybris_ShipmentID ,
-        CASE WHEN c.PK IS NULL THEN 'Destination'
-             WHEN a.OrderShipmentPackageItemID IS NULL THEN 'Source'
-        END AS MissingFROM
-INTO    DataMigration.Migration.MissingConsignment
-FROM    ( SELECT    oi.OrderShipmentPackageItemID
-          FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                    INNER JOIN RFOperations.ETL.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                    INNER JOIN RFOperations.Hybris.OrderItem (NOLOCK) ri ON ri.OrderId = o.OrderID
-                    INNER JOIN Hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
-                    INNER JOIN RFOperations.Hybris.OrderShipmentPackageItem oi ON oi.OrderID = o.OrderID--CAST(o.OrderNumber AS INT)
-                                                              AND ri.OrderItemID = oi.OrderItemId --o.OrderID
-                    INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
-                    LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.OrderNumber AS INT)
-          WHERE     o.CountryID = @RFOCountry
-                    AND a.AutoShipID IS NULL
-                    AND od.Startdate >= @ServerMod
-        ) a
-        FULL OUTER JOIN ( SELECT    pte.PK, p_orderentry, p_order 
-                          FROM      Hybris.dbo.orders o ( NOLOCK )
-                                    INNER JOIN Hybris..consignments pt ON o.PK = pt.p_order
-                                    INNER JOIN Hybris..consignmententries pte ON pte.p_consignment = pt.PK
-                          WHERE     ( p_template = 0
+		SELECT O.ORDERNUMBER+'-'+CAST(OI.PRODUCTID AS NVARCHAR)+'-'+CAST(OSI.TRACKINGNUMBER AS NVARCHAR) AS ConsignmentCombo
+		INTO Datamigration.migration.Diff_consignment
+		FROM
+		RFOPERATIONS.HYBRIS.ORDERSHIPMENT OS,
+		RFOPERATIONS.HYBRIS.ORDERSHIPMENTPACKAGEITEM OSI , 
+		RFOPERATIONS.HYBRIS.ORDERITEM OI,
+		RFOPERATIONS.HYBRIS.ORDERS O
+		WHERE 
+			O.ORDERID=OI.ORDERID AND
+			CAST(O.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM') AND
+			O.ORDERID IN (SELECT ORDERID FROM RFOPERATIONS.ETL.ORDERDATE WHERE STARTDATE> '2014-05-01') AND
+			OI.ORDERITEMID=OSI.ORDERITEMID AND
+			OSI.ORDERSHIPMENTID=OS.ORDERSHIPMENTID
+			AND O.COUNTRYID=236
+		EXCEPT
+		SELECT  SUBSTRING(pt.p_code,CHARINDEX('a',pt.p_code,1)+1,100)+'-'+CAST(p.p_rflegacyproductid as NVARCHAR)+'-'+ pte.p_trackingnumber
+        FROM      Hybris.dbo.orders o ( NOLOCK )
+                  INNER JOIN Hybris..consignments pt ON o.PK = pt.p_order
+                  INNER JOIN Hybris..consignmententries pte ON pte.p_consignment = pt.PK
+				  INNER JOIN hybris..orderentries OE ON OE.PK=pte.p_orderentry
+				  INNER JOIN hybris..products p ON p.pk=OE.productpk
+                  WHERE     ( p_template = 0
                                       OR p_template IS NULL
                                     )
                                     AND o.TypePkString <> @ReturnOrderType
                                     AND currencypk = @HybCountry
-                        ) c ON a.OrderShipmentPackageItemID = c.PK --a.OrderPaymentID = c.p_paymenttransaction AND
-WHERE   a.OrderShipmentPackageItemID IS NULL
-        OR c.PK IS NULL; 
 
 
-
-SELECT  @RowCount = COUNT(*)
-FROM    DataMigration.Migration.MissingConsignment;
-
-IF ( @RowCount > 0 )
-    BEGIN 
-
-        SELECT  ' Total Missing ' + @Country + ' Consignments' ,
-                @RowCount;
-
-        SELECT  MissingFROM ,
-                COUNT(*)
-        FROM    DataMigration.Migration.MissingConsignment
-        GROUP BY MissingFROM;
-
-        SELECT  *
-        FROM    DataMigration.Migration.MissingConsignment
-        ORDER BY MissingFROM;
-
-    END;  
-
+	SELECT  @RowCount = COUNT(*)
+	FROM    DataMigration.Migration.MissingConsignment;
+    
+	SELECT  ' Total Missing ' + @Country + ' Consignments in Hybris' , @RowCount;
+	
+	SELECT  ' Query Datamigration.migration.Diff_consignment table to get the list of missing consignment and entries. Column value has format OrderNumber-ProductId-TrackingNumber';
 	
 
 	------------------------------------------------------------------------------
@@ -149,11 +128,13 @@ IF OBJECT_ID('TEMPDB.dbo.#RFO_Ship') IS NOT NULL
 IF OBJECT_ID('TEMPDB.dbo.#LoadedConsignment') IS NOT NULL
     DROP TABLE #LoadedConsignment;
 
-SELECT  pte.PK
+SELECT  SUBSTRING(pt.p_code,CHARINDEX('a',pt.p_code,1)+1,100)+'-'+CAST(p.p_rflegacyproductid as NVARCHAR)+'-'+ pte.p_trackingnumber as PK
 INTO    #LoadedConsignment
 FROM    Hybris.dbo.orders o ( NOLOCK )
-        INNER JOIN Hybris..consignments pt ON o.PK = pt.p_order
-        INNER JOIN Hybris..consignmententries pte ON pte.p_consignment = pt.PK
+                  INNER JOIN Hybris..consignments pt ON o.PK = pt.p_order AND O.USERPK IN (SELECT PK FROM HYBRIS..USERS WHERE P_SOURCeNAME='Hybris-DM')
+                  INNER JOIN Hybris..consignmententries pte ON pte.p_consignment = pt.PK
+				  INNER JOIN hybris..orderentries OE ON OE.PK=pte.p_orderentry
+				  INNER JOIN hybris..products p ON p.pk=OE.productpk
 WHERE   ( p_template = 0
           OR p_template IS NULL
         )
@@ -193,13 +174,13 @@ SELECT  CAST(TrackingNumber AS NVARCHAR(100)) AS TrackingID ,
 INTO    #RFO_SPItem
 FROM    RFOperations.Hybris.OrderShipmentPackageItem a
         	JOIN RFOperations.Hybris.OrderItem f ON f.OrderItemID =a.OrderItemID AND f.OrderID =a.OrderID
-			 JOIN RFOperations.Hybris.Orders b ON a.OrderID = b.OrderID
+			 JOIN RFOperations.Hybris.Orders b ON a.OrderID = b.OrderID and CAST(b.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM') AND
 	        JOIN RFOperations.Hybris.OrderShipment d ON d.OrderID = b.OrderID AND d.OrderShipmentID =a.OrderShipmentID      
 			JOIN RFOperations.Hybris.OrderShippingAddress e ON e.OrderID = b.OrderID 
 			JOIN Hybris.dbo.Addresses ad ON ad.PK =e.OrdershippingaddressID AND ad.p_rfAddressID = d.OrderShipmentID
 		LEFT JOIN RFOperations.RFO_Reference.ShippingMethod c ON d.ShippingMethodID = c.ShippingMethodID
 
-WHERE   EXISTS (SELECT 1 FROM #LoadedConsignment lc WHERE lc.PK =a.OrderShipmentPackageItemID)
+WHERE   EXISTS (SELECT 1 FROM #LoadedConsignment lc WHERE lc.PK =b.ORDERNUMBER+'-'+CAST(f.PRODUCTID AS NVARCHAR)+'-'+CAST(a.TRACKINGNUMBER AS NVARCHAR))
 
 CREATE CLUSTERED INDEX MIX_RFSPItem ON #RFO_SPItem (OrderID);
 
@@ -227,7 +208,7 @@ ELSE CAST( LTRIM(RTRIM(s.Code)) AS NVARCHAR (100)) END AS p_shippingmethod
         END AS p_status ,
         CAST(a.p_carrier AS NVARCHAR(100)) AS p_carrier ,
         CAST(p_shippingaddress AS NVARCHAR(100)) AS p_shippingaddress ,
-        CAST(p_order AS NVARCHAR(100)) AS p_order ,
+        CAST(a.p_order AS NVARCHAR(100)) AS p_order ,
         CASE WHEN s.PK = 8796093251624
              THEN CAST('UPS Ground(HD)' AS NVARCHAR(100))
              WHEN s.PK = 8796093284392
@@ -237,8 +218,10 @@ ELSE CAST( LTRIM(RTRIM(s.Code)) AS NVARCHAR (100)) END AS p_shippingmethod
         END AS p_deliverymode
 INTO    #Hybris_SPItem
 FROM    Hybris.dbo.consignments a JOIN Hybris.dbo.consignmententries b ON a.PK =b.p_consignment
+		INNER JOIN hybris..orderentries OE ON OE.PK=b.p_orderentry
+		INNER JOIN hybris..products p ON p.pk=OE.productpk
         JOIN Hybris.dbo.deliverymodes s ON a.p_deliverymode = s.PK
-WHERE EXISTS (SELECT 1 FROM #LoadedConsignment lc WHERE lc.PK =b.PK)
+WHERE EXISTS (SELECT 1 FROM #LoadedConsignment lc WHERE lc.PK =SUBSTRING(a.p_code,CHARINDEX('a',a.p_code,1)+1,100)+'-'+CAST(p.p_rflegacyproductid as NVARCHAR)+'-'+ b.p_trackingnumber)
 CREATE CLUSTERED INDEX MIX_HYSPItem ON #Hybris_SPItem (p_order);
 
 
@@ -249,10 +232,10 @@ EXCEPT
 SELECT  *
 FROM    #Hybris_SPItem;
 
-SELECT TOP 2 * FROM #SPItem
+SELECT @RowCount=COUNT (*) FROM #SpItem 
 
-SELECT COUNT (*) FROM #SpItem 
-
+IF @RowCount>0 
+BEGIN
 
 CREATE CLUSTERED INDEX MIX_Item ON #SPItem (OrderID);
 
@@ -380,6 +363,12 @@ SET a.Hybris_Value = b. ' + @DesCol
 	FROM DataMigration.Migration.Metadata_Orders a JOIN DataMigration.Migration.Errorlog_orders b ON a.MapID =b.MapID 
 	GROUP BY a.MapID, RFO_Column
 
+	END;
+	ELSE
+		BEGIN
+		Select ' There are no differences in RFO and Hybris values , hence comparison scripts execution is skipped'
+		END;
+	
 	END 
 
 

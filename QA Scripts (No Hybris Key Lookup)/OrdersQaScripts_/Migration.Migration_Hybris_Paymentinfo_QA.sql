@@ -94,7 +94,7 @@ WHERE   o.CountryID = @RFOCountry
 		AND oi.ServerModifiedDate>@LastRun
 
         ) a
-        FULL OUTER JOIN ( SELECT    a.PK
+        FULL OUTER JOIN ( SELECT    a.code
                           FROM    Hybris.dbo.orders o ( NOLOCK )
         INNER JOIN Hybris..paymentInfos a ON o.pk = a.OwnerPkString AND a.modifiedTS> @LastRun
 WHERE   ( p_template = 0

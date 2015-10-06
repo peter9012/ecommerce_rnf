@@ -257,7 +257,7 @@ JOIN Hybris.dbo.PaymentInfos pf ON pt.p_info =pf.PK
 JOIN Hybris.dbo.paymnttrnsctentries pte ON pte.p_paymenttransaction = pt.PK
 JOIN Hybris.dbo.enumerationvalues ev ON ev.PK =pte.p_type
 WHERE EXISTS (SELECT 1 FROM #LoadedTransaction lt WHERE lt.PK = pte.PK)
-AND pte.modifiedTS@>LastRun
+AND pte.modifiedTS>@LastRun
 
 
 
@@ -282,7 +282,6 @@ CREATE CLUSTERED INDEX MIX_Tran ON #Tran (OrderID)
 
 TRUNCATE TABLE DataMigration.Migration.ErrorLog_Orders
 
-DECLARE @LastRUN DATETIME ='05/01/1901'
 
 DECLARE @I INT = (SELECT  MIN (MapID)FROM DataMigration.Migration.Metadata_Orders WHERE HybrisObject = 'PaymentTransactions'), 
 @C INT =  (SELECT MAX(MapID) FROM DataMigration.Migration.Metadata_Orders) 

@@ -67,7 +67,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 
-		s_assert.assertAll();
+		//s_assert.assertAll();
 	}
 
 	//Hybris Project-1699 :: Version : 1 :: Express Enrollment for Nunavut province and tryto ship adhoc order at quebec address. 
@@ -132,7 +132,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		s_assert.assertFalse(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
 
-		s_assert.assertAll();
+		//s_assert.assertAll();
 	}
 
 	//Hybris Project-1698 :: Version : 1 :: Express Enrollment for Northwest territories province and adding qubec address and make it default.
@@ -176,7 +176,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//In progress
-		s_assert.assertAll();
+		//s_assert.assertAll();
 	}
 
 	//Hybris Project-1292 :: Version : 1 :: Customer living in Quebec cannot be enrolled as consultant. 
@@ -198,7 +198,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
 		s_assert.assertTrue(storeFrontHomePage.verifyQuebecProvinceIsDisabled(),"Quebec province in the province drop down is not disabled");
-		s_assert.assertAll();
+		//s_assert.assertAll();
 	}
 
 	// Hybris Project-2190 :: Version : 1 :: Enrolling RC living in Quebec 
@@ -267,7 +267,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertAll();	
+//		//s_assert.assertAll();	
 	}
 
 	//Hybris Project-2189 :: Version : 1 :: Enrolling PC living in Quebec 
@@ -347,7 +347,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertAll();	
+		//s_assert.assertAll();	
 
 	}
 
@@ -372,7 +372,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifySuggesstionsForEnteredAddressPop(), "QAS pop up for Quebec address suggestions has NOT appeared");
 
-		s_assert.assertAll();
+		//s_assert.assertAll();
 	}
 
 }

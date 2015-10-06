@@ -511,10 +511,23 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']]"));
-		driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
-		logger.info("Add to CRP button clicked");
-		driver.waitForLoadingImageToDisappear();
+		if(driver.getCountry().equalsIgnoreCase("CA")){		
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']]"));
+			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForLoadingImageToDisappear();
+			}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForElementPresent(By.xpath("//*[@value='OK']"));
+			driver.click(By.xpath("//*[@value='OK']"));
+			logger.info("Pop Up Dismiss");
+			driver.waitForLoadingImageToDisappear();
+		}
+
 	}
 
 	public void clickOnCRPCheckout(){

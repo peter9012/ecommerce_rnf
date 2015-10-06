@@ -41,7 +41,7 @@ FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.Hybris.OrderItem (NOLOCK) ri ON ri.OrderId = o.OrderID
         INNER JOIN Hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderShipmentPackageItem oi ON oi.OrderID = o.OrderID
-                                                              AND ri.OrderItemID = oi.OrderItemId --o.OrderID
+                                                              --AND ri.OrderItemID = oi.OrderItemId --o.OrderID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.OrderNumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.AutoshipID IS NULL
@@ -174,7 +174,7 @@ SELECT  CAST(TrackingNumber AS NVARCHAR(100)) AS TrackingID ,
 INTO    #RFO_SPItem
 FROM    RFOperations.Hybris.OrderShipmentPackageItem a
         	JOIN RFOperations.Hybris.OrderItem f ON f.OrderItemID =a.OrderItemID AND f.OrderID =a.OrderID
-			 JOIN RFOperations.Hybris.Orders b ON a.OrderID = b.OrderID and CAST(b.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM') AND
+			 JOIN RFOperations.Hybris.Orders b ON a.OrderID = b.OrderID and CAST(b.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM')
 	        JOIN RFOperations.Hybris.OrderShipment d ON d.OrderID = b.OrderID AND d.OrderShipmentID =a.OrderShipmentID      
 			JOIN RFOperations.Hybris.OrderShippingAddress e ON e.OrderID = b.OrderID 
 			JOIN Hybris.dbo.Addresses ad ON ad.PK =e.OrdershippingaddressID AND ad.p_rfAddressID = d.OrderShipmentID
@@ -198,11 +198,8 @@ SELECT  CAST(p_trackingid AS NVARCHAR(100)) AS p_trackingid ,
 ,CASE WHEN s.PK = 8796093251624 THEN CAST('UPS Ground(HD)' AS NVARCHAR(100))
 	  WHEN s.PK = 8796093284392 THEN CAST('Canada Post Ground' AS NVARCHAR(100))
 	  WHEN s.PK = 8796093317160 THEN CAST('Pickup' AS NVARCHAR(100))
-
-ELSE CAST( LTRIM(RTRIM(s.Code)) AS NVARCHAR (100)) END AS p_shippingmethod
-
-
-       , CAST(p_code AS NVARCHAR(100)) AS p_code ,
+      ELSE CAST( LTRIM(RTRIM(s.Code)) AS NVARCHAR (100)) END AS p_shippingmethod
+      , CAST(p_code AS NVARCHAR(100)) AS p_code ,
         CASE WHEN p_status = 8796102000731 THEN CAST('3' AS NVARCHAR(100))
              ELSE NULL
         END AS p_status ,
@@ -212,8 +209,8 @@ ELSE CAST( LTRIM(RTRIM(s.Code)) AS NVARCHAR (100)) END AS p_shippingmethod
         CASE WHEN s.PK = 8796093251624
              THEN CAST('UPS Ground(HD)' AS NVARCHAR(100))
              WHEN s.PK = 8796093284392
-             THEN CAST('Canada Post Ground' AS NVARCHAR(100))
-             WHEN s.PK = 8796093317160 THEN CAST('Pickup' AS NVARCHAR(100))
+             THEN CAST('Canadian Postal Services' AS NVARCHAR(100))
+             WHEN s.PK = 8796093317160 THEN CAST('Pick Up' AS NVARCHAR(100))
              ELSE CAST(s.code AS NVARCHAR(100))
         END AS p_deliverymode
 INTO    #Hybris_SPItem

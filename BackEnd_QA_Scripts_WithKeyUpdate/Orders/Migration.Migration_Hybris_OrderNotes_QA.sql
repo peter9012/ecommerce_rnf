@@ -42,7 +42,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = o.orderId
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = o.AccountId
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)

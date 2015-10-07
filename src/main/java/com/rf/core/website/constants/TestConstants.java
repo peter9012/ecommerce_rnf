@@ -108,17 +108,17 @@ public class TestConstants {
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
-	public static final String CONSULTANT_PASSWORD_STG2 = "111maiden";
-	public static final String CONSULTANT_NEW_PASSWORD = "11maiden5";
+	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
+	public static final String CONSULTANT_NEW_PASSWORD = "111Maiden$";
 
 	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
-	public static final String CONSULTANT_BIZ_URL = "http://atst1.myrfotst2.biz/ca/";
-	public static final String CONSULTANT_COM_URL = "http://atst1.myrfotst2.com/ca/";
-	public static final String SPONSER_PWS="https://mduartestucky.myrfotst2.biz/ca/";
+	public static final String CONSULTANT_BIZ_URL = "http://astoner.myrfotst3.biz/ca/";
+	public static final String CONSULTANT_COM_URL = "http://astoner.myrfotst3.com/ca/";
+	public static final String SPONSER_PWS="https://mduartestucky.myrfotst3.biz/ca/";
 	public static final String CANADIAN_SPONSER_HAVING_PULSE = "auto161213 auto";
-	public static final String BIZ_PWS_CA="https://mduartestucky.myrfotst2.biz/ca/";
-	public static final String SPONSER_PWS_HAVING_PULSE_DOT_COM_CA="http://aauto3.myrfotst2.com/ca/";
-	public static final String SPONSER_PWS_WITHOUT_PULSE_DOT_COM_CA="http://aauto4.myrfotst2.com/ca/";
+	public static final String BIZ_PWS_CA="https://mduartestucky.myrfotst3.biz/ca/";
+	public static final String SPONSER_PWS_HAVING_PULSE_DOT_COM_CA="http://aauto3.myrfotst3.com/ca/";
+	public static final String SPONSER_PWS_WITHOUT_PULSE_DOT_COM_CA="http://aauto4.myrfotst3.com/ca/";
 	public static final String CANADIAN_SPONSER_HAVING_PULSE_CA= "auto66677 auto";
 	public static final String CANADIAN_SPONSER_WITHOUT_PULSE_CA = "auto77766 auto";
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
@@ -175,10 +175,10 @@ public class TestConstants {
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "111maiden";
-	//	public static final String CONSULTANT1_PWS_URL_CA = "http://astoner.myrfotst2.biz/ca/";
-	//	public static final String CONSULATNT1_PWS_URL_US = "http://astoner.myrfotst2.biz/us/";
-	public static final String CONSULTANT1_PWS_COM_URL = "http://astoner.myrfotst2.com/ca/";
-	public static final String CONSULTANT2_PWS_URL = "http://astoner.myrfotst2.biz/ca";
+	//	public static final String CONSULTANT1_PWS_URL_CA = "http://astoner.myrfotst3.biz/ca/";
+	//	public static final String CONSULATNT1_PWS_URL_US = "http://astoner.myrfotst3.biz/us/";
+	public static final String CONSULTANT1_PWS_COM_URL = "http://astoner.myrfotst3.com/ca/";
+	public static final String CONSULTANT2_PWS_URL = "http://astoner.myrfotst3.biz/ca";
 
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
 	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "111maiden";

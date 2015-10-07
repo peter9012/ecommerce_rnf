@@ -74,7 +74,7 @@ WHERE   b.p_origination <> 'www.rodanandfields.com'
 SELECT  @RFOCount = COUNT(DISTINCT o.OrderID)
 FROM    RFOperations.Hybris.Orders o
         INNER JOIN RFOperations.etl.OrderDate od ON od.Orderid = o.OrderID
-        INNER JOIN hybris..users u ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN hybris..users u ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         LEFT JOIN RFOperations.Hybris.Autoship a ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
@@ -112,7 +112,7 @@ FROM    ( SELECT  DISTINCT
                     o.OrderID
           FROM      RFOperations.Hybris.Orders o
                     INNER JOIN RFOperations.etl.OrderDate od ON od.Orderid = o.OrderID
-                    INNER JOIN hybris..users u ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                    INNER JOIN hybris..users u ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                     LEFT JOIN RFOperations.Hybris.Autoship a ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
           WHERE     o.CountryID = @RFOCountry
                     AND a.autoshipid IS NULL
@@ -235,7 +235,7 @@ WITH    OrderShippingAddress
     SELECT  CAST (a.OrderID AS NVARCHAR(100)) AS OrderID ,
             CAST(ISNULL(ShippingCost, 0.00) AS NVARCHAR(100)) AS ShippingCost ,
             CAST(OrderNumber AS NVARCHAR(100)) AS OrderNumber ,
-       -- CAST(AutoShipID AS NVARCHAR(100)) AS AutoShipID ,
+        CAST(AutoShipID AS NVARCHAR(100)) AS AutoShipID ,
             CASE WHEN CommissionDate IS NULL
                  THEN CAST (CAST('1900-01-01 00:00:00.000' AS DATETIME) AS NVARCHAR(100))
                  ELSE CAST(CommissionDate AS NVARCHAR(100))
@@ -319,7 +319,7 @@ CREATE CLUSTERED INDEX MIX_RFOrder ON #RFO_Orders (OrderID )
 SELECT  CAST (a.PK AS NVARCHAR(100)) AS PK ,
         CAST(CAST (deliverycost AS MONEY) AS NVARCHAR(100)) AS deliverycost ,
         CAST(a.code AS NVARCHAR(100)) AS code ,
-      -- CAST(p_associatedtemplate AS NVARCHAR(100)) AS p_associatedtemplate ,
+        CAST(p_associatedtemplate AS NVARCHAR(100)) AS p_associatedtemplate ,
         CAST(p_commissiondate AS NVARCHAR(100)) AS p_commissiondate ,
         CAST(CAST (totaldiscounts AS MONEY) AS NVARCHAR(100)) AS totaldiscounts ,
         CAST(CAST(p_totalcv AS MONEY) AS NVARCHAR(100)) AS p_totalcv ,

@@ -37,7 +37,7 @@ AS
         SELECT  @RFOCount = COUNT(DISTINCT oi.OrderItemID)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
                 INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                 INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
                 INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -84,7 +84,7 @@ AS
         FROM    ( SELECT    OrderItemID
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                             INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
                             INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                             INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
                             INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID

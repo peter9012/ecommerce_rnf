@@ -30,7 +30,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -73,7 +73,7 @@ FROM    ( SELECT    OrderShippingAddressID ,
                     OrderID
           FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                     INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                    INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                    INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid= cast(o.AccountID as nvarchar)
                     INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
                     INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
                     LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -128,20 +128,20 @@ IF OBJECT_ID('TEMPDB.dbo.#ShipAdr_Dups') IS NOT NULL
 
 
 SELECT  p_rfaddressid ,
-        COUNT(PK) AS Hybris_Duplicates
+        COUNT(B.PK) AS Hybris_Duplicates
 INTO    #ShipAdr_Dups
-FROM    RFOperations.Hybris.OrderShippingAddress (NOLOCK) a
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
-        INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
-        INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
-        JOIN Hybris.dbo.Addresses (NOLOCK) b ON a.OrderShippingAddressID = b.PK
-        LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
-WHERE   o.CountryID = @RFOCountry
+FROM    RFOperations.Hybris.Orders (NOLOCK) a
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(A.OrderID AS INT)
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(a.AccountID as nvarchar)
+        INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = a.OrderID
+        INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID
+        JOIN Hybris.dbo.Addresses (NOLOCK) b ON oi.OrderShippingAddressID = b.PK
+        LEFT JOIN RFOperations.Hybris.Autoship aas WITH ( NOLOCK ) ON CAST(aas.AutoshipNumber AS INT) = CAST (a.ordernumber AS INT)
+WHERE   a.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
         AND od.startdate >= @ServerMod
 GROUP BY p_rfaddressid
-HAVING  COUNT(PK) > 1; 
+HAVING  COUNT(B.PK) > 1; 
 
 
 

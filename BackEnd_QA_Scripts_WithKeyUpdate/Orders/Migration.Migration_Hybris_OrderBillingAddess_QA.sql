@@ -33,9 +33,10 @@ AS
         SELECT  @RFOCount = COUNT(*)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
                 INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = o.OrderID
                 INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
+				INNER JOIN Hybris..PaymentInfos HPI ON hO.PK = HPI.OwnerPKString 
                 LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
         WHERE   o.CountryID = @RFOCountry
                 AND a.autoshipid IS NULL
@@ -77,7 +78,7 @@ AS
                             o.OrderID
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                             INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                             INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = o.OrderID
                             INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
                             LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -137,7 +138,7 @@ AS
         INTO    #BillAdr_Dups
         FROM    RFOperations.Hybris.Orders (NOLOCK) a
                 INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(a.OrderNumber AS INT)
-                INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = a.AccountID
+                INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(A.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = a.OrderID
                 INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID
                 INNER JOIN Hybris..paymentinfos pio ON pio.OwnerPkString = ho.PK

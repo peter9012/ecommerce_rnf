@@ -1,7 +1,7 @@
 USE DataMigration
 go
 
-CREATE PROCEDURE Migration.Migration_Hybris_Paymentinfo_QA
+CREATE PROCEDURE Migration.Migration_Hybris_Paymentinfo_QA @LastRun '2014-05-01' 
 AS
     BEGIN 
 
@@ -37,10 +37,11 @@ AS
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(o.AccountID as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
+		INNER JOIN Hybris..PaymentInfos HPI ON HO.PK = HPI.OwnerPKString AND HPI.Code = CAST (Oi.OrderPaymentID AS NVARCHAR)
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
@@ -81,9 +82,10 @@ FROM    ( SELECT    OrderPaymentID
                
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
+		INNER JOIN Hybris..PaymentInfos HPI ON HO.PK = HPI.OwnerPKString --AND HPI.Code = CAST (Oi.OrderPaymentID AS NVARCHAR)
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
@@ -100,7 +102,7 @@ WHERE   ( p_template = 0
         AND currencypk = @HybCountry
 
 
-                        ) c ON a.orderPaymentID = c.PK  
+                        ) c ON CAST(a.orderPaymentID  AS NVARCHAR) = c.PK  
 WHERE   a.orderPaymentID IS NULL
         OR c.PK IS NULL; 
 
@@ -142,10 +144,10 @@ SELECT  p.code,
 INTO    #Pay_Dups
 FROM   RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
-		INNER JOIN Hybris..paymentinfos p ON p.OwnerPkString =ho.PK
+		INNER JOIN Hybris..paymentinfos p ON p.OwnerPkString =ho.PK AND P.Code = CAST (Oi.OrderPaymentID AS NVARCHAR)
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
@@ -217,9 +219,9 @@ IF @RowCount > 0
                                 OrderPaymentID
                      )
             SELECT  CAST (a.OrderPaymentID AS NVARCHAR(100)) AS OrderPaymentID ,
-                    CAST(b.PaymentProfileID AS NVARCHAR(100)) AS PaymentProfileID
+                    CAST(b.PaymentProfileID AS NVARCHAR(100)) AS PaymentProfileID,
+					CONCAT (SUBSTRING (DisplayNumber, 1, 6),SUBSTRING (DisplayNumber, (LEN(a.DisplayNumber) -3), 4), ExpMonth,ExpYear) AS SubscriptionID,
 --,CAST( RFOperations.[dbo].[DecryptTripleDES] (f.AccountNumber) AS NVARCHAR (200)) AS  CardNumber
-                    ,
                     CAST(a.Expmonth AS NVARCHAR(100)) AS Expmonth ,
                     CAST(a.ExpYear AS NVARCHAR(100)) AS ExpYear ,
                     CAST(LTRIM(RTRIM(CONCAT(FirstName, ' ', LastName))) AS NVARCHAR(100)) AS ccowner
@@ -248,9 +250,9 @@ IF @RowCount > 0
 
 
         SELECT  CAST (a.PK AS NVARCHAR(100)) AS PK ,
-                CAST(p_rfaccountpaymentmethodid AS NVARCHAR(100)) AS p_rfaccountpaymentmethodid
---,CAST( p_number AS NVARCHAR (100)) AS  p_number
-                ,
+                CAST(p_rfaccountpaymentmethodid AS NVARCHAR(100)) AS p_rfaccountpaymentmethodid,
+				CAST(p_subscriptionID as nvarchar(100)) AS p_subscriptionID,
+				--,CAST( p_number AS NVARCHAR (100)) AS  p_number
                 CAST(p_validtomonth AS NVARCHAR(100)) AS p_validtomonth ,
                 CAST(p_validtoyear AS NVARCHAR(100)) AS p_validtoyear ,
                 CAST(p_ccowner AS NVARCHAR(100)) AS ccowner
@@ -291,9 +293,7 @@ IF @RowCount > 0
         TRUNCATE TABLE DataMigration.Migration.ErrorLog_Orders
 
 
-        DECLARE @LastRUN DATETIME = '05/01/1901'
-
-        DECLARE @I INT = ( SELECT   MIN(MapID)
+                DECLARE @I INT = ( SELECT   MIN(MapID)
                            FROM     DataMigration.Migration.Metadata_Orders
                            WHERE    HybrisObject = 'PaymentInfos'
                          ) ,
@@ -430,7 +430,7 @@ SET a.Hybris_Value = b. ' + @DesCol
 --DROP INDEX MIX_RFItem ON #RFO_Item
 
 
-
+/*
 
         SELECT  *
         FROM    DataMigration.Migration.ErrorLog_Orders a
@@ -438,7 +438,7 @@ SET a.Hybris_Value = b. ' + @DesCol
 --WHERE a.MapID =107
 GROUP BY        mapID
 
-
+*/
 
     END 
 

@@ -2,7 +2,7 @@
 USE DataMigration
 go
 
-CREATE PROCEDURE Migration.Migration_Hybris_OrderNotes_QA
+CREATE PROCEDURE Migration.Migration_Hybris_OrderNotes_QA @LastRun DATETIME = '2014-05-01'
 AS
 BEGIN
  
@@ -41,8 +41,8 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = o.orderId
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -87,7 +87,7 @@ INTO    DataMigration.Migration.MissingNotes
 FROM    ( SELECT   oi.OrderNoteID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON CAST (u.p_rfaccountid AS BIGINT) = o.AccountID
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -218,7 +218,6 @@ CREATE CLUSTERED INDEX MIX_Note ON #Note (OrderNoteID)
 TRUNCATE TABLE DataMigration.Migration.ErrorLog_Orders
 
 
-DECLARE @LastRUN DATETIME ='05/01/1901'
 
 DECLARE @I INT = (SELECT MIN(MapID) FROM DataMigration.Migration.Metadata_Orders WHERE HybrisObject = 'OrderNotes'),
 @C INT =  (SELECT MAX(MapID) FROM DataMigration.Migration.Metadata_Orders  WHERE HybrisObject = 'OrderNotes') 

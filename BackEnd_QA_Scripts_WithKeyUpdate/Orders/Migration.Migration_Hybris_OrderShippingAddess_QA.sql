@@ -69,8 +69,7 @@ SELECT  OrderShippingAddressID AS RFO_OrderShippingAddressID ,
              WHEN a.OrderShippingAddressID IS NULL THEN 'Source'
         END AS MissingFROM
 INTO    DataMigration.Migration.MissingSHipAddress
-FROM    ( SELECT    OrderShippingAddressID ,
-                    OrderID
+FROM    ( SELECT    OrderShippingAddressID 
           FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                     INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                     INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid= cast(o.AccountID as nvarchar)
@@ -131,7 +130,7 @@ SELECT  p_rfaddressid ,
         COUNT(B.PK) AS Hybris_Duplicates
 INTO    #ShipAdr_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(A.OrderID AS INT)
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = A.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(a.AccountID as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = a.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID

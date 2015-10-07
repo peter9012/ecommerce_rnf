@@ -123,6 +123,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
+		country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		// Click on our product link that is located at the top of the page and then click in on quick shop
@@ -187,7 +188,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		//storeFrontHomePage.switchToPreviousTab();
-		storeFrontHomePage.switchToPreviousTab(); 
+		if(country.equalsIgnoreCase("CA"))
+		{storeFrontHomePage.switchToPreviousTab();}
+		//storeFrontHomePage.switchToPreviousTab(); 
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));

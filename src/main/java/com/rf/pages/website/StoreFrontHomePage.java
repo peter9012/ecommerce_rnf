@@ -33,24 +33,38 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		super(driver);		
 	}
 
-	//	public void clickOnOurBusinessLink(){
-	//		driver.waitForElementPresent(BUSINESS_LINK_LOC);
-	//		Actions actions = new Actions(RFWebsiteDriver.driver);
-	//		WebElement becomeAConsultant  = driver.findElement(BUSINESS_LINK_LOC);		
-	//		actions.moveToElement(becomeAConsultant).pause(1000).click(becomeAConsultant).build().perform();
-	//		logger.info("Become a consultant clicked");
-	//		driver.pauseExecutionFor(2000);
-	//	}
-	//
-	//	public StoreFrontEnrollNowPage clickOnOurEnrollNowLink(){
-	//		driver.waitForElementPresent(ENROLL_NOW_LINK_LOC);
-	//		driver.waitForElementToBeVisible(ENROLL_NOW_LINK_LOC, 5);
-	//		driver.click(ENROLL_NOW_LINK_LOC);
-	//		logger.info("Enroll Now Link clicked");
-	//		driver.waitForLoadingImageToDisappear();
-	//		return new StoreFrontEnrollNowPage(driver);
-	//	}
-
+	public StoreFrontConsultantPage dismissPolicyPopup(){
+		try {	
+			driver.waitForElementPresent(By.id("agree"));
+			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
+			if (we.isDisplayed()){
+				we.click();
+				driver.click(By.xpath("//input[@value='Continue']"));
+			}
+					//do nothing
+						
+		}
+		catch (IndexOutOfBoundsException e) {
+		
+			System.out.println("Policy Popup Dialog not seen.");
+		}
+		return null;
+	} 
+public void clickRenewLater()  {
+		
+		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
+//		driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		if (we.isDisplayed()){
+		
+			we.click();//(By.xpath("//input[@value='Renew Later']"));
+		} 
+			System.out.println ("No renewal popup for this consultant");
+		
+		}
+			
+		
+	
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -60,10 +74,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
+		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontConsultantPage(driver);
 	}
+
 
 	public StoreFrontRCUserPage loginAsRCUser(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
@@ -87,6 +104,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
+		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontPCUserPage(driver);

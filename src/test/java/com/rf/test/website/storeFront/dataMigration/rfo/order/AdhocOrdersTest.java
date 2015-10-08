@@ -46,7 +46,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 
 
-		/*while(true){
+		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -61,7 +61,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
@@ -140,7 +140,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		/*while(true){
+		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
@@ -156,7 +156,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		logger.info("login is successful");
@@ -237,7 +237,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		/*while(true){
+		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
@@ -253,7 +253,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 		logger.info("login is successful");
 

@@ -64,7 +64,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -80,7 +80,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}		
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
@@ -186,7 +186,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -202,7 +202,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
@@ -303,7 +303,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
@@ -319,7 +319,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		logger.info("login is successful");
@@ -424,7 +424,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
@@ -440,7 +440,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
@@ -543,7 +543,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
@@ -559,7 +559,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC Page doesn't contain Welcome User Message");
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
@@ -659,7 +659,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_4294_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
@@ -674,7 +674,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -775,7 +775,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.GET_PC_USER_FOR_FAILED_AUTOSHIP_ORDER_RFO,RFO_DB);
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
@@ -789,7 +789,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 
 		storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		logger.info("login is successful");
@@ -892,7 +892,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 
 			randomRCList= DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACTIVE_RC_USER_HAVING_FAILED_ORDERS_RFO,RFO_DB);
 			rcEmailID= (String) getValueFromQueryResult(randomRCList, "Username");
@@ -907,7 +907,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcEmailID),"RC User Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcEmailID),"RC User Page doesn't contain Welcome User Message");
 		storeFrontRCUserPage= storeFrontHomePage.loginAsRCUser(rcEmailID, password);
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();

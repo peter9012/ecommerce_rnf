@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontAccountTerminationPage;
@@ -27,6 +28,8 @@ import com.rf.test.website.RFWebsiteBaseTest;
 public class EnrollmentTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EnrollmentTest.class.getName());
+
+	private static final String RFL_DB = null;
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
@@ -630,10 +633,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			//			logger.info("Account Id of the user is "+accountID);
+						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+						consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+						accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+						logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -880,7 +883,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -896,7 +899,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 					break;
 			}
 
-			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -920,7 +923,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -934,7 +937,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 				}
 				else
 					break;
-			}*/
+			}
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -1254,7 +1257,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		/*while(true){
+		while(true){
 		   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 		   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -1269,7 +1272,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		   }
 		   else
 		    break;
-		  }*/
+		  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -1388,7 +1391,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 	      randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	      consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	      accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -1402,7 +1405,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	      }
 	      else
 	       break;
-	     }*/
+	     }
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful"); 
@@ -1441,7 +1444,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String pcUserEmailID = TestConstants.PC_USERNAME;
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*   while(true){
+		  while(true){
 	    randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 	    pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 	    accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
@@ -1455,7 +1458,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	     driver.get(driver.getURL());
 	    }
 	    else
-	     break;*/
+	     break;
 		storeFrontPCUserPage=storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		logger.info("login is successful"); 
 		//click on auto ship cart
@@ -1481,7 +1484,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"pc perks update cart message is not displayed");
 		//update the product Qty Decreasing it and validate the  Error message
 		s_assert.assertTrue(storeFrontHomePage.validateErrorMsgAfterRemovingProductsFromPcCart(),"Error message is not being displayed");
-		s_assert.assertAll(); 
+		s_assert.assertAll(); }
 	}
 
 	//Hybris Project-4350:Verify "Join my team" button on the .com and .biz site
@@ -1509,9 +1512,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String consultantWithPWSEmailID = TestConstants.CONSULTANT_USERNAME;
 		String consultantPWSURL = TestConstants.CONSULTANT_BIZ_URL;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
 			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");*/
+			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
@@ -1531,11 +1534,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String consultantWithPWSEmailID = TestConstants.CONSULTANT_USERNAME;
 		String consultantPWSURL = TestConstants.CONSULTANT_COM_URL;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
 			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 			consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
-		 */
+		 
 
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
@@ -1556,11 +1559,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String consultantPWSURL = TestConstants.CONSULTANT_COM_URL;
 		String pwsUrlForBiz = TestConstants.CONSULTANT_BIZ_URL;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
 			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 			consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
-		 */
+		
 		// For .com site
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
@@ -1591,11 +1594,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String consultantPWSURL = TestConstants.CONSULTANT_COM_URL;
 		String pwsUrlForBiz = TestConstants.CONSULTANT_BIZ_URL;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
 			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 			consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
-		 */
+		 
 
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
@@ -1632,8 +1635,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Get Canadian sponser with PWS from database
-		//   canadianSponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
-		//   canadianSponserHavingPulse = (String) getValueFromQueryResult(canadianSponserList, "AccountID");
+		   canadianSponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,RFO_DB);
+		   canadianSponserHavingPulse = (String) getValueFromQueryResult(canadianSponserList, "AccountID");
 		storeFrontHomePage.openPWS(TestConstants.SPONSER_PWS);
 
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();

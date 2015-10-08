@@ -63,7 +63,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -78,7 +78,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -133,7 +133,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -148,7 +148,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -224,7 +224,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -239,7 +239,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);

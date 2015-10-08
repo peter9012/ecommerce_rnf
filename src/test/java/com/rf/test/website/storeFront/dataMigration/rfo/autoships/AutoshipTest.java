@@ -168,7 +168,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -184,7 +184,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				break;
 		}		
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
@@ -280,7 +280,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
+		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
@@ -296,8 +296,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");*/
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

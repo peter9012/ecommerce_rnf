@@ -57,7 +57,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -72,7 +72,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -143,7 +143,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -158,7 +158,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -221,7 +221,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -236,7 +236,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -319,7 +319,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -334,7 +334,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -402,7 +402,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -417,7 +417,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -468,7 +468,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -483,7 +483,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -548,7 +548,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -563,7 +563,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -628,7 +628,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		} 
-		/*while(true){
+		while(true){
 	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -643,7 +643,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   }
 	   else
 	    break;
-	  }*/
+	  }
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);

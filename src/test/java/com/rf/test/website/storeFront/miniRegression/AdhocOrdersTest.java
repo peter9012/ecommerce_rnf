@@ -134,7 +134,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 
 		List<Map<String, Object>> randomPCUserList =  null;
-		String pcUserEmailID = "autorfpc@xyz.com";
+		String pcUserEmailID = "autopctst3@xyz.com";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String accountId = null;
@@ -230,7 +230,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
 
-		String rcUserEmailID = "auto12312@xyz.com";
+		String rcUserEmailID = "autorctst3@xyz.com";
 		String accountId = null;
 
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;

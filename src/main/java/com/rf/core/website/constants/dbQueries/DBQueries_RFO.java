@@ -1505,6 +1505,34 @@ public class DBQueries_RFO {
 			"AND ar.HardTerminationDate < DATEADD(DAY, -90,CONVERT(DATE, GETDATE())) "+
 			"ORDER BY NEWID()";
 
+	public static String GET_SPONSOR_ID = "select top 1 AccountNumber from RFO_Accounts.AccountBase where accountId IN ( "+
+			"SELECT TOP 1 "+
+			"ab.AccountID "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+ 
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+ 
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+ 
+			"WHERE   ab.CountryID = %s "+
+			"AND ab.AccountTypeID = 1 "+/*Consultant*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+ 
+			"FROM   RFO_Accounts.AccountRF AS ar "+ 
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+ 
+			"AND ar.AccountID = ab.AccountID )  "+
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+ 
+			"WHERE  o.AccountID = ab.AccountID "+ 
+			"AND o.OrderTypeID = 3 "+/*Consultant*/
+			"AND o.OrderStatusID = 2 ) "+  
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1 "+ 
+			"FROM   Hybris.Autoship AS a "+ 
+			"WHERE  a.AccountID = ab.AccountID "+ 
+			"AND a.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
+			"AND a.Active = 1 ) "+
+			"ORDER BY NEWID() )";
+
 	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";
 
 	public static String GET_EMAIL_ADDRESS_ID_RFO = "select top 1 * from RFO_Accounts.AccountEmails where AccountContactId = '%s'";

@@ -111,7 +111,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PASSWORD_STG2 = "111maiden";
 	public static final String CONSULTANT_NEW_PASSWORD = "11maiden5";
 
-	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
+	public static final String CONSULTANT_USERNAME = "consultantuser@xyz.com";
 	public static final String CONSULTANT_BIZ_URL = "http://atst1.myrfotst2.biz/ca/";
 	public static final String CONSULTANT_COM_URL = "http://atst1.myrfotst2.com/ca/";
 	public static final String SPONSER_PWS="https://mduartestucky.myrfotst2.biz/ca/";

@@ -62,6 +62,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(LOGIN_BTN_LOC);	
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
+		try{
+			driver.turnOffImplicitWaits();
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 		return new StoreFrontConsultantPage(driver);
 	}
 
@@ -76,6 +88,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
+		try{
+			driver.turnOffImplicitWaits();
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
+
+
 		return new StoreFrontRCUserPage(driver);
 	}
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
@@ -89,6 +115,19 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
+		try{
+			driver.turnOffImplicitWaits();
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
+			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
+
 		return new StoreFrontPCUserPage(driver);
 	}
 
@@ -119,6 +158,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.id("search-sponsor-button"));
 		logger.info("Sponsor entered as "+cid+" and search button clicked");
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String getCIDFromUIAfterSponsorSearch(){
+		driver.waitForElementPresent(By.xpath("//div[@class='the-search-results']/div[1]//ul/li[2]"));
+		return driver.findElement(By.xpath("//div[@class='the-search-results']/div[1]//ul/li[2]")).getText();
 	}
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
@@ -516,7 +560,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForLoadingImageToDisappear();
-			}
+		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
 			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
@@ -1143,6 +1187,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		else
 			return false;
 	}
+
 }
 
 

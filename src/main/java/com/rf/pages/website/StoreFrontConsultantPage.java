@@ -125,8 +125,11 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	public String getUserNameAForVerifyLogin(String profileName){
-		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
+/*		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
 		String userName = driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]")).getText();
+		return userName;*/
+		driver.waitForElementPresent(By.xpath("//span[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"+profileName+"')]"));
+		String userName = driver.findElement(By.xpath("//span[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"+profileName+"')]")).getText().toLowerCase();
 		return userName;
 	}
 

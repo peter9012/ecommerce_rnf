@@ -1162,6 +1162,14 @@ public void clickRenewLater()  {
 		else
 			return false;
 	}
+	public void logout(){
+		driver.findElement(By.id("account-info-button")).click();
+		driver.waitForElementPresent(By.linkText("Log out"));
+		driver.findElement(By.linkText("Log out")).click();
+		logger.info("Logout");
+	}
+	
+	
 }
 
 

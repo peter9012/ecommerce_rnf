@@ -73,11 +73,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -159,11 +154,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
+	
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -237,11 +228,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
+		
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -335,10 +322,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
@@ -484,12 +468,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
+		
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -564,11 +543,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	   else
 	    break;
 	  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();

@@ -59,11 +59,10 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-//		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//		logger.info("Account Id of the user is "+accountID);
-		consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);   
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -73,14 +72,14 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 
 		//	    //assert First Name with RFO
-		//	    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		//	    firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
-		//	    assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
-		//	   
-		//	    // assert Last Name with RFO
-		//	    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		//	    lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
-		//	    assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
+			    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			    firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+			    assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
+			   
+			    // assert Last Name with RFO
+			    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			    lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+			    assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
 
 		// assert Address Line 1 with RFO
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
@@ -149,9 +148,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_INACTIVE_RFO_4181,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_INACTIVE_RFO_4181,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
@@ -163,9 +161,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	public void testNoAutoshipTemplateForInactiveAccount_4182() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		String userEmailID = null;
-//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182_RFO, RFO_DB);
-//		userEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		userEmailID = "autoconsultanttst@rnf.com";
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_INACTIVE_ACCOUNT_NO_AUTOSHIP_TEMPLATE_4182_RFO, RFO_DB);
+		userEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailID, password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");   
@@ -178,9 +175,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_INACTIVE_RFO_4184,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_INACTIVE_RFO_4184,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
@@ -194,9 +190,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULATNT_NOCRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4186,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULATNT_NOCRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4186,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
@@ -209,9 +204,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4188,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4188,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");			
@@ -225,9 +219,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -250,9 +243,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -276,9 +268,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4190,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4190,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");			
@@ -291,9 +282,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFO_4192,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_SUBMITTED_ORDERS_INACTIVE_RFO_4192,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
@@ -307,9 +297,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFO_4193,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFO_4193,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 	//	s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -333,9 +322,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4194,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4194,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
@@ -348,9 +336,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFO_4196,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantEmailID = "autoconsultanttst@rnf.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_HAS_SUBMITTED_ORDERS_INACTIVE_RFO_4196,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");			
@@ -375,9 +362,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> billingAddressCountList =  null;
 		int totalBillingAddressesFromDB = 0;
 		String userEmailId = null;
-//		randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFO_4223,RFO_DB);
-//		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "Username");
-		userEmailId = "autocon@xyz.com";
+		randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFO_4223,RFO_DB);
+		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailId, password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -400,9 +386,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderNumberList =  null;		
 		String orderNumberDB = null;
 		String consultantEmail = null;
-//		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFO_4195,RFO_DB);
-//		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "Username");
-		consultantEmail = "autocon@xyz.com";
+		randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFO_4195,RFO_DB);
+		consultantEmail = (String) getValueFromQueryResult(randomConsultantEmailIdList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmail, password);
 	//	s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -433,10 +418,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		String pcUserEmail = null;
-//		randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_HAS_CRP_PULSE_SUBMITTED_ORDERS_RFO_4205,RFO_DB);
-//		pcUserEmail = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
-		//pcUserEmail = "autopc@rnf.com";
-		pcUserEmail = "auto15151@xyz.com";
+		randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_HAS_CRP_PULSE_SUBMITTED_ORDERS_RFO_4205,RFO_DB);
+		pcUserEmail = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmail, password);
 		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -460,9 +443,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		String rcUserEmail = null;
-//		randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ENROLLED_RC_USER_HAS_FAILED_ORDER_RFO_4200,RFO_DB);
-//		rcUserEmail = (String) getValueFromQueryResult(randomRCUserEmailIdList, "Username");
-		rcUserEmail= "auto12346@xyz.com";
+		randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ENROLLED_RC_USER_HAS_FAILED_ORDER_RFO_4200,RFO_DB);
+		rcUserEmail = (String) getValueFromQueryResult(randomRCUserEmailIdList, "Username");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmail, password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");

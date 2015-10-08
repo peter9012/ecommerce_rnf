@@ -205,9 +205,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 					else
 						break;
 				}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -258,9 +256,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 						break;
 				}
 
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		s_assert.assertAll();
@@ -301,9 +297,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 					else
 						break;
 				}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -1543,8 +1537,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				}
 
 				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		logger.info("login is successful");
+		
 		//goto orders page
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage=storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();

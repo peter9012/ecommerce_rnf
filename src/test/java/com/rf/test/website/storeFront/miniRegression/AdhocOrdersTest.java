@@ -63,8 +63,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		logger.info("login is successful");
+		
 		/*storeFrontConsultantPage.clickOnShopLink();
 		storeFrontConsultantPage.clickOnAllProductsLink();*/
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();

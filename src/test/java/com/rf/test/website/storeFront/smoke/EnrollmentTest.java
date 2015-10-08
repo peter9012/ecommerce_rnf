@@ -524,10 +524,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			//			logger.info("Account Id of the user is "+accountID);
+						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+						consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+						accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+						logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -575,10 +575,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			//			logger.info("Account Id of the user is "+accountID);
+						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+						consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+						accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+						logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -938,9 +938,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 				else
 					break;
 			}
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+	
 		//goto check my pulse
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickCheckMyPulseLinkPresentOnWelcomeDropDown();
@@ -1273,10 +1271,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		   else
 		    break;
 		  }
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
@@ -1406,9 +1401,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	      else
 	       break;
 	     }
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful"); 
+		
 		//click on auto ship cart
 		storeFrontHomePage.clickOnAutoshipCart();
 		//validate update Cart page is displayed
@@ -1564,14 +1557,14 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 			consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
 		
-		// For .com site
-		storeFrontHomePage.openPWS(consultantPWSURL);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-		storeFrontHomePage.clickOnUserName();
-		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
-		s_assert.assertTrue(storeFrontConsultantPage.getHomtownNamePresentOnAfterClickonPersinalizeLink().length()>0, "HomeTown text is not present on meet your consultant page");
-		s_assert.assertTrue(storeFrontConsultantPage.getConsultantSinceTextPresentAfterClickonPersinalizeLink().length()>0, "Consultant since text is not present on meet your consultant page");
-		s_assert.assertTrue(storeFrontConsultantPage.getFavoriteProductNameIsPresentAfterClickonPersinalizeLink().length()>0, "Favorite product text is not present on meet your consultant page");
+//		// For .com site
+//		storeFrontHomePage.openPWS(consultantPWSURL);
+//		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+//		storeFrontHomePage.clickOnUserName();
+//		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+//		s_assert.assertTrue(storeFrontConsultantPage.getHomtownNamePresentOnAfterClickonPersinalizeLink().length()>0, "HomeTown text is not present on meet your consultant page");
+//		s_assert.assertTrue(storeFrontConsultantPage.getConsultantSinceTextPresentAfterClickonPersinalizeLink().length()>0, "Consultant since text is not present on meet your consultant page");
+//		s_assert.assertTrue(storeFrontConsultantPage.getFavoriteProductNameIsPresentAfterClickonPersinalizeLink().length()>0, "Favorite product text is not present on meet your consultant page");
 
 		// For .biz site
 		storeFrontHomePage.openPWS(pwsUrlForBiz);
@@ -1606,17 +1599,16 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(), "Why I joined Rodan + Fields block is not Present on meet your consultant page ");
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfProductsOnMeetYourConsultantPage(), "What I love most about R+F products block is not Present on meet your consultant page ");
-		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfBusinessOnMeetYourConsultantPage(), "What I love most about my R+F Business block is not Present on meet your consultant page ");
 
 		// For .biz site
-		storeFrontHomePage.openPWS(pwsUrlForBiz);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-		storeFrontHomePage.clickOnUserName();
-		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
-		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(), "Why I joined Rodan + Fields block is not Present on meet your consultant page ");
-		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfProductsOnMeetYourConsultantPage(), "What I love most about R+F products block is not Present on meet your consultant page ");
-		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfBusinessOnMeetYourConsultantPage(), "What I love most about my R+F Business block is not Present on meet your consultant page ");
-		s_assert.assertAll();
+//		storeFrontHomePage.openPWS(pwsUrlForBiz);
+//		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+//		storeFrontHomePage.clickOnUserName();
+//		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+//		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(), "Why I joined Rodan + Fields block is not Present on meet your consultant page ");
+//		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfProductsOnMeetYourConsultantPage(), "What I love most about R+F products block is not Present on meet your consultant page ");
+//		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfBusinessOnMeetYourConsultantPage(), "What I love most about my R+F Business block is not Present on meet your consultant page ");
+//		s_assert.assertAll();
 	}
 
 	// Hybris Project-3854:Register as RC with Different CA Sponsor WITH Pulse

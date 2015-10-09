@@ -94,30 +94,30 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-				while(true){
-					randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-		pcUserEmailID = "autopc@rnf.com";
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-		//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-		//			if(isSiteNotFoundPresent){
-		//				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-		//				driver.get(driver.getURL());
-		//			}
-		//			else
-		//				break;
-		//		}		
+			pcUserEmailID = "autopc@rnf.com";
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			//			if(isSiteNotFoundPresent){
+			//				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+			//				driver.get(driver.getURL());
+			//			}
+			//			else
+			//				break;
+			//		}		
 
-		logger.info("login is successful");
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
-		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
+			logger.info("login is successful");
+			storeFrontPCUserPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+			s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
 
-		s_assert.assertAll();}
+			s_assert.assertAll();}
 	}
 
 
@@ -130,44 +130,44 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
-		consultantEmailID = TestConstants.CONSULTANT_USERNAME;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-		//			if(isSiteNotFoundPresent){
-		//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-		//				driver.get(driver.getURL());
-		//			}
-		//			else
-		//				break;
-		//		}
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			//			if(isSiteNotFoundPresent){
+			//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			//				driver.get(driver.getURL());
+			//			}
+			//			else
+			//				break;
+			//		}
 
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
 
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-		storeFrontOrdersPage.orderNumberForOrderHistory();
-		storeFrontReportOrderComplaintPage = storeFrontOrdersPage.clickOnActions();
-		s_assert.assertTrue(storeFrontReportOrderComplaintPage.VerifyOrderNumberOnReportPage(),"OrderNumber is different on ReportOrderComplaintPage");
-		storeFrontReportOrderComplaintPage.clickOnCheckBox();
-		s_assert.assertTrue(storeFrontReportOrderComplaintPage.verifyCountOfDropDownOptionsOnReportPage(),"DropDown Options are not present as expected");
-		storeFrontReportOrderComplaintPage.selectOptionFromDropDown();
-		storeFrontReportProblemConfirmationPage = storeFrontReportOrderComplaintPage.enterYourProblemAndSubmit(TestConstants.TELL_US_ABOUT_YOUR_PROBLEM);
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+			s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+			storeFrontOrdersPage.orderNumberForOrderHistory();
+			storeFrontReportOrderComplaintPage = storeFrontOrdersPage.clickOnActions();
+			s_assert.assertTrue(storeFrontReportOrderComplaintPage.VerifyOrderNumberOnReportPage(),"OrderNumber is different on ReportOrderComplaintPage");
+			storeFrontReportOrderComplaintPage.clickOnCheckBox();
+			s_assert.assertTrue(storeFrontReportOrderComplaintPage.verifyCountOfDropDownOptionsOnReportPage(),"DropDown Options are not present as expected");
+			storeFrontReportOrderComplaintPage.selectOptionFromDropDown();
+			storeFrontReportProblemConfirmationPage = storeFrontReportOrderComplaintPage.enterYourProblemAndSubmit(TestConstants.TELL_US_ABOUT_YOUR_PROBLEM);
 
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyHeaderAtReportConfirmationPage("REPORT A PROBLEM"),"Report a problem is not present at header");
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyThankYouTagAtReportConfirmationPage("THANK YOU"),"Thank you tag is not present on the page");
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyOrderNumberAtReportConfirmationPage(),"Order number not present as expected");
-		s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyBackToOrderButtonAtReportConfirmationPage(),"Back To Order button is not present");
+			s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyHeaderAtReportConfirmationPage("REPORT A PROBLEM"),"Report a problem is not present at header");
+			s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyThankYouTagAtReportConfirmationPage("THANK YOU"),"Thank you tag is not present on the page");
+			s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyEmailAddAtReportConfirmationPage(consultantEmailID),"Email Address is not present as expected" );
+			s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyOrderNumberAtReportConfirmationPage(),"Order number not present as expected");
+			s_assert.assertTrue(storeFrontReportProblemConfirmationPage.verifyBackToOrderButtonAtReportConfirmationPage(),"Back To Order button is not present");
 
-		s_assert.assertAll();}
+			s_assert.assertAll();}
 	}
 
 
@@ -190,22 +190,22 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
-		
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-					if(isSiteNotFoundPresent){
-						logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				}
-		
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -239,24 +239,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		consultantEmailID = TestConstants.CONSULTANT_USERNAME;//emailID;
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
-		
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-					if(isSiteNotFoundPresent){
-						logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				}
 
-		
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		s_assert.assertAll();
@@ -282,22 +282,22 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
-		
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-					if(isSiteNotFoundPresent){
-						logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				}
-		
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -569,10 +569,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
-						addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-						city = TestConstants.NEW_ADDRESS_CITY_US;
-						postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-						phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -1098,11 +1098,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
-		 RFO_DB = driver.getDBNameRFO();
-		 List<Map<String, Object>> randomRCUserList =  null;
-		 String rcUserEmailID = null;
-		 String accountID = null;
-		 randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountID = null;
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
 		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(newRCName, password);
 		logger.info("login is successful");
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
@@ -1333,12 +1333,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		 s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-	  s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-	  storeFrontHomePage.clickEnrollmentNextBtn();  
-	  storeFrontHomePage.selectProductAndProceedToAddToCRP();
-	  storeFrontHomePage.addQuantityOfProduct("5");
-	  storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
+		storeFrontHomePage.clickEnrollmentNextBtn();  
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.addQuantityOfProduct("5");
+		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
@@ -1521,23 +1521,23 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-					accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountID);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-					if(isSiteNotFoundPresent){
-						logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				}
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
 
-				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+
 		//goto orders page
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage=storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -1615,7 +1615,43 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		driver.get(currentPWSUrl);
 		s_assert.assertTrue(storeFrontHomePage.validatePWS(), "PWS is not active");  
 		s_assert.assertAll();
-	}	 	 
+	}	
+
+	//Hybris Project-1976 :: Version : 1 :: Autoship Module. Check My Pulse UI 
+	@Test
+	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException	 {
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+		//goto check my pulse
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickCheckMyPulseLinkPresentOnWelcomeDropDown();
+		//pass driver control to child window
+		storeFrontConsultantPage.switchToChildWindow();
+		//validate home page for pulse
+		s_assert.assertTrue(storeFrontConsultantPage.validatePulseHomePage(),"Home Page for pulse is not displayed");
+		storeFrontConsultantPage.switchToPreviousTab();
+		s_assert.assertAll();
+	}
 
 }
 

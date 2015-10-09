@@ -25,6 +25,7 @@ import com.rf.test.base.RFBaseTest;
 public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
+	protected String countryId = null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -45,7 +46,13 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
-		driver.get(driver.getURL()+"/"+driver.getCountry());
+		String country = driver.getCountry();
+		driver.get(driver.getURL()+"/"+country);
+		if(country.equalsIgnoreCase("ca"))
+			countryId = "40";
+		else if(country.equalsIgnoreCase("us"))
+			countryId = "236";
+
 		setPassword(driver.getPassword());
 		try{
 			logout();
@@ -66,7 +73,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void setPassword(String pass){
 		password=pass;
 	}
-	
+
 	public void logout(){
 		driver.findElement(By.id("account-info-button")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
@@ -194,14 +201,14 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 			//logger.info("query result:" + map.get(column));
 
-		//	logger.info("query result:" + map.get(column));
+			//	logger.info("query result:" + map.get(column));
 
 			value = map.get(column);			
 		}
 		logger.info("Data returned by query: "+ value);
 		return value;
 	}
-	
+
 	public List<String> getValuesFromQueryResult(List<Map<String, Object>> userDataList,String column){
 		List<String> allReturnedValuesFromQuery = new ArrayList<String>();
 		Object value = null;

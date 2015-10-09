@@ -59,7 +59,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
@@ -97,7 +97,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
@@ -127,7 +127,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
@@ -154,7 +154,7 @@ public class DBQueries_RFO {
 					"JOIN    Hybris.Sites AS S2 ON S2.AccountID = AB2.AccountID "+
 					"JOIN    Hybris.SiteURLs AS SUL2 ON SUL2.SiteID = S2.SiteID "+
 					"JOIN    Hybris.SiteDomain AS SD2 ON SD2.SiteDomainID = SUL2.SiteDomainID "+
-					"WHERE   ab.CountryID = 236 "+
+					"WHERE   ab.CountryID = %s "+
 					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
 					/*Active Account*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -175,7 +175,7 @@ public class DBQueries_RFO {
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-					"WHERE   ab.CountryID = 236 "+
+					"WHERE   ab.CountryID = %s "+
 					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
 					/*No PWS sponsor*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -201,7 +201,7 @@ public class DBQueries_RFO {
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-					"WHERE   ab.CountryID = 236 "+
+					"WHERE   ab.CountryID = %s "+
 					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
 					/*No Sponsor*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -224,7 +224,7 @@ public class DBQueries_RFO {
 					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
 					"WHERE   O.OrderTypeID = 10 "+/*Consultant Auto-ship*/
 					"AND O.OrderStatusID = 2 "+ /*Submitted*/
-					"AND AB.CountryID = 236 "+
+					"AND AB.CountryID = %s "+
 					/*Active Accounts*/
 					"AND NOT EXISTS ( SELECT 1 "+
 					"FROM   RFO_Accounts.AccountRF AS ar "+
@@ -258,7 +258,7 @@ public class DBQueries_RFO {
 					"FROM    Hybris.Orders AS O "+
 					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
 					"WHERE   O.OrderTypeID = 3 "+/*Consultant*/
-					"AND AB.CountryID = 236 "+
+					"AND AB.CountryID = %s "+
 					"AND O.OrderStatusID = 2 "+ /*Submitted*/
 					/*Active Accounts*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -275,7 +275,7 @@ public class DBQueries_RFO {
 					"FROM    Hybris.Orders AS O "+
 					"JOIN    Hybris.Autoship AS A ON A.AutoshipID = O.AutoShipID "+
 					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
-					"WHERE   AB.CountryID = 236 "+
+					"WHERE   AB.CountryID = %s "+
 					"AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
 					"AND O.OrderStatusID = 2 "+ /*Submitted*/
 					/*Active Accounts*/
@@ -323,7 +323,7 @@ public class DBQueries_RFO {
 					"FROM    Hybris.Orders AS O "+
 					"JOIN    Hybris.Autoship AS A ON A.AutoshipID = O.AutoShipID "+
 					"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
-					"WHERE   AB.CountryID = 236 "+
+					"WHERE   AB.CountryID = %s "+
 					"AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
 					"AND O.OrderStatusID = 2 "+ /*Submitted*/
 					/*Active Accounts*/
@@ -347,7 +347,7 @@ public class DBQueries_RFO {
 		     "SELECT TOP 1 "+
 		     "@AutoshipID = A.AutoshipID "+
 		     "FROM    Hybris.Autoship AS A "+
-		     "WHERE   A.CountryID = 236 "+
+		     "WHERE   A.CountryID = %s "+
 		     "AND A.Active = 1 "+
 		     "AND A.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
 		     "ORDER BY NEWID() "+
@@ -408,7 +408,7 @@ public class DBQueries_RFO {
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-					"WHERE   ab.CountryID = 236 "+
+					"WHERE   ab.CountryID = %s "+
 					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
 					/*Active Accounts*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -455,7 +455,7 @@ public class DBQueries_RFO {
 			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 1 "+
+			   "WHERE   ab.CountryID = %s AND ab.AccountTypeID = 1 "+
 			   /*Active Accounts*/
 			   "AND NOT EXISTS ( SELECT 1 "+
 			   "FROM   RFO_Accounts.AccountRF AS ar "+
@@ -494,7 +494,7 @@ public class DBQueries_RFO {
 			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 2 "+
+			   "WHERE   ab.CountryID = %s AND ab.AccountTypeID = 2 "+
 			   /*Active Accounts*/
 			   "AND NOT EXISTS ( SELECT 1 "+
 			   "FROM   RFO_Accounts.AccountRF AS ar "+
@@ -531,7 +531,7 @@ public class DBQueries_RFO {
 		     "SELECT TOP 1 "+
 		     "@AutoshipID = A.AutoshipID "+
 		     "FROM    Hybris.Autoship AS A "+
-		     "WHERE   A.CountryID = 236 "+
+		     "WHERE   A.CountryID = %s "+
 		     "AND A.Active = 1 "+
 		     "AND A.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
 		     "ORDER BY NEWID() "+
@@ -642,7 +642,7 @@ public class DBQueries_RFO {
 				"@Accountid = AB.AccountID "+
 				"FROM    Hybris.Orders AS O "+
 				"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
-				"WHERE   AB.CountryID = 236 "+
+				"WHERE   AB.CountryID = %s "+
 				"AND O.OrderTypeID = 10 "+/*Consultant Auto-ship*/
 				"AND O.OrderStatusID = 1 "+ /*Failed*/
 				/*Active Accounts*/
@@ -673,6 +673,37 @@ public class DBQueries_RFO {
 								"FROM    Hybris.OrderShipmentPackageItem AS OSPI "+
 								"WHERE   OSPI.OrderID = @Orderid ";
 
+	public static String GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_RFO = "USE RFOperations "+
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"ab.AccountID , "+
+			"[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"WHERE   ab.CountryID = %s "+
+			"AND ab.AccountTypeID = 1 /*Consultant*/ "+
+
+			        "AND NOT EXISTS ( SELECT 1 "+
+			        "FROM   RFO_Accounts.AccountRF AS ar "+
+			        "WHERE  ar.Active = 0 "+
+			        "AND ar.HardTerminationDate IS NOT NULL "+
+			        "AND ar.AccountID = ab.AccountID )  "+
+			        /*Pending/Submitted Orders */
+			        "AND EXISTS ( SELECT 1 "+
+			        "FROM   Hybris.Orders AS o "+
+			        "WHERE  o.AccountID = ab.AccountID "+
+			        "AND o.OrderTypeID = 10 /*Consultant Auto-ship*/ "+
+			        "AND o.OrderStatusID = 1 )  "+
+			        /*Active Template*/
+			        "AND EXISTS ( SELECT 1 "+
+			        "FROM   Hybris.Autoship AS a "+
+			        "WHERE  a.AccountID = ab.AccountID "+
+			        "AND a.AutoshipTypeID = 2 /*Consultant Auto-ship Template*/ "+
+			        "AND a.Active = 1 ) "+
+			        "ORDER BY NEWID()";
+
 	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4294_RFO =
 			"SELECT  * "+
 					"FROM    Hybris.Orders AS O "+
@@ -700,7 +731,7 @@ public class DBQueries_RFO {
 	"@Accountid = AB.AccountID "+
 	"FROM    Hybris.Orders AS O "+
 	"JOIN    RFO_Accounts.AccountBase AS AB ON AB.AccountID = O.AccountID "+
-	"WHERE   AB.CountryID = 236 "+
+	"WHERE   AB.CountryID = %s "+
 	"AND O.OrderTypeID = 9 "+/*PC Auto-ship*/
 	"AND O.OrderStatusID = 1 "+ /*Failed*/
 	/*Active Accounts*/
@@ -755,7 +786,7 @@ public class DBQueries_RFO {
 				   "FROM    RFO_Accounts.AccountBase AS ab "+
 				   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 				   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-				   "WHERE   ab.CountryID = 236 "+
+				   "WHERE   ab.CountryID = %s "+
 				   "AND ab.AccountTypeID = 3 "+
 				   "AND NOT EXISTS ( SELECT 1 "+
 				   "FROM   RFO_Accounts.AccountRF AS ar "+
@@ -813,7 +844,7 @@ public class DBQueries_RFO {
 			    "FROM    RFO_Accounts.AccountBase AS ab "+
 			    "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			    "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			    "WHERE   ab.CountryID = 236 "+
+			    "WHERE   ab.CountryID = %s "+
 			    "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			    /*Active Accounts*/
 			    "AND NOT EXISTS ( SELECT 1 "+
@@ -828,7 +859,7 @@ public class DBQueries_RFO {
 			"FROM RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			"AND EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -845,7 +876,7 @@ public class DBQueries_RFO {
 			"FROM RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			"AND EXISTS ( SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -874,7 +905,7 @@ public class DBQueries_RFO {
 			"FROM RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1  "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1  "+ /*Consultant*/
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			"AND EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -893,7 +924,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULATNT_NOCRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4186="SELECT TOP 1 ab.AccountID,[as].Username "+
 			"FROM RFO_Accounts.AccountBase AS ab JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			"AND EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -908,7 +939,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4188= "SELECT TOP 1 ab.AccountID ,[as].Username "+
 			"FROM RFO_Accounts.AccountBase AS ab JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/ 
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/ 
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			"AND EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -923,7 +954,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189= "SELECT TOP 1 ab.AccountID,[as].Username FROM RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			" AND ar.EnrollmentDate IS NOT NULL "+ /*Active Accounts*/
 			" AND NOT EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			" WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -940,7 +971,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4191 = "SELECT TOP 1 ab.AccountID ,[as].Username "+
 			"FROM RFO_Accounts.AccountBase AS ab JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			"AND ar.EnrollmentDate IS NOT NULL "+ /*Active Accounts*/
 			"AND NOT EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
@@ -956,7 +987,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_NO_ORDERS_INACTIVE_RFO_4190= "SELECT TOP 1 ab.AccountID ,[as].Username "+
 			" FROM RFO_Accounts.AccountBase AS ab JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			" JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			" WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			" WHERE ab.CountryID = %s AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			" AND ar.EnrollmentDate IS NOT NULL "+ /*Inactive Accounts*/
 			" AND EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar WHERE ar.Active = 0 "+
 			" AND ar.HardTerminationDate IS NOT NULL AND ar.AccountID = ab.AccountID) "+ /*Failed Orders*/
@@ -977,7 +1008,7 @@ public class DBQueries_RFO {
 			   "FROM RFO_Accounts.AccountBase AS ab "+
 			   "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE ab.CountryID = 236 "+
+			   "WHERE ab.CountryID = %s "+
 			   "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			   "AND ar.EnrollmentDate IS NOT NULL "+
 			   /*Inactive Accounts*/
@@ -1026,7 +1057,7 @@ public class DBQueries_RFO {
 			 "FROM RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE ab.CountryID = 236 "+
+			 "WHERE ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Active Accounts*/
@@ -1076,7 +1107,7 @@ public class DBQueries_RFO {
 			 "FROM RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE ab.CountryID = 236 "+
+			 "WHERE ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Inactive Accounts*/
@@ -1126,7 +1157,7 @@ public class DBQueries_RFO {
 			 "FROM RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE ab.CountryID = 236 "+
+			 "WHERE ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Inactive Accounts*/
@@ -1179,7 +1210,7 @@ public class DBQueries_RFO {
 			 "JOIN RFO_Accounts.AccountContacts ac ON ac.AccountId = ab.AccountID "+
 			 "JOIN RFO_Accounts.AccountEmails ae ON ae.AccountContactId = ac.AccountContactId "+
 			 "JOIN RFO_Accounts.EmailAddresses ea ON ea.EmailAddressID = ae.EmailAddressId "+
-			 "WHERE   ab.CountryID = 236 "+
+			 "WHERE   ab.CountryID = %s "+
 			 "AND ( ea.EmailAddress IS NULL "+
 			 "OR NOT EXISTS ( SELECT    1 "+
 			 "FROM      RFO_Accounts.AccountContacts ac_s "+
@@ -1199,7 +1230,7 @@ public class DBQueries_RFO {
 			 "[as].Username "+
 			 "FROM    RFO_Accounts.AccountBase AS ab "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE   ab.CountryID = 236 "+  
+			 "WHERE   ab.CountryID = %s "+  
 			 /*Multiple payment profiles*/
 			 "AND EXISTS ( SELECT 1 "+
 			 "FROM   RFO_Accounts.PaymentProfiles pp "+
@@ -1220,7 +1251,7 @@ public class DBQueries_RFO {
 			 "FROM RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE ab.CountryID = 236 "+
+			 "WHERE ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Active Accounts*/
@@ -1271,7 +1302,7 @@ public class DBQueries_RFO {
 			 "FROM    RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE   ab.CountryID = 236 "+
+			 "WHERE   ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 2 "+ /*Preferred Customer*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Submitted Orders */
@@ -1304,7 +1335,7 @@ public class DBQueries_RFO {
 			 "FROM    RFO_Accounts.AccountBase AS ab "+
 			 "JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			 "JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			 "WHERE   ab.CountryID = 236 "+
+			 "WHERE   ab.CountryID = %s "+
 			 "AND ab.AccountTypeID = 3 "+ /*Retail Customer*/
 			 "AND ar.EnrollmentDate IS NOT NULL "+
 			 /*Failed Orders */
@@ -1327,7 +1358,7 @@ public class DBQueries_RFO {
 			   "FROM    RFO_Accounts.AccountBase AS ab "+
 			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 "+
+			   "WHERE   ab.CountryID = %s "+
 			   "AND ab.AccountTypeID = 2 "+ /*Preferred Customer*/
 			   /*Active Accounts*/
 			   "AND NOT EXISTS ( SELECT 1 "+
@@ -1350,7 +1381,7 @@ public class DBQueries_RFO {
 			   "FROM    RFO_Accounts.AccountBase AS ab "+
 			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 "+
+			   "WHERE   ab.CountryID = %s "+
 			   "AND ab.AccountTypeID = 3 "+ /*Retail Customer*/
 			   /*Active Accounts*/
 			   "AND NOT EXISTS ( SELECT 1 "+
@@ -1367,7 +1398,7 @@ public class DBQueries_RFO {
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-					"WHERE   ab.CountryID = 236 "+
+					"WHERE   ab.CountryID = %s "+
 					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
 					/*Active Accounts*/
 					"AND NOT EXISTS ( SELECT 1 "+
@@ -1401,7 +1432,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 1 "+/*Consultant*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
@@ -1466,7 +1497,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 1 /*Consultant*/ "+
 			"AND ar.HardTerminationDate > DATEADD(MONTH, -6,CONVERT(DATE, GETDATE())) "+
 			"ORDER BY NEWID()";
@@ -1482,7 +1513,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 1 /*Consultant*/ "+
 			"AND ar.HardTerminationDate < DATEADD(MONTH, -6,CONVERT(DATE, GETDATE())) "+
 			"ORDER BY NEWID()";
@@ -1500,10 +1531,38 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 2 /*Preferred Customer*/ "+
 			"AND ar.HardTerminationDate < DATEADD(DAY, -90,CONVERT(DATE, GETDATE())) "+
 			"ORDER BY NEWID()";
+
+	public static String GET_SPONSOR_ID = "select top 1 AccountNumber from RFO_Accounts.AccountBase where accountId IN ( "+
+			"SELECT TOP 1 "+
+			"ab.AccountID "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+ 
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+ 
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+ 
+			"WHERE   ab.CountryID = %s "+
+			"AND ab.AccountTypeID = 1 "+/*Consultant*/
+			/*Active Accounts*/
+			"AND NOT EXISTS ( SELECT 1 "+ 
+			"FROM   RFO_Accounts.AccountRF AS ar "+ 
+			"WHERE  ar.Active = 0 "+
+			"AND ar.HardTerminationDate IS NOT NULL "+ 
+			"AND ar.AccountID = ab.AccountID )  "+
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1 "+
+			"FROM   Hybris.Orders AS o "+ 
+			"WHERE  o.AccountID = ab.AccountID "+ 
+			"AND o.OrderTypeID = 3 "+/*Consultant*/
+			"AND o.OrderStatusID = 2 ) "+  
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1 "+ 
+			"FROM   Hybris.Autoship AS a "+ 
+			"WHERE  a.AccountID = ab.AccountID "+ 
+			"AND a.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
+			"AND a.Active = 1 ) "+
+			"ORDER BY NEWID() )";
 
 	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";
 

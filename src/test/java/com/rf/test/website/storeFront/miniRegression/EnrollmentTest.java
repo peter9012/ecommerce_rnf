@@ -1,11 +1,16 @@
 package com.rf.test.website.storeFront.miniRegression;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -31,6 +36,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 	private String env = null;
+	private String RFO_DB = null;
 
 	//Hybris Project-3218 :: Version : 1 :: Consultant login after being logout.
 	@Test
@@ -44,18 +50,21 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String emailId = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 
+
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
+
 		}
 		String profileName = TestConstants.FIRST_NAME+randomNum;
 		/*storeFrontHomePage.clickOnOurBusinessLink();
@@ -85,12 +94,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-
-		storeFrontHomePage.logout();
+		logout();
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, password);
 		s_assert.assertTrue(storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName).contains(profileName),"Profile Name After Login"+profileName+" and on UI is "+storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName));
 		logger.info("login is successful");
-
 		s_assert.assertAll();
 	}	
 
@@ -218,8 +225,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 
 		s_assert.assertAll();
 	}
@@ -234,25 +241,35 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String emailId = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String CCS = null;
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> sponsorIdList =  null;
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+
 		/*storeFrontHomePage.clickOnOurBusinessLink();
 			storeFrontHomePage.clickOnOurEnrollNowLink();*/
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		storeFrontHomePage.searchCID(CCS);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -272,14 +289,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, password);
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		s_assert.assertTrue(storeFrontConsultantPage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontConsultantPage.getUserNameAForVerifyLogin(firstName));
-		logger.info("login is successful");
-		
 		s_assert.assertAll();
 	}
 
@@ -291,6 +300,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		String CCS = null;
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> sponsorIdList =  null;
+
+		if(country.equalsIgnoreCase("CA")){
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
+		}else{
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		}
+
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		/*storeFrontHomePage.clickOnShopLink();
 			storeFrontHomePage.clickOnAllProductsLink();*/
@@ -328,7 +351,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
-		storeFrontHomePage.searchCIDForPCAndRC();
+		storeFrontHomePage.searchCID(CCS);
 
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
@@ -346,7 +369,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		
+
 		s_assert.assertAll();	
 	}
 
@@ -358,6 +381,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String CCS = null;
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> sponsorIdList =  null;
+
+		if(country.equalsIgnoreCase("CA")){
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
+		}else{
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		}
+
+
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		/*storeFrontHomePage.clickOnShopLink();
 			storeFrontHomePage.clickOnAllProductsLink();*/
@@ -396,7 +433,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
-		storeFrontHomePage.searchCIDForPCAndRC();
+
+		storeFrontHomePage.searchCID(CCS);
 
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
@@ -419,12 +457,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		
+
 		s_assert.assertAll(); 
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test
+	@Test(enabled=false)
 	public void testEnrollPulsefromMyAmount_135() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -449,7 +487,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			
+
 			// Products are displayed?
 			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 			logger.info("Quick shop products are displayed");
@@ -505,8 +543,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			//storeFrontHomePage.switchToPreviousTab(); 
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			
-			s_assert.assertAll(); 
 
 		}
 
@@ -552,7 +588,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
 		storeFrontUpdateCartPage.clickOnSubscribeBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyPulseOrderCreatedMsg(), "Pulse order created msg is NOT present,Pulse might NOT be subscribed successfully");
-		
+
 		s_assert.assertAll();
 	}
 }

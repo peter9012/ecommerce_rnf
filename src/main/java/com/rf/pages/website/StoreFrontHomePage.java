@@ -17,13 +17,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			.getLogger(StoreFrontHomePage.class.getName());
 	private Actions actions;
 
-	private final By BUSINESS_LINK_LOC = By.cssSelector("li[id='BusinessSystemBar']"); 
-	private final By ENROLL_NOW_LINK_LOC = By.cssSelector("a[title='Enroll Now']");	
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='SIGN IN']");
+	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//div[@id='sponsorPage']/div/div/div[2]/div/div[1]/a");
+	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
+
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
@@ -40,31 +41,28 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			if (we.isDisplayed()){
 				we.click();
 				driver.click(By.xpath("//input[@value='Continue']"));
+				driver.waitForLoadingImageToDisappear();
 			}
-					//do nothing
-						
+			//do nothing
+
 		}
-		catch (IndexOutOfBoundsException e) {
-		
+		catch (Exception e) {
 			System.out.println("Policy Popup Dialog not seen.");
 		}
 		return null;
 	} 
-public void clickRenewLater()  {
-		
-		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
-//		driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		if (we.isDisplayed()){
-		
-			we.click();//(By.xpath("//input[@value='Renew Later']"));
-		} 
-			System.out.println ("No renewal popup for this consultant");
-		
+
+	public void clickRenewLater()  {
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			logger.info("Renew later button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
 		}
-			
-		
-	
+	}
+
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -91,10 +89,13 @@ public void clickRenewLater()  {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
+		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontRCUserPage(driver);
 	}
+
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);		
@@ -123,21 +124,68 @@ public void clickRenewLater()  {
 	}
 
 	public void searchCID() throws InterruptedException{
-		driver.waitForElementPresent(By.id("sponserparam"));
-		driver.findElement(By.id("sponserparam")).sendKeys("test");
-		driver.waitForElementPresent(By.id("search-sponsor-button"));
-		driver.click(By.id("search-sponsor-button"));
+		try{
+			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+			driver.findElement(By.id("sponsor-name-id")).sendKeys("test");
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.id("sponserparam"));
+			driver.findElement(By.id("sponserparam")).sendKeys("test");
+		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='Search']"));
+			driver.click(By.xpath("//input[@value='Search']"));			
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.id("search-sponsor-button"));
+			driver.click(By.id("search-sponsor-button"));
+
+		}
+
 		logger.info("Sponsor entered as 'test' and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void searchCID(String cid) throws InterruptedException{
-		driver.waitForElementPresent(By.id("sponserparam"));
-		driver.findElement(By.id("sponserparam")).sendKeys(cid);
-		driver.waitForElementPresent(By.id("search-sponsor-button"));
-		driver.click(By.id("search-sponsor-button"));
+		try{
+			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+			driver.findElement(By.id("sponsor-name-id")).sendKeys(cid);
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.id("sponserparam"));
+			driver.findElement(By.id("sponserparam")).sendKeys(cid);
+		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='Search']"));
+			driver.click(By.xpath("//input[@value='Search']"));			
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.id("search-sponsor-button"));
+			driver.click(By.id("search-sponsor-button"));
+
+		}
 		logger.info("Sponsor entered as "+cid+" and search button clicked");
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void searchCIDOnSelectASponsorPopUp(String cid){
+		driver.waitForElementPresent(By.id("sponsorparam"));
+		driver.findElement(By.id("sponsorparam")).sendKeys(cid);
+		driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
+		driver.click(By.xpath("//input[@value='Search']"));
+		logger.info("Sponsor entered as "+cid+" and search button clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String clickOnSelectAndContinueOnSelectASponsorPopUp(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'the-sponsor-results')]/div[1]//input[@value='Select & Continue']"));
+		String sponsorName = getSponsorNameFromSelectAndContinueSection();
+		driver.click(By.xpath("//div[contains(@class,'the-sponsor-results')]/div[1]//input[@value='Select & Continue']"));
+		logger.info("select and continue button clicked");
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
+		return sponsorName;
+	}
+
+	public String getCIDFromUIAfterSponsorSearch(){
+		driver.waitForElementPresent(By.xpath("//div[@class='the-search-results']/div[1]//ul/li[2]"));
+		return driver.findElement(By.xpath("//div[@class='the-search-results']/div[1]//ul/li[2]")).getText();
 	}
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
@@ -535,7 +583,7 @@ public void clickRenewLater()  {
 			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForLoadingImageToDisappear();
-			}
+		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
 			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
@@ -606,8 +654,7 @@ public void clickRenewLater()  {
 
 	public void checkPulseCheckBox(){
 		driver.waitForElementPresent(By.xpath("//input[@id='pulse-check']/.."));
-		System.out.println("check"+(driver.findElement(By.xpath("//input[@id='pulse-check']/..")).isSelected()));
-		if(driver.findElement(By.xpath("//input[@id='pulse-check']/..")).isSelected()){
+		if(driver.findElement(By.xpath("//input[@id='pulse-check']")).getAttribute("checked").contains("true")){
 			driver.click(By.xpath("//input[@id='pulse-check']/.."));
 		}
 		else{
@@ -616,14 +663,16 @@ public void clickRenewLater()  {
 	}
 
 	public void checkCRPCheckBox(){
+		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[@id='CRP-check']/.."));
-		if(driver.findElement(By.xpath("//input[@id='CRP-check']/..")).isSelected()){
+		if(driver.findElement(By.xpath("//input[@id='CRP-check']")).getAttribute("checked").contains("true")){
 			driver.click(By.xpath("//input[@id='CRP-check']/.."));
 		}
 		else{
 			driver.pauseExecutionFor(500);
 		}
 	}
+
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']"));
 		try{
@@ -930,6 +979,13 @@ public void clickRenewLater()  {
 		driver.click(By.xpath("//a[@id='not-your-sponsor']"));
 	}
 
+	public void clickNotYourSponsorLinkOnKitPage(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Not your sponsor?']"));
+		driver.click(By.xpath("//a[text()='Not your sponsor?']"));
+		driver.waitForLoadingImageToDisappear();
+
+	}
+
 	public boolean validateInvalidSponsor(){
 		return driver.isElementPresent(By.xpath("//span[contains(text(),'No result found')]"));
 	}
@@ -942,7 +998,7 @@ public void clickRenewLater()  {
 	}
 
 	public void checkPCPerksCheckBox(){
-		driver.findElement(By.xpath("//div[@id='pc-customer2-div-order-summary']")).click(); 
+		driver.findElement(By.id("become-pc")).click(); 
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -983,7 +1039,8 @@ public void clickRenewLater()  {
 	}
 
 	public boolean validateSetUpAccountPageIsDisplayed(){
-		return driver.getTitle().contains("Account");
+		return driver.findElement(By.xpath("//h1[contains(text(),'SetUp Account')]")).getText().contains("Account");
+		//return driver.getTitle().contains("account");
 	}
 
 	public boolean validateUpdatedMainAccountInfo(){
@@ -1118,9 +1175,16 @@ public void clickRenewLater()  {
 
 	public String convertBizToComPWS(String pws){
 		String com  = "com";
-		String comPws = pws.replaceAll("biz",com);
-		return comPws;
+		String biz ="biz";
+		if(pws.contains(biz)){
+			String comPws = pws.replaceAll("biz",com);
+			return comPws;
+		}else{
+			String bizPws = pws.replaceAll("com",biz);
+			return bizPws;
+		}
 	}
+
 
 	public boolean verifyContinueWithoutSponserLinkPresent(){
 		return driver.isElementPresent(By.id("continue-no-sponsor"));
@@ -1162,14 +1226,174 @@ public void clickRenewLater()  {
 		else
 			return false;
 	}
+
+	public String getSponsorNameFromSelectAndContinueSection(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'the-sponsor-results')]/div[1]//li[@class='font-bold']"));
+		return driver.findElement(By.xpath("//div[contains(@class,'the-sponsor-results')]/div[1]//li[@class='font-bold']")).getText();
+	}
+
+	public String getSponsorNameFromHeaderKitPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header']//div[contains(@class,'consultant-info')]//a"));
+		return driver.findElement(By.xpath("//div[@id='header']//div[contains(@class,'consultant-info')]//a")).getText();	
+	}
+
+	public boolean isSponsorPresentInSearchList(){
+		driver.waitForElementPresent(By.xpath("//div[@class='sponsorDataDiv']"));
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']"));
+	}
+
+	public void updateQuantityOfProductToTheSecondProduct(String qty) throws InterruptedException{
+		driver.waitForElementPresent(By.id("quantity1"));
+		driver.findElement(By.id("quantity1")).clear();
+		driver.findElement(By.id("quantity1")).sendKeys(qty);
+		logger.info("quantity added is "+qty);
+		driver.click(By.xpath("//a[@class='updateLink']"));
+		driver.pauseExecutionFor(5500);
+		logger.info("Update button clicked after adding quantity");
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnCheckoutButton(){
+		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
+		logger.info("checkout button clicked");
+		if(driver.isElementPresent(By.xpath("//input[@onclick='checkOutNow();']"))){
+			driver.click(By.xpath("//input[@onclick='checkOutNow();']"));
+		}
+		driver.waitForPageLoad();
+	}
+
+	public void clickEditShoppingCartLink(){
+		driver.waitForElementPresent(By.xpath("//a[@href='/ca/cart']"));
+		driver.click(By.xpath("//a[@href='/ca/cart']"));
+		logger.info("edit shopping cart link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public double getSubTotalOfFirstProduct(){
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
+		String qty=driver.findElement(By.xpath("//input[@id='quantity0']")).getAttribute("value");
+		Integer.parseInt(qty);
+		String total=driver.findElement(By.xpath("//div[@class='cartItems']/div[1]//span[@class='special-price']")).getText();
+		String[] totalvalue= total.split("\\s+");
+		Double.parseDouble(totalvalue[1].trim());
+		//Integer.parseInt(totalvalue[1].trim());
+		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
+	}
+
+	public double getSubTotalOfSecondProduct(){
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity1']"));
+		String qty=driver.findElement(By.xpath("//input[@id='quantity1']")).getAttribute("value");
+		Integer.parseInt(qty);
+		String total=driver.findElement(By.xpath("//div[@class='cartItems']/div[2]//span[@class='special-price']")).getText();
+		String[] totalvalue= total.split("\\s+");
+		Double.parseDouble(totalvalue[1].trim());
+		//Integer.parseInt(totalvalue[1].trim());
+		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
+	}
+
+	public boolean validateSubTotal(double subtotal1,double subtotal2){
+		driver.waitForElementPresent(By.xpath("//div[@class='col-xs-12']//div[3]/span"));
+		String subTotalVal=driver.findElement(By.xpath("//div[@class='col-xs-12']//div[3]/span")).getText();
+		String[] totalvalue= subTotalVal.split("\\s+");
+		double subTotalValue=Double.parseDouble(totalvalue[1].trim());
+		if(subTotalValue==(subtotal1+subtotal2)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void removeProduct2FromTheCart(){
+		driver.waitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(1);']"));
+		driver.click(By.xpath("//a[@href='javascript:submitRemove(1);']"));
+		driver.pauseExecutionFor(1500);
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateProductRemovedAutoshipTemplateUpdatedMsg(){
+		driver.waitForElementNotPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG);
+	}
+
+	public void clickOnBelowFieldsSponsorLink(){
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(FIELD_SPONSOR_LINK_LOC);
+		driver.click(FIELD_SPONSOR_LINK_LOC);
+		driver.waitForPageLoad();
+		logger.info("field sponsor link has been clicked");
+	}
+	public void enterDetailsInRequestASponsorForm(String firstName,String lastName,String emailId,String postalCode){
+		driver.waitForElementPresent(By.id("firstName"));
+		driver.type(By.id("firstName"),firstName );
+		driver.type(By.id("lastName"),lastName);
+		driver.type(By.id("email"),emailId);
+		driver.type(By.id("zipcode"),postalCode);
+		driver.click(By.xpath("//input[@value='Submit']"));
+		logger.info("form submitted");
+		driver.waitForPageLoad();
+
+	}
+	public boolean verifyConfirmationMessageAfterSubmission(){
+
+		if(driver.findElement(CONFIRMATION_MESSAGE_LOC).isDisplayed()){
+
+			String confirmationMessage = driver.findElement(CONFIRMATION_MESSAGE_LOC).getText();
+			logger.info("message=="+confirmationMessage);
+			if(confirmationMessage.equalsIgnoreCase("YOUR REQUEST HAS BEEN SUBMITTED")){
+				return true;
+			}
+			else{
+				return false;
+			}
+
+		}
+		return false;
+	}
+
 	public void logout(){
 		driver.findElement(By.id("account-info-button")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.findElement(By.linkText("Log out")).click();
 		logger.info("Logout");
+	}	
+
+	public void removeProduct1FromTheCart(){
+		driver.waitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+		driver.click(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+		driver.pauseExecutionFor(1500);
+		driver.waitForPageLoad();
 	}
-	
-	
+
+	public boolean validateEmptyShoppingCartPageIsDisplayed(){
+		driver.waitForElementNotPresent(By.xpath("//div[@id='left-shopping']//span"));
+		return driver.findElement(By.xpath("//div[@id='left-shopping']//span")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG);
+	}
+
+	public void clickOnContinueShoppingLinkOnEmptyShoppingCartPage(){
+		driver.waitForElementNotPresent(By.xpath(".//div[@id='left-shopping']/a[2]"));
+		driver.click(By.xpath(".//div[@id='left-shopping']/a[2]"));;
+		driver.waitForPageLoad();
+	}
+
+	public void addSecondProduct(){
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		logger.info("Continue shopping link clicked");
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+
+	}
 }
 
 

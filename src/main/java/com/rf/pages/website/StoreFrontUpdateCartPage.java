@@ -286,11 +286,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']"));
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+		if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
+			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
 		else
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//button[@class='btn btn-secondary']"));
+			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -390,6 +390,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
 		driver.waitForLoadingImageToDisappear();		
+	}
+
+	public void clickOnNextStepBtnShippingAddress(){
+		driver.waitForElementPresent(By.id("use_address"));
+		driver.click(By.id("use_address"));
+		logger.info("Next button on shipping address clicked"); 
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public String getSelectedBillingAddress(){
@@ -526,15 +533,23 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		List<WebElement> allShippingAddresses = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]"));
 		logger.info("Total shipping addresses listed are "+allShippingAddresses.size());
 		driver.pauseExecutionFor(2000);
-		for(int i =1;i<=allShippingAddresses.size();i++ ) {
-			if(driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']")).isSelected()==false){
-				driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']"));
-				driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']/.."));
-				driver.waitForLoadingImageToDisappear();
-				logger.info("New Address Name is "+ driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div["+i+"]/p/span[@class='font-bold']")).getText());
-				return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div["+i+"]/p/span[@class='font-bold']")).getText();
+		if(allShippingAddresses.size()<2){
+			logger.info("ONLY 1 shipping address was present on the cart");
+			return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/p/span[@class='font-bold']")).getText();
+		}
+		else{
+			for(int i =1;i<=allShippingAddresses.size();i++ ) {
+				if(driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']")).isSelected()==false){
+					driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']"));
+					driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]["+i+"]//input[@type='radio']/.."));
+					driver.waitForLoadingImageToDisappear();
+					logger.info("New Address Name is "+ driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div["+i+"]/p/span[@class='font-bold']")).getText());
+					return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div["+i+"]/p/span[@class='font-bold']")).getText();
+				}
+
 			}
 		}
+
 		return null;
 	}
 

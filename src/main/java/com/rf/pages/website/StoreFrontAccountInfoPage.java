@@ -20,7 +20,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	Actions actions;
 
-	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Account info')]");
+	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[contains(text(),'Account info')]");
 	private final By TERMINATE_MY_ACCOUNT = By.xpath("//a[text()='Terminate My Account']");
 	private final By ACCOUNT_INFO_FIRST_NAME_LOC = By.xpath("//input[@id='first-name']");
 	private final By ACCOUNT_INFO_LAST_NAME_LOC = By.xpath("//input[@id='last-name']");
@@ -47,6 +47,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
 	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
+	private final By ACCOUNT_SHIPPING_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='Shipping Info']");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -80,6 +81,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.clear(ACCOUNT_INFO_CITY_LOC);
 		driver.type(ACCOUNT_INFO_CITY_LOC, city);
 		//driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION)));
+		driver.click(By.id("state"));
 		driver.click(ACCOUNT_INFO_PROVINCE_LOC);
 		driver.clear(ACCOUNT_INFO_POSTAL_CODE_LOC);
 		driver.type(ACCOUNT_INFO_POSTAL_CODE_LOC, postalCode);
@@ -356,7 +358,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
 		driver.pauseExecutionFor(2000);
 	}
-	
+
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
 		driver.click(LEFT_MENU_ACCOUNT_INFO_LOC);
 		logger.info("Account inof link from left panel clicked "+LEFT_MENU_ACCOUNT_INFO_LOC);
@@ -461,11 +463,40 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
-	//	public void clickOnYourAccountDropdown(){
-	//		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
-	//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-	//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-	//	}	
+	public void clickOnSaveButtonAfterAddressChange() throws InterruptedException{
+		driver.waitForElementPresent(By.id("saveAccountInfo"));
+		driver.click(By.id("saveAccountInfo"));
+		logger.info("Save button after selecting address is clicked");
+		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept as original button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(NoSuchElementException e){
 
+		}  
+	}
+
+	public void changeMainAddressToQuebec(){
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[@value='QC']"));
+		driver.click(By.xpath("//select[@id='state']/option[@value='QC']"));
+		logger.info("state selected is quebec");
+	}
+
+	public String getAddressUpdateConfirmationMessageFromUI(){
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+	}
+
+	public StoreFrontShippingInfoPage clickOnShippingInfoOnAccountInfoPage(){
+		driver.waitForElementPresent(ACCOUNT_SHIPPING_INFO_LOC);
+		driver.click(ACCOUNT_SHIPPING_INFO_LOC);
+		logger.info("Shipping Info link clicked "+ACCOUNT_SHIPPING_INFO_LOC);
+		driver.pauseExecutionFor(3000);
+		driver.waitForLoadingImageToDisappear();
+		return new StoreFrontShippingInfoPage(driver);
+
+	}
 }
 

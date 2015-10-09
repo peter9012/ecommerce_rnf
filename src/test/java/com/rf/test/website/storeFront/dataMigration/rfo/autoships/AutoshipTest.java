@@ -48,9 +48,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
-			pcEmailID= "autopc@rnf.com";//(String) getValueFromQueryResult(randomPCList, "Username");
+			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,countryId),RFO_DB);
+			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -62,7 +61,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		// s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
 		storeFrontCartAutoShipPage = storeFrontPCUserPage.addProductToPCPerk();
@@ -99,9 +98,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = TestConstants.CONSULTANT_USERNAME;//(String) getValueFromQueryResult(randomConsultantList, "Username");
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
@@ -154,7 +152,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String taxDB = null;	
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
-		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
+		String consultantEmailID = null;
 		String lastName = null;
 		String orderId = null;
 		String accountId = null;
@@ -168,8 +166,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -184,9 +182,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				break;
 		}		
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");*/
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -268,7 +265,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String taxDB = null;	
 		String grandTotalDB = null;
 		String shippingMethodDB = null;
-		String pcUserEmailID = "autorfpc@xyz.com";
+		String pcUserEmailID = null;
 		String lastName = null;
 		String orderId = null;
 		String accountId = null;
@@ -280,8 +277,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-		/*while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -296,8 +293,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				break;
 		}	
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");*/
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

@@ -286,11 +286,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@class='btn btn-secondary']"));
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+		if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
+			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
 		else
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//button[@class='btn btn-secondary']"));
+			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
 		logger.info("Buy Now button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}

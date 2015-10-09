@@ -288,6 +288,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void type(By locator, String input) {
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		findElement(locator).clear();
 		findElement(locator).sendKeys(input);
 	}

@@ -67,6 +67,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
@@ -106,6 +107,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
 
 		s_assert.assertAll();
@@ -129,6 +131,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
 		storeFrontAccountTerminationPage.selectTerminationReason();
@@ -136,10 +139,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
 		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 		storeFrontHomePage.loginAsRCUser(rcUserEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");		
 		s_assert.assertAll();
-
 	}
 
 	// Hybris Phase 2-1980 :: Version : 1 :: Order >>Actions >>Report problems
@@ -198,6 +201,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderGrandTotalList =  null;
 		List<Map<String, Object>> orderDateList =  null;
 		List<Map<String, Object>> randomRCList =  null;
+
 		String orderNumberDB = null;
 		String orderStatusDB = null;
 		String orderGrandTotalDB = null;
@@ -215,11 +219,18 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
-		//assert for order number with RFO
-		orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
-		orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-		logger.info("Order Number from RFO DB is "+orderNumberDB);
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");
+		// Get Order Number
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+
+		// Get Order Id
+		List<Map<String,Object>> getOrderIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
+		String orderId = String.valueOf(getValueFromQueryResult(getOrderIDList, "OrderID"));
+
+		/*//assert for order number with RFO
+	  orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
+	  orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+	  logger.info("Order Number from RFO DB is "+orderNumberDB);
+	  s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");*/
 
 		//assert for order status with RFO
 		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
@@ -228,9 +239,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),"Order Status on UI is different from RFO DB");
 
 		//assert for grand total with RFO
-		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
+		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4287_RFO, orderId),RFO_DB);
 		DecimalFormat dff = new DecimalFormat("#.00");
-		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(orderGrandTotalList, "AmountToBeAuthorized"))); 
+		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(orderGrandTotalList, "Total"))); 
 		logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
 
@@ -240,7 +251,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 
-		s_assert.assertAll();		
+		s_assert.assertAll();  
 	}
 
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
@@ -295,6 +306,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
 		storeFrontAccountInfoPage.updateAccountInformation(TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION,city,postalCode,phoneNumber);
+		//storeFrontAccountInfoPage.handleSpouseDetail();
+
 		//assert First Name with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
@@ -330,9 +343,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		assertTrue("Postal Code on UI is different from DB", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB));
 
 		// assert Main Phone Number with RFO
-		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-		assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+		//		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+		//		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+		//		assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 
 		// assert Gender Id with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
@@ -376,9 +389,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}			
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");

@@ -100,6 +100,7 @@ public class TestConstants {
 	 */
 	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
+	public static final String PC_USER_STG = "autopcstg@xyz.com";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG="cart has been update";
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT="Your Total SV value should be equal to or greater than the threshold 100";
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="Please add products in your PC cart greater than the threshold CAD $90";
@@ -328,6 +329,7 @@ public class TestConstants {
 	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
+	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
 }
 
 

@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -107,7 +106,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
@@ -183,7 +182,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
@@ -227,7 +225,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		//assert shipping Address with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
@@ -347,7 +345,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		// assert shipping Address with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
@@ -466,7 +464,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
@@ -581,7 +579,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		//assert shipping Address with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
@@ -654,7 +652,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_4294_RFO,countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -693,7 +691,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		DecimalFormat df = new DecimalFormat("#.00");
 
@@ -808,7 +806,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		DecimalFormat df = new DecimalFormat("#.00");
 
@@ -922,7 +920,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		DecimalFormat df = new DecimalFormat("#.00");
 
@@ -934,7 +932,7 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_RFO,orderId),RFO_DB);
-		shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
+		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
 		handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 		String shippingMethodId = String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
@@ -945,28 +943,22 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"CRP failed autoship template subTotal amount on RFO is "+subTotalDB+" \n and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 
-
 		// assert shipping amount with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"CRP failed autoship template shipping amount on RFO is "+shippingDB+" \n and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
-
 
 		// assert Handling Value with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP failed autoship template handling amount on RFO is "+handlingDB+" \n and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
-
 		// assert Tax with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP failed autoship template tax amount on RFO is "+taxDB+" \n and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
 
-
 		// assert Grand Total with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAdhocOrderTemplate().contains(grandTotalDB),"CRP failed autoship template grand total on RFO is "+grandTotalDB+" \n and on UI is "+storeFrontOrdersPage.getGrandTotalFromAdhocOrderTemplate());
-
 
 		// assert Shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP failed autoship template shipping method on RFO is "+shippingMethodDB+" \n and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
-
 	}	
 
 }

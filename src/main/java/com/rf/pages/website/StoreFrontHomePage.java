@@ -17,8 +17,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			.getLogger(StoreFrontHomePage.class.getName());
 	private Actions actions;
 
-	private final By BUSINESS_LINK_LOC = By.cssSelector("li[id='BusinessSystemBar']"); 
-	private final By ENROLL_NOW_LINK_LOC = By.cssSelector("a[title='Enroll Now']");	
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
@@ -48,26 +46,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			//do nothing
 
 		}
-		catch (IndexOutOfBoundsException e) {
-
+		catch (Exception e) {
 			System.out.println("Policy Popup Dialog not seen.");
 		}
 		return null;
 	} 
+
 	public void clickRenewLater()  {
-
-		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
-		//		driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		if (we.isDisplayed()){
-			we.click();//(By.xpath("//input[@value='Renew Later']"));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			logger.info("Renew later button clicked");
 			driver.waitForLoadingImageToDisappear();
-		} 
-		System.out.println ("No renewal popup for this consultant");
+		}catch(Exception e){
 
+		}
 	}
-
-
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
@@ -82,18 +76,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
-		//		try{
-		//			driver.turnOffImplicitWaits();
-		//			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.waitForLoadingImageToDisappear();
-		//		}catch(Exception e){
-		//
-		//		}
-		//		finally{
-		//			driver.turnOnImplicitWaits();
-		//		}
 		return new StoreFrontConsultantPage(driver);
 	}
 
@@ -107,24 +89,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
+		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
-		//		try{
-		//			driver.turnOffImplicitWaits();
-		//			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.waitForLoadingImageToDisappear();
-		//		}catch(Exception e){
-		//
-		//		}
-		//		finally{
-		//			driver.turnOnImplicitWaits();
-		//		}
-
-
 		return new StoreFrontRCUserPage(driver);
 	}
+
 	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);		
@@ -138,19 +109,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
-		//		try{
-		//			driver.turnOffImplicitWaits();
-		//			driver.quickWaitForElementPresent(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/span[1]"));
-		//			driver.click(By.xpath("//div[@id='policyPopUp']//div[@class='shipping-popup-gray']/input[@value='Continue']"));
-		//			driver.waitForLoadingImageToDisappear();
-		//		}catch(Exception e){
-		//
-		//		}
-		//		finally{
-		//			driver.turnOnImplicitWaits();
-		//		}
-
 		return new StoreFrontPCUserPage(driver);
 	}
 
@@ -1393,6 +1351,49 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return false;
 	}
 
+	public void logout(){
+		driver.findElement(By.id("account-info-button")).click();
+		driver.waitForElementPresent(By.linkText("Log out"));
+		driver.findElement(By.linkText("Log out")).click();
+		logger.info("Logout");
+	}	
+
+	public void removeProduct1FromTheCart(){
+		driver.waitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+		driver.click(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+		driver.pauseExecutionFor(1500);
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateEmptyShoppingCartPageIsDisplayed(){
+		driver.waitForElementNotPresent(By.xpath("//div[@id='left-shopping']//span"));
+		return driver.findElement(By.xpath("//div[@id='left-shopping']//span")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG);
+	}
+
+	public void clickOnContinueShoppingLinkOnEmptyShoppingCartPage(){
+		driver.waitForElementNotPresent(By.xpath(".//div[@id='left-shopping']/a[2]"));
+		driver.click(By.xpath(".//div[@id='left-shopping']/a[2]"));;
+		driver.waitForPageLoad();
+	}
+
+	public void addSecondProduct(){
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		logger.info("Continue shopping link clicked");
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			logger.info("Buy Now button clicked and another product selected");
+			driver.waitForPageLoad();
+		}
+
+	}
 }
 
 

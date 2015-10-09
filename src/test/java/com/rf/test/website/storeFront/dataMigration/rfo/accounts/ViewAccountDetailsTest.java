@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
@@ -444,7 +443,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-4200:Enrolled RC , Failed Order
-	@Test
+	@Test(enabled=false)
 	public void testEnrolledRCHasFailedOrders_HP2_4200() throws InterruptedException, SQLException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;

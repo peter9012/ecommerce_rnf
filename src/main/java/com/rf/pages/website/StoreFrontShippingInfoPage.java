@@ -138,6 +138,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		}
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
+		driver.waitForPageLoad();
 	}
 
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{
@@ -175,6 +176,41 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		}catch(NoSuchElementException e){
 			return false;
 		}
+	}
+
+	public String getAddressUpdateConfirmationMessageFromUI(){
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+
+	}
+	public String getErrorMessageForUSAddressFromUI(){
+		return driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+	}
+
+	public void changeMainAddressToQuebec(){
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[@value='QC']"));
+		driver.click(By.xpath("//select[@id='state']/option[@value='QC']"));
+		logger.info("state selected is quebec");
+	}
+
+	public void changeAddressToUSAddress() throws InterruptedException{
+		driver.findElement(By.id("new-address-1")).clear();
+		driver.findElement(By.id("new-address-1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+		logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
+		driver.findElement(By.id("townCity")).clear();
+		driver.findElement(By.id("townCity")).sendKeys(TestConstants.CITY_US);
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+		driver.click(By.xpath("//select[@id='state']/option[2]"));
+		logger.info("state selected");
+		driver.findElement(By.id("postcode")).clear();
+		driver.findElement(By.id("postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+		logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
+		driver.findElement(By.id("phonenumber")).clear();
+		driver.findElement(By.id("phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
+		selectFirstCardNumber();
+		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 	}
 
 }

@@ -46,9 +46,9 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[contains(@value,'ADD')]"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[contains(@value,'ADD')]"));
-		logger.info("Add Product to PC Perk button clicked "+"//div[@id='main-content']/div[5]/div[1]//input[contains(@value,'ADD')]");
+		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']"));
+		driver.click(By.xpath("//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']"));
+		logger.info("Add Product to PC Perk button clicked "+"//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']");
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
@@ -88,9 +88,20 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//li[@id='mini-shopping-special-button']")).isDisplayed();
 	}
 
-	//	public void clickOnYourAccountDropdown(){
-	//		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
-	//		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
-	//	}
+	public void clickChangeMyAutoshipDateButton(){
+		driver.waitForElementPresent(By.id("change-autoship-button"));
+		driver.findElement(By.id("change-autoship-button")).click();
+	}
+
+	public void selectSecondAutoshipDateAndClickSave(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//li[2]/span[1]"));
+		driver.click(By.xpath("//ul[@id='autoship-date']//li[2]/span[1]"));
+		logger.info("pc perks delayed date selected");
+		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
+		driver.click(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
+		logger.info("save button clicked after different date selected");
+		driver.waitForLoadingImageToDisappear();
+
+	}
 }
 

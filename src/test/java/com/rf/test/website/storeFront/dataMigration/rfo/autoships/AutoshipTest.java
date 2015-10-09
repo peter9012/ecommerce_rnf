@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -48,7 +47,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
-			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,countryId),RFO_DB);
+			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
@@ -210,7 +209,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
@@ -323,7 +322,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName+" "+lastName+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));

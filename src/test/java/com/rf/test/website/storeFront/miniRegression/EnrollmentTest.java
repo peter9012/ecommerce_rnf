@@ -95,11 +95,9 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		logout();
-
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(emailId, password);
 		s_assert.assertTrue(storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName).contains(profileName),"Profile Name After Login"+profileName+" and on UI is "+storeFrontConsultantPage.getUserNameAForVerifyLogin(profileName));
 		logger.info("login is successful");
-
 		s_assert.assertAll();
 	}	
 

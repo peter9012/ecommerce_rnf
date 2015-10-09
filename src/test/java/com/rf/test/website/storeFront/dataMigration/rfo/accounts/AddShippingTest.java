@@ -12,7 +12,6 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontOrdersPage;
@@ -642,7 +641,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileNameUsingEditCRP();
-		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -661,16 +660,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		//------------------ Verify that autoship template contains the default shipping profile address by verifying by name------------------------------------------------------------		
 
 		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address doesn't contains the default shipping address");
-
-		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
-
-		//------------------ Verify that adhoc orders template doesn't  contains the newly created shipping profile address by verifying by name------------------------------------------------------------
-
-		s_assert.assertFalse(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"AdHoc Orders Template Shipping Address contains new shipping address when future autoship checkbox not selected");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -81,7 +81,7 @@ INTO     DataMigration.Migration.MissingPayment
 FROM    ( SELECT    OrderPaymentID 
                
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid =  o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -143,7 +143,7 @@ SELECT  p.code,
         COUNT(p.PK) AS Hybris_Duplicates
 INTO    #Pay_Dups
 FROM   RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
+        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid =  o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID

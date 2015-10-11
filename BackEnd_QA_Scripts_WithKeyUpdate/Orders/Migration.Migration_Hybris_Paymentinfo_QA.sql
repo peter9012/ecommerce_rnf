@@ -147,7 +147,7 @@ FROM   RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
-		INNER JOIN Hybris..paymentinfos p ON p.OwnerPkString =ho.PK AND P.Code = CAST (Oi.OrderPaymentID AS NVARCHAR)
+		INNER JOIN Hybris..paymentinfos p ON p.OwnerPkString =ho.PK AND P.PK = Oi.OrderPaymentID
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL

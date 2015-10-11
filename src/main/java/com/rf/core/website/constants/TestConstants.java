@@ -1,8 +1,6 @@
 package com.rf.core.website.constants;
 
 public class TestConstants {
-
-
 	/*
 	 * Consultant User Creation Details
 	 */

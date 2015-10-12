@@ -281,16 +281,24 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyForSubmittedAdhocOrders() throws InterruptedException {
-		driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
-		int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
-		for(int i=2; i<=sizeOfOrders; i++){
-			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
-			if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("SUBMITTED")){
-				return true;      
+		boolean isNextLinkPresent =  false;
+		do{
+			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
+			int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
+			for(int i=2; i<=sizeOfOrders; i++){
+				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
+				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("SUBMITTED")){
+					return true;
+				}else if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+					isNextLinkPresent = true;
+					driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				}
 			}
-
 		}
+		while(isNextLinkPresent==true);
+
 		return false;
+
 	}
 
 	public StoreFrontReportOrderComplaintPage clickOnActions(){

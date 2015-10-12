@@ -330,10 +330,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@class='btn btn-primary btn-check btn-block']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary btn-check btn-block']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
 		logger.info("checkout button clicked");
-		driver.waitForLoadingImageToDisappear();
+		if(driver.isElementPresent(By.xpath("//input[@onclick='checkOutNow();']"))){
+			driver.click(By.xpath("//input[@onclick='checkOutNow();']"));
+		}
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyCheckoutConfirmation(){

@@ -125,11 +125,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
-
-		if (driver.findElements(locator).size() > 0) {
-			return true;
-		} else
+		try{
+			if (driver.findElements(locator).size() > 0) {
+				return true;
+			} else
+				return false;
+		}
+		catch(Exception e){
 			return false;
+		}
 	}
 
 
@@ -647,13 +651,13 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void switchToSecondWindow(){
-//		Set<String> allWindows = driver.getWindowHandles();
-//		Iterator itr = allWindows.iterator();
-//		while(itr.hasNext()){
-//			driver.switchTo().window((String) itr.next());
-//			break;
-//		}
-		
+		//		Set<String> allWindows = driver.getWindowHandles();
+		//		Iterator itr = allWindows.iterator();
+		//		while(itr.hasNext()){
+		//			driver.switchTo().window((String) itr.next());
+		//			break;
+		//		}
+
 		Set<String> allWindows = driver.getWindowHandles();
 		String parentWindow = driver.getWindowHandle();
 		for(String allWin : allWindows){
@@ -661,7 +665,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				driver.switchTo().window(allWin);
 				break;
 			}
-			
+
 		}
 		logger.info("Switched to second window");
 	}

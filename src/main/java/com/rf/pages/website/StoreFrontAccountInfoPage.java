@@ -59,6 +59,17 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	}
 
+	public void enterSpouseLastNameOptional(String firstName){
+		try{
+			driver.quickWaitForElementPresent(By.id("spouse-last"));
+			driver.clear(By.id("spouse-last"));
+			driver.findElement(By.id("spouse-last")).sendKeys(firstName);
+			logger.info("Spouse last name entered as "+firstName);
+		}catch(Exception e){
+
+		}
+	}
+
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.click(TERMINATE_MY_ACCOUNT);
@@ -162,10 +173,19 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		String mainPhoneNumberFromUI = driver.findElement(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC).getAttribute("value");
 		if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
+			System.out.println("phone selected in if block is "+mainPhoneNumberFromUI);
 			return true;
+		}else{
+			String[] mainPhone = mainPhoneNumberFromUI.split("-");
+			mainPhoneNumberFromUI = mainPhone[0]+mainPhone[1]+mainPhone[2];
+			if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
+				System.out.println("phone selected in else block is "+mainPhoneNumberFromUI);
+				return true;
+			}
 		}
 		return false;
 	}
+
 
 	public boolean verifyGenderFromUIAccountInfo(String gender){
 		boolean genderValue = driver.findElement(By.xpath(String.format(ACCOUNT_INFO_RADIO_BUTTON_LOC, TestConstants.CONSULTANT_GENDER))).isSelected();

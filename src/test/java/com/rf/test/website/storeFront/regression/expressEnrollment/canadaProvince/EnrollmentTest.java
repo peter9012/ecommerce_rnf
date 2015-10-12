@@ -175,8 +175,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		//In progress
-		//s_assert.assertAll();
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-1292 :: Version : 1 :: Customer living in Quebec cannot be enrolled as consultant. 
@@ -198,7 +197,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
 		s_assert.assertTrue(storeFrontHomePage.verifyQuebecProvinceIsDisabled(),"Quebec province in the province drop down is not disabled");
-		//s_assert.assertAll();
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-2190 :: Version : 1 :: Enrolling RC living in Quebec 
@@ -267,7 +266,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		//s_assert.assertAll();	
+		s_assert.assertAll();	
 	}
 
 	//Hybris Project-2189 :: Version : 1 :: Enrolling PC living in Quebec 
@@ -347,7 +346,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		//s_assert.assertAll();	
+		s_assert.assertAll();	
 
 	}
 
@@ -372,7 +371,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifySuggesstionsForEnteredAddressPop(), "QAS pop up for Quebec address suggestions has NOT appeared");
 
-		//s_assert.assertAll();
+		s_assert.assertAll();
 	}
 
 }

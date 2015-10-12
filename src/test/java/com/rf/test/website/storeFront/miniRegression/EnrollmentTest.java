@@ -102,7 +102,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3920 :: Version : 1 :: Verify creating crp autoship from My Account under .biz site 
-	@Test(enabled=false)
+	@Test
 	public void testCreatingCRPAutoshipUnderBizSite_3920() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -169,8 +169,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
 		storeFrontHomePage.clickOnGoToMyAccountToCheckStatusOfCRP();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAccountInfoFromLeftPanel();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+//		storeFrontAccountInfoPage.clickOnAccountInfoFromLeftPanel();
+//		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
 		s_assert.assertAll();
@@ -252,7 +252,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 
 		}else{
@@ -261,7 +261,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		}
 
@@ -306,11 +306,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> sponsorIdList =  null;
 
 		if(country.equalsIgnoreCase("CA")){
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 
 		}else{
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		}
 
@@ -386,11 +386,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> sponsorIdList =  null;
 
 		if(country.equalsIgnoreCase("CA")){
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"236"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 
 		}else{
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,"40"),RFO_DB);
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		}
 
@@ -453,8 +453,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
-		storeFrontHomePage.switchToPreviousTab();
-		storeFrontHomePage.switchToPreviousTab();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 
@@ -462,7 +460,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test(enabled=false)
+	@Test
 	public void testEnrollPulsefromMyAmount_135() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -539,7 +537,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.switchToPreviousTab();
+		
 			//storeFrontHomePage.switchToPreviousTab(); 
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");

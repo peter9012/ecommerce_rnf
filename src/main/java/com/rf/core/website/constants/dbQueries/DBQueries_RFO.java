@@ -895,7 +895,7 @@ public class DBQueries_RFO {
 					"ORDER BY NEWID() "+
 					"SELECT a.AccountID,[as].Username,a.AutoshipID,a.NextRunDate "+
 					"FROM Hybris.Autoship AS a JOIN Security.AccountSecurity AS [as] ON a.AccountID = [as].AccountID "+
-					"WHERE a.Active = 1 AND a.AutoshipStatusID = 2 "+ /*Submitted*//*Inactive Accounts*/
+					"WHERE a.Active = 0 AND a.AutoshipStatusID = 2 "+ /*Submitted*//*Inactive Accounts*/
 					"AND EXISTS ( SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 					"WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+
 					"AND ar.AccountID = a.AccountID) AND a.NextRunDate >= GETDATE() "+ 
@@ -1415,7 +1415,32 @@ public class DBQueries_RFO {
 					"ORDER BY NEWID(); ";
 
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
-			""; // Waiting for query
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+					/*Pulse*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+
+					"AND a.AutoshipTypeID = 3 "+
+					"AND a.Active = 1 ) "+
+					"AND NOT EXISTS (SELECT 1 "+
+					"FROM  RFO_Accounts.ConsultantPWSInfo AS CPI "+ 
+					"WHERE CPI.AccountId = ab.AccountID) "+
+					"ORDER BY NEWID() ";
+
 
 	public static String GET_SHIPPING_ADDRESS_QUERY_FOR_ALL_RFO = "select * from Hybris.OrderShippingAddress where OrderID='%s'";
 
@@ -1461,7 +1486,7 @@ public class DBQueries_RFO {
 					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username , "+
-					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'stgmyrandf','myrfotst2') + '/us' AS URL "+
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,'stgmyrandf','myrfo%s') + '/%s' AS URL "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
@@ -1583,6 +1608,10 @@ public class DBQueries_RFO {
 
 	public static String callQueryWithArguement(String query,String value){
 		return String.format(query, value);
+	}
+
+	public static String callQueryWithArguementPWS(String query,String env,String country){
+		return String.format(query, env,country);
 	}
 }
 

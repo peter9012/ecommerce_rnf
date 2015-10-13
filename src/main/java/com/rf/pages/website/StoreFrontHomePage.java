@@ -588,13 +588,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
 			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
 			logger.info("Add to CRP button clicked");
-			driver.waitForLoadingImageToDisappear();
-			driver.waitForElementPresent(By.xpath("//*[@value='OK']"));
-			driver.click(By.xpath("//*[@value='OK']"));
-			logger.info("Pop Up Dismiss");
-			driver.waitForLoadingImageToDisappear();
+			driver.waitForLoadingImageToDisappear();			
 		}
-
 	}
 
 	public void clickOnCRPCheckout(){
@@ -679,7 +674,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
 			logger.info("Add to CRP button clicked");
 		}catch(Exception e){
-			driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[1]/div[2]//input[@value='Add to crp']"));
+			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -756,6 +751,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickOnSwitchToStandardEnrollmentLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
 		driver.click(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+	}
+
+	public void clickOnSwitchToExpressEnrollmentLink(){
+		driver.waitForElementPresent(By.xpath("//a[@id='lnk-switch']"));
+		driver.click(By.xpath("//a[@id='lnk-switch']"));
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(2000);
 	}
@@ -959,10 +961,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	//	}
 
 	public boolean validateShippingMethodDisclaimersForUPSGroundHD(){
-		Select sel=new Select(driver.findElement(By.xpath("//select[@id='selectDeliveryModeForCRP']/../select")));
-		sel.selectByValue("UPS Standard Overnight");
-		driver.waitForLoadingImageToDisappear();
-		return sel.getFirstSelectedOption().getText().contains("Overnight");
+		return driver.findElement(By.xpath("//select[@id='selectDeliveryModeForCRP']/option[3]")).getText().contains("Overnight");
 	}
 
 	public boolean validatePCPerksCheckBoxIsDisplayed(){
@@ -998,7 +997,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void checkPCPerksCheckBox(){
-		driver.findElement(By.id("become-pc")).click(); 
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2']/.."));
+		driver.findElement(By.xpath("//input[@id='pc-customer2']/..")).click(); 
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -1050,17 +1051,27 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void reEnterContactInfoAndPassword(){
-		driver.findElement(By.xpath("//input[@id='address-1']")).clear();
-		driver.findElement(By.xpath("//input[@id='address-1']")).sendKeys(TestConstants.RE_ENTER_ADDRESS_LINE_1);
-		driver.findElement(By.xpath("//input[@id='city']")).clear();
-		driver.findElement(By.xpath("//input[@id='city']")).sendKeys(TestConstants.RE_ENTER_CITY);
-		driver.findElement(By.xpath("//input[@id='postcode']")).clear();
-		driver.findElement(By.xpath("//input[@id='postcode']")).sendKeys(TestConstants.RE_ENTER_POSTALCODE);
+		String country = driver.getCountry();
+		if(country.equalsIgnoreCase("ca")){
+			driver.findElement(By.xpath("//input[@id='address-1']")).clear();
+			driver.findElement(By.xpath("//input[@id='address-1']")).sendKeys(TestConstants.RE_ENTER_ADDRESS_LINE_1);
+			driver.findElement(By.xpath("//input[@id='city']")).clear();
+			driver.findElement(By.xpath("//input[@id='city']")).sendKeys(TestConstants.RE_ENTER_CITY);
+			driver.findElement(By.xpath("//input[@id='postcode']")).clear();
+			driver.findElement(By.xpath("//input[@id='postcode']")).sendKeys(TestConstants.RE_ENTER_POSTALCODE);
+		}else{
+			driver.findElement(By.xpath("//input[@id='address-1']")).clear();
+			driver.findElement(By.xpath("//input[@id='address-1']")).sendKeys(TestConstants.NEW_ADDRESS_LINE_1_US);
+			driver.findElement(By.xpath("//input[@id='city']")).clear();
+			driver.findElement(By.xpath("//input[@id='city']")).sendKeys(TestConstants.CITY_US);
+			driver.findElement(By.xpath("//input[@id='postcode']")).clear();
+			driver.findElement(By.xpath("//input[@id='postcode']")).sendKeys(TestConstants.POSTAL_CODE_US);
+		}
 		addressLine1=driver.findElement(By.xpath("//input[@id='address-1']")).getText();
 		city=driver.findElement(By.xpath("//input[@id='city']")).getText();
 		postalCode=driver.findElement(By.xpath("//input[@id='postcode']")).getText();
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(TestConstants.RE_ENTER_PASSWORD1);
-		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(TestConstants.RE_ENTER_PASSWORD2);
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(driver.getPassword());
+		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(driver.getPassword());
 		clickNextButton();
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1128,8 +1139,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		while(true){
 			try{
 				driver.waitForElementNotPresent(By.xpath("//a[text()='Remove']"));
-				driver.click(By.xpath("//a[text()='Remove']"));;
-				driver.waitForPageLoad();
+				driver.click(By.xpath("//a[text()='Remove']"));				
 				if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(TestConstants.AUTOSHIP_TEMPLATE_ERROR_MSG_PC)){
 					flag=true;
 					break;
@@ -1212,7 +1222,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPCUserIsOnSponserPWSAfterSuccessfulEnrollment(String sponserPWS,String newPWS){
-		if(sponserPWS.equalsIgnoreCase(newPWS)){
+		if(newPWS.contains(sponserPWS)){
 			return true;
 		}
 		else
@@ -1220,7 +1230,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPCUserIsOnCorpSiteAfterSuccessfulEnrollment(String corpUrl,String newPWS){
-		if(corpUrl.equalsIgnoreCase(newPWS)){
+		if(newPWS.contains(corpUrl)){
 			return true;
 		}
 		else
@@ -1264,8 +1274,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickEditShoppingCartLink(){
-		driver.waitForElementPresent(By.xpath("//a[@href='/ca/cart']"));
-		driver.click(By.xpath("//a[@href='/ca/cart']"));
+		driver.waitForElementPresent(By.xpath("//a[@class='gray-anchor']"));
+		driver.click(By.xpath("//a[@class='gray-anchor']"));
 		logger.info("edit shopping cart link clicked");
 		driver.waitForPageLoad();
 	}
@@ -1275,7 +1285,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		String qty=driver.findElement(By.xpath("//input[@id='quantity0']")).getAttribute("value");
 		Integer.parseInt(qty);
 		String total=driver.findElement(By.xpath("//div[@class='cartItems']/div[1]//span[@class='special-price']")).getText();
-		String[] totalvalue= total.split("\\s+");
+		String[] totalvalue= total.split("\\$+");
 		Double.parseDouble(totalvalue[1].trim());
 		//Integer.parseInt(totalvalue[1].trim());
 		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
@@ -1286,7 +1296,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		String qty=driver.findElement(By.xpath("//input[@id='quantity1']")).getAttribute("value");
 		Integer.parseInt(qty);
 		String total=driver.findElement(By.xpath("//div[@class='cartItems']/div[2]//span[@class='special-price']")).getText();
-		String[] totalvalue= total.split("\\s+");
+		String[] totalvalue= total.split("\\$+");
 		Double.parseDouble(totalvalue[1].trim());
 		//Integer.parseInt(totalvalue[1].trim());
 		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
@@ -1295,7 +1305,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean validateSubTotal(double subtotal1,double subtotal2){
 		driver.waitForElementPresent(By.xpath("//div[@class='col-xs-12']//div[3]/span"));
 		String subTotalVal=driver.findElement(By.xpath("//div[@class='col-xs-12']//div[3]/span")).getText();
-		String[] totalvalue= subTotalVal.split("\\s+");
+		String[] totalvalue= subTotalVal.split("\\$+");
 		double subTotalValue=Double.parseDouble(totalvalue[1].trim());
 		if(subTotalValue==(subtotal1+subtotal2)){
 			return true;
@@ -1388,11 +1398,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.waitForPageLoad();
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}
+	}
 
+	public String createBizToCom(String bizUrl){
+		if(bizUrl.contains("biz")){
+			String pws = bizUrl.replaceAll("biz","com");
+			return pws;
+		}else
+			return bizUrl;
 	}
 }
 

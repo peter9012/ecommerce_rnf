@@ -72,7 +72,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-62 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN
@@ -128,7 +128,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-63 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH REGIMEN  
@@ -184,7 +184,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 
 	}
 
@@ -241,7 +241,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 }

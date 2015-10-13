@@ -75,10 +75,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
+		driver.quickWaitForElementPresent(By.id("account-info-button"));
 		driver.findElement(By.id("account-info-button")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.findElement(By.linkText("Log out")).click();
 		logger.info("Logout");		
+		driver.pauseExecutionFor(3000);
 	}
 
 	// This assertion for the UI Texts

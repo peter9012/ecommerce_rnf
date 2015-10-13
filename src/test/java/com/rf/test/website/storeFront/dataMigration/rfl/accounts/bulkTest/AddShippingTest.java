@@ -349,8 +349,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 		storeFrontUpdateCartPage.editShippingAddress();
 		s_assert.assertFalse(storeFrontUpdateCartPage.isUseThisShippingProfileFutureAutoshipChkboxVisible(),"Autoship Checkbox Present");
 
@@ -402,8 +402,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			storeFrontConsultantPage.clickOnAllProductsLink();
 			storeFrontUpdateCartPage.clickOnBuyNowButton();
 			storeFrontUpdateCartPage.clickOnCheckoutButton();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-			storeFrontUpdateCartPage.clickOnConfirmationOK();
+			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+			//storeFrontUpdateCartPage.clickOnConfirmationOK();
 			storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 			storeFrontUpdateCartPage.clickAddANewAddressLink();
@@ -456,8 +456,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 

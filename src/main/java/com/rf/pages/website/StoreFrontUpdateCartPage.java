@@ -330,28 +330,37 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@class='btn btn-primary btn-check btn-block']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary btn-check btn-block']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
 		logger.info("checkout button clicked");
-		driver.waitForLoadingImageToDisappear();
-	}
-
-	public boolean verifyCheckoutConfirmation(){
 		try{
-			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
-			return true;
-		}catch(NoSuchElementException e){
-			return false;
+			driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			logger.info("Confirmation OK button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+		}
+		catch(Exception e){
+
 		}
 	}
 
-	public void clickOnConfirmationOK(){
-		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
-		driver.click(By.xpath("//input[@value='OK']"));
-		logger.info("Confirmation OK button clicked");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-	}
+	//	public boolean verifyCheckoutConfirmation(){
+	//		try{
+	//			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
+	//			return true;
+	//		}catch(NoSuchElementException e){
+	//			return false;
+	//		}
+	//	}
+	//
+	//	public void clickOnConfirmationOK(){
+	//		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
+	//		driver.click(By.xpath("//input[@value='OK']"));
+	//		logger.info("Confirmation OK button clicked");
+	//		driver.waitForLoadingImageToDisappear();
+	//		driver.waitForPageLoad();
+	//	}
 
 	public String getSubtotal(){
 		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));

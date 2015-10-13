@@ -72,7 +72,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-66 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN  
@@ -127,7 +127,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-67 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
@@ -182,7 +182,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-68 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
@@ -237,7 +237,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 }

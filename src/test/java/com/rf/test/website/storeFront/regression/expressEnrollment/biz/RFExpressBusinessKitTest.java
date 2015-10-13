@@ -72,7 +72,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-55 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN 
@@ -127,7 +127,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}
 
 	// Hybris Project-56 :: Version : 1 :: Express EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen SOOTHE REGIMEN  
@@ -182,6 +182,6 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 //		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 //		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 //
-//		s_assert.assertAll();
+s_assert.assertAll(); // Please don't comment this line
 	}	
 }

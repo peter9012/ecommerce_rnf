@@ -997,7 +997,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void checkPCPerksCheckBox(){
-		driver.findElement(By.id("become-pc")).click(); 
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2']/.."));
+		driver.findElement(By.xpath("//input[@id='pc-customer2']/..")).click(); 
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -1220,7 +1222,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPCUserIsOnSponserPWSAfterSuccessfulEnrollment(String sponserPWS,String newPWS){
-		if(sponserPWS.equalsIgnoreCase(newPWS)){
+		if(newPWS.contains(sponserPWS)){
 			return true;
 		}
 		else
@@ -1228,7 +1230,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPCUserIsOnCorpSiteAfterSuccessfulEnrollment(String corpUrl,String newPWS){
-		if(corpUrl.equalsIgnoreCase(newPWS)){
+		if(newPWS.contains(corpUrl)){
 			return true;
 		}
 		else
@@ -1400,6 +1402,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}
+	}
+
+	public String createBizToCom(String bizUrl){
+		if(bizUrl.contains("biz")){
+			String pws = bizUrl.replaceAll("biz","com");
+			return pws;
+		}else
+			return bizUrl;
 	}
 }
 

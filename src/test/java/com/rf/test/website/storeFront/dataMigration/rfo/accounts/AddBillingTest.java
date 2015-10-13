@@ -213,8 +213,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 		//storeFrontUpdateCartPage.clickOnUpdateCartButton();
 
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
@@ -375,8 +375,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 
 		s_assert.assertTrue(storeFrontUpdateCartPage.getSelectedBillingAddress().contains(newBillingProfileName), "Payment Method doesn't contains the default billing profile");
@@ -418,8 +418,8 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();

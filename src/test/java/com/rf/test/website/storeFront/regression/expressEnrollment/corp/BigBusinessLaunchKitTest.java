@@ -46,7 +46,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -69,10 +69,10 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll(); // Please don't comment this line
 	}
 
 	//Hybris Project-21 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN 
@@ -101,7 +101,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -124,12 +124,12 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll();
 	}
-	
+
 	// Hybris Project-22 :: Version : 1 :: Express Enrollment USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH REGIMEN
 	@Test
 	public void testExpressEnrollmentBusinessKitUnblemishRegimen_22() throws InterruptedException{
@@ -156,7 +156,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
@@ -179,12 +179,12 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll();
 	}
-	
+
 
 	//Hybris Project-23 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen SOOTHE REGIMEN  
 	@Test
@@ -196,7 +196,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		regimenName =  TestConstants.REGIMEN_NAME_SOOTHE;
 		kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 		String sRandName = RandomStringUtils.randomAlphabetic(12);
-		
+
 		if(country.equalsIgnoreCase("CA")){
 			//kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -213,12 +213,12 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		
+
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-//		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -236,10 +236,10 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll();
 	}
 
 }

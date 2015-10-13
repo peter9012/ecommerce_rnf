@@ -61,8 +61,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
 		logger.info("Subtotal while creating order is "+subtotal);
@@ -135,8 +135,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
 		logger.info("Subtotal while creating order is "+subtotal);

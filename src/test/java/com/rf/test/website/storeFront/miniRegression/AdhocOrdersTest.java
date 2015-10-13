@@ -67,8 +67,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = String.valueOf(storeFrontUpdateCartPage.getSubtotal());
 		logger.info("subtotal ="+subtotal);
@@ -160,8 +160,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
 		logger.info("subtotal ="+subtotal);

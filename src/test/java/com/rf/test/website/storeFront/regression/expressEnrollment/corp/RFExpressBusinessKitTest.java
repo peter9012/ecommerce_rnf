@@ -66,10 +66,10 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll(); // Please don't comment this line
 	}
 
 	// Hybris Project-2203 :: Version : 1 :: Express EnrollmentTest Business Portfolio Kit.  
@@ -126,12 +126,12 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll(); // Please don't comment this line
 	}
-	
+
 	//Hybris Project-2204 :: Version : 1 :: CORP:Express Enrollment Business Portfolio Kit(CRP:N,P:N)
 	@Test(enabled=false) // can't see ship immediately
 	public void testExpressEnrollmentBusinessPorfolioKitRedefineRegimen_2204() throws InterruptedException{
@@ -180,9 +180,9 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//
-//		s_assert.assertAll();
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//
+		s_assert.assertAll(); // Please don't comment this line
 	}
 }

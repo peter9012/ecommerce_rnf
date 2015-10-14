@@ -22,7 +22,7 @@ public class LoginTest extends RFWebsiteBaseTest {
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmLogout();
+		//crmLogout();
 		}
 
 }

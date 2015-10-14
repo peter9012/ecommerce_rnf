@@ -100,6 +100,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
+	public String getCrmURL(){
+		return propertyFile.getProperty("crmUrl");
+	}
 
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");

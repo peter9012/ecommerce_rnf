@@ -73,6 +73,13 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void setPassword(String pass){
 		password=pass;
 	}
+	 public void crmLogout(){
+			driver.findElement(By.id("userNavLabel")).click();
+			driver.waitForElementPresent(By.id("app_logout"));
+			driver.findElement(By.id("app_logout")).click();
+			logger.info("Logout");
+			
+		}
 
 	public void logout(){
 		driver.quickWaitForElementPresent(By.id("account-info-button"));

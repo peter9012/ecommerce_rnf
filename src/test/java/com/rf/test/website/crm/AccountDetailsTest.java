@@ -36,7 +36,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	private String consultantEmailAddress = null;
 	
 	//Test enroll an Consultant and verify its details in crm.
-	@Test
+	@Test(priority=1)
 	public void testStandardEnrollmentTermsAndConditions() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -44,6 +44,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		consultantEmailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
@@ -60,12 +61,10 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*storeFrontHomePage.clickOnOurBusinessLink();
-			storeFrontHomePage.clickOnOurEnrollNowLink();*/
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME, password, addressLine1, city,TestConstants.PROVINCE_ALBERTA, postalCode, phoneNumber,consultantEmailAddress);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -78,7 +77,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		//		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
+		//storeFrontHomePage.addQuantityOfProduct("5");
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
@@ -96,10 +95,10 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 
 	}
 
-	@Test(dependsOnMethods="testStandardEnrollmentTermsAndConditions")
+	@Test(priority=2)
 	public void verifyConsultantDetails() throws InterruptedException{
-		consultantEmailAddress="auto758952@xyz.com";
-		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+//		consultantEmailAddress="auto734005@xyz.com";
+//		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
@@ -118,7 +117,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	//Test enroll an PC user and verify its details in crm.
-	@Test
+	@Test(priority=3)
 	public void testPCEnrollment() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -126,17 +125,21 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		pcUserEmailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		
+		if(country.equalsIgnoreCase("CA")){			 
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		/*storeFrontHomePage.clickOnShopLink();
-			storeFrontHomePage.clickOnAllProductsLink();*/
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 
-		//Select a product with the price less than $80 and proceed to buy it
-		storeFrontHomePage.applyPriceFilterLowToHigh();
+		//Select a product and proceed to buy it.
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
 		//Cart page is displayed?
@@ -154,19 +157,10 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
 		logger.info("Login or Create Account page is displayed");
 
-		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+		//Enter the User information and check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME,pcUserEmailAddress, password);
 
-		//Pop for PC threshold validation
-		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		//Enter the Main account info and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
@@ -182,9 +176,6 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
-		/*storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		//storeFrontHomePage.switchToPreviousTab();
@@ -197,10 +188,10 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();	
 
 	}
-	@Test(dependsOnMethods="testPCEnrollment")
+	@Test(priority=4)//dependsOnMethods="testPCEnrollment"
 	public void verifyPCUserDetails() throws InterruptedException{
-		pcUserEmailAddress="PCUser931791@xyz.com";
-		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+//		pcUserEmailAddress="auto45324@xyz.com";
+//		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
@@ -220,16 +211,21 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 	
 	//Test enroll an RC user and verify its details in crm.
-	@Test
+	@Test(priority=5)
 	public void testRCEnrollment() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		String lastName = "lN";
+		country = driver.getCountry();
+		rcUserEmailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		if(country.equalsIgnoreCase("CA")){			 
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		/*storeFrontHomePage.clickOnShopLink();
-			storeFrontHomePage.clickOnAllProductsLink();*/
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
@@ -243,12 +239,9 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Two products are in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("2"), "number of products in the cart is NOT 2");
-		logger.info("2 products are successfully added to the cart");
+		//one products are in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
 
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
@@ -258,11 +251,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-
-		/*//CheckoutPage is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
-			logger.info("Checkout page has displayed");*/
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME,rcUserEmailAddress, password);
 
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
@@ -282,13 +271,16 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		s_assert.assertAll();	
+		s_assert.assertAll();
 
 	}
-	@Test(dependsOnMethods="testRCEnrollment")
+	@Test(priority=6)
 	public void verifyRCUserDetails() throws InterruptedException{
+//		rcUserEmailAddress="auto23337@xyz.com";
+//		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);

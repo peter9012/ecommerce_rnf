@@ -702,7 +702,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterPhoneNumber(phoneNumber);
 
 	}
-
+	//overloaded method for email address.
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber,String emailAddress){
+		selectEnrollmentKitPage(kitName, regimenName);		
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterEmailAddress(emailAddress);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+	}
 	//Method Overloaded without Kit and Regimen
 	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
 		enterFirstName(firstName);

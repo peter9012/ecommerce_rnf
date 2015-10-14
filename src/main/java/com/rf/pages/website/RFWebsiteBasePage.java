@@ -258,12 +258,56 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+	//overloaded method for email address
+	public void enterNewRCDetails(String firstName,String lastName,String emailAddress,String password) throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		//		String firstName="RCUser";
+		//		String lastName = "Test";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
+		driver.click(By.id("next-button"));		
+		logger.info("Create New Account button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
 
 	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		//		String firstName="PCUser";
 		//		String lastName = "Test";
-		String emailAddress = firstName+randomNum+"@xyz.com";
+		String emailAddress = firstName+"@xyz.com";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
+		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		logger.info("check box for PC user checked");
+		driver.click(By.xpath("//input[@id='next-button']"));		
+		logger.info("Create New Account button clicked");		
+	}
+	//overloaded method for email address.
+	public void enterNewPCDetails(String firstName,String lastName,String emailAddress,String password) throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		//		String firstName="PCUser";
+		//		String lastName = "Test";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);

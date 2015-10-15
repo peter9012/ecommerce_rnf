@@ -153,7 +153,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.findElement(By.id("sponserparam")).sendKeys(cid);
 		}
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@value='Search']"));
+			driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
 			driver.click(By.xpath("//input[@value='Search']"));			
 		}catch(NoSuchElementException e){
 			driver.quickWaitForElementPresent(By.id("search-sponsor-button"));

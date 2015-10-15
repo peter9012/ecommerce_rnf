@@ -96,8 +96,8 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	@Test(priority=2)
-	public void verifyConsultantDetails() throws InterruptedException{
-//		consultantEmailAddress="auto734005@xyz.com";
+	public void testVerifyConsultantDetails() throws InterruptedException{
+//		consultantEmailAddress="auto16626@xyz.com";
 //		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
@@ -124,7 +124,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String firstName=TestConstants.PC_FIRST_NAME+randomNum;
 		pcUserEmailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		
 		if(country.equalsIgnoreCase("CA")){			 
@@ -189,8 +189,8 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 
 	}
 	@Test(priority=4)//dependsOnMethods="testPCEnrollment"
-	public void verifyPCUserDetails() throws InterruptedException{
-//		pcUserEmailAddress="auto45324@xyz.com";
+	public void testVerifyPCUserDetails() throws InterruptedException{
+//		pcUserEmailAddress="auto757408@xyz.com";
 //		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
@@ -215,7 +215,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	public void testRCEnrollment() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String firstName=TestConstants.RC_FIRST_NAME+randomNum;
 		String lastName = "lN";
 		country = driver.getCountry();
 		rcUserEmailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
@@ -278,7 +278,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 
 	}
 	@Test(priority=6)
-	public void verifyRCUserDetails() throws InterruptedException{
+	public void testVerifyRCUserDetails() throws InterruptedException{
 //		rcUserEmailAddress="auto23337@xyz.com";
 //		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
@@ -298,4 +298,12 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyCountryName(),"Country Name is not as expected for this user");
 		s_assert.assertAll();
 }
+	// Hybris Project-4494:View the Account Policies for Consultant
+	@Test
+	public void testViewAccountPoliciesForConsultant() throws InterruptedException{
+		consultantEmailAddress="auto734005@xyz.com";
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+	
+	}
 }

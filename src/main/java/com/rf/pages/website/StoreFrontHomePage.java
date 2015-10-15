@@ -288,6 +288,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterEmailAddress(String emailAddress){		
 		driver.type(By.id("email-account"), emailAddress+"\t");
+		logger.info("Email address is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
 
@@ -308,6 +309,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterPassword(String password){
 		driver.type(By.id("new-password-account"),password);
+		logger.info("Password entered is "+password);
 	}
 
 	public void enterConfirmPassword(String password){

@@ -39,6 +39,7 @@ public class CRMHomePage extends RFWebsiteBasePage {
     private final By ACCOUNT_ACTIVITIES_LOC = By.xpath("//span[@class='listTitle' and contains(text(),'Account Policies')]");
     private final By EDIT_ACCOUNT_BUTTON_LOC = By.xpath("//td[@id='topButtonRow']/input[@value='Edit Account']");
     private final By SAVE_BUTTON_LOC = By.xpath("//td[@id='bottomButtonRow']/input[@title='Save']");
+    private final By BACK_TO_SERVICE_CLOUD_CONSOLE_LOC = By.linkText("Back to Service Cloud Console");
 	static String  firstName = null;
 	public CRMHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -54,6 +55,11 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		//driver.click(SEARCH_BUTTON_LOC);
 		driver.waitForPageLoad();
 	}
+	public boolean verifySearchPage(){
+		driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
+		return driver.isElementPresent(SEARCH_TEXT_BOX_LOC);
+		
+	}
 	public void clickaccountNameForAccountDetailsPage(String name){
 		//driver.switchTo().frame(driver.findElement(I_FRAME_LOC));
 		driver.switchTo().defaultContent();
@@ -61,8 +67,16 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
 		driver.click(By.xpath(String.format(ACCOUNT_NAME_SELECTION, name)));
 		driver.switchTo().defaultContent();
+		}
+	public void clickOnAccountNameForAccountDetailPageInAccountSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.switchTo().defaultContent();
 		
-
+		
 	}
 	public boolean verifyAccountTypeForRCUser(){
 		driver.waitForElementPresent(ACCOUNT_TYPE);
@@ -126,5 +140,47 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		logger.info("Save button clicked after editing profile");
 		driver.waitForPageLoad();
+	}
+	public void clickOnBackToServiceCloudConsole(){
+		driver.quickWaitForElementPresent(BACK_TO_SERVICE_CLOUD_CONSOLE_LOC);
+		if(driver.isElementPresent(BACK_TO_SERVICE_CLOUD_CONSOLE_LOC)){
+		driver.click(BACK_TO_SERVICE_CLOUD_CONSOLE_LOC);		
+		logger.info("User has clicked on back to service cloud console link");
+		}else{
+			logger.info("back to service cloud console link not present");
+		}
+		driver.pauseExecutionFor(30000);
+		}
+	public int clickOnBillingProfileAndGetNumberBillingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//div[@class='listHoverLinks']/a/span[contains(text(),'Billing  Profiles')]/span"));
+		String count=driver.findElement(By.xpath("//div[@class='listHoverLinks']/a/span[contains(text(),'Billing  Profiles')]/span")).getText();
+		String [] countOfBillingProfile = count.split("\\[");
+		driver.waitForElementPresent(By.xpath("//div[@class='listHoverLinks']/a/span[contains(text(),'Billing  Profiles')]"));
+		driver.findElement(By.xpath("//div[@class='listHoverLinks']/a/span[contains(text(),'Billing  Profiles')]")).click();
+		logger.info("Billing profile link is clicked");
+		driver.switchTo().defaultContent();
+		return Integer.parseInt(countOfBillingProfile[1].substring(0, countOfBillingProfile[1].length()-1));
+		
+	}
+	public int getCountOfBillingProfileUnderBillingProfileSection(){
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]")));
+		driver.waitForElementPresent(By.xpath(" //div[@id='ep']/following-sibling::div[5]/div[1]/div[1]/div[2]/table/tbody/tr"));
+		int count=driver.findElements(By.xpath(" //div[@id='ep']/following-sibling::div[5]/div[1]/div[1]/div[2]/table/tbody/tr")).size();
+		int rowCount = count-1;
+		driver.switchTo().defaultContent();
+		logger.info("billing count from UI "+rowCount);
+		return rowCount;
+	}
+	public boolean verifyBillingInfoActionField(){
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='ep']/following-sibling::div[5]/div[1]/div/div[2]/table//th[contains(text(),'Action')]"));
+		boolean actionButton = driver.isElementPresent(By.xpath("//div[@id='ep']/following-sibling::div[5]/div[1]/div/div[2]/table//th[contains(text(),'Action')]"));
+		driver.switchTo().defaultContent();
+		return actionButton;
 	}
 }

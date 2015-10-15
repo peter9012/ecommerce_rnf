@@ -16,13 +16,18 @@ public class LoginTest extends RFWebsiteBaseTest {
 	private CRMLoginPage crmLoginpage;
 	private CRMHomePage crmHomePage;
 
+	//Hybris Project-4719:Single sign on to CRM
 	@Test
-	public void loginToCRM() throws InterruptedException{
+	public void singleSignInToCRM_4719() throws InterruptedException{
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_INVALID_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmLoginpage.getErrorMessageOnLoginPage().contains("check your username and password"),"Login is successful with invalid credential");
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmLogout();
+		crmHomePage.clickOnBackToServiceCloudConsole();
+		s_assert.assertTrue(crmHomePage.verifySearchPage(),"Basic search Page has not been displayed");
+		s_assert.assertAll();
 		}
 
 }

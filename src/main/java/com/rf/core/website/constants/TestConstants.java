@@ -335,8 +335,9 @@ public class TestConstants {
 	//public static final String CRM_LOGIN_PASSWORD = "RFtest1234";
 	public static final String CRM_LOGIN_USERNAME = "crmqaguest@rodanandfields.com.qa2";
 	public static final String CRM_LOGIN_PASSWORD = "crmrocks1";
-	public static final String PC_FIRST_NAME = "PCUser";
+	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
+	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 }
 
 

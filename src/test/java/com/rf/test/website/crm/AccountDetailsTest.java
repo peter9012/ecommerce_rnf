@@ -279,7 +279,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 	@Test(priority=6)
 	public void testVerifyRCUserDetails() throws InterruptedException{
-//		rcUserEmailAddress="auto23337@xyz.com";
+//		rcUserEmailAddress="RCUser677657@xyz.com";
 //		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
@@ -300,10 +300,29 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 }
 	// Hybris Project-4494:View the Account Policies for Consultant
 	@Test
-	public void testViewAccountPoliciesForConsultant() throws InterruptedException{
+	public void testViewAccountPoliciesForConsultant_4494() throws InterruptedException{
 		consultantEmailAddress="auto734005@xyz.com";
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserById(consultantEmailAddress);
 	
+	}
+	// Hybris Project-4539:View Billing profile for a PC
+	@Test//WIP
+	public void testViewBillingProfileForPC_4539() throws InterruptedException{
+		consultantEmailAddress="auto734005@xyz.com";
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserById("pc");
+		crmHomePage.clickOnAccountNameForAccountDetailPageInAccountSection();
+		int countOfBillingProfile=crmHomePage.clickOnBillingProfileAndGetNumberBillingProfile();
+		s_assert.assertTrue(crmHomePage.verifyBillingInfoActionField(),"Action field is not present");
+		assertEquals(countOfBillingProfile,crmHomePage.getCountOfBillingProfileUnderBillingProfileSection(),"Billing Addresses count is not same");
+		s_assert.assertAll();
+		
 	}
 }

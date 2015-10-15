@@ -1450,6 +1450,75 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 		driver.click(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 	}
+
+	public String fetchingUserName(){
+		return driver.findElement(By.xpath("//div[@id='account-info-button']//span[2]")).getText();
+	}
+
+	public boolean verifyUserNameAfterLoginAgain(String oldUserNameOnUI,String newUserNameOnUI){
+		if(oldUserNameOnUI.equals(newUserNameOnUI)){
+			return true;
+		}      
+		return  false;
+	}
+
+	public void uncheckCRPCheckBox(){
+		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
+		if(driver.isElementPresent(By.xpath("//input[@checked='checked']"))){
+			driver.click(By.xpath("//input[@id='CRP-check']/.."));
+		}
+	}
+
+	public boolean validateTermsAndConditionsForConsultantApplicationPulse(){
+		driver.waitForElementPresent(By.xpath("//strong[contains(text(),'I have read and accepted all Terms and Conditions for the Consultant Application, Pulse')]"));
+		return driver.isElementPresent(By.xpath("//strong[contains(text(),'I have read and accepted all Terms and Conditions for the Consultant Application, Pulse')]"));
+	}
+
+	public void uncheckPulseCheckBox(){
+		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/.."));
+		if(driver.isElementPresent(By.xpath("//input[@checked='checked']"))){
+			driver.click(By.xpath("//input[@id='pulse-check']/.."));
+		}
+	}
+
+	public boolean validateTermsAndConditionsForConsultantApplicationCRP(){
+		driver.waitForElementPresent(By.xpath("//strong[contains(text(),'I have read and accepted all Terms and Conditions for the Consultant Application, CRP')]"));
+		return driver.isElementPresent(By.xpath("//strong[contains(text(),'I have read and accepted all Terms and Conditions for the Consultant Application, CRP')]"));
+	}
+
+	public void clickOnEnrollUnderLastUpline(){
+		driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']/a"));
+		driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/a"));
+	}
+
+	public void enterPasswordForReactivationForConsultant(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::input[2]"));
+		driver.type(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::input[2]"), driver.getPassword());
+	}
+
+	public void clickOnLoginToReactiveMyAccountForConsultant(){
+		//driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::a[2]/input"));
+		driver.click(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::a[2]/input"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyTerminatedConsultantIsNotInSponsorList(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//span[contains(text(),'No result found')]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public boolean verifyTerminatedConsultantPresentInSponsorList(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']"))){
+			return true;
+		}else
+			return false;
+	}
+
 }
 
 

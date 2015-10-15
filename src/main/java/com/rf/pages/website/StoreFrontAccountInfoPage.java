@@ -40,8 +40,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
-	private final By CANCEL_MY_CRP_LOC = By.xpath("//p[@id='crp-status']/a[contains(text(),'Cancel my CRP')]");
-	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//input[@id='cancel-crp-button']");
+	private final By CANCEL_MY_CRP_LOC = By.xpath("//a[contains(text(),'Cancel my CRP')]");
+	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//a[@id='cancel-crp-button']");
 	private final By ENROLL_IN_CRP_LOC = By.xpath("//input[@id='crp-enroll']");
 	private final By DAY_OF_BIRTH_FOR_4178_LOC = By.xpath("//select[@id='dayOfBirth']//option[@selected='selected'][2]");
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
@@ -529,5 +529,43 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.id("cancel-pc-perks-button"));
 		return new StoreFrontAccountTerminationPage(driver);
 	}
+
+	public void cancelPulseSubscription(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.click(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//a[@id='cancel-pulse-button']"));
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public boolean validatePulseCancelled(){
+		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
+		return driver.isElementPresent(By.id("subscribe_pulse_button_new"));
+	}
+
+	public boolean validateSubscribeToPulse(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+	}
+
+	public void enterNewUserNameAndClicKOnSaveButton(String newUserName) {
+		driver.waitForElementPresent(By.id("username-account"));
+		driver.clear(By.id("username-account"));
+		driver.type(By.id("username-account"), newUserName);
+		driver.click(By.id("saveAccountInfo"));
+		logger.info("save button clicked");
+
+	}
+
+	public boolean verifyProfileUpdationMessage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p"));
+		String updationMessage = driver.findElement(By.xpath("//div[@id='globalMessages']//p")).getText();
+		System.out.println("updationMessage==="+updationMessage);
+		if(updationMessage.equals("Your profile has been updated")){
+			return true;
+		}
+		return false;
+	}	
 }
 

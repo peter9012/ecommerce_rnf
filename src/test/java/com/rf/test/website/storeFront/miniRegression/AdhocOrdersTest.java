@@ -307,7 +307,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
-	}
-
-
+	}	
+	
 }

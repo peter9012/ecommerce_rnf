@@ -328,6 +328,7 @@ public class TestConstants {
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
+	public static final String NEW_RC_USER_NAME = "updatedUserName";
 }
 
 

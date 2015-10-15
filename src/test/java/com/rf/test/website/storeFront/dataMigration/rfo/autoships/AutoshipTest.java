@@ -69,8 +69,8 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		String selectedShippingMethod = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
 		logger.info("Shipping Method selected is: "+selectedShippingMethod);
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
-		storeFrontUpdateCartPage.clickOnNextStepBtn();
-		storeFrontUpdateCartPage.clickUpdateCartBtn();  
+		//storeFrontUpdateCartPage.clickOnNextStepBtn();
+		//storeFrontUpdateCartPage.clickUpdateCartBtn();  
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

@@ -518,5 +518,16 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return new StoreFrontShippingInfoPage(driver);
 
 	}
+
+	public void clickOnPcPerksStatus(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'PC Perks Status')]"));
+		driver.click(By.xpath("//a[contains(text(),'PC Perks Status')]"));
+	}
+
+	public StoreFrontAccountTerminationPage clickOnCancelPCPerks(){
+		driver.waitForElementPresent(By.id("cancel-pc-perks-button"));
+		driver.click(By.id("cancel-pc-perks-button"));
+		return new StoreFrontAccountTerminationPage(driver);
+	}
 }
 

@@ -674,7 +674,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
 			logger.info("Add to CRP button clicked");
 		}catch(Exception e){
-			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
+			driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
+			logger.info("Add to CRP button clicked");
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1424,6 +1425,44 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			return pws;
 		}else
 			return bizUrl;
+	}
+
+	public boolean verifyInvalidSponsorPopupIsPresent(){
+		driver.waitForElementPresent(By.id("inactiveConsultant180Form"));
+		if(driver.isElementPresent(By.id("inactiveConsultant180Form"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public void clickOnCnacelEnrollment(){
+		driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']/input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/input[@class='cancelEnrollment']"));
+	}
+
+	public void enterPasswordAfterTermination(){
+		driver.waitForElementPresent(By.xpath("//input[@class='password-field']"));
+		driver.type(By.xpath("//input[@class='password-field']"), driver.getPassword());
+	}
+
+	public boolean verifyReactiveYourPCAccountPopup(){
+		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'REACTIVATE YOUR PC ACCOUNT')]"));
+		if(driver.isElementPresent(By.xpath("//h2[contains(text(),'REACTIVATE YOUR PC ACCOUNT')]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public void clickOnLoginToReactiveMyAccount(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//input[@class='reactivatePC']"));
+		driver.click(By.xpath("//input[@class='reactivatePC']/.."));
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnCnacelEnrollmentForPC(){
+		driver.waitForElementPresent(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
+		driver.click(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 	}
 }
 

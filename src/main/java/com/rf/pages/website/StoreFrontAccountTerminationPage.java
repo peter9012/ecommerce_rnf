@@ -117,4 +117,18 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 			System.out.println("Confirm popup not seen.");
 		}
 	}
+
+	public void fillTheEntriesAndClickOnSubmitDuringTerminationForPC(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.click(By.xpath("//select[@id='problemType']/option[contains(text(),'Other')]"));
+		driver.type(By.id("terminationComments"), "I want to terminate my account");
+		driver.click(By.id("pcperkTerminationConfirm"));
+	}
+
+	public void clickOnConfirmAccountTermination(){
+		driver.waitForElementPresent(By.xpath("//input[@id='confirmpcTemrminate']"));
+		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
+		driver.waitForLoadingImageToDisappear();   
+	}
 }

@@ -32,7 +32,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
-	@Test
+	@Test //mini-regression test
 	public void testCreateAdhocOrderConsultant_1878() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
@@ -125,7 +125,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
-	@Test
+	@Test //mini-regression test
 	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
@@ -219,7 +219,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-1879 :: Version : 1 :: Create Adhoc Order For The Retail Customer
-	@Test
+	@Test //mini-regression test
 	public void testCreateAdhocOrderRC_1879() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();

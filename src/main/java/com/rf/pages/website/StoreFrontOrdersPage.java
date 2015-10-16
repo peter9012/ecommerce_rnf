@@ -14,7 +14,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());	
 
 	private final By ORDERS_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[contains(text(),'Orders')]");
-	private final By ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Order details: CRP')]");
+	private final By ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']");
 	private final By ORDER_NUMBER_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/a");
 	private final By ORDER_SCHEDULE_DATE_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[2]");
 	private final By ORDER_GRAND_TOTAL_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[3]");
@@ -99,7 +99,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean verifyCRPAutoShipHeader(){
 		driver.waitForElementPresent(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC);
 		logger.info(driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
-		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: CRP #"+autoShipOrderNumber);
+		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains(autoShipOrderNumber);
 	}
 
 	public boolean verifyCRPAutoShipAddress(String firstName,String lastName,String addressLine1,String city,String postalCode,String country){

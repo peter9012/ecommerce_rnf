@@ -128,7 +128,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
 				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			else
@@ -139,7 +139,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			logger.info("Add To Bag button clicked");
 			driver.waitForLoadingImageToDisappear();
@@ -150,7 +150,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)
 			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
 		else
@@ -201,11 +201,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 	//	}
 
 	public void addAnotherProduct() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			logger.info("Buy Now button clicked and another product selected");
@@ -457,7 +457,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnRodanAndFieldsLogo(){
 		try{
 			driver.turnOffImplicitWaits();
-			driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
 			driver.click(RODAN_AND_FIELDS_IMG_LOC);
 		}catch(NoSuchElementException e){
 			try{

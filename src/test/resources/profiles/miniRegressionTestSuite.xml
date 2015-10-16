@@ -4,10 +4,18 @@
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 	</listeners>
-	<test name="miniRegressionTest">		
-		<classes>		  									
-			<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
-			<class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class>						
+	<test name="miniRegressionTest">
+		<classes>
+			<class
+				name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
+			<class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class>
+			<methods>
+				<include name="testExpressEnrollmentLoginAfterLogout_3218" />
+				<include name="testCreatingCRPAutoshipUnderBizSite_3920" />
+				<include name="ccsRCEnrollmentUnderUSSponsor_3618" />
+				<include name="testCcsPCEnrollmentUnderUSSponsor_3617" />
+				<include name="testSubscribingPulseMyAccount_3921" />				
+			</methods>
 		</classes>
 	</test>
 </suite>

@@ -6,17 +6,19 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-		    <!-- <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class> -->
+			<!-- <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class> -->
 			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
 				<methods>
-                                  <include name="testStandardEnrollmentTermsAndConditions_1288"/>
-                                  <include name="testRCEnrollment_1307"/>
-                                  <include name="testPCEnrollment_1308"/>
-                                  <include name="testStandardEnrollmentWithoutCRPAndPulse_3255"/>
-                                  <include name="testSubscribingPulseMyAccount_3921"/>
-                                  <include name="testUserEnrollCRPThroughMyAccount_2230"/>
-                </methods>           
-           	</class>		
+					<include name="testStandardEnrollmentTermsAndConditions_1288" />
+					<include name="testRCEnrollment_1307" />
+					<include name="testPCEnrollment_1308" />
+					<include name="testCreateAdhocOrderPC_1877" />
+					<include name="testUserEnrollCRPThroughMyAccount_2230" />
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
+					<include name="testSubscribingPulseMyAccount_3921" />
+
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

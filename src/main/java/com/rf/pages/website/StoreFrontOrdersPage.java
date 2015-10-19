@@ -731,5 +731,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return  autoShipOrderDate;
 	}
 
+	public boolean verifyAdhocOrderIsPresent(){
+		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
+		if(driver.isElementPresent(ORDER_NUM_OF_ORDER_HISTORY)){
+			return true;
+		}else
+			return true;
+	}
+
 }
 

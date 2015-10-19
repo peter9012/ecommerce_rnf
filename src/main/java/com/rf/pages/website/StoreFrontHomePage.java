@@ -704,6 +704,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	}
 
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName, regimenName);  
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterEmailAddress(emailaddress);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(emailaddress);
+	}
+
 	//Method Overloaded without Kit and Regimen
 	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
 		enterFirstName(firstName);

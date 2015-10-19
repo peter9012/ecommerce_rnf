@@ -329,6 +329,7 @@ public class TestConstants {
 
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
 	public static final String NEW_RC_USER_NAME = "updatedUserName";
+	public static final String PROVINCE_ALABAMA_US ="Alabama";
 }
 
 

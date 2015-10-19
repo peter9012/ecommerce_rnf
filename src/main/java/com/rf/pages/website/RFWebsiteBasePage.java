@@ -238,8 +238,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		//		String firstName="RCUser";
-		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -259,10 +257,28 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
+	//overloaded method for email address
+	public void enterNewRCDetails(String firstName,String lastName,String emailAddress,String password) throws InterruptedException{
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
+		driver.click(By.id("next-button"));  
+		logger.info("Create New Account button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
 	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		//		String firstName="PCUser";
-		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -280,6 +296,25 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
 		logger.info("Create New Account button clicked");		
+	}
+
+	public void enterNewPCDetails(String firstName,String lastName,String password, String emailID) throws InterruptedException{
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailID+"\t");
+		logger.info("email entered as "+emailID);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
+		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		logger.info("check box for PC user checked");
+		driver.click(By.xpath("//input[@id='next-button']"));  
+		logger.info("Create New Account button clicked");  
 	}
 
 	public boolean isPopUpForPCThresholdPresent() throws InterruptedException{
@@ -600,9 +635,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String createNewPC(String firstName,String lastName,String password) throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		//		String firstName="PCUser";
-		//		String lastName = "Test";
 		String emailAddress = firstName+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
@@ -915,11 +947,49 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
-	//	public void clickOnUserNameForHomePage(){
-	//		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
-	//		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
-	//		logger.info("Rodan and Fields logo clicked"); 
-	//		driver.waitForPageLoad();
-	//	}
+	public boolean verifyUpradingToConsulTantPopup(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[@id='activePCPopup']//h2[contains(text(),'UPGRADING TO A CONSULTANT')]"))){
+			return true;
+		}else
+			return false;
+	}
 
+	public void enterPasswordForUpgradePcToConsultant(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"));
+		driver.type(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"), driver.getPassword());
+	}
+
+	public void clickOnLoginToTerminateToMyPCAccount(){
+		//driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
+		driver.click(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+	}
+
+	public void navigateToCountry(){
+		driver.waitForElementPresent(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//button"));
+		String defaultSelectedCountry= driver.findElement(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//button")).getText();
+		driver.click(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//button"));
+		if(defaultSelectedCountry.contains("USA")){
+			driver.waitForElementPresent(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//a[contains(text(),'CAN')]"));
+			driver.click(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//a[contains(text(),'CAN')]"));
+			logger.info("navigated to canada site successfully");
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//a[contains(text(),'USA')]"));
+			driver.click(By.xpath("//div[@class='footer-tagline-decide']/following::div[4]//a[contains(text(),'USA')]"));
+			logger.info("navigated to USA site successfully");
+		}
+		driver.waitForPageLoad();
+	}
+
+	public void clickAddToBagButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+		driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+
+	}
 }

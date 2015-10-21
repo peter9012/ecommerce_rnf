@@ -2,6 +2,7 @@ package com.rf.test.website.storeFront.regression.account;
 
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -336,47 +337,47 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-//	//Hybris Project-1367 :: Version : 1 :: Enroll as consultant with a empty card number.
-//	
-//	public void testEnrollConsultantWithEmptyCardNumber_1367() throws InterruptedException{
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		country = driver.getCountry();
-//		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-//
-//		if(country.equalsIgnoreCase("CA")){
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-//			city = TestConstants.CITY_CA;
-//			postalCode = TestConstants.POSTAL_CODE_CA;
-//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-//		}else{
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
-//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-//			city = TestConstants.NEW_ADDRESS_CITY_US;
-//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-//
-//		}
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//		storeFrontHomePage.searchCID();
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-//		storeFrontHomePage.clickEnrollmentNextBtn();
-//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop(); 
-//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-//		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-//		storeFrontHomePage.clickOnEnrollmentNextButton();
-//		s_assert.assertTrue(storeFrontHomePage.validateEmptyCreditCardMessage(), "Please enter a valid credit card Number");
-//
-//		s_assert.assertAll(); 
-//	}
+	//	//Hybris Project-1367 :: Version : 1 :: Enroll as consultant with a empty card number.
+	//	
+	//	public void testEnrollConsultantWithEmptyCardNumber_1367() throws InterruptedException{
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	//		country = driver.getCountry();
+	//		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+	//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+	//
+	//		if(country.equalsIgnoreCase("CA")){
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
+	//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	//			city = TestConstants.CITY_CA;
+	//			postalCode = TestConstants.POSTAL_CODE_CA;
+	//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+	//		}else{
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+	//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+	//			city = TestConstants.NEW_ADDRESS_CITY_US;
+	//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+	//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+	//
+	//		}
+	//
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+	//		storeFrontHomePage.searchCID();
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+	//		storeFrontHomePage.clickEnrollmentNextBtn();
+	//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop(); 
+	//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+	//		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+	//		storeFrontHomePage.clickOnEnrollmentNextButton();
+	//		s_assert.assertTrue(storeFrontHomePage.validateEmptyCreditCardMessage(), "Please enter a valid credit card Number");
+	//
+	//		s_assert.assertAll(); 
+	//	}
 
 	//Hybris Project-1361:Enroll as consultant using invalid card numbers
 	@Test
@@ -416,82 +417,82 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-//	//Test Case Hybris Project-3718 ::Standard EnrollmentTest (No CRP, No Pulse) as consultant using invalid card numbers
-//	
-//	public void testStandardEnrollmentWithoutCRPAndPulseWithInvalidCardAsConsultant_3718() throws InterruptedException{
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		country = driver.getCountry();
-//		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
-//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-//
-//		if(country.equalsIgnoreCase("CA")){
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
-//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-//			city = TestConstants.CITY_CA;
-//			postalCode = TestConstants.POSTAL_CODE_CA;
-//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-//		}else{
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
-//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-//			city = TestConstants.NEW_ADDRESS_CITY_US;
-//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-//		}
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//		storeFrontHomePage.searchCID();
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-//		storeFrontHomePage.clickEnrollmentNextBtn();
-//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
-//		storeFrontHomePage.enterCardNumber(TestConstants.INVALID_CARD_NUMBER_15DIGITS);
-//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-//		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
-//
-//		s_assert.assertAll();
-//	}
+	//	//Test Case Hybris Project-3718 ::Standard EnrollmentTest (No CRP, No Pulse) as consultant using invalid card numbers
+	//	
+	//	public void testStandardEnrollmentWithoutCRPAndPulseWithInvalidCardAsConsultant_3718() throws InterruptedException{
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	//		country = driver.getCountry();
+	//		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+	//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+	//
+	//		if(country.equalsIgnoreCase("CA")){
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
+	//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	//			city = TestConstants.CITY_CA;
+	//			postalCode = TestConstants.POSTAL_CODE_CA;
+	//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+	//		}else{
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+	//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+	//			city = TestConstants.NEW_ADDRESS_CITY_US;
+	//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+	//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+	//		}
+	//
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+	//		storeFrontHomePage.searchCID();
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+	//		storeFrontHomePage.clickEnrollmentNextBtn();
+	//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+	//		storeFrontHomePage.enterCardNumber(TestConstants.INVALID_CARD_NUMBER_15DIGITS);
+	//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	//		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
+	//
+	//		s_assert.assertAll();
+	//	}
 
-//	// Hybris Project-1368:Enroll as consultant using Expired Date card
-//	
-//	public void testEnrollAsConsultantUsingExpiredDataCard_1368() throws InterruptedException  {
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000); 
-//		country = driver.getCountry();
-//		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-//
-//		if(country.equalsIgnoreCase("CA")){
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
-//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-//			city = TestConstants.CITY_CA;
-//			postalCode = TestConstants.POSTAL_CODE_CA;
-//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-//		}else{
-//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
-//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-//			city = TestConstants.NEW_ADDRESS_CITY_US;
-//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-//		}
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();	  
-//		storeFrontHomePage.searchCID();
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-//		storeFrontHomePage.clickEnrollmentNextBtn();
-//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
-//		//Enter the expired date at billing section and validate the error message
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnEnrollmentNextButton();
-//		//validate  expired date error message
-//		s_assert.assertTrue(storeFrontHomePage.validateExpiredDateMessage());
-//		s_assert.assertAll(); 
-//	}
+	//	// Hybris Project-1368:Enroll as consultant using Expired Date card
+	//	
+	//	public void testEnrollAsConsultantUsingExpiredDataCard_1368() throws InterruptedException  {
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000); 
+	//		country = driver.getCountry();
+	//		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+	//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+	//
+	//		if(country.equalsIgnoreCase("CA")){
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+	//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	//			city = TestConstants.CITY_CA;
+	//			postalCode = TestConstants.POSTAL_CODE_CA;
+	//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+	//		}else{
+	//			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+	//			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+	//			city = TestConstants.NEW_ADDRESS_CITY_US;
+	//			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+	//			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+	//		}
+	//
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();	  
+	//		storeFrontHomePage.searchCID();
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+	//		storeFrontHomePage.clickEnrollmentNextBtn();
+	//		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+	//		//Enter the expired date at billing section and validate the error message
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDateAsExpiredDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnEnrollmentNextButton();
+	//		//validate  expired date error message
+	//		s_assert.assertTrue(storeFrontHomePage.validateExpiredDateMessage());
+	//		s_assert.assertAll(); 
+	//	}
 
 	//Hybris Project-1274:9. Express enrollment -fields validation
 	@Test
@@ -788,204 +789,204 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-//	//Hybris Project-2196 :: Version : 1 :: Switch from PC to Consultant (Under Same Consultant)
-//	
-//	public void testSwitchFromPCToConsultantUnderSameConsultant_2196() throws InterruptedException {
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-//		String lastName = "lN";
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		// Click on our product link that is located at the top of the page and then click in on quick shop
-//
-//
-//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-//
-//		// Products are displayed?
-//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-//		logger.info("Quick shop products are displayed");
-//
-//		//Select a product with the price less than $80 and proceed to buy it
-//		storeFrontHomePage.applyPriceFilterLowToHigh();
-//		storeFrontHomePage.selectProductAndProceedToBuy();
-//
-//		//Cart page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-//		logger.info("Cart page is displayed");
-//
-//		//1 product is in the Shopping Cart?
-//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-//		logger.info("1 product is successfully added to the cart");
-//
-//		//Click on Check out
-//		storeFrontHomePage.clickOnCheckoutButton();
-//
-//		//Log in or create an account page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-//		logger.info("Login or Create Account page is displayed");
-//
-//		//Enter the User information and DO  check the "Become a Preferred Customer" checkbox and click the create account button
-//		String newPCName= storeFrontHomePage.createNewPC(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-//
-//		//Pop for PC threshold validation
-//		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-//
-//		//In the Cart page add one more product
-//		storeFrontHomePage.addAnotherProduct();
-//
-//		//Click on Check out
-//		storeFrontHomePage.clickOnCheckoutButton();
-//
-//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-//		storeFrontHomePage.enterMainAccountInfo();
-//		logger.info("Main account details entered");
-//
-//		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_FOR_PC);
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
-//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-//
-//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-//		//Enter Billing Profile
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnSaveBillingProfile();
-//		storeFrontHomePage.clickOnBillingNextStepBtn();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		//storeFrontHomePage.switchToPreviousTab();
-//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		//storeFrontHomePage.switchToPreviousTab();
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		storeFrontPCUserPage=new StoreFrontPCUserPage(driver);
-//		storeFrontPCUserPage.clickOnWelcomeDropDown();
-//		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-//		storeFrontPCUserPage.clickOnYourAccountDropdown();
-//		storeFrontPCUserPage.clickOnPCPerksStatus();
-//		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
-//		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
-//		storeFrontPCUserPage.cancelMyPCPerksAct();
-//		//Proceed with consultant enrollment, following pc to consultant flow
-//		//   storeFrontHomePage.clickOnOurBusinessLink();
-//		//   storeFrontHomePage.clickOnOurEnrollNowLink();
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//		storeFrontHomePage.searchCID();
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-//		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-//
-//		storeFrontHomePage.enterEmailAddress(newPCName);
-//		s_assert.assertFalse(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
-//
-//		s_assert.assertAll();
-//	}
+	//	//Hybris Project-2196 :: Version : 1 :: Switch from PC to Consultant (Under Same Consultant)
+	//	
+	//	public void testSwitchFromPCToConsultantUnderSameConsultant_2196() throws InterruptedException {
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String lastName = "lN";
+	//
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		// Click on our product link that is located at the top of the page and then click in on quick shop
+	//
+	//
+	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	//
+	//		// Products are displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	//		logger.info("Quick shop products are displayed");
+	//
+	//		//Select a product with the price less than $80 and proceed to buy it
+	//		storeFrontHomePage.applyPriceFilterLowToHigh();
+	//		storeFrontHomePage.selectProductAndProceedToBuy();
+	//
+	//		//Cart page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	//		logger.info("Cart page is displayed");
+	//
+	//		//1 product is in the Shopping Cart?
+	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+	//		logger.info("1 product is successfully added to the cart");
+	//
+	//		//Click on Check out
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Log in or create an account page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	//		logger.info("Login or Create Account page is displayed");
+	//
+	//		//Enter the User information and DO  check the "Become a Preferred Customer" checkbox and click the create account button
+	//		String newPCName= storeFrontHomePage.createNewPC(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+	//
+	//		//Pop for PC threshold validation
+	//		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
+	//
+	//		//In the Cart page add one more product
+	//		storeFrontHomePage.addAnotherProduct();
+	//
+	//		//Click on Check out
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		logger.info("Main account details entered");
+	//
+	//		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_FOR_PC);
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//		//Enter Billing Profile
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		//storeFrontHomePage.switchToPreviousTab();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		//storeFrontHomePage.switchToPreviousTab();
+	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	//		storeFrontPCUserPage=new StoreFrontPCUserPage(driver);
+	//		storeFrontPCUserPage.clickOnWelcomeDropDown();
+	//		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+	//		storeFrontPCUserPage.clickOnYourAccountDropdown();
+	//		storeFrontPCUserPage.clickOnPCPerksStatus();
+	//		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+	//		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+	//		storeFrontPCUserPage.cancelMyPCPerksAct();
+	//		//Proceed with consultant enrollment, following pc to consultant flow
+	//		//   storeFrontHomePage.clickOnOurBusinessLink();
+	//		//   storeFrontHomePage.clickOnOurEnrollNowLink();
+	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+	//		storeFrontHomePage.searchCID();
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+	//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+	//		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+	//		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
+	//
+	//		storeFrontHomePage.enterEmailAddress(newPCName);
+	//		s_assert.assertFalse(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
+	//
+	//		s_assert.assertAll();
+	//	}
 
-//	//Hybris Project-2362 :: Version : 1 :: Switch from PC to Consultant (Under Diff Consultant)
-//	
-//	public void testSwitchFromPCToConsultantUnderDifferentConsultant_2362() throws InterruptedException {
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-//		String lastName = "lN";
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		// Click on our product link that is located at the top of the page and then click in on quick shop
-//
-//
-//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-//
-//		// Products are displayed?
-//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-//		logger.info("Quick shop products are displayed");
-//
-//		//Select a product with the price less than $80 and proceed to buy it
-//		storeFrontHomePage.applyPriceFilterLowToHigh();
-//		storeFrontHomePage.selectProductAndProceedToBuy();
-//
-//		//Cart page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-//		logger.info("Cart page is displayed");
-//
-//		//1 product is in the Shopping Cart?
-//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-//		logger.info("1 product is successfully added to the cart");
-//
-//		//Click on place order
-//		storeFrontHomePage.clickOnCheckoutButton();
-//
-//		//Log in or create an account page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-//		logger.info("Login or Create Account page is displayed");
-//
-//		//Enter the User information and DO  check the "Become a Preferred Customer" checkbox and click the create account button
-//		String newPCName= storeFrontHomePage.createNewPC(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-//
-//		//Pop for PC threshold validation
-//		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-//
-//		//In the Cart page add one more product
-//		storeFrontHomePage.addAnotherProduct();
-//
-//		//Click on Check out
-//		storeFrontHomePage.clickOnCheckoutButton();
-//
-//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-//		storeFrontHomePage.enterMainAccountInfo();
-//		logger.info("Main account details entered");
-//
-//		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_FOR_PC);
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
-//
-//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-//
-//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-//		//Enter Billing Profile
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnSaveBillingProfile();
-//		storeFrontHomePage.clickOnBillingNextStepBtn();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		//storeFrontHomePage.switchToPreviousTab();
-//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		//storeFrontHomePage.switchToPreviousTab();
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		storeFrontPCUserPage=new StoreFrontPCUserPage(driver);
-//		storeFrontPCUserPage.clickOnWelcomeDropDown();
-//		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-//		storeFrontPCUserPage.clickOnYourAccountDropdown();
-//		storeFrontPCUserPage.clickOnPCPerksStatus();
-//		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
-//		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
-//		storeFrontPCUserPage.cancelMyPCPerksAct();
-//		//Proceed with consultant enrollment, following pc to consultant flow
-//		//			storeFrontHomePage.clickOnOurBusinessLink();
-//		//			storeFrontHomePage.clickOnOurEnrollNowLink(); 
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//		storeFrontHomePage.searchCID("cid");
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-//		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME+randomNum);
-//
-//		storeFrontHomePage.enterEmailAddress(newPCName);
-//		s_assert.assertTrue(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
-//
-//		s_assert.assertAll();
-//	}
+	//	//Hybris Project-2362 :: Version : 1 :: Switch from PC to Consultant (Under Diff Consultant)
+	//	
+	//	public void testSwitchFromPCToConsultantUnderDifferentConsultant_2362() throws InterruptedException {
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String lastName = "lN";
+	//
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		// Click on our product link that is located at the top of the page and then click in on quick shop
+	//
+	//
+	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	//
+	//		// Products are displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	//		logger.info("Quick shop products are displayed");
+	//
+	//		//Select a product with the price less than $80 and proceed to buy it
+	//		storeFrontHomePage.applyPriceFilterLowToHigh();
+	//		storeFrontHomePage.selectProductAndProceedToBuy();
+	//
+	//		//Cart page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	//		logger.info("Cart page is displayed");
+	//
+	//		//1 product is in the Shopping Cart?
+	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+	//		logger.info("1 product is successfully added to the cart");
+	//
+	//		//Click on place order
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Log in or create an account page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	//		logger.info("Login or Create Account page is displayed");
+	//
+	//		//Enter the User information and DO  check the "Become a Preferred Customer" checkbox and click the create account button
+	//		String newPCName= storeFrontHomePage.createNewPC(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+	//
+	//		//Pop for PC threshold validation
+	//		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
+	//
+	//		//In the Cart page add one more product
+	//		storeFrontHomePage.addAnotherProduct();
+	//
+	//		//Click on Check out
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		logger.info("Main account details entered");
+	//
+	//		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_FOR_PC);
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
+	//
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//		//Enter Billing Profile
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		//storeFrontHomePage.switchToPreviousTab();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		//storeFrontHomePage.switchToPreviousTab();
+	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	//		storeFrontPCUserPage=new StoreFrontPCUserPage(driver);
+	//		storeFrontPCUserPage.clickOnWelcomeDropDown();
+	//		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+	//		storeFrontPCUserPage.clickOnYourAccountDropdown();
+	//		storeFrontPCUserPage.clickOnPCPerksStatus();
+	//		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+	//		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+	//		storeFrontPCUserPage.cancelMyPCPerksAct();
+	//		//Proceed with consultant enrollment, following pc to consultant flow
+	//		//			storeFrontHomePage.clickOnOurBusinessLink();
+	//		//			storeFrontHomePage.clickOnOurEnrollNowLink(); 
+	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+	//		storeFrontHomePage.searchCID("cid");
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+	//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+	//		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
+	//		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME+randomNum);
+	//
+	//		storeFrontHomePage.enterEmailAddress(newPCName);
+	//		s_assert.assertTrue(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
+	//
+	//		s_assert.assertAll();
+	//	}
 
 	// Hybris Phase 2-2228 :: Version : 1 :: Perform RC Account termination through my account
 	@Test
@@ -4566,7 +4567,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-4310 :: Version : 1 :: Soft-Terminate Consultant is not available for Sponsor's search
-	@Test(enabled=false) //WIP
+	@Test
 	public void testTerminatedConsultantIsNotAvailableAsSponsor_4310() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -4617,7 +4618,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4311 :: Version : 1 :: Reactivated Soft-Terminated Consultant should be in the search for Sponsor list
-	@Test(enabled=false) //WIP
+	@Test
 	public void ReactivateTerminatedConsultantAndSearchInSponsorList_4311() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -4702,7 +4703,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4775 :: Version : 1 :: Consultant to PC downgrade and PC to Consultant for same User for US
-	@Test(enabled=false)
+	@Test
 	public void testConsultantToPCDowngradeANdPCToConsultantForSameForUS_4775() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -4887,7 +4888,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4821:Consultant To RC downgrade US
-	@Test(enabled=false) //WIP
+	@Test
 	public void testConsultantToRCDowngrade_4821() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -5442,6 +5443,68 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 
 		s_assert.assertAll(); 
+	}
+
+	//Hybris Phase 2-1981:Orders page UI for RC
+	@Test
+	public void testOrdersPageUIForRCUser_HP2_1981() throws SQLException, InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> orderNumberList =  null;
+		List<Map<String, Object>> orderStatusList =  null;
+		List<Map<String, Object>> orderGrandTotalList =  null;
+		List<Map<String, Object>> orderDateList =  null;
+		List<Map<String, Object>> randomRCList =  null;
+
+		String orderNumberDB = null;
+		String orderStatusDB = null;
+		String orderGrandTotalDB = null;
+		String orderDateDB = null;
+		String rcUserEmailAddress = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,countryId),RFO_DB);
+		rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "Username");
+
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, password);
+		//s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailAddress),"RC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+
+		// Get Order Number
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+
+		// Get Order Id
+		List<Map<String,Object>> getOrderIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
+		String orderId = String.valueOf(getValueFromQueryResult(getOrderIDList, "OrderID"));
+
+/*		//assert for order number with RFO
+		  orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
+		  orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+		  logger.info("Order Number from RFO DB is "+orderNumberDB);
+		  s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");
+*/
+		//assert for order status with RFO
+		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
+		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
+		logger.info("Order Status from RFO DB is "+orderStatusDB);
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),"Order Status on UI is different from RFO DB");
+
+		//assert for grand total with RFO
+		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4287_RFO, orderId),RFO_DB);
+		DecimalFormat dff = new DecimalFormat("#.00");
+		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(orderGrandTotalList, "Total"))); 
+		logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
+		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
+
+		//assert for order date with RFO
+		orderDateList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
+		orderDateDB = String.valueOf (getValueFromQueryResult(orderDateList, "CompletionDate"));
+		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
+		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
+
+		s_assert.assertAll();  
 	}
 
 }

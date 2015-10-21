@@ -211,8 +211,29 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		selectFirstCardNumber();
 		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+	}	
+
+	public void clickOnNewAddressRadioButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//input"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//input"));
+		logger.info("new address radio button clicked");
 	}
 
+	public void clickOnPopUpAfterClickingRadioButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-quickinfo']/div/input[@value='YES, UPDATE MY AUTO-SHIP']"));
+		driver.click(By.xpath("//div[@id='popup-quickinfo']/div/input[@value='YES, UPDATE MY AUTO-SHIP']"));
+		logger.info("clicked on YES, UPDATE MY AUTO-SHIP Button");
+	}
+
+	public boolean verifyChangeInDefaultAddressForShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']"));
+		logger.info(driver.findElement(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']")).getText());
+		if(driver.isElementPresent(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']"))){
+			return true;}
+		else{
+			return false;
+		}
+	}
 }
 
 

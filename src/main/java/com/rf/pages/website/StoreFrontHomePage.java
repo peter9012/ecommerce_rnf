@@ -288,6 +288,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterEmailAddress(String emailAddress){		
 		driver.type(By.id("email-account"), emailAddress+"\t");
+		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
 
@@ -589,6 +590,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForLoadingImageToDisappear();			
+		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+			
 		}
 	}
 
@@ -1606,6 +1614,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean isEnterCardNumberPrepopulated(){
 		driver.waitForElementPresent(By.id("card-nr"));
 		return driver.findElement(By.id("card-nr")).getAttribute("value").length()>0;
+	}
+
+	public void clickEnrollmentNextBtnWithoutHandlingPopUP(){
+		driver.waitForElementPresent(By.id("enrollment-next-button"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.id("enrollment-next-button"));
+		logger.info("EnrollmentTest Next Button clicked");
 	}
 
 }

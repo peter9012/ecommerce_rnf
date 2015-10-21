@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.expressEnrollment.biz;
+/*package com.rf.test.website.storeFront.regression.expressEnrollment.biz;
 
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
@@ -185,3 +185,4 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); // Please don't comment this line
 	}	
 }
+*/

@@ -20,7 +20,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private String env = null;
 	private String PWS = null;
 
-	//Hybris Project-65 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
+	/*//Hybris Project-65 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testExpressEnrollmentPerosnalResultsKitRedefineRegimen_65() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -129,7 +129,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		//
 		s_assert.assertAll(); // Please don't comment this line
 	}
-
+*/
 	//Hybris Project-67 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen UNBLEMISH REGIMEN  
 	@Test
 	public void testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67() throws InterruptedException{
@@ -185,7 +185,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); // Please don't comment this line
 	}
 
-	//Hybris Project-68 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
+	/*//Hybris Project-68 :: Version : 1 :: Express EnrollmentTest USD 395 Personal Results Kit, Personal Regimen SOOTHE REGIMEN 
 	@Test
 	public void testExpressEnrollmentPersonalKitSootheRegimen_68() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -238,6 +238,6 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//
 		s_assert.assertAll(); // Please don't comment this line
-	}
+	}*/
 
 }

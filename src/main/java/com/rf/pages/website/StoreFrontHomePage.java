@@ -1535,6 +1535,79 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			return false;
 	}
 
+	public boolean isFirstNamePrepopulated(){
+		driver.waitForElementPresent(By.id("first-name"));
+		return driver.findElement(By.id("first-name")).getAttribute("value").length()>0;
+
+	}
+
+	public boolean isLastNamePrepopulated(){
+		return driver.findElement(By.id("last-name")).getAttribute("value").length()>0;
+	}
+
+	public boolean isEmailAddressPrepopulated(){  
+		return driver.findElement(By.id("email-account")).getAttribute("value").length()>0;
+
+	}
+
+	public boolean isAddressLine1Prepopulated(){
+		return driver.findElement(By.id("address-1")).getAttribute("value").length()>0;
+	}
+
+	public boolean isCityPrepopulated(){
+		return driver.findElement(By.id("city")).getAttribute("value").length()>0;
+	}
+
+	public boolean isSelectProvincePrepopulated(){
+		return driver.findElement(By.xpath("//select[@id='state']/option[@selected='selected'][2]")).getText().length()>0;
+	}
+
+	public boolean isEnterPostalCodePrepopulated(){
+		return driver.findElement(By.id("postcode")).getAttribute("value").length()>0;
+	}
+
+	public boolean isPhoneNumberPrepopulated(){
+		return driver.findElement(By.id("phonenumber")).getAttribute("value").length()>0;
+	}
+
+	public void clickOnCrossIconForAddressPopup(){
+		driver.waitForElementPresent(By.xpath("span[@class='icon-close']"));
+		driver.findElement(By.xpath("//span[@class='icon-close']/..")).click();
+	}
+
+	public void clearAddressLine1(){
+		driver.waitForElementPresent(By.id("address-1"));
+		driver.findElement(By.id("address-1")).clear();
+	}
+
+	public boolean verifyEnterValueForMandatoryFieldPopup(){
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'This field is required.')]"));
+		return driver.findElement(By.xpath("//div[contains(text(),'This field is required.')]")).getText().contains("This field is required.");
+	}
+
+	public void clickEnrollmentNextBtnWithoutClickOnUseAsEnteredAddress() throws InterruptedException{
+		driver.waitForElementPresent(By.id("enrollment-next-button"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.id("enrollment-next-button"));
+		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+	}
+
+	public void clickOnReviewAndConfirmBillingEditBtn(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Billing info')]/a"));
+		driver.findElement(By.xpath("//h3[contains(text(),'Billing info')]/a")).click();
+	}
+
+	public boolean isEnterNameOnCardPrepopulated(){
+		return driver.findElement(By.id("card-name")).getAttribute("value").length()>0;
+	}
+
+	public boolean isEnterCardNumberPrepopulated(){
+		driver.waitForElementPresent(By.id("card-nr"));
+		return driver.findElement(By.id("card-nr")).getAttribute("value").length()>0;
+	}
+
 }
 
 

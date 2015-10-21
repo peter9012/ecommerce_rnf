@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.expressEnrollment.corp;
+/*package com.rf.test.website.storeFront.regression.expressEnrollment.corp;
 
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
@@ -243,3 +243,4 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	}
 
 }
+*/

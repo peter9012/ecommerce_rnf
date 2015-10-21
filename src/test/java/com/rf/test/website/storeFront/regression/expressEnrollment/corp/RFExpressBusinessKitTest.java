@@ -72,7 +72,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); // Please don't comment this line
 	}
 
-	// Hybris Project-2203 :: Version : 1 :: Express EnrollmentTest Business Portfolio Kit.  
+	/*// Hybris Project-2203 :: Version : 1 :: Express EnrollmentTest Business Portfolio Kit.  
 	@Test
 	public void testExpressEnrollmentBusinessPortfolioKitRedefineRegimen_2203() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -130,10 +130,10 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//
 		s_assert.assertAll(); // Please don't comment this line
-	}
+	}*/
 
 	//Hybris Project-2204 :: Version : 1 :: CORP:Express Enrollment Business Portfolio Kit(CRP:N,P:N)
-	@Test(enabled=false) // can't see ship immediately
+	@Test
 	public void testExpressEnrollmentBusinessPorfolioKitRedefineRegimen_2204() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

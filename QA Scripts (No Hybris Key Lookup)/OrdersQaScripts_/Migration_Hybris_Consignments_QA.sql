@@ -111,7 +111,8 @@ IF OBJECT_ID('Datamigration.migration.Diff_consignment') IS NOT NULL
     
 	SELECT  ' Total Missing ' + @Country + ' Consignments in Hybris' , @RowCount;
 	
-	SELECT  ' Query Datamigration.migration.Diff_consignment table to get the list of missing consignment and entries. Column value has format OrderNumber-ProductId-TrackingNumber';
+	SELECT  ' Query Datamigration.migration.Diff_consignment table to 
+	the list of missing consignment and entries. Column value has format OrderNumber-ProductId-TrackingNumber';
 	
 
 	------------------------------------------------------------------------------

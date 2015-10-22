@@ -40,7 +40,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -52,7 +52,7 @@ WHERE   o.CountryID = @RFOCountry
 
 SELECT  @HybrisCount= COUNT(DISTINCT one.PK )
 FROM    Hybris.dbo.orders o ( NOLOCK )
-        INNER JOIN Hybris..ordernotes ONe ON ONe.p_order = o.pk
+        INNER JOIN Hybris..ordernotes ONe ON ONe.p_order = o.pk AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
 WHERE   ( p_template = 0
           OR p_template IS NULL
         )
@@ -87,7 +87,7 @@ INTO    DataMigration.Migration.MissingNotes
 FROM    ( SELECT   oi.OrderNoteID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -102,7 +102,7 @@ WHERE   o.CountryID = @RFOCountry
 
        ( SELECT    one.p_noteid
         FROM    Hybris.dbo.orders o ( NOLOCK )
-        INNER JOIN Hybris..ordernotes ONe ON ONe.p_order = o.pk AND one.modifiedTS> @LastRun
+        INNER JOIN Hybris..ordernotes ONe ON ONe.p_order = o.pk AND one.modifiedTS> @LastRun AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
 WHERE   ( p_template = 0
           OR p_template IS NULL
         )
@@ -177,7 +177,7 @@ CAST( OrderNoteID AS NVARCHAR (100)) AS  OrderNoteID
 
 INTO #RFO_Note
 FROM RFoperations.Hybris.OrderNotes a , rfoperations.hybris.orders o 
-WHERE a.orderid=o.orderid and EXISTS  (SELECT 1 FROM #OrderNotesMigrate hon WHERE hon.pk=a.ordernoteid )
+WHERE a.orderid=o.orderid and EXISTS  (SELECT 1 FROM #OrderNotesMigrate hon WHERE hon.p_noteid=a.ordernoteid )
 
 CREATE CLUSTERED INDEX MIX_RFNote ON #RFO_Note (OrderNoteID)
 
@@ -195,7 +195,7 @@ CAST( p_noteid AS NVARCHAR (100)) AS  p_noteid
 
 INTO #Hybris_Note
 FROM Hybris.dbo.OrderNotes a , Hybris.dbo.orders o
-WHERE a.p_order=o.pk and EXISTS (SELECT 1 FROM #OrderNotesMigrate hon WHERE  hon.PK=a.p_noteid)
+WHERE a.p_order=o.pk and EXISTS (SELECT 1 FROM #OrderNotesMigrate hon WHERE  hon.p_noteid=a.p_noteid)
 
 
 CREATE CLUSTERED INDEX MIX_HYNote ON #Hybris_Note (p_noteid)

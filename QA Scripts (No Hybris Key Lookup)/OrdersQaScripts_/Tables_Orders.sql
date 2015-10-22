@@ -1,6 +1,6 @@
  USE DataMigration 
  GO 
- 
+ /*
  IF OBJECT_ID ('DataMigration.Migration.Metadata_Orders') IS NOT NULL 
  DROP TABLE  Migration.Metadata_Orders
 
@@ -55,11 +55,7 @@ VALUES
 ,( 0,'Orders','OrderID','OrderPayment','paymentinfopk')
 ,( 0,'Orders','OrderID','ShippingMethod','deliverymodepk')
 ,( 0,'Orders','OrderID','ShippingAddress','deliveryaddresspk')
-,( 0,'Orders','OrderID','TotalTaxValues','TotalTaxValues')
-,( 0,'Orders','OrderID','DeliveryTaxValues','DeliveryTaxValues')
-,( 0,'Orders','OrderID','HandlingCostTaxValues','HandlingCostTaxValues')
 ,( 0,'Orders','OrderID','ModifiedDate','Modifiedts')
-,( 0,'OrderEntries ','OrderItemID','DiscountValues','discountvalues')
 ,( 0,'OrderEntries ','OrderItemID','TotalPrice','totalprice')
 ,( 0,'OrderEntries ','OrderItemID','WholesalePrice','p_wholesaleprice')
 ,( 0,'OrderEntries ','OrderItemID','CV','p_cv')
@@ -146,7 +142,7 @@ VALUES
 ,( 0,'paymnttrnsctentries','OrderPaymentTransactionID','Currency', 'p_currency')
 ,( 0,'paymnttrnsctentries','OrderPaymentTransactionID','SubscriptionID', 'p_subscriptionid')
 
-
+*/
 
 --TRUNCATE TABLE DataMigration.Migration.Metadata_Orders
 
@@ -227,7 +223,7 @@ WHILE ( @I <= @C )
 										WHEN HybrisObject = 'PaymentTransactions'
                                            THEN 'P_order'
 										--	 WHEN HybrisObject = 'OrderEntries' THEN 'PK'
-										ELSE 'PK'
+										ELSE 'p_rfaddressid'
                                         END
                                 FROM     DataMigration.Migration.Metadata_Orders
                                 WHERE   MapID = @I

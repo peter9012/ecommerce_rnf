@@ -38,7 +38,7 @@ AS
 		COUNT(DISTINCT oi.OrderItemID)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
                 INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
+                INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
                 INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                 --INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
                 --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
@@ -55,7 +55,7 @@ AS
         SELECT  @HybrisCount = 
 		COUNT(DISTINCT oe.PK)
         FROM    Hybris.dbo.orders o ( NOLOCK )
-                INNER JOIN Hybris..orderentries oe ON oe.orderpk = o.pk
+                INNER JOIN Hybris..orderentries oe ON oe.orderpk = o.pk AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
         WHERE   ( p_template = 0
                   OR p_template IS NULL
                 )
@@ -92,7 +92,7 @@ AS
 			INTO DATAMIGRATION.MIGRATION.RFO_COMBO
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                             INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
+                            INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
                             INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                             LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
                   WHERE     o.CountryID = @RFOCountry
@@ -103,7 +103,7 @@ AS
         SELECT  CAST(o.code AS NVARCHAR(MAX))+'-'+CAST(p_rflegacyproductid AS NVARCHAR(MAX))+'-'+CAST(QUANTITY AS NVARCHAR(MAX))+'-'+CAST(oe.totalprice AS NVARCHAR(MAX)) as PK
 			INTO DATAMIGRATION.MIGRATION.HYB_COMBO
                 FROM      Hybris.dbo.orders o ( NOLOCK )
-                          INNER JOIN Hybris..orderentries oe ON oe.orderpk = o.pk
+                          INNER JOIN Hybris..orderentries oe ON oe.orderpk = o.pk AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
                 WHERE     ( p_template = 0
 							OR p_template IS NULL
                            )
@@ -185,8 +185,7 @@ AS
                 AND O.TypePkString <> @ReturnOrderType
                 AND currencypk = @HybCountry 
 
-        SELECT  0 ,
-                GETDATE()
+        
 ---------------------------------------------------------------------------------------------------------------------
 --- Load Order Items 
 ----------------------------------------------------------------------------------------------------------------------

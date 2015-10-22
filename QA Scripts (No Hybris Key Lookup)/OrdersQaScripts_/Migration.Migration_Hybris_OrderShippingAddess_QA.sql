@@ -26,7 +26,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) and U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
         --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
         LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -38,7 +38,7 @@ WHERE   o.CountryID = @RFOCountry
 
 SELECT  @HybrisCount = COUNT(DISTINCT a.PK)
 FROM    Hybris.dbo.orders o ( NOLOCK )
-        INNER JOIN Hybris..addresses a ON o.pk = a.OwnerPkString AND a.modifiedTS> @LAstRun
+        INNER JOIN Hybris..addresses a ON o.pk = a.OwnerPkString AND a.modifiedTS> @LAstRun AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
 WHERE   ( p_template = 0
           OR p_template IS NULL
         )
@@ -69,7 +69,7 @@ FROM    ( SELECT    OrderShippingAddressID ,
                     O.OrderID
           FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
                     INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
-                    INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid= cast(o.AccountID as nvarchar)
+                    INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid= cast(o.AccountID as nvarchar) U.P_SOURCENAME='Hybris-DM'
                     INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
                     LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
           WHERE     o.CountryID = @RFOCountry
@@ -79,7 +79,7 @@ FROM    ( SELECT    OrderShippingAddressID ,
         ) a
         FULL OUTER JOIN ( SELECT    a.p_rfaddressid 
                           FROM      Hybris.dbo.orders o ( NOLOCK )
-                                    INNER JOIN Hybris..addresses a ON o.pk = a.OwnerPkString AND a.modifiedTS> @LastRun
+                                    INNER JOIN Hybris..addresses a ON o.pk = a.OwnerPkString AND a.modifiedTS> @LastRun AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
                           WHERE     ( p_template = 0
                                       OR p_template IS NULL
                                     )
@@ -123,15 +123,16 @@ SELECT  p_rfaddressid ,
 INTO    #ShipAdr_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
         INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = A.OrderID
-        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(a.AccountID as nvarchar)
+        INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(a.AccountID as nvarchar) AND U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = a.OrderID
-        INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID
-        JOIN Hybris.dbo.Addresses (NOLOCK) b ON oi.OrderShippingAddressID = b.p_rfaddressid
+        INNER JOIN Hybris..orders ho ON ho.code = a.OrderNumber AND ( p_template = 0 OR p_template IS NULL)
+        JOIN Hybris.dbo.Addresses (NOLOCK) b ON oi.OrderShippingAddressID = b.p_rfaddressid AND b.ownerpkstring=ho.pk
         LEFT JOIN RFOperations.Hybris.Autoship aas WITH ( NOLOCK ) ON CAST(aas.AutoshipNumber AS INT) = CAST (a.ordernumber AS INT)
 WHERE   a.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
         AND od.startdate >= @ServerMod
 		AND oi.ServerModifiedDate> @LAstRun
+		AND B.p_shippingaddress = 1 
 GROUP BY p_rfaddressid
 HAVING  COUNT(B.PK) > 1; 
 
@@ -180,7 +181,7 @@ SELECT   DISTINCT
         a.p_rfaddressid
 INTO    #LoadedShipAddress
 FROM    Hybris.dbo.orders o ( NOLOCK )
-        INNER JOIN Hybris..Addresses a ON o.pk = a.OwnerPkString
+        INNER JOIN Hybris..Addresses a ON o.pk = a.OwnerPkString AND O.userpk in (select pk from hybris..users where P_SOURCENAME='Hybris-DM')
 WHERE   ( p_template = 0
           OR p_template IS NULL
         )
@@ -189,7 +190,6 @@ WHERE   ( p_template = 0
         AND p_shippingaddress = 1 
 		AND a.modifiedTS> @LAstRun
 
-SELECT 0, GETDATE()
 --------------------------------------------------------------------------------------------------------------------------
 
 SELECT  CAST (OrderShippingAddressID AS NVARCHAR(100)) AS OrderShippingAddressID ,

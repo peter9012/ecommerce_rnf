@@ -451,19 +451,31 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void checkAllowMySpouseCheckBox(){
-		if(!driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).isSelected()){
+		try{
+			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/ancestor::div[1][@class='repaired-checkbox checked']"));
+			System.out.println("checkbox already checked");
 			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+			driver.pauseExecutionFor(1000);
 		}
+		catch(Exception e){
+
+		}
+
+		driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+		driver.pauseExecutionFor(1000);
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
 		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
+		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
+		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
 		driver.click(By.xpath("//input[@id='acceptSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
@@ -472,12 +484,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();

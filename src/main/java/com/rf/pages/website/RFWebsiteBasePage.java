@@ -201,17 +201,21 @@ public class RFWebsiteBasePage extends RFBasePage{
 	//	}
 
 	public void addAnotherProduct() throws InterruptedException{
+		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		action.moveToElement(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).doubleClick(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).build().perform();
+		//driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
+		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		//  driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
 			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
@@ -747,21 +751,25 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
 		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			driver.waitForElementPresent(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]"));
 			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]")));
 			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+			driver.pauseExecutionFor(2000);
 			driver.waitForLoadingImageToDisappear();
-			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+			driver.pauseExecutionFor(2000);
+			return validateHomePage();			
 		}catch(NoSuchElementException e){
-			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
-		}
+			return false;
+		}	
 	}
 
 
-	public boolean validateCancelEnrollmentFunctionalityRC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment btn btn-primary']"));
-		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[@class='cancelEnrollment btn btn-primary']"));
+	public boolean validateCancelEnrollmentFunctionality(){
+		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[contains(@class,'cancelEnrollment')]"));
+		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[contains(@class,'cancelEnrollment')]"));
+		driver.pauseExecutionFor(2000);
+		driver.waitForLoadingImageToDisappear();
 		return validateHomePage();
 	}
 
@@ -772,9 +780,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
 			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+			driver.pauseExecutionFor(2000);
 			driver.waitForLoadingImageToDisappear();
-			System.out.println("**** "+driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText());
-			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+			driver.pauseExecutionFor(2000);
+			return validateHomePage();			
 		}catch(NoSuchElementException e){
 			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
 		}
@@ -783,12 +792,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
 		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		driver.pauseExecutionFor(2000);
+		driver.waitForLoadingImageToDisappear();
 		return validateHomePage();
 	}
 
 	public boolean validateHomePage(){
 		driver.waitForPageLoad();
 		String url = driver.getURL();
+		String currentURL = driver.getCurrentUrl();
+		System.out.println(currentURL);
 		return driver.getCurrentUrl().contains(url);
 	}
 

@@ -108,7 +108,7 @@ public class TestConstants {
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
 	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
-	public static final String CONSULTANT_NEW_PASSWORD = "111Maiden$";
+	public static final String CONSULTANT_NEW_PASSWORD = "111maiden$";
 
 
 	public static final String CONSULTANT_USERNAME = "consultantuserstg@xyz.com";

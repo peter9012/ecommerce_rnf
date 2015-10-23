@@ -636,4 +636,22 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public void selectShippingMethodUPSGroundInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[1]"));
+		logger.info("UPS 2Day shipping method is selected");
+
+	}
+
+	public double getSubtotalValue(){
+		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
+		String[] totalValue= value.split("\\s");
+		double  subtotal = Double.parseDouble(totalValue[1]);
+		logger.info("Subtotal Value fetched is "+subtotal);
+		return subtotal;
+	}
+
 }

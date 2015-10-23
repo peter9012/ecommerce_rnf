@@ -596,7 +596,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//input[@value='OK']"));
 			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
-			
+
 		}
 	}
 
@@ -644,8 +644,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void acceptTheProvideAccessToSpousePopup(){
-		if(driver.findElement(By.id("acceptSpouse")).isDisplayed()){
+		try{
+			driver.quickWaitForElementPresent(By.id("acceptSpouse"));
 			driver.click(By.id("acceptSpouse"));
+		}
+		catch(Exception e){
+
 		}
 	}
 
@@ -1358,17 +1362,19 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 		logger.info("field sponsor link has been clicked");
 	}
+
 	public void enterDetailsInRequestASponsorForm(String firstName,String lastName,String emailId,String postalCode){
 		driver.waitForElementPresent(By.id("firstName"));
 		driver.type(By.id("firstName"),firstName );
 		driver.type(By.id("lastName"),lastName);
 		driver.type(By.id("email"),emailId);
-		driver.type(By.id("zipcode"),postalCode);
+		driver.findElement(By.id("zipcode")).sendKeys(postalCode+"\t");
+		driver.waitForLoadingImageToDisappear();
 		driver.click(By.xpath("//input[@value='Submit']"));
 		logger.info("form submitted");
-		driver.waitForPageLoad();
-
+		driver.waitForLoadingImageToDisappear();
 	}
+
 	public boolean verifyConfirmationMessageAfterSubmission(){
 
 		if(driver.findElement(CONFIRMATION_MESSAGE_LOC).isDisplayed()){
@@ -1406,8 +1412,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnContinueShoppingLinkOnEmptyShoppingCartPage(){
-		driver.waitForElementNotPresent(By.xpath(".//div[@id='left-shopping']/a[2]"));
-		driver.click(By.xpath(".//div[@id='left-shopping']/a[2]"));;
+		driver.waitForElementNotPresent(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
 		driver.waitForPageLoad();
 	}
 
@@ -1473,6 +1479,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickOnCnacelEnrollmentForPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 		driver.click(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
+		driver.pauseExecutionFor(2000);
 	}
 
 	public String fetchingUserName(){

@@ -247,6 +247,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 	}
 
+	public void selectEnrollmentKitPage(String kitName){
+		driver.waitForLoadingImageToDisappear();
+		//kitPrice =  kitPrice.toUpperCase();
+		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
+		//logger.info("EnrollmentTest Kit is selected as "+kitPrice);
+		driver.pauseExecutionFor(500);
+		System.out.println(kitName);
+		//driver.click(By.xpath("//div[@class='imageCLass' and contains(text(),'"+kitPrice+"')]"));
+		driver.click(By.xpath("//img[@title='"+kitName+"']"));
+		driver.waitForLoadingImageToDisappear();
+	}
+
 	public void selectPortfolioEnrollmentKitPage(String kitName){
 		driver.waitForLoadingImageToDisappear();
 		kitName =  kitName.toUpperCase();
@@ -759,6 +771,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	public void enterUserInformationForEnrollment(String kitName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName);  
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+
 	}
 
 	// method overloaded, parameter for province is there

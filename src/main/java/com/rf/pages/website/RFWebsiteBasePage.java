@@ -410,6 +410,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(20000);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -772,6 +773,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
 			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
 			driver.waitForLoadingImageToDisappear();
+			System.out.println("**** "+driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText());
 			return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
 		}catch(NoSuchElementException e){
 			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));

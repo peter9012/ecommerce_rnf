@@ -1,16 +1,11 @@
-
-
---SELECT * FROM datamigration..dm_log
---WHERE  test_area='853-Returns'
-
 USE RFOperations;
 SET STATISTICS TIME ON;
 GO
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-DECLARE @HYB_key VARCHAR(100) = 'p_returnorder';
-DECLARE @RFO_key VARCHAR(100) = 'returnorderid';
+DECLARE @HYB_key VARCHAR(100) = 'code';
+DECLARE @RFO_key VARCHAR(100) = 'autoshipnumber';
 DECLARE @sql_gen_1 NVARCHAR(MAX);
 DECLARE @sql_gen_2 NVARCHAR(MAX);
 DECLARE @cnt INT;
@@ -28,194 +23,189 @@ DECLARE @temp TABLE
       rfo_value VARCHAR(MAX)
     );
 
+--Validation of AUTOSHIP Counts, Dups & Columns without transformations
+
+--Duplicate check on Hybris side for US
+SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
+             ELSE 'No duplicates - Validation Passed'
+        END AS [Step-1 Validation]
+FROM    ( SELECT    COUNT(*) cnt ,
+                    a.code AS autoshipnumber
+          FROM      Hybris.dbo.orders a ,
+                    Hybris.dbo.users b ,
+                    Hybris.dbo.countries c
+          WHERE     a.userpk = b.PK
+                    AND b.p_country = c.PK
+                    AND c.isocode = 'US'
+                    AND a.p_template = 1 --AS
+          GROUP BY  a.code
+          HAVING    COUNT(*) > 1
+        ) t1;
+
+      --Counts check on Hybris side for US
+IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+    DROP TABLE #DuplicateAutoship;
+
+SELECT  AutoshipID
+INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+FROM    Hybris.Autoship
+WHERE   AccountID IN (
+        SELECT  a.AccountID
+        FROM    Hybris.Autoship a
+                INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+        WHERE   ab.AccountTypeID = 1
+                AND a.CountryID = 236
+                AND a.AutoshipTypeID = 2
+                AND a.Active = 1
+        GROUP BY a.AccountID
+        HAVING  COUNT(*) > 1 )
+        AND Active = 1
+        AND AutoshipTypeID = 2--total 809
+EXCEPT
+SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+FROM    Hybris.Autoship a
+        INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+WHERE   ab.AccountTypeID = 1
+        AND a.CountryID = 236
+        AND a.AutoshipTypeID = 2
+        AND a.Active = 1
+GROUP BY a.AccountID
+HAVING  COUNT(*) > 1;
+            --total 386
 
 
---Counts check on Hybris side for US
-SELECT  CASE WHEN ( SELECT  COUNT(*)
-                    FROM    ( SELECT    a.PK
-                              FROM      Hybris.dbo.orders (NOLOCK) a ,
-                                        Hybris.dbo.users (NOLOCK) b ,
-                                        Hybris.dbo.countries (NOLOCK) c
-                              WHERE     a.userpk = b.PK
-                                        AND b.p_country = c.PK
-                                        AND c.isocode = 'US'
-                                        AND a.p_template IS NULL
-                                        AND a.TypePkString = 8796127723602 --Returns
-                                        AND p_sourcename = 'Hybris-DM'
-                              EXCEPT
-                              SELECT    p_returnorder
-                              FROM      Hybris..returnrequest(NOLOCK)
-                              WHERE     p_returnorder IN (
-                                        SELECT  a.PK
-                                        FROM    Hybris.dbo.orders (NOLOCK) a ,
-                                                Hybris.dbo.users (NOLOCK) b ,
-                                                Hybris.dbo.countries (NOLOCK) c
-                                        WHERE   a.userpk = b.PK
-                                                AND b.p_country = c.PK
-                                                AND c.isocode = 'US'
-                                                AND a.p_template IS NULL
-                                                AND a.TypePkString = 8796127723602
-                                                AND p_sourcename = 'Hybris-DM' )
-                            ) a
-                  ) > 0
-             THEN 'Count Comparison between ReturnOrder & ReturnRequest - Failed!'
-             ELSE 'Count Comparison between ReturnOrder & ReturnRequest - Passed'
-        END Results ,
-        CASE WHEN ( SELECT  COUNT(*)
-                    FROM    Hybris.dbo.orders (NOLOCK) a ,
-                            Hybris.dbo.users (NOLOCK) b ,
-                            Hybris.dbo.countries (NOLOCK) c
-                    WHERE   a.userpk = b.PK
-                            AND b.p_country = c.PK
-                            AND c.isocode = 'US'
-                            AND a.p_template IS NULL
-                            AND a.TypePkString = 8796127723602
-                    GROUP BY a.code
-                    HAVING  COUNT(*) > 1
-                  ) IS NULL
-             THEN 'No Duplicates Return Order-Validation Passed'
-             ELSE 'Duplicate Order Returns-Validation failled'
-        END [Step-1 Validation] ,
-        CASE WHEN ( SELECT  COUNT(*)
-                    FROM    Hybris.dbo.orders (NOLOCK) a ,
-                            Hybris.dbo.users (NOLOCK) b ,
-                            Hybris.dbo.countries (NOLOCK) c ,
-                            Hybris.dbo.returnrequest (NOLOCK) d
-                    WHERE   a.userpk = b.PK
-                            AND b.p_country = c.PK
-                            AND a.PK = d.p_returnorder
-                            AND c.isocode = 'US'
-                            AND a.p_template IS NULL
-                            AND a.TypePkString = 8796127723602
-                    GROUP BY p_returnorder ,
-                            p_order
-                    HAVING  COUNT(*) > 1
-                  ) IS NULL
-             THEN 'No duplicates in Return Request - Validation Passed'
-             ELSE 'Duplicates Found'
-        END [Step-1 Validation] ,
-        hybris_cnt ,
+
+IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+    DROP TABLE #LoadedAutoshipID;
+
+SELECT    DISTINCT
+        a.AutoshipID
+INTO    #LoadedAutoshipID
+FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
+        INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+                                       AND u.p_sourcename = 'Hybris-DM'
+WHERE   a.CountryID = 236
+        AND a.AutoshipID NOT IN ( SELECT    AutoshipID
+                                  FROM      #DuplicateAutoship );
+
+								  
+
+IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+    DROP TABLE #extra;
+
+SELECT  ho.code
+INTO    #extra
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                               AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+WHERE   lo.AutoshipID IS NULL; 
+
+
+
+		
+
+SELECT  hybris_cnt ,
         rfo_cnt ,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
         END Results
 FROM    ( SELECT    COUNT(a.PK) hybris_cnt
-          FROM      Hybris.dbo.orders (NOLOCK) a ,
-                    Hybris.dbo.users (NOLOCK) b ,
-                    Hybris.dbo.countries (NOLOCK) c
+          FROM      Hybris.dbo.orders a ,
+                    Hybris.dbo.users b ,
+                    Hybris.dbo.countries c
           WHERE     a.userpk = b.PK
                     AND b.p_country = c.PK
                     AND c.isocode = 'US'
-                    AND ISNULL(a.p_template, 0) = 0
-                    AND a.TypePkString = 8796127723602 --Returns
-                    AND p_sourcename = 'Hybris-DM'
-        ) t1 , --120379
-        ( SELECT    COUNT(DISTINCT ReturnOrderID) rfo_cnt
-          FROM      Hybris.ReturnOrder (NOLOCK) a ,
-                    Hybris.dbo.orders (NOLOCK) b ,					
-                    Hybris.dbo.users (NOLOCK) c
-          WHERE     a.OrderID = b.pk
-                    AND b.userpk = c.PK                   
-                    AND a.ReturnOrderID IN ( SELECT ReturnOrderID
-                                             FROM   Hybris.ReturnItem (NOLOCK) )
-                    AND CountryID = 236
-                    AND p_sourcename = 'Hybris-DM'
-                    AND a.ReturnStatusID = 5
+                    AND a.p_template = 1
+                  AND p_sourcename = 'Hybris-DM'
+        ) t1 ,
+        ( SELECT    COUNT(DISTINCT a.AutoshipID) rfo_cnt
+          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
+                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+          WHERE     a.CountryID = 236
         ) t2;
-  --120379
-IF OBJECT_ID('Tempdb..#missing') IS NOT NULL
-    DROP TABLE #missing;
 
-SELECT  t1.ReturnOrderID ,
-        t2.PK ,
-        CASE WHEN t2.PK IS NULL THEN 'Destination'
-             WHEN t1.ReturnOrderID IS NULL THEN 'Source'
-        END AS MissingFrom
-INTO    #missing
-FROM    ( SELECT   DISTINCT 
-                    a.ReturnOrderID
-          FROM      Hybris.ReturnOrder (NOLOCK) a ,
-                    Hybris.dbo.orders (NOLOCK) b ,
-                    Hybris.dbo.users (NOLOCK) c
-          WHERE     a.OrderID = b.PK
-                    AND b.userpk = c.PK                  
-                    AND CountryID = 236
-                    AND p_sourcename = 'Hybris-DM'
-                    AND a.ReturnStatusID = 5
-					AND a.ReturnOrderID IN ( SELECT ReturnOrderID
-                                             FROM   Hybris.ReturnItem (NOLOCK) )
-        ) t1
-        FULL OUTER JOIN ( SELECT    a.pk
-                          FROM      Hybris.dbo.orders (NOLOCK) a ,
-                                    Hybris.dbo.users (NOLOCK) b ,
-                                    Hybris.dbo.countries (NOLOCK) c
-                          WHERE     a.userpk = b.PK
-                                    AND b.p_country = c.PK
-                                    AND c.isocode = 'US'
-                                    AND ISNULL(a.p_template, 0) = 0
-                                    AND a.TypePkString = 8796127723602 --Returns
-                                    AND p_sourcename = 'Hybris-DM'
-                        ) t2 ON t1.returnorderID = t2.pk
-WHERE   ( t2.PK  IS NULL
-          OR t1.ReturnOrderID IS NULL
-        );
+		IF OBJECT_ID('tempdb..#missing') IS NOT NULL
+		DROP TABLE #missing
 
-SELECT  *
-FROM    #missing m;
-		
-		--DATA-1898
 
-		--SELECT ho.pk,ro.ReturnOrderID,ri.ReturnOrderID AS ReturnOrderIDInReturnItem FROM #missing m
-		--JOIN Hybris..orders ho ON ho.pk=m.pk
-		--JOIN hybris.returnorder ro ON ro.ReturnOrderID=m.pk
-		--LEFT JOIN hybris.returnitem ri ON ri.returnorderid=ro.ReturnOrderID
-		
-  --======================================================================
-  --				Column2Column Coparision Starts.
-  ---======================================================================
+		SELECT t1.code,t2.AutoshipID,CASE WHEN t1.code IS NULL THEN 'Missing in Hybris'
+		WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO' END  Results
+		INTO #missing FROM    ( SELECT    a.code
+          FROM      Hybris.dbo.orders a ,
+                    Hybris.dbo.users b ,
+                    Hybris.dbo.countries c
+          WHERE     a.userpk = b.PK 
+                    AND b.p_country = c.PK
+                    AND c.isocode = 'US'
+                    AND a.p_template = 1
+                   AND p_sourcename = 'Hybris-DM' 
+        ) t1 
+		FULL OUTER JOIN
+        ( SELECT     a.AutoshipID
+          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
+                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+          WHERE     a.CountryID = 236 
+        ) t2 ON t1.code=t2.AutoshipID
+		WHERE t1.code IS NULL OR t2.AutoshipID IS NULL
+
+
+		SELECT COUNT(*) AS MIssingHybrisCount FROM #missing WHERE Results='Missing in Hybris'
+		SELECT COUNT(*) AS RFOMissingCount FROM #missing WHERE Results='Missing in RFO'
+		SELECT TOP 10 * FROM #missing WHERE Results='Missing in Hybris'
+		UNION
+		SELECT TOP 10 * FROM #missing WHERE Results='Missing in RFO'
+
+
+          ----  Column2Column Validation that doesn't have transformation - Autoship
+
 
 
 DELETE  FROM DataMigration.dbo.dm_log
-WHERE   test_area = '853-Returns';
+WHERE   test_area = '824-Autoship';
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
     DROP TABLE #tempact;
 
-SELECT  a.ReturnOrderID ,
-        a.OrderID ,
+
+
+SELECT  a.AutoshipID ,
+        a.AutoshipNumber ,
         a.AccountID ,
-        c.PK ,
-        d.ReturnTypeID ,
-        a.ReturnStatusID ,
-        [RefundedTax] ,
-        [RefundedShippingCost] ,
-        [RefundedHandlingCost]
+        u.PK ,
+        a.AutoshipStatusID ,
+        a.AutoshipTypeID ,
+        a.StartDate ,
+        a.TotalTax
 INTO    #tempact
-FROM    Hybris.ReturnOrder a ,
-        Hybris.dbo.orders b ,
-        Hybris.dbo.users c ,
-        Hybris.ReturnItem d
-WHERE   a.OrderID = b.PK 
-        AND b.userpk = c.PK
-        AND a.ReturnOrderID = d.ReturnOrderID
-        AND a.CountryID = 236
-        AND p_sourcename = 'Hybris-DM'        
-        AND a.ReturnStatusID = 5
-		--AND a.ReturnOrderID NOT IN (SELECT pk FROM #missing)-- Loaded which doesn't have Items
---AND b.p_template IS NULL AND b.TypePkString = 8796127723602
-GROUP BY a.ReturnOrderID ,
-        a.OrderID ,
+FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+        JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+                                 AND u.p_sourcename = 'Hybris-DM'
+WHERE   a.CountryID = 236
+        AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
+                                      FROM      Hybris.Orders
+                                      WHERE     CountryID = 236 )
+GROUP BY a.AutoshipID ,
+        a.AutoshipNumber ,
         a.AccountID ,
-        c.PK ,
-        d.ReturnTypeID ,
-        a.ReturnStatusID ,
-        [RefundedTax] ,
-        [RefundedShippingCost] ,
-        [RefundedHandlingCost]; 
+        u.PK ,
+        a.AutoshipStatusID ,
+        a.AutoshipTypeID ,
+        a.StartDate ,
+        a.TotalTax;
 
 
-
-CREATE NONCLUSTERED INDEX as_cls1 ON #tempact (ReturnOrderID);
+CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 
 SELECT  'Validation of column to column with no transformation in progress' AS [Step-2 Validation] ,
         GETDATE() AS StartTime;
@@ -224,9 +214,8 @@ SELECT  @lt_1 = COUNT(*)
 FROM    DataMigration.dbo.map_tab
 WHERE   flag = 'c2c'
         AND rfo_column <> @RFO_key
-        AND [owner] = '853-Returns'
-        AND Hybris_Table = 'ReturnRequest';
- --and prev_run_err > 0
+        AND [owner] = '824-Autoship';
+--and prev_run_err > 0
 
 WHILE @cnt <= @lt_1
     BEGIN
@@ -285,8 +274,7 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                   WHERE     flag = 'c2c'
                             AND rfo_column <> @RFO_key
 --and prev_run_err > 0
-                            AND [owner] = '853-Returns'
-                            AND Hybris_Table = 'ReturnRequest'
+                            AND [owner] = '824-Autoship'
                 ) temp
         WHERE   rn = @cnt; 
 
@@ -321,9 +309,8 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                 FROM    DataMigration.dbo.map_tab a ,
                         @temp b
                 WHERE   a.hybris_column = b.hybris_column
-                        AND [owner] = '853-Returns'
-                        AND Hybris_Table = 'ReturnRequest';
-            END;	
+                        AND [owner] = '824-Autoship'; 
+            END;  
 
         INSERT  INTO DataMigration.dbo.dm_log
                 SELECT TOP 5
@@ -364,34 +351,32 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
 
 UPDATE  DataMigration.dbo.map_tab
 SET     [prev_run_err] = 0
-WHERE   [owner] = '853-Returns'
+WHERE   [owner] = '824-Autoship'
         AND flag = 'c2c'
-        AND Hybris_Table = 'ReturnRequest'
         AND hybris_column NOT IN ( SELECT DISTINCT
                                             hybris_column
                                    FROM     DataMigration..dm_log
-                                   WHERE    test_area = '853-Returns'
+                                   WHERE    test_area = '824-Autoship'
                                             AND test_type = 'c2c' );
 
 
---Defaults Check
+
 SELECT  'Step-2 Completed, Validation of default columns in progress' AS [Step-3 Validation] ,
         GETDATE() AS StartTime;
 
+----Defaults Check
 SET @cnt = 1;
 SELECT  @lt_1 = COUNT(*)
 FROM    DataMigration.dbo.map_tab
 WHERE   flag = 'defaults'
-        AND [owner] = '853-Returns'
-        AND [RFO_Reference Table] = 'NULL'
-        AND Hybris_Table = 'ReturnRequest';
+        AND [owner] = '824-Autoship'
+        AND [RFO_Reference Table] = 'NULL';
 --and prev_run_err > 0
 SELECT  @lt_2 = COUNT(*)
 FROM    DataMigration.dbo.map_tab
 WHERE   flag = 'defaults'
-        AND [owner] = '853-Returns'
-        AND [RFO_Reference Table] <> 'NULL'
-        AND Hybris_Table = 'ReturnRequest';
+        AND [owner] = '824-Autoship'
+        AND [RFO_Reference Table] <> 'NULL';
 --and prev_run_err > 0
 
 WHILE ( @cnt <= @lt_1
@@ -401,28 +386,26 @@ WHILE ( @cnt <= @lt_1
         IF ( SELECT COUNT(*)
              FROM   DataMigration.dbo.map_tab
              WHERE  flag = 'defaults'
-                    AND [owner] = '853-Returns'
+                    AND [owner] = '824-Autoship'
                     AND [RFO_Reference Table] = 'NULL'
-                    AND Hybris_Table = 'ReturnRequest'
            ) > 1
             BEGIN
                 SELECT  @sql_gen_1 = 'use rfoperations
-		select distinct ''' + [owner] + ''' as test_area, ''' + flag
+            select distinct ''' + [owner] + ''' as test_area, ''' + flag
                         + ''' as test_type, null as rfo_column, '''
                         + Hybris_Column + ''' as hybris_column, a.' + @HYB_key
                         + ', ' + hybris_column
                         + ', null as rfo_key, null as rfo_value
-		from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
-		where a.' + @HYB_key + '=b.' + @RFO_key + '
-		and ' + hybris_column + ' is not null'
+            from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
+            where a.' + @HYB_key + '=b.' + @RFO_key + '
+            and ' + hybris_column + ' is not null'
                 FROM    ( SELECT    * ,
                                     ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
                           FROM      DataMigration.dbo.map_tab
                           WHERE     flag = 'defaults'
                                     AND [RFO_Reference Table] = 'NULL'
-		--and prev_run_err > 0
-                                    AND [owner] = '853-Returns'
-                                    AND Hybris_Table = 'ReturnRequest'
+            --and prev_run_err > 0
+                                    AND [owner] = '824-Autoship'
                         ) temp
                 WHERE   rn = @cnt;
             END;
@@ -444,7 +427,7 @@ WHILE ( @cnt <= @lt_1
              FROM   @temp
            ) > 1
             BEGIN
-		--declare @err_cnt int
+            --declare @err_cnt int
                 SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
                                         ELSE hyb_cnt
                                    END
@@ -458,9 +441,8 @@ WHILE ( @cnt <= @lt_1
                 FROM    DataMigration.dbo.map_tab a ,
                         @temp b
                 WHERE   a.hybris_column = b.hybris_column
-                        AND [owner] = '853-Returns'
-                        AND Hybris_Table = 'ReturnRequest';
-            END;	
+                        AND [owner] = '824-Autoship'; 
+            END;  
 
         INSERT  INTO DataMigration.dbo.dm_log
                 SELECT TOP 5
@@ -493,33 +475,31 @@ WHILE ( @cnt <= @lt_1
                                                               '~') )
                         );
 
-        DELETE  FROM @temp;
+      --select * from datamigration.dbo.dm_log where test_type = 'defaults'
 
         IF ( SELECT COUNT(*)
              FROM   DataMigration.dbo.map_tab
              WHERE  flag = 'defaults'
-                    AND [owner] = '853-Returns'
+                    AND [owner] = '824-Autoship'
                     AND [RFO_Reference Table] <> 'NULL'
-                    AND Hybris_Table = 'ReturnRequest'
            ) > 1
             BEGIN
                 SELECT  @sql_gen_2 = 'use rfoperations
-		select distinct ''' + [owner] + ''' as test_area, ''' + flag
+            select distinct ''' + [owner] + ''' as test_area, ''' + flag
                         + ''' as test_type, null as rfo_column, '''
                         + Hybris_Column + ''' as hybris_column, a.' + @HYB_key
                         + ', ' + hybris_column
                         + ', null as rfo_key, null as rfo_value
-		from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
-		where a.' + @HYB_key + '=b.' + @RFO_key + '
-		and ' + hybris_column + ' <> ''' + [RFO_Reference Table] + ''''
+            from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
+            where a.' + @HYB_key + '=b.' + @RFO_key + '
+            and ' + hybris_column + ' <> ''' + [RFO_Reference Table] + ''''
                 FROM    ( SELECT    * ,
                                     ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
                           FROM      DataMigration.dbo.map_tab
                           WHERE     flag = 'defaults'
                                     AND [RFO_Reference Table] <> 'NULL'
-		--and prev_run_err > 0
-                                    AND [owner] = '853-Returns'
-                                    AND Hybris_Table = 'ReturnRequest'
+            --and prev_run_err > 0
+                                    AND [owner] = '824-Autoship'
                         ) temp
                 WHERE   rn = @cnt;
             END;
@@ -541,7 +521,7 @@ WHILE ( @cnt <= @lt_1
              FROM   @temp
            ) > 1
             BEGIN
-		--declare @err_cnt int
+            --declare @err_cnt int
                 SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
                                         ELSE hyb_cnt
                                    END
@@ -555,9 +535,8 @@ WHILE ( @cnt <= @lt_1
                 FROM    DataMigration.dbo.map_tab a ,
                         @temp b
                 WHERE   a.hybris_column = b.hybris_column
-                        AND [owner] = '853-Returns'
-                        AND Hybris_Table = 'ReturnRequest';
-            END;	
+                        AND [owner] = '824-Autoship'; 
+            END;  
 
         INSERT  INTO DataMigration.dbo.dm_log
                 SELECT TOP 5
@@ -598,28 +577,26 @@ WHILE ( @cnt <= @lt_1
 
 UPDATE  DataMigration.dbo.map_tab
 SET     [prev_run_err] = 0
-WHERE   [owner] = '853-Returns'
+WHERE   [owner] = '824-Autoship'
         AND flag = 'defaults'
-        AND Hybris_Table = 'ReturnRequest'
         AND hybris_column NOT IN ( SELECT DISTINCT
                                             hybris_column
                                    FROM     DataMigration..dm_log
-                                   WHERE    test_area = '853-Returns'
+                                   WHERE    test_area = '824-Autoship'
                                             AND test_type = 'defaults' );
-
 
 
 SELECT  'Step-3 completed, Validation of transformed columns in progress' AS [Step-4 Validation] ,
         GETDATE() AS StartTime;
 
---Transformed Columns Validation 
+--Transformed Columns Validation --10:16 mins
 SET @cnt = 1;
 SELECT  @lt_1 = COUNT(*)
 FROM    DataMigration.dbo.map_tab
 WHERE   flag = 'manual'
         AND rfo_column <> @RFO_key
-        AND [owner] = '853-Returns'
-        AND Hybris_Table = 'ReturnRequest';
+		AND id NOT IN (66)
+        AND [owner] = '824-Autoship';
 --and prev_run_err > 0
 
 WHILE @cnt <= @lt_1
@@ -676,10 +653,11 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                             ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
                   FROM      DataMigration.dbo.map_tab
                   WHERE     flag = 'manual'
-                            AND rfo_column <> @RFO_key 
+--and rfo_column <> @RFO_key 
+                            AND id NOT IN ( 69, 70 ) --Data types are image on Hybris end. This value is generated by the system
+                            AND id NOT IN ( 3, 4, 64, 65,66,72 ) --order not migrated yet
 --and prev_run_err > 0
-                            AND [owner] = '853-Returns'
-                            AND Hybris_Table = 'ReturnRequest'
+                            AND [owner] = '824-Autoship'
                 ) temp
         WHERE   rn = @cnt;
 
@@ -701,7 +679,7 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
              FROM   @temp
            ) > 1
             BEGIN
-	--declare @err_cnt int
+      --declare @err_cnt int
                 SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
                                         ELSE hyb_cnt
                                    END
@@ -715,9 +693,8 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                 FROM    DataMigration.dbo.map_tab a ,
                         @temp b
                 WHERE   a.hybris_column = b.hybris_column
-                        AND [owner] = '853-Returns'
-                        AND Hybris_Table = 'ReturnRequest';
-            END;	
+                        AND [owner] = '824-Autoship'; 
+            END;  
 
         INSERT  INTO DataMigration..dm_log
                 SELECT TOP 5
@@ -758,20 +735,17 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
 
 UPDATE  DataMigration.dbo.map_tab
 SET     [prev_run_err] = 0
-WHERE   [owner] = '853-Returns'
+WHERE   [owner] = '824-Autoship'
         AND flag = 'manual'
-        AND Hybris_Table = 'ReturnRequest'
         AND hybris_column NOT IN ( SELECT DISTINCT
                                             hybris_column
                                    FROM     DataMigration..dm_log
-                                   WHERE    test_area = '853-Returns'
+                                   WHERE    test_area = '824-Autoship'
                                             AND test_type = 'manual' );
 
 
-SELECT  CASE WHEN ( [total no of columns] - [columns passed] ) > 0
-             THEN 'VALIDATION INPROGRESS'
-             ELSE 'VALIDATION COMPLETED'
-        END [Status] ,
+
+SELECT  'VALIDATION COMPLETED' [Status] ,
         [total no of columns] ,
         [columns passed] ,
         [total no of columns] - [columns passed] AS [Required Analysis] ,
@@ -780,37 +754,20 @@ FROM    ( SELECT    COUNT(cnt) AS [columns passed]
           FROM      ( SELECT DISTINCT
                                 hybris_column AS cnt
                       FROM      DataMigration.dbo.map_tab
-                      WHERE     [owner] = '853-Returns'
-                                AND Hybris_Table = 'ReturnRequest'
+                      WHERE     [owner] = '824-Autoship'
                                 AND flag IN ( 'c2c', 'manual', 'defaults' )
                       EXCEPT
                       SELECT DISTINCT
                                 hybris_column
                       FROM      DataMigration..dm_log
-                      WHERE     test_area = '853-Returns'
+                      WHERE     test_area = '824-Autoship'
                     ) a
         ) tab1 ,
         ( SELECT    COUNT(id) AS [total no of columns]
           FROM      DataMigration.dbo.map_tab
-          WHERE     [owner] = '853-Returns'
+          WHERE     [owner] = '824-Autoship'
                     AND flag IN ( 'c2c', 'manual', 'defaults' )
-                    AND Hybris_Table = 'ReturnRequest'
         ) tab2;
-
-
-
-
-SELECT  *
-FROM    DataMigration.dbo.map_tab
-WHERE   [owner] = '853-Returns'
-        AND  prev_run_err <> 0
-             AND  prev_run_err IS NOT NULL
-            ;
-
-SELECT  *
-FROM    DataMigration.dbo.dm_log
-WHERE   test_area = '853-Returns';
 
 SET STATISTICS TIME OFF;
 GO
-

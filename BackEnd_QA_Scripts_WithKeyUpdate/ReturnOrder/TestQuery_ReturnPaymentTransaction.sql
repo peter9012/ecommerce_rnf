@@ -1,11 +1,17 @@
-use rfoperations
+
+
+
+
+--SELECT * FROM datamigration..dm_log
+--WHERE test_area='853-ReturnPaymentTransaction'
+USE rfoperations
 set statistics time on
 go
 
 set transaction isolation level read uncommitted
 
-declare @HYB_key varchar(100) = '[p_order]'
-declare @RFO_key varchar(100) = 'ReturnOrderid'
+declare @HYB_key varchar(100) = 'P_order'
+declare @RFO_key varchar(100) = 'returnorderId'
 declare @sql_gen_1 nvarchar(max)
 declare @sql_gen_2 nvarchar(max)
 declare @cnt int
@@ -13,58 +19,90 @@ declare @lt_1 int
 declare @lt_2 int
 declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column varchar(max), hybris_column varchar(max), hyb_key varchar(max), hyb_value varchar(max), rfo_key varchar(max), rfo_value varchar(max))
 
---Validation of AUTOSHIP Counts, Dups & Columns without transformations
+		--Validation of AUTOSHIP Counts, Dups & Columns without transformations
 
---Duplicate check on Hybris side for US
-select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
-from (select count(*) cnt, e.p_order, e.p_info --, a.ownerpkstring  
-from hybris.dbo.paymentinfos (nolock) a,
-hybris.dbo.users b,
-hybris.dbo.countries c,
-hybris.dbo.orders (nolock) d,
-hybris.dbo.paymenttransactions e
-where a.userpk=b.pk
-and b.p_country=c.pk
-and d.pk=a.ownerpkstring
-AND a.pk=e.p_info
-and c.isocode = 'US'
-and b.p_sourcename = 'Hybris-DM'
-and d.p_template is null AND d.TypePkString=8796127723602 AND a.duplicate = 1 --R profile
-group by e.p_order, e.p_info
-having count(*) > 1)t1
-
-
---Counts check on Hybris side for US
-select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
-			when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
-from (select count(e.pk) hybris_cnt 
-		from hybris.dbo.orders  a,
-		hybris.dbo.users  b,
+		--Duplicate check on Hybris side for US
+		select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
+		from (select count(*) cnt, e.p_order, e.p_info --, a.ownerpkstring  
+		from hybris.dbo.paymentinfos (nolock) a,
+		hybris.dbo.users b,
 		hybris.dbo.countries c,
-        hybris.dbo.paymentinfos  d,
+		hybris.dbo.orders (nolock) d,
 		hybris.dbo.paymenttransactions e
 		where a.userpk=b.pk
 		and b.p_country=c.pk
-		and a.pk=d.ownerpkstring
-		AND d.pk=e.p_info
+		and d.pk=a.ownerpkstring
+		AND a.pk=e.p_info
 		and c.isocode = 'US'
-		and a.p_template is null AND a.TypePkString=8796127723602
-		and d.duplicate = 1
-		and b.p_sourcename = 'Hybris-DM')t1, --105789
+		and b.p_sourcename = 'Hybris-DM'
+		and d.p_template is null AND d.TypePkString=8796127723602 AND a.duplicate = 1 --R profile
+		group by e.p_order, e.p_info
+		having count(*) > 1)t1
 
-		(select count([ReturnPaymentTransactionId]) rfo_cnt
-		from rfoperations.hybris.returnorder  a,
-		hybris.dbo.users  b,
-		rfoperations.hybris.returnpayment  c,
-		hybris..orders d,
-		hybris.returnpaymenttransaction e
-		where a.accountid=b.p_rfaccountid
-		and a.returnorderid=c.returnorderid
-		AND d.pk=a.orderid
-		AND c.returnpaymentid=e.ReturnPaymentId
-		and countryid = 236
-		and p_sourcename = 'Hybris-DM') t2 --149286
+
+				----Counts check on Hybris side for US
+				SELECT  hybris_cnt ,
+						RFO_CNT ,
+						CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
+							 WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
+							 ELSE 'Count matches - validation passed'
+						END Results
+				FROM    ( SELECT    COUNT(hpt.PK) hybris_cnt
+						  FROM      Hybris.dbo.orders ho
+									JOIN Hybris..users u ON ho.userpk = u.PK
+															AND u.p_sourcename = 'Hybris-DM'
+															AND ho.TypePkString = 8796127723602
+															AND ho.p_template IS NULL
+									JOIN Hybris..countries c ON c.PK = u.p_country
+																AND c.isocode = 'US'
+									JOIN Hybris..paymentinfos pai ON pai.OwnerPkString = ho.PK
+									JOIN Hybris..paymenttransactions hpt ON hpt.p_info = pai.originalpk
+																	AND hpt.p_order=ho.pk
+																			AND pai.duplicate = 1
+						) t1 , --105789
+						( SELECT    COUNT(rpt.ReturnPaymentTransactionId) rfo_cnt
+						  FROM      RFOperations.Hybris.ReturnOrder ro
+									JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
+									JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
+									JOIN Hybris..orders ho ON ho.PK = ro.OrderID
+									JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId
+						  WHERE     CountryID = 236
+									AND p_sourcename = 'Hybris-DM'
+						) t2 --149286
+
+
+    SELECT  t1.PK ,
+            t2.ReturnOrderID ,
+            CASE WHEN t1.PK IS NULL THEN 'Missing In Hybris'
+                 WHEN t2.ReturnOrderID IS NULL THEN 'Missing In RFO'
+            END AS Results
+    FROM    ( SELECT  DISTINCT
+                        ho.PK
+              FROM      Hybris..orders ho
+                        JOIN Hybris..users u ON ho.userpk = u.PK
+                                                AND u.p_sourcename = 'Hybris-DM'
+                                                AND ho.TypePkString = 8796127723602
+                                                AND ISNULL(ho.p_template, 0) = 0
+                        JOIN Hybris..countries c ON c.PK = u.p_country
+                                                    AND c.isocode = 'US'
+                        JOIN Hybris..paymentinfos pai ON pai.OwnerPkString = ho.PK
+                        JOIN Hybris..paymenttransactions hpt ON hpt.p_info = pai.originalpk
+														--ON hpt.p_order=ho.pk
+                                                              AND pai.duplicate = 1
+            ) t1
+            FULL OUTER JOIN ( SELECT    ro.ReturnOrderID
+                              FROM      RFOperations.Hybris.ReturnOrder ro
+                                        JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID AND ro.ReturnOrderID=9024957481005
+                                        JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
+                                        JOIN Hybris..orders ho ON ho.PK = ro.OrderID
+                                        JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId
+                              WHERE     CountryID = 236
+                                        AND p_sourcename = 'Hybris-DM'
+                            ) t2 ON t1.PK = t2.ReturnOrderID
+    WHERE   t1.PK IS NULL
+            OR t2.ReturnOrderID IS NULL; 
 	
+
 
 --Column2Column Validation that doesn't have transformation - Autoship
 
@@ -81,17 +119,15 @@ where a.accountid=b.p_rfaccountid
 and a.ReturnOrderID=c.ReturnOrderID
 and c.returnpaymentid=d.pk 
 and countryid = 236 and b.p_sourcename = 'Hybris-DM'
-AND a.returnordernumber NOT IN (SELECT a.returnordernumber FROM hybris.ReturnOrder a JOIN hybris.orders b ON a.ReturnOrderNumber=b.OrderNumber AND a.countryid = 236)
-AND a.returnordernumber <> '11030155' --AS no same as Return no
 AND a.ReturnOrderID IN (SELECT returnorderid FROM hybris.returnitem)
---and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
 group by a.returnorderid, a.orderid, returnordernumber, a.accountid, b.pk, c.returnpaymentid, c.Vendorid, d.code,c.AmountToBeAuthorized , c.ProcessOnDate
 
 create clustered index as_cls1 on #tempact (returnorderid)
 
 select 'Validation of column to column with no transformation in progress' as [Step-2 Validation], getdate() as StartTime
 set @cnt = 1
-select @lt_1 = count(*) from datamigration.dbo.map_tab where flag = 'c2c' and rfo_column <> @RFO_key and [owner] = '853-ReturnPaymentTransaction'
+select @lt_1 = count(*) from datamigration.dbo.map_tab where flag = 'c2c' and rfo_column <> @RFO_key
+AND [Hybris_Column ]<>@HYB_key and [owner] = '853-ReturnPaymentTransaction'
 
 while @cnt<=@lt_1
 begin
@@ -124,6 +160,7 @@ ON A.'+@HYB_key+'=B.'+@RFO_key+''
 from (select *, row_number() over (order by [owner]) rn
 from datamigration.dbo.map_tab
 where flag = 'c2c' 
+AND [RFO_Column ]<>@RFO_key
 and Hybris_column <> @HYB_key
 and [owner] = '853-ReturnPaymentTransaction')temp where rn = @cnt 
 

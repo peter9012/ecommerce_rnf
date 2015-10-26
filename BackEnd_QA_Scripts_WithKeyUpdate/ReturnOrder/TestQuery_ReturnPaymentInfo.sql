@@ -1,4 +1,9 @@
-use rfoperations
+--SELECT * FROM DataMigration..dm_log
+--WHERE test_area='853-ReturnPaymentInfo'
+
+
+
+USE rfoperations
 set statistics time on
 go
 
@@ -51,10 +56,13 @@ from (select count(d.pk) hybris_cnt
 		from rfoperations.hybris.returnorder  a,
 		hybris.dbo.users  b,
 		rfoperations.hybris.returnpayment  c,
-		hybris..orders d
+		hybris..orders d,
+		Hybris..orders ho
 		where a.accountid=b.p_rfaccountid
 		and a.returnorderid=c.returnorderid
-		AND d.pk=a.orderid
+		AND d.pk=a.ReturnOrderID
+		AND ho.pk=a.OrderID AND ho.pk=d.p_associatedorder
+		AND d.p_template IS NULL 
 		and countryid = 236
 		and p_sourcename = 'Hybris-DM') t2 --149286
 	
@@ -65,28 +73,44 @@ delete from datamigration.dbo.dm_log where test_area = '853-ReturnPaymentInfo'
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 drop table #tempact
 
-select a.returnorderid, returnordernumber, a.accountid, b.pk, c.returnpaymentid, c.Vendorid, d.code, e.paymentinfopk as originalpk into #tempact 
-from rfoperations.hybris.ReturnOrder a,
-hybris.dbo.users b,
-rfoperations.hybris.ReturnPayment c,
-hybris.dbo.paymentinfos d,
-hybris.dbo.orders e
-where a.accountid=b.p_rfaccountid
-and a.ReturnOrderID=c.ReturnOrderID
-and c.returnpaymentid=d.pk 
-and a.orderid=e.pk
-and countryid = 236 and b.p_sourcename = 'Hybris-DM'
-AND a.returnordernumber NOT IN (SELECT a.returnordernumber FROM hybris.ReturnOrder a JOIN hybris.orders b ON a.ReturnOrderNumber=b.OrderNumber AND a.countryid = 236)
-AND a.returnordernumber <> '11030155' --AS no same as Return no
-AND a.ReturnOrderID IN (SELECT returnorderid FROM hybris.returnitem)
---and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
-group by a.returnorderid, returnordernumber, a.accountid, b.pk, c.returnpaymentid, c.Vendorid, d.code
+SELECT  a.ReturnOrderID ,
+        ReturnOrderNumber ,
+        a.AccountID ,
+        b.PK ,
+        c.ReturnPaymentId ,
+        c.VendorID ,
+        d.code ,
+        e.paymentinfopk AS originalpk
+INTO    #tempact
+FROM    RFOperations.Hybris.ReturnOrder a ,
+        Hybris.dbo.users b ,
+        RFOperations.Hybris.ReturnPayment c ,
+        Hybris.dbo.paymentinfos d ,
+        Hybris.dbo.orders e
+WHERE   a.AccountID = b.p_rfaccountid
+        AND a.ReturnOrderID = c.ReturnOrderID
+        AND c.ReturnPaymentId = d.PK
+        AND a.OrderID = e.PK
+        AND CountryID = 236
+        AND b.p_sourcename = 'Hybris-DM'              
+        AND a.ReturnOrderID IN ( SELECT ReturnOrderID
+                                 FROM   Hybris.ReturnItem )
+
+GROUP BY a.ReturnOrderID ,
+        ReturnOrderNumber ,
+        a.AccountID ,
+        b.PK ,
+        c.ReturnPaymentId ,
+        c.VendorID ,
+        d.code,
+		e.paymentinfopk
 
 create clustered index as_cls1 on #tempact (returnorderid)
 
 select 'Validation of column to column with no transformation in progress' as [Step-2 Validation], getdate() as StartTime
 set @cnt = 1
-select @lt_1 = count(*) from datamigration.dbo.map_tab where flag = 'c2c' and rfo_column <> @RFO_key and [owner] = '853-ReturnPaymentInfo'
+select @lt_1 = count(*) from datamigration.dbo.map_tab
+ where flag = 'c2c' and rfo_column <> @RFO_key and [owner] = '853-ReturnPaymentInfo'AND id NOT IN (418,419)--month and year been masked 
 
 while @cnt<=@lt_1
 begin
@@ -120,6 +144,7 @@ from (select *, row_number() over (order by [owner]) rn
 from datamigration.dbo.map_tab
 where flag = 'c2c' 
 and rfo_column <> @RFO_key
+AND id NOT IN (418,419)--month and year been masked 
 and [owner] = '853-ReturnPaymentInfo')temp where rn = @cnt 
 
 print @sql_gen_1

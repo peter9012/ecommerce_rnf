@@ -7,7 +7,8 @@
 	<test name="EnrollmentRegression">
 	<classes>
 			<!-- ACCOUNTS -->
-	 <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
+<!-- 	 
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/>
      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest"/>
      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
@@ -17,10 +18,26 @@
      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/>
      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/>
      <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"/>
-     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/> -->
+     
      <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"/>
-     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
-     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
+     <methods>
+     	<include name="testAllowMySpouseThroughEnrollment_82" />
+     	<include name="testEditAllowMySpouseInMyAccount_86" />
+     	<include name="testCorporateUserShouldAbleToChangeSponsorRC_1305" />
+     	<include name="testPCEnrollNotMySponsorLink_1306" />
+     	<include name="testVerifySubscribeToPulse_2134" />
+     	<include name="testVerifyUserCanCancelPulseSubscriptionThroughMyAccount_2233" />
+     	<include name="testVerifyRequestASponsorFunctionality_2248" />
+     	<include name="testRegisterAsRCWithDifferentCASponserWithPulse_3854" />
+     	<include name="testValidateRemoveProductsFromCart_2302" />
+     	<include name="testchangeUsernameOfRcUserWithUpdatedUserName_4660" />
+     	<include name="testExistingRetailCustomerPopupDuringRCRegistration_2200" />
+     	<include name="testExistingConsultantPopupDuringRCRegistration_2201" />
+     </methods>
+<!--      
+	<class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/> -->
   </classes>
 	</test>
 </suite>

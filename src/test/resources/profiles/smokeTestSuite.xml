@@ -12,7 +12,7 @@
 					<include name="testStandardEnrollmentTermsAndConditions_1288" />
 					<include name="testRCEnrollment_1307" />
 					<include name="testPCEnrollment_1308" />
-					<include name="testCreateAdhocOrderPC_1877" />
+					<!-- <include name="testCreateAdhocOrderPC_1877" /> -->
 					<include name="testUserEnrollCRPThroughMyAccount_2230" />
 					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
 					<include name="testSubscribingPulseMyAccount_3921" />

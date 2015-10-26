@@ -90,8 +90,15 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
 			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 			driver.pauseExecutionFor(2500);
-			driver.click(By.xpath("//a[@id='cancel-pulse-button']"));
+			driver.click(By.xpath("//a[@id='cancelPulse']"));
 			driver.waitForLoadingImageToDisappear();
+			try{
+				driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+				driver.click(By.id("cancel-pulse-button"));
+				driver.waitForLoadingImageToDisappear();
+			}catch(Exception e){
+
+			}
 			driver.waitForPageLoad();
 		}
 		driver.click(By.xpath("//input[@id='subscribe_pulse_button_new']"));
@@ -115,8 +122,15 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[@id='cancel-pulse-button']"));
+		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+			driver.click(By.id("cancel-pulse-button"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
 		driver.waitForPageLoad();
 	}
 
@@ -126,7 +140,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	public String getUserNameAForVerifyLogin(String profileName){
-/*		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
+		/*		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]"));
 		String userName = driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]")).getText();
 		return userName;*/
 		driver.waitForElementPresent(By.xpath("//span[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"+profileName+"')]"));

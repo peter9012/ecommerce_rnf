@@ -976,8 +976,15 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+			driver.click(By.id("cancel-pulse-button"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
 		driver.waitForPageLoad();
 	}
 
@@ -1655,6 +1662,24 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
+	}
+
+	public String getDotComPWS(){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[1]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[1]")).getText();
+		String[] pws = pwsUnderPulse.split("/");
+		String comPwsString = pws[0]+"/"+pws[1]+"/"+pws[2]+"/"+pws[3];
+		logger.info("Com Pws String from UI is "+comPwsString);
+		return comPwsString;
+	}
+
+	public String getDotBizPWS(){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[2]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[2]")).getText();
+		String[] pws = pwsUnderPulse.split("/");
+		String bizPwsString = pws[0]+"/"+pws[1]+"/"+pws[2]+"/"+pws[3];
+		logger.info("Biz Pws String from UI is "+bizPwsString);
+		return bizPwsString;
 	}
 
 }

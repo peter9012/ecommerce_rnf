@@ -654,4 +654,50 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return subtotal;
 	}
 
+	public void changeCreditCardDate(){
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[9]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[9]"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[9]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[9]"));
+	}
+
+	public String getQuantityOfProductOnCartPage(){
+		String quantityBeforeUpdate = driver.findElement(By.id("quantity0")).getAttribute("value");
+		return quantityBeforeUpdate;
+	}
+
+	public String upgradeQuantityOfProduct(String quantityBeforeUpdate){
+		int quantity = Integer.parseInt(quantityBeforeUpdate)+1;
+		return Integer.toString(quantity);
+	}
+
+	public void clickOnUpdateMoreInfoButton(){
+		driver.waitForElementPresent(By.xpath("//input[@value='Update more info']"));
+		driver.click(By.xpath("//input[@value='Update more info']"));
+	}
+
+	public String getSubtotalFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][2]//span"));
+		return driver.findElement(By.xpath("//div[@id='module-subtotal'][2]//span")).getText();
+	}
+
+	public String getDeliveyFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][3]//span"));
+		return driver.findElement(By.xpath("//div[@id='module-subtotal'][3]//span")).getText();
+	}
+	public String getHandlingFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
+		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
+	}
+	public String getTaxFromCart(){
+		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
+		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+	}
+	public String getGrandTotalFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='module-total']//span"));
+		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
+	}
+
 }

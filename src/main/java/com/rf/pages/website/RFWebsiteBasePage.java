@@ -466,6 +466,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
@@ -1006,5 +1007,39 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 
+	}
+
+	public void clickOnEditAtAutoshipTemplate(){
+		driver.waitForElementPresent(By.xpath("//input[@value='Edit']"));
+		driver.click(By.xpath("//input[@value='Edit']"));
+	}
+
+	public String getQuantityOfProductFromAutoshipTemplate(){
+		String quantity = driver.findElement(By.xpath("//div[@class='order-summary-left spacer'][2]/div[1]/div[2]/div[2]/div[3]")).getText();
+		return quantity;
+	}
+
+	public void clickOnBillingNextStepButton() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));
+		driver.click(By.xpath("//*[@id='start-shipping-method']/div[2]/div/input"));
+		logger.info("Next button on clicked"); 
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
+	}
+
+	public boolean verifyConsultantCantShipToQuebecMsg(){
+		String message = driver.findElement(By.xpath("//div[@id='errorQCEnrollDiv']")).getText();
+		if(message.equals("Consultants cannot ship to Quebec.")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void clickOnAccountInfoNextButton(){
+		driver.waitForElementPresent(By.id("clickNext"));
+		driver.click(By.id("clickNext"));
 	}
 }

@@ -547,8 +547,16 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 		driver.click(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[@id='cancel-pulse-button']"));
+		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+			driver.click(By.id("cancel-pulse-button"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+
 		driver.waitForPageLoad();
 	}
 

@@ -63,15 +63,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 public void clickRenewLater()  {
 		
 		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
-		driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		try{
-			driver.click(By.xpath("//input[@value='Renew Later']"));
-		} finally{
+//		driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		if (we.isDisplayed()){
+		
+			we.click();//(By.xpath("//input[@value='Renew Later']"));
+		} 
 			System.out.println ("No renewal popup for this consultant");
+		
 		}
 			
 		
-	}
+	
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -81,8 +84,8 @@ public void clickRenewLater()  {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	
-		clickRenewLater();
 		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontConsultantPage(driver);
@@ -111,6 +114,7 @@ public void clickRenewLater()  {
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
 		dismissPolicyPopup();
+		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontPCUserPage(driver);

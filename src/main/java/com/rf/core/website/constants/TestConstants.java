@@ -112,15 +112,15 @@ public class TestConstants {
 
 
 	public static final String CONSULTANT_USERNAME = "consultantuserstg@xyz.com";
-		
+
 	public static final String CONSULTANT_BIZ_URL = "http://atst1.myrfotst2.biz/ca/";
 	public static final String CONSULTANT_COM_URL = "http://atst1.myrfotst2.com/ca/";
 	public static final String SPONSER_PWS="https://mduartestucky.myrfotst2.biz/ca/";
 
-//	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
-//	public static final String CONSULTANT_BIZ_URL = "http://astoner.myrfotst3.biz/ca/";
-//	public static final String CONSULTANT_COM_URL = "http://astoner.myrfotst3.com/ca/";
-//	public static final String SPONSER_PWS="https://mduartestucky.myrfotst3.biz/ca/";
+	//	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
+	//	public static final String CONSULTANT_BIZ_URL = "http://astoner.myrfotst3.biz/ca/";
+	//	public static final String CONSULTANT_COM_URL = "http://astoner.myrfotst3.com/ca/";
+	//	public static final String SPONSER_PWS="https://mduartestucky.myrfotst3.biz/ca/";
 
 	public static final String CANADIAN_SPONSER_HAVING_PULSE = "auto161213 auto";
 	public static final String BIZ_PWS_CA="https://mduartestucky.myrfotst3.biz/ca/";
@@ -330,6 +330,8 @@ public class TestConstants {
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
 	public static final String NEW_RC_USER_NAME = "updatedUserName";
 	public static final String PROVINCE_ALABAMA_US ="Alabama";
+
+	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
 }
 
 

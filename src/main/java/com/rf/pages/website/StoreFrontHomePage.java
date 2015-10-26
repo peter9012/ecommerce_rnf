@@ -1682,6 +1682,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return bizPwsString;
 	}
 
+	public boolean verifyCurrentUrlContainComSite(){  
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("com");
+	}
+
+
 }
 
 

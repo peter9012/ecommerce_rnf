@@ -700,4 +700,23 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
 	}
 
+	public boolean validateHeaderContent(){
+		String headerContent="REVIEW AND UPDATE YOUR CART";
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'REVIEW AND UPDATE')]"));
+		return driver.findElement(By.xpath("//div[contains(text(),'REVIEW AND UPDATE')]")).getText().contains(headerContent);
+	}
+
+	public boolean validateCartUpdated(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']"));
+		return driver.isElementPresent(By.xpath("//div[@id='globalMessages']/img"));
+	}
+
+	public void selectShippingMethodUPS2DayInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[2]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[2]"));
+		logger.info("UPS 2Day shipping method is selected");
+	}
+
 }

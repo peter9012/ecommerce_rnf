@@ -544,11 +544,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
-		driver.waitForElementToBeClickable(By.xpath("//input[@id='Terms2']/.."), 15);
+		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
 		driver.pauseExecutionFor(3000);
-		driver.click(By.xpath("//input[@id='Terms2']/.."));
-		driver.click(By.xpath("//input[@id='Terms3']/.."));
-
+		driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input/.."));
+		driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[2]//input/.."));
 	}
 
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
@@ -624,15 +623,27 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void checkIAcknowledgePCAccountCheckBox(){
-		driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
-		driver.click(By.xpath("//input[@id='Terms2']/.."));  
-		logger.info("I Acknowledge PC Account Checkbox selected");
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
+			driver.click(By.xpath("//input[@id='Terms2']/.."));  
+			logger.info("I Acknowledge PC Account Checkbox selected");
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//form[@id='placeOrderForm1']/ul/div[1]/li[1]/div"));
+			driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[1]/li[1]/div"));  
+			logger.info("I Acknowledge PC Account Checkbox selected");
+		}
 	}
 
 	public void checkPCPerksTermsAndConditionsCheckBox(){
-		driver.waitForElementPresent(By.xpath("//input[@id='Terms3']/.."));
-		driver.click(By.xpath("//input[@id='Terms3']/.."));  
-		logger.info("PC Perks terms and condition checkbox selected");
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@id='Terms3']/.."));
+			driver.click(By.xpath("//input[@id='Terms3']/.."));  
+			logger.info("PC Perks terms and condition checkbox selected");
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//form[@id='placeOrderForm1']/ul/div[1]/li[2]/div"));
+			driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[1]/li[2]/div"));  
+			logger.info("PC Perks terms and condition checkbox selected");
+		}
 	}
 
 	public boolean isWelcomePCPerksMessageDisplayed(){
@@ -1041,5 +1052,5 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnAccountInfoNextButton(){
 		driver.waitForElementPresent(By.id("clickNext"));
 		driver.click(By.id("clickNext"));
-	}
+	}	
 }

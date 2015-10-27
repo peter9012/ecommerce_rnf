@@ -8,7 +8,7 @@
 	<classes>
 			<!-- ACCOUNTS -->
 	 <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
-     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/> -->
      <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest"/> -->
      <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
      <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.PersonalResultsKitTest"/> -->

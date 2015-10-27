@@ -36,7 +36,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public StoreFrontConsultantPage dismissPolicyPopup(){
 		try {	
-			driver.waitForElementPresent(By.id("agree"));
+			driver.quickWaitForElementPresent(By.id("agree"));
 			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
 			if (we.isDisplayed()){
 				we.click();
@@ -522,6 +522,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("The I Acknowledge CheckBox is checked");
 	}
 
+	public String getErrorMessageForInvalidSSN(){
+		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
+		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		return errorMessage;
+	}
+
+	public String getInvalidPasswordMessage(){
+		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
+		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		return errorMessage;
+	}
+
 	public boolean isTheTermsAndConditionsCheckBoxDisplayed(){
 		driver.waitForElementPresent(By.xpath("//input[@id='terms-check']/.."));
 		return driver.IsElementVisible(driver.findElement(By.xpath("//input[@id='terms-check']/..")));
@@ -693,16 +705,32 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='quick-refine']"));
 		try{
+
 			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
 			logger.info("Add to CRP button clicked");
 		}catch(Exception e){
-			driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
-			logger.info("Add to CRP button clicked");
+			try{
+
+				driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
+				logger.info("Add to CRP button clicked");
+			}catch(Exception e1){
+
+				driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[2]/div[1]/div[2]/div[2]//button"));
+				logger.info("Add to CRP button clicked");				
+			}
+		}
+
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
+	
 	public void clickNextOnCRPCartPage(){
 		driver.waitForElementPresent(By.id("submitForm"));
 		driver.click(By.id("submitForm"));
@@ -729,6 +757,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName, regimenName);  
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterEmailAddress(emailaddress);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince(province);
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(emailaddress);
+	}
+
+	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);  
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
@@ -1140,7 +1184,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnAutoshipCart(){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='bag-special']/span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
 		driver.click(By.xpath("//div[@id='bag-special']/span"));;
 		driver.waitForPageLoad();
 	}
@@ -1151,28 +1195,54 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnContinueShoppingLink(){
-		driver.waitForElementNotPresent(By.xpath("//div[@class='col-xs-12']//a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath("//div[@class='col-xs-12']//a[contains(text(),'Continue shopping')]"));;
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
+			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
+		}
+		catch(Exception e){
+			driver.click(By.xpath("//div[@id='left-shopping']//a[contains(text(),'Continue')]"));			
+		}
 		driver.waitForPageLoad();
 	}
 
 	public void selectAProductAndAddItToCRP(){
-		driver.waitForElementNotPresent(By.xpath("//button[@class='btn btn-primary' and @tabindex='5']"));
-		driver.click(By.xpath("//button[@class='btn btn-primary' and @tabindex='5']"));;
-		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[@value='Add to crp']"));
+		driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[@value='Add to crp']"));;
+		driver.waitForSpinImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+
+		}
 		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
 	}
 
-	public boolean validateAutoshipTemplateUpdatedMsg(){
-		driver.waitForElementNotPresent(By.xpath(".//div[@id='globalMessages']//p"));
-		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG);
+	public void selectAnotherProductAndAddItToCRP(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
+		driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
+		driver.waitForSpinImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+
+		}
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
+	}
+
+	public String getAutoshipTemplateUpdatedMsg(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 	}
 
 	public boolean validateRemoveProductsTillErrorMsgIsDisplayed(){
 		boolean flag=false;
 		while(true){
 			try{
-				driver.waitForElementNotPresent(By.xpath("//a[text()='Remove']"));
+				driver.waitForElementPresent(By.xpath("//a[text()='Remove']"));
 				driver.click(By.xpath("//a[text()='Remove']"));;
 				driver.waitForPageLoad();
 				if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(TestConstants.AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT)){
@@ -1377,16 +1447,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 	}
 
-	public void removeProduct2FromTheCart(){
+	public void removefirstProductFromTheCart(){
 		driver.waitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(1);']"));
 		driver.click(By.xpath("//a[@href='javascript:submitRemove(1);']"));
 		driver.pauseExecutionFor(1500);
 		driver.waitForPageLoad();
 	}
 
-	public boolean validateProductRemovedAutoshipTemplateUpdatedMsg(){
-		driver.waitForElementNotPresent(By.xpath(".//div[@id='globalMessages']//p"));
-		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG);
+	public String getProductRemovedAutoshipTemplateUpdatedMsg(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+	}
+
+	public String getThresholdMessageIsDisplayed(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 	}
 
 	public void clickOnBelowFieldsSponsorLink(){
@@ -1433,9 +1508,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("Logout");
 	}	
 
-	public void removeProduct1FromTheCart(){
-		driver.waitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+	public void removeFirstProductFromTheCart(){
+		driver.quickWaitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(0);']"));
 		driver.click(By.xpath("//a[@href='javascript:submitRemove(0);']"));
+		driver.pauseExecutionFor(1500);
+		driver.waitForPageLoad();
+	}
+
+	public void removeSecondProductFromTheCart(){
+		driver.quickWaitForElementPresent(By.xpath("//a[@href='javascript:submitRemove(1);']"));
+		driver.click(By.xpath("//a[@href='javascript:submitRemove(1);']"));
 		driver.pauseExecutionFor(1500);
 		driver.waitForPageLoad();
 	}
@@ -1687,6 +1769,62 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.getCurrentUrl().contains("com");
 	}
 
+	public boolean verifyCurrentUrlContainBizSite(){  
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("biz");
+	}
+
+	public boolean verifyCreateAccountpageIsDisplayed(){
+		return driver.findElement(By.xpath("//h1[contains(text(),'SetUp Account')]")).getText().contains("SetUp Account");
+	}
+
+	public boolean verifyCRPSelectionpageIsDisplayed(){
+		return driver.findElement(By.xpath("//div[contains(text(),'CRP Selection')]")).getText().contains("CRP Selection");
+	}
+
+	public void selectInvalidNewBillingCardExpirationDate(){
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[2]"));
+		logger.info("Invalid expiration date is selected");
+	}
+
+	public boolean validateInvalidCreditCardExpiryDate(){
+		if(driver.findElement(By.xpath("//div[contains(text(),'Must be a valid Expiration Date')]")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void selectKitAndEnrollmentType(String kitName,String regimenName,String enrollmentType){
+		selectEnrollmentKitPage(kitName, regimenName);  
+		chooseEnrollmentOption(enrollmentType);
+	}
+
+	public void enterInvalidPassword(String password){
+		driver.waitForElementPresent(By.id("new-password-account"));
+		driver.clear(By.id("new-password-account"));
+		driver.type(By.id("new-password-account"),password+"\t");
+		driver.clear(By.id("new-password-account"));
+	}
+
+	public void enterInvalidConfirmPassword(String password){
+		driver.waitForElementPresent(By.id("new-password-account2"));
+		driver.clear(By.id("new-password-account2"));
+		driver.type(By.id("new-password-account2"),password+"\t");
+		driver.clear(By.id("new-password-account2"));
+	}
+
+	public String getErrorMessageForInvalidSponser(){
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found for')]"));
+		String errorMessage=driver.findElement(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found for')]")).getText();
+		return errorMessage;
+	}
 
 }
 

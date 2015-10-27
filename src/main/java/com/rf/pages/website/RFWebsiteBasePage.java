@@ -166,7 +166,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("quantity added is "+qty);
 		driver.click(By.xpath("//a[@class='updateLink']"));
 		logger.info("Update button clicked after adding quantity");
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
@@ -1020,6 +1021,26 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	}
 
+	public void clickAddToBagButton(String country){
+		if(country.equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[2]/div[2]/div[1]//button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}else if(country.equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[1]//button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+	}
+
 	public void clickOnEditAtAutoshipTemplate(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Edit']"));
 		driver.click(By.xpath("//input[@value='Edit']"));
@@ -1053,4 +1074,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.id("clickNext"));
 		driver.click(By.id("clickNext"));
 	}	
+
+	public boolean verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(){
+		if(driver.isElementPresent(By.xpath("//a[text()='Edit PC Perks']"))){
+			return true;
+		}else
+			return false;
+	}
 }

@@ -14,7 +14,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 			.getLogger(StoreFrontAccountTerminationPage.class.getName());
 
 	private final By ACCOUNT_TERMINATION_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[contains(text(),'Account termination')]");
-	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='submit']");
+	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='SUBMIT']");
 	private final By ACCOUNT_TERMINATION_PAGE_POPUP_HEADER = By.xpath("//div[@id='popup-content']//h2");
 	private final By POPUP_CANCEL_TERMINATION_BUTTON = By.xpath("//input[@value='Cancel Termination']");
 	private final By POPUP_CONFIRM_TERMINATION_BUTTON = By.xpath("//input[@value='Confirm Termination']");

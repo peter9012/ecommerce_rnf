@@ -82,39 +82,25 @@ public class DBQueries_RFO {
 			"ORDER BY NEWID()";
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
-
-
-			/*********************************************************************************************
-			Need a query on RFO having active (i.e statusId =�1� ) RC only  having pending/submitted adhoc orders.
-			 **********************************************************************************************/
-
 			"USE RFOperations "+
-			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-			"BEGIN TRANSACTION "+
-			"SELECT TOP 1 "+
-			"ab.AccountID , "+
-			"[as].Username "+
-			"FROM    RFO_Accounts.AccountBase AS ab "+
-			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = %s "+
-			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
-			/*Active Accounts*/
-			"AND NOT EXISTS ( SELECT 1 "+
-			"FROM   RFO_Accounts.AccountRF AS ar "+
-			"WHERE  ar.Active = 0 "+
-			"AND ar.HardTerminationDate IS NOT NULL "+
-			"AND ar.AccountID = ab.AccountID ) "+ 
-			/*Pending/Submitted Orders */
-			"AND EXISTS ( SELECT 1 "+
-			"FROM   Hybris.Orders AS o "+
-			"WHERE  o.AccountID = ab.AccountID "+
-			"AND o.OrderTypeID = 1 "+/*RC*/
-			"AND o.OrderStatusID IN (1,2) ) "+ 
-			"ORDER BY NEWID()";
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = %s "+
+					"AND ab.AccountTypeID = 3 /*Retail Customer*/ "+
+					"AND ar.Active = 1 "+
 
-
-
+			       /* Orders Check*/
+			       "AND EXISTS ( SELECT 1 "+
+			       "FROM   Hybris.Orders AS o, hybris..orders o1 "+
+			       "WHERE  o.AccountID = ab.AccountID "+
+			       "AND o.orderid=o1.pk "+   
+			       "AND o.OrderTypeID = 1) "+
+			       "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_RC_RFO = 
 			"USE RFOperations "+
@@ -774,32 +760,26 @@ public class DBQueries_RFO {
 
 
 	public static String GET_ACTIVE_RC_USER_HAVING_FAILED_ORDERS_RFO = 
-
 			"USE RFOperations "+
 					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-
-				   "BEGIN TRANSACTION "+
-
-				   "SELECT TOP 1 "+
-				   "ab.AccountID , "+
-				   "[as].Username "+
-				   "FROM    RFO_Accounts.AccountBase AS ab "+
-				   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-				   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-				   "WHERE   ab.CountryID = %s "+
-				   "AND ab.AccountTypeID = 3 "+
-				   "AND NOT EXISTS ( SELECT 1 "+
-				   "FROM   RFO_Accounts.AccountRF AS ar "+
-				   "WHERE  ar.Active = 0 "+
-				   "AND ar.HardTerminationDate IS NOT NULL "+
-				   "AND ar.AccountID = ab.AccountID )  "+
-				   /*Pending/Submitted Orders */
-				   "AND EXISTS ( SELECT 1 "+
-				   "FROM   Hybris.Orders AS o "+
-				   "WHERE  o.AccountID = ab.AccountID "+
-				   "AND o.OrderTypeID = 1 "+ /*Retail*/
-				   "AND o.OrderStatusID = 1) "+ 
-				   "ORDER BY NEWID()";
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = %s "+
+					"AND ab.AccountTypeID = 3 /*RC*/ "+
+					"AND ar.active = 1 "+
+					/*Failed orders*/
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Orders o, hybris..orders o1 "+
+					"WHERE  o.AccountID = ab.AccountID "+
+					"AND o.orderid=o1.pk "+
+					"AND o.OrderTypeID = 1 "+
+					"AND o.OrderStatusID = 1 ) "+
+					"ORDER BY NEWID()";
 
 	public static String GET_SUBTOTAL_GRANDTOTAL_TAX_DETAILS_FOR_4296_RFO =
 			"SELECT  * "+

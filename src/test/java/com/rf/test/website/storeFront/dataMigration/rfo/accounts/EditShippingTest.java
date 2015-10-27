@@ -33,7 +33,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
-	@Test
+	@Test(enabled=false) //Wrong query results from database
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> shippingAddressCountList =  null;

@@ -105,12 +105,16 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		s_assert.assertFalse(storeFrontAccountInfoPage.verifyAccountTerminationLink(),"Account Termination Link Is Present");
+		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+		storeFrontPCUserPage.cancelMyPCPerksAct();
+		storeFrontHomePage.loginAsConsultant(pcUserEmailID, password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
+		s_assert.assertAll();	
 
-		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-2228 :: Version : 1 :: Perform RC Account termination through my account

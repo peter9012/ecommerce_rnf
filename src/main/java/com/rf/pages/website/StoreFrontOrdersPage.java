@@ -33,7 +33,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
 	private final By ACTIONS_BUTTON_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]");
 	private final By ACTIONS_DROPDOWN_LOC = By.xpath(" //div[@id='history-orders-table']//div[2]/div[2]/div[5]/ul/li[2]/a");
-	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[1]/a");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
 	private final By AUTOSHIP_DATE_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[2]//div[contains(@class,'ref-values')]//div[2]");
 
@@ -394,7 +394,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getTaxAmountFromAutoshipTemplate(){
-		String tax = driver.findElement(By.id("crpTotalTax")).getText();
+		String tax = null;
+		try{
+			tax = driver.findElement(By.id("crpTotalTax")).getText();
+		}catch(Exception e){
+			tax = driver.findElement(By.id("totalTax")).getText();
+		}
 		System.out.println("Tax is "+tax);
 		return tax.trim();
 	}
@@ -497,8 +502,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getGrandTotalFromAdhocOrderTemplate(){
-		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
-		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText();
+		try{
+			logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
+			return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText();
+		}catch(Exception e){
+			logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='orderGrandTotal']")).getText());
+			return driver.findElement(By.xpath("//div[@id='orderGrandTotal']")).getText();
+		}
 	}
 
 	public boolean verifyAdhocOrderTemplateTotalSV(String totalSV){
@@ -737,6 +747,25 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			return true;
 		}else
 			return true;
+	}
+
+	public double getOrderGrandTotal(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
+			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			String[] totalValue= value.split("\\s");
+			double  orderTotal = Double.parseDouble(totalValue[1]);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
+			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			String fetchValue = value.substring(1);
+			double  orderTotal = Double.parseDouble(fetchValue);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		}
+		return 0;
 	}
 
 }

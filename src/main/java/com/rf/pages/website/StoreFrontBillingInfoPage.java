@@ -18,7 +18,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'Billing info')]");
 	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'col-sm-4')]");
 	private final By DEFAULT_BILLING_ADDRESSES_LOC = By.xpath("//input[@class='paymentAddress' and @checked='checked']/ancestor::li[1]/p[1]");
-	private final By ADD_NEW_BILLING_LINK_LOC = By.linkText("Add a new billing profile»");
+	private final By ADD_NEW_BILLING_LINK_LOC = By.xpath("//a[contains(text(),'Add a new billing profile')]");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 	private final By ADD_NEW_BILLING_CARD_NAME_LOC = By.id("card-name");
 	private final By ADD_NEW_BILLING_CARD_EXP_MONTH_LOC = By.id("expiryMonth");

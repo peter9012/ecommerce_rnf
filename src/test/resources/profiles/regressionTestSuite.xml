@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="regressionTestSuite">
 	<listeners>
@@ -24,3 +25,31 @@
   </classes>
 	</test>
 </suite>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="regressionTestSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="EnrollmentRegression">
+	<classes>
+			<!-- ACCOUNTS -->
+	 <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/> -->
+     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest"/> -->
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.PersonalResultsKitTest"/> -->
+   	 <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest"/> -->
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/> -->
+     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"/> -->
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"/>
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
+  </classes>
+	</test>
+</suite>
+>>>>>>> stash

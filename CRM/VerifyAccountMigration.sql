@@ -1,7 +1,7 @@
 USE [RFOperations]
 GO
 
-/****** Object:  StoredProcedure [dbo].[VerifyAccountMigration]    Script Date: 10/22/2015 2:04:44 PM ******/
+/****** Object:  StoredProcedure [dbo].[VerifyAccountMigration]    Script Date: 10/27/2015 6:53:02 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,7 +9,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-alter PROCEDURE [dbo].[VerifyAccountMigration] @LastRunDate DATETIME
+
+
+
+
+
+
+ALTER PROCEDURE [dbo].[VerifyAccountMigration] @LastRunDate DATETIME
 AS
 BEGIN
 
@@ -71,11 +77,11 @@ SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.Ac
 
 SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Accounts
 
-SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference 
+SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS CRM_Accounts, (@RFOAccount - @CRMAccount) AS Difference 
 INTO rfoperations.sfdc.AccountDifference;
 
 SELECT  AccountID AS RFO_AccountID,
- b.RFOAccountID__C AS Hybris_rfAccountID , 
+ b.RFOAccountID__C AS CRM_rfAccountID , 
  CASE WHEN b.RFOAccountID__C IS NULL THEN 'Destination'
       WHEN a.AccountID IS NULL THEN 'Source' 
  END AS MissingFROM
@@ -122,47 +128,47 @@ SELECT 'No Duplicates'
 --Loading RFO Data
 SELECT DISTINCT 
 		CAST (AB.AccountID AS NVARCHAR (100)) AS AccountID	,			--p_rfaccountid
-       	AC.FIRSTNAME+' '+ AC.LASTNAME AS Name  ,
+       	REPLACE(AC.FIRSTNAME+' '+ AC.LASTNAME,'  ',' ') AS Name  ,
 		AB.AccountNumber,
-		CAST(AB.ServerModifiedDate AS DATE) as LastModifiedDate,
-		CAST(AB.ServerModifiedDate AS DATE) as CreationDate,
+		CAST(ISNULL(AB.ServerModifiedDate,'1900-01-01') AS DATE) as LastModifiedDate,
+		CAST(ISNULL(AB.ServerModifiedDate,'1900-01-01') AS DATE) as CreationDate,
 		AST.NAME as AccountStatus,
 		ACT.NAME as AccountType,
 		CAST(ACT.AccountTypeId AS NVARCHAR) as RecordTypeID,
 		AB.ChangedByApplication,
 		AB.ChangedByUser,
-		CAST(C.NAME AS NVARCHAR) CountryId,
-		CAST(CY.name AS NVARCHAR) CurrencyId,
-		CAST(lg.English AS NVARCHAR) Languageid,
-		CAST(tz.name AS NVARCHAR) TimeZoneId,
+		CAST(C.NAME AS NVARCHAR(MAX)) CountryId,
+		CAST(CY.name AS NVARCHAR(MAX)) CurrencyId,
+		CAST(lg.English AS NVARCHAR(MAX)) Languageid,
+		CAST(tz.name AS NVARCHAR(MAX)) TimeZoneId,
 		CASE WHEN AR.ACTIVE=1 THEN 'true' ELSE 'false' END  as IsActive,
-		CAST(AR.CoApplicant AS NVARCHAR) CoApplicant,
-		CAST(AR.EnrollerId AS NVARCHAR) EnrollerId,
-		CAST(AR.SponsorId AS NVARCHAR) SponsorId, 	
-		CAST(AR.EnrollmentDate AS DATE) EnrollmentDate,
-		CAST(AR.HardTerminationDate AS DATE) HardTerminationDate,
-		CAST(AR.IsBusinessEntity AS NVARCHAR) IsBusinessEntity,
-		CAST(AR.IsTaxExempt AS NVARCHAR) IsTaxExempt,
-		CAST(AR.LastAutoAssignmenDate AS DATE) LastAutoAssignmenDate,
-		CAST(AR.LastRenewalDate AS DATE) LastRenewalDate,
-		CAST(AR.NextRenewalDate AS DATE) NextRenewalDate,
-		CAST(AR.SoftTerminationDate AS DATE) SoftTerminationDate,
-		CAST(AR.ServerModifiedDate AS DATE) as LastModifiedDate_1,
-		CAST(AC.LegalName AS NVARCHAR) LegalName,
-		CAST(AC.AccountContactID AS NVARCHAR) As MainContact,
-		CAST(AA.AddressID AS NVARCHAR) RFO_AddressProfileID,
-		CAST(AA.AddressLine1 AS NVARCHAR) AddressLine1,
-		CAST(AA.AddressLine2 AS NVARCHAR) AddressLine2,
-		CAST(AA.AddressLine3 AS NVARCHAR) AddressLine3,
-		CAST(AA.AddressLine4 AS NVARCHAR) AddressLine4,
-		CAST(AA.AddressLine5 AS NVARCHAR) AddressLine5,
-		CAST(AA.CountryID AS NVARCHAR) as MainAddressCountry,
-		CAST(AA.latitude AS NVARCHAR) latitude,
-		CAST(AA.locale AS NVARCHAR) locale,
-		CAST(AA.longitude AS NVARCHAR) longitude,
-		CAST(AA.Region AS NVARCHAR) Region,
-		CAST(AA.PostalCode AS NVARCHAR) PostalCode,
-		CAST(AA.SubRegion AS NVARCHAR) SubRegion,
+		CAST(AR.CoApplicant AS NVARCHAR(MAX)) CoApplicant,
+		CAST(AR.EnrollerId AS NVARCHAR(MAX)) EnrollerId,
+		CAST(AR.SponsorId AS NVARCHAR(MAX)) SponsorId, 	
+		CAST(ISNULL(AR.EnrollmentDate,'1900-01-01') AS DATE) EnrollmentDate,
+		CAST(ISNULL(AR.HardTerminationDate,'1900-01-01') AS DATE) HardTerminationDate,
+		CAST(CASE WHEN AR.IsBusinessEntity=1 THEN 'true' WHEN AR.IsBusinessEntity=0 THEN 'false' END AS NVARCHAR(MAX)) IsBusinessEntity,
+		CAST(CASE WHEN AR.IsTaxExempt= 1 THEN 'true' WHEN AR.IsTaxExempt=0 THEN 'false' END AS NVARCHAR(MAX)) IsTaxExempt,
+		CAST(ISNULL(AR.LastAutoAssignmenDate,'1900-01-01') AS DATE) LastAutoAssignmenDate,
+		CAST(ISNULL(AR.LastRenewalDate,'1900-01-01') AS DATE) LastRenewalDate,
+		CAST(ISNULL(AR.NextRenewalDate,'1900-01-01') AS DATE) NextRenewalDate,
+		CAST(ISNULL(AR.SoftTerminationDate,'1900-01-01') AS DATE) SoftTerminationDate,
+		CAST(ISNULL(AR.ServerModifiedDate,'1900-01-01') AS DATE) as LastModifiedDate_1,
+		REPLACE(CAST(AC.LegalName AS NVARCHAR(MAX)),'  ',' ') LegalName,
+		CAST(AC.AccountContactID AS NVARCHAR(MAX)) As MainContact,
+		CAST(AA.AddressID AS NVARCHAR(MAX)) RFO_AddressProfileID,
+		CAST(AA.AddressLine1 AS NVARCHAR(MAX)) AddressLine1,
+		CAST(AA.AddressLine2 AS NVARCHAR(MAX)) AddressLine2,
+		CAST(AA.AddressLine3 AS NVARCHAR(MAX)) AddressLine3,
+		CAST(AA.AddressLine4 AS NVARCHAR(MAX)) AddressLine4,
+		CAST(AA.AddressLine5 AS NVARCHAR(MAX)) AddressLine5,
+		CAST(C.NAME AS NVARCHAR(MAX)) as MainAddressCountry,
+		CAST(CAST(AA.latitude AS DECIMAL(1,1)) AS NVARCHAR(MAX)) latitude,
+		CAST(AA.locale AS NVARCHAR(MAX)) locale,
+		CAST(CAST(AA.longitude AS DECIMAL(1,1)) AS NVARCHAR(MAX)) longitude,
+		CAST(AA.Region AS NVARCHAR(MAX)) Region,
+		CAST(AA.PostalCode AS NVARCHAR(MAX)) PostalCode,
+		CAST(AA.SubRegion AS NVARCHAR(MAX)) SubRegion,
 		'' as TaxNumber__c		  
 		INTO rfoperations.sfdc.RFO_ACCOUNTS  
 		  -- join address table here.
@@ -200,7 +206,7 @@ SELECT DISTINCT
 	CAST(A.LastModifiedDate AS DATE ) LastModifiedDate,
 	CAST (A.CreatedDate AS DATE) CreatedDate,
 	A.AccountStatus__c, -- To be mapped.
-	A.AccountType__c,
+	CASE WHEN A.AccountType__c = 'Preferred Customer' THEN 'PreferredCustomer' ELSE A.AccountType__c END AS AccountType__c,
 	CASE WHEN RT.NAME ='Preferred Customer' THEN 2 WHEN RT.NAME ='Consultant' THEN 1 WHEN RT.NAME ='Retail Customer' then 3 END AS RecordTypeId, -- To be mapped
 	A.ChangedByApplication__c,
 	A.ChangeByUser__c,
@@ -210,17 +216,17 @@ SELECT DISTINCT
 	TZ.NAME Timezone__c,
 	A.IsActive__c,
 	A.Coapplicant__c,
-	ASP.RFOAccountId__c as ParentEnroller__c,
-	AEN.RFOAccountId__c as ParentSponsor__c,
-	CAST(A.EnrollmentDate__c AS DATE) EnrollmentDate__c,
-	CAST(A.HardTerminationDate__c AS DATE) HardTerminationDate__c,
+	ASP.RFOAccountId__c as ParentSponsor__c,
+	AEN.RFOAccountId__c as ParentEnroller__c,
+	CAST(ISNULL(A.EnrollmentDate__c,'1900-01-01') AS DATE) EnrollmentDate__c,
+	CAST(ISNULL(A.HardTerminationDate__c,'1900-01-01') AS DATE) HardTerminationDate__c,
 	A.IsBusinessEntity__c,
 	A.IsTaxExempt__c,
-	A.LastAutoAssignmentDate__c,
-	CAST(A.LastRenewalDate__c AS DATE) LastRenewalDate__c,
-	CAST(A.NextRenewalDate__c AS DATE) NextRenewalDate__c,
-	A.SoftTerminationDate__c,
-	CAST(A.LastModifiedDate AS DATE) AS LastModifiedDate_1,
+	CAST(ISNULL(A.LastAutoAssignmentDate__c,'1900-01-01') AS DATE) LastAutoAssignmentDate__c,
+	CAST(ISNULL(A.LastRenewalDate__c,'1900-01-01') AS DATE) LastRenewalDate__c,
+	CAST(ISNULL(A.NextRenewalDate__c,'1900-01-01') AS DATE) NextRenewalDate__c,
+	CAST(ISNULL(A.SoftTerminationDate__c,'1900-01-01') AS DATE) SoftTerminationDate__c ,
+	CAST(ISNULL(A.LastModifiedDate,'1900-01-01') AS DATE) AS LastModifiedDate_1,
 	A.LegalTaxName__c,
 	CO.RFAccountContactID__c as MainContact__c,
 	A.RFOAddressProfileId__c,
@@ -229,7 +235,7 @@ SELECT DISTINCT
 	A.AddressLine3__c,
 	A.AddressLine4__c,
 	A.AddressLine5__c,
-	A.MainAddressCountry__c,
+	C.NAME AS MainAddressCountry__c,
 	A.Latitude__c,
 	A.Locale__c,
 	A.Longitude__c,
@@ -276,8 +282,8 @@ CREATE CLUSTERED INDEX MIX_AccountID ON #Accounts (AccountID)
 
 CREATE TABLE RFOPERATIONS.SFDC.BusinessRuleFailure
 (AccountId BIGINT,
- FailureReason NVARCHAR,
- FailedValue NVARCHAR
+ FailureReason NVARCHAR(MAX),
+ FailedValue NVARCHAR(MAX)
  )
   
 --Identify Missing Enroller/Sponsor for a PC/Consultant
@@ -324,7 +330,7 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 ,Identifier NVARCHAR (50)
 , RecordID BIGINT 
 , RFO_Value NVARCHAR (MAX)
-, Hybris_Value NVARCHAR (MAX)
+, CRM_Value NVARCHAR (MAX)
 )
 
 
@@ -410,13 +416,10 @@ END
 
 END 
 
-SELECT * FROM RFOPERATIONS.SFDC.CRM_METADATA_ACCOUNTS
-
-select count(*) , COLID from rfoperations.sfdc.ErrorLog_Accounts GROUP BY COLID
 
 
-SELECT  b.RFO_column, COUNT(*) AS Counts
-FROM RFOPerations.dbo.ErrorLog_Accounts A JOIN RFOPerations.dbo.CRM_Metadata_Accounts B ON a.ColID =b.ColID
+SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
+FROM rfoperations.sfdc.ErrorLog_Accounts A JOIN Rfoperations.sfdc.CRM_Metadata_Accounts B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 
@@ -425,6 +428,12 @@ drop index MIX_rfAccountID ON #Hybris_Accounts
 drop index MIX_AccountID1 ON #Accounts
 
 END
+
+
+
+
+
+
 GO
 
 

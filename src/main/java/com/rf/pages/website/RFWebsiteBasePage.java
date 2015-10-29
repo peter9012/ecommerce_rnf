@@ -576,7 +576,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean recurringMonthlyChargesSection() {
-		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Recurring Monthly Charges')]"));
+		driver.quickWaitForElementPresent(By.xpath("//h3[contains(text(),'Recurring Monthly Charges')]"));
 		return driver.findElement(By.xpath("//h3[contains(text(),'Recurring Monthly Charges')]")).isDisplayed();
 	}
 

@@ -785,7 +785,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		selectProvince();
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(emailaddress);
+	
 	}
 
 	//Method Overloaded without Kit and Regimen

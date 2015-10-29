@@ -138,7 +138,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
 		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
 		storeFrontPCUserPage.cancelMyPCPerksAct();
-		storeFrontHomePage.loginAsConsultant(emailID, password);
+		storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();	
 	}
@@ -250,8 +250,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
+	
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -265,11 +264,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		logout();
+		s_assert.assertTrue(driver.getCurrentUrl().contains(".com/"+driver.getCountry()+"/"), "current url doesn't contains expected .com but actual URL is "+driver.getCurrentUrl());
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-2512 :: Version : 1 :: Username validations.
-	@Test
+	@Test(enabled=false) //Test case in test link not updated as per the functionality
 	public void testUsernameValidations_2512() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -4250,15 +4250,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	//Hybris Project-2232:Verify that user can cancel CRP subscription through my account.
 	@Test
 	public void testVerifyUserCanCancelCRPSubscriptionThroughMyAccount_2232() throws InterruptedException {
-
 		RFO_DB = driver.getDBNameRFO(); 
-
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-
-
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -5020,7 +5015,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city,TestConstants.PROVINCE_ALBERTA, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -6332,7 +6327,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-137:Enroll and manage my autoships in Canada - consultant
-	@Test(enabled=false) //wip
+	@Test
 	public void testEnrollAndManageMyAutoshipsInCanada_137() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -6411,7 +6406,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4725:Consultant to PC downgrade for US User
-	@Test(enabled=false) //WIP
+	@Test
 	public void testDowngradeConsultantToPC_4725() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -6526,7 +6521,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4301:In DB, check details of cancelled CRP autoship for active Consultant.
-	@Test(enabled=false) //WIP
+	@Test
 	public void testCancelledCRPAutoshipForActiveConsultant_4301() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 
@@ -6712,7 +6707,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2144:Check Shipping and Handling Fee for UPS 2Day for Order total 0- 0-999999
-	@Test
+	@Test(enabled=false) //WIP
 	public void testCheckShippingAndHandlingFee_2144() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -6769,7 +6764,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-2145:Check Shipping and Handling Fee for UPS 2Day for Order total 0-999999-CRP Autoship
-	@Test
+	@Test(enabled=false) //WIP
 	public void testCheckShippingAndHandlingFeeAsPerOrderTotal_2145() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;

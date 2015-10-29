@@ -1,15 +1,15 @@
  USE rfoperations
  GO 
  /*
- IF OBJECT_ID ('CRM_Metadata_Accounts') IS NOT NULL 
- DROP TABLE  CRM_Metadata_Accounts
+ IF OBJECT_ID ('CRM_Metadata') IS NOT NULL 
+ DROP TABLE  CRM_Metadata
 
   IF OBJECT_ID ('CRM_ErrorLog_Accounts') IS NOT NULL 
  DROP TABLE  CRM_ErrorLog_Accounts
 
  
 
-CREATE TABLE sfdc.CRM_Metadata_Accounts
+CREATE TABLE sfdc.CRM_Metadata
 (
 ColID INT IDENTITY (1,1) PRIMARY KEY
 ,Skip BIT
@@ -21,7 +21,7 @@ ColID INT IDENTITY (1,1) PRIMARY KEY
 ) 
 
 
-INSERT INTO SFDC.CRM_Metadata_Accounts
+INSERT INTO SFDC.CRM_Metadata
 (
 Skip 
 ,CRMObject 
@@ -126,23 +126,12 @@ GO
 
 
 
-CREATE TABLE rfoperations.sfdc.ErrorLog_Accounts
-(
-ErrorID INT  IDENTITY(1,1) PRIMARY KEY
-, ColID INT 
-,Identifier NVARCHAR (50)
-, RecordID BIGINT 
-, RFO_Value NVARCHAR (MAX)
-, CRM_Value NVARCHAR (MAX)
-)
-
-
 ----Generate SQL Compare Statements
 
 DECLARE @I INT = 1,
 @C INT =
      ( SELECT   MAX(ColID)
-               FROM     rfoperations.sfdc.CRM_Metadata_Accounts
+               FROM     rfoperations.sfdc.CRM_METADATA
              );
 
 
@@ -169,13 +158,13 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='Contacts' THEN '#Contacts'
 										WHEN CRMObject='PaymentProfile' THEN '#PaymentProfiles'
                                      END
-                              FROM      rfoperations.sfdc.crm_Metadata_Accounts
+                              FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
                             ); 
 
 
                 SET @SrcKey = ( SELECT  RFO_Key
-                                FROM    rfoperations.sfdc.crm_Metadata_Accounts
+                                FROM    rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
@@ -184,18 +173,18 @@ WHILE ( @I <= @C )
 									     WHEN CRMObject = 'Contacts' THEN 'RFAccountContactId__c'
 										 WHEN CRMObject = 'PaymentProfile' THEN 'RFOPaymentProfileID__C'
 									END
-                                FROM     rfoperations.sfdc.crm_Metadata_Accounts
+                                FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               ); 
 
                 SET @SRCCol = ( SELECT  RFO_Column
-                                FROM   rfoperations.sfdc.crm_Metadata_Accounts
+                                FROM   rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
 
                 SET @DesCol = ( SELECT  CRM_Column
-                                FROM    rfoperations.sfdc.crm_Metadata_Accounts
+                                FROM    rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
@@ -203,7 +192,7 @@ WHILE ( @I <= @C )
 												 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.RFO_Contacts'
 												 WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.RFO_PaymentProfiles'
                                              END
-									FROM     rfoperations.sfdc.CRM_Metadata_Accounts
+									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
                             ); 
 
@@ -212,7 +201,7 @@ WHILE ( @I <= @C )
 												  WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
 												  WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.CRM_PaymentProfiles'
 											 END
-									FROM     rfoperations.sfdc.CRM_Metadata_Accounts
+									FROM     rfoperations.sfdc.CRM_METADATA
                          
                               WHERE     ColID = @I
                             ); 
@@ -237,7 +226,7 @@ SELECT @SQL1
 --SELECT @SQL3
 
 
-                UPDATE   rfoperations.sfdc.CRM_Metadata_Accounts
+                UPDATE   rfoperations.sfdc.CRM_METADATA
                 SET     sqlstmt = @SQL1
                 WHERE   ColID = @I;
 
@@ -247,6 +236,5 @@ SELECT @SQL1
 
 
 
-SELECT * FROM  DataMigration.Migration.Metadata_Orders
 
 

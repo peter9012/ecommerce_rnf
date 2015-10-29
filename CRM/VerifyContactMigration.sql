@@ -34,7 +34,7 @@ SELECT ' Refer Following tables to view test results.
 		3. Rfoperations.dbo.Accounts_Dups --> List of Duplicate Account IDs in CRM.
 		4. Rfoperations.dbo.MissingCoApplicants --> List of CoApplicants that did not get created in CRM.
 		5. Rfoperations.sfdc.ErrorLog_Contacts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
-		6. Rfoperations.sfdc.CRM_Metadata_Accounts --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
+		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
 		
 
 SET ANSI_WARNINGS OFF 
@@ -260,8 +260,8 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , CRM_Value NVARCHAR (MAX)
 )
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE CRMObject = 'Contacts') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE CRMObject = 'Contacts') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') , 
+@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') 
 
 
 DECLARE @DesKey NVARCHAR (50) 
@@ -275,7 +275,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_Metadata_Accounts
+                               FROM     Rfoperations.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -289,31 +289,31 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @DesTemp NVARCHAR (50) =(SELECT CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts' 
 											 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
 										END
-			FROM  Rfoperations.sfdc.CRM_Metadata_Accounts 
+			FROM  Rfoperations.sfdc.CRM_METADATA 
 			  WHERE ColID =@I
 								) 
 
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
 SET @SrcKey= (SELECT RFO_Key
-			  FROM Rfoperations.sfdc.CRM_Metadata_Accounts 
+			  FROM Rfoperations.sfdc.CRM_METADATA 
 			  WHERE ColID =@I
 								)
 
                 SET @DesKey = ( SELECT  CASE WHEN CRMObject= 'Accounts' THEN 'RFOAccountId__c'
 											 WHEN CRMObject= 'Contacts' THEN 'RFAccountContactId__c'
                                         END
-                                FROM    Rfoperations.sfdc.CRM_Metadata_Accounts
+                                FROM    Rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               ); 
 
 
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.CRM_Value = b. ' + @DesCol +
@@ -347,7 +347,7 @@ END
 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_Contacts A JOIN Rfoperations.sfdc.CRM_Metadata_Accounts B ON a.ColID =b.ColID
+FROM rfoperations.sfdc.ErrorLog_Contacts A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 drop index RF_ContactID ON rfoperations.sfdc.RFO_Contacts

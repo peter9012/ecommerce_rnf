@@ -27,7 +27,7 @@ SELECT ' Refer Following tables to view test results.
 		3. Rfoperations.dbo.Accounts_Dups --> List of Duplicate Account IDs in CRM.
 		4. Rfoperations.dbo.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
 		5. Rfoperations.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
-		6. Rfoperations.sfdc.CRM_Metadata_Accounts --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
+		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
 		
 
 SET ANSI_WARNINGS OFF 
@@ -210,8 +210,8 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE CRMObject = 'PaymentProfile') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE CRMObject = 'PaymentProfile') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') , 
+@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') 
 
 
 DECLARE @DesKey NVARCHAR (50) = 'RFOPaymentProfileID__C'; 
@@ -227,7 +227,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_Metadata_Accounts
+                               FROM     Rfoperations.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -241,9 +241,9 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_Metadata_Accounts WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
@@ -276,7 +276,7 @@ END
 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_PaymentProfiles A JOIN Rfoperations.sfdc.CRM_Metadata_Accounts B ON a.ColID =b.ColID
+FROM rfoperations.sfdc.ErrorLog_PaymentProfiles A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 

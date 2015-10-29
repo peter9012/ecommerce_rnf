@@ -287,8 +287,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-
-		
 		
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();

@@ -1581,6 +1581,18 @@ public class DBQueries_RFO {
 
 	public static String GET_ACCOUNT_NUMBER_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountID='%s'";
 
+	public static String GET_ACCOUNT_ID = "select top 1 * from RFO_Accounts.AccountContacts where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContactAddresses  where AddressId IN (select AddressID from RFO_Accounts.Addresses where ( addresstypeid = '3' and IsDefault='1' and EndDate IS NULL and AddressId in  (select addressid from RFO_Accounts.AccountContactAddresses where AccountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s'))))))";
+
+	public static String UPDATE_ENROLL_DATE = "update RFO_Accounts.AccountRF SET "+
+			"EnrollmentDate = '3/12/2014' "+
+			"WHERE AccountID = %s";
+
+	public static String UPDATE_SOFT_TERMINATION_DATE = "update RFO_Accounts.AccountRF SET "+
+			"SoftTerminationDate = '3/12/2015' "+
+			"WHERE AccountID = %s";
+
+	public static String GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS = "select * from RFO_Accounts.AccountBase join RFO_Accounts.AccountContacts ON RFO_Accounts.AccountContacts.AccountId = RFO_Accounts.AccountBase.AccountID join RFO_Accounts.AccountEmails ON RFO_Accounts.AccountEmails.AccountContactId = RFO_Accounts.AccountContacts.AccountContactId join RFO_Accounts.EmailAddresses ON RFO_Accounts.EmailAddresses.EmailAddressID = RFO_Accounts.AccountEmails.EmailAddressId where RFO_Accounts.EmailAddresses.EmailAddress like '%s'";
+
 	/**
 	 * 
 	 * @param query

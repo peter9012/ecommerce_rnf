@@ -286,13 +286,27 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
-		if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
-			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
-		else
-			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
-		logger.info("Buy Now button clicked");
-		driver.waitForLoadingImageToDisappear();
+
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		else{
+			driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+			if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+			else
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
+			logger.info("Buy Now button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		driver.waitForPageLoad();
+
 	}
 
 	public void clickOnAddToCRPButton() throws InterruptedException{
@@ -678,14 +692,36 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@value='Update more info']"));
 	}
 
+	//	public String getSubtotalFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][2]//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][2]//span")).getText();
+	//	}
+	//
+	//	public String getDeliveyFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][3]//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][3]//span")).getText();
+	//	}
+	//	public String getHandlingFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
+	//	}
+	//	public String getTaxFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
+	//		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+	//	}
+	//	public String getGrandTotalFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-total']//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
+	//	}
+
 	public String getSubtotalFromCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][2]//span"));
-		return driver.findElement(By.xpath("//div[@id='module-subtotal'][2]//span")).getText();
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText();
 	}
 
 	public String getDeliveyFromCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][3]//span"));
-		return driver.findElement(By.xpath("//div[@id='module-subtotal'][3]//span")).getText();
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span"));
+		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span")).getText();
 	}
 	public String getHandlingFromCart(){
 		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
@@ -696,8 +732,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
 	}
 	public String getGrandTotalFromCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='module-total']//span"));
-		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
+		driver.waitForElementPresent(By.id("orderTotal"));
+		return driver.findElement(By.id("orderTotal")).getText();
 	}
 
 	public boolean validateHeaderContent(){

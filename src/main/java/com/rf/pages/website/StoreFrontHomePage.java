@@ -730,7 +730,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public void clickNextOnCRPCartPage(){
 		driver.waitForElementPresent(By.id("submitForm"));
 		driver.click(By.id("submitForm"));
@@ -785,7 +785,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		selectProvince();
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-	
+
 	}
 
 	//Method Overloaded without Kit and Regimen
@@ -1824,6 +1824,32 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found for')]"));
 		String errorMessage=driver.findElement(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found for')]")).getText();
 		return errorMessage;
+	}
+
+	public void clickOnEnrollUnderLastUplineProcessToPopupDisappear(String consultantEmailID) throws InterruptedException{
+		while(true){
+			if(!driver.findElement(By.id("inactiveConsultant180Popup")).getCssValue("display").contains("none")){
+				clickOnEnrollUnderLastUpline();
+				hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+				selectProductAndProceedToBuy();
+				clickOnCheckoutButton();
+				enterEmailAddress(consultantEmailID);
+			}else{
+				break;
+			}
+		}
+	}
+
+	public int getQuantityValueForTheFirstProduct(){
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
+		String qty=driver.findElement(By.xpath("//input[@id='quantity0']")).getAttribute("value");
+		return Integer.parseInt(qty);
+	}
+
+	public int getQuantityValueForTheSecondProduct(){
+		driver.waitForElementPresent(By.xpath("//input[@id='quantity1']"));
+		String qty=driver.findElement(By.xpath("//input[@id='quantity1']")).getAttribute("value");
+		return Integer.parseInt(qty);
 	}
 
 }

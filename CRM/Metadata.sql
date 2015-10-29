@@ -92,6 +92,32 @@ VALUES
 ,(0,'Contacts','RFAccountContactID__C','MobilePhone,','MobilePhone,')
 ,(0,'Contacts','RFAccountContactID__C','MainEmail__c,','MainEmail__c,')
 ,(0,'Contacts','RFAccountContactID__C','SecondaryEmail__c ','SecondaryEmail__c ')
+,(0,'PaymentProfile','PaymentProfileId','PAYMENTPROFILEID','RFOPaymentProfileId__c')
+,(0,'PaymentProfile','PaymentProfileId','CHANGEDBYAPPLICATION','ChangedByApplication__c')
+,(0,'PaymentProfile','PaymentProfileId','AccountID','Account__c')
+,(0,'PaymentProfile','PaymentProfileId','DisplayNumber','DisplayNumber__c')
+,(0,'PaymentProfile','PaymentProfileId','ExpMonth','ExpMonth__c')
+,(0,'PaymentProfile','PaymentProfileId','ExpYear','ExpYear__c')
+,(0,'PaymentProfile','PaymentProfileId','NameOnCard','NameOnCard__c')
+,(0,'PaymentProfile','PaymentProfileId','Vendor','PaymentVendor__c')
+,(0,'PaymentProfile','PaymentProfileId','StartDate','StartDate__c')
+,(0,'PaymentProfile','PaymentProfileId','EndDate','EndDate__c')
+,(0,'PaymentProfile','PaymentProfileId','IsDefault','IsDefault__c')
+,(0,'PaymentProfile','PaymentProfileId','PaymentType','PaymentType__c')
+,(0,'PaymentProfile','PaymentProfileId','PROFILENAME','ProfileName__c')
+,(0,'PaymentProfile','PaymentProfileId','RFO_AddressProfileID','RFOAddressProfileId__c')
+,(0,'PaymentProfile','PaymentProfileId','AddressLine1','AddressLine1__c')
+,(0,'PaymentProfile','PaymentProfileId','AddressLine2','AddressLine2__c')
+,(0,'PaymentProfile','PaymentProfileId','AddressLine3','AddressLine3__c')
+,(0,'PaymentProfile','PaymentProfileId','AddressLine4','AddressLine4__c')
+,(0,'PaymentProfile','PaymentProfileId','AddressLine5','AddressLine5__c')
+,(0,'PaymentProfile','PaymentProfileId','CountryId','Country__c')
+,(0,'PaymentProfile','PaymentProfileId','latitude','Latitude__c')
+,(0,'PaymentProfile','PaymentProfileId','locale','Locale__c')
+,(0,'PaymentProfile','PaymentProfileId','longitude','Longitude__c')
+,(0,'PaymentProfile','PaymentProfileId','Region','Region__c')
+,(0,'PaymentProfile','PaymentProfileId','PostalCode','Postal_Code__c')
+,(0,'PaymentProfile','PaymentProfileId','SubRegion','Sub_Region__c')
 
 
 
@@ -156,7 +182,7 @@ WHILE ( @I <= @C )
                 SET @DesKey = ( SELECT   
 									CASE WHEN CRMObject = 'Accounts' THEN 'RFOAccountId__c'
 									     WHEN CRMObject = 'Contacts' THEN 'RFAccountContactId__c'
-										 WHEN CRMObject = 'PaymentProfile' THEN 'RFO_PaymentProfileID__C'
+										 WHEN CRMObject = 'PaymentProfile' THEN 'RFOPaymentProfileID__C'
 									END
                                 FROM     rfoperations.sfdc.crm_Metadata_Accounts
                                 WHERE   ColID = @I

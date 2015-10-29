@@ -1,4 +1,14 @@
-use rfoperations
+﻿
+
+
+
+
+--SELECT * from datamigration.dbo.dm_log where test_area = '853-ReturnPaymentAddress'
+
+--SELECT * FROM RFO_Reference.AddressTypeAND [Hybris_Column ]='p_rfaddressid'
+
+USE rfoperations
+SET STATISTICS TIME ON
 set transaction isolation level read uncommitted
 
 declare @HYB_key varchar(100) = 'pk'
@@ -9,43 +19,90 @@ declare @lt_1 int
 declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column varchar(max), hybris_column varchar(max), hyb_key varchar(max), hyb_value varchar(max), rfo_key varchar(max), rfo_value varchar(max))
 
 --Duplicate check on Hybris side for US
-select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
-from (SELECT ownerpkstring 
-	  FROM hybris.dbo.addresses 
-	  WHERE duplicate=1 AND OwnerPkString IN (SELECT DISTINCT returnpaymentid FROM Hybris.returnorder a JOIN hybris.returnpayment b ON a.ReturnOrderid=b.ReturnOrderID WHERE CountryID=236) 
-	  AND p_billingaddress=1 
-	  GROUP BY OwnerPkString HAVING COUNT(*)>1)t1
+SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
+             ELSE 'No duplicates - Validation Passed'
+        END AS [Step-1 Validation]
+FROM    ( SELECT    COUNT(*) cnt
+          FROM      Hybris.dbo.addresses
+          WHERE     duplicate = 1
+                    AND OwnerPkString IN (
+                    SELECT DISTINCT
+                            ReturnPaymentId
+                    FROM    Hybris.ReturnOrder a
+                            JOIN Hybris.ReturnPayment b ON a.ReturnOrderID = b.ReturnOrderID
+                    WHERE   CountryID = 236 )
+                    AND p_billingaddress = 1
+          GROUP BY  OwnerPkString
+          HAVING    COUNT(*) > 1
+        ) t1;
 
 
 --Counts check on Hybris side for US
-select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
-			when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
-from (select count(distinct e.ownerpkstring) hybris_cnt 
-		from hybris.dbo.orders a,
-		hybris.dbo.users b,
-		hybris.dbo.countries c,
-		hybris.dbo.paymentinfos d,
-		hybris.dbo.addresses e
-		where a.userpk=b.pk
-		and b.p_country=c.pk
-		and a.paymentinfopk=d.PK
-		AND d.pk=e.ownerpkstring
-		and c.isocode = 'US'
-		and a.p_template is null AND a.TypePkString=8796127723602 
-		AND d.duplicate = 1
-		AND e.p_billingaddress=1 AND e.duplicate = 1
-		and b.p_sourcename = 'Hybris-DM')t1, --105777
+SELECT  hybris_cnt ,
+        rfo_cnt ,
+        CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
+             WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
+             ELSE 'Count matches - validation passed'
+        END Results
+FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
+          FROM      Hybris.dbo.orders ho
+                    JOIN Hybris.dbo.users u ON ho.userpk = u.PK
+                                               AND u.p_sourcename = 'Hybris-DM'
+                                               AND ho.TypePkString = 8796127723602
+                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+                                                   AND c.isocode = 'US'
+                    JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                    JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = hpi.PK
+          WHERE     ad.duplicate = 1
+                    AND hpi.duplicate = 1
+                    AND ho.p_template IS NULL
+                    AND ad.p_billingaddress = 1
+        ) t1 , --105777
+        ( SELECT    COUNT(ba.ReturnBillingAddressID) rfo_cnt
+          FROM      RFOperations.Hybris.ReturnOrder ro
+                    JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
+                                               AND u.p_sourcename = 'Hybris-DM'
+                    JOIN [Hybris].[ReturnBillingAddress] ba ON ba.ReturnOrderID = ro.ReturnOrderID
+                    JOIN Hybris..orders ho ON ho.PK = ro.OrderID
+                                              AND ro.CountryID = 236
+                                              AND ho.paymentinfopk IS NOT NULL
+        ) t2;
 
-		(select count(c.ReturnBillingAddressID) rfo_cnt
-		from rfoperations.hybris.returnorder a,
-		hybris.dbo.users b,
-		[Hybris].[ReturnBillingAddress] c,
-		hybris..orders d
-		where a.accountid=b.p_rfaccountid
-		and a.returnorderid=c.returnorderid
-		AND a.returnorderid=d.pk
-		and a.countryid = 236 AND d.paymentinfopk IS NOT null
-		and p_sourcename = 'Hybris-DM') t2 --
+
+
+	---	--Missing Catching 
+SELECT  t1.pk,t2.ReturnBillingAddressID,
+        CASE WHEN t1.PK IS NULL   THEN 'Missing In Hybris'
+             WHEN t2.ReturnBillingAddressID IS NULL   THEN 'Missing In RFO'
+                     END Results
+FROM    ( SELECT    ad.PK
+          FROM      Hybris.dbo.orders ho
+                    JOIN Hybris.dbo.users u ON ho.userpk = u.PK
+                                               AND u.p_sourcename = 'Hybris-DM'
+                                               AND ho.TypePkString = 8796127723602
+                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+                                                   AND c.isocode = 'US'
+                    JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                    JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = hpi.PK
+          WHERE     ad.duplicate = 1
+                    AND hpi.duplicate = 1
+                    AND ho.p_template IS NULL
+                    AND ad.p_billingaddress = 1
+        ) t1 
+		FULL OUTER JOIN
+        ( SELECT    ba.ReturnBillingAddressID
+          FROM      RFOperations.Hybris.ReturnOrder ro
+                    JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
+                                               AND u.p_sourcename = 'Hybris-DM'
+                    JOIN [Hybris].[ReturnBillingAddress] ba ON ba.ReturnOrderID = ro.ReturnOrderID
+                    JOIN Hybris..orders ho ON ho.PK = ro.OrderID
+                                              AND ro.CountryID = 236
+                                              AND ho.paymentinfopk IS NOT NULL
+        ) t2 ON t1.pk=t2.ReturnBillingAddressID
+		WHERE t1.pk IS NULL OR t2.ReturnBillingAddressID IS NULL 
+
+
+				
 
 delete from datamigration.dbo.dm_log where test_area = '853-ReturnPaymentAddress'
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL

@@ -1,3 +1,17 @@
+
+
+--SELECT * FROM datamigration..map_tab
+--WHERE [owner]='824-Autoship' AND [Hybris_Column ]='statuspk'
+
+
+
+SELECT * FROM datamigration..dm_log
+WHERE test_area ='824-Autoship'
+
+SELECT ato.ConsultantID,ato.AutoshipID,ho.p_consultantIdReceivingCommiss,ho.pk FROM Hybris..orders ho
+JOIN hybris.autoship ato ON ho.pk=ato.autoshipid
+WHERE ato.ConsultantID <>ho.p_consultantIdReceivingCommiss 
+
 USE RFOperations;
 SET STATISTICS TIME ON;
 GO
@@ -75,7 +89,8 @@ DECLARE @temp TABLE
 
 
 
-
+		 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+			DROP TABLE #LoadedAutoshipID;
 
 		SELECT    DISTINCT
 				a.AutoshipID
@@ -116,6 +131,32 @@ DECLARE @temp TABLE
 				  WHERE     a.CountryID = 236
 							
 										) t2;
+
+
+
+                                         IF OBJECT_ID('tempdb..#missing') IS NOT NULL
+                                            DROP TABLE #missing;
+
+                                        SELECT  t1.pk,t2.AutoshipID,CASE WHEN t1.pk IS NULL THEN 'Missing in Hybris' 
+										WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO' END  results INTO #missing
+                                        FROM    ( SELECT    a.PK
+                                                  FROM      Hybris.dbo.orders a ,
+                                                            Hybris.dbo.users b ,
+                                                            Hybris.dbo.countries c
+                                                  WHERE     a.userpk = b.PK
+                                                            AND b.p_country = c.PK
+                                                            AND c.isocode = 'US'
+                                                            AND a.p_template = 1
+                                                            AND p_sourcename = 'Hybris-DM'
+                                                ) t1 FULL OUTER JOIN 
+                                                ( SELECT    a.AutoshipID
+                                                  FROM      RFOperations.Hybris.Autoship (NOLOCK) a
+                                                            JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+                                                  WHERE     a.CountryID = 236
+                                                ) t2 ON t1.pk=t2.AutoshipID
+												WHERE t1.pk IS NULL OR t2.AutoshipID IS NULL 
+												SELECT COUNT(*) AS TotalMissingAutoship FROM #missing
+												SELECT *FROM #missing
 
 		--Column2Column Validation that doesn't have transformation - Autoship
 
@@ -1492,3 +1533,7 @@ DECLARE @temp TABLE
 
 --			SET STATISTICS TIME OFF;
 --			GO
+
+
+SELECT *FROM datamigration..dm_log
+WHERE test_area='824-autoship'

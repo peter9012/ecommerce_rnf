@@ -1,363 +1,761 @@
-use rfoperations
-set statistics time on
-go
 
-set transaction isolation level read uncommitted
 
-declare @HYB_key varchar(100) = 'orderpk'
-declare @RFO_key varchar(100) = 'autoshipid'
-declare @sql_gen_1 nvarchar(max)
-declare @sql_gen_2 nvarchar(max)
-declare @cnt int
-declare @lt_1 int
-declare @lt_2 int
-declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column varchar(max), hybris_column varchar(max), hyb_key varchar(max), hyb_value varchar(max), rfo_key varchar(max), rfo_value varchar(max))
 
---Validation of AUTOSHIP Counts, Dups & Columns without transformations
 
---Duplicate check on Hybris side for US
-select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
-from (select count(*) cnt, d.orderpk, d.productpk,d.[entrynumber]
-from hybris.dbo.orders a,
-hybris.dbo.users b,
-hybris.dbo.countries c,
-hybris.dbo.orderentries d
-where a.userpk=b.pk
-and b.p_country=c.pk
-and a.pk=d.orderpk
-and c.isocode = 'US'
-and p_sourcename = 'Hybris-DM'
-and a.p_template = 1 --AS
-group by d.orderpk, d.productpk,d.[entrynumber]
-having count(*) > 1)t1
 
---Counts check on Hybris side for US
-select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
-			when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
-from (select count(distinct d.pk) hybris_cnt 
-		from hybris.dbo.orders a,
-		hybris.dbo.users b,
-		hybris.dbo.countries c,
-        hybris.dbo.orderentries d
-		where a.userpk=b.pk
-		and b.p_country=c.pk
-		and a.pk=d.orderpk
-		and c.isocode = 'US'
-		and a.p_template = 1
-		and p_sourcename = 'Hybris-DM')t1, --1710792
-		(select sum(cnt) rfo_cnt from (select count(*) cnt, a.AutoshipId , LineItemNo ,ProductID rfo_cnt
-		from rfoperations.hybris.autoship a,
-		hybris.dbo.users b,
-		rfoperations.hybris.autoshipitem c
-		where a.accountid=b.p_rfaccountid
-		and a.autoshipid=c.autoshipid
-		and countryid = 236
-		and p_sourcename = 'Hybris-DM'
-		group by a.autoshipid, lineitemno, productid)	--	having count(*) = 1)
-		a) t2 --1712145
+			--SELECT * FROM datamigration..map_tab
+			--WHERE [owner]='824-AutoshipItem'
+
+
+			SELECT * FROM datamigration..dm_log
+			WHERE test_area='824-AutoshipItem'
+
+			USE RFOperations;
+			SET STATISTICS TIME ON;
+			GO
+
+			SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+			DECLARE @HYB_key VARCHAR(100) = 'orderpk';
+			DECLARE @RFO_key VARCHAR(100) = 'autoshipid';
+			DECLARE @sql_gen_1 NVARCHAR(MAX);
+			DECLARE @sql_gen_2 NVARCHAR(MAX);
+			DECLARE @cnt INT;
+			DECLARE @lt_1 INT;
+			DECLARE @lt_2 INT;
+			DECLARE @temp TABLE
+				(
+				  test_area VARCHAR(MAX) ,
+				  test_type VARCHAR(MAX) ,
+				  rfo_column VARCHAR(MAX) ,
+				  hybris_column VARCHAR(MAX) ,
+				  hyb_key VARCHAR(MAX) ,
+				  hyb_value VARCHAR(MAX) ,
+				  rfo_key VARCHAR(MAX) ,
+				  rfo_value VARCHAR(MAX)
+				);
+
+			--Validation of AUTOSHIP Counts, Dups & Columns without transformations
+
+				--Counts check on Hybris side for US
+			IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+				DROP TABLE #DuplicateAutoship;
+
+			SELECT  AutoshipID
+			INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+			FROM    Hybris.Autoship
+			WHERE   AccountID IN (
+					SELECT  a.AccountID
+					FROM    Hybris.Autoship a
+							INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+					WHERE   ab.AccountTypeID = 1
+							AND a.CountryID = 236
+							AND a.AutoshipTypeID = 2
+							AND a.Active = 1
+					GROUP BY a.AccountID
+					HAVING  COUNT(*) > 1 )
+					AND Active = 1
+					AND AutoshipTypeID = 2--total 809
+			EXCEPT
+			SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+			FROM    Hybris.Autoship a
+					INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+			WHERE   ab.AccountTypeID = 1
+					AND a.CountryID = 236
+					AND a.AutoshipTypeID = 2
+					AND a.Active = 1
+			GROUP BY a.AccountID
+			HAVING  COUNT(*) > 1;
+					 --total 386
+
+
+
+			IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+				DROP TABLE #LoadedAutoshipID;
+
+			SELECT    DISTINCT
+					a.AutoshipID
+			INTO    #LoadedAutoshipID
+			FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+					INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
+					INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
+					INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
+					INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
+					INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
+					INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+													 AND u.p_sourcename = 'Hybris-DM'
+			WHERE   a.CountryID = 236
+					AND a.AutoshipID NOT IN ( SELECT    AutoshipID
+											  FROM      #DuplicateAutoship );
+
+
+
+						
+
+			IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+				DROP TABLE #extra;				  
+										  
+			SELECT  PK
+			INTO    #extra
+			FROM    Hybris..orders ho
+					JOIN Hybris.Autoship ato ON ho.code = ato.AutoshipNumber
+			WHERE   ato.CountryID = 236
+					AND ato.AutoshipID NOT IN ( SELECT  AutoshipId
+												FROM    Hybris.AutoshipItem );	   
+
+
+
+
+
+
+			--Duplicate check on Hybris side for US
+			SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
+						 ELSE 'No duplicates - Validation Passed'
+					END AS [Step-1 Validation]
+			FROM    ( SELECT    COUNT(*) cnt ,
+								oe.orderpk ,
+								oe.productpk ,
+								oe.[entrynumber]
+					  FROM      Hybris.dbo.orders ho
+								JOIN Hybris.dbo.users u ON u.PK = ho.userpk
+														   AND u.p_sourcename = 'Hybris-DM'
+								JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+															   AND c.isocode = 'US'
+								JOIN Hybris.dbo.orderentries oe ON oe.orderpk = ho.PK
+																   AND ho.p_template = 1
+					  GROUP BY  oe.orderpk ,
+								oe.productpk ,
+								oe.entrynumber
+					  HAVING    COUNT(*) > 1
+					) t1;
+
+
+			--Counts check on Hybris side for US
+			SELECT  hybris_cnt ,
+					rfo_cnt ,
+					CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
+						 WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
+						 ELSE 'Count matches - validation passed'
+					END Results
+			FROM    ( SELECT    COUNT(*) hybris_cnt
+					  FROM      Hybris.dbo.orders ho
+								JOIN Hybris.dbo.users u ON u.PK = ho.userpk
+														   AND u.p_sourcename = 'Hybris-DM'
+								JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+															   AND c.isocode = 'US'
+								JOIN Hybris.dbo.orderentries oe ON oe.orderpk = ho.PK
+																   AND ho.p_template = 1
+																   AND ho.PK NOT IN (
+																   SELECT PK
+																   FROM   #extra )
+					) t1 ,
+					( SELECT    SUM(cnt) rfo_cnt
+					  FROM      ( SELECT    COUNT(*) cnt ,
+											rai.AutoshipId ,
+											LineItemNo ,
+											ProductID rfo_cnt
+								  FROM      RFOperations.Hybris.Autoship rat
+											JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(rat.AccountID AS NVARCHAR)
+											JOIN RFOperations.Hybris.AutoshipItem rai ON rai.AutoshipId = rat.AutoshipID
+								  WHERE     rat.CountryID = 236
+											AND p_sourcename = 'Hybris-DM'
+											AND rat.AutoshipID IN (
+											SELECT  AutoshipID
+											FROM    #LoadedAutoshipID )
+								  GROUP BY  rai.AutoshipId ,
+											LineItemNo ,
+											ProductID
+								) a
+					) t2;
+			 --1712145
 	
 
---Column2Column Validation that doesn't have transformation - Autoship
+			--Column2Column Validation that doesn't have transformation - Autoship
 
-delete from datamigration.dbo.dm_log where test_area = '824-AutoshipItem'
-IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
-drop table #tempact
-
-select a.autoshipid, autoshipnumber, b.pk, c.productid, c.lineitemno, cast(c.totaltax as float) as [totaltax]
-into #tempact 
-from rfoperations.hybris.autoship a,
-hybris.dbo.users b,
-rfoperations.hybris.autoshipitem c
-where a.accountid=b.p_rfaccountid
-and a.autoshipid=c.autoshipid
-and countryid = 236 
-and p_sourcename = 'Hybris-DM'
---and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
-and b.modifiedTS <= '2015-07-14 06:00:00.000' 
-and a.autoshipnumber not in (select ordernumber from hybris.orders where countryid = 236)
-group by a.autoshipid, autoshipnumber, b.pk, c.productid, c.lineitemno, c.totaltax
-
-create clustered index as_cls1 on #tempact (autoshipid)
-
-select 'Validation of column to column with no transformation in progress' as [Step-2 Validation], getdate() as StartTime
-set @cnt = 1
-select @lt_1 = count(*) from datamigration.dbo.map_tab where flag = 'c2c' and rfo_column <> @RFO_key and [owner] = '824-AutoshipItem'
-
-while @cnt<=@lt_1
-begin
-
-select @sql_gen_1 = 'SELECT DISTINCT  '''+[owner]+''', '''+flag+''', '''+[RFO_Reference Table]+''' as rfo_column, '''+Hybris_Column+''' as hybris_column, A.'+@HYB_key+' as hyb_key, A.'+Hybris_Column+' as hyb_value, B.'+@RFO_key+' as rfo_key, B.RFO_Col as rfo_value
-
-FROM (SELECT a.'+@HYB_key+', '+Hybris_Column+' FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Col FROM rfoperations.'+[Schema]+'.'+RFO_Table+' a, #tempact b where a.'+@RFO_key+'=b.'+@RFO_key+') A  
-
-LEFT JOIN
-
-(SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Col FROM rfoperations.'+[Schema]+'.'+RFO_Table+' a, #tempact b where a.'+@RFO_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@HYB_key+', '+Hybris_Column+' FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+') B
-ON A.'+@HYB_key+'=B.'+@RFO_key+'
-UNION
-SELECT DISTINCT '''+[owner]+''', '''+flag+''', '''+[RFO_Reference Table]+''', '''+Hybris_Column+''', A.'+@HYB_key+', A.'+Hybris_Column+', B.'+@RFO_key+',B.RFO_Col
-
-FROM (SELECT a.'+@HYB_key+', '+Hybris_Column+' FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Col FROM rfoperations.'+[Schema]+'.'+RFO_Table+' a, #tempact b where a.'+@RFO_key+'=b.'+@RFO_key+') A  
-
-RIGHT JOIN
-
-(SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Col FROM rfoperations.'+[Schema]+'.'+RFO_Table+' a, #tempact b where a.'+@RFO_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@HYB_key+', '+Hybris_Column+' FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+') B
-ON A.'+@HYB_key+'=B.'+@RFO_key+''
-from (select *, row_number() over (order by [owner]) rn
-from datamigration.dbo.map_tab
-where flag = 'c2c' 
-and rfo_column <> @RFO_key
-and [owner] = '824-AutoshipItem')temp where rn = @cnt 
-
-print @sql_gen_1
-insert into @temp (test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value)
-EXEC sp_executesql @sql_gen_1
-
-if(select count(*) from @temp) >1
-begin
-	declare @err_cnt int
-	select @err_cnt = case when hyb_cnt = 0 then rfo_cnt else hyb_cnt end from (select count(distinct hyb_key) hyb_cnt, count(distinct rfo_key) rfo_cnt from @temp)t1
-
-	update a
-	set [prev_run_err] = @err_cnt
-	from datamigration.dbo.map_tab a,
-	@temp b
-	where a.hybris_column=b.hybris_column
-	and [owner] = '824-AutoshipItem' 
-end	
-
-insert into datamigration.dbo.dm_log
-select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-from @temp
-where ((coalesce(hyb_key, '~') = coalesce(rfo_key,'~'))
-and (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
-union 
-select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-from @temp
-where ((coalesce(hyb_key, '~') <> coalesce(rfo_key,'~'))
-or (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
+			DELETE  FROM DataMigration.dbo.dm_log
+			WHERE   test_area = '824-AutoshipItem';
 
 
-delete from @temp
+			IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
+				DROP TABLE #tempact;
 
-set @cnt=@cnt+1
+			SELECT  rat.AutoshipID ,
+					AutoshipNumber ,
+					u.PK ,
+					rai.ProductID ,
+					rai.LineItemNo ,
+					CAST(rai.TotalTax AS FLOAT) AS [totaltax]
+						INTO    #tempact
+			FROM    RFOperations.Hybris.Autoship rat
+					JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(rat.AccountID AS NVARCHAR)
+					JOIN RFOperations.Hybris.AutoshipItem rai ON rai.AutoshipId = rat.AutoshipID
+			WHERE   rat.CountryID = 236
+					AND p_sourcename = 'Hybris-DM'
+					AND rat.AutoshipID IN ( SELECT  AutoshipID
+											FROM    #LoadedAutoshipID )
+			GROUP BY rat.AutoshipID ,
+					AutoshipNumber ,
+					u.PK ,
+					rai.ProductID ,
+					rai.LineItemNo ,
+					rai.TotalTax;
 
-end
+			CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 
-update datamigration.dbo.map_tab
-set [prev_run_err] = 0
-where [owner] = '824-AutoshipItem' and flag = 'c2c'
-and hybris_column not in (select distinct hybris_column from datamigration..dm_log where test_area = '824-AutoshipItem' and test_type = 'c2c')
+			SELECT  'Validation of column to column with no transformation in progress' AS [Step-2 Validation] ,
+					GETDATE() AS StartTime;
+			SET @cnt = 1;
+			SELECT  @lt_1 = COUNT(*)
+			FROM    DataMigration.dbo.map_tab
+			WHERE   flag = 'c2c'
+					AND rfo_column <> @RFO_key
+					AND [Hybris_Column ] = @HYB_key
+					AND [owner] = '824-AutoshipItem';
 
+			WHILE @cnt <= @lt_1
+				BEGIN
 
-select 'Step-2 Completed, Validation of default columns in progress' as [Step-3 Validation],
-getdate() as StartTime
+					SELECT  @sql_gen_1 = 'SELECT DISTINCT  ''' + [owner] + ''', ''' + flag
+							+ ''', ''' + [RFO_Reference Table] + ''' as rfo_column, '''
+							+ Hybris_Column + ''' as hybris_column, A.' + @HYB_key
+							+ ' as hyb_key, A.' + Hybris_Column + ' as hyb_value, B.'
+							+ @RFO_key + ' as rfo_key, B.RFO_Col as rfo_value
 
-----Defaults Check
-set @cnt = 1
-select @lt_1 = count(*) from datamigration.dbo.map_tab   where flag = 'defaults' and [owner] = '824-AutoshipItem' and [rfo_reference table]= 'NULL'
-select @lt_2 = count(*) from datamigration.dbo.map_tab  where flag = 'defaults' and [owner] = '824-AutoshipItem' and [rfo_reference table]<> 'NULL'
+			FROM (SELECT a.' + @HYB_key + ', ' + Hybris_Column + ' FROM hybris.dbo.'
+							+ Hybris_Table + ' a, #tempact b where a.' + @HYB_key + '=b.'
+							+ @RFO_key + '
+			except
+			SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Col FROM rfoperations.'
+							+ [Schema] + '.' + RFO_Table + ' a, #tempact b where a.'
+							+ @RFO_key + '=b.' + @RFO_key + ') A  
 
-while (@cnt<=@lt_1 and @cnt<=@lt_2)
-begin
-	if (select count(*) from datamigration.dbo.map_tab   where flag = 'defaults' and [owner] = '824-AutoshipItem' and [rfo_reference table] = 'NULL') >1
-	begin
-		select @sql_gen_1 = 'use rfoperations
-		select distinct '''+[owner]+''' as test_area, '''+flag+''' as test_type, null as rfo_column, '''+Hybris_Column+''' as hybris_column, a.'+@HYB_key+', '+hybris_column+', null as rfo_key, null as rfo_value
-		from hybris.dbo.'+hybris_table+' a, #tempact b 
-		where a.'+@HYB_key+'=b.'+@RFO_key+'
-		and '+hybris_column+' is not null' 
-		from (select *, row_number() over (order by [owner]) rn
-		from datamigration.dbo.map_tab 
-		where flag = 'defaults' 
-		and [rfo_reference table] = 'NULL'
-		and [owner] = '824-AutoshipItem')temp where rn = @cnt
-	end
+			LEFT JOIN
 
-	print @sql_gen_1
-	insert into @temp (test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value)
-	EXEC sp_executesql @sql_gen_1
+			(SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Col FROM rfoperations.'
+							+ [Schema] + '.' + RFO_Table + ' a, #tempact b where a.'
+							+ @RFO_key + '=b.' + @RFO_key + '
+			except
+			SELECT a.' + @HYB_key + ', ' + Hybris_Column + ' FROM hybris.dbo.'
+							+ Hybris_Table + ' a, #tempact b where a.' + @HYB_key + '=b.'
+							+ @RFO_key + ') B
+			ON A.' + @HYB_key + '=B.' + @RFO_key + '
+			UNION
+			SELECT DISTINCT ''' + [owner] + ''', ''' + flag + ''', '''
+							+ [RFO_Reference Table] + ''', ''' + Hybris_Column + ''', A.'
+							+ @HYB_key + ', A.' + Hybris_Column + ', B.' + @RFO_key
+							+ ',B.RFO_Col
 
-	if(select count(*) from @temp) >1
-	begin
-		--declare @err_cnt int
-		select @err_cnt = case when hyb_cnt = 0 then rfo_cnt else hyb_cnt end from (select count(distinct hyb_key) hyb_cnt, count(distinct rfo_key) rfo_cnt from @temp)t1
+			FROM (SELECT a.' + @HYB_key + ', ' + Hybris_Column + ' FROM hybris.dbo.'
+							+ Hybris_Table + ' a, #tempact b where a.' + @HYB_key + '=b.'
+							+ @RFO_key + '
+			except
+			SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Col FROM rfoperations.'
+							+ [Schema] + '.' + RFO_Table + ' a, #tempact b where a.'
+							+ @RFO_key + '=b.' + @RFO_key + ') A  
 
-		update a
-		set [prev_run_err] = @err_cnt
-		from datamigration.dbo.map_tab a,
-		@temp b
-		where a.hybris_column=b.hybris_column
-		and [owner] = '824-AutoshipItem' 
-	end	
+			RIGHT JOIN
 
-	insert into datamigration.dbo.dm_log
-	select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-	from @temp
-	where ((coalesce(hyb_key, '~') = coalesce(rfo_key,'~'))
-	and (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
-	union 
-	select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-	from @temp
-	where ((coalesce(hyb_key, '~') <> coalesce(rfo_key,'~'))
-	or (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
+			(SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Col FROM rfoperations.'
+							+ [Schema] + '.' + RFO_Table + ' a, #tempact b where a.'
+							+ @RFO_key + '=b.' + @RFO_key + '
+			except
+			SELECT a.' + @HYB_key + ', ' + Hybris_Column + ' FROM hybris.dbo.'
+							+ Hybris_Table + ' a, #tempact b where a.' + @HYB_key + '=b.'
+							+ @RFO_key + ') B
+			ON A.' + @HYB_key + '=B.' + @RFO_key + ''
+					FROM    ( SELECT    * ,
+										ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
+							  FROM      DataMigration.dbo.map_tab
+							  WHERE     flag = 'c2c'
+										AND rfo_column <> @RFO_key
+										AND [owner] = '824-AutoshipItem'
+							) temp
+					WHERE   rn = @cnt; 
 
-	--select * from datamigration.dbo.dm_log where test_type = 'defaults'
+					PRINT @sql_gen_1;
+					INSERT  INTO @temp
+							( test_area ,
+							  test_type ,
+							  rfo_column ,
+							  hybris_column ,
+							  hyb_key ,
+							  hyb_value ,
+							  rfo_key ,
+							  rfo_value
+							)
+							EXEC sp_executesql @sql_gen_1;
 
-	if (select count(*) from datamigration.dbo.map_tab  where flag = 'defaults' and [owner] = '824-AutoshipItem' and [rfo_reference table] <> 'NULL') >1
-	begin
-		select @sql_gen_2 = 'use rfoperations
-		select distinct '''+[owner]+''' as test_area, '''+flag+''' as test_type, null as rfo_column, '''+Hybris_Column+''' as hybris_column, a.'+@HYB_key+', '+hybris_column+', null as rfo_key, null as rfo_value
-		from hybris.dbo.'+hybris_table+' a, #tempact b 
-		where a.'+@HYB_key+'=b.'+@RFO_key+'
-		and '+hybris_column+' <> '''+[rfo_reference table]+'''' 
-		from (select *, row_number() over (order by [owner]) rn
-		from datamigration.dbo.map_tab 
-		where flag = 'defaults' 
-		and [rfo_reference table] <> 'NULL'
-		and [owner] = '824-AutoshipItem')temp where rn = @cnt
-	end
+					IF ( SELECT COUNT(*)
+						 FROM   @temp
+					   ) > 1
+						BEGIN
+							DECLARE @err_cnt INT;
+							SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
+													ELSE hyb_cnt
+											   END
+							FROM    ( SELECT    COUNT(DISTINCT hyb_key) hyb_cnt ,
+												COUNT(DISTINCT rfo_key) rfo_cnt
+									  FROM      @temp
+									) t1;
 
-	print @sql_gen_2
-    insert into @temp (test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value)
-	EXEC sp_executesql @sql_gen_2
+							UPDATE  a
+							SET     [prev_run_err] = @err_cnt
+							FROM    DataMigration.dbo.map_tab a ,
+									@temp b
+							WHERE   a.hybris_column = b.hybris_column
+									AND [owner] = '824-AutoshipItem'; 
+						END;	
 
-	if(select count(*) from @temp) >1
-	begin
-		--declare @err_cnt int
-		select @err_cnt = case when hyb_cnt = 0 then rfo_cnt else hyb_cnt end from (select count(distinct hyb_key) hyb_cnt, count(distinct rfo_key) rfo_cnt from @temp)t1
-
-		update a
-		set [prev_run_err] = @err_cnt
-		from datamigration.dbo.map_tab a,
-		@temp b
-		where a.hybris_column=b.hybris_column
-		and [owner] = '824-AutoshipItem' 
-	end	
-
-	insert into datamigration.dbo.dm_log
-	select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-	from @temp
-	where ((coalesce(hyb_key, '~') = coalesce(rfo_key,'~'))
-	and (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
-	union 
-	select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-	from @temp
-	where ((coalesce(hyb_key, '~') <> coalesce(rfo_key,'~'))
-	or (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
-
-delete from @temp
-
-set @cnt=@cnt+1
-
-end
-
-update datamigration.dbo.map_tab
-set [prev_run_err] = 0
-where [owner] = '824-AutoshipItem' and flag = 'defaults'
-and hybris_column not in (select distinct hybris_column from datamigration..dm_log where test_area = '824-AutoshipItem' and test_type = 'defaults')
-
-
-
-select 'Step-3 completed, Validation of transformed columns in progress' as [Step-4 Validation], getdate() as StartTime
-
---Transformed Columns Validation --10:16 mins
-set @cnt = 1
-select @lt_1 = count(*) from datamigration.dbo.map_tab  where flag = 'manual' and rfo_column <> @RFO_key and [owner] = '824-AutoshipItem'
-
-while @cnt<=@lt_1
-begin
-
-select  @sql_gen_1 = 'SELECT DISTINCT  '''+[owner]+''' as test_area, '''+flag+''' as test_type, '''+[RFO_Reference Table]+''' as rfo_column, '''+Hybris_Column+''' as hybris_column, A.'+@HYB_key+' as hyb_key, A.Hyb_Trans_col as hyb_value, B.'+@RFO_key+' as rfo_key, B.RFO_Trans_Col as rfo_value
-
-FROM (SELECT a.'+@HYB_key+', '+Hybris_Column+' as Hyb_Trans_col FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Trans_Col FROM '+RFO_Table+') A  
-
-LEFT JOIN
-
-(SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Trans_Col FROM '+RFO_Table+'
-except
-SELECT a.'+@HYB_key+', '+Hybris_Column+' as Hyb_Trans_col FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+') B
-ON A.'+@HYB_key+'=B.'+@RFO_key+'
-UNION
-SELECT DISTINCT  '''+[owner]+''', '''+flag+''', '''+[RFO_Reference Table]+''', '''+Hybris_Column+''', A.'+@HYB_key+', A.Hyb_Trans_col, B.'+@RFO_key+', B.RFO_Trans_Col
-
-FROM (SELECT a.'+@HYB_key+', '+Hybris_Column+' as Hyb_Trans_col FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+'
-except
-SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Trans_Col FROM '+RFO_Table+') A  
-
-RIGHT JOIN
-
-(SELECT a.'+@RFO_key+', '+RFO_Column+' as RFO_Trans_Col FROM '+RFO_Table+'
-except
-SELECT a.'+@HYB_key+', '+Hybris_Column+' as Hyb_Trans_col FROM hybris.dbo.'+Hybris_Table+' a, #tempact b where a.'+@HYB_key+'=b.'+@RFO_key+') B
-ON A.'+@HYB_key+'=B.'+@RFO_key+''
-from (select *, row_number() over (order by [owner]) rn
-from datamigration.dbo.map_tab
-where flag = 'manual'
-and rfo_column <> @RFO_key 
-and id not in (69,70) --Data types are image on Hybris end. This value is generated by the system
-and id not in (3,4,64,65) --order not migrated yet
-and [owner] = '824-AutoshipItem')temp where rn = @cnt
-
-print @sql_gen_1
-insert into @temp (test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value)
-EXEC sp_executesql @sql_gen_1
+					INSERT  INTO DataMigration.dbo.dm_log
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') = COALESCE(rfo_key, '~') )
+									  AND ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									)
+							UNION
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') <> COALESCE(rfo_key, '~') )
+									  OR ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									);
 
 
-if(select count(*) from @temp) >1
-begin
-	--declare @err_cnt int
-	select @err_cnt = case when hyb_cnt = 0 then rfo_cnt else hyb_cnt end from (select count(distinct hyb_key) hyb_cnt, count(distinct rfo_key) rfo_cnt from @temp)t1
+					DELETE  FROM @temp;
 
-	update a
-	set [prev_run_err] = @err_cnt
-	from datamigration.dbo.map_tab a,
-	@temp b
-	where a.hybris_column=b.hybris_column
-	and [owner] = '824-AutoshipItem' 
-end	
+					SET @cnt = @cnt + 1;
 
-insert into datamigration..dm_log
-select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value
-from @temp
-where ((coalesce(hyb_key, '~') = coalesce(rfo_key,'~'))
-and (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
-union 
-select top 5 test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value 
-from @temp
-where ((coalesce(hyb_key, '~') <> coalesce(rfo_key,'~'))
-or (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
+				END;
 
-update datamigration.dbo.map_tab
-set [prev_run_err] = 0
-where [owner] = '824-AutoshipItem' and flag = 'manual'
-and hybris_column not in (select distinct hybris_column from datamigration..dm_log where test_area = '824-AutoshipItem' and test_type = 'manual')
+			UPDATE  DataMigration.dbo.map_tab
+			SET     [prev_run_err] = 0
+			WHERE   [owner] = '824-AutoshipItem'
+					AND flag = 'c2c'
+					AND hybris_column NOT IN ( SELECT DISTINCT
+														hybris_column
+											   FROM     DataMigration..dm_log
+											   WHERE    test_area = '824-AutoshipItem'
+														AND test_type = 'c2c' );
 
-delete from @temp
 
-set @cnt=@cnt+1
+			SELECT  'Step-2 Completed, Validation of default columns in progress' AS [Step-3 Validation] ,
+					GETDATE() AS StartTime;
 
-end
+			----Defaults Check
+			SET @cnt = 1;
+			SELECT  @lt_1 = COUNT(*)
+			FROM    DataMigration.dbo.map_tab
+			WHERE   flag = 'defaults'
+					AND [owner] = '824-AutoshipItem'
+					AND [RFO_Reference Table] = 'NULL';
+			SELECT  @lt_2 = COUNT(*)
+			FROM    DataMigration.dbo.map_tab
+			WHERE   flag = 'defaults'
+					AND [owner] = '824-AutoshipItem'
+					AND [RFO_Reference Table] <> 'NULL';
 
-select 'VALIDATION COMPLETED' [Status], [total no of columns], [columns passed],[total no of columns]-[columns passed] as [Required Analysis],
-getdate() as EndTime
-from 
-	(select count(cnt) as [columns passed] from (select distinct hybris_column as cnt from datamigration.dbo.map_tab where [owner] = '824-AutoshipItem' and flag in ('c2c', 'manual', 'defaults')
-	except
-	select distinct hybris_column from DataMigration..dm_log where test_area = '824-AutoshipItem')a) tab1,
+			WHILE ( @cnt <= @lt_1
+					AND @cnt <= @lt_2
+				  )
+				BEGIN
+					IF ( SELECT COUNT(*)
+						 FROM   DataMigration.dbo.map_tab
+						 WHERE  flag = 'defaults'
+								AND [owner] = '824-AutoshipItem'
+								AND [RFO_Reference Table] = 'NULL'
+					   ) > 1
+						BEGIN
+							SELECT  @sql_gen_1 = 'use rfoperations
+					select distinct ''' + [owner] + ''' as test_area, ''' + flag
+									+ ''' as test_type, null as rfo_column, '''
+									+ Hybris_Column + ''' as hybris_column, a.' + @HYB_key
+									+ ', ' + hybris_column
+									+ ', null as rfo_key, null as rfo_value
+					from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
+					where a.' + @HYB_key + '=b.' + @RFO_key + '
+					and ' + hybris_column + ' is not null'
+							FROM    ( SELECT    * ,
+												ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
+									  FROM      DataMigration.dbo.map_tab
+									  WHERE     flag = 'defaults'
+												AND [RFO_Reference Table] = 'NULL'
+												AND [owner] = '824-AutoshipItem'
+									) temp
+							WHERE   rn = @cnt;
+						END;
 
-	(select count(id) as [total no of columns] from  datamigration.dbo.map_tab where [owner] = '824-AutoshipItem' and flag in ('c2c', 'manual','defaults'))tab2
+					PRINT @sql_gen_1;
+					INSERT  INTO @temp
+							( test_area ,
+							  test_type ,
+							  rfo_column ,
+							  hybris_column ,
+							  hyb_key ,
+							  hyb_value ,
+							  rfo_key ,
+							  rfo_value
+							)
+							EXEC sp_executesql @sql_gen_1;
 
-set statistics time off
-go
+					IF ( SELECT COUNT(*)
+						 FROM   @temp
+					   ) > 1
+						BEGIN
+					--declare @err_cnt int
+							SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
+													ELSE hyb_cnt
+											   END
+							FROM    ( SELECT    COUNT(DISTINCT hyb_key) hyb_cnt ,
+												COUNT(DISTINCT rfo_key) rfo_cnt
+									  FROM      @temp
+									) t1;
+
+							UPDATE  a
+							SET     [prev_run_err] = @err_cnt
+							FROM    DataMigration.dbo.map_tab a ,
+									@temp b
+							WHERE   a.hybris_column = b.hybris_column
+									AND [owner] = '824-AutoshipItem'; 
+						END;	
+
+					INSERT  INTO DataMigration.dbo.dm_log
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') = COALESCE(rfo_key, '~') )
+									  AND ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									)
+							UNION
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') <> COALESCE(rfo_key, '~') )
+									  OR ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									);
+
+				--select * from datamigration.dbo.dm_log where test_type = 'defaults'
+
+					IF ( SELECT COUNT(*)
+						 FROM   DataMigration.dbo.map_tab
+						 WHERE  flag = 'defaults'
+								AND [owner] = '824-AutoshipItem'
+								AND [RFO_Reference Table] <> 'NULL'
+					   ) > 1
+						BEGIN
+							SELECT  @sql_gen_2 = 'use rfoperations
+					select distinct ''' + [owner] + ''' as test_area, ''' + flag
+									+ ''' as test_type, null as rfo_column, '''
+									+ Hybris_Column + ''' as hybris_column, a.' + @HYB_key
+									+ ', ' + hybris_column
+									+ ', null as rfo_key, null as rfo_value
+					from hybris.dbo.' + Hybris_Table + ' a, #tempact b 
+					where a.' + @HYB_key + '=b.' + @RFO_key + '
+					and ' + hybris_column + ' <> ''' + [RFO_Reference Table] + ''''
+							FROM    ( SELECT    * ,
+												ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
+									  FROM      DataMigration.dbo.map_tab
+									  WHERE     flag = 'defaults'
+												AND [RFO_Reference Table] <> 'NULL'
+												AND [owner] = '824-AutoshipItem'
+									) temp
+							WHERE   rn = @cnt;
+						END;
+
+					PRINT @sql_gen_2;
+					INSERT  INTO @temp
+							( test_area ,
+							  test_type ,
+							  rfo_column ,
+							  hybris_column ,
+							  hyb_key ,
+							  hyb_value ,
+							  rfo_key ,
+							  rfo_value
+							)
+							EXEC sp_executesql @sql_gen_2;
+
+					IF ( SELECT COUNT(*)
+						 FROM   @temp
+					   ) > 1
+						BEGIN
+					--declare @err_cnt int
+							SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
+													ELSE hyb_cnt
+											   END
+							FROM    ( SELECT    COUNT(DISTINCT hyb_key) hyb_cnt ,
+												COUNT(DISTINCT rfo_key) rfo_cnt
+									  FROM      @temp
+									) t1;
+
+							UPDATE  a
+							SET     [prev_run_err] = @err_cnt
+							FROM    DataMigration.dbo.map_tab a ,
+									@temp b
+							WHERE   a.hybris_column = b.hybris_column
+									AND [owner] = '824-AutoshipItem'; 
+						END;	
+
+					INSERT  INTO DataMigration.dbo.dm_log
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') = COALESCE(rfo_key, '~') )
+									  AND ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									)
+							UNION
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') <> COALESCE(rfo_key, '~') )
+									  OR ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									);
+
+					DELETE  FROM @temp;
+
+					SET @cnt = @cnt + 1;
+
+				END;
+
+			UPDATE  DataMigration.dbo.map_tab
+			SET     [prev_run_err] = 0
+			WHERE   [owner] = '824-AutoshipItem'
+					AND flag = 'defaults'
+					AND hybris_column NOT IN ( SELECT DISTINCT
+														hybris_column
+											   FROM     DataMigration..dm_log
+											   WHERE    test_area = '824-AutoshipItem'
+														AND test_type = 'defaults' );
+
+
+
+			SELECT  'Step-3 completed, Validation of transformed columns in progress' AS [Step-4 Validation] ,
+					GETDATE() AS StartTime;
+
+			--Transformed Columns Validation --10:16 mins
+			SET @cnt = 1;
+			SELECT  @lt_1 = COUNT(*)
+			FROM    DataMigration.dbo.map_tab
+			WHERE   flag = 'manual'
+					AND rfo_column <> @RFO_key
+					AND [owner] = '824-AutoshipItem';
+
+			WHILE @cnt <= @lt_1
+				BEGIN
+
+					SELECT  @sql_gen_1 = 'SELECT DISTINCT  ''' + [owner]
+							+ ''' as test_area, ''' + flag + ''' as test_type, '''
+							+ [RFO_Reference Table] + ''' as rfo_column, '''
+							+ Hybris_Column + ''' as hybris_column, A.' + @HYB_key
+							+ ' as hyb_key, A.Hyb_Trans_col as hyb_value, B.' + @RFO_key
+							+ ' as rfo_key, B.RFO_Trans_Col as rfo_value
+
+			FROM (SELECT a.' + @HYB_key + ', ' + Hybris_Column
+							+ ' as Hyb_Trans_col FROM hybris.dbo.' + Hybris_Table
+							+ ' a, #tempact b where a.' + @HYB_key + '=b.' + @RFO_key + '
+			except
+			SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Trans_Col FROM '
+							+ RFO_Table + ') A  
+
+			LEFT JOIN
+
+			(SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Trans_Col FROM '
+							+ RFO_Table + '
+			except
+			SELECT a.' + @HYB_key + ', ' + Hybris_Column
+							+ ' as Hyb_Trans_col FROM hybris.dbo.' + Hybris_Table
+							+ ' a, #tempact b where a.' + @HYB_key + '=b.' + @RFO_key
+							+ ') B
+			ON A.' + @HYB_key + '=B.' + @RFO_key + '
+			UNION
+			SELECT DISTINCT  ''' + [owner] + ''', ''' + flag + ''', '''
+							+ [RFO_Reference Table] + ''', ''' + Hybris_Column + ''', A.'
+							+ @HYB_key + ', A.Hyb_Trans_col, B.' + @RFO_key
+							+ ', B.RFO_Trans_Col
+
+			FROM (SELECT a.' + @HYB_key + ', ' + Hybris_Column
+							+ ' as Hyb_Trans_col FROM hybris.dbo.' + Hybris_Table
+							+ ' a, #tempact b where a.' + @HYB_key + '=b.' + @RFO_key + '
+			except
+			SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Trans_Col FROM '
+							+ RFO_Table + ') A  
+
+			RIGHT JOIN
+
+			(SELECT a.' + @RFO_key + ', ' + RFO_Column + ' as RFO_Trans_Col FROM '
+							+ RFO_Table + '
+			except
+			SELECT a.' + @HYB_key + ', ' + Hybris_Column
+							+ ' as Hyb_Trans_col FROM hybris.dbo.' + Hybris_Table
+							+ ' a, #tempact b where a.' + @HYB_key + '=b.' + @RFO_key
+							+ ') B
+			ON A.' + @HYB_key + '=B.' + @RFO_key + ''
+					FROM    ( SELECT    * ,
+										ROW_NUMBER() OVER ( ORDER BY [owner] ) rn
+							  FROM      DataMigration.dbo.map_tab
+							  WHERE     flag = 'manual'
+										AND rfo_column <> @RFO_key
+										AND id NOT IN ( 69, 70 ) --Data types are image on Hybris end. This value is generated by the system
+										AND id NOT IN ( 3, 4, 64, 65 ) --order not migrated yet
+										AND [owner] = '824-AutoshipItem'
+							) temp
+					WHERE   rn = @cnt;
+
+					PRINT @sql_gen_1;
+					INSERT  INTO @temp
+							( test_area ,
+							  test_type ,
+							  rfo_column ,
+							  hybris_column ,
+							  hyb_key ,
+							  hyb_value ,
+							  rfo_key ,
+							  rfo_value
+							)
+							EXEC sp_executesql @sql_gen_1;
+
+
+					IF ( SELECT COUNT(*)
+						 FROM   @temp
+					   ) > 1
+						BEGIN
+				--declare @err_cnt int
+							SELECT  @err_cnt = CASE WHEN hyb_cnt = 0 THEN rfo_cnt
+													ELSE hyb_cnt
+											   END
+							FROM    ( SELECT    COUNT(DISTINCT hyb_key) hyb_cnt ,
+												COUNT(DISTINCT rfo_key) rfo_cnt
+									  FROM      @temp
+									) t1;
+
+							UPDATE  a
+							SET     [prev_run_err] = @err_cnt
+							FROM    DataMigration.dbo.map_tab a ,
+									@temp b
+							WHERE   a.hybris_column = b.hybris_column
+									AND [owner] = '824-AutoshipItem'; 
+						END;	
+
+					INSERT  INTO DataMigration..dm_log
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') = COALESCE(rfo_key, '~') )
+									  AND ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									)
+							UNION
+							SELECT TOP 5
+									test_area ,
+									test_type ,
+									rfo_column ,
+									hybris_column ,
+									hyb_key ,
+									hyb_value ,
+									rfo_key ,
+									rfo_value
+							FROM    @temp
+							WHERE   ( ( COALESCE(hyb_key, '~') <> COALESCE(rfo_key, '~') )
+									  OR ( COALESCE(hyb_value, '~') <> COALESCE(rfo_value,
+																		  '~') )
+									);
+
+					UPDATE  DataMigration.dbo.map_tab
+					SET     [prev_run_err] = 0
+					WHERE   [owner] = '824-AutoshipItem'
+							AND flag = 'manual'
+							AND hybris_column NOT IN (
+							SELECT DISTINCT
+									hybris_column
+							FROM    DataMigration..dm_log
+							WHERE   test_area = '824-AutoshipItem'
+									AND test_type = 'manual' );
+
+					DELETE  FROM @temp;
+
+					SET @cnt = @cnt + 1;
+
+				END;
+
+			SELECT  'VALIDATION COMPLETED' [Status] ,
+					[total no of columns] ,
+					[columns passed] ,
+					[total no of columns] - [columns passed] AS [Required Analysis] ,
+					GETDATE() AS EndTime
+			FROM    ( SELECT    COUNT(cnt) AS [columns passed]
+					  FROM      ( SELECT DISTINCT
+											hybris_column AS cnt
+								  FROM      DataMigration.dbo.map_tab
+								  WHERE     [owner] = '824-AutoshipItem'
+											AND flag IN ( 'c2c', 'manual', 'defaults' )
+								  EXCEPT
+								  SELECT DISTINCT
+											hybris_column
+								  FROM      DataMigration..dm_log
+								  WHERE     test_area = '824-AutoshipItem'
+								) a
+					) tab1 ,
+					( SELECT    COUNT(id) AS [total no of columns]
+					  FROM      DataMigration.dbo.map_tab
+					  WHERE     [owner] = '824-AutoshipItem'
+								AND flag IN ( 'c2c', 'manual', 'defaults' )
+					) tab2;
+
+			SET STATISTICS TIME OFF;
+			GO
 

@@ -1,4 +1,17 @@
-use rfoperations
+
+--SELECT * FROM datamigration..dm_log
+--WHERE test_area ='824-AutoshipShippingAddress'
+
+--SELECT * FROM datamigration..map_tab
+--WHERE [owner]='824-AutoshipShippingAddress' AND [Hybris_Column ]='P_gender'
+
+
+
+
+
+
+SELECT * FROM RFO_Reference.Gender
+USE rfoperations
 set transaction isolation level read uncommitted
 
 declare @HYB_key varchar(100) = 'pk'
@@ -9,6 +22,79 @@ declare @lt_1 int
 declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column varchar(max), hybris_column varchar(max), hyb_key varchar(max), hyb_value varchar(max), rfo_key varchar(max), rfo_value varchar(max))
 
 
+
+
+
+
+
+	----Counts check on Hybris side for US
+		IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+			DROP TABLE #DuplicateAutoship;
+
+		SELECT  AutoshipID
+		INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+		FROM    Hybris.Autoship
+		WHERE   AccountID IN (
+				SELECT  a.AccountID
+				FROM    Hybris.Autoship a
+						INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+				WHERE   ab.AccountTypeID = 1
+						AND a.CountryID = 236
+						AND a.AutoshipTypeID = 2
+						AND a.Active = 1
+				GROUP BY a.AccountID
+				HAVING  COUNT(*) > 1 )
+				AND Active = 1
+				AND AutoshipTypeID = 2--total 809
+		EXCEPT
+		SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+		FROM    Hybris.Autoship a
+				INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+		WHERE   ab.AccountTypeID = 1
+				AND a.CountryID = 236
+				AND a.AutoshipTypeID = 2
+				AND a.Active = 1
+		GROUP BY a.AccountID
+		HAVING  COUNT(*) > 1;
+		 --total 386
+
+
+
+		 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+			DROP TABLE #LoadedAutoshipID;
+
+		SELECT   DISTINCT a.AutoshipID
+				INTO    #LoadedAutoshipID
+		FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+				INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
+				INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
+				INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
+				INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
+				INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
+				INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+												 AND u.p_sourcename = 'Hybris-DM'
+		WHERE   a.CountryID = 236
+				AND a.AutoshipID NOT IN ( SELECT    AutoshipID
+										  FROM      #DuplicateAutoship )
+
+										  
+
+		 IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+			DROP TABLE #extra;
+										  
+									SELECT pk  INTO #extra 
+									 FROM Hybris..orders ho
+									JOIN Hybris.autoship ato ON ho.code=ato.AutoshipNumber
+									WHERE ato.CountryID=236
+									AND ato.AutoshipID NOT IN (SELECT AutoshipID FROM HYbris.autoshipitem)	   
+
+
+
+
+
+
+
+
 --Duplicate check on Hybris side for US
 select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
 from (SELECT ownerpkstring 
@@ -17,28 +103,84 @@ from (SELECT ownerpkstring
 	  AND p_shippingaddress=1 
 	  GROUP BY OwnerPkString HAVING COUNT(*)>1)t1
 
---Counts check on Hybris side for US
-select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
-			when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
-from (select count(distinct d.ownerpkstring) hybris_cnt 
-		from hybris.dbo.orders a,
-		hybris.dbo.users b,
-		hybris.dbo.countries c,
-		hybris.dbo.addresses d
-		where a.userpk=b.pk
-		and b.p_country=c.pk
-		and a.pk=d.ownerpkstring
-		and c.isocode = 'US'
-		and a.p_template = 1 and d.p_shippingaddress=1 and duplicate=1
-		and b.p_sourcename = 'Hybris-DM')t1, --909344
-		(select count(distinct a.autoshipid) rfo_cnt
-		from rfoperations.hybris.autoship a,
-		hybris.dbo.users b,
-		hybris.AutoshipShippingaddress c
-		where a.accountid=b.p_rfaccountid
-		and a.autoshipid=c.autoshipid
-		and a.countryid = 236
-		and p_sourcename = 'Hybris-DM') t2 --909463
+
+
+	--				--Counts check on Hybris side for US
+		SELECT  hybris_cnt ,
+				rfo_cnt ,
+				CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
+					 WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
+					 ELSE 'Count matches - validation passed'
+				END Results
+		FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
+				  FROM      Hybris.dbo.orders ho
+							JOIN Hybris.dbo.users u ON u.PK = ho.userpk
+													   AND u.p_sourcename = 'Hybris-DM'
+							JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+														   AND c.isocode = 'US'
+							JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = ho.PK
+															AND ho.p_template = 1
+															AND ad.duplicate = 1
+															AND ad.p_shippingaddress = 1
+				  WHERE     ho.PK NOT IN ( SELECT   PK
+										   FROM     #extra )
+				) t1 , --909344
+				( SELECT  COUNT(DISTINCT asa.AutoshipShippingAddressID) rfo_cnt
+				  FROM      RFOperations.Hybris.Autoship rat
+							JOIN Hybris.dbo.users u ON u.p_rfaccountid = rat.AccountID
+													   AND rat.CountryID = 236
+							JOIN Hybris.AutoshipShippingAddress asa ON asa.AutoShipID = rat.AutoshipID
+							JOIN #LoadedAutoshipID lo ON lo.AutoshipID = rat.AutoshipID
+														 AND u.p_sourcename = 'Hybris-DM'
+				) t2; --909463
+
+
+
+				
+
+				IF OBJECT_ID('tempdb..#missing') IS NOT NULL
+				DROP TABLE #missing
+
+
+
+
+                        SELECT  t1.PK ,
+                                t2.ReturnBillingAddressID ,
+                                CASE WHEN t1.PK IS NULL
+                                     THEN 'Missing in Hybris'
+                                     WHEN t2.ReturnBillingAddressID IS NULL
+                                     THEN 'Missing in RFO'
+                                END AS results INTO #missing 
+                        FROM    ( SELECT    ad.PK
+                                  FROM      Hybris.dbo.orders ho
+                                            JOIN Hybris.dbo.users u ON ho.userpk = u.PK
+                                                              AND u.p_sourcename = 'Hybris-DM'
+                                                              AND ho.TypePkString = 8796127723602
+                                            JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+                                                              AND c.isocode = 'US'
+                                            JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                                            JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = hpi.PK
+                                  WHERE     ad.duplicate = 1
+                                            AND hpi.duplicate = 1
+                                            AND ho.p_template IS NULL
+                                            AND ad.p_billingaddress = 1
+                                ) t1
+                                JOIN ( SELECT   ba.ReturnBillingAddressID
+                                       FROM     RFOperations.Hybris.ReturnOrder ro
+                                                JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
+                                                              AND u.p_sourcename = 'Hybris-DM'
+                                                JOIN Hybris.ReturnBillingAddress ba ON ba.ReturnOrderID = ro.ReturnOrderID
+                                                JOIN Hybris..orders ho ON ho.PK = ro.OrderID
+                                                              AND ro.CountryID = 236
+                                                              AND ho.paymentinfopk IS NOT NULL
+                                     ) t2 ON t1.PK = t2.ReturnBillingAddressID
+                        WHERE   t1.PK IS NULL
+                                OR t2.ReturnBillingAddressID IS NULL; 
+
+								SELECT COUNT(*) FROM #missing
+								
+
+
 
 
 delete from datamigration.dbo.dm_log where test_area = '824-AutoshipShippingAddress'
@@ -50,7 +192,7 @@ into #tempact
 from rfoperations.hybris.autoship a
 join hybris.dbo.users b
 on a.accountid=b.p_rfaccountid
-
+JOIN #LoadedAutoshipID lo ON lo.AutoshipID=a.AutoshipID
 left join rfoperations.Hybris.AutoshipShippingAddress c
 on a.autoshipid=c.autoshipid
 and a.countryid = 236 and p_sourcename = 'Hybris-DM'

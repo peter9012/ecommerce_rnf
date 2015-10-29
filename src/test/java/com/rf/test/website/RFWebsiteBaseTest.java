@@ -47,7 +47,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		setPassword(driver.getPassword());
 		try{
 			logout();
-		}catch(NoSuchElementException e){
+		}catch(Exception e){
 
 		}		
 	}

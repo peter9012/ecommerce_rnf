@@ -1,4 +1,14 @@
-use rfoperations
+-----Autoship PaymentInfos
+
+
+
+SELECT * FROM datamigration..dm_log
+WHERE test_area='824-AutoshipPaymentInfo'
+
+
+
+
+USE rfoperations
 set statistics time on
 go
 
@@ -13,28 +23,169 @@ declare @lt_1 int
 declare @lt_2 int
 declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column varchar(max), hybris_column varchar(max), hyb_key varchar(max), hyb_value varchar(max), rfo_key varchar(max), rfo_value varchar(max))
 
---Validation of AUTOSHIP Counts, Dups & Columns without transformations
 
---Duplicate check on Hybris side for US
-select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
-from (select count(a.pk) cnt --, a.ownerpkstring  
-from hybris.dbo.paymentinfos (nolock) a,
-hybris.dbo.users b,
-hybris.dbo.countries c,
-hybris.dbo.orders (nolock) d
-where a.userpk=b.pk
-and b.p_country=c.pk
-and d.pk=a.ownerpkstring
-and c.isocode = 'US'
-and b.p_sourcename = 'Hybris-DM'
-and d.p_template = 1 and a.duplicate = 1 --AS/AS profile
-group by a.ownerpkstring, a.code
-having count(*) > 1)t1
 
---Counts check on Hybris side for US
-select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
-			when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
-from (select count(distinct d.pk) hybris_cnt 
+
+
+
+				--Counts check on Hybris side for US
+					IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+						DROP TABLE #DuplicateAutoship;
+
+					SELECT  AutoshipID
+					INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+					FROM    Hybris.Autoship
+					WHERE   AccountID IN (
+							SELECT  a.AccountID
+							FROM    Hybris.Autoship a
+									INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+							WHERE   ab.AccountTypeID = 1
+									AND a.CountryID = 236
+									AND a.AutoshipTypeID = 2
+									AND a.Active = 1
+							GROUP BY a.AccountID
+							HAVING  COUNT(*) > 1 )
+							AND Active = 1
+							AND AutoshipTypeID = 2--total 809
+					EXCEPT
+					SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+					FROM    Hybris.Autoship a
+							INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+					WHERE   ab.AccountTypeID = 1
+							AND a.CountryID = 236
+							AND a.AutoshipTypeID = 2
+							AND a.Active = 1
+					GROUP BY a.AccountID
+					HAVING  COUNT(*) > 1;
+					 --total 386
+
+
+
+					 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+						DROP TABLE #LoadedAutoshipID;
+
+					SELECT    DISTINCT
+							a.AutoshipID
+					INTO    #LoadedAutoshipID
+					FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+							--INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
+							INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
+							INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
+							INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
+							INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
+							INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+															 AND u.p_sourcename = 'Hybris-DM'
+					WHERE   a.CountryID = 236
+							AND a.AutoshipID NOT IN ( SELECT    AutoshipID
+													  FROM      #DuplicateAutoship );
+
+
+
+
+										  
+												IF OBJECT_ID('tempdb..#extra') IS NOT NULL 
+												DROP TABLE #extra
+												SELECT pk INTO #extra  FROM Hybris..orders ho
+												JOIN Hybris.autoship ato ON ho.code=ato.AutoshipNumber
+												WHERE ato.CountryID=236
+												AND ato.AutoshipID NOT IN (SELECT AutoshipID FROM HYbris.autoshipitem)	
+
+
+
+
+			--Validation of AUTOSHIP Counts, Dups & Columns without transformations
+
+			--Duplicate check on Hybris side for US
+			select case when count(1)>0 then 'Duplicates Found' else 'No duplicates - Validation Passed' end as [Step-1 Validation]
+			from (select count(a.pk) cnt --, a.ownerpkstring  
+			from hybris.dbo.paymentinfos (nolock) a,
+			hybris.dbo.users b,
+			hybris.dbo.countries c,
+			hybris.dbo.orders (nolock) d
+			where a.userpk=b.pk
+			and b.p_country=c.pk
+			and d.pk=a.ownerpkstring
+			and c.isocode = 'US'
+			and b.p_sourcename = 'Hybris-DM'
+			and d.p_template = 1 and a.duplicate = 1 --AS/AS profile
+			group by a.ownerpkstring, a.code
+			having count(*) > 1)t1
+
+			--Counts check on Hybris side for US
+			select Hybris_CNT, RFO_CNT, case when hybris_cnt > rfo_cnt then 'Hybris count more than RFO count'
+						when rfo_cnt > hybris_cnt then 'RFO count more than Hybris count' else 'Count matches - validation passed' end Results
+			from (select count(distinct d.pk) hybris_cnt 
+					from hybris.dbo.orders a,
+					hybris.dbo.users b,
+					hybris.dbo.countries c,
+			        hybris.dbo.paymentinfos d
+					where a.userpk=b.pk
+					and b.p_country=c.pk
+					and a.pk=d.ownerpkstring
+					and c.isocode = 'US'
+					and a.p_template = 1 and d.duplicate = 1
+					and b.p_sourcename = 'Hybris-DM'
+					AND d.pk NOT IN (SELECT pk FROM #extra)
+					)t1, --1135025
+					(select count(distinct autoshippaymentid) rfo_cnt
+					 FROM rfoperations.hybris.autoship a,
+					hybris.dbo.users b,
+					 rfoperations.hybris.autoshippayment c
+					,#LoadedAutoshipID lo		
+					where a.accountid=b.p_rfaccountid
+					and a.autoshipid=c.autoshipid
+					and b.p_country=8796100624418
+					and p_sourcename = 'Hybris-DM'
+					AND a.AutoshipID =lo.AutoshipID
+					) t2 --1270461
+
+
+					----Checking the mismatch back in RFL                       
+			SELECT  CASE WHEN COUNT(1) > 0 THEN 'Payments having issue'
+			             ELSE 'No Issues - Validation Passed'
+			        END AS [Step-1 Validation]
+			FROM    ( SELECT  -- COUNT(*) CNT
+								OrderPaymentID INTO #test
+
+			          FROM      RodanFieldsLive..OrderPayments(NOLOCK)
+
+			          WHERE     OrderPaymentID IN (
+			                    SELECT  c.AutoshipPaymentID
+			                    FROM   RFOperations.Hybris.AutoshipPayment c ,                       
+			                           	#LoadedAutoshipID lo 
+			                    WHERE   c.autoshipID=lo.AutoshipID
+			                    EXCEPT
+			                    SELECT  d.PK
+			                    FROM    Hybris.dbo.orders a ,
+			                            Hybris.dbo.users b ,
+			                            Hybris.dbo.countries c ,
+			                            Hybris.dbo.paymentinfos d
+			                    WHERE   a.userpk = b.PK
+			                            AND b.p_country = c.PK
+			                            AND a.PK = d.OwnerPkString
+			                            AND c.isocode = 'US'
+			                            AND a.p_template = 1
+			                            AND d.duplicate = 1
+			                            AND b.p_sourcename = 'Hybris-DM' )
+			                    AND OrderID IN ( SELECT code
+			                                     FROM   Hybris..orders
+			                                     WHERE  p_template = 1 )
+			                    AND AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
+			                    AND ( LTRIM(RTRIM(BillingFirstName)) <> ''
+			                          OR LTRIM(RTRIM(BillingLastName)) <> ''
+			                        )
+			        ) b;
+
+
+					--DROP TABLE #test
+	
+					IF OBJECT_ID('tempdb..#missing') IS NOT NULL 
+					DROP TABLE #missing
+
+
+		SELECT t1.OwnerPkString,t2.AutoshipID,CASE WHEN t1.OwnerPkString IS NULL  THEN 'Missing in Hybris'
+		WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO' END AS Results INTO #missing
+		 from (select distinct d.OwnerPkString
 		from hybris.dbo.orders a,
 		hybris.dbo.users b,
 		hybris.dbo.countries c,
@@ -44,41 +195,55 @@ from (select count(distinct d.pk) hybris_cnt
 		and a.pk=d.ownerpkstring
 		and c.isocode = 'US'
 		and a.p_template = 1 and d.duplicate = 1
-		and b.p_sourcename = 'Hybris-DM')t1, --1093729
-		(select count(distinct autoshippaymentid) rfo_cnt
+		and b.p_sourcename = 'Hybris-DM'
+		AND a.pk NOT IN (SELECT PK FROM #extra)
+		)t1 FULL OUTER JOIN 
+		(select distinct c.AutoshipID
 		from rfoperations.hybris.autoship a,
 		hybris.dbo.users b,
-		rfoperations.hybris.autoshippayment c
+		rfoperations.hybris.autoshippayment c,
+		#LoadedAutoshipID lo 
 		where a.accountid=b.p_rfaccountid
 		and a.autoshipid=c.autoshipid
-		and countryid = 236
-		and p_sourcename = 'Hybris-DM') t2 --986577
-	
+		and b.p_country=8796100624418
+		and p_sourcename = 'Hybris-DM'
+		AND a.AutoshipID =lo.AutoshipID
+		) t2 ON t1.OwnerPkString=t2.AutoshipID
+		WHERE t1.OwnerPkString IS NULL OR t2.AutoshipID IS NULL 
 
---Column2Column Validation that doesn't have transformation - Autoship
+		SELECT COUNT(*) counts FROM #missing 
+		SELECT *FROM #missing 
+
+
+
+--------Column2Column Validation that doesn't have transformation - Autoship
 
 delete from datamigration.dbo.dm_log where test_area = '824-AutoshipPaymentInfo'
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 drop table #tempact
 
 select a.autoshipid, autoshipnumber, a.accountid, b.pk, c.autoshippaymentid, c.Vendorid, d.code
---into #tempact 
+into #tempact 
 from rfoperations.hybris.autoship a,
 hybris.dbo.users b,
 rfoperations.hybris.autoshippayment c,
-hybris.dbo.paymentinfos d
+hybris.dbo.orders d
 where a.accountid=b.p_rfaccountid
 and a.autoshipid=c.autoshipid
-and c.autoshippaymentid=d.pk 
+and a.AutoshipID=d.pk AND d.p_template=1
 and countryid = 236 and b.p_sourcename = 'Hybris-DM'
+AND c.AutoshipID IN (SELECT AutoshipID FROM #LoadedAutoshipID)--Taking Loading only.
+AND c.AutoshipPaymentID NOT IN (SELECT OrderPaymentID FROM #test)--Excluding Missing.
 --and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
 group by a.autoshipid, autoshipnumber, a.accountid, b.pk, c.autoshippaymentid, c.Vendorid, d.code
+
 
 create clustered index as_cls1 on #tempact (autoshipid)
 
 select 'Validation of column to column with no transformation in progress' as [Step-2 Validation], getdate() as StartTime
 set @cnt = 1
 select @lt_1 = count(*) from datamigration.dbo.map_tab where flag = 'c2c' and rfo_column <> @RFO_key and [owner] = '824-AutoshipPaymentInfo'
+AND id NOT IN (215,216)--encrypted Months
 
 while @cnt<=@lt_1
 begin
@@ -112,7 +277,9 @@ from (select *, row_number() over (order by [owner]) rn
 from datamigration.dbo.map_tab
 where flag = 'c2c' 
 and rfo_column <> @RFO_key
-and [owner] = '824-AutoshipPaymentInfo')temp where rn = @cnt 
+and [owner] = '824-AutoshipPaymentInfo'
+AND id NOT IN (215,216)--encrypted Months
+)temp where rn = @cnt 
 
 print @sql_gen_1
 insert into @temp (test_area, test_type, rfo_column, hybris_column, hyb_key, hyb_value, rfo_key, rfo_value)

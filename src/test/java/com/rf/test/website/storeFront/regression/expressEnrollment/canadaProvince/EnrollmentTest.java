@@ -367,12 +367,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnSaveBillingProfile();
 			storeFrontHomePage.clickOnBillingNextStepBtn();
 			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.switchToPreviousTab();
+			
 			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
 			logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.switchToPreviousTab();
+			
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			s_assert.assertAll();	

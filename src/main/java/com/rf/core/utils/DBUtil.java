@@ -17,7 +17,7 @@ public class DBUtil {
 	private static final Logger logger = LogManager
 			.getLogger(DBUtil.class.getName());
 
-	
+
 	private static final String Driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	private static String ConnectionString = null;
 	private static String databaseIP = null;
@@ -63,5 +63,13 @@ public class DBUtil {
 		dataSource.setUsername(databaseUserName);
 		dataSource.setPassword(databasePassword);
 		return dataSource;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void performDatabaseQueryForUpdate(String sQuery,String databaseName){
+		JdbcTemplate jdbcTemplate;
+		jdbcTemplate = new JdbcTemplate(getDataSource(databaseName));
+		logger.info("QUERY TRIGGERED IS "+sQuery+"\n");
+		jdbcTemplate.execute(sQuery);
 	}
 }

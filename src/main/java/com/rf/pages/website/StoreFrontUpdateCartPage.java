@@ -816,4 +816,50 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public String getTotalPriceOfProduct(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
+			System.out.println(value);
+			return value;
+
+
+		} else if(driver.getCountry().equalsIgnoreCase("US")){
+			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
+			System.out.println(value);
+			return value;
+
+		}
+		return null;
+	}
+
+	public boolean checkDateFunctionality(){
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
+	}
+
+	public void clickOnChangeNextShipDate(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
+		driver.click(By.xpath("//a[contains(text(),'Change next ship date')]"));
+	}
+
+	public void clickOnDate(){
+		driver.waitForElementPresent(By.xpath("//input[@id='todayDate']/.."));
+		driver.click(By.xpath("//input[@id='todayDate']/.."));
+	}
+
+	public int getCountofDateFromCalendar(){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]"));
+		return driver.findElements(By.xpath("//td[contains(@class,'undefined')]")).size();
+
+	}
+
+	public boolean verifyEnabledDatesOfTheCalendar(int i){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//a[text()='"+i+"']"));
+		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//a[text()='"+i+"']/..")).getAttribute("data-handler").contains("selectDay");
+	}
+
+	public boolean verifyDisabledDatesOfTheCalendar(int i){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/.."));
+		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/..")).getAttribute("class").contains("unselectable ");
+	}
+
 }

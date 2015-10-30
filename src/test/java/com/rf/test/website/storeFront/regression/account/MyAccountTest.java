@@ -262,12 +262,74 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//	//Hybris Project-2512 :: Version : 1 :: Username validations.
+	//	@Test(enabled=false) //Test case in test link not updated as per the functionality
+	//	public void testUsernameValidations_2512() throws InterruptedException	{
+	//		RFO_DB = driver.getDBNameRFO();
+	//		List<Map<String, Object>> randomConsultantList =  null;
+	//		String consultantEmailID = null;
+	//		String accountID = null;
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		while(true){
+	//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	//			logger.info("Account Id of the user is "+accountID);
+	//
+	//			storeFrontHomePage = new StoreFrontHomePage(driver);
+	//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	//			if(isSiteNotFoundPresent){
+	//				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	//				driver.get(driver.getURL());
+	//			}
+	//			else
+	//				break;
+	//		}
+	//
+	//		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	//		logger.info("login is successful");
+	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
+	//
+	//		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+	//		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+	//		//Enter data less than 8 characters in 'username' field and verify the error message
+	//		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_BELOW_8_DIGITS);
+	//		//hit save btn
+	//		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter at least 6 characters."),"Validation for username less than 6 characters IS NOT PRESENT");
+	//		//Enter data more than 8 chars with space and verify error msg
+	//		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_DIGITS);
+	//		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 characters and space IS NOT PRESENT");
+	//		//Enter data more than 8 chars with just numbers and verify
+	//		/* storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAMEMORETHAN8NUMBERS);
+	//		  storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		  s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
+	//		//Enter data more than 8 chars with only special chars and validate error msg
+	//		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS);
+	//		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 special characters IS NOT PRESENT");
+	//		//Enter data more than 8 chars with alphabets and validate
+	//		/* storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAMEMORETHAN8ALPHABETS);
+	//		  storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		  s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
+	//		//Enter data more than 8 chars(alphanumeric with atleast a special char)
+	//		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR);
+	//		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	//		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 alphanumneric characters with atleast a special char IS NOT PRESENT");
+	//
+	//		s_assert.assertAll();
+	//	}
+
+
 	//Hybris Project-2512 :: Version : 1 :: Username validations.
-	@Test(enabled=false) //Test case in test link not updated as per the functionality
-	public void testUsernameValidations_2512() throws InterruptedException	{
+	@Test(enabled=true) //Test case in test link not updated as per the functionality
+	public void testUsernameValidations_2512() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
+		String anotherConsultantEmailID = null;
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -294,30 +356,50 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		//Enter data less than 8 characters in 'username' field and verify the error message
-		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_BELOW_8_DIGITS);
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_BELOW_6_DIGITS);
 		//hit save btn
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter at least 6 characters."),"Validation for username less than 6 characters IS NOT PRESENT");
 		//Enter data more than 8 chars with space and verify error msg
-		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_DIGITS);
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_DIGITS);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 characters and space IS NOT PRESENT");
 		//Enter data more than 8 chars with just numbers and verify
 		/* storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAMEMORETHAN8NUMBERS);
-		  storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		  s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
+	    storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	    s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
 		//Enter data more than 8 chars with only special chars and validate error msg
-		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS);
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_SPECIAL_CHARS);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 special characters IS NOT PRESENT");
 		//Enter data more than 8 chars with alphabets and validate
 		/* storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAMEMORETHAN8ALPHABETS);
-		  storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		  s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
+	    storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+	    s_assert.assertFalse(storeFrontAccountInfoPage.checkErrorMessage());*/
 		//Enter data more than 8 chars(alphanumeric with atleast a special char)
-		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR);
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHANUMERIC_CHARS_WITH_SPCLCHAR);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 alphanumneric characters with atleast a special char IS NOT PRESENT");
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		anotherConsultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+
+		//  s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"This username has been assigned to other user");
+		//  enter data more then 8 characters with few special characters.
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR);
+		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 alphanumneric characters with atleast a special char IS NOT PRESENT");
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR_COMB);
+		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 8 alphanumneric characters with atleast a special char IS NOT PRESENT");
+		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR);
+		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+		s_assert.assertTrue(storeFrontAccountInfoPage.enterUserNameWithSpclChar(TestConstants.CONSULTANT_USERNAME_PREFIX),"validity message not present");
+		storeFrontAccountInfoPage.enterUserName(anotherConsultantEmailID);
+		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+		s_assert.assertTrue(storeFrontAccountInfoPage.errorMessageForExistingUser(),"Unable to update account details message not present on UI");
+		logout();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR, password);
 
 		s_assert.assertAll();
 	}
@@ -4699,7 +4781,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	@Test
 	public void ReactivateTerminatedConsultantAndSearchInSponsorList_4311() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
@@ -4718,7 +4799,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			// Get Account Number
 			List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-
+			logger.info("Account number of the consultant is "+CCS);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -4756,7 +4837,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
@@ -6739,7 +6819,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -6775,7 +6854,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			else if(driver.getCountry().equalsIgnoreCase("US")){
 				s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains("$2.50"),"Handling charges on UI is not As per shipping method selected");
 
-				s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains("9.00"),"Shipping charges on UI is not As per shipping method selected");
+				s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(TestConstants.SHIPPING_CHARGES_ON_UI_FOR_US),"Shipping charges on UI is not As per shipping method selected");
 			}
 		}else{
 			logger.info(" Order total is not in required range");
@@ -6785,7 +6864,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4313:Soft-Terminated Consultant becomes a RC
-	@Test(enabled=false) //WIP
+	@Test
 	public void testSoftTerminatedConsultantBecomesRC_4313() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -6916,7 +6995,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4793:Ad-hoc Scenarios- Checking the consultant > consultant > PC for US User
-	@Test(enabled=false) //WIP
+	@Test
 	public void testRegisterAsConsultantWithDifferentConsultantAsSponser_4793() throws InterruptedException {
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			RFO_DB = driver.getDBNameRFO();	
@@ -7108,7 +7187,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 			storeFrontHomePage.clickPlaceOrderBtn();
 			if(country.equalsIgnoreCase("CA"))
-			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+				s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			s_assert.assertAll();
 		}else{
 			logger.info("NOT EXECUTED...Test is ONLY for US env");
@@ -7116,7 +7195,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4792:Ad-hoc Scenarios- Checking the consultant > consultant > PC for Canada User
-	@Test(enabled=false) //WIP
+	@Test
 	public void testRegisterAsConsultantWithDifferentConsultantAsSponser_4792() throws InterruptedException {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();	
@@ -7314,7 +7393,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4724:Consultant to PC downgrade for Canadian User
-	@Test(enabled=false) //WIP
+	@Test
 	public void testConsultantToPCDownGradeforCanadianUser_4724() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){	
 			RFO_DB = driver.getDBNameRFO();	
@@ -7432,7 +7511,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1978:Orders page UI for Consultant - Cart - history and autoships
-	@Test(enabled=false) //WIP
+	@Test
 	public void testOrderPageUIAndEditCartForConsultant_1978() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 
@@ -7633,98 +7712,356 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();  	
 
 	}
-	
-	 // Hybris Project-2273:Adhoc Orders for Consultant and PC and RC --> Multiple line Item
-	 @Test(enabled=false) //WIP
-	 public void testAdhocOrdersForMultiplsLineItem_2273() throws InterruptedException	 {
-	  RFO_DB = driver.getDBNameRFO(); 
-	  String country = driver.getCountry();
-	  List<Map<String, Object>> randomConsultantList =  null;
-	  String consultantEmailID = null;
-	  String accountID = null;
 
-	  if(country.equalsIgnoreCase("us")){
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	   city = TestConstants.CITY_US;
-	   postalCode = TestConstants.POSTAL_CODE_US;
-	  }
-	  else if(country.equalsIgnoreCase("ca")){
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	   city = TestConstants.CITY_CA;
-	   postalCode = TestConstants.POSTAL_CODE_CA;
-	  } 
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontOrdersPage=new StoreFrontOrdersPage(driver);
-	  while(true){
-	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-	   logger.info("Account Id of the user is "+accountID);
+	// Hybris Project-2273:Adhoc Orders for Consultant and PC and RC --> Multiple line Item
+	@Test(enabled=false) //WIP
+	public void testAdhocOrdersForMultiplsLineItem_2273() throws InterruptedException	 {
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
 
-	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-	   if(isSiteNotFoundPresent){
-	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-	    driver.get(driver.getURL());
-	   }
-	   else
-	    break;
-	  }
-	  logger.info("login is successful");
-	  storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontOrdersPage=new StoreFrontOrdersPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-	  // Products are displayed?
-	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	  logger.info("Quick shop products are displayed");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-	  //Select a product with the price less than $80 and proceed to buy it
-	  storeFrontHomePage.applyPriceFilterLowToHigh();
-	  storeFrontHomePage.selectProductAndProceedToBuy();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
 
-	  //Cart page is displayed?
-	  s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	  logger.info("Cart page is displayed");
+		//Select a product with the price less than $80 and proceed to buy it
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.selectProductAndProceedToBuy();
 
-	  //1 product is in the Shopping Cart?
-	  s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-	  logger.info("1 product is successfully added to the cart");
-	  //update qty to 2 of the first product
-	  storeFrontHomePage.addQuantityOfProduct("2"); 
-	  //add another product in the cart
-	  storeFrontHomePage.addAnotherProduct();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
 
-	  logger.info("2 products are successfully added to the cart");
-	  //update qty to 1 of the second product
-	  storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("1"); 
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		//update qty to 2 of the first product
+		storeFrontHomePage.addQuantityOfProduct("2"); 
+		//add another product in the cart
+		storeFrontHomePage.addAnotherProduct();
 
-	  //get the quantity value for the first product in cart
-	  int qtyProduct1=storeFrontHomePage.getQuantityValueForTheFirstProduct();
-	  //get the quantity value for the Second product in cart
-	  int qtyProduct2=storeFrontHomePage.getQuantityValueForTheSecondProduct();
-	  //get the sub-total of the first product
-	  double subtotal1=storeFrontHomePage.getSubTotalOfFirstProduct();
-	  //get the sub-total of the second product
-	  double subtotal2=storeFrontHomePage.getSubTotalOfSecondProduct();
+		logger.info("2 products are successfully added to the cart");
+		//update qty to 1 of the second product
+		storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("1"); 
 
-	  //Click on Check out
-	  storeFrontHomePage.clickOnCheckoutButton();
-	  //click next button
-	  storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-	  //click next button
-	  storeFrontHomePage.clickOnBillingNextStepBtn();
-	  //click place-order button
-	  storeFrontHomePage.clickPlaceOrderBtn();
-	  //Navigate to orders section
-	  storeFrontHomePage.clickOnWelcomeDropDown();
-	  storeFrontOrdersPage=storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-	  //click on first adhoc order placed
-	  storeFrontOrdersPage.clickOnFirstAdHocOrder();
-	  //On orders page validate the sub-total for the order placed
-	  s_assert.assertTrue(storeFrontOrdersPage.validateSubTotal(subtotal1, subtotal2), "sub-total is not recalculated accordingly to the updated qty of product(s)");
-	  //validate with the no. of quantitie(s) of both the products
-	  s_assert.assertTrue(storeFrontOrdersPage.validateQuantityForFirstProduct(qtyProduct1),"quantitie(s) for product 1 didn't match");
-	  s_assert.assertTrue(storeFrontOrdersPage.validateQuantityForSecondProduct(qtyProduct2),"quantitie(s) for product 2 didn't match");
-	  s_assert.assertAll();
-	 }
+		//get the quantity value for the first product in cart
+		int qtyProduct1=storeFrontHomePage.getQuantityValueForTheFirstProduct();
+		//get the quantity value for the Second product in cart
+		int qtyProduct2=storeFrontHomePage.getQuantityValueForTheSecondProduct();
+		//get the sub-total of the first product
+		double subtotal1=storeFrontHomePage.getSubTotalOfFirstProduct();
+		//get the sub-total of the second product
+		double subtotal2=storeFrontHomePage.getSubTotalOfSecondProduct();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//click next button
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//click next button
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		//click place-order button
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Navigate to orders section
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage=storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//click on first adhoc order placed
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		//On orders page validate the sub-total for the order placed
+		s_assert.assertTrue(storeFrontOrdersPage.validateSubTotal(subtotal1, subtotal2), "sub-total is not recalculated accordingly to the updated qty of product(s)");
+		//validate with the no. of quantitie(s) of both the products
+		s_assert.assertTrue(storeFrontOrdersPage.validateQuantityForFirstProduct(qtyProduct1),"quantitie(s) for product 1 didn't match");
+		s_assert.assertTrue(storeFrontOrdersPage.validateQuantityForSecondProduct(qtyProduct2),"quantitie(s) for product 2 didn't match");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2272:Adhoc Orders fro Consultant and PC and RC --> Single line Item
+	@Test(enabled=false) //WIP
+	public void testAdhocOrdersFromConsultantAndPc_2272() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		String quantityOfProductsOrdered = storeFrontUpdateCartPage.getQuantityOfProductOnCartPage();
+		String totalPrice = storeFrontUpdateCartPage.getTotalPriceOfProduct();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isOrderPlacedSuccessfully(),"order is not placed successfully");
+		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
+		storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		String orderNumber=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber); 
+		s_assert.assertTrue(storeFrontOrdersPage.verifyQuantityOnOrdersDetails(quantityOfProductsOrdered),"quantity is not matched in order detail page");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyTotalValueOfProductOnOrderDetails(totalPrice));
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-2130:To verify Change date functionality for PC shouldnt be present on the storefront
+	@Test(enabled=false) //WIP
+	public void testVerifyChangeDateFunctionalityForPCUser_2130() throws InterruptedException	  {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		while(true){
+
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);  
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage=storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
+		storeFrontUpdateCartPage=storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		s_assert.assertFalse(storeFrontUpdateCartPage.checkDateFunctionality(), "check date functionality is present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2131:To verify the change date functionality for consultant on the storefront
+	@Test(enabled=false) //WIP
+	public void testDateFunctionalityForConsultant_2131() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
+		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.clickOnChangeNextShipDate();
+		int noOfDay = storeFrontUpdateCartPage.getCountofDateFromCalendar();
+		for(int i=1; i<=17; i++){
+			System.out.println("value of i "+i);
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyEnabledDatesOfTheCalendar(i),"This date -"+storeFrontUpdateCartPage.verifyEnabledDatesOfTheCalendar(i)+" is not enabled");
+			System.out.println("Done");
+		}
+		for(int i=18; i<=noOfDay; i++){
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyDisabledDatesOfTheCalendar(i),"This date -"+storeFrontUpdateCartPage.verifyDisabledDatesOfTheCalendar(i)+" is not enabled");
+		}
+		s_assert.assertAll();		
+
+	}
+
+	// Hybris Project-4304:In DB, check details of CRP autoship for inactive consultant
+	@Test(enabled=false) //WIP
+	public void checkDetailsOfCRpAutoshipForInactiveConsultant_4304() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+
+		String firstName = null;
+		String addressLine1 = null;
+		String postalCode = null;
+		String locale = null;
+		String region = null;
+		String country = null;
+		String shippingAddressFromDB =null;
+		String subTotalDB = null;
+		String shippingDB = null;
+		String handlingDB = null;
+		String taxDB = null;	
+		String grandTotalDB = null;
+		String shippingMethodDB = null;
+		String consultantEmailID = null;
+		String lastName = null;
+		String accountId = null;
+		String shippingMethodId =null;
+
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
+		List<Map<String,Object>> getOtherDetailValuesList = null;
+		DecimalFormat df = new DecimalFormat("#.00");
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+
+		// Get Order Number for assert
+		String autoshipNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//get Autoship Id Fro RFO
+		List<Map<String, Object>> autoshipIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ID_FOR_RFO, autoshipNumber),RFO_DB);
+		String autoshipID = String.valueOf(getValueFromQueryResult(autoshipIdDetailsList, "AutoshipID"));
+		System.out.println("Autoship id "+autoshipID);
+
+		//get values from UI before termination
+		String shippingAddressFromUI =storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate();
+		String subTotalFromUI = storeFrontOrdersPage.getSubTotalFromAutoshipTemplate();
+		String shippingFromUI = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+		String handlingFromUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+		String taxFromUI = 	storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate();
+		String grandTotalFromUI = storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate();
+		String shippingMethodFromUI = storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate();
+
+		// terminate the consultant
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Terminated User doesn't get Login failed");
+
+		// get values from DB for assertion 
+		List<Map<String,Object>> shippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_FOR_AUTOSHIP_TEMPLATE_RFO, autoshipID), RFO_DB);
+		firstName = (String) getValueFromQueryResult(shippingAddressList, "FirstName");
+		lastName = (String) getValueFromQueryResult(shippingAddressList, "LastName");
+		addressLine1 = (String) getValueFromQueryResult(shippingAddressList, "Address1");
+		postalCode = (String) getValueFromQueryResult(shippingAddressList, "PostalCode");
+		locale = (String) getValueFromQueryResult(shippingAddressList, "Locale");
+		region = (String) getValueFromQueryResult(shippingAddressList, "Region");
+		country = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
+		if(country.equals("40")){
+			country = "canada"; 
+		}else if(country.equals("236")){
+			country = "United States";
+		}
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
+		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
+		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
+		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
+		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+
+		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
+		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
+		taxDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
+		grandTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "Total")));
+
+		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
+
+		//assert shipping Address with RFO
+		s_assert.assertTrue(shippingAddressFromUI.contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+shippingAddressFromUI);
+
+		//Assert Subtotal with RFO
+		s_assert.assertTrue(subTotalFromUI.contains(subTotalDB),"CRP autoship template subTotal on RFO is "+subTotalDB+" and on UI is "+subTotalFromUI);
+
+		// Assert Tax with RFO
+		s_assert.assertTrue(taxFromUI.contains(taxDB),"CRP autoship template tax amount on RFO is "+taxDB+" and on UI is "+taxFromUI);
+
+		// Assert Grand Total with RFO
+		s_assert.assertTrue(grandTotalFromUI.contains(grandTotalDB),"CRP autoship template grand total on RFO is "+grandTotalDB+" and on UI is "+grandTotalFromUI);
+
+		// assert shipping amount with RFO
+		s_assert.assertTrue(shippingFromUI.contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+shippingFromUI);
+
+		// assert Handling Value with RFO
+		s_assert.assertTrue(handlingFromUI.contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingFromUI);
+
+		// assert for shipping Method with RFO
+		s_assert.assertTrue(shippingMethodFromUI.contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+shippingMethodFromUI);
+
+		s_assert.assertAll();
+	}
 }
 

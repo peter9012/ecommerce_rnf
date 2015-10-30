@@ -800,5 +800,18 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public boolean verifyTotalValueOfProductOnOrderDetails(String totalPrice){
+		driver.waitForElementPresent(By.xpath("//div[@id='productSV']/following::div[2]"));
+		return driver.findElement(By.xpath("//div[@id='productSV']/following::div[2]")).getText().equals(totalPrice);
+	}
+
+	public boolean verifyQuantityOnOrdersDetails(String quantityOfProductsOrdered ){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]")).getText().equals(quantityOfProductsOrdered)){
+			return true;
+		}
+		return false;
+	}
+
 }
 

@@ -1092,8 +1092,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnEditAtAutoshipTemplate(){
-		driver.waitForElementPresent(By.xpath("//input[@value='EDIT']"));
-		driver.click(By.xpath("//input[@value='EDIT']"));
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//input[@value='edit']"));
+			driver.click(By.xpath("//input[@value='edit']"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//input[@value='EDIT']"));
+			driver.click(By.xpath("//input[@value='EDIT']"));	
+		}
+
 	}
 
 	public String getQuantityOfProductFromAutoshipTemplate(){

@@ -502,6 +502,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterSocialInsuranceNumber(String sin) throws InterruptedException{
+		driver.findElement(By.id("S-S-N")).clear();
 		driver.findElement(By.id("S-S-N")).sendKeys(sin+"\t");
 		logger.info("Social Insurance Number is "+sin);
 	}
@@ -1568,8 +1569,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnCnacelEnrollment(){
-		driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']/input[@class='cancelEnrollment']"));
-		driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/input[@class='cancelEnrollment']"));
+		driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']/input[@value='Cancel Enrollment']"));
+		//  driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/input[@value='Cancel Enrollment']"));
 	}
 
 	public void enterPasswordAfterTermination(){

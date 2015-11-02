@@ -281,6 +281,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).clear();
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
@@ -301,6 +302,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).clear();
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
@@ -322,6 +324,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).clear();
 		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
@@ -341,6 +344,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).clear();
 		driver.findElement(By.id("email-account")).sendKeys(emailID+"\t");
 		logger.info("email entered as "+emailID);
 		driver.pauseExecutionFor(1000);
@@ -1063,12 +1067,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickAddToBagButton(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-		driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
+		}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-
 	}
 
 	public void clickAddToBagButton(String country){
@@ -1092,14 +1100,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnEditAtAutoshipTemplate(){
-		if(driver.getCountry().equalsIgnoreCase("us")){
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='EDIT']"));
+			driver.click(By.xpath("//input[@value='EDIT']"));
+		}catch(Exception e){
 			driver.waitForElementPresent(By.xpath("//input[@value='edit']"));
-			driver.click(By.xpath("//input[@value='edit']"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//input[@value='EDIT']"));
-			driver.click(By.xpath("//input[@value='EDIT']"));	
+			driver.click(By.xpath("//input[@value='edit']"));	
 		}
-
 	}
 
 	public String getQuantityOfProductFromAutoshipTemplate(){

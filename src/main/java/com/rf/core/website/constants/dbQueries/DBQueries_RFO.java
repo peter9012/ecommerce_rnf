@@ -1372,27 +1372,25 @@ public class DBQueries_RFO {
 			   "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO = 
-			"SELECT TOP 1 "+
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
-					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
 					"WHERE   ab.CountryID = %s "+
-					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
-					/*Active Accounts*/
-					"AND NOT EXISTS ( SELECT 1 "+
-					"FROM   RFO_Accounts.AccountRF AS ar "+
-					"WHERE  ar.Active = 0 "+
-					"AND ar.HardTerminationDate IS NOT NULL "+
-					"AND ar.AccountID = ab.AccountID ) "+
-					/*Pending/Submitted Orders */
-					"AND EXISTS ( SELECT 1 "+
-					"FROM   Hybris.Orders AS o "+
-					"WHERE  o.AccountID = ab.AccountID "+
-					"AND o.OrderTypeID = 1 "+/*RC*/ 
-					"AND o.OrderStatusID IN (1,2) ) "+ 
-					"ORDER BY NEWID(); ";
+					"AND ab.AccountTypeID = 3 /*Retail Customer*/ "+
+					"AND ar.Active = 1 "+
+
+			       /* Orders Check*/
+			       "AND EXISTS ( SELECT 1 "+
+			       "FROM   Hybris.Orders AS o, hybris..orders o1 "+
+			       "WHERE  o.AccountID = ab.AccountID "+
+			       "AND o.orderid=o1.pk "+   
+			       "AND o.OrderTypeID = 1) "+
+			       "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
 			"USE RFOperations "+

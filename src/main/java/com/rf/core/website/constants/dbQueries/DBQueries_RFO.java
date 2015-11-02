@@ -1372,27 +1372,25 @@ public class DBQueries_RFO {
 			   "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO = 
-			"SELECT TOP 1 "+
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+					"SELECT TOP 1 "+
 					"ab.AccountID , "+
 					"[as].Username "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
-					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
 					"WHERE   ab.CountryID = %s "+
-					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
-					/*Active Accounts*/
-					"AND NOT EXISTS ( SELECT 1 "+
-					"FROM   RFO_Accounts.AccountRF AS ar "+
-					"WHERE  ar.Active = 0 "+
-					"AND ar.HardTerminationDate IS NOT NULL "+
-					"AND ar.AccountID = ab.AccountID ) "+
-					/*Pending/Submitted Orders */
-					"AND EXISTS ( SELECT 1 "+
-					"FROM   Hybris.Orders AS o "+
-					"WHERE  o.AccountID = ab.AccountID "+
-					"AND o.OrderTypeID = 1 "+/*RC*/ 
-					"AND o.OrderStatusID IN (1,2) ) "+ 
-					"ORDER BY NEWID(); ";
+					"AND ab.AccountTypeID = 3 /*Retail Customer*/ "+
+					"AND ar.Active = 1 "+
+
+			       /* Orders Check*/
+			       "AND EXISTS ( SELECT 1 "+
+			       "FROM   Hybris.Orders AS o, hybris..orders o1 "+
+			       "WHERE  o.AccountID = ab.AccountID "+
+			       "AND o.orderid=o1.pk "+   
+			       "AND o.OrderTypeID = 1) "+
+			       "ORDER BY NEWID()";
 
 	public static String GET_RANDOM_CONSULTANT_NO_PWS_RFO =
 			"USE RFOperations "+
@@ -1580,6 +1578,18 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_ACTIVE_SITE_PREFIX_RFO = "select top 1 SitePrefix from Hybris.Sites where accountID IN (select top 1 accountID from RFO_Accounts.AccountBase where countryID=%s and AccountStatusID=1 and AccountTypeID=1 order by newId())";
 
 	public static String GET_ACCOUNT_NUMBER_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountID='%s'";
+
+	public static String GET_ACCOUNT_ID = "select top 1 * from RFO_Accounts.AccountContacts where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContactAddresses  where AddressId IN (select AddressID from RFO_Accounts.Addresses where ( addresstypeid = '3' and IsDefault='1' and EndDate IS NULL and AddressId in  (select addressid from RFO_Accounts.AccountContactAddresses where AccountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s'))))))";
+
+	public static String UPDATE_ENROLL_DATE = "update RFO_Accounts.AccountRF SET "+
+			"EnrollmentDate = '3/12/2014' "+
+			"WHERE AccountID = %s";
+
+	public static String UPDATE_SOFT_TERMINATION_DATE = "update RFO_Accounts.AccountRF SET "+
+			"SoftTerminationDate = '3/12/2015' "+
+			"WHERE AccountID = %s";
+
+	public static String GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS = "select * from RFO_Accounts.AccountBase join RFO_Accounts.AccountContacts ON RFO_Accounts.AccountContacts.AccountId = RFO_Accounts.AccountBase.AccountID join RFO_Accounts.AccountEmails ON RFO_Accounts.AccountEmails.AccountContactId = RFO_Accounts.AccountContacts.AccountContactId join RFO_Accounts.EmailAddresses ON RFO_Accounts.EmailAddresses.EmailAddressID = RFO_Accounts.AccountEmails.EmailAddressId where RFO_Accounts.EmailAddresses.EmailAddress like '%s'";
 
 	/**
 	 * 

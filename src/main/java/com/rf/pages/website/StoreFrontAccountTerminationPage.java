@@ -27,11 +27,17 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		return driver.getCurrentUrl().contains(TestConstants.ACCOUNT_TERMINATION_PAGE_SUFFIX_URL);
 
 	}
+
 	public void clickSubmitToTerminateAccount(){
-		driver.waitForElementPresent(SUBMIT_BOX_LOC);
-		driver.click(SUBMIT_BOX_LOC);
-		logger.info("Submit to terminate account button clicked "+SUBMIT_BOX_LOC);
+		try{
+			driver.quickWaitForElementPresent(SUBMIT_BOX_LOC);
+			driver.click(SUBMIT_BOX_LOC);
+		}catch(Exception e){
+			driver.click(By.xpath("//input[@value='submit']"));
+		}
+		logger.info("Submit to terminate account button clicked ");
 	}
+
 	public boolean verifyPopupHeader(){
 		driver.waitForElementPresent(ACCOUNT_TERMINATION_PAGE_POPUP_HEADER);
 		return driver.findElement(ACCOUNT_TERMINATION_PAGE_POPUP_HEADER).getText().contains("CONFIRM ACCOUNT TERMINATION");

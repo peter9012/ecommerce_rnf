@@ -87,13 +87,18 @@ public class TestConstants {
 
 
 
-	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smspo";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto 111maiden";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_NUMBERS="123456789";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHABETS="11maidenfghi";
-
+	public static final String CONSULTANT_USERNAME_BELOW_6_DIGITS="smspo";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_DIGITS="smsto 111maiden";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_SPECIAL_CHARS="!@#$%^&*()@";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_NUMBERS="123456789";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHABETS="11maidenfghi";
+	
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR="abcdef#$";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR_COMB="$abcd%et";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR="abcdef+";
+	public static final String CONSULTANT_USERNAME_PREFIX="abced";
+	public static final String SHIPPING_CHARGES_ON_UI_FOR_US = "25.00";
 	/*
 	 * Consultant User Details
 	 */

@@ -768,5 +768,50 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return 0;
 	}
 
+	public boolean validateSubTotal(double subtotal1,double subtotal2){
+		driver.waitForElementPresent(By.xpath("//div[@id='idSubTotal']"));
+		String subTotalVal=driver.findElement(By.xpath("//div[@id='idSubTotal']")).getText();
+		String[] totalvalue= subTotalVal.split("\\$+");
+		double subTotalValue=Double.parseDouble(totalvalue[1].trim());
+		if(subTotalValue==(subtotal1+subtotal2)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean validateQuantityForFirstProduct(int expectedQty){
+		driver.waitForElementPresent(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[2]/div[2]//div[3]"));
+		String actualQty=driver.findElement(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[2]/div[2]//div[3]")).getText();
+		if(expectedQty==Integer.parseInt(actualQty)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean validateQuantityForSecondProduct(int expectedQty){
+		driver.waitForElementPresent(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[3]/div[2]//div[3]"));
+		String actualQty=driver.findElement(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[3]/div[2]//div[3]")).getText();
+		if(expectedQty==Integer.parseInt(actualQty)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyTotalValueOfProductOnOrderDetails(String totalPrice){
+		driver.waitForElementPresent(By.xpath("//div[@id='productSV']/following::div[2]"));
+		return driver.findElement(By.xpath("//div[@id='productSV']/following::div[2]")).getText().equals(totalPrice);
+	}
+
+	public boolean verifyQuantityOnOrdersDetails(String quantityOfProductsOrdered ){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]")).getText().equals(quantityOfProductsOrdered)){
+			return true;
+		}
+		return false;
+	}
+
 }
 

@@ -588,5 +588,41 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}	
-}
 
+	public boolean errorMessageForExistingUser(){
+		driver.waitForElementPresent(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']"));
+		return driver.findElement(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']")).getText().contains("Your Username already exist");
+	}
+
+	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{
+		char splChar[] = {'!','$','%','*','^','(',')'};
+		int lenth = splChar.length;
+		boolean flag;
+		for(int i = 0; i<lenth; i++){
+			flag = false;
+			String username = prefix+splChar[i];
+			enterUserName(username);
+			clickSaveAccountPageInfo();
+			flag = errorMessagePresent();
+			if(flag==true){
+				continue;
+			}
+			else{
+				return false;
+
+			}
+
+
+		}
+		return true;
+	}
+	public boolean errorMessagePresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
+		if(driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed()){
+			return true;
+
+		}else{
+			return false;
+		}
+	}
+}

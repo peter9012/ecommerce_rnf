@@ -1,6 +1,6 @@
  USE rfoperations
  GO 
- /*
+ 
  IF OBJECT_ID ('rfoperations.sfdc.CRM_Metadata') IS NOT NULL 
  DROP TABLE  rfoperations.sfdc.CRM_Metadata
 
@@ -137,7 +137,7 @@ VALUES
 ,(0,'AccountNotes','AccountNoteId','Description__c','Description__c')
 ,(0,'AccountNotes','AccountNoteId','ActivityDate__c','ActivityDate__c')
 ,(0,'AccountNotes','AccountNoteId','NotesReasonType__c','NotesReasonType__c')
-,(0,'AccountNotes','AccountNoteId','Type__c','Type__c')
+,(0,'AccountNotes','AccountNoteId','ChannelType__c','ChannelType__c')
 ,(0,'AccountNotes','AccountNoteId','NotesDetailType__c','NotesDetailType__c')
 ,(0,'AccountNotes','AccountNoteId','ChangedByApplication__c','ChangedByApplication__c')
 ,(0,'AccountNotes','AccountNoteId','ChangedByUser__c','ChangedByUser__c')
@@ -197,7 +197,7 @@ WHILE ( @I <= @C )
 									     WHEN CRMObject = 'Contacts' THEN 'RFAccountContactId__c'
 										 WHEN CRMObject = 'PaymentProfile' THEN 'RFOPaymentProfileID__C'
 										 WHEN CRMObject='ShippingProfile' THEN 'RFOAddressPRofileID__C'
-										 WHEN CRMObject='AccountNotes' THEN 'RFOAccountNoteID__c'
+										 WHEN CRMObject='AccountNotes' THEN 'RFOAccountNotesID__c'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I

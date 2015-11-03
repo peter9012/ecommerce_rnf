@@ -46,9 +46,27 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontCartAutoShipPage addProductToPCPerk(){
-		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']"));
-		driver.click(By.xpath("//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']"));
-		logger.info("Add Product to PC Perk button clicked "+"//div[@class='quickshop-section blue']/div[2]//input[@value='ADD to PC Perks']");
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[contains(@value,'PC Perks')]"));
+			driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[contains(@value,'PC Perks')]"));
+		}catch(Exception e){
+			try{
+				driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[contains(@value,'PC Perks')]"));
+			}catch(Exception e1){
+				driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[3]//input[contains(@value,'PC Perks')]"));
+			}
+		}
+
+		logger.info("Add Product to PC Perk button clicked");
+
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
@@ -78,8 +96,12 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
-		driver.click(By.xpath("//input[@value='Close window']"));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='Close window']"));
+			driver.click(By.xpath("//input[@value='Close window']"));
+		}catch(Exception e){			
+			driver.click(By.xpath("//div[@id='popup-content']/div/div/following::input[@value='Close window']"));
+		}
 		driver.waitForPageLoad();
 		return new StoreFrontHomePage(driver);
 	}

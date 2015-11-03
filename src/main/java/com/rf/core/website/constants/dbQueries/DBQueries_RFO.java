@@ -791,7 +791,7 @@ public class DBQueries_RFO {
 					"FROM    Hybris.OrderShipment AS OS "+
 					"WHERE   OS.OrderID = '%s' ";							
 
-	public static String GET_ORDERID_FOR_ALL_RFO = "select top 1 * from hybris.orders where OrderNumber='%S'";
+	public static String GET_ORDERID_FOR_ALL_RFO = "select top 1 * from hybris.orders where OrderNumber='%s'";
 
 	public static String GET_ORDER_DETAILS_FOR_RFO = 
 			"SELECT  * "+

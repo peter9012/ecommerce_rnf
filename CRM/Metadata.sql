@@ -1,8 +1,8 @@
  USE rfoperations
  GO 
  /*
- IF OBJECT_ID ('rfoperations.sfdc.') IS NOT NULL 
- DROP TABLE  rfoperations.sfdc.
+ IF OBJECT_ID ('rfoperations.sfdc.CRM_Metadata') IS NOT NULL 
+ DROP TABLE  rfoperations.sfdc.CRM_Metadata
 
   IF OBJECT_ID ('CRM_ErrorLog_Accounts') IS NOT NULL 
  DROP TABLE  CRM_ErrorLog_Accounts
@@ -133,6 +133,14 @@ VALUES
 ,(0,'ShippingProfile','AddressID','PostalCode__C','PostalCode__c')
 ,(0,'ShippingProfile','AddressID','SubRegion__C','SubRegion__c')
 ,(0,'ShippingProfile','AddressID','ProfileName__c','ProfileName__c')
+,(0,'AccountNotes','AccountNoteId','Account__c','Account__c')
+,(0,'AccountNotes','AccountNoteId','Description__c','Description__c')
+,(0,'AccountNotes','AccountNoteId','ActivityDate__c','ActivityDate__c')
+,(0,'AccountNotes','AccountNoteId','NotesReasonType__c','NotesReasonType__c')
+,(0,'AccountNotes','AccountNoteId','Type__c','Type__c')
+,(0,'AccountNotes','AccountNoteId','NotesDetailType__c','NotesDetailType__c')
+,(0,'AccountNotes','AccountNoteId','ChangedByApplication__c','ChangedByApplication__c')
+,(0,'AccountNotes','AccountNoteId','ChangedByUser__c','ChangedByUser__c')
 
 
 
@@ -172,6 +180,7 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='Contacts' THEN '#Contacts'
 										WHEN CRMObject='PaymentProfile' THEN '#PaymentProfiles'
 										WHEN CRMObject='ShippingProfile' THEN '#ShippingProfiles'
+										WHEN CRMObject='AccountNotes' THEN '#AccountNotes'
                                      END
                               FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
@@ -188,6 +197,7 @@ WHILE ( @I <= @C )
 									     WHEN CRMObject = 'Contacts' THEN 'RFAccountContactId__c'
 										 WHEN CRMObject = 'PaymentProfile' THEN 'RFOPaymentProfileID__C'
 										 WHEN CRMObject='ShippingProfile' THEN 'RFOAddressPRofileID__C'
+										 WHEN CRMObject='AccountNotes' THEN 'RFOAccountNoteID__c'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
@@ -208,6 +218,7 @@ WHILE ( @I <= @C )
 												 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.RFO_Contacts'
 												 WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.RFO_PaymentProfiles'
 												 WHEN CRMObject='ShippingProfile' THEN 'Rfoperations.sfdc.RFO_ShippingProfiles'
+												 WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.RFO_AccountNotes'
                                              END
 									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
@@ -218,6 +229,7 @@ WHILE ( @I <= @C )
 												  WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
 												  WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.CRM_PaymentProfiles'
 												  WHEN CRMObject ='ShippingProfile' THEN 'Rfoperations.sfdc.CRM_ShippingProfiles'
+												  WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.CRM_AccountNotes'
 											 END
 									FROM     rfoperations.sfdc.CRM_METADATA
                          

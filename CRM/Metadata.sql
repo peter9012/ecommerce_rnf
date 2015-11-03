@@ -1,8 +1,8 @@
  USE rfoperations
  GO 
  /*
- IF OBJECT_ID ('CRM_Metadata') IS NOT NULL 
- DROP TABLE  CRM_Metadata
+ IF OBJECT_ID ('rfoperations.sfdc.') IS NOT NULL 
+ DROP TABLE  rfoperations.sfdc.
 
   IF OBJECT_ID ('CRM_ErrorLog_Accounts') IS NOT NULL 
  DROP TABLE  CRM_ErrorLog_Accounts
@@ -118,7 +118,21 @@ VALUES
 ,(0,'PaymentProfile','PaymentProfileId','Region','Region__c')
 ,(0,'PaymentProfile','PaymentProfileId','PostalCode','Postal_Code__c')
 ,(0,'PaymentProfile','PaymentProfileId','SubRegion','Sub_Region__c')
-
+,(0,'ShippingProfile','AddressID','Account__C','Account__c')
+,(0,'ShippingProfile','AddressID','AddressLine1__C','AddressLine1__c')
+,(0,'ShippingProfile','AddressID','AddressLine2__C','AddressLine2__c')
+,(0,'ShippingProfile','AddressID','IsDefault','IsDefault__c')
+,(0,'ShippingProfile','AddressID','AddressLine3__C','AddressLine3__c')
+,(0,'ShippingProfile','AddressID','AddressLine4__C','AddressLine4__c')
+,(0,'ShippingProfile','AddressID','AddressLine5__C','AddressLine5__c')
+,(0,'ShippingProfile','AddressID','Country__C','Country__c')
+,(0,'ShippingProfile','AddressID','latitude__C','Latitude__c')
+,(0,'ShippingProfile','AddressID','locale__C','Locale__c')
+,(0,'ShippingProfile','AddressID','longitude__C','Longitude__c')
+,(0,'ShippingProfile','AddressID','Region__C','Region__c')
+,(0,'ShippingProfile','AddressID','PostalCode__C','PostalCode__c')
+,(0,'ShippingProfile','AddressID','SubRegion__C','SubRegion__c')
+,(0,'ShippingProfile','AddressID','ProfileName__c','ProfileName__c')
 
 
 
@@ -157,6 +171,7 @@ WHILE ( @I <= @C )
 										WHEN CRMObject = 'Accounts' THEN '#Accounts'
 										WHEN CRMObject='Contacts' THEN '#Contacts'
 										WHEN CRMObject='PaymentProfile' THEN '#PaymentProfiles'
+										WHEN CRMObject='ShippingProfile' THEN '#ShippingProfiles'
                                      END
                               FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
@@ -172,6 +187,7 @@ WHILE ( @I <= @C )
 									CASE WHEN CRMObject = 'Accounts' THEN 'RFOAccountId__c'
 									     WHEN CRMObject = 'Contacts' THEN 'RFAccountContactId__c'
 										 WHEN CRMObject = 'PaymentProfile' THEN 'RFOPaymentProfileID__C'
+										 WHEN CRMObject='ShippingProfile' THEN 'RFOAddressPRofileID__C'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
@@ -191,6 +207,7 @@ WHILE ( @I <= @C )
 				   SET @SrcTemp = ( SELECT  CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.RFO_Accounts'
 												 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.RFO_Contacts'
 												 WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.RFO_PaymentProfiles'
+												 WHEN CRMObject='ShippingProfile' THEN 'Rfoperations.sfdc.RFO_ShippingProfiles'
                                              END
 									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
@@ -200,6 +217,7 @@ WHILE ( @I <= @C )
 				SET @DesTemp = ( SELECT      CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts'
 												  WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
 												  WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.CRM_PaymentProfiles'
+												  WHEN CRMObject ='ShippingProfile' THEN 'Rfoperations.sfdc.CRM_ShippingProfiles'
 											 END
 									FROM     rfoperations.sfdc.CRM_METADATA
                          

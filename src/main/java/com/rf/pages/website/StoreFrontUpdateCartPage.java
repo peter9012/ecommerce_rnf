@@ -256,12 +256,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.id("saveCrpShippingAddress"));
 		logger.info("Save shipping profile button clicked");
 		try{
-			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
-
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept New shipping address button clicked");			
 		}
+		
+		driver.waitForLoadingImageToDisappear();
 	}	
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		

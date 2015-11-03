@@ -228,10 +228,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
-	public boolean verifyShippingMethod(String shippingMethodDB){
-		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
-		logger.info("Shipping Method from UI is "+shippingMethodUI);
-		return shippingMethodUI.contains(shippingMethodDB);
+	public String getShippingMethod(){
+		logger.info("Shipping Method from UI is "+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText());
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();	
 	}
 
 	public String getShippingMethodFromAdhocOrderTemplate(){
@@ -537,16 +536,16 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]/a")).getText();
 					clickOrderNumber(failedOrderNumber);
 					driver.waitForElementPresent(By.xpath("//div[@class='gray-container-info-top']/div"));
-					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER DETAILS: CRP #")==true){
+					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER DETAILS: CRP")==true){
 						return failedOrderNumber;
 					}else{
 						driver.navigate().back();
 					}
 				}
 			}   
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 		}while(isNextLinkPresent==true);
 		return null;
@@ -572,9 +571,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					}
 				}
 			}
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 		}while(isNextLinkPresent==true);
 		return null;
@@ -600,9 +599,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					}
 				}
 			}
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 
 		}while(isNextLinkPresent==true);

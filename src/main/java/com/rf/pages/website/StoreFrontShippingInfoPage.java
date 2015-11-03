@@ -194,6 +194,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void changeAddressToUSAddress() throws InterruptedException{
+		driver.waitForElementPresent(By.id("new-address-1"));
 		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
 		logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);

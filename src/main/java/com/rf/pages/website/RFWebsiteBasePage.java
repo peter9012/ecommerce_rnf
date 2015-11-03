@@ -1071,8 +1071,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
+			driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
 		}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();

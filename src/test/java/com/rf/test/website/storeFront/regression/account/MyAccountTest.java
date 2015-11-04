@@ -73,9 +73,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -110,8 +110,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
@@ -146,9 +146,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -188,9 +188,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -226,9 +226,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -304,7 +304,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-2512 :: Version : 1 :: Username validations.
-	@Test(enabled=true) //Test case in test link not updated as per the functionality
+	@Test //Test case in test link not updated as per the functionality
 	public void testUsernameValidations_2512() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1074,9 +1074,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -1115,9 +1115,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -1969,9 +1969,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				logger.info("login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -2309,7 +2309,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 
-
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -2329,7 +2328,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		storeFrontHomePage.clickOnRequestASponsorBtn();
 		storeFrontHomePage.clickOnNotYourSponsorLink();
-		//storeFrontHomePage.clickOKOnSponsorInformationPopup();
+		storeFrontHomePage.clickOKOnSponsorInformationPopup();
 		storeFrontHomePage.searchCIDForPCAndRC();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 
@@ -2725,10 +2724,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
-		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
@@ -2736,18 +2733,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.loginAsConsultant(emailID, password);
 		storeFrontHomePage.clickOnAutoshipCart();
 		storeFrontHomePage.clickOnContinueShoppingLink();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.selectDifferenetProductAndAddItToCRP();
 		storeFrontHomePage.removeSecondProductFromTheCart();
-		s_assert.assertTrue(storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for product removal from UI is "+storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG);
 		storeFrontHomePage.removeFirstProductFromTheCart();
-		s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+		}else
+			s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA);
+
 		storeFrontHomePage.addQuantityOfProduct(qtyOfProducts);
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG);
 		storeFrontHomePage.addQuantityOfProduct(newQtyOfProducts);
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG);
 		newQtyOfProducts ="0";
 		storeFrontHomePage.addQuantityOfProduct(newQtyOfProducts);
-		s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+		}else
+			s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA),"Error message for threshold condition from UI is "+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA);
 
 		s_assert.assertAll(); 
 	}
@@ -2938,9 +2941,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Project-3854:Register as RC with Different CA Sponsor WITH Pulse
 	@Test
 	public void testRegisterAsRCWithDifferentCASponserWithPulse_3854() throws InterruptedException {
-		if(country.equalsIgnoreCase("ca")){
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO();		
+			RFO_DB = driver.getDBNameRFO();  
 			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 			String lastName = "lN";
 			List<Map<String, Object>> canadianSponserList =  null;
@@ -2954,7 +2958,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			// Get Canadian sponser with PWS from database
 			canadianSponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
 			canadianSponserHavingPulse = String.valueOf(getValueFromQueryResult(canadianSponserList, "AccountID"));
-			storeFrontHomePage.openPWS(TestConstants.SPONSER_PWS);
+
+			// sponser search by Account Number
+			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,canadianSponserHavingPulse),RFO_DB);
+			String idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+			storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 			// Products are displayed?
@@ -2986,7 +2995,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue without sponser link present");
 			s_assert.assertFalse(storeFrontHomePage.verifyRequestASponsorBtn(),"Request a sponser button is present");
 			//storeFrontHomePage.clickOKOnSponsorInformationPopup();
-			storeFrontHomePage.searchCIDForSponserHavingPulseSubscribed(TestConstants.CANADIAN_SPONSER_HAVING_PULSE);
+			storeFrontHomePage.searchCIDForSponserHavingPulseSubscribed(idForConsultant);
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -3011,6 +3020,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
+
 
 	//Hybris Project-2250:Corporate Sponsor: PC and RC can create an account without a Sponsor -- will be set to Corporate
 	@Test
@@ -3917,9 +3927,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				logger.info("Account Id of the user is "+accountId);
 
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+				boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 				if(isSiteNotFoundPresent){
-					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					logger.info("Login Error for the user "+pcUserEmailID);
 					driver.get(driver.getURL());
 				}
 				else
@@ -5616,7 +5626,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 			logger.info("login is successful");
 			storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontUpdateCartPage.clickOnBuyNowButton();
+			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
 			storeFrontUpdateCartPage.clickOnCheckoutButton();
 
 			storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
@@ -5776,7 +5786,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName,TestConstants.LAST_NAME, emailAddress, password, addressLine1, city,TestConstants.PROVINCE_ALABAMA_US, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName,TestConstants.LAST_NAME, emailAddress, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -6603,9 +6613,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login Error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -6631,12 +6641,22 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		//Add a new shipping address..
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
-		storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
-		storeFrontUpdateCartPage.selectNewShippingAddressState();
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		if(country.equalsIgnoreCase("us")){
+			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontUpdateCartPage.selectNewShippingAddressState();
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		}
+		else{
+			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
+			storeFrontUpdateCartPage.selectNewShippingAddressState();
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		}
 		//change the shipping method and proceed to next stp
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
 		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
@@ -7376,9 +7396,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -7725,9 +7745,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -7777,7 +7797,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}else if(country.equals("236")){
 			country = "United States";
 		}
-		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1.trim()+"\n"+locale.trim()+", "+region.trim()+" "+postalCode.trim()+"\n"+country.toUpperCase().trim();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));

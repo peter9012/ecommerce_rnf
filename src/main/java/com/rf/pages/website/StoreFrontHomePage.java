@@ -1221,8 +1221,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void selectAnotherProductAndAddItToCRP(){
-		driver.waitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
-		driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[7]/div[1]//form[@id='productDetailForm']/input[2]"));
+			driver.click(By.xpath("//div[@id='main-content']/div[7]/div[1]//form[@id='productDetailForm']/input[2]"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
+			driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[2]//input[@value='Add to crp']"));
+		}
 		driver.waitForSpinImageToDisappear();
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
@@ -1852,6 +1858,26 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//input[@id='quantity1']"));
 		String qty=driver.findElement(By.xpath("//input[@id='quantity1']")).getAttribute("value");
 		return Integer.parseInt(qty);
+	}
+
+	public void selectDifferenetProductAndAddItToCRP(){
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
+		}
+		driver.waitForSpinImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+
+		}
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
 	}
 
 }

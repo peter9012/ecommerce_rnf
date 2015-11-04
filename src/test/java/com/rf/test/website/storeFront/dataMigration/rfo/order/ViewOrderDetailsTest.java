@@ -33,7 +33,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	@Test
 	public void testOrderDetailsOfCRPAutoShipOrder_HP2_4286() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-
 		String firstName = null;
 		String addressLine1 = null;
 		String postalCode = null;
@@ -41,8 +40,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String region = null;
 		String country = null;
 		String shippingAddressFromDB =null;
-		String city = null;
-		String state = null;
 		String subTotalDB = null;
 		String shippingDB = null;
 		String handlingDB = null;
@@ -51,16 +48,12 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		String shippingMethodDB = null;
 		String consultantEmailID = null;
 		String lastName = null;
-		String orderId = null;
 		String accountId = null;
 		String shippingMethodId =null;
-
 		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
 		DecimalFormat df = new DecimalFormat("#.00");
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 
 		while(true){
@@ -68,7 +61,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -140,23 +132,17 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-
-
 		s_assert.assertAll();
 
 	}
-
 
 	// phase 2 4287 -> Verify order details of consultant order
 	@Test
 	public void testOrdersDetailsOfConsultant_HP2_4287() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-
 		String firstName = null;
 		String addressLine1 = null;
 		String postalCode = null;
-		String locale = null;
-		String region = null;
 		String country = null;
 		String shippingAddressFromDB =null;
 		String city = null;
@@ -175,7 +161,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> verifyAllDetailsList = null;
-		List<Map<String,Object>> orderIdAccountIdDetailsList = null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
 		List<Map<String,Object>> getOtherDetailValuesList = null;
 		List<Map<String,Object>> getOrderIDList = null;
@@ -626,7 +611,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	@Test
 	public void testDetailsOfFailedConsultantAutoshipOrder_4294() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-
 		String firstName = null;
 		String addressLine1 = null;
 		String postalCode = null;

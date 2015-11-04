@@ -382,9 +382,15 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
 			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA);
 			logger.info("City entered is "+TestConstants.CITY_CA);
-			driver.click(By.id("state"));
-			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-			driver.click(By.xpath("//select[@id='state']/option[2]"));
+			try{
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
+				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+			}catch(Exception e){
+				driver.click(By.id("state"));
+				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+				driver.click(By.xpath("//select[@id='state']/option[2]"));	
+			}	
 			logger.info("state selected");
 			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_CA);
 			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_CA);
@@ -1071,8 +1077,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[2]//form[@id='productDetailForm']/button"));
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
+			driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
 		}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -1101,11 +1107,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnEditAtAutoshipTemplate(){
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@value='EDIT']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='Edit']"));
 			driver.click(By.xpath("//input[@value='EDIT']"));
-		}catch(Exception e){
-			driver.waitForElementPresent(By.xpath("//input[@value='edit']"));
-			driver.click(By.xpath("//input[@value='edit']"));	
+		}
+		catch(Exception e){
+			try{
+				driver.click(By.xpath("//input[@value='EDIT']"));
+			}
+			catch(Exception e1){
+				driver.click(By.xpath("//input[@value='edit']"));	
+			}
 		}
 	}
 
@@ -1151,4 +1162,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Default Sponser email address from UI is "+sponserEmailID);
 		return sponserEmailID;
 	}
+
+	public String splitPWS(String pws){
+		if(pws.contains(".biz")){
+			pws = pws.split(".biz")[0];	
+		}
+		else
+			pws = pws.split(".com")[0];
+		return pws;
+	}
+
 }

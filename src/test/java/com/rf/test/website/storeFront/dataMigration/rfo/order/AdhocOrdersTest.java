@@ -64,7 +64,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		/*storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();*/
+			storeFrontConsultantPage.clickOnAllProductsLink();*/
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -125,6 +125,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
 	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
@@ -157,7 +158,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		/*storeFrontPCUserPage.clickOnShopLink();
-		storeFrontPCUserPage.clickOnAllProductsLink();*/
+			storeFrontPCUserPage.clickOnAllProductsLink();*/
 		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -253,7 +254,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 
 		/*storeFrontRCUserPage.clickOnShopLink();
-		storeFrontRCUserPage.clickOnAllProductsLink();  */ 
+			storeFrontRCUserPage.clickOnAllProductsLink();  */ 
 		storeFrontRCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -308,6 +309,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
-	}
-
+	}	
 }
+
+

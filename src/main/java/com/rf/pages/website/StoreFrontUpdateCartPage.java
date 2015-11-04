@@ -256,12 +256,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.id("saveCrpShippingAddress"));
 		logger.info("Save shipping profile button clicked");
 		try{
-			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
-
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+			logger.info("Accept New shipping address button clicked");
 		}
+
+		driver.waitForLoadingImageToDisappear();
 	}	
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
@@ -654,10 +657,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
 		driver.click(By.xpath("//select[@id='deliveryMode']"));
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
-		driver.click(By.xpath("//select[@id='deliveryMode']/option[1]"));
-		logger.info("UPS 2Day shipping method is selected");
-
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'UPS Ground')]"));
+		logger.info("UPS 2Day shipping method is selected"); 
 	}
+
 
 	public double getSubtotalValue(){
 		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));

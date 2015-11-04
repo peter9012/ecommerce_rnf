@@ -121,7 +121,7 @@ SELECT 'No Duplicates'
 		--Loading CRM data
 		SELECT
 		RFOAccountNotesId__c,
-		Account__c,
+		RFOAccountID__C,
 		Description__c,
 		ActivityDate__c,
 		NotesReasonType__c,

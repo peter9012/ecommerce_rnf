@@ -32,7 +32,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
-
+	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
+	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -1171,5 +1172,21 @@ public class RFWebsiteBasePage extends RFBasePage{
 			pws = pws.split(".com")[0];
 		return pws;
 	}
+
+	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
+		driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
+		driver.click(WELCOME_DD_BILLING_INFO_LINK_LOC);
+		logger.info("User has clicked on billing link from welcome drop down");
+		driver.waitForPageLoad();
+		return new StoreFrontBillingInfoPage(driver);
+	}
+
+	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
+		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);		
+		logger.info("User has clicked on shipping link from welcome drop down");
+		return new StoreFrontShippingInfoPage(driver);
+	}
+
 
 }

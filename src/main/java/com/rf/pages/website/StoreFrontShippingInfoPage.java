@@ -87,6 +87,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public void selectNewShippingAddressState(){
 		driver.click(By.id("state"));
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
@@ -234,6 +235,19 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		else{
 			return false;
 		}
+	}
+
+	public String getDefaultSelectedShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[1]")).getText();
+	}
+
+	public boolean verifyOldDefaultSelectAddress(String addressname, String addressnameAfterAdd){
+		return addressname.equalsIgnoreCase(addressnameAfterAdd);
+	}
+
+	public boolean verifyRadioButtonNotSelectedByDefault(String name){
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+name+"')]/following::input[@checked='checked']"));
 	}
 }
 

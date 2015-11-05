@@ -18,7 +18,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 	private final By PAYMENT_BILLING_EDIT_BTN_LOC = By.xpath("//a[@class='editPayment']");
-	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//p[@id='selectedPaymentInfo']/span[1]");
+	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//div[@id='multiple-billing-profiles']/descendant::span[1]");
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
@@ -431,6 +431,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
@@ -863,6 +864,22 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean verifyDisabledDatesOfTheCalendar(int i){
 		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/.."));
 		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/..")).getAttribute("class").contains("unselectable ");
+	}
+
+	public void clickOnAddANewShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
+		driver.click(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
+	}
+
+	public void selectNewShippingAddressStateOnCartPage(){
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		logger.info("State/Province selected");
+	}
+
+	public boolean  verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/preceding::span[contains(text(),'"+name+"')]"));
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/preceding::span[contains(text(),'"+name+"')]")).getText().contains(name);
 	}
 
 }

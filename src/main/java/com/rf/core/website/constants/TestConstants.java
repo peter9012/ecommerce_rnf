@@ -69,6 +69,7 @@ public class TestConstants {
 	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
 	public static final String SPONSOR_ID_US="1686295";
+	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "411111111111111#";
 
 	public static final String PROVINCE_YUKON = "Yukon";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
@@ -86,41 +87,47 @@ public class TestConstants {
 
 
 
-	public static final String CONSULTANT_USERNAME_BELOW_8_DIGITS="smspo";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_DIGITS="smsto 111maiden";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_SPECIAL_CHARS="!@#$%^&*()@";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_NUMBERS="123456789";
-	public static final String CONSULTANT_USERNAME_MORE_THAN_8_ALPHABETS="11maidenfghi";
-
+	public static final String CONSULTANT_USERNAME_BELOW_6_DIGITS="smspo";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_DIGITS="smsto 111maiden";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_SPECIAL_CHARS="!@#$%^&*()@";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_NUMBERS="123456789";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHABETS="11maidenfghi";
+	
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR="abcdef#$";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR_COMB="$abcd%et";
+	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR="abcdef+";
+	public static final String CONSULTANT_USERNAME_PREFIX="abced";
+	public static final String SHIPPING_CHARGES_ON_UI_FOR_US = "25.00";
 	/*
 	 * Consultant User Details
 	 */
 	public static final String CONSULTANT_EMAIL_ID_STG2 = "con0708@yopmail.com";
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
 	public static final String PC_USER_STG = "autopcstg@xyz.com";
-	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG="cart has been update";
+	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG="Your next autoship cart has been updated";
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT="Your Total SV value should be equal to or greater than the threshold 100";
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="Please add products in your PC cart greater than the threshold CAD $90";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY="quantity has been updated";
-
+	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated";
+	
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
 	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
-	public static final String CONSULTANT_NEW_PASSWORD = "111Maiden$";
+	public static final String CONSULTANT_NEW_PASSWORD = "111maiden$";
 
 
 	public static final String CONSULTANT_USERNAME = "consultantuserstg@xyz.com";
-		
+
 	public static final String CONSULTANT_BIZ_URL = "http://atst1.myrfotst2.biz/ca/";
 	public static final String CONSULTANT_COM_URL = "http://atst1.myrfotst2.com/ca/";
 	public static final String SPONSER_PWS="https://mduartestucky.myrfotst2.biz/ca/";
 
-//	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
-//	public static final String CONSULTANT_BIZ_URL = "http://astoner.myrfotst3.biz/ca/";
-//	public static final String CONSULTANT_COM_URL = "http://astoner.myrfotst3.com/ca/";
-//	public static final String SPONSER_PWS="https://mduartestucky.myrfotst3.biz/ca/";
+	//	public static final String CONSULTANT_USERNAME = "autocon@xyz.com";
+	//	public static final String CONSULTANT_BIZ_URL = "http://astoner.myrfotst3.biz/ca/";
+	//	public static final String CONSULTANT_COM_URL = "http://astoner.myrfotst3.com/ca/";
+	//	public static final String SPONSER_PWS="https://mduartestucky.myrfotst3.biz/ca/";
 
 	public static final String CANADIAN_SPONSER_HAVING_PULSE = "auto161213 auto";
 	public static final String BIZ_PWS_CA="https://mduartestucky.myrfotst3.biz/ca/";
@@ -167,7 +174,10 @@ public class TestConstants {
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG="removed from your cart";
-
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "Your Total SV value should be equal to or greater than the threshold 80";
+	public static final String CONSULTANT_VALID_10_DIGIT_MAIN_PHONE_NUMBER ="3423423423";
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA= "Your Total SV value should be equal to or greater than the threshold 100";
+	
 	//	//PWS STAGING
 	//	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	//	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
@@ -338,6 +348,12 @@ public class TestConstants {
 	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
+	public static final String NEW_RC_USER_NAME = "updatedUserName";
+	public static final String PROVINCE_ALABAMA_US ="Alabama";
+
+	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
+	public static final String NEW_SHIPPING_PROFILE_NAME_CA = "new SP";
+
 }
 
 

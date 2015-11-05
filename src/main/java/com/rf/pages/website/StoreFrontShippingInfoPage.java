@@ -194,6 +194,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void changeAddressToUSAddress() throws InterruptedException{
+		driver.waitForElementPresent(By.id("new-address-1"));
 		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
 		logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
@@ -211,8 +212,29 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		selectFirstCardNumber();
 		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+	}	
+
+	public void clickOnNewAddressRadioButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//input"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//input"));
+		logger.info("new address radio button clicked");
 	}
 
+	public void clickOnPopUpAfterClickingRadioButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-quickinfo']/div/input[@value='YES, UPDATE MY AUTO-SHIP']"));
+		driver.click(By.xpath("//div[@id='popup-quickinfo']/div/input[@value='YES, UPDATE MY AUTO-SHIP']"));
+		logger.info("clicked on YES, UPDATE MY AUTO-SHIP Button");
+	}
+
+	public boolean verifyChangeInDefaultAddressForShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']"));
+		logger.info(driver.findElement(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']")).getText());
+		if(driver.isElementPresent(By.xpath("//div[@id='main-content']//span[text()='Failed to change default address.']"))){
+			return true;}
+		else{
+			return false;
+		}
+	}
 }
 
 

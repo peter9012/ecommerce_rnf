@@ -40,8 +40,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
-	private final By CANCEL_MY_CRP_LOC = By.xpath("//p[@id='crp-status']/a[contains(text(),'Cancel my CRP')]");
-	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//input[@id='cancel-crp-button']");
+	private final By CANCEL_MY_CRP_LOC = By.xpath("//a[contains(text(),'Cancel my CRP')]");
+	private final By CANCEL_MY_CRP_NOW_LOC = By.xpath("//a[@id='cancel-crp-button']");
 	private final By ENROLL_IN_CRP_LOC = By.xpath("//input[@id='crp-enroll']");
 	private final By DAY_OF_BIRTH_FOR_4178_LOC = By.xpath("//select[@id='dayOfBirth']//option[@selected='selected'][2]");
 	private final By MONTH_OF_BIRTH_4178_LOC = By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]");
@@ -451,19 +451,31 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void checkAllowMySpouseCheckBox(){
-		if(!driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).isSelected()){
+		try{
+			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/ancestor::div[1][@class='repaired-checkbox checked']"));
+			System.out.println("checkbox already checked");
 			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+			driver.pauseExecutionFor(1000);
 		}
+		catch(Exception e){
+
+		}
+
+		driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+		driver.pauseExecutionFor(1000);
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
 		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
+		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
+		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
 		driver.click(By.xpath("//input[@id='acceptSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
@@ -472,12 +484,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
@@ -529,5 +542,87 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.id("cancel-pc-perks-button"));
 		return new StoreFrontAccountTerminationPage(driver);
 	}
-}
 
+	public void cancelPulseSubscription(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.click(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//a[@id='cancelPulse']"));
+		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+			driver.click(By.id("cancel-pulse-button"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+
+		driver.waitForPageLoad();
+	}
+
+	public boolean validatePulseCancelled(){
+		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
+		return driver.isElementPresent(By.id("subscribe_pulse_button_new"));
+	}
+
+	public boolean validateSubscribeToPulse(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+	}
+
+	public void enterNewUserNameAndClicKOnSaveButton(String newUserName) {
+		driver.waitForElementPresent(By.id("username-account"));
+		driver.clear(By.id("username-account"));
+		driver.type(By.id("username-account"), newUserName);
+		driver.click(By.id("saveAccountInfo"));
+		logger.info("save button clicked");
+
+	}
+
+	public boolean verifyProfileUpdationMessage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p"));
+		String updationMessage = driver.findElement(By.xpath("//div[@id='globalMessages']//p")).getText();
+		System.out.println("updationMessage==="+updationMessage);
+		if(updationMessage.equals("Your profile has been updated")){
+			return true;
+		}
+		return false;
+	}	
+
+	public boolean errorMessageForExistingUser(){
+		driver.waitForElementPresent(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']"));
+		return driver.findElement(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']")).getText().contains("Your Username already exist");
+	}
+
+	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{
+		char splChar[] = {'!','$','%','*','^','(',')'};
+		int lenth = splChar.length;
+		boolean flag;
+		for(int i = 0; i<lenth; i++){
+			flag = false;
+			String username = prefix+splChar[i];
+			enterUserName(username);
+			clickSaveAccountPageInfo();
+			flag = errorMessagePresent();
+			if(flag==true){
+				continue;
+			}
+			else{
+				return false;
+
+			}
+
+
+		}
+		return true;
+	}
+	public boolean errorMessagePresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
+		if(driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed()){
+			return true;
+
+		}else{
+			return false;
+		}
+	}
+}

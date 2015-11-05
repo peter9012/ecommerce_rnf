@@ -14,7 +14,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());	
 
 	private final By ORDERS_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[contains(text(),'Orders')]");
-	private final By ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Order details: CRP')]");
+	private final By ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']");
 	private final By ORDER_NUMBER_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/a");
 	private final By ORDER_SCHEDULE_DATE_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[2]");
 	private final By ORDER_GRAND_TOTAL_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[3]");
@@ -33,7 +33,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
 	private final By ACTIONS_BUTTON_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]");
 	private final By ACTIONS_DROPDOWN_LOC = By.xpath(" //div[@id='history-orders-table']//div[2]/div[2]/div[5]/ul/li[2]/a");
-	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[1]/a");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
 	private final By AUTOSHIP_DATE_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[2]//div[contains(@class,'ref-values')]//div[2]");
 
@@ -99,7 +99,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean verifyCRPAutoShipHeader(){
 		driver.waitForElementPresent(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC);
 		logger.info(driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText());
-		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains("ORDER DETAILS: CRP #"+autoShipOrderNumber);
+		return driver.findElement(ORDERS_PAGE_CRP_AUTOSHIP_TEMPLATE_HEADER_LOC).getText().contains(autoShipOrderNumber);
 	}
 
 	public boolean verifyCRPAutoShipAddress(String firstName,String lastName,String addressLine1,String city,String postalCode,String country){
@@ -228,10 +228,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//strong[text()='Shipping Address:']/following::p[1]")).getText().trim().toLowerCase();
 	}
 
-	public boolean verifyShippingMethod(String shippingMethodDB){
-		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
-		logger.info("Shipping Method from UI is "+shippingMethodUI);
-		return shippingMethodUI.contains(shippingMethodDB);
+	public String getShippingMethod(){
+		logger.info("Shipping Method from UI is "+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText());
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();	
 	}
 
 	public String getShippingMethodFromAdhocOrderTemplate(){
@@ -394,7 +393,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getTaxAmountFromAutoshipTemplate(){
-		String tax = driver.findElement(By.id("crpTotalTax")).getText();
+		String tax = null;
+		try{
+			tax = driver.findElement(By.id("crpTotalTax")).getText();
+		}catch(Exception e){
+			tax = driver.findElement(By.id("totalTax")).getText();
+		}
 		System.out.println("Tax is "+tax);
 		return tax.trim();
 	}
@@ -497,8 +501,13 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getGrandTotalFromAdhocOrderTemplate(){
-		logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
-		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText();
+		try{
+			logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText());
+			return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='order-summary-left'][2]/ul/li[4]/span")).getText();
+		}catch(Exception e){
+			logger.info("total from UI "+driver.findElement(By.xpath("//div[@id='orderGrandTotal']")).getText());
+			return driver.findElement(By.xpath("//div[@id='orderGrandTotal']")).getText();
+		}
 	}
 
 	public boolean verifyAdhocOrderTemplateTotalSV(String totalSV){
@@ -527,16 +536,16 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]/a")).getText();
 					clickOrderNumber(failedOrderNumber);
 					driver.waitForElementPresent(By.xpath("//div[@class='gray-container-info-top']/div"));
-					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER DETAILS: CRP #")==true){
+					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER DETAILS: CRP")==true){
 						return failedOrderNumber;
 					}else{
 						driver.navigate().back();
 					}
 				}
 			}   
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 		}while(isNextLinkPresent==true);
 		return null;
@@ -562,9 +571,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					}
 				}
 			}
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 		}while(isNextLinkPresent==true);
 		return null;
@@ -590,9 +599,9 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 					}
 				}
 			}
-			if(driver.isElementPresent(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
+			if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 				isNextLinkPresent = true;
-				driver.click(By.xpath("//table[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
+				driver.click(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"));
 			}
 
 		}while(isNextLinkPresent==true);
@@ -729,6 +738,78 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		autoShipOrderDate = driver.findElement(AUTOSHIP_DATE_LOC).getText();
 		logger.info("autoship order Date is "+autoShipOrderDate);
 		return  autoShipOrderDate;
+	}
+
+	public boolean verifyAdhocOrderIsPresent(){
+		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
+		if(driver.isElementPresent(ORDER_NUM_OF_ORDER_HISTORY)){
+			return true;
+		}else
+			return true;
+	}
+
+	public double getOrderGrandTotal(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
+			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			String[] totalValue= value.split("\\s");
+			double  orderTotal = Double.parseDouble(totalValue[1]);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
+			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			String fetchValue = value.substring(1);
+			double  orderTotal = Double.parseDouble(fetchValue);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		}
+		return 0;
+	}
+
+	public boolean validateSubTotal(double subtotal1,double subtotal2){
+		driver.waitForElementPresent(By.xpath("//div[@id='idSubTotal']"));
+		String subTotalVal=driver.findElement(By.xpath("//div[@id='idSubTotal']")).getText();
+		String[] totalvalue= subTotalVal.split("\\$+");
+		double subTotalValue=Double.parseDouble(totalvalue[1].trim());
+		if(subTotalValue==(subtotal1+subtotal2)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean validateQuantityForFirstProduct(int expectedQty){
+		driver.waitForElementPresent(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[2]/div[2]//div[3]"));
+		String actualQty=driver.findElement(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[2]/div[2]//div[3]")).getText();
+		if(expectedQty==Integer.parseInt(actualQty)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean validateQuantityForSecondProduct(int expectedQty){
+		driver.waitForElementPresent(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[3]/div[2]//div[3]"));
+		String actualQty=driver.findElement(By.xpath("//div[@class='order-products orders-table col-sm-8 col-xs-12']/div[3]/div[2]//div[3]")).getText();
+		if(expectedQty==Integer.parseInt(actualQty)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyTotalValueOfProductOnOrderDetails(String totalPrice){
+		driver.waitForElementPresent(By.xpath("//div[@id='productSV']/following::div[2]"));
+		return driver.findElement(By.xpath("//div[@id='productSV']/following::div[2]")).getText().equals(totalPrice);
+	}
+
+	public boolean verifyQuantityOnOrdersDetails(String quantityOfProductsOrdered ){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']//div[@class='row']/div[2]/div[3]")).getText().equals(quantityOfProductsOrdered)){
+			return true;
+		}
+		return false;
 	}
 
 }

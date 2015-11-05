@@ -19,7 +19,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 	private String country = null;
 
-	//Hybris Project-44 :: Version : 1 :: Standard EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REDEFINE REGIMEN  
+	/*//Hybris Project-44 :: Version : 1 :: Standard EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REDEFINE REGIMEN  
 	@Test
 	public void testStandardEnrollmentBigBusinessKitRedefineRegimen_44() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -76,7 +76,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); // Please don't comment this line
-	}
+	}*/
 
 	//Hybris Project-45 :: Version : 1 :: BIZ:Standard Enroll USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH
 	@Test
@@ -138,7 +138,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	}
 
 
-	// Hybris Project-46 :: Version : 1 :: Standard EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN   
+/*	// Hybris Project-46 :: Version : 1 :: Standard EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN   
 	@Test
 	public void testStandardEnrollmentBigBusinessKitReverseRegimen_46() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -255,5 +255,5 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); // Please don't comment this line
 	}
-
+*/
 }

@@ -84,7 +84,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 			regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-			kitName = TestConstants.KIT_NAME_PERSONAL;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
 			city = TestConstants.CITY_QUEBEC;
 			postalCode = TestConstants.POSTAL_CODE_QUEBEC;
@@ -97,7 +97,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
-			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 			storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -107,7 +107,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 			storeFrontHomePage.checkTheIAgreeCheckBox();
 			storeFrontHomePage.clickOnEnrollMeBtn();
 			s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for terms and conditions is not visible");
@@ -133,10 +133,13 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.selectFirstCardNumber();
 			storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontShippingInfoPage.clickOnSaveShippingProfile();
-
+			s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
+			storeFrontShippingInfoPage.clickOnNewAddressRadioButton();
+			storeFrontShippingInfoPage.clickOnPopUpAfterClickingRadioButton();
 			//--------------- Verify that Newly added Shipping is not listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
+			s_assert.assertTrue(storeFrontShippingInfoPage.verifyChangeInDefaultAddressForShippingAddress(),"Failed to change in default address message is not present");
 
-			s_assert.assertFalse(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
+
 
 			s_assert.assertAll();
 
@@ -364,12 +367,12 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnSaveBillingProfile();
 			storeFrontHomePage.clickOnBillingNextStepBtn();
 			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.switchToPreviousTab();
+			
 			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
 			logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.switchToPreviousTab();
+			
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			s_assert.assertAll();	
@@ -386,7 +389,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 			regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-			kitName = TestConstants.KIT_NAME_PERSONAL;			 
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
 			city = TestConstants.CITY_QUEBEC;
 			postalCode = TestConstants.POSTAL_CODE_QUEBEC;
@@ -398,7 +401,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickEnrollmentNextBtnWithoutHandlingPopUP();
 			s_assert.assertTrue(storeFrontHomePage.verifySuggesstionsForEnteredAddressPop(), "QAS pop up for Quebec address suggestions has NOT appeared");
 
 			s_assert.assertAll();

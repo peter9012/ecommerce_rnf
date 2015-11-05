@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.standardEnrollment.biz;
+/*package com.rf.test.website.storeFront.regression.standardEnrollment.biz;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
@@ -263,3 +263,4 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	}
 
 }
+*/

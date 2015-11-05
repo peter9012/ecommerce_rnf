@@ -29,7 +29,7 @@ public class CRMLoginPage extends RFWebsiteBasePage {
 		logger.info("login password is: "+password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
-		driver.waitForLoadingImageBoxToDisappear();
+		//driver.waitForLoadingImageBoxToDisappear();
 		return new CRMHomePage(driver);
 	}
 	public String getErrorMessageOnLoginPage() throws InterruptedException{		

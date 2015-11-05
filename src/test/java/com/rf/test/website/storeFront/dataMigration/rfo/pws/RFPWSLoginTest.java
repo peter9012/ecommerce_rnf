@@ -2,16 +2,19 @@ package com.rf.test.website.storeFront.dataMigration.rfo.pws;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 import com.rf.core.utils.DBUtil;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class RFPWSLoginTest extends RFWebsiteBaseTest {
-
+	private static final Logger logger = LogManager
+			.getLogger(RFPWSLoginTest.class.getName());
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsulatantPage;
 	private String RFO_DB = null;
@@ -54,6 +57,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
+		consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
 
@@ -85,6 +89,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
+		consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
 
@@ -136,7 +141,6 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		s_assert.assertAll();    
 	}
 
-
 	//Hybris Phase 2-4406 RC - someone's PWS - someone's PWS
 	@Test
 	public void testRetailCustomerLoginFromOthersPWS_4406() throws InterruptedException{
@@ -157,6 +161,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWSURL);
+		otherPWSURL = storeFrontHomePage.splitPWS(otherPWSURL);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(otherPWSURL),"RC is not on someone's PWS");
 
@@ -188,13 +193,13 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
 		String pcEmailID = null;
 		String sponsorsPWS = null;
-
 		randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
 		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(sponsorsPWS);
+		storeFrontHomePage.openConsultantPWS(sponsorsPWS+"/"+driver.getCountry());
+		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
+		logger.info("sponsorsPWS after string split is "+sponsorsPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 
@@ -225,6 +230,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openConsultantPWS(otherPWS);
+		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 
@@ -247,6 +253,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
 		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
 		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
 

@@ -33,7 +33,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 	private String RFO_DB = null;		
 
-	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page 	
+	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' pageï¿½	
 	@Test
 	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -177,8 +177,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
 		//storeFrontUpdateCartPage.clickOnNextStepBtn();
-		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontUpdateCartPage.clickOnEditShipping();
+		//storeFrontUpdateCartPage.clickUpdateCartBtn();
+		//storeFrontUpdateCartPage.clickOnEditShipping();
 
 		//---------------Verify that the new added shipping address is displayed in 'Shipment' section on update autoship cart page------------------------------------------------------------------------
 

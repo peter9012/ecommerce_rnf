@@ -79,7 +79,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); // Please don't comment this line
 	}
 
-	//Hybris Project-41 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
+	/*//Hybris Project-41 :: Version : 1 :: Standard EnrollmentTest USD 995 RF Express Business Kit, Personal Regimen UNBLEMISH REGIMEN
 	@Test
 	public void testStandardEnrollmentExpressBusinessKitUnblemishRegimen_41() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -254,6 +254,6 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); // Please don't comment this line
-	}
+	}*/
 
 }

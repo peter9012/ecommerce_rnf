@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.standardEnrollment.biz;
+/*package com.rf.test.website.storeFront.regression.standardEnrollment.biz;
 
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -266,3 +266,4 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	}
 
 }
+*/

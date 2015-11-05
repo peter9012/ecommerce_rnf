@@ -20,8 +20,13 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyRCUserPage(String username) throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_USER_LOC);
+		try{
+		driver.quickWaitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);
+		}catch(Exception e){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='account-info-button']/a/span[2]"));
+			return driver.isElementPresent(By.xpath("//div[@id='account-info-button']/a/span[2]"));
+		}
 
 	}
 

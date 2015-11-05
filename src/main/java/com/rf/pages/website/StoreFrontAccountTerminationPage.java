@@ -14,7 +14,7 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 			.getLogger(StoreFrontAccountTerminationPage.class.getName());
 
 	private final By ACCOUNT_TERMINATION_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//div[contains(text(),'Account termination')]");
-	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='submit']");
+	private final By SUBMIT_BOX_LOC = By.xpath("//input[@value='SUBMIT']");
 	private final By ACCOUNT_TERMINATION_PAGE_POPUP_HEADER = By.xpath("//div[@id='popup-content']//h2");
 	private final By POPUP_CANCEL_TERMINATION_BUTTON = By.xpath("//input[@value='Cancel Termination']");
 	private final By POPUP_CONFIRM_TERMINATION_BUTTON = By.xpath("//input[@value='Confirm Termination']");
@@ -27,11 +27,17 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		return driver.getCurrentUrl().contains(TestConstants.ACCOUNT_TERMINATION_PAGE_SUFFIX_URL);
 
 	}
+
 	public void clickSubmitToTerminateAccount(){
-		driver.waitForElementPresent(SUBMIT_BOX_LOC);
-		driver.click(SUBMIT_BOX_LOC);
-		logger.info("Submit to terminate account button clicked "+SUBMIT_BOX_LOC);
+		try{
+			driver.quickWaitForElementPresent(SUBMIT_BOX_LOC);
+			driver.click(SUBMIT_BOX_LOC);
+		}catch(Exception e){
+			driver.click(By.xpath("//input[@value='submit']"));
+		}
+		logger.info("Submit to terminate account button clicked ");
 	}
+
 	public boolean verifyPopupHeader(){
 		driver.waitForElementPresent(ACCOUNT_TERMINATION_PAGE_POPUP_HEADER);
 		return driver.findElement(ACCOUNT_TERMINATION_PAGE_POPUP_HEADER).getText().contains("CONFIRM ACCOUNT TERMINATION");

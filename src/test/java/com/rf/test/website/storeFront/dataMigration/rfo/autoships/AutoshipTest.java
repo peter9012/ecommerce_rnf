@@ -36,20 +36,13 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-130:change shipping method on autoship - PC 
 	@Test
 	public void testChangeShippingMethodOnPCAutoShip_130() throws InterruptedException{
-
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
-		//------------------------------- Hard coded User part is commented for now----------------------------------------------- 
-		//pcUserEmailID = TestConstants.PC_USER_EMAIL_ID_RFO; 
-		//---------------------------------------------------------------------------------------------------------------------  
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		while(true){
 			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
-
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -76,8 +69,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		assertTrue("shipping method is not as expected", storeFrontOrdersPage.verifyShippingMethod(selectedShippingMethod));
-
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethod().contains(selectedShippingMethod),"shipping method expected is "+selectedShippingMethod+" but on UI it is "+storeFrontOrdersPage.getShippingMethod());
 		s_assert.assertAll();
 	}
 
@@ -85,21 +77,13 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
 	@Test
 	public void testChangeShippingMethodOnConsultantAutoShip_131() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-
-		//------------------------------- Hard coded User part is commented for now----------------------------------------------- 
-		//consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_RFO; 
-		//---------------------------------------------------------------------------------------------------------------------  
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
@@ -126,8 +110,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
-		assertTrue("shipping method is not as expected", storeFrontOrdersPage.verifyShippingMethod(selectedShippingMethod));
-
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethod().contains(selectedShippingMethod),"shipping method expected is "+selectedShippingMethod+" but on UI it is "+storeFrontOrdersPage.getShippingMethod());
 		s_assert.assertAll();
 	}
 

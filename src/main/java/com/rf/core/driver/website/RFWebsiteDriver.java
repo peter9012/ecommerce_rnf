@@ -1,6 +1,7 @@
 package com.rf.core.driver.website;
 
 import java.io.File;
+
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.rf.core.driver.RFDriver;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.utils.PropertyFile;
@@ -99,9 +98,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
-	}
-	public String getCrmURL(){
-		return propertyFile.getProperty("crmUrl");
 	}
 
 	public String getDBNameRFL(){
@@ -240,27 +236,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-	public void waitForLoadingImageBoxToDisappear(){
-		turnOffImplicitWaits();
-		By locator = By.xpath("//div[@id='ext-gen79']/div");
-		logger.info("Waiting for loading image to get disappear");
-		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
-			try{
-				if(driver.findElements(locator).size()==1){
-					pauseExecutionFor(1000);
-					logger.info("waiting..");
-					continue;
-				}else{
-					turnOnImplicitWaits();
-					logger.info("loading image disappears");
-					break;
-				}			
-			}catch(Exception e){
-				continue;
-			}
-		}
-
-	}
 
 	public void waitForSpinImageToDisappear(){
 		turnOffImplicitWaits();
@@ -317,7 +292,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void type(By locator, String input) {
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+*/		waitForElementPresent(locator);
 		findElement(locator).clear();
 		findElement(locator).sendKeys(input);
 	}
@@ -694,5 +670,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		logger.info("Switched to second window");
 	}
+	
+	public String getCrmURL(){
+		return propertyFile.getProperty("crmUrl");
+	}
 
 }
+

@@ -40,8 +40,8 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 		String emailAddress = EmailAdd.toLowerCase();
 		driver.waitForElementPresent(REPORT_CONFIRMATION_EMAIL_ADD_LOC);
 		String emailAdd = driver.findElement(REPORT_CONFIRMATION_EMAIL_ADD_LOC).getText();
-
-		if(emailAdd.equals(emailAddress)){
+		
+		if(emailAdd.trim().equalsIgnoreCase(emailAddress.trim())){
 			return true;
 		}
 		return false;

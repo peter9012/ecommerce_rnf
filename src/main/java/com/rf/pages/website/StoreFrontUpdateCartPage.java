@@ -256,12 +256,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.id("saveCrpShippingAddress"));
 		logger.info("Save shipping profile button clicked");
 		try{
-			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
-
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+			logger.info("Accept New shipping address button clicked");
 		}
+
+		driver.waitForLoadingImageToDisappear();
 	}	
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
@@ -286,13 +289,27 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
-		if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
-			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
-		else
-			driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
-		logger.info("Buy Now button clicked");
-		driver.waitForLoadingImageToDisappear();
+
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		else{
+			driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+			if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+			else
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]//button"));
+			logger.info("Buy Now button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		driver.waitForPageLoad();
+
 	}
 
 	public void clickOnAddToCRPButton() throws InterruptedException{
@@ -634,6 +651,218 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}else{
 			return false;
 		}
+	}
+
+	public void selectShippingMethodUPSGroundInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'UPS Ground')]"));
+		logger.info("UPS 2Day shipping method is selected"); 
+	}
+
+
+	public double getSubtotalValue(){
+		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
+		String[] totalValue= value.split("\\s");
+		double  subtotal = Double.parseDouble(totalValue[1]);
+		logger.info("Subtotal Value fetched is "+subtotal);
+		return subtotal;
+	}
+
+	public void changeCreditCardDate(){
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[9]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[9]"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[9]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[9]"));
+	}
+
+	public String getQuantityOfProductOnCartPage(){
+		String quantityBeforeUpdate = driver.findElement(By.id("quantity0")).getAttribute("value");
+		return quantityBeforeUpdate;
+	}
+
+	public String upgradeQuantityOfProduct(String quantityBeforeUpdate){
+		int quantity = Integer.parseInt(quantityBeforeUpdate)+1;
+		return Integer.toString(quantity);
+	}
+
+	public void clickOnUpdateMoreInfoButton(){
+		driver.waitForElementPresent(By.xpath("//input[@value='Update more info']"));
+		driver.click(By.xpath("//input[@value='Update more info']"));
+	}
+
+	//	public String getSubtotalFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][2]//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][2]//span")).getText();
+	//	}
+	//
+	//	public String getDeliveyFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][3]//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][3]//span")).getText();
+	//	}
+	//	public String getHandlingFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
+	//	}
+	//	public String getTaxFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
+	//		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+	//	}
+	//	public String getGrandTotalFromCart(){
+	//		driver.waitForElementPresent(By.xpath("//div[@id='module-total']//span"));
+	//		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
+	//	}
+
+	public String getSubtotalFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText();
+	}
+
+	public String getDeliveyFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span"));
+		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span")).getText();
+	}
+	public String getHandlingFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
+		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
+	}
+	public String getTaxFromCart(){
+		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
+		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+	}
+	public String getGrandTotalFromCart(){
+		driver.waitForElementPresent(By.id("orderTotal"));
+		return driver.findElement(By.id("orderTotal")).getText();
+	}
+
+	public boolean validateHeaderContent(){
+		String headerContent="REVIEW AND UPDATE YOUR CART";
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'REVIEW AND UPDATE')]"));
+		return driver.findElement(By.xpath("//div[contains(text(),'REVIEW AND UPDATE')]")).getText().contains(headerContent);
+	}
+
+	public boolean validateCartUpdated(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']"));
+		return driver.isElementPresent(By.xpath("//div[@id='globalMessages']/img"));
+	}
+
+	public void selectShippingMethodUPS2DayInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[2]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[2]"));
+		driver.waitForLoadingImageToDisappear();
+		logger.info("UPS 2Day shipping method is selected");
+
+	}
+
+	public double getOrderTotal(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[text()='Total']/following::div[1]/span")).getText().trim();
+			String[] totalValue= value.split("\\s");
+			double  orderTotal = Double.parseDouble(totalValue[1]);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		} else if(driver.getCountry().equalsIgnoreCase("US")){
+			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[text()='Total']/following::div[1]/span")).getText().trim();
+			String fetchValue = value.substring(1);
+			double  orderTotal = Double.parseDouble(fetchValue);
+			logger.info("Subtotal Value fetched is "+orderTotal);
+			return orderTotal;
+		}
+		return 0;
+
+	}
+
+	public void selectShippingMethod2Day(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'UPS 2Day')]/preceding-sibling::span"));
+			driver.click(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'UPS 2Day')]/preceding-sibling::span"));
+			logger.info("UPS 2Day shipping method is selected");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			driver.click(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			logger.info("Fedex 2Day shipping method is selected");
+		}
+	}
+
+	public void clickOnAutoShipButton(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[2]//button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[2]//button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[2]/div[2]/div[2]//button"));
+			logger.info("Buy Now button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[2]//button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[2]//button")).isEnabled()==true){
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[2]//button"));
+			}else{
+				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[2]//button"));
+				logger.info("Buy Now button clicked");
+				driver.waitForLoadingImageToDisappear();
+			}
+			try{
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-special']/input[2]"));
+				driver.click(By.xpath("//div[@id='popup-special']/input[2]"));
+				driver.waitForLoadingImageToDisappear();
+			}catch(Exception e){
+				logger.info("No message popup displays");
+			}
+
+		}
+	}
+
+	public String getTotalPriceOfProduct(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
+			System.out.println(value);
+			return value;
+
+
+		} else if(driver.getCountry().equalsIgnoreCase("US")){
+			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
+			System.out.println(value);
+			return value;
+
+		}
+		return null;
+	}
+
+	public boolean checkDateFunctionality(){
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
+	}
+
+	public void clickOnChangeNextShipDate(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
+		driver.click(By.xpath("//a[contains(text(),'Change next ship date')]"));
+	}
+
+	public void clickOnDate(){
+		driver.waitForElementPresent(By.xpath("//input[@id='todayDate']/.."));
+		driver.click(By.xpath("//input[@id='todayDate']/.."));
+	}
+
+	public int getCountofDateFromCalendar(){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]"));
+		return driver.findElements(By.xpath("//td[contains(@class,'undefined')]")).size();
+
+	}
+
+	public boolean verifyEnabledDatesOfTheCalendar(int i){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//a[text()='"+i+"']"));
+		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//a[text()='"+i+"']/..")).getAttribute("data-handler").contains("selectDay");
+	}
+
+	public boolean verifyDisabledDatesOfTheCalendar(int i){
+		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/.."));
+		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/..")).getAttribute("class").contains("unselectable ");
 	}
 
 }

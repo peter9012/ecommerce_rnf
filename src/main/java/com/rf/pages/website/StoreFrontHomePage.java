@@ -1184,12 +1184,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	public void clickOnAutoshipCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
-		driver.click(By.xpath("//div[@id='bag-special']/span"));;
-		driver.waitForPageLoad();
-	}
-
 	public boolean validateUpdateCartPageIsDisplayed(){
 		driver.pauseExecutionFor(1000);
 		return driver.getCurrentUrl().contains("autoship");
@@ -1878,6 +1872,107 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
+	}
+
+	public void enterNewShippingAddressNameDuringEnrollment(String name){
+		driver.waitForElementPresent(By.id("attention"));
+		driver.findElement(By.id("attention")).clear();
+		driver.findElement(By.id("attention")).sendKeys(name);
+		logger.info("New Shipping Address name is "+name);
+	}
+
+	public void enterNewShippingAddressLine1DuringEnrollment(String addressLine1){
+		driver.findElement(By.id("address-1")).clear();
+		driver.findElement(By.id("address-1")).sendKeys(addressLine1);
+		logger.info("New Shipping Address is "+addressLine1);
+	}
+
+	public void enterNewShippingAddressCityDuringEnrollment(String city){
+		driver.findElement(By.id("city")).clear();
+		driver.findElement(By.id("city")).sendKeys(city);
+		logger.info("New Shipping City is "+city);
+	}
+
+	public void selectNewShippingAddressStateDuringEnrollment(){
+		driver.click(By.id("state"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']//option[2]"));
+		driver.click(By.xpath("//select[@id='state']//option[2]"));
+		logger.info("State/Province selected");
+	}
+
+	public void clickEditShipping(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
+		logger.info("Edit shipping link clicked.");
+	}
+
+	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{
+		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
+		driver.click(By.id("saveShippingAddreessId")); 
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean verifyUpdatedShippingAddress(String address){
+		try{
+			driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div//span[contains(text(),'"+address+"')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(address.charAt(0)) + address.substring(1);
+			if(driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div//span[contains(text(),'"+word+"')]"))){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
+	public boolean isDefaultShippingAddressRadioBtnSelected(String defaultAddressFirstName) throws InterruptedException{
+		try{
+			driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/following::span/input"));
+			return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/following::span/input")).isSelected();
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
+			if(driver.isElementPresent(By.xpath("//span[contains(text(),'"+word+"')]/following::span/input"))){
+				return driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/following::span/input")).isSelected();
+			}else {
+				return false;
+			}
+		}
+	}
+
+	public boolean verifyShippingAddressOnOrderPage(String address){
+		try{
+			driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//span[contains(text(),'"+address+"')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+	public boolean verifyShippingAddressIsPresentOnReviewPage(String name){
+		driver.waitForElementNotPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+name+"')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+name+"')]"));
+	}
+
+	public StoreFrontAccountInfoPage clickOnEditShippingOnReviewAndConfirmPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[4]//a[contains(text(),'Edit')]"));
+		driver.click(By.xpath("//div[@id='summarySection']/div[4]//a[contains(text(),'Edit')]"));
+		logger.info("Edit shipping link clicked on review and confirm page.");
+		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	public void editFirstName(String firstName){
+		driver.waitForElementPresent(By.id("first-name"));
+		driver.clear(By.id("first-name"));
+		driver.type(By.id("first-name"), firstName);
+		logger.info("first name entered as "+firstName);
+	}
+
+	public void enterNewShippingAddressName(String name){
+		driver.waitForElementPresent(By.id("new-attention"));
+		driver.findElement(By.id("new-attention")).clear();
+		driver.findElement(By.id("new-attention")).sendKeys(name);
+		logger.info("New Shipping Address name is "+name);
 	}
 
 }

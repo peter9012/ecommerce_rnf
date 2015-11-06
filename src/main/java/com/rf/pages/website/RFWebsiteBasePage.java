@@ -34,6 +34,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
+	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -1188,5 +1189,24 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return new StoreFrontShippingInfoPage(driver);
 	}
 
+	public void clickAddNewShippingProfileLink() throws InterruptedException{
+		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
+		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
+		logger.info("Ads new shipping profile link clicked");
+	}
+
+	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+	}
+
+	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
+	}
+
+	public void clickOnAutoshipCart(){
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+		driver.click(By.xpath("//div[@id='bag-special']/span"));;
+		driver.waitForPageLoad();
+	}
 
 }

@@ -249,6 +249,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public boolean verifyRadioButtonNotSelectedByDefault(String name){
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+name+"')]/following::input[@checked='checked']"));
 	}
+
+	public boolean verifyRadioButtonIsSelectedByDefault(String name) {
+		String shippingname = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+shippingname+"')]/following::input[@checked='checked']"));
+	}
 }
 
 

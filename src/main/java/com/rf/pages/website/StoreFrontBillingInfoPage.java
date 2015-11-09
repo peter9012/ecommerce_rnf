@@ -168,4 +168,14 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
+
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		try{
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));   
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
 }

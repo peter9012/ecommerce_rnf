@@ -1975,6 +1975,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("New Shipping Address name is "+name);
 	}
 
+	public void clickOnEditBillingProfile() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//a[text()='Edit']"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//a[text()='Edit']"));
+		logger.info("Edit billing profile clicked");
+	}	
+
 }
 
 

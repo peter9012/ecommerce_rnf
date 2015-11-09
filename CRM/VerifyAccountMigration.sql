@@ -319,7 +319,7 @@ INSERT INTO rfoperations.sfdc.BusinessRuleFailure
 SELECT ACCOUNTID , ' Tax Number is not populated', CRM.TAXNUMBER__C 
 FROM rfoperations.sfdc.Rfo_accounts RFO,
 rfoperations.sfdc.crm_accounts CRM
-where RFO.ACCOUNTID=CRM.RFOAccountId__c AND LEN(CRM.TAXNUMBER__C)<1
+where RFO.ACCOUNTID=CRM.RFOAccountId__c AND LEN(CRM.TAXNUMBER__C)<1 AND AccountType='Consultant'
 
 SELECT ' Business Rule Failures loaded in Error table'
 

@@ -667,6 +667,83 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 	}
 
+	//Hybris Project-2030 :: Version : 1 :: Add shipping address during checkout 
+	 @Test
+	 public void testAddShippingAddressDuringCheckout_2030() throws InterruptedException{
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  RFO_DB = driver.getDBNameRFO(); 
+	  String country = driver.getCountry();
+	  String addressLine1 = null;
+	  String city = null;
+	  String postalCode = null;
+	  List<Map<String, Object>> randomConsultantList =  null;
+	  String consultantEmailID = null;
+	  String accountID = null;
+	  String lastName = "lN";
+	  if(country.equalsIgnoreCase("us")){
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	   city = TestConstants.CITY_US;
+	   postalCode = TestConstants.POSTAL_CODE_US;
+	  }
+	  else if(country.equalsIgnoreCase("ca")){
+	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+	   city = TestConstants.CITY_CA;
+	   postalCode = TestConstants.POSTAL_CODE_CA;
+	  } 
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	  while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
+	  //s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	  logger.info("login is successful");
+	  
+	  storeFrontConsultantPage.clickOnWelcomeDropDown();
+	  storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+	  s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+	  //String defaultSelectedShippingAddressNameOnShippingInfo = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
+	  
+	  //Continue with checkout page
+	  storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
+	  storeFrontUpdateCartPage.clickAddToBagButton(country);
+	  storeFrontUpdateCartPage.clickOnCheckoutButton();
+	  //s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+	  //storeFrontUpdateCartPage.clickOnConfirmationOK();
+	  /*storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+	  storeFrontUpdateCartPage.clickOnEditShipping();*/
+	  storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
+	  
+	  String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+	  storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+	  storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+	  storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
+	  storeFrontShippingInfoPage.selectNewShippingAddressState();
+	  storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+	  storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+	  storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
+//	  s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(newShippingAddressName), "New Address has not got associated with the billing profile");
+//	  
+//	  storeFrontConsultantPage.clickOnRodanAndFieldsLogo();
+//	  storeFrontConsultantPage.clickOnWelcomeDropDown();
+//	  storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+//	  String defaultSelectedShippingAddressNameAfterAddAShippingAddress = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
+//	  
+//	  s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(defaultSelectedShippingAddressNameOnShippingInfo, defaultSelectedShippingAddressNameAfterAddAShippingAddress), "New Address has not got associated with the billing profile");
+//	  
+//	  s_assert.assertAll();
+	 }
 
 }
 

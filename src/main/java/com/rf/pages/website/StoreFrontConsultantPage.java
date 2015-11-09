@@ -4,21 +4,15 @@ package com.rf.pages.website;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
-
 
 public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontConsultantPage.class.getName());
 
 	Actions actions;
-	private final By WELCOME_USER_LOC = By.id("account-info-button");
-	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
-	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
+	private final By WELCOME_USER_LOC = By.id("account-info-button");	
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By NEXT_CRP_IMG_LOC = By.xpath("//li[@id='mini-shopping-special-button']//div[contains(text(),'Next')]");
 
@@ -33,21 +27,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
 		return driver.isElementPresent(By.linkText(link));
-	}
-
-	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
-		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);		
-		logger.info("User has clicked on shipping link from welcome drop down");
-		return new StoreFrontShippingInfoPage(driver);
-	}
-
-	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
-		driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
-		driver.click(WELCOME_DD_BILLING_INFO_LINK_LOC);
-		logger.info("User has clicked on billing link from welcome drop down");
-		driver.waitForPageLoad();
-		return new StoreFrontBillingInfoPage(driver);
 	}
 
 	public String getCurrentURL() throws InterruptedException{

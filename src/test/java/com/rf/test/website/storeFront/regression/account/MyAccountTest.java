@@ -4805,9 +4805,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.enterPasswordForReactivationForConsultant();
 		storeFrontHomePage.clickOnLoginToReactiveMyAccountForConsultant();
-
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		// search the same consultant in sponsor's list 
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(CCS);
 		s_assert.assertTrue(storeFrontHomePage.verifyTerminatedConsultantPresentInSponsorList(), "Terminated Consultant is not present in sponsor's list");
@@ -5286,7 +5286,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			//check login with enrolled RC user
 			driver.get(driver.getURL()+"/"+driver.getCountry());
 			storeFrontRCUserPage=storeFrontHomePage.loginAsRCUser(consultantEmailAddress, password);
-			s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(consultantEmailAddress),"unable to login successfully");
+			s_assert.assertFalse(storeFrontHomePage.isCurrentURLShowsError(),"unable to login successfully");
 			s_assert.assertAll();
 		}
 		else{

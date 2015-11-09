@@ -18,9 +18,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 	private final By PAYMENT_BILLING_EDIT_BTN_LOC = By.xpath("//a[@class='editPayment']");
-	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//p[@id='selectedPaymentInfo']/span[1]");
+	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//div[@id='multiple-billing-profiles']/descendant::span[1]");
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
-	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 
@@ -243,14 +242,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		logger.info("State/Province selected");
 	}
 
-	public void enterNewShippingAddressPostalCode(String postalCode){
-		driver.findElement(By.id("postcode")).sendKeys(postalCode);
-	}
-
-	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
-		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
-	}
-
 	public void clickOnSaveShippingProfile() throws InterruptedException{
 		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
 		driver.click(By.id("saveCrpShippingAddress"));
@@ -280,12 +271,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			}
 		}
 
-	}
-
-	public void clickAddNewShippingProfileLink() throws InterruptedException{
-		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
-		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
-		logger.info("Ads new shipping profile link clicked");
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
@@ -431,6 +416,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
@@ -863,6 +849,108 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean verifyDisabledDatesOfTheCalendar(int i){
 		driver.waitForElementPresent(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/.."));
 		return driver.findElement(By.xpath("//td[contains(@class,'undefined')]//span[contains(text(),'"+i+"')]/..")).getAttribute("class").contains("unselectable ");
+	}
+
+	public void clickOnAddANewShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
+		driver.click(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
+	}
+
+	public void selectNewShippingAddressStateOnCartPage(){
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		logger.info("State/Province selected");
+	}
+
+	public boolean  verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/preceding::span[contains(text(),'"+name+"')]"));
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/preceding::span[contains(text(),'"+name+"')]")).getText().contains(name);
+	}
+
+	public void clickOnConfirmationOK(){
+		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
+		driver.click(By.xpath("//input[@value='OK']"));
+		logger.info("Confirmation OK button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public String userNameBeforeEdit(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//div[@class='user-name col-xs-12']"));
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//div[@class='user-name col-xs-12']")).getText();
+	}
+
+	public boolean verifyUpdatedAddressPresentOnOrderPage(String profileName){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]"));
+		String userName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
+		if(userName.equalsIgnoreCase(profileName)){
+			return true;}
+		else {
+			return false;}
+	}
+
+	public void clickOnUseAsEnteredButton(){
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+		}catch(Exception e){
+			logger.info("useAsEntered popUp not Present");
+		}
+	}
+
+	public void addAshippingProfile(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
+		List<WebElement> totalShipingAddress = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div"));
+		if(totalShipingAddress.size() <= 1){
+			driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
+			driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
+			logger.info("add a new shipping address clicked");
+			enterNewShippingAddressName(profileName);
+			enterNewShippingAddressLine1(addressLine);
+			enterNewShippingAddressCity(city);
+			enterNewShippingAddressPhoneNumber(phoneNumber);
+			enterNewShippingAddressPostalCode(postalCode);
+			clickOnSaveShippingProfile();
+			logger.info("save address button clicked");
+		}else{
+			logger.info("It is having more than one shipping address");
+			//List<WebElement> totalRadioButton = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']//span"));
+		}
+	}
+
+	public void clickOnEditOnNotDefaultAddress(){
+		if(driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]//input[@checked='checked']"))==false){
+			driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]//a[contains(text(),'Edit')]"));
+		}else{
+			driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[2]//a[contains(text(),'Edit')]"));
+		}
+		driver.pauseExecutionFor(5000);
+	}
+
+	public void clickOnSaveShippingProfileOnUpdateCrpPage() throws InterruptedException{
+		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
+		driver.click(By.id("saveCrpShippingAddress"));
+		logger.info("Save shipping profile button clicked");
+	}
+
+	public boolean verifyUpdatedAddressPresentUpdateCartPg(String profileNameSecond){
+		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[2]/p/span[1]"));
+		String name = driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[2]/p/span[1]")).getText();
+		System.out.println(name);
+		System.out.println(profileNameSecond);
+		if(name.equalsIgnoreCase(profileNameSecond)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyUpdatedShippingAddress(String address){
+		try{
+			driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div//span[contains(text(),'"+address+"')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
 	}
 
 }

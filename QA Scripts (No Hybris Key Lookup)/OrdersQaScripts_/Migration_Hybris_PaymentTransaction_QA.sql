@@ -237,8 +237,8 @@ CREATE CLUSTERED INDEX MIX_RFtran ON #RFO_tran (OrderID)
 
 SELECT 
 CAST( p_order AS NVARCHAR (100)) AS  p_order
-,CAST( pt.p_currency AS NVARCHAR (100)) AS  p_transactionid
-,CAST( PTE.p_paymenttransaction AS NVARCHAR (100)) AS  p_requestid
+,CAST( pt.p_currency AS NVARCHAR (100)) AS  p_currency
+,CAST( PTE.p_requestid AS NVARCHAR (100)) AS  p_requestid
 ,CAST( p_paymentprovider AS NVARCHAR (100)) AS  p_paymentprovider
 ,CAST( cast ( p_plannedamount AS DECIMAL (8,2)) AS NVARCHAR (100)) AS  p_plannedamount
 ,CAST (pte.PK AS NVARCHAR (100)) AS PK 

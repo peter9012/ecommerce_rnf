@@ -41,10 +41,10 @@ IF OBJECT_ID('rfoperations.sfdc.AccountDifference') IS NOT NULL DROP TABLE rfope
 
 
 SELECT ' Refer Following tables to view test results.
-		1. Rfoperations.dbo.AccountDifference--> Difference in RFO and CRM Accounts
-		2. Rfoperations.dbo.AccountsMissing --> List of Missing AccountIDs from Source and Destination.
-		3. Rfoperations.dbo.Accounts_Dups --> List of Duplicate Account IDs in CRM.
-		4. Rfoperations.dbo.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
+		1. Rfoperations.sfdc.AccountDifference--> Difference in RFO and CRM Accounts
+		2. Rfoperations.sfdc.AccountsMissing --> List of Missing AccountIDs from Source and Destination.
+		3. Rfoperations.sfdc.Accounts_Dups --> List of Duplicate Account IDs in CRM.
+		4. Rfoperations.sfdc.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
 		5. Rfoperations.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
 		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
 		

@@ -15,6 +15,7 @@ import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
+import com.rf.pages.website.StoreFrontOrdersAutoshipStatusPage;
 import com.rf.pages.website.StoreFrontOrdersPage;
 import com.rf.pages.website.StoreFrontPCUserPage;
 import com.rf.pages.website.StoreFrontShippingInfoPage;
@@ -46,9 +47,10 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private String env = null;
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
+	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
-	@Test(enabled=false) //WIP
+	@Test //WIP
 	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
@@ -78,11 +80,10 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -136,7 +137,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
-	@Test(enabled=false) //WIP
+	@Test //WIP
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -178,7 +179,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
-		String userNameBeforeEdit = storeFrontUpdateCartPage.userNameBeforeEdit();
+		//String userNameBeforeEdit = storeFrontUpdateCartPage.userNameBeforeEdit();
 		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
 		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
 		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine);
@@ -197,7 +198,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2037 :: Version : 1 :: Edit shipping address in autoship template 
-	@Test(enabled=false) //WIP
+	@Test //WIP
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -257,7 +258,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
-	@Test 
+	@Test //WIP
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -335,7 +336,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	}
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
-	@Test
+	@Test//WIP
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -403,6 +404,91 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 
 	}
+
+	//Hybris Project-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
+	@Test //WIP
+	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String newShippingAddressName = TestConstants.FIRST_NAME+randomNumber;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		//Enroll a consultant without CRP and pulse
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		//Edit shipping address during enroll the consultant in CRP 
+		storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added
+		storeFrontOrdersAutoshipStatusPage=storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontOrdersAutoshipStatusPage.clickOnEnrollInCRP();
+		storeFrontOrdersAutoshipStatusPage.clickAddToCRPButton(driver.getCountry());
+		storeFrontOrdersAutoshipStatusPage.clickOnCRPCheckout();
+		storeFrontOrdersAutoshipStatusPage.clickOnEditShipping();
+		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedShippingAddress(newShippingAddressName),"Updated shipping address is not present");
+		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//verify the default shipping address is new shipping address
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage=storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.isDefaultAddressRadioBtnSelected(newShippingAddressName),"Default adddress is not the edited address");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName),"Default selected shipping address does not have autoship text");
+		s_assert.assertAll();
+	}
+
 }
 
 

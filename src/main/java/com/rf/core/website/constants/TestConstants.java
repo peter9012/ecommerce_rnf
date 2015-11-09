@@ -326,6 +326,7 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String EDIT_BILLING_PROFILE_NAME = "newBPNameEdited";
 	public static final String ADDRESS_NAME = "newSAName";
 	public static final String SECURITY_NUMBER = "123";
 	public static final String NEW_ADDRESS_LINE1_US = "123 J street";

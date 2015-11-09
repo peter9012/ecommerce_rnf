@@ -547,6 +547,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);

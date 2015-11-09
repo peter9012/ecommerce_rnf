@@ -944,4 +944,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public boolean verifyUpdatedShippingAddress(String address){
+		try{
+			driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div//span[contains(text(),'"+address+"')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
 }

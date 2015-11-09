@@ -564,7 +564,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account 
-	@Test(enabled=false) //WIP //AutoShip order text is not coming
+	@Test
 	public void testAddNewBillingProfileDuringCRPEnrollment_2046() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

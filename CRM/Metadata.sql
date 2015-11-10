@@ -145,6 +145,24 @@ VALUES
 ,(0,'AccountStatusHistory','AccountId','ServerModifiedDate','ServerModifiedDate')
 ,(0,'AccountStatusHistory','AccountId','ChangedByApplication__C','ChangedByApplication__C')
 ,(0,'AccountStatusHistory','AccountId','Reason__C','Reason__C')
+,(0,'KPI','Account__C','Account__c','Account__c')
+,(0,'KPI','Account__C','PeriodStartDate__c','PeriodStartDate__c')
+,(0,'KPI','Account__C','PeriodEndDate__c','PeriodEndDate__c')
+,(0,'KPI','Account__C','PeriodClosedDate__c','PeriodClosedDate__c')
+,(0,'KPI','Account__C','SalesVolume__c','SalesVolume__c')
+,(0,'KPI','Account__C','EstimatedSV__c','EstimatedSV__c')
+,(0,'KPI','Account__C','PSQV__c','PSQV__c')
+,(0,'KPI','Account__C','EstimatedPSQV__c','EstimatedPSQV__c')
+,(0,'KPI','Account__C','ECLegCurrent__c','ECLegCurrent__c')
+,(0,'KPI','Account__C','ECLegPriorMonth__c','ECLegPriorMonth__c')
+,(0,'KPI','Account__C','TitleRecognized__c','TitleRecognized__c')
+,(0,'KPI','Account__C','TitleQualified__c','TitleQualified__c')
+,(0,'KPI','Account__C','TitlePaidAs__c','TitlePaidAs__c')
+,(0,'KPI','Account__C','RFx_ECLegs__c','RFx_ECLegs__c')
+,(0,'KPI','Account__C','RFx_LV_ECLegs__c','RFx_LV_ECLegs__c')
+,(0,'KPI','Account__C','RFx_L1L2_Volume__c','RFx_L1L2_Volume__c')
+,(0,'KPI','Account__C','RFx_L1L6_Volume__c','RFx_L1L6_Volume__c')
+
 
 
 
@@ -186,6 +204,7 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='ShippingProfile' THEN '#ShippingProfiles'
 										WHEN CRMObject='AccountNotes' THEN '#AccountNotes'
 										WHEN CRMObject='AccountStatusHistory' THEN '#AccountStatusHistory'
+										WHEN CRMObject='KPI' THEN '#KPI'
                                      END
                               FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
@@ -204,6 +223,7 @@ WHILE ( @I <= @C )
 										 WHEN CRMObject='ShippingProfile' THEN 'RFOAddressPRofileID__C'
 										 WHEN CRMObject='AccountNotes' THEN 'RFOAccountNotesID__c'
 										 WHEN CRMObject='AccountStatusHistory' THEN 'RFOAccountID__c'
+										 WHEN CRMObject='KPI' THEN 'Account__C'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
@@ -226,6 +246,7 @@ WHILE ( @I <= @C )
 												 WHEN CRMObject='ShippingProfile' THEN 'Rfoperations.sfdc.RFO_ShippingProfiles'
 												 WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.RFO_AccountNotes'
 												 WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.RFO_AccountStatusHistory'
+												 WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.rfo_kpi'
                                              END
 									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
@@ -238,6 +259,7 @@ WHILE ( @I <= @C )
 												  WHEN CRMObject ='ShippingProfile' THEN 'Rfoperations.sfdc.CRM_ShippingProfiles'
 												  WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.CRM_AccountNotes'
 												  WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.CRM_AccountStatusHistory'
+												  WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.crm_kpi'
 											 END
 									FROM     rfoperations.sfdc.CRM_METADATA
                          

@@ -387,7 +387,7 @@ SET @SrcKey= (SELECT RFO_Key
 DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
-SET a.Hybris_Value = b. ' + @DesCol +
+SET a.CRM_Value = b. ' + @DesCol +
 ' FROM rfoperations.sfdc.ErrorLog_Accounts a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)

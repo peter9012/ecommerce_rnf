@@ -598,9 +598,16 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
+		}
+		else{
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
+		}
 		driver.click(By.xpath("////input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");		
 	}
@@ -739,8 +746,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void selectShippingMethodUPS2DayInOrderSummary(){
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
 		driver.click(By.xpath("//select[@id='deliveryMode']"));
-		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[2]"));
-		driver.click(By.xpath("//select[@id='deliveryMode']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'2Day')]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'2Day')]"));
 		driver.waitForLoadingImageToDisappear();
 		logger.info("UPS 2Day shipping method is selected");
 
@@ -953,4 +960,44 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public void clickOnEditBillingProfileDuringEnrollInCRP(String billingProfileName) throws InterruptedException{
+		try{
+			driver.pauseExecutionFor(3000);
+			driver.waitForElementPresent(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+			driver.waitForElementToBeClickable(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"), 20);
+			driver.click(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+		}catch(NoSuchElementException e){
+			try{
+				billingProfileName = WordUtils.uncapitalize(billingProfileName);
+				driver.waitForElementPresent(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+				//driver.waitForElementToBeClickable(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"), 20);
+				driver.click(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+			}catch(NoSuchElementException e1){
+				billingProfileName = billingProfileName.toLowerCase(); 
+				driver.waitForElementPresent(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+				//driver.waitForElementToBeClickable(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"), 20);
+				driver.click(By.xpath("//span[text()='"+billingProfileName+"']/following::a[contains(text(),'Edit')][1]"));
+			}
+		}  
+		logger.info("Edit link for "+billingProfileName+"clicked");
+	}
+
+	public boolean verifyNewlyCreatedShippingAddressIsSelectedByDefault(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+	}
+
+	public void clickOnSaveCRPShippingInfo(){
+		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
+		driver.click(By.id("saveCrpShippingAddress"));
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+		}catch(NoSuchElementException e){
+
+		}
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
+		driver.waitForPageLoad();
+	}
 }

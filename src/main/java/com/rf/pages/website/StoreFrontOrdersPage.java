@@ -812,5 +812,12 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return false;
 	}
 
+	public boolean isBillingAddressContainsName(String name){
+		String uncapitalizeName = WordUtils.uncapitalize(name);
+		String lowerCaseName = name.toLowerCase();
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div/ul/li[3]/p"));
+		return (driver.findElement(By.xpath("//div[@id='main-content']/div/ul/li[3]/p")).getText().contains(name)||driver.findElement(By.xpath("//div[@id='main-content']/div/ul/li[3]/p")).getText().contains(uncapitalizeName)||driver.findElement(By.xpath("//div[@id='main-content']/div/ul/li[3]/p")).getText().contains(lowerCaseName));
+	}
+
 }
 

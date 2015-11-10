@@ -12,6 +12,7 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontBillingInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
@@ -32,9 +33,19 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
+	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private String RFO_DB = null;
-	
-	
+	private String city = null;
+	private String phoneNumber = null;
+	private String postalCode = null;
+	private String kitName = null;
+	private String regimenName = null;
+	private String enrollmentType = null;
+	private String addressLine1 = null;
+	private String country = null;
+	private String env = null;
+
+	//Hybris Project-2047:Edit billing profile on 'Billing Profile' page
 	@Test(enabled=false) //WIP
 	public void testEditBillingProfileOnBillingProfilePage_2047() throws InterruptedException, SQLException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -395,70 +406,6 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-//	//Hybris Project-2051:Edit billing address during consultant enrollment
-//	@Test(enabled=false) //WIP
-//	public void testEditBillingAddressDuringConsultantEnrollment_2051() throws InterruptedException	  {
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		country = driver.getCountry();
-//		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-//		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-//
-//		if(country.equalsIgnoreCase("CA")){
-//			kitName = TestConstants.KIT_NAME_EXPRESS;    
-//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-//			city = TestConstants.CITY_CA;
-//			postalCode = TestConstants.POSTAL_CODE_CA;
-//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-//		}else{
-//			kitName = TestConstants.KIT_NAME_EXPRESS;
-//			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
-//			city = TestConstants.CITY_US;
-//			postalCode = TestConstants.POSTAL_CODE_US;
-//			phoneNumber = TestConstants.PHONE_NUMBER_US;
-//		}
-//
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//		storeFrontHomePage.searchCID();
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-//		storeFrontHomePage.clickNextButton();
-//		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-//		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-//		storeFrontHomePage.clickEnrollmentNextBtn();
-//		//click edit next to main account info and validate setup account page is displayed
-//		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
-//		s_assert.assertTrue(storeFrontHomePage.validateSetUpAccountPageIsDisplayed(), "SetUp account page is not displayed");
-//		//Edit contact Info and re-enter password
-//		storeFrontHomePage.reEnterContactInfoAndPassword();
-//		//validate updated Account Info Details on review and confirmation page
-//		s_assert.assertTrue(storeFrontHomePage.validateUpdatedMainAccountInfo());
-//		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-//		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-//		storeFrontHomePage.checkTheIAgreeCheckBox();
-//		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-//		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-//		storeFrontHomePage.clickOnConfirmAutomaticPayment();
-//		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-//		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-//		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-//		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-//
-//		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited Billing profile is NOT listed on the page");
-//
-//		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//		s_assert.assertAll(); 
-//	}
-
 	// Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
 	@Test(enabled=false) //WIP
 	public void testEditBillingProfileDuringPCRegistration_2050() throws InterruptedException{
@@ -528,6 +475,189 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(editedBillingProfileName),"New Billing Profile is not selected by default on update cart page");
 		s_assert.assertAll();
+	}
+
+	//Hybris Project-2051:Edit billing address during consultant enrollment
+	@Test(enabled=true) //WIP
+	public void testEditBillingAddressDuringConsultantEnrollment_2051() throws InterruptedException	  {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String secondSocialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
+		String lastName = "lN";
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		storeFrontHomePage.openPWSSite(country, env);
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		//Edit the Billing Address on review and confirm page
+		storeFrontHomePage.clickOnEditBillingOnReviewAndConfirmPage();
+		//Edit Billing Info and rename first Name
+		storeFrontHomePage.enterNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(secondSocialInsuranceNumber);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		//validate updated Account Info Details on review and confirmation page
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage=storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		String orderNumber =storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+		s_assert.assertTrue(storeFrontOrdersPage.isBillingAddressContainsName(newBillingProfileName),"Modified Billing address is not present on order page");
+		//validate only updated profile is listed in billing profiles under billing info section
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing info page is not displayed");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName)," Billing address is not on Billing page");
+		s_assert.assertAll();
+
+	}
+
+
+	//Hybris Project-2052:Edit billing profile during CRP enrollment through my account
+	@Test(enabled=false) //WIP
+	public void editBillingprofileDuringCRPEnrollmentThroughMyAccount_2052() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		//Enroll a consultant without CRP and pulse
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+
+		String firstBillingName = TestConstants.FIRST_NAME+randomNum;
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(firstBillingName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		// add a new billing profile
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+
+		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+
+
+		// Enroll in CRP
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontAccountInfoPage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
+		storeFrontAccountInfoPage.clickOnCRPCheckout();
+
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		String lastName = "In";
+		String newBillingProfileNameAfterEdit = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		storeFrontUpdateCartPage.clickOnBillingNextStepButtonDuringEnrollInCRP();
+		//storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		storeFrontUpdateCartPage.clickOnEditBillingProfileDuringEnrollInCRP(newBillingProfileName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileNameAfterEdit),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickOnSetupCRPAccountBtn();
+
+		// verify on billing info page
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontUpdateCartPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileNameAfterEdit),"Edited Billing Profile is selected by default on Billing Profile page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(firstBillingName),"Old Billing Profile is not selected by default on Billing Profile page");
+		//s_assert.assertTrue(storeFrontBillingInfoPage.isAutoshipOrderAddressTextPresent(newBillingProfileNameAfterEdit),"Default selected shipping address does not have autoship text");
+		s_assert.assertAll(); 
 	}
 
 }

@@ -603,34 +603,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.IsElementVisible(driver.findElement(By.id("Congrats")));
 	}
 
-	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("CA")){		
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']]"));
-			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
-			logger.info("Add to CRP button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}
-		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
-			logger.info("Add to CRP button clicked");
-			driver.waitForLoadingImageToDisappear();			
-		}
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
-			driver.click(By.xpath("//input[@value='OK']"));
-			driver.waitForLoadingImageToDisappear();
-		}catch(Exception e){
-
-		}
-	}
-
-	public void clickOnCRPCheckout(){
-		driver.waitForElementPresent(By.id("crpCheckoutButton"));
-		driver.click(By.id("crpCheckoutButton"));
-		logger.info("checkout button clicked");
-		driver.waitForLoadingImageToDisappear();
-	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
@@ -640,16 +612,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("Next button on shipping update cart clicked"); 
 		driver.waitForLoadingImageToDisappear();
 	}
-
-	public boolean verifyOrderConfirmation(){
-		logger.info("Asserting Order Confirmation Message");
-		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']/span"));
-		if(driver.findElement(By.xpath("//div[@id='order-confirm']/span")).getText().equalsIgnoreCase("Your CRP order has been created")){
-			return true;
-		}
-		return false;
-	}
-
+	
 	public void clickOnGoToMyAccountToCheckStatusOfCRP(){
 		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']/a"));
 		driver.click(By.xpath("//div[@id='order-confirm']/a"));	
@@ -1461,6 +1424,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public String getThresholdMessageIsDisplayed(){
+		driver.pauseExecutionFor(3000);
 		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 	}
@@ -1514,6 +1478,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//a[@href='javascript:submitRemove(0);']"));
 		driver.pauseExecutionFor(1500);
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void removeSecondProductFromTheCart(){
@@ -1979,7 +1944,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//a[text()='Edit']"));
 		logger.info("Edit billing profile clicked");
-	}	
+	}
+
+	public void clickOnEditBillingOnReviewAndConfirmPage(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Billing info')]/a[text()='Edit']"));
+		driver.click(By.xpath("//h3[contains(text(),'Billing info')]/a[text()='Edit']"));
+	}
 
 }
 

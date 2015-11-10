@@ -13,7 +13,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	Actions actions;
 	private final By WELCOME_USER_LOC = By.id("account-info-button");	
-	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By NEXT_CRP_IMG_LOC = By.xpath("//li[@id='mini-shopping-special-button']//div[contains(text(),'Next')]");
 
 	public StoreFrontConsultantPage(RFWebsiteDriver driver) {
@@ -35,14 +34,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.getCurrentUrl();
 	}
 
-	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);		
-		logger.info("User has clicked on account link from welcome drop down");
-		driver.pauseExecutionFor(3000);
-		return new StoreFrontAccountInfoPage(driver);
-	}
-
+	
 	public StoreFrontCartAutoShipPage clickNextCRP(){
 		driver.waitForElementPresent(NEXT_CRP_IMG_LOC);
 		driver.click(NEXT_CRP_IMG_LOC);

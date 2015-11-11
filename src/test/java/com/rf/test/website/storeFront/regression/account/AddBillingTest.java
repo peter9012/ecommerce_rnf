@@ -486,7 +486,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2045 :: Version : 1 :: Add billing address during consultant enrollment 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddBillingAddressConsultantEnrollment_2045() throws InterruptedException{
 		String kitName = null;
 		String regimenName = null;

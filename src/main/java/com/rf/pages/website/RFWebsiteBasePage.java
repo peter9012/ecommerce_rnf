@@ -679,9 +679,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOKOnSponsorInformationPopup(){
 		driver.pauseExecutionFor(2000);
 		try{
-		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
-		driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+			//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+			driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
 		}catch(Exception e){
 			logger.info("No sponsor informantion popup appeared");
 		}
@@ -1121,10 +1121,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		catch(Exception e){
 			try{
-				driver.click(By.xpath("//input[@value='EDIT']"));
+				driver.click(By.xpath("//input[@value='Edit']"));
 			}
 			catch(Exception e1){
-				driver.click(By.xpath("//input[@value='edit']"));	
+				driver.click(By.xpath("//input[@value='edit']")); 
 			}
 		}
 	}

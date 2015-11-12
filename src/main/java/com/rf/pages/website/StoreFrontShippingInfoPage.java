@@ -183,8 +183,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 
 	}
+
 	public String getErrorMessageForUSAddressFromUI(){
-		return driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		//  return driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		System.out.println(driver.findElement(By.xpath("//input[@id='postcode']/following::label")).getText());
+		return driver.findElement(By.xpath("//input[@id='postcode']/following::label")).getText();  
 	}
 
 	public void changeMainAddressToQuebec(){

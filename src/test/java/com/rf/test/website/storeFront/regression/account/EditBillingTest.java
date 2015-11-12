@@ -199,7 +199,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-2342:Edit billing profile | My Account | check
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditBillingProfileMyAccountFutureAutoshipNotChecked_2342() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
@@ -266,7 +266,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future a
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 

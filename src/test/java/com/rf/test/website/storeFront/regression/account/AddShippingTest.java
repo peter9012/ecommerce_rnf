@@ -296,7 +296,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	} 
 
 	//Hybris Project-2032 :: Version : 1 :: Add shipping address during PC user or Retail user registration
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringPCRegistration_2032() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -410,7 +410,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

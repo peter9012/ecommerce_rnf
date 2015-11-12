@@ -35,6 +35,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
+	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
+
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -676,9 +678,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOKOnSponsorInformationPopup(){
 		driver.pauseExecutionFor(2000);
-		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
-		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
-		driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+		try{
+			//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+			driver.click(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
+		}catch(Exception e){
+			logger.info("No sponsor informantion popup appeared");
+		}
 	}
 
 	public void clickYesIWantToJoinPCPerksCB(){
@@ -1080,8 +1086,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
-			driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
+			//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
+			//   driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
 		}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -1115,10 +1123,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		catch(Exception e){
 			try{
-				driver.click(By.xpath("//input[@value='EDIT']"));
+				driver.click(By.xpath("//input[@value='Edit']"));
 			}
 			catch(Exception e1){
-				driver.click(By.xpath("//input[@value='edit']"));	
+				driver.click(By.xpath("//input[@value='edit']")); 
 			}
 		}
 	}
@@ -1153,6 +1161,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}	
 
 	public boolean verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(){
+		driver.pauseExecutionFor(2000);
 		if(driver.isElementPresent(By.xpath("//a[text()='Edit PC Perks']"))){
 			return true;
 		}else
@@ -1209,5 +1218,58 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='bag-special']/span"));;
 		driver.waitForPageLoad();
 	}
+
+	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("CA")){		
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']]"));
+			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForLoadingImageToDisappear();			
+		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+	}
+
+	public void clickOnCRPCheckout(){
+		driver.waitForElementPresent(By.id("crpCheckoutButton"));
+		driver.click(By.id("crpCheckoutButton"));
+		logger.info("checkout button clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnBillingNextStepButtonDuringEnrollInCRP() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));
+		driver.click(By.xpath("//*[@id='start-shipping-method']/div[2]/div/input"));
+		logger.info("Next button on clicked"); 
+	}
+
+	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
+		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);		
+		logger.info("User has clicked on account link from welcome drop down");
+		driver.pauseExecutionFor(3000);
+		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	public boolean verifyOrderConfirmation(){
+		logger.info("Asserting Order Confirmation Message");
+		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']/span"));
+		if(driver.findElement(By.xpath("//div[@id='order-confirm']/span")).getText().equalsIgnoreCase("Your CRP order has been created")){
+			return true;
+		}
+		return false;
+	}
+
 
 }

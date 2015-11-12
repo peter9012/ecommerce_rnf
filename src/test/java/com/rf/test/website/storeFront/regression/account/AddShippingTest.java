@@ -11,6 +11,7 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.StoreFrontAccountInfoPage;
 import com.rf.pages.website.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.StoreFrontConsultantPage;
 import com.rf.pages.website.StoreFrontHomePage;
@@ -30,6 +31,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
+	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
+	private String RFO_DB = null;
 	private String city = null;
 	private String phoneNumber = null;
 	private String postalCode = null;
@@ -38,7 +41,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private String enrollmentType = null;
 	private String addressLine1 = null;
 	private String country = null;
-	private String RFO_DB = null;	
+
 
 	//Hybris Project-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page
 	@Test
@@ -293,7 +296,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	} 
 
 	//Hybris Project-2032 :: Version : 1 :: Add shipping address during PC user or Retail user registration
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringPCRegistration_2032() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -368,6 +371,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
+		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 
@@ -406,7 +410,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -481,6 +485,98 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyRadioButtonIsSelectedByDefault(firstName), "Shipping address was given in main account info is not selected by default");
+
+	}
+
+	//Hybris Project-2034 :: Version : 1 :: Add shipping address during CRP enrollment through my account 
+	@Test(enabled=false) //WIP
+	public void testAddShippingAddressDuringCRPEnrollment_2034() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String newShippingAddressName = TestConstants.FIRST_NAME+randomNum;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		//Enroll a consultant without CRP and pulse
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		// Enroll in CRP
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontAccountInfoPage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
+		storeFrontAccountInfoPage.clickOnCRPCheckout();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
+		String lastName = "In";
+		String newShippingName = newShippingAddressName+randomNum;
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+		storeFrontUpdateCartPage.selectNewShippingAddressStateOnCartPage();
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+		/*storeFrontShippingInfoPage.selectFirstCardNumber();
+	   storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
+	   storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();*/
+
+		storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyCreatedShippingAddressIsSelectedByDefault(newShippingName), "Newly created shipping address is not selected by default");
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
+
+		// verify on shipping info page
+		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingName), "New Shipping address is not listed on Shipping profile page");
+		s_assert.assertAll();
 
 	}
 }

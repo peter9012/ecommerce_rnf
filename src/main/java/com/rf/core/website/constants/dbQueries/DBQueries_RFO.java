@@ -285,7 +285,8 @@ public class DBQueries_RFO {
 					"FROM    RFOperations.[Security].[AccountSecurity] "+
 					"WHERE   AccountID ='%s' ";
 
-	public static String GET_ORDERID_RFO = "select OrderID from Hybris.orders where OrderNumber = '%S'";
+	public static String GET_ORDERID_RFO = "select * from Hybris.orders where OrderNumber = '%s'";
+	public static String GET_ORDER_STATUS = "select Name from RFO_Reference.OrderStatus where orderStatusId='%s'";
 
 	public static String GET_ACTIVE_CONSULTANT_WITH_ADHOC_ORDER_4287_RFO =
 			"SELECT  Username "+

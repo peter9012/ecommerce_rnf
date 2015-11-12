@@ -7,12 +7,27 @@
 	<test name="Regression_Suite">
 		<classes>
 
-			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest" />
-		 
+<!-- 			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
 		 	<methods>
 			<include name="testEditAllowMySpouseInMyAccount_86" />
 			</methods>
-			</classes>
+			</class> -->
+			
+			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
+			<methods>
+<!-- 			<include name="testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143" />
+			<include name="testOrdersPageUIForRCUser_HP2_1981" /> -->
+			<include name="testVerifyUserCanCancelPulseSubscriptionThroughMyAccount_2233" />
+			<include name="ReactivateTerminatedConsultantAndSearchInSponsorList_4311" />
+			<include name="testConsultantToRCDowngrade_4821" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest">
+				<methods>
+				<include name="testExpressEnrollmentBusinessPorfolioKitRedefineRegimen_2204" />
+				</methods>
+			</class>
+		</classes>
 			
 		</test>
 </suite>	

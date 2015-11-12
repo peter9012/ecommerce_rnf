@@ -50,7 +50,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
@@ -137,7 +137,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -198,7 +198,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2037 :: Version : 1 :: Edit shipping address in autoship template 
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -258,7 +258,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -336,7 +336,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	}
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
-	@Test//WIP
+	@Test(enabled=false)//WIP
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -406,7 +406,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
-	@Test //WIP
+	@Test(enabled=false) //WIP
 	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

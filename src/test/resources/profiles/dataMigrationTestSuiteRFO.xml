@@ -22,8 +22,8 @@
 			<class name="com.rf.test.website.storeFront.dataMigration.rfo.order.ViewOrderDetailsTest"></class>
 			
 							<!-- PWS -->
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.PWSLoginTest"></class>
-			
+<!-- 			<class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.PWSLoginTest"></class>
+ -->			
 		</classes>
 	</test>
 </suite>

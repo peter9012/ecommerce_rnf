@@ -22,7 +22,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='SIGN IN']");
-	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//div[@id='sponsorPage']/div/div/div[2]/div/div[1]/a");
+	//private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//div[@id='sponsorPage']/div/div/div[2]/div/div[1]/a");
+	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don’t Have an R+F Sponsor?')]");
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 
 	private String addressLine1=null;
@@ -467,7 +468,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter a valid')]")).isDisplayed()){
+		if(driver.findElement(By.xpath("//input[@id='card-nr']/following::label[1][contains(text(),'Please enter a valid')]")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -476,7 +477,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateEmptyCreditCardMessage(){
-		if(driver.findElement(By.xpath("//div[contains(text(),'This field is required')]")).isDisplayed()){
+		if(driver.findElement(By.xpath("//input[@id='card-nr']/following::label[1][contains(text(),'This field is required')]")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -524,14 +525,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public String getErrorMessageForInvalidSSN(){
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		driver.waitForElementPresent(By.xpath("//input[@id='S-S-N']/following::label[1]"));
+		String errorMessage=driver.findElement(By.xpath("//input[@id='S-S-N']/following::label[1]")).getText();
 		return errorMessage;
 	}
 
 	public String getInvalidPasswordMessage(){
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		driver.waitForElementPresent(By.xpath("//input[@id='new-password-account']/following::label[1]"));
+		String errorMessage=driver.findElement(By.xpath("//input[@id='new-password-account']/following::label[1]")).getText();
+		return errorMessage;
+	}
+
+	public String getInvalidPasswordNotmatchingMessage(){
+		driver.waitForElementPresent(By.xpath("//input[@id='new-password-account2']/following::label[1]"));
+		String errorMessage=driver.findElement(By.xpath("//input[@id='new-password-account2']/following::label[1]")).getText();
 		return errorMessage;
 	}
 
@@ -612,7 +619,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("Next button on shipping update cart clicked"); 
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public void clickOnGoToMyAccountToCheckStatusOfCRP(){
 		driver.waitForElementPresent(By.xpath("//div[@id='order-confirm']/a"));
 		driver.click(By.xpath("//div[@id='order-confirm']/a"));	
@@ -1601,8 +1608,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnEnrollUnderLastUpline(){
-		driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']/a"));
-		driver.click(By.xpath("//form[@id='inactiveConsultant180Form']/a"));
+		driver.waitForElementPresent(By.id("enrollUnderLastUpline"));
+		driver.pauseExecutionFor(1000);
+		driver.click(By.id("enrollUnderLastUpline"));
 	}
 
 	public void enterPasswordForReactivationForConsultant(){
@@ -1679,8 +1687,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyEnterValueForMandatoryFieldPopup(){
-		driver.waitForElementPresent(By.xpath("//div[contains(text(),'This field is required.')]"));
-		return driver.findElement(By.xpath("//div[contains(text(),'This field is required.')]")).getText().contains("This field is required.");
+		driver.waitForElementPresent(By.xpath("//input[@id='address-1']/following::label[1][contains(text(),'This field is required')]"));
+		return driver.findElement(By.xpath("//input[@id='address-1']/following::label[1][contains(text(),'This field is required')]")).getText().contains("This field is required.");
 	}
 
 	public void clickEnrollmentNextBtnWithoutClickOnUseAsEnteredAddress() throws InterruptedException{
@@ -1760,7 +1768,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardExpiryDate(){
-		if(driver.findElement(By.xpath("//div[contains(text(),'Must be a valid Expiration Date')]")).isDisplayed()){
+		if(driver.findElement(By.xpath("//input[@id='monthYear']/following::label[1][contains(text(),'Must be a valid Expiration Date')]")).isDisplayed()){
 			return true;
 		}
 		else{

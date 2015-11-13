@@ -462,7 +462,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(20000);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -948,7 +948,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return PWS;
 	}
 
-	public void openPWSSite(String country,String env){
+	public String openPWSSite(String country,String env){
 		while(true){
 			driver.get(getBizPWS(country, env));
 			driver.waitForPageLoad();
@@ -957,6 +957,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			else
 				break;
 		}	
+		return driver.getCurrentUrl();
 	}
 
 	public void switchToChildWindow(){

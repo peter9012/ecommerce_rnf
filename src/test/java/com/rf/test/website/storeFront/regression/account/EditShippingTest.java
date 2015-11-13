@@ -50,7 +50,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
@@ -137,7 +137,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -198,7 +198,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2037 :: Version : 1 :: Edit shipping address in autoship template 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;

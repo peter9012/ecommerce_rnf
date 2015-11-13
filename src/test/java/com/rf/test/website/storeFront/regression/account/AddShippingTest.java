@@ -489,7 +489,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2034 :: Version : 1 :: Add shipping address during CRP enrollment through my account 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringCRPEnrollment_2034() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

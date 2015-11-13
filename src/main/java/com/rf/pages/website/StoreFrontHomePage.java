@@ -1281,6 +1281,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else
 			return false;
 	}
+	
+	public void clickOnJoinMyTeamBtn(){
+		driver.click(By.xpath("//a[@class='joinMe']"));
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
+	}
 
 	public void openPWS(String pws){
 		driver.get(pws);
@@ -1302,6 +1308,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			String bizPws = pws.replaceAll("com",biz);
 			return bizPws;
 		}
+	}
+
+	public String convertBizSiteToComSite(String pws){
+		String com  = "com";
+		String biz ="biz";
+		if(pws.contains(biz))
+			pws = pws.replaceAll(biz,com);
+		return pws;
+	}
+
+	public String convertComSiteToBizSite(String pws){
+		String com  = "com";
+		String biz ="biz";
+		if(pws.contains(com))
+			pws = pws.replaceAll(com,biz);
+		return pws;		
 	}
 
 

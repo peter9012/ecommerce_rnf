@@ -1295,7 +1295,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 
-
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -2792,14 +2791,18 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String bizPws = storeFrontHomePage.getBizPWS(country, env);
-		String comPws = storeFrontHomePage.convertBizToComPWS(bizPws);
-		storeFrontHomePage.openPWS(comPws);
+		String PWS = storeFrontHomePage.getBizPWS(country, env);
+		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+		//String comPws = storeFrontHomePage.convertBizToComPWS(bizPws);
+		storeFrontHomePage.openPWS(PWS);
 		storeFrontHomePage.clickOnUserName();
 		s_assert.assertFalse(storeFrontHomePage.verifyJoinMyTeamLinkPresent(), "Join My Team Link present on the Com page");
-		storeFrontHomePage.openPWS(bizPws);
+		PWS = storeFrontHomePage.convertComSiteToBizSite(PWS);
+		storeFrontHomePage.openPWS(PWS);
 		storeFrontHomePage.clickOnUserName();
 		s_assert.assertTrue(storeFrontHomePage.verifyJoinMyTeamLinkPresent(), "Join My Team Link is not present on the Biz page");
+		storeFrontHomePage.clickOnJoinMyTeamBtn();
+		s_assert.assertTrue(driver.getCurrentUrl().contains(".biz/"+driver.getCountry()+"/consultant/enrollment/kitproduct"),"user is not on biz enrollment kit page after clicking 'Join My Team' btn");
 		s_assert.assertAll(); 
 	}
 
@@ -2815,6 +2818,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		storeFrontHomePage.clickOnUserName();
@@ -2837,7 +2841,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
-		consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
 
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
@@ -2862,6 +2866,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
 		// For .com site
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		storeFrontHomePage.clickOnUserName();
@@ -2871,7 +2876,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.getFavoriteProductNameIsPresentAfterClickonPersinalizeLink().length()>0, "Favorite product text is not present on meet your consultant page");
 
 		// For .biz site
-		consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		storeFrontHomePage.clickOnUserName();
@@ -2898,15 +2903,17 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
 
 		// for .com site
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		storeFrontHomePage.clickOnUserName();
 		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(), "Why I joined Rodan + Fields block is not Present on meet your consultant page ");
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfProductsOnMeetYourConsultantPage(), "What I love most about R+F products block is not Present on meet your consultant page ");
-
+		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfBusinessOnMeetYourConsultantPage(), "What I love most about my R+F Business block is not Present on meet your consultant page ");
+		
 		// For .biz site
-		consultantPWSURL = storeFrontHomePage.convertBizToComPWS(consultantPWSURL);
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
 		storeFrontHomePage.clickOnUserName();
@@ -2920,7 +2927,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Project-3854:Register as RC with Different CA Sponsor WITH Pulse
 	@Test
 	public void testRegisterAsRCWithDifferentCASponserWithPulse_3854() throws InterruptedException {
-
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 			RFO_DB = driver.getDBNameRFO();  
@@ -2942,7 +2948,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,canadianSponserHavingPulse),RFO_DB);
 			String idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
 
-			storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
+			String PWS = storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 			// Products are displayed?
@@ -2990,7 +2996,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			//Fetch the PWS url and assert
 			String currentPWSUrl=driver.getCurrentUrl();
-			s_assert.assertFalse(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(TestConstants.SPONSER_PWS,currentPWSUrl),"PWS after enrollment are same");
+			s_assert.assertFalse(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(PWS,currentPWSUrl),"PWS of the RC after enrollment is same as the one it started enrollment");
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			s_assert.assertAll(); 
 
@@ -3024,13 +3030,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Two products are in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("2"), "number of products in the cart is NOT 2");
-		logger.info("2 products are successfully added to the cart");
-
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
 
@@ -3060,9 +3059,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		logout();
 		//click on the rodanfields Logo
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
+		logout();
+
 		//PC-Enrollment
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -3070,8 +3071,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 
-		//Select a product with the price less than $80 and proceed to buy it
-		storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
 		//Cart page is displayed?
@@ -3091,15 +3090,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		//Enter the User information and DO  check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-
-		//Pop for PC threshold validation
-		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Enter the Main account info and click next
 		storeFrontHomePage.enterMainAccountInfo();
@@ -3124,6 +3114,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "PC is not registered to corporate site");
 		s_assert.assertAll(); 
 	}
 

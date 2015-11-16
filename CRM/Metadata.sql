@@ -162,6 +162,19 @@ VALUES
 ,(0,'KPI','Account__C','RFx_LV_ECLegs__c','RFx_LV_ECLegs__c')
 ,(0,'KPI','Account__C','RFx_L1L2_Volume__c','RFx_L1L2_Volume__c')
 ,(0,'KPI','Account__C','RFx_L1L6_Volume__c','RFx_L1L6_Volume__c')
+,(0,'Site','RFOAccountID__C','RFOSiteId__c','RFOSiteId__c')
+,(0,'Site','RFOAccountID__C','SitePrefix__c','SitePrefix__c')
+,(0,'Site','RFOAccountID__C','StartDate__c','StartDate__c')
+,(0,'Site','RFOAccountID__C','EndDate__c','EndDate__c')
+,(0,'Site','RFOAccountID__C','LastModifiedDate','LastModifiedDate')
+,(0,'Site','RFOAccountID__C','ChangedByApplication__c','ChangedByApplication__c')
+,(0,'Site','RFOAccountID__C','ChangedByUser__c','ChangedByUser__c')
+,(0,'Site','RFOAccountID__C','IsActive__c','IsActive__c')
+,(0,'Site','RFOAccountID__C','ExpirationDate__c','ExpirationDate__c')
+,(0,'Site','RFOAccountID__C','PrimaryDomain__c','PrimaryDomain__c')
+,(0,'Site','RFOAccountID__C','BusinessDomain__c','BusinessDomain__c')
+,(0,'Site','RFOAccountID__C','EmailAddress__c','EmailAddress__c')
+
 
 
 

@@ -30,7 +30,7 @@ FROM    commissions.sfdc.stg_commissionskpi ACL
 SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.PerformanceKPI
 
 										   
-SELECT  @RFOPP AS RFO_AccountPolicyCount, @CRMPP AS CRM_AccountPolicyCount, (@RFOPP - @CRMPP) AS Difference 
+SELECT  @RFOPP AS RFO_KPICount, @CRMPP AS CRM_KPICountCount, (@RFOPP - @CRMPP) AS Difference 
 INTO rfoperations.sfdc.KPIDifference;
 
 SELECT  AccountId AS RFO_AccountId,

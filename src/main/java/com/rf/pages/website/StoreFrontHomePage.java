@@ -1281,7 +1281,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else
 			return false;
 	}
-	
+
 	public void clickOnJoinMyTeamBtn(){
 		driver.click(By.xpath("//a[@class='joinMe']"));
 		driver.pauseExecutionFor(1000);
@@ -1986,6 +1986,94 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//h3[contains(text(),'Billing info')]/a[text()='Edit']"));
 	}
 
+	public String getProductName(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a"));
+		String productName=driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a")).getText();
+		logger.info("fetched product name is "+productName);
+		return productName;
+	}
+
+	public boolean verifyNumberOfProductsInMiniCart(String numberOfProductsInCart){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.xpath("//a[@id='shopping-cart']")); 
+		WebElement allProducts = driver.findElement(By.xpath("//a[@id='shopping-cart']"));
+		actions.moveToElement(allProducts).build().perform();
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForElementPresent(By.xpath("//ul[@id='subtotal']/li/span[1]")); 
+		String productCount=driver.findElement(By.xpath("//ul[@id='subtotal']/li/span[1]")).getText();
+		return productCount.contains(numberOfProductsInCart);
+	}
+
+	public boolean isProductImageExist(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='big-picture']/img"));
+		return driver.isElementPresent(By.xpath("//div[@id='big-picture']/img"));
+	}
+
+	public boolean verifyProductName(String ProductName){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='product-details']/div[1]/div/h1"));
+		String name=driver.findElement(By.xpath("//div[@id='product-details']/div[1]/div/h1")).getText();
+		return name.contains(ProductName);
+	}
+
+	public void mouseHoverProductAndClickQuickInfo(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img")); 
+		WebElement allProducts = driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img"));
+		actions.moveToElement(allProducts).build().perform();
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
+		driver.click(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
+		driver.pauseExecutionFor(5000);
+	}
+
+	public boolean isModalWindowExists(){
+		driver.quickWaitForElementPresent(By.id("popup-quickinfo"));
+		return driver.isElementPresent(By.id("popup-quickinfo"));
+	}
+
+	public void updateProductQuantityOnModalWindowAndProceedToBuy(String qty){
+		driver.waitForElementPresent(By.id("quickinfo-quantity"));
+		driver.findElement(By.id("quickinfo-quantity")).clear();
+		driver.findElement(By.id("quickinfo-quantity")).sendKeys(qty);
+		logger.info("quantity added is "+qty);
+		driver.click(By.xpath("//form[@id='productDetailFormQuickInfo']/input[3]"));
+		driver.pauseExecutionFor(5500);
+		logger.info("Update button clicked after adding quantity");
+		driver.waitForPageLoad();
+	}
+
+	public void clickMiniCart(){
+		driver.waitForElementPresent(By.xpath("//a[@id='shopping-cart']"));
+		driver.click(By.xpath("//a[@id='shopping-cart']"));
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public double getSubTotalOnShoppingCartPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='subtotal-shopping']//span"));
+		String total = driver.findElement(By.xpath("//div[@id='subtotal-shopping']//span")).getText();
+		String total1[] = total.split("\\$");
+		return Double.parseDouble(total1[1]);
+	}
+
+
+	public boolean verifySubTotalAccordingToQuantity(String qty,double subTotalOfAddedProduct,double subTotalOfAfterUpdate){
+		double quantity = Double.parseDouble(qty);
+		double totalAfterUpdate = (quantity*subTotalOfAddedProduct);
+		if(totalAfterUpdate == (subTotalOfAfterUpdate)){
+			return true;}
+		else{return false;}
+	}
+
+	public void clickProductLinkForProductDetail(){
+		driver.waitForElementPresent(By.xpath("//div[@id='mini-shopping']/div[1]/div/div[2]/div[1]/a"));
+		driver.click(By.xpath("//div[@id='mini-shopping']/div[1]/div/div[2]/div[1]/a"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateQuickShopScreen(){
+		driver.pauseExecutionFor(1500);
+		return driver.getCurrentUrl().contains("quickShop");
+	}
 }
 
 

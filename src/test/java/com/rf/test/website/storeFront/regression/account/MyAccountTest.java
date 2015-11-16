@@ -2911,7 +2911,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfWhyIJoinedOnMeetYourConsultantPage(), "Why I joined Rodan + Fields block is not Present on meet your consultant page ");
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfProductsOnMeetYourConsultantPage(), "What I love most about R+F products block is not Present on meet your consultant page ");
 		s_assert.assertTrue(storeFrontConsultantPage.verifyBlockOfBusinessOnMeetYourConsultantPage(), "What I love most about my R+F Business block is not Present on meet your consultant page ");
-		
+
 		// For .biz site
 		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
 		storeFrontHomePage.openPWS(consultantPWSURL);
@@ -4348,9 +4348,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			String CCS = null;
 			RFO_DB = driver.getDBNameRFO(); 
 			List<Map<String, Object>> sponsorIdList =  null;
-
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
@@ -4381,12 +4379,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 			s_assert.assertAll();
 		}
-		else{
+		else {
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
-
-
 
 	//Hybris Project-4660 :: Version : 1 :: Change the username of RC user and Login with updated username
 	@Test
@@ -5508,7 +5504,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> orderStatusList =  null;
 		List<Map<String, Object>> orderGrandTotalList =  null;
-		List<Map<String, Object>> orderDateList =  null;
 		List<Map<String, Object>> randomRCList =  null;
 		String orderStatusDB = null;
 		String orderGrandTotalDB = null;
@@ -5530,17 +5525,18 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 
 		// Get Order Id
-		List<Map<String,Object>> getOrderIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
-		String orderId = String.valueOf(getValueFromQueryResult(getOrderIDList, "OrderID"));
+		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
+		String orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
+		String orderStatusId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderStatusID"));
 
 		/*		//assert for order number with RFO
-		  orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
-		  orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
-		  logger.info("Order Number from RFO DB is "+orderNumberDB);
-		  s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");
+			  orderNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO,  rcUserEmailAddress),RFO_DB);
+			  orderNumberDB = (String) getValueFromQueryResult(orderNumberList, "OrderNumber");
+			  logger.info("Order Number from RFO DB is "+orderNumberDB);
+			  s_assert.assertTrue(storeFrontOrdersPage.verifyOrderNumber(orderNumberDB),"Order Number on UI is different from RFO DB");
 		 */
 		//assert for order status with RFO
-		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
+		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS, orderStatusId),RFO_DB);
 		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
 		logger.info("Order Status from RFO DB is "+orderStatusDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),"Order Status on UI is different from RFO DB");
@@ -5553,13 +5549,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
 
 		//assert for order date with RFO
-		orderDateList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO, rcUserEmailAddress),RFO_DB);
-		orderDateDB = String.valueOf (getValueFromQueryResult(orderDateList, "CompletionDate"));
+		orderDateDB = String.valueOf (getValueFromQueryResult(getOrderDetailsList, "CompletionDate"));
+		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 
 		s_assert.assertAll();  
 	}
+
 
 	//Hybris Project-2142:Check Shipping and Handling Fee for UPS Ground for Order total 0-999999
 	@Test
@@ -6070,7 +6067,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String pcUserEmailID = null;
 		List<Map<String, Object>> orderStatusList =  null;
 		List<Map<String, Object>> orderGrandTotalList =  null;
-		List<Map<String, Object>> orderDateList =  null;
 		String orderStatusDB = null;
 		String orderGrandTotalDB = null;
 		String orderDateDB = null;
@@ -6122,13 +6118,15 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		// Get Order Number
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		// Get Order Id
-		List<Map<String,Object>> getOrderIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
-		orderId = String.valueOf(getValueFromQueryResult(getOrderIDList, "OrderID"));
+		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
+		orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
+		String orderStatusId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderStatusID"));
 		//assert for order status with RFO
-		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO, pcUserEmailID),RFO_DB);
+		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS, orderStatusId),RFO_DB);
 		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
 		logger.info("Order Status from RFO DB is "+orderStatusDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB),"Order Status on UI is different from RFO DB");
+
 		//assert for grand total with RFO
 		orderGrandTotalList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4287_RFO, orderId),RFO_DB);
 		DecimalFormat dff = new DecimalFormat("#.00");
@@ -6137,8 +6135,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
 
 		//assert for order date with RFO
-		orderDateList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DATE_FOR_CRP_ORDER_HISTORY_QUERY_RFO, pcUserEmailID),RFO_DB);
-		orderDateDB = String.valueOf (getValueFromQueryResult(orderDateList, "CompletionDate"));
+		orderDateDB = String.valueOf (getValueFromQueryResult(getOrderDetailsList, "CompletionDate"));
 		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 
@@ -7782,6 +7779,303 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(handlingFromUI.contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingFromUI);
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(shippingMethodFromUI.contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+shippingMethodFromUI);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2132:Verify The Mini Functionality
+	@Test(enabled=false) //WIP
+	public void testMiniFunctionality_2132() throws InterruptedException{
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		//storeFrontHomePage.applyPriceFilterLowToHigh();
+		String selectedProductName=storeFrontHomePage.getProductName();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+
+		//click on continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+		//verify the number of products in mini cart
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInMiniCart("1"),"number of products in the mini cart is not 1");
+
+		//click on product link for product detail page
+		storeFrontHomePage.clickProductLinkForProductDetail();
+
+		//verify product details
+		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
+
+		//navigate back to quick shop page
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		storeFrontHomePage.updateProductQuantityOnModalWindowAndProceedToBuy("3");
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("4"), "number of products in the cart is NOT 4");
+		//click on continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+
+		//click on mini cart icon
+		storeFrontHomePage.clickMiniCart();
+		//remove all products from mini cart
+		storeFrontHomePage.removeFirstProductFromTheCart();
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("0"), "number of products in the cart is NOT 0");
+		storeFrontHomePage.clickOnContinueShoppingLinkOnEmptyShoppingCartPage();
+		//storeFrontHomePage.verifyNumberOfProductsInMiniCart("0");
+		s_assert.assertAll();	
+
+	}
+
+	//Hybris Project-2170:Login as Existing Consultant and Place an Adhoc Order - check Alert Message
+	@Test(enabled=false) //WIP
+	public void testCreateAdhocOrderConsultant_2170() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnPlaceOrderButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"checkout confirmation popup not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+		storeFrontUpdateCartPage.verifyConsultantIsAbleToContinueCheckoutProcess();
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2113:Reduce the Quantity
+	@Test
+	public void testReduceTheQuantity_2113() throws InterruptedException{
+		String qtyIncrease = "2";
+		String qtyReduce = "1";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButton();
+		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
+		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");
+		storeFrontHomePage.addQuantityOfProduct(qtyReduce);
+		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		double subTotalAfterReduce = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyReduce,subTotalOfAddedProduct,subTotalAfterReduce),"subTotal is not updated with reduced quantity");
+		s_assert.assertAll();	  
+
+	}
+
+	//Hybris Project-2120:Increase the Quantity
+	@Test(enabled=false) //WIP
+	public void testIncreseTheQuantity_2120() throws InterruptedException{
+		String qtyIncrease = "2";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButton();
+		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
+		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains("Product quantity has been updated."),"update message not coming as expected");
+		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2121:Remove Product from the cart
+	@Test(enabled=false) //WIP
+	public void testRemoveProductFromTheCart_2121() throws InterruptedException{
+		String qtyIncrease = "2";
+		String qtyReduce = "1";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButton();
+		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
+		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");
+		storeFrontHomePage.addQuantityOfProduct(qtyReduce);
+		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		double subTotalAfterReduce = storeFrontHomePage.getSubTotalOnShoppingCartPage();
+		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyReduce,subTotalOfAddedProduct,subTotalAfterReduce),"subTotal is not updated with reduced quantity");
+		s_assert.assertAll();
+
+	}
+
+	//Hybris Project-2293 withoutloggin in add product to cart--> click ContinueShopping
+	@Test(enabled=false) //WIP
+	public void testWithOutLoginQuickShopScreen_2293() throws InterruptedException	{
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Click on Continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+
+		//validate quick-shop screen
+		s_assert.assertTrue(storeFrontHomePage.validateQuickShopScreen(),"QuickShop page is not displayed");
+		s_assert.assertAll();
+	}
+
+
+	// Hybris Project-2292:Continue Shopping - logged in
+	@Test(enabled=false) //WIP
+	public void testQuickShopScreenWithRegisteredUser_2292() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//For Consultant
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Click on Continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+		//validate quick-shop screen
+		s_assert.assertTrue(storeFrontHomePage.validateQuickShopScreen(),"QuickShop page is not displayed");
+		logout();
+
+		//For PC User
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Click on Continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+		//validate quick-shop screen
+		s_assert.assertTrue(storeFrontHomePage.validateQuickShopScreen(),"QuickShop page is not displayed");
+		logout();
+
+		//For RC User
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Click on Continue shopping link
+		storeFrontHomePage.clickOnContinueShoppingLink();
+		//validate quick-shop screen
+		s_assert.assertTrue(storeFrontHomePage.validateQuickShopScreen(),"QuickShop page is not displayed");
+
 		s_assert.assertAll();
 	}
 }

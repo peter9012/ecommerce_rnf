@@ -1000,4 +1000,26 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
+
+	public boolean verifyCheckoutConfirmation(){
+		try{
+			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+	public boolean verifyConsultantIsAbleToContinueCheckoutProcess(){
+		try{
+			driver.quickWaitForElementPresent(By.id("saveShippingInfo"));
+			if(driver.isElementPresent(By.id("saveShippingInfo"))){
+				return true;
+			}
+		}catch(Exception e){
+			return false;
+		}
+		return false;
+	}
+
 }

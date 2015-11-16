@@ -258,7 +258,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -336,7 +336,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	}
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -406,7 +406,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

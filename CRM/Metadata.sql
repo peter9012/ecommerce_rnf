@@ -205,6 +205,7 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='AccountNotes' THEN '#AccountNotes'
 										WHEN CRMObject='AccountStatusHistory' THEN '#AccountStatusHistory'
 										WHEN CRMObject='KPI' THEN '#KPI'
+										WHEN CRMObject='Site' THEN '#Site'
                                      END
                               FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
@@ -224,6 +225,7 @@ WHILE ( @I <= @C )
 										 WHEN CRMObject='AccountNotes' THEN 'RFOAccountNotesID__c'
 										 WHEN CRMObject='AccountStatusHistory' THEN 'RFOAccountID__c'
 										 WHEN CRMObject='KPI' THEN 'Account__C'
+										 WHEN CRMObject='Site' THEN 'RFOAccountID__C'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
@@ -247,6 +249,7 @@ WHILE ( @I <= @C )
 												 WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.RFO_AccountNotes'
 												 WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.RFO_AccountStatusHistory'
 												 WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.rfo_kpi'
+												 WHEN CRMObject='Site' THEN 'rfoperations.sfdc.rfo_Site'
                                              END
 									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
@@ -260,6 +263,7 @@ WHILE ( @I <= @C )
 												  WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.CRM_AccountNotes'
 												  WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.CRM_AccountStatusHistory'
 												  WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.crm_kpi'
+												  WHEN CRMObject='Site' THEN 'rfoperations.sfdc.crm_Site'
 											 END
 									FROM     rfoperations.sfdc.CRM_METADATA
                          

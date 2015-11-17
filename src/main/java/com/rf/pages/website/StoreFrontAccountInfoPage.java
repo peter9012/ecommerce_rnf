@@ -566,7 +566,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateSubscribeToPulse(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.quickWaitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 	}
 
@@ -616,6 +616,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return true;
 	}
+
 	public boolean errorMessagePresent(){
 		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
 		if(driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed()){
@@ -625,4 +626,82 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			return false;
 		}
 	}
+
+	public boolean verifyCrpStatusAfterReactivation() {
+		driver.quickWaitForElementPresent(By.id("crp-enroll"));
+		return driver.isElementPresent(By.id("crp-enroll"));
+
+	}
+
+	public boolean verifyPulseStatusAfterReactivation(String currentPulseStatus) {
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span"));
+		if(driver.findElement(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span")).getText().equals(currentPulseStatus)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public String getCRPStatusFromUI() {
+		return driver.findElement(By.xpath("//div[@id='currentCRPStatus']/span")).getText();
+	}
+
+	public String getPulseStatusFromUI() {
+		return driver.findElement(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span")).getText();
+	}
+
+	public void clickOndelayOrCancelPCPerks(){
+		driver.quickWaitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+	}
+
+	public boolean isYesChangeMyAutoshipDateButtonPresent() {
+		driver.waitForElementPresent(By.id("change-autoship-button"));
+		return driver.isElementPresent(By.id("change-autoship-button"));
+	}
+
+	public boolean isCancelPCPerksLinkPresent() {
+		driver.waitForElementPresent(By.xpath("//a[@id='cancel-pc-perks-button']"));
+		return driver.isElementPresent(By.xpath("//a[@id='cancel-pc-perks-button']"));
+
+	}
+
+	public void clickOnCancelMyPulseSubscription(){
+		try{
+			if(validateSubscribeToPulse()==true){
+				cancelPulseSubscription();
+			}
+		}catch(Exception e){
+
+		}
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnOnlySubscribeToPulseBtn(){
+		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
+		driver.click(By.id("subscribe_pulse_button_new"));
+		driver.pauseExecutionFor(1000);
+	}
+
+	public void clickOnNextDuringPulseSubscribtion(){
+		driver.waitForElementPresent(By.id("pulse-enroll"));
+		driver.click(By.id("pulse-enroll"));
+		driver.waitForPageLoad();
+	}
+
+	public void enterWebsitePrefixName(String name){
+		driver.waitForElementPresent(By.id("webSitePrefix"));
+		driver.type(By.id("webSitePrefix"), name);
+		clickOnNextDuringPulseSubscribtion();
+	}
+
+	public boolean verifyWebsitePrefixSuggestionIsPresent(){
+		List<WebElement> noOfSuggestions = driver.findElements(By.xpath("//p[@id='prefix-validation']/span"));
+		if(noOfSuggestions.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

@@ -139,20 +139,21 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
 	@Test
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO(); 
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			city = TestConstants.CITY_US;
 			addressLine = TestConstants.ADDRESS_LINE_1_US;
-			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_US;
+			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_US+randomNum;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 		}else{
 			city = TestConstants.CITY_CA;
 			addressLine = TestConstants.ADDRESS_LINE_1_CA;
-			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_CA;
+			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_CA+randomNum;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		}
@@ -181,18 +182,19 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//String userNameBeforeEdit = storeFrontUpdateCartPage.userNameBeforeEdit();
 		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine);
 		storeFrontUpdateCartPage.enterNewShippingAddressName(profileName);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
 		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(),"order is not placed successfully");
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentOnOrderPage(profileName),"shipping address is not updated on order page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.getUpdatedAddressPresentOnOrderConfirmationPage().equalsIgnoreCase(profileName),"shipping address name expected is"+profileName+"while shippig address coming on order confirmation page is "+storeFrontUpdateCartPage.getUpdatedAddressPresentOnOrderConfirmationPage());
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(profileName), "New Shipping address is not listed on Shipping profile page");
 		s_assert.assertAll();
 
 	}

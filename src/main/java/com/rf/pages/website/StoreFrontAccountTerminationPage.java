@@ -137,4 +137,30 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.waitForLoadingImageToDisappear();   
 	}
+
+	public boolean verifyMessageWithoutComments(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p[1]"));
+		String message = driver.findElement(By.xpath("//div[@id='globalMessages']//p[1]")).getText();
+		System.out.println(message);
+		if(message.equalsIgnoreCase("Comment is required.")){
+			return true;
+		}else{
+			return false;}
+	}
+
+	public boolean verifyMessageWithoutReason(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p[1]"));
+		String message = driver.findElement(By.xpath("//div[@id='globalMessages']//p[1]")).getText();
+		System.out.println(message);
+		if(message.equalsIgnoreCase("Reason is required.")){
+			return true;
+		}else{
+			return false;}
+	}
+
+	public void clickOnAgreementCheckBox(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@class='repaired-checkbox']"));
+		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
+	}
+	
 }

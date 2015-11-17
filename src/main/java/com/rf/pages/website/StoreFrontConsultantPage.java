@@ -34,7 +34,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.getCurrentUrl();
 	}
 
-	
+
 	public StoreFrontCartAutoShipPage clickNextCRP(){
 		driver.waitForElementPresent(NEXT_CRP_IMG_LOC);
 		driver.click(NEXT_CRP_IMG_LOC);
@@ -156,6 +156,22 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 			return true;
 		}else
 			return false;
+	}
+
+	public void clickOnMeetYourConsultantLink(){
+		driver.pauseExecutionFor(1500);
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+			driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		}catch(Exception e){
+			logger.info("Meet Your Consultant link is not present");
+			e.printStackTrace();
+		}
+	}
+
+	public boolean validateMeetYourConsultantPage(){
+		driver.pauseExecutionFor(2000);
+		return driver.getCurrentUrl().contains("MeetYourConsultantPage");
 	}
 
 }

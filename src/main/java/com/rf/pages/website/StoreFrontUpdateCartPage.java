@@ -147,6 +147,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+			driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+		}
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address']"));
 		driver.click(By.xpath("//input[@class='use_address']"));
 		logger.info("Next button on shipping update cart clicked");
@@ -598,16 +602,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		}
-		else{
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
-		}
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
 		driver.click(By.xpath("////input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");		
 	}
@@ -864,8 +861,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
-		driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+		}
 		logger.info("State/Province selected");
 	}
 
@@ -887,13 +891,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//div[@class='user-name col-xs-12']")).getText();
 	}
 
-	public boolean verifyUpdatedAddressPresentOnOrderPage(String profileName){
+	public String getUpdatedAddressPresentOnOrderConfirmationPage(){
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]"));
-		String userName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
-		if(userName.equalsIgnoreCase(profileName)){
-			return true;}
-		else {
-			return false;}
+		String shippingAddresName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
+		return shippingAddresName.trim();
 	}
 
 	public void clickOnUseAsEnteredButton(){

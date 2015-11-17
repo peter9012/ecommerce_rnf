@@ -810,13 +810,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-1304 :: Version : 1 :: Switch from RC to PC (Not existing user) 
 	@Test
-	public void testSwitchFromRCToPC_1304() throws InterruptedException	{
+	public void testSwitchFromRCToPC_1304() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();		
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
 
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
@@ -837,8 +837,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		//Enter the User information and DONOT  check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+
 		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
 		storeFrontHomePage.enterMainAccountInfo();
+
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -1289,13 +1291,17 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	//Hybris Project-2198 :: Version : 1 :: Switch from RC to PC (Under Same Consultant) 
 	@Test
 	public void testSwitchFromRCToPCUnderSameConsultant_2198() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		// create RC User
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
@@ -1303,24 +1309,25 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//Select a product and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-		//Click on PlaceOrder
-		//storeFrontHomePage.clickOnCheckoutButton();
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Log in or create an account page is displayed?
-		/* s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-	  logger.info("Login or Create Account page is displayed");*/
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
 
-		//Enter the User information and DONOT  check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, emailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		logger.info("Main account details entered");
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -1329,11 +1336,39 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
+
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
 		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		//Validate welcome PC Perks Message
 		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+
 		s_assert.assertAll(); 
 	}
 
@@ -4329,7 +4364,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-
 		s_assert.assertAll();
 
 	}
@@ -7901,7 +7935,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2120:Increase the Quantity
-	@Test(enabled=false) //WIP
+	@Test
 	public void testIncreseTheQuantity_2120() throws InterruptedException{
 		String qtyIncrease = "2";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -7917,7 +7951,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2121:Remove Product from the cart
-	@Test(enabled=false) //WIP
+	@Test
 	public void testRemoveProductFromTheCart_2121() throws InterruptedException{
 		String qtyIncrease = "2";
 		String qtyReduce = "1";
@@ -7938,7 +7972,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2293 withoutloggin in add product to cart--> click ContinueShopping
-	@Test(enabled=false) //WIP
+	@Test
 	public void testWithOutLoginQuickShopScreen_2293() throws InterruptedException	{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -7963,7 +7997,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Project-2292:Continue Shopping - logged in
-	@Test(enabled=false) //WIP
+	@Test
 	public void testQuickShopScreenWithRegisteredUser_2292() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -8017,9 +8051,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountIdForPCUser);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -8051,9 +8085,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountIdForRCUser);
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -8078,4 +8112,1318 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-2307:Product Listing Scren should have Buy Now button --> click Buy Now--> product is added to the cart
+	@Test 
+	public void testProductListHaveBuyNowButtonAndProductAddedToCart_2307() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User and verify Buy Now Button.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Select a product  and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//login as RC User And Verify Buy Now Button.
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Select a product  and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//login as consultant and verify Buy Now Button.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("loginError for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Select a product  and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+		//verify Buy now button for all users without login.
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button without login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Select a product  and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+	}
+
+	//Hybris Project-2309:Add Product froom Quick Info Screen
+	@Test(enabled=false) //WIP
+	public void testAddProductFromQuickInfoScreen_2309() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User and Add Product From Quick Info Screen
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		storeFrontHomePage.clickAddToBagButtonOnQuickInfoPopup();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+		//login as RC User And Verify Buy Now Button.
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		storeFrontHomePage.clickAddToBagButtonOnQuickInfoPopup();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+		//login as consultant and verify Buy Now Button.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		storeFrontHomePage.clickAddToBagButtonOnQuickInfoPopup();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+	}
+
+	//Hybris Project-2323:Check Buy Now Link
+	@Test(enabled=false) //WIP 
+	public void testCheckBuyNowLink_2323() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User and verify Buy Now Button.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+
+		//login as RC User And Verify Buy Now Button.
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+		//login as consultant and verify Buy Now Button.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		//verify add to bag button on quick info popup 
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		//verify add to bag button on product detail page
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+	}
+
+	//Hybris Project-2319:Check Quick Info Screen layout and informations
+	@Test(enabled=false) //WIP
+	public void testVerifyQuickInfoScreenLayoutAndProductDetails_2319() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User and verify Buy Now Button.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		String selectedProductName=storeFrontHomePage.getProductName();
+		String selectedProductPrice=storeFrontHomePage.getProductPrice();
+
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		//verify product details
+		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(selectedProductPrice),"Product price is not as expected");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+
+		//login as RC User And Verify Buy Now Button.
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		String selectedProduct=storeFrontHomePage.getProductName();
+		String priceOfProduct=storeFrontHomePage.getProductPrice();
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		//verify product details
+		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(priceOfProduct),"Product price is not as expected");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
+		//login as consultant and verify Buy Now Button.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		String ProductName=storeFrontHomePage.getProductName();
+		String productPrice=storeFrontHomePage.getProductPrice();
+		//verify product list page has buy now button After login.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(),"Add to Bag Button is not present");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		//verify add to bag button on quick info popup 
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+		storeFrontHomePage.clickViewProductDetailLink();
+		//verify product details
+		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductName(ProductName),"Product name is not as expected");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(productPrice),"Product price is not as expected");
+	}
+
+	// Hybris Project-3844:Verify links in Meet Your consultant Banner
+	@Test(enabled=false) //WIP
+	public void testVerifyLinksInMeetYourConsultantBanner_3844() {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//click meet your consultant banner link
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		//validate we are navigated to "Meet your Consultant" page on .COM
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3847:Verify Footer Links on .COM home Page
+	@Test(enabled=false) //WIP
+	public void testVerifyFooterLinksOnHomePage_3847()	 {
+		//Navgate to app home page
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//validate RF Connection link
+		s_assert.assertTrue(storeFrontHomePage.validateRFConnectionLink(),"RF Connection link is not redirecting to proper screen");
+		//validate Carrers link
+		s_assert.assertTrue(storeFrontHomePage.validateCareersLink(),"Careers link is not redirecting to proper screen");
+		//validtae Contact-Us Link
+		s_assert.assertTrue(storeFrontHomePage.validateContactUsLink(),"Contact Us link is not redirecting to proper screen");
+		//validate Disclaimer link
+		s_assert.assertTrue(storeFrontHomePage.validateDisclaimerLink(),"Disclaimer link is not redirecting to proper screen");
+		//validate Privacy-policy link
+		s_assert.assertTrue(storeFrontHomePage.validatePrivacyPolicyLink(),"PrivacyPolicy link is not redirecting to proper screen");
+		//validate Satisfaction-Guarantee link
+		s_assert.assertTrue(storeFrontHomePage.validateSatisfactionGuaranteeLink(),"SatisfactionGuarantee link is not redirecting to proper screen");
+		//validate Terms&Conditions link
+		s_assert.assertTrue(storeFrontHomePage.validateTermsConditionsLink(),"TermsConditions link is not redirecting to proper screen");
+		//validate pressroom link
+		s_assert.assertTrue(storeFrontHomePage.validatePressRoomLink(),"PressRoom link is not redirecting to proper screen");
+		//validate country flag dropdown
+		s_assert.assertTrue(storeFrontHomePage.validateCountryFlagDropDownBtn(),"Country flag Drop down button is not present in UI on homepage");
+		//validate Derm RF Link
+		s_assert.assertTrue(storeFrontHomePage.validateDermRFLink()," Derm RF link is not redirecting to proper screen");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3845:Verify the Links in the top Navigation on .COM home Page
+	@Test(enabled=false) //WIP
+	public void testVerifyLinksInTheTopNavigationOnHomePage_3845()	 {
+		//Navgate to app home page
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//click on logo and validate the homepage
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.validateHomePage(),"Home page is not displayed ");
+		//click login  link and validate username,password,login button & forgot pwd link
+		s_assert.assertTrue(storeFrontHomePage.validateLoginFunctionality(),"All the Elements of login functionality are not displayed!");
+		//validate 'shop','About' &'Become a Consultant' Menu 
+		s_assert.assertTrue(storeFrontHomePage.validateTopNavigationMenuElements(),"Top Menu Navigation Elements are not displayed/present");
+		//validate country flag dropdown
+		s_assert.assertTrue(storeFrontHomePage.validateCountryFlagDropDownBtn(),"Country flag Drop down button is not present in UI on homepage");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4663:Consultant Account Termination
+	@Test(enabled=false) //WIP
+	public void testConsultantAccountTermination_4663() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		/*storeFrontHomePage.clickOnOurBusinessLink();
+	   storeFrontHomePage.clickOnOurEnrollNowLink();*/
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		//  s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+		//  s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.addQuantityOfProduct("5");
+		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage = new StoreFrontAccountTerminationPage(driver);
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutComments(),"comment is required message not present on UI");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutReason(),"Reason is required message not present on UI");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.clickOnAgreementCheckBox();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		//  storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		storeFrontAccountTerminationPage.clickCancelTerminationButton();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyWelcomeDropdownToCheckUserRegistered(),"Account is Terminated");
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(),"account Termination confirmation pop up is not present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4665:consultant re-enrollment within 6 month
+	@Test(enabled=false) //WIP
+	public void testConsultantRe_enrollmentWithin6month_4665() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		String currentCRPStatus = storeFrontAccountInfoPage.getCRPStatusFromUI();
+		System.out.println(currentCRPStatus);
+		String currentPulseStatus = storeFrontAccountInfoPage.getPulseStatusFromUI();
+		System.out.println(currentPulseStatus);
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage = new StoreFrontAccountTerminationPage(driver);
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.clickOnAgreementCheckBox();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.clickOnEnrollUnderLastUpline();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		//  storeFrontHomePage.clickOnEnrollmentNextButton();
+		storeFrontHomePage.enterPasswordForReactivationForConsultant();
+		storeFrontHomePage.clickOnLoginToReactiveMyAccountForConsultant();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCrpStatusAfterReactivation(),"CRP Status is present");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPulseStatusAfterReactivation(currentPulseStatus),"pulse status is not same as old status");
+		//  storeFrontHomePage.clickNextButton();
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4803:PC account termination for US new PC
+	@Test(enabled=false) //WIP
+	public void testPCAccountTermination_4803() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		/*storeFrontHomePage.clickOnShopLink();
+	   storeFrontHomePage.clickOnAllProductsLink();*/
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product with the price less than $80 and proceed to buy it
+		//  storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		//  s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		/*storeFrontHomePage.clickPlaceOrderBtn();
+	  s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	  logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontPCUserPage = new StoreFrontPCUserPage(driver); 
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+		storeFrontPCUserPage.cancelMyPCPerksAct();
+		storeFrontHomePage.loginAsPCUser(emailAddress, password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2324:Category Product List page
+	@Test(enabled=false) //WIP
+	public void testVerifyCategoryProductListPage_2324() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(1,6);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User User and verify Product Details and category.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//verify the different categories and verify the products in present in each category.
+		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
+		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
+		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
+		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
+
+		//Select Random Product in Redefine Section And verify Its Details on product list page.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButton(randomNum),"Add to PC Perks button is not present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2325:CAtegory Product List for Consultant
+	@Test(enabled=false) //WIP
+	public void testVerifyCategoryProductListPage_2325() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(1,6);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As Consultant User and verify Product Details and category.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//verify the different categories and verify the products in present in each category.
+		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
+		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
+		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
+		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
+
+		//Select Random Product in Redefine Section And verify Its Details on product list page.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButton(randomNum),"Add to CRP button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifySVValue(randomNum),"SV Value for consultant is not present");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-2326:Category Product List for Retail Customers & PC
+	@Test(enabled=false) //WIP 
+	public void testVerifyCategoryProductListPage_2326() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(1,6);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As RC User User and verify Product Details and category.
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//verify the different categories and verify the products in present in each category.
+		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
+		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
+		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
+		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
+
+		//Select Random Product in Redefine Section And verify Its Details on product list page.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//login As PC User User and verify Product Details and category.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}	
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//verify the different categories and verify the products in present in each category.
+		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
+		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
+		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
+		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
+
+		//Select Random Product in Redefine Section And verify Its Details on product list page.
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButton(randomNum),"Add to PC Perks button is not present");
+		s_assert.assertAll();
+	}
+
+
+	//Hybris Project-4648:Cancellation Message for PC account Termination
+	@Test(enabled=false) //WIP
+	public void testCancellationMessageforPCaccountTermination() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontAccountInfoPage.clickOndelayOrCancelPCPerks();
+		s_assert.assertTrue(storeFrontAccountInfoPage.isYesChangeMyAutoshipDateButtonPresent(),"Yes Change My Autoship Date is Not Presnt on UI");
+		s_assert.assertTrue(storeFrontAccountInfoPage.isCancelPCPerksLinkPresent(),"Cancel PC Perks link Not Present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4765:Consultant can choose a default PWS prefix upon enrolling in Pulse
+	@Test(enabled=false) //WIP
+	public void testConsultantCanChooseDefaultPWSPrefixUponEnrollingInPulse_4765() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
+		storeFrontAccountInfoPage.clickOnOnlySubscribeToPulseBtn();
+
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyWebsitePrefixSuggestionIsPresent(), "There are no suggestions for website prefix");
+		storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
+
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+		storeFrontUpdateCartPage.clickOnSubscribeBtn();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		s_assert.assertTrue(storeFrontAccountInfoPage.validateSubscribeToPulse(),"pulse is not subscribed for the user");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4766:Consultant can choose a custom PWS prefix upon enrolling in Pulse
+	@Test(enabled=false) //WIP
+	public void testVerifyConsultantCanChooseCustomPWSPrefixUponEnrollingInPulse_4766() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
+		storeFrontAccountInfoPage.clickOnOnlySubscribeToPulseBtn();
+		int randomNum = CommonUtils.getRandomNum(1000, 100000);
+		String websitePrefixName = TestConstants.FIRST_NAME+randomNum;
+		storeFrontAccountInfoPage.enterWebsitePrefixName(websitePrefixName);
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyWebsitePrefixSuggestionIsPresent(), "There are no suggestions for website prefix");
+		storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+		storeFrontUpdateCartPage.clickOnSubscribeBtn();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		s_assert.assertTrue(storeFrontAccountInfoPage.validateSubscribeToPulse(),"pulse is not subscribed for the user");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3765:RC2PC User - Place Adhoc Order from spsonsor's PWS site check Sposnor of Order
+	@Test(enabled=false) //WIP
+	public void testPlaceAdhocOrderFromSponsorPWSSiteCheckSponsorOfOrder_3765() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		// create RC User
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, emailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
+
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
+		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Validate welcome PC Perks Message
+		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String url = driver.getCurrentUrl();
+
+		//Validate welcome PC Perks Message
+		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+
+		// again placed adhoc order
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String pwsAfterOrderPlaced = driver.getCurrentUrl();		
+		s_assert.assertTrue(storeFrontHomePage.verifyUrlAfterplacedAnAdhocOrder(url, pwsAfterOrderPlaced), "pws before and are not equal");
+		s_assert.assertAll(); 
+	}
+
 }

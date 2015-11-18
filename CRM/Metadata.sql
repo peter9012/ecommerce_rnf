@@ -74,23 +74,23 @@ VALUES
 ,(0,'Accounts','AccountID','SponsorId','ParentSponsor__c')
 ,(0,'Accounts','AccountID','SubRegion','SubRegion__c')
 ,(0,'Accounts','AccountID','TimeZoneId','Timezone__c')
-,(0,'Contacts','RFAccountContactID__C','ContactType__c,','ContactType__c,')
-,(0,'Contacts','RFAccountContactID__C','Account,','Account,')
-,(0,'Contacts','RFAccountContactID__C','BirthDate,','BirthDate,')
-,(0,'Contacts','RFAccountContactID__C','ChangedByApplication__c,','ChangedByApplication__c,')
-,(0,'Contacts','RFAccountContactID__C','ChangedByUser__C,','ChangedByUser__C,')
-,(0,'Contacts','RFAccountContactID__C','DISPLAYTAXNUMBER__c,','DISPLAYTAXNUMBER__c,')
-,(0,'Contacts','RFAccountContactID__C','FirstName  ,','FirstName  ,')
-,(0,'Contacts','RFAccountContactID__C','Gender__c,','Gender__c,')
-,(0,'Contacts','RFAccountContactID__C','LastName ,','LastName ,')
-,(0,'Contacts','RFAccountContactID__C','LegalName__C ,','LegalName__C ,')
-,(0,'Contacts','RFAccountContactID__C','MiddleName ,','MiddleName ,')
-,(0,'Contacts','RFAccountContactID__C','NickName__c ,','NickName__c ,')
-,(0,'Contacts','RFAccountContactID__C','TaxNumber__c,','TaxNumber__c,')
-,(0,'Contacts','RFAccountContactID__C','LastModifiedDate,','LastModifiedDate,')
-,(0,'Contacts','RFAccountContactID__C','MainPhone__c,','MainPhone__c,')
-,(0,'Contacts','RFAccountContactID__C','MobilePhone,','MobilePhone,')
-,(0,'Contacts','RFAccountContactID__C','MainEmail__c,','MainEmail__c,')
+,(0,'Contacts','RFAccountContactID__C','ContactType__c','ContactType__c')
+,(0,'Contacts','RFAccountContactID__C','Account','Account')
+,(0,'Contacts','RFAccountContactID__C','BirthDate','BirthDate')
+,(0,'Contacts','RFAccountContactID__C','ChangedByApplication__c','ChangedByApplication__c')
+,(0,'Contacts','RFAccountContactID__C','ChangedByUser__C','ChangedByUser__C')
+,(0,'Contacts','RFAccountContactID__C','DISPLAYTAXNUMBER__c','DISPLAYTAXNUMBER__c')
+,(0,'Contacts','RFAccountContactID__C','FirstName  ','FirstName ')
+,(0,'Contacts','RFAccountContactID__C','Gender__c','Gender__c')
+,(0,'Contacts','RFAccountContactID__C','LastName','LastName')
+,(0,'Contacts','RFAccountContactID__C','LegalName__C ','LegalName__C')
+,(0,'Contacts','RFAccountContactID__C','MiddleName ','MiddleName')
+,(0,'Contacts','RFAccountContactID__C','NickName__c ','NickName__c ')
+,(0,'Contacts','RFAccountContactID__C','TaxNumber__c','TaxNumber__c')
+,(0,'Contacts','RFAccountContactID__C','LastModifiedDate','LastModifiedDate')
+,(0,'Contacts','RFAccountContactID__C','MainPhone__c','MainPhone__c')
+,(0,'Contacts','RFAccountContactID__C','MobilePhone','MobilePhone')
+,(0,'Contacts','RFAccountContactID__C','MainEmail__c','MainEmail__c')
 ,(0,'Contacts','RFAccountContactID__C','SecondaryEmail__c ','SecondaryEmail__c ')
 ,(0,'PaymentProfile','PaymentProfileId','PAYMENTPROFILEID','RFOPaymentProfileId__c')
 ,(0,'PaymentProfile','PaymentProfileId','CHANGEDBYAPPLICATION','ChangedByApplication__c')
@@ -175,7 +175,10 @@ VALUES
 ,(0,'Site','RFOAccountID__C','BusinessDomain__c','BusinessDomain__c')
 ,(0,'Site','RFOAccountID__C','EmailAddress__c','EmailAddress__c')
 
-
+,(0,'Policy','Account__C','Policy__c','Policy__c')
+,(0,'Policy','Account__C','DateAccepted__c','DateAccepted__c')
+,(0,'Policy','Account__C','ChangedByApplication__c','ChangedByApplication__c')
+,(0,'Policy','Account__C','ChangedByUser__c','ChangedByUser__c')
 
 
 
@@ -219,6 +222,7 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='AccountStatusHistory' THEN '#AccountStatusHistory'
 										WHEN CRMObject='KPI' THEN '#KPI'
 										WHEN CRMObject='Site' THEN '#Site'
+										WHEN CRMObject='Policy' THEN '#Policy'
                                      END
                               FROM      rfoperations.sfdc.CRM_METADATA
                               WHERE     ColID = @I
@@ -239,6 +243,7 @@ WHILE ( @I <= @C )
 										 WHEN CRMObject='AccountStatusHistory' THEN 'RFOAccountID__c'
 										 WHEN CRMObject='KPI' THEN 'Account__C'
 										 WHEN CRMObject='Site' THEN 'RFOAccountID__C'
+										 WHEN CRMObject='Policy' THEN 'Account__C'
 									END
                                 FROM     rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
@@ -263,6 +268,7 @@ WHILE ( @I <= @C )
 												 WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.RFO_AccountStatusHistory'
 												 WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.rfo_kpi'
 												 WHEN CRMObject='Site' THEN 'rfoperations.sfdc.rfo_Site'
+												 WHEN CRMObject='Policy' THEN 'rfoperations.sfdc.rfo_Policy'
                                              END
 									FROM     rfoperations.sfdc.CRM_METADATA
 									WHERE    ColID = @I
@@ -277,6 +283,7 @@ WHILE ( @I <= @C )
 												  WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.CRM_AccountStatusHistory'
 												  WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.crm_kpi'
 												  WHEN CRMObject='Site' THEN 'rfoperations.sfdc.crm_Site'
+												  WHEN CRMObject='Policy' THEN 'rfoperations.sfdc.crm_Policy'
 											 END
 									FROM     rfoperations.sfdc.CRM_METADATA
                          

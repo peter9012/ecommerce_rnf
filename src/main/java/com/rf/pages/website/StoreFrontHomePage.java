@@ -1639,9 +1639,15 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnEnrollUnderLastUpline(){
-		driver.waitForElementPresent(By.id("enrollUnderLastUpline"));
-		driver.pauseExecutionFor(1000);
-		driver.click(By.id("enrollUnderLastUpline"));
+		try{
+			driver.waitForElementPresent(By.id("enrollUnderLastUpline"));
+			driver.pauseExecutionFor(1000);
+			driver.click(By.id("enrollUnderLastUpline"));
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
+			driver.pauseExecutionFor(1000);
+			driver.click(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
+		}
 	}
 
 	public void enterPasswordForReactivationForConsultant(){
@@ -1785,7 +1791,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyCRPSelectionpageIsDisplayed(){
-		return driver.findElement(By.xpath("//div[contains(text(),'CRP Selection')]")).getText().contains("CRP Selection");
+		return driver.findElement(By.xpath("//div[@id='main-content']/div[text()='6.Consultant Replenishment Program Selection']")).getText().contains("6.Consultant Replenishment Program Selection");
 	}
 
 	public void selectInvalidNewBillingCardExpirationDate(){
@@ -2159,7 +2165,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(){
 		driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 		driver.type(By.xpath("//input[@id='sponsor-name-id']"), "test");
-		driver.click(By.xpath("//input[@value='Search']"));
+		//		if(driver.getCountry().equalsIgnoreCase("ca"))
+		//			driver.click(By.xpath("//input[@value='Search']"));
 		driver.click(By.xpath("//input[@value='Search']"));
 	}
 
@@ -2420,7 +2427,175 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifyUrlAfterplacedAnAdhocOrder(String urlBeforeOrderPlaced, String urlAfterOrderPlaced){
 		return urlBeforeOrderPlaced.equalsIgnoreCase(urlAfterOrderPlaced);
+	}
 
+	public String getProductName(int num){
+		if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]/h3/a"));
+			String productName=driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]/h3/a")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}else if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/h3/a"));
+			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/h3/a")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}
+		return null;
+	}
+
+	public String getProductPrice(int num){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/p/span[1]"));
+			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/p/span[1]")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div["+num+"]/p/span[1]"));
+			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[4]/div[2]/div["+num+"]/p/span[1]")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}
+		return null;
+	}
+
+	public void mouseHoverProductAndClickQuickInfo(int num){
+		if(driver.getCountry().equalsIgnoreCase("US")){
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			driver.waitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[1]/img")); 
+			WebElement allProducts = driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[1]/img"));
+			actions.moveToElement(allProducts).build().perform();
+			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[2]/input"));
+			driver.click(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[2]/input"));
+			driver.pauseExecutionFor(5000);
+		}else if(driver.getCountry().equalsIgnoreCase("CA")){
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]/a[1]/img")); 
+			WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]/a[1]/img"));
+			actions.moveToElement(allProducts).build().perform();
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]//a[2]/input"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]//a[2]/input"));
+			driver.pauseExecutionFor(5000);
+		}
+	}
+
+	public boolean verifyAddToPCPerksButtonOnQuickInfoPopup(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
+		return driver.isElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
+	}
+
+	public boolean verifyAddToPCPerksButtonOnProductDetailPage(){
+		driver.quickWaitForElementPresent(By.xpath("//input[@value='Add to PC Perks']"));
+		return driver.isElementPresent(By.xpath("//input[@value='Add to PC Perks']"));
+	}
+
+	public boolean verifyProductLongDescription(){
+		driver.quickWaitForElementPresent(By.id("description-box"));
+		return driver.isElementPresent(By.id("description-box"));
+	}
+
+	public boolean verifyAddToCRPButtonOnQuickInfoPopup(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
+		return driver.isElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
+	}
+
+	public boolean verifyAddToCRPButtonOnProductDetailPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='shop']/div[3]/div[1]/div[2]/form[2]//input[3]"));
+		return driver.isElementPresent(By.xpath("//div[@id='shop']/div[3]/div[1]/div[2]/form[2]//input[3]"));
+	}
+
+	public boolean verifyPriceFromLowToHigh(){
+		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));{
+			String firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			System.out.println("1st "+firstProductPrice);
+			System.out.println("2nd "+secondProductPrice);
+			System.out.println("3rd "+thirdProductPrice);
+
+			if(Double.parseDouble(thirdProductPrice)>Double.parseDouble(secondProductPrice)){
+				if(Double.parseDouble(secondProductPrice)>Double.parseDouble(firstProductPrice)){
+					return true;
+				}else{
+					return false;
+				}
+			}return false;
+		}
+	}
+
+
+	public boolean verifyPriceFromHighTolow(){
+		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));{
+			String firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			System.out.println("1st "+firstProductPrice);
+			System.out.println("2nd "+secondProductPrice);
+			System.out.println("3rd "+thirdProductPrice);
+
+			if(Double.parseDouble(firstProductPrice)>Double.parseDouble(secondProductPrice)){
+				if(Double.parseDouble(secondProductPrice)>Double.parseDouble(thirdProductPrice)){
+					return true;
+				}else{
+					return false;
+				}
+			}return false;
+		}
+
+	}
+
+	public boolean verifyPriceAfterDeselectThefilter(String priceBeforeApplyFilter){
+		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
+	}
+
+	public String getProductNameBeforeApplyProductFilter(){
+		System.out.println("Hi");
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/h2"));
+		System.out.println(driver.findElement(By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/h2")).getText());
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/h2")).getText();
+	}
+
+	public int getSizeOfProductFilter(){
+		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
+		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')]/li")).size();
+		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		return sizeOfProduct;
+	}
+
+	public boolean verifyProductFilterIsApply(int i){
+		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
+		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')]/li[1]"));
+		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
+		driver.click(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[@class='pull-right']//input/.."));
+		driver.waitForPageLoad();
+		String productNameFromUI = driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim();
+		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
+		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		driver.pauseExecutionFor(1000);
+		driver.click(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[@class='pull-right']//input/.."));
+		driver.waitForPageLoad();
+		return productNameFromUI.contains(productNameFromfilter);
+	}
+
+	public void clickOnClearAll(){
+		driver.click(By.xpath("//a[contains(text(),'Clear All')]"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyProductNameAfterRemoveProductFilter(String productNameBeforeApplyFilter){
+		driver.waitForElementPresent(By.xpath("//div[@class='quick-shop-section-header']/h2"));
+		return driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim().contains(productNameBeforeApplyFilter.trim());
+	}
+
+	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
+		driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
+		driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.click(By.xpath("//input[@value='Search']"));
+		}
+		driver.click(By.xpath("//input[@value='Search']"));
 	}
 }
 

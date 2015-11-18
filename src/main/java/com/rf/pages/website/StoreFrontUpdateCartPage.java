@@ -605,7 +605,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		driver.click(By.xpath("////input[@value='Setup CRP Account']"));
+		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");		
 	}
 
@@ -1021,6 +1021,21 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			return false;
 		}
 		return false;
+	}
+
+	public boolean verifySVValueOnCartPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='cart-summary-module']/div[5]/div[2]/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='cart-summary-module']/div[5]/div[2]/span"));
+	}
+
+	public boolean verifySVValueOnOrderSummaryPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
+	}
+
+	public boolean verifySVValueOnOrderConfirmationPage(){
+		driver.quickWaitForElementPresent(By.id("productSV"));
+		return driver.isElementPresent(By.id("productSV"));
 	}
 
 }

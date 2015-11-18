@@ -170,9 +170,20 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateMeetYourConsultantPage(){
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(5000);
 		return driver.getCurrentUrl().contains("MeetYourConsultantPage");
 	}
+
+	public boolean validateCRPCartDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));
+	}
+
+	public boolean validateAdhocCartIsDisplayed(){
+		driver.waitForElementPresent(By.xpath("//span[@class='cart-section']"));
+		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
+	}
+
 
 }
 

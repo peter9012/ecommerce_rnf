@@ -1272,5 +1272,32 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return false;
 	}
 
+	public boolean validateMyAccountDDPresentInTopNav(){
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		return driver.isElementPresent(WELCOME_USER_DD_LOC);
+	}
+
+	public boolean validateAdhocCartIsDisplayed(){
+		driver.waitForElementPresent(By.xpath("//span[@class='cart-section']"));
+		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
+	}
+
+	public void applyPriceFilterHighToLow() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
+		logger.info("filter done for high to low price");
+	}
+
+	public void deselectPriceFilter() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']"));
+		driver.click(By.xpath("//select[@id='sortOptions']/option[1]"));
+		logger.info("deselect the price filter");
+	}
+
+	public String getProductPriceBeforeApplyFilter(){
+		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+	}
 
 }

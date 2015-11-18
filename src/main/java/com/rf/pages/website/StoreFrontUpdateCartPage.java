@@ -401,6 +401,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
@@ -861,14 +862,14 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+		driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
 			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
-			driver.click(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+			driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
 		}
 		logger.info("State/Province selected");
 	}

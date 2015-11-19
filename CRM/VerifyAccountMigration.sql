@@ -192,7 +192,8 @@ SELECT DISTINCT
                                                             AND EA.IsDefault = 1
         JOIN RFOperations.RFO_Accounts.AccountRF (NOLOCK) AR ON AB.AccountID = AR.AccountID
 		JOIN RFOperations.Security.AccountSecurity (NOLOCK) ASE ON ASE.AccountID = ab.AccountID
-		WHERE AB.ServerModifiedDate>= @LastRunDate
+		WHERE AB.ServerModifiedDate>= @LastRunDate AND
+		NOT EXISTS (SELECT 1 FROM RFOPERATIONS.DBO.AccountsMissing AM WHERE MISSINGFROM ='Destination' AND AM.RFO_ACCOUNTID=AB.ACCOUNTID)
         
 		--SELECT * FROM SFDCBACKUP.SFDCBKP.language ORDER BY NAME
 		--SELECT * FROM RFOPERATIONS.SFDC.RFO_ACCOUNTS

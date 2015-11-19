@@ -6,14 +6,11 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
@@ -617,8 +614,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
-		boolean flag  = false;
-		String value = null;
 		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));

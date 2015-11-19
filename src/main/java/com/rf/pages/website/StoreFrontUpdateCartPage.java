@@ -862,14 +862,16 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+			driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
 			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
-			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		}catch(Exception e){
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+			driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
 		}
 		logger.info("State/Province selected");
 	}
@@ -996,7 +998,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
 			driver.click(By.id("QAS_AcceptOriginal"));
 		}catch(NoSuchElementException e){
-
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));		
 		}
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);

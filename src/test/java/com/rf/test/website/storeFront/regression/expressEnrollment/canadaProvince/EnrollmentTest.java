@@ -138,9 +138,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.clickOnPopUpAfterClickingRadioButton();
 			//--------------- Verify that Newly added Shipping is not listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
 			s_assert.assertTrue(storeFrontShippingInfoPage.verifyChangeInDefaultAddressForShippingAddress(),"Failed to change in default address message is not present");
-
-
-
 			s_assert.assertAll();
 
 		}

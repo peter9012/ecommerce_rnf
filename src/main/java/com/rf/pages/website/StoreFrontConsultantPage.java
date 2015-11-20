@@ -50,32 +50,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return new StoreFrontCartAutoShipPage(driver);
 	} 
 
-	public void clickOnAutoshipStatusLink(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Autoship Status')]"));
-		driver.click(By.xpath("//a[contains(text(),'Autoship Status')]"));
-		logger.info("Autoship status link clicked");
-		driver.waitForPageLoad();
-	}
-
-	public void subscribeToPulse(){
-		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
-			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-			driver.pauseExecutionFor(2500);
-			driver.click(By.xpath("//a[@id='cancelPulse']"));
-			driver.waitForLoadingImageToDisappear();
-			try{
-				driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
-				driver.click(By.id("cancel-pulse-button"));
-				driver.waitForLoadingImageToDisappear();
-			}catch(Exception e){
-
-			}
-			driver.waitForPageLoad();
-		}
-		driver.click(By.xpath("//input[@id='subscribe_pulse_button_new']"));
-		driver.waitForLoadingImageToDisappear();
-	}
-
 	public boolean validateErrorMessageWithSpclCharsOnPulseSubscription(){
 		driver.findElement(By.xpath("//input[@id='webSitePrefix']")).sendKeys("!@");
 		driver.click(By.id("pulse-enroll"));
@@ -183,7 +157,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//span[@class='cart-section']"));
 		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
 	}
-
-
+	
 }
 

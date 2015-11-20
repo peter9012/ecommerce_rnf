@@ -134,14 +134,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.findElement(By.id("sponsor-name-id")).sendKeys("test");
 		}catch(NoSuchElementException e){
-			driver.quickWaitForElementPresent(By.id("sponserparam"));
 			driver.findElement(By.id("sponserparam")).sendKeys("test");
 		}
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@value='Search']"));
 			driver.click(By.xpath("//input[@value='Search']"));			
 		}catch(NoSuchElementException e){
-			driver.quickWaitForElementPresent(By.id("search-sponsor-button"));
 			driver.click(By.id("search-sponsor-button"));
 
 		}
@@ -980,7 +977,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean isReviewAndConfirmPageContainsShippingAddress(String shippingAddress){
 		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']//div[contains(@class,'third-list-module')][1]//span[contains(@class,'font-bold')]/.."));
-		System.out.println("******** "+driver.findElement(By.xpath("//div[@id='summarySection']//div[contains(@class,'third-list-module')][1]//span[contains(@class,'font-bold')]/..")).getText());
 		return driver.findElement(By.xpath("//div[@id='summarySection']//div[contains(@class,'third-list-module')][1]//span[contains(@class,'font-bold')]/..")).getText().contains(shippingAddress);
 	}
 
@@ -1165,17 +1161,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.getCurrentUrl().contains("autoship");
 	}
 
-	public void clickOnContinueShoppingLink(){
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
-			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
-		}
-		catch(Exception e){
-			driver.click(By.xpath("//div[@id='left-shopping']//a[contains(text(),'Continue')]"));			
-		}
-		driver.waitForPageLoad();
-	}
-
 	public void selectAProductAndAddItToCRP(){
 		driver.waitForElementPresent(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[@value='Add to crp']"));
 		driver.click(By.xpath("//div[contains(@class,'blue')]/div[2]/div[1]//input[@value='Add to crp']"));;
@@ -1235,13 +1220,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else
 			return false;
 
-	}
-
-	public void selectAProductAndAddItToPCPerks(){
-		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));;
-		driver.waitForPageLoad();
-		driver.pauseExecutionFor(1000);
 	}
 
 	public boolean validateErrorMsgAfterRemovingProductsFromPcCart(){
@@ -1859,26 +1837,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//input[@id='quantity1']"));
 		String qty=driver.findElement(By.xpath("//input[@id='quantity1']")).getAttribute("value");
 		return Integer.parseInt(qty);
-	}
-
-	public void selectDifferenetProductAndAddItToCRP(){
-
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
-		}
-		driver.waitForSpinImageToDisappear();
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
-			driver.click(By.xpath("//input[@value='OK']"));
-		}catch(Exception e){
-
-		}
-		driver.pauseExecutionFor(1000);
-		driver.waitForPageLoad();
 	}
 
 	public void enterNewShippingAddressNameDuringEnrollment(String name){

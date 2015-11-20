@@ -1042,4 +1042,47 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return driver.isElementPresent(By.id("productSV"));
 	}
 
+	public int getNoOfProductInCart(){
+		return driver.findElements(By.xpath("//div[@class='cart-items']/div")).size();
+	}
+
+	public boolean getValueOfFlag(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//span[@id='cartQVSV']")).getText().split("\\ ")[1];
+			if(Double.parseDouble(SVValue)>0){
+				return true;
+			}
+		}catch(Exception e){
+		}
+		return false;
+	}
+
+	public String removeProductSFromCart(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//span[@id='cartQVSV']")).getText();
+			driver.click(By.xpath("//div[@class='cart-items']/div["+i+"]//a[text()='Remove']"));
+			logger.info("//div[@class='cart-items']/div["+i+"]//a[text()='Remove'] clicked");
+			driver.waitForPageLoad();
+			return SVValue;
+		}catch (Exception e) {
+			logger.info("No Remove option");
+		}
+		return null;
+	}
+
+	public String getSVValueFromCart(){
+		logger.info(driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText());
+		return driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText();
+	}
+
+	public double compareSVValue(String SVValueOfRemovedProduct, double totalSVValue){
+		System.out.println("enter in compare method");
+		String sv = SVValueOfRemovedProduct.split("\\ ")[1];
+		double SVValueOfRemoved = Double.parseDouble(sv);
+		double finalSVValue = totalSVValue-SVValueOfRemoved;
+		System.out.println("Final SV Value "+finalSVValue);
+		return finalSVValue;
+
+	}
+
 }

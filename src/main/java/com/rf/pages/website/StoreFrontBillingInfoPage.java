@@ -155,20 +155,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		logger.info("new billing profile name is "+driver.findElement(BILLING_PROFILE_NAME_LOC).getText());
 		return driver.findElement(BILLING_PROFILE_NAME_LOC).getText();
 	}
-
-	public boolean isTheBillingAddressPresentOnPage(String firstName){
-		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){ 
-				return true;
-			}
-		}
-		return false;
-	}
-
+	
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
 		try{
 			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));

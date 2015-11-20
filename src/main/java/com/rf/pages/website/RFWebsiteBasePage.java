@@ -1295,4 +1295,126 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
 	}
 
+	public void clickOnContinueShoppingLink(){
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
+			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
+		}
+		catch(Exception e){
+			driver.click(By.xpath("//div[@id='left-shopping']//a[contains(text(),'Continue')]"));			
+		}
+		driver.waitForPageLoad();
+	}
+
+
+	public void selectAProductAndAddItToPCPerks(){
+		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));
+		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));;
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(1000);
+	}
+
+	public boolean isBillingProfileIsSelectedByDefault(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
+	}
+
+	public boolean isTheBillingAddressPresentOnPage(String firstName){
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){ 
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String getDotComPWS(String country){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[1]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[1]")).getText();
+		return pwsUnderPulse;
+	}
+
+	public String getDotBizPWS(String country){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[2]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[2]")).getText();
+		return pwsUnderPulse;
+	}
+
+	public String getEmailId(String country){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[3]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[3]")).getText();
+		return pwsUnderPulse;
+	}
+
+	public void enterWebsitePrefixName(String name){
+		driver.waitForElementPresent(By.id("webSitePrefix"));
+		driver.type(By.id("webSitePrefix"), name+"\t");
+		driver.pauseExecutionFor(1000);
+	}
+
+	public boolean verifySpecialCharNotAcceptInPrefixName(){
+		driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'This prefix is not available')]"));
+		if(driver.isElementPresent(By.xpath("//span[contains(text(),'This prefix is not available')]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public void clickOnAutoshipStatusLink(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Autoship Status')]"));
+		driver.click(By.xpath("//a[contains(text(),'Autoship Status')]"));
+		logger.info("Autoship status link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void subscribeToPulse(){
+		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
+			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+			driver.pauseExecutionFor(2500);
+			driver.click(By.xpath("//a[@id='cancelPulse']"));
+			driver.waitForLoadingImageToDisappear();
+			try{
+				driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+				driver.click(By.id("cancel-pulse-button"));
+				driver.waitForLoadingImageToDisappear();
+			}catch(Exception e){
+
+			}
+			driver.waitForPageLoad();
+		}
+		driver.click(By.xpath("//input[@id='subscribe_pulse_button_new']"));
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void selectDifferenetProductAndAddItToCRP(){
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
+		}
+		driver.waitForSpinImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+
+		}
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
+	}
+
 }

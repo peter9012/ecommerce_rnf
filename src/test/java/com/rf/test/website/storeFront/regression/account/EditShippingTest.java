@@ -50,7 +50,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 
 	// Hybris Phase 2-2035 :: Version : 1 :: Edit shipping address on 'Shipping Profile' page
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
@@ -137,22 +137,23 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO(); 
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			city = TestConstants.CITY_US;
 			addressLine = TestConstants.ADDRESS_LINE_1_US;
-			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_US;
+			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_US+randomNum;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 		}else{
 			city = TestConstants.CITY_CA;
 			addressLine = TestConstants.ADDRESS_LINE_1_CA;
-			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_CA;
+			profileName = TestConstants.NEW_SHIPPING_PROFILE_NAME_CA+randomNum;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 		}
@@ -181,24 +182,25 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//String userNameBeforeEdit = storeFrontUpdateCartPage.userNameBeforeEdit();
 		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine);
 		storeFrontUpdateCartPage.enterNewShippingAddressName(profileName);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
 		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(),"order is not placed successfully");
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentOnOrderPage(profileName),"shipping address is not updated on order page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.getUpdatedAddressPresentOnOrderConfirmationPage().equalsIgnoreCase(profileName),"shipping address name expected is"+profileName+"while shippig address coming on order confirmation page is "+storeFrontUpdateCartPage.getUpdatedAddressPresentOnOrderConfirmationPage());
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(profileName), "New Shipping address is not listed on Shipping profile page");
 		s_assert.assertAll();
 
 	}
 
 	//Hybris Project-2037 :: Version : 1 :: Edit shipping address in autoship template 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -258,7 +260,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -336,7 +338,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 	}
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -406,7 +408,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

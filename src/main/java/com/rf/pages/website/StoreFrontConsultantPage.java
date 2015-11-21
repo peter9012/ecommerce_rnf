@@ -34,7 +34,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		return driver.getCurrentUrl();
 	}
 
-	
+
 	public StoreFrontCartAutoShipPage clickNextCRP(){
 		driver.waitForElementPresent(NEXT_CRP_IMG_LOC);
 		driver.click(NEXT_CRP_IMG_LOC);
@@ -49,32 +49,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		logger.info("Add product to CRP button clicked");
 		return new StoreFrontCartAutoShipPage(driver);
 	} 
-
-	public void clickOnAutoshipStatusLink(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Autoship Status')]"));
-		driver.click(By.xpath("//a[contains(text(),'Autoship Status')]"));
-		logger.info("Autoship status link clicked");
-		driver.waitForPageLoad();
-	}
-
-	public void subscribeToPulse(){
-		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
-			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-			driver.pauseExecutionFor(2500);
-			driver.click(By.xpath("//a[@id='cancelPulse']"));
-			driver.waitForLoadingImageToDisappear();
-			try{
-				driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
-				driver.click(By.id("cancel-pulse-button"));
-				driver.waitForLoadingImageToDisappear();
-			}catch(Exception e){
-
-			}
-			driver.waitForPageLoad();
-		}
-		driver.click(By.xpath("//input[@id='subscribe_pulse_button_new']"));
-		driver.waitForLoadingImageToDisappear();
-	}
 
 	public boolean validateErrorMessageWithSpclCharsOnPulseSubscription(){
 		driver.findElement(By.xpath("//input[@id='webSitePrefix']")).sendKeys("!@");
@@ -158,5 +132,31 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 			return false;
 	}
 
+	public void clickOnMeetYourConsultantLink(){
+		driver.pauseExecutionFor(1500);
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+			driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		}catch(Exception e){
+			logger.info("Meet Your Consultant link is not present");
+			e.printStackTrace();
+		}
+	}
+
+	public boolean validateMeetYourConsultantPage(){
+		driver.pauseExecutionFor(5000);
+		return driver.getCurrentUrl().contains("MeetYourConsultantPage");
+	}
+
+	public boolean validateCRPCartDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));
+	}
+
+	public boolean validateAdhocCartIsDisplayed(){
+		driver.waitForElementPresent(By.xpath("//span[@class='cart-section']"));
+		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
+	}
+	
 }
 

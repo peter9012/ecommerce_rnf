@@ -125,5 +125,84 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 
 	}
+
+	public String getAccountterminationReasonTooMuchProduct(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[2]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[2]")).getText();
+	}
+
+	public String getAccountterminationReasonTooExpensive(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[3]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[3]")).getText();
+	}
+	public String getAccountterminationReasonEnrolledInAutoShipProgram(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[4]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[4]")).getText();
+	}
+	public String getAccountterminationReasonProductNotRight(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[5]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[5]")).getText();
+	}
+	public String getAccountterminationReasonUpgradingToConsultant(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[6]")).getText();
+	}
+	public String getAccountterminationReasonReceiveProductTooOften(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[7]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[7]")).getText();
+	}
+	public String getAccountterminationReasonDoNotWantToObligated(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[8]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[8]")).getText();
+	}
+	public String getAccountterminationReasonOther(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[9]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[9]")).getText();
+	}
+
+	public boolean verifyToSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[1]/div[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[1]/div[2]"));
+	}
+	public boolean verifySubjectSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[2]/div[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[2]/div[2]"));
+	}
+
+	public boolean verifyMessageSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
+		return driver.isElementPresent(By.xpath("//textarea[@id='terminationComments']"));
+	}
+
+	public boolean verifyIHaveChangedMyMindButton(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[1]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[1]"));
+	}
+
+	public boolean verifySendAnEmailToCancelAccountButton(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[2]"));
+	}
+
+	public boolean validatePCPerkCartDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));
+	}
 }
 

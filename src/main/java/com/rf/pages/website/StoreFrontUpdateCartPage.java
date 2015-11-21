@@ -147,6 +147,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+			driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+		}
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address']"));
 		driver.click(By.xpath("//input[@class='use_address']"));
 		logger.info("Next button on shipping update cart clicked");
@@ -397,6 +401,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
@@ -598,17 +603,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		}
-		else{
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[4]/div"));
-		}
-		driver.click(By.xpath("////input[@value='Setup CRP Account']"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
+		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
+		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");		
 	}
 
@@ -864,8 +862,17 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
-		driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+			driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
+		}catch(Exception e){
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+			driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+			driver.click(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
+		}
 		logger.info("State/Province selected");
 	}
 
@@ -887,13 +894,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//div[@class='user-name col-xs-12']")).getText();
 	}
 
-	public boolean verifyUpdatedAddressPresentOnOrderPage(String profileName){
+	public String getUpdatedAddressPresentOnOrderConfirmationPage(){
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]"));
-		String userName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
-		if(userName.equalsIgnoreCase(profileName)){
-			return true;}
-		else {
-			return false;}
+		String shippingAddresName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
+		return shippingAddresName.trim();
 	}
 
 	public void clickOnUseAsEnteredButton(){
@@ -994,10 +998,91 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
 			driver.click(By.id("QAS_AcceptOriginal"));
 		}catch(NoSuchElementException e){
-
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));		
 		}
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
+
+	public boolean verifyCheckoutConfirmation(){
+		try{
+			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+
+	public boolean verifyConsultantIsAbleToContinueCheckoutProcess(){
+		try{
+			driver.quickWaitForElementPresent(By.id("saveShippingInfo"));
+			if(driver.isElementPresent(By.id("saveShippingInfo"))){
+				return true;
+			}
+		}catch(Exception e){
+			return false;
+		}
+		return false;
+	}
+
+	public boolean verifySVValueOnCartPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='cart-summary-module']/div[5]/div[2]/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='cart-summary-module']/div[5]/div[2]/span"));
+	}
+
+	public boolean verifySVValueOnOrderSummaryPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
+	}
+
+	public boolean verifySVValueOnOrderConfirmationPage(){
+		driver.quickWaitForElementPresent(By.id("productSV"));
+		return driver.isElementPresent(By.id("productSV"));
+	}
+
+	public int getNoOfProductInCart(){
+		return driver.findElements(By.xpath("//div[@class='cart-items']/div")).size();
+	}
+
+	public boolean getValueOfFlag(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//span[@id='cartQVSV']")).getText().split("\\ ")[1];
+			if(Double.parseDouble(SVValue)>0){
+				return true;
+			}
+		}catch(Exception e){
+		}
+		return false;
+	}
+
+	public String removeProductSFromCart(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//span[@id='cartQVSV']")).getText();
+			driver.click(By.xpath("//div[@class='cart-items']/div["+i+"]//a[text()='Remove']"));
+			logger.info("//div[@class='cart-items']/div["+i+"]//a[text()='Remove'] clicked");
+			driver.waitForPageLoad();
+			return SVValue;
+		}catch (Exception e) {
+			logger.info("No Remove option");
+		}
+		return null;
+	}
+
+	public String getSVValueFromCart(){
+		logger.info(driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText());
+		return driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText();
+	}
+
+	public double compareSVValue(String SVValueOfRemovedProduct, double totalSVValue){
+		System.out.println("enter in compare method");
+		String sv = SVValueOfRemovedProduct.split("\\ ")[1];
+		double SVValueOfRemoved = Double.parseDouble(sv);
+		double finalSVValue = totalSVValue-SVValueOfRemoved;
+		System.out.println("Final SV Value "+finalSVValue);
+		return finalSVValue;
+
+	}
+
 }

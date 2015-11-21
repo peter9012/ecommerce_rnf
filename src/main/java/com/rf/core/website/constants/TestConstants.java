@@ -93,7 +93,7 @@ public class TestConstants {
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_NUMBERS="123456789";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHABETS="11maidenfghi";
-	
+
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR="abcdef#$";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR_COMB="$abcd%et";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR="abcdef+";
@@ -110,7 +110,7 @@ public class TestConstants {
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="Please add products in your PC cart greater than the threshold CAD $90";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY="quantity has been updated";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated";
-	
+
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
@@ -177,7 +177,7 @@ public class TestConstants {
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "Your Total SV value should be equal to or greater than the threshold 80";
 	public static final String CONSULTANT_VALID_10_DIGIT_MAIN_PHONE_NUMBER ="3423423423";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA= "Your Total SV value should be equal to or greater than the threshold 100";
-	
+
 	//	//PWS STAGING
 	//	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	//	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
@@ -344,6 +344,16 @@ public class TestConstants {
 
 	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
 	public static final String NEW_SHIPPING_PROFILE_NAME_CA = "new SP";
+
+	public static final String TOO_MUCH_PRODUCT ="Too much product";
+	public static final String  TOO_EXPENSIVE ="Too expensive";
+	public static final String ENROLLED_IN_AUTOSHIP_PROGRAM="Did not know I was enrolled in an autoship program";
+	public static final String PRODUCT_NOT_RIGHT = "Products were not right for me";
+	public static final String UPGRADING_TO_CONSULTANT = "I am upgrading to a Consultant";
+	public static final String RECEIVE_PRODUCT_TOO_OFTEN = "I received products too often";
+	public static final String DO_NOT_WANT_TO_OBLIGATED_TO_ORDER_PRODUCT = "Do not want to be obligated to order products";
+	public static final String OTHER_REASON = "Other";
+
 }
 
 

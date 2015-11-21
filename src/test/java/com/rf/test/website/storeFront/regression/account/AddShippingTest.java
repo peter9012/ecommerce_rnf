@@ -476,7 +476,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		// Get Order Number
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(newShippingAddressName), "Adhoc Order template shipping address on RFO is"+newShippingAddressName+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(newShippingAddressName.toLowerCase()), "Adhoc Order template shipping address on RFO is"+newShippingAddressName+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
 
 		// verify on shipping info page
 		storeFrontHomePage.clickOnWelcomeDropDown();
@@ -486,10 +486,11 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyRadioButtonIsSelectedByDefault(firstName), "Shipping address was given in main account info is not selected by default");
 
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-2034 :: Version : 1 :: Add shipping address during CRP enrollment through my account 
-	@Test(enabled=false) //WIP
+	@Test
 	public void testAddShippingAddressDuringCRPEnrollment_2034() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

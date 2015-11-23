@@ -332,7 +332,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Phase 2-2048:Edit billing profile during checkout
 	@Test
-	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{		
+	public void testEditBillingAdhocCheckoutFutureChecboxSelected_2048() throws InterruptedException{  
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -355,16 +355,17 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
+
 		logger.info("login is successful");
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		//storeFrontUpdateCartPage.clickOnConfirmationOK();
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
+		String defaultSelectedAddressName=storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName();
+		storeFrontUpdateCartPage.clickOnEditOnNotDefaultAddressOfBilling();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
@@ -373,33 +374,21 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
-		storeFrontUpdateCartPage.clickBillingEditAfterSave();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
-		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertFalse(storeFrontUpdateCartPage.isNewEditedBillingProfileIsPresentOnOrderConfirmationPage(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isDefaultBillingProfileIsPresentOrderConfirmationPage(defaultSelectedAddressName),"New Billing Profile is not selected by default on CRP cart page");
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickAutoshipOrderNumber();
-
-		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
-
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
-
-		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
-
-		//------------------ Verify that adhoc orders template contains the newly created billing profile------------------------------------------------------------
-
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method doesn't contains new billing profile");
-
-		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+		storeFrontBillingInfoPage=new StoreFrontBillingInfoPage(driver);
+		storeFrontBillingInfoPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info Page is not displayed");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Edited billing address is not present on billing info page");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Edited billing profile is selected as default profile");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingProfileIsSelectedByDefault(defaultSelectedAddressName),"Default billing profile is selected as default profile");
 		s_assert.assertAll();
 	}
+
 
 	// Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
 	@Test

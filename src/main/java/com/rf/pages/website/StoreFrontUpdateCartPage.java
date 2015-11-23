@@ -1085,4 +1085,46 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	}
 
+	public String getDefaultSelectedBillingAddressName(){
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]")).getText();
+	}
+
+	public void clickOnEditOnNotDefaultAddressOfBilling(){
+		if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//input[@checked='checked']"))==false){
+			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
+		}else{
+			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]"));
+		}
+		driver.pauseExecutionFor(5000);
+	}
+
+	public boolean isNewEditedBillingProfileIsPresentOnOrderConfirmationPage(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+	}
+
+	public boolean isBillingProfileIsSelectedByDefault(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
+	}
+
+	public boolean isTheBillingAddressPresentOnPage(String firstName){
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){ 
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isDefaultBillingProfileIsPresentOrderConfirmationPage(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+	}
+
 }

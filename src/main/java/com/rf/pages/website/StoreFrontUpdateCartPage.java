@@ -11,6 +11,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.website.constants.TestConstants;
 
 public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
@@ -232,10 +233,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
+		driver.findElement(By.id("townCity")).clear();
 		driver.findElement(By.id("townCity")).sendKeys(city);
 	}
 
@@ -247,8 +250,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
-		driver.click(By.id("saveCrpShippingAddress"));
+		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.click(By.id("saveCrpShippingAddress"));
+		}else{
+			driver.click(By.id("saveShippingAddreessId"));
+		}
+
 		logger.info("Save shipping profile button clicked");
 		try{
 			driver.click(By.id("QAS_AcceptOriginal"));
@@ -260,7 +268,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 
 		driver.waitForLoadingImageToDisappear();
-	}	
+	}
+
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
 		try{
@@ -928,7 +937,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
-	public void clickOnEditOnNotDefaultAddress(){
+	public void clickOnEditOnNonDefaultAddress(){
 		if(driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]//input[@checked='checked']"))==false){
 			driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]//a[contains(text(),'Edit')]"));
 		}else{
@@ -1125,6 +1134,54 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean isDefaultBillingProfileIsPresentOrderConfirmationPage(String profileName){
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+	}
+
+	public String getDefaultShippingProfileName(){
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/ancestor::div[2]//div[contains(@class,'user-name')]")).getText();
+	}
+
+	public void addAshippingProfileAndClickOnItsEdit(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
+		driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
+		logger.info("add a new shipping address clicked");
+		enterNewShippingAddressName(profileName+" "+TestConstants.LAST_NAME);
+		enterNewShippingAddressLine1(addressLine);
+		enterNewShippingAddressCity(city);
+		selectNewShippingAddressStateOnCartPage();
+		enterNewShippingAddressPhoneNumber(phoneNumber);
+		enterNewShippingAddressPostalCode(postalCode);
+		clickOnSaveShippingProfile();
+		logger.info("save address button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+profileName+"')]/following::a[@class='editShippingAddress'][1]"));
+		logger.info("Edit clicked of newly added shipping profile");		
+	}
+
+	public boolean isOnlyOneShippingProfilePresentOnAdhocCart(){
+		List<WebElement> totalShippingAddressPresentOnAdhocCart = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div"));
+		if(totalShippingAddressPresentOnAdhocCart.size()==1){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyNewlyEditedShippingAddressIsSelected(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+	}
+
+	public String getDefaultSelectedShippingAddressNameFromShippingInfoPage(){
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='addressCode']/../../preceding-sibling::p[3]/span[1]"));
+			String name= driver.findElement(By.xpath("//input[@checked='checked' and @name='addressCode']/../../preceding-sibling::p[3]/span[1]")).getText();
+			logger.info("Shipping method name to assert is "+name);
+			return name;
+		} else if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='addressCode']/../../preceding-sibling::p[3]/span[1]"));
+			String name= driver.findElement(By.xpath("//input[@checked='checked' and @name='addressCode']/../../preceding-sibling::p[3]/span[1]")).getText();
+			return name;
+		}
+		return null;
 	}
 
 }

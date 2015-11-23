@@ -140,12 +140,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			try{
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+				driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			}catch(Exception e){
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+				driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			}
 			logger.info("Add To Bag button clicked");
 			driver.waitForLoadingImageToDisappear();
 			driver.waitForPageLoad();
-
 		}
 
 	}
@@ -1202,10 +1206,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.findElement(By.id("postcode")).clear();
 		driver.findElement(By.id("postcode")).sendKeys(postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
 	}
 

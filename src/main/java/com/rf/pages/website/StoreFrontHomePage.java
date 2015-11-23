@@ -1952,11 +1952,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public String getProductName(){
-		driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a"));
-		String productName=driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a")).getText();
-		logger.info("fetched product name is "+productName);
-		return productName;
+		if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a"));
+			String productName=driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}
+		else {
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/h3/a"));
+			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/h3/a")).getText();
+			logger.info("fetched product name is "+productName);
+			return productName;
+		}		
 	}
+
 
 	public boolean verifyNumberOfProductsInMiniCart(String numberOfProductsInCart){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -1982,13 +1991,24 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void mouseHoverProductAndClickQuickInfo(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img")); 
-		WebElement allProducts = driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img"));
-		actions.moveToElement(allProducts).build().perform();
-		driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
-		driver.click(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
-		driver.pauseExecutionFor(5000);
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img")); 
+			WebElement allProducts = driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[1]/img"));
+			actions.moveToElement(allProducts).build().perform();
+			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
+			driver.click(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div[1]//a[2]/input"));
+			driver.pauseExecutionFor(5000);
+		}
+		else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img")); 
+			WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img"));
+			actions.moveToElement(allProducts).build().perform();
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
+			driver.pauseExecutionFor(5000);
+		}
 	}
+
 
 	public boolean isModalWindowExists(){
 		driver.quickWaitForElementPresent(By.id("popup-quickinfo"));

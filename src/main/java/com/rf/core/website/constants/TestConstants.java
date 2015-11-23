@@ -333,7 +333,11 @@ public class TestConstants {
 	public static final String NEW_ADDRESS_CITY_US="San Francisco";
 	public static final String NEW_ADDRESS_POSTAL_CODE_US="99294";
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US="4155555555";
-
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME_CA = "newCA";
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME_US = "newUS";
+	public static final String NEW_ADDRESS_LINE_PHONE_NUMBER_CA = "8067736418";
+	public static final String NEW_ADDRESS_LINE_1_CITY_CA = "Bonnyville";
+	
 	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
 	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";

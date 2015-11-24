@@ -393,14 +393,40 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getTaxAmountFromAutoshipTemplate(){
+
 		String tax = null;
-		try{
-			tax = driver.findElement(By.id("crpTotalTax")).getText();
-		}catch(Exception e){
-			tax = driver.findElement(By.id("totalTax")).getText();
+		if(driver.getCountry().equalsIgnoreCase("US")){
+			try{
+				tax = driver.findElement(By.id("crpTotalTax")).getText();
+			}catch(Exception e){
+				tax = driver.findElement(By.id("totalTax")).getText();
+			}
+			System.out.println("Tax is "+tax);
+			return tax.trim();
 		}
-		System.out.println("Tax is "+tax);
-		return tax.trim();
+		else {
+			if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span"))&&(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='PST']/following::div[1]/span")))){
+				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span")).getText();
+				String gstTaxValue[] = gstTax.split("\\ ");
+				System.out.println("gstTax==="+gstTaxValue[1]);
+				double gstTaxIntegerValue = Double.parseDouble(gstTaxValue[1]);
+				String pstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='PST']/following::div[1]/span")).getText();
+				String pstTaxValue[] = pstTax.split("\\ ");
+				System.out.println("pstTax==="+pstTaxValue[1]);
+				double pstTaxIntegerValue = Double.parseDouble(pstTaxValue[1]);
+				double totalTax = (gstTaxIntegerValue+pstTaxIntegerValue);
+				System.out.println("totalTax==="+totalTax);
+				String taxFinal = Double.toString(totalTax);
+				return taxFinal;
+			}else if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span"))){
+				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span")).getText();
+				return gstTax;
+			}
+			else {
+				tax = driver.findElement(By.id("totalTax")).getText();
+				return tax.trim();
+			}
+		}
 	}
 
 

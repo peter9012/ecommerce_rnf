@@ -152,8 +152,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
 			driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
 		}
-		driver.waitForElementPresent(By.xpath("//input[@class='use_address']"));
-		driver.click(By.xpath("//input[@class='use_address']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+		driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 	}

@@ -522,7 +522,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
+		/*driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));*/
 		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");
 

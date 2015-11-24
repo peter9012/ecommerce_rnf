@@ -1,6 +1,6 @@
 package com.rf.test.website.storeFront.dataMigration.rfo.accounts;
 
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +33,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 	private String RFO_DB = null;		
 
-	// Hybris Phase 2-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page�	
+	//Hybris Project-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page
 	@Test
-	public void testAddNewShippingAddressOnShippingProfilePage_2029() throws InterruptedException, SQLException{
+	public void testAddsShippingAddressOnShippingProfilePage_2029() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		String country = driver.getCountry();
@@ -62,11 +62,10 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -75,7 +74,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -118,7 +116,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	//Hybris Phase 2-2031:Add shipping address in autoship template
+	//Hybris Project-2031 :: Version : 1 :: Add shipping address in autoship template 
 	@Test
 	public void testAddShippingAddressInAutoshipTemplate_2031() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -147,11 +145,10 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -161,8 +158,18 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
+		//get shipping address name on adhoc order
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+
+		// Get Order Number
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		String shippingAddressNameFromAdhoc = storeFrontOrdersPage.getShippingAddressFromAdhocTemplate();
+
+		storeFrontOrdersPage.clickOnWelcomeDropDown();
+		storeFrontCartAutoShipPage = storeFrontOrdersPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
@@ -176,8 +183,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
-		//storeFrontUpdateCartPage.clickOnNextStepBtn();
-		//storeFrontUpdateCartPage.clickUpdateCartBtn();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+
 		//storeFrontUpdateCartPage.clickOnEditShipping();
 
 		//---------------Verify that the new added shipping address is displayed in 'Shipment' section on update autoship cart page------------------------------------------------------------------------
@@ -186,13 +193,26 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
+		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
+
+		// verify Adhoc order template addreess is remain same as before
+		storeFrontShippingInfoPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		String shippingAddressNameFromAdhocAfterAddANewAddress = storeFrontOrdersPage.getShippingAddressFromAdhocTemplate();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(shippingAddressNameFromAdhoc, shippingAddressNameFromAdhocAfterAddANewAddress), "New Address has not got associated with the billing profile");
 		s_assert.assertAll();
-	}
+	} 
+
 
 	// ADD a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	//Hybris Project-4461:ADD a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship"
@@ -668,83 +688,76 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2030 :: Version : 1 :: Add shipping address during checkout 
-	 @Test
-	 public void testAddShippingAddressDuringCheckout_2030() throws InterruptedException{
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  RFO_DB = driver.getDBNameRFO(); 
-	  String country = driver.getCountry();
-	  String addressLine1 = null;
-	  String city = null;
-	  String postalCode = null;
-	  List<Map<String, Object>> randomConsultantList =  null;
-	  String consultantEmailID = null;
-	  String accountID = null;
-	  String lastName = "lN";
-	  if(country.equalsIgnoreCase("us")){
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	   city = TestConstants.CITY_US;
-	   postalCode = TestConstants.POSTAL_CODE_US;
-	  }
-	  else if(country.equalsIgnoreCase("ca")){
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	   city = TestConstants.CITY_CA;
-	   postalCode = TestConstants.POSTAL_CODE_CA;
-	  } 
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-	  while(true){
-	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-	   logger.info("Account Id of the user is "+accountID);
+	@Test
+	public void testAddShippingAddressDuringCheckout_2030() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO(); 
+		String country = driver.getCountry();
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		String lastName = "lN";
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
 
-	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-	   if(isSiteNotFoundPresent){
-	    logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-	    driver.get(driver.getURL());
-	   }
-	   else
-	    break;
-	  }
-	  //s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-	  logger.info("login is successful");
-	  
-	  storeFrontConsultantPage.clickOnWelcomeDropDown();
-	  storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
-	  s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
-	  //String defaultSelectedShippingAddressNameOnShippingInfo = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-	  
-	  //Continue with checkout page
-	  storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-	  storeFrontUpdateCartPage.clickAddToBagButton(country);
-	  storeFrontUpdateCartPage.clickOnCheckoutButton();
-	  //s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-	  //storeFrontUpdateCartPage.clickOnConfirmationOK();
-	  /*storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-	  storeFrontUpdateCartPage.clickOnEditShipping();*/
-	  storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
-	  
-	  String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-	  storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-	  storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
-	  storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-	  storeFrontShippingInfoPage.selectNewShippingAddressState();
-	  storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
-	  storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-	  storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
-//	  s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(newShippingAddressName), "New Address has not got associated with the billing profile");
-//	  
-//	  storeFrontConsultantPage.clickOnRodanAndFieldsLogo();
-//	  storeFrontConsultantPage.clickOnWelcomeDropDown();
-//	  storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
-//	  String defaultSelectedShippingAddressNameAfterAddAShippingAddress = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-//	  
-//	  s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(defaultSelectedShippingAddressNameOnShippingInfo, defaultSelectedShippingAddressNameAfterAddAShippingAddress), "New Address has not got associated with the billing profile");
-//	  
-//	  s_assert.assertAll();
-	 }
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		String defaultSelectedShippingAddressNameOnShippingInfo = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
+
+		//Continue with checkout page
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
+		storeFrontUpdateCartPage.clickAddToBagButton(country);
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
+
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+		storeFrontUpdateCartPage.selectNewShippingAddressStateOnCartPage();
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
+		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(newShippingAddressName), "New Address has not got associated with the billing profile");
+		storeFrontConsultantPage.clickOnRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
+		String defaultSelectedShippingAddressNameAfterAddAShippingAddress = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
+
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(defaultSelectedShippingAddressNameOnShippingInfo, defaultSelectedShippingAddressNameAfterAddAShippingAddress), "New Address has not got associated with the billing profile");
+
+		s_assert.assertAll();
+	}
 
 }
-
-

@@ -570,8 +570,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean isOrderPlacedSuccessfully(){
-		driver.waitForElementPresent(By.xpath("//h1[text()='Thank you for your order']"));
-		return driver.IsElementVisible(driver.findElement(By.xpath("//h1[text()='Thank you for your order']")));
+		driver.waitForElementPresent(By.xpath("//h1[contains(text(),'Thank you')]"));
+		return driver.IsElementVisible(driver.findElement(By.xpath("//h1[contains(text(),'Thank you')]")));
 	}
 
 	public boolean verifyWelcomeDropdownToCheckUserRegistered(){		
@@ -1421,6 +1421,26 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
+	}
+
+	public void selectProductAndProceedToBuyForPC() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
+		}
+		else {
+			driver.quickWaitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[5]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[5]//input[@value='ADD to PC Perks']"));
+		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+		}
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+
 	}
 
 }

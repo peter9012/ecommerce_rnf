@@ -34,7 +34,31 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstName) throws InterruptedException{
-		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input")).isSelected();
+		try{
+			boolean flag=driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input")).isSelected();
+			return flag;
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
+			if(driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/ancestor::div[1]/form/span/input")).isSelected()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			return driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
+			if(driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"))){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	}
 
 	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
@@ -124,6 +148,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
+		driver.pauseExecutionFor(3000);
 		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 	}
 
@@ -167,16 +192,6 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			}
 		}
 		return false;
-	}
-
-	public boolean isAutoshipOrderAddressTextPresent(String firstName){
-		try{
-			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
-			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
-			return true;
-		}catch(NoSuchElementException e){
-			return false;
-		}
 	}
 
 	public String getAddressUpdateConfirmationMessageFromUI(){

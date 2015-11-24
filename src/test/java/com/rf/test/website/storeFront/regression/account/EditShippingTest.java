@@ -108,8 +108,8 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
+		//storeFrontShippingInfoPage.selectFirstCardNumber();
+		//storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -259,7 +259,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,countryId,driver.getEnvironment()),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
@@ -315,10 +315,11 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.getDefaultSelectedShippingAddressNameFromShippingInfoPage().contains(defaultSelectedShippingName),"Default selected shipping address is not the expected");
 		s_assert.assertAll();
 	}
+
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
 	@Test
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		country = driver.getCountry();
@@ -361,13 +362,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-		//Edit the shipping Address 
-		storeFrontHomePage.clickEditShipping();
-		storeFrontHomePage.enterNewShippingAddressName(newShippingAddressName+" "+TestConstants.LAST_NAME);
-		storeFrontHomePage.clickOnSaveShippingProfileAfterEdit();
-		//assert for edited shipping address
-		s_assert.assertTrue(storeFrontHomePage.verifyUpdatedShippingAddress(newShippingAddressName),"Updated shipping address is not present");
-		s_assert.assertTrue(storeFrontHomePage.isDefaultShippingAddressRadioBtnSelected(newShippingAddressName),"Default adddress is not the edited address");
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -376,6 +370,16 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		//Edit the shipping Address in ShipMent Section. 
+		storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
+		storeFrontHomePage.clickEditShipping();
+		storeFrontHomePage.enterNewShippingAddressName(newShippingAddressName+" "+TestConstants.LAST_NAME);
+		storeFrontHomePage.clickOnSaveShippingProfileAfterEdit();
+		//assert for edited shipping address
+		s_assert.assertTrue(storeFrontHomePage.verifyUpdatedShippingAddress(newShippingAddressName),"Updated shipping address is not present");
+		s_assert.assertTrue(storeFrontHomePage.isDefaultShippingAddressRadioBtnSelected(newShippingAddressName),"Default adddress is not the edited address");
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		//verify new shipping address on order confirmation page
 		s_assert.assertTrue(storeFrontHomePage.verifyShippingAddressOnOrderPage(newShippingAddressName),"Shipping address on order page is not the edited address");
@@ -390,9 +394,8 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontShippingInfoPage.isDefaultAddressRadioBtnSelected(newShippingAddressName),"Default adddress is not the edited address");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName),"Default selected shipping address does not have autoship text");
 		s_assert.assertAll();
-
-
 	}
+
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
 	@Test
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{

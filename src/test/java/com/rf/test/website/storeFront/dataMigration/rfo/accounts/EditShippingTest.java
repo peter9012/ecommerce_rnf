@@ -118,7 +118,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		String lastName = "lN";
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME;
+
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
@@ -136,11 +136,10 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
 			else
@@ -160,8 +159,8 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		storeFrontShippingInfoPage.selectFirstCardNumber();
-		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
+		//storeFrontShippingInfoPage.selectFirstCardNumber();
+		//storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 

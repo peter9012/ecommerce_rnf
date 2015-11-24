@@ -2572,6 +2572,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 		driver.click(By.xpath("//input[@value='Search']"));
 	}
+
+	public void clickEditShippingInShipmentOnCheckoutPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+		logger.info("Edit For shipping address clicked.");
+	}
 }
 
 

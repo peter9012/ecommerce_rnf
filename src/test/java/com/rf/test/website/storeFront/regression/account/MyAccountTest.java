@@ -2764,8 +2764,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-142 Autoship template - manage products in cart - PC perk 
 	@Test
-	public void testAutoshipTemplateManagePoductsInCartPCPerk_142() throws InterruptedException	{
-		String QtyOfProducts="10";
+	public void testAutoshipTemplateManagePoductsInCartPCPerk_142() throws InterruptedException {
+		String qtyOfProducts="10";
+		String newQtyOfProducts="5";
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
@@ -2788,31 +2789,48 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		logger.info("login is successful"); 
 		//click on auto ship cart
+
 		storeFrontHomePage.clickOnAutoshipCart();
-		//validate update pc perks cart page is displayed
-		s_assert.assertTrue(storeFrontHomePage.validateUpdateCartPageIsDisplayed(),"pc perks update cart page is not displayed");
-		//click on continue shopping link
-		storeFrontHomePage.clickOnContinueShoppingLink();
-		//add a product and add it to pc perks
-		storeFrontHomePage.selectAProductAndAddItToPCPerks();
-		//validate pc perks update cart message
-		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG);
-		//click on continue shopping link
-		storeFrontHomePage.clickOnContinueShoppingLink();
-		//add a product and add it to pc perks
-		storeFrontHomePage.selectAProductAndAddItToPCPerks();
-		//validate pc perks update cart message
-		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG);
-		//Remove products until SV is less than threshold US - SV is less than $80 CA - SV is less than CAD $90
-		s_assert.assertTrue(storeFrontHomePage.validateErrorMsgAfterRemovingProductsFromPcCart(),"Error message is not being displayed");
-		//update the product Qty by Increasing it and validate the  pc perks update cart message
-		storeFrontHomePage.addQuantityOfProduct(QtyOfProducts);
-		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"pc perks update cart message is not displayed");
-		//update the product Qty Decreasing it and validate the  Error message
-		s_assert.assertTrue(storeFrontHomePage.validateErrorMsgAfterRemovingProductsFromPcCart(),"Error message is not being displayed");
+		storeFrontUpdateCartPage= new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
+		storeFrontUpdateCartPage.selectProductAndProceedToBuyForPC();   
+		int noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();   
+		for(int i=noOfProduct; i>=1; i--){
+			boolean flag = storeFrontUpdateCartPage.getValueOfFlagForPC(i);
+			if(flag==true){
+				double SVValue = Double.parseDouble(storeFrontUpdateCartPage.getSubtotalFromCart().split("\\$")[1].trim());
+				String SVValueOfRemovedProduct = storeFrontUpdateCartPage.removeProductsFromCartForPC(i);
+
+				double remainingSVValue = storeFrontUpdateCartPage.compareSubtotalValue(SVValueOfRemovedProduct, SVValue);
+				if(driver.getCountry().equalsIgnoreCase("us")){
+					if(remainingSVValue>=80.00){
+						s_assert.assertTrue(storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG),"Error message for product removal from UI is "+i+storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG);
+
+					}else{
+						s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG),"Error message for threshold condition for zero quantity from UI is  "+i+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+						break;
+					}
+				}else 
+					if(remainingSVValue>=90.00){
+						s_assert.assertTrue(storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG),"Error message for product removal from UI is 3 "+i+storeFrontHomePage.getProductRemovedAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG);
+
+					}else{
+						s_assert.assertTrue(storeFrontHomePage.getThresholdMessageIsDisplayed().contains(TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA_FOR_PC),"Error message for threshold condition for zero quantity from UI is 4 "+i+storeFrontHomePage.getThresholdMessageIsDisplayed()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_THRESHOLD_MSG);
+						break;
+					}
+
+			}else{
+				logger.info("SV value is null");
+			}
+		}
+
+		storeFrontHomePage.addQuantityOfProduct(qtyOfProducts);
+		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected msg is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
+		storeFrontHomePage.addQuantityOfProduct(newQtyOfProducts);
+		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
+
 		s_assert.assertAll(); 
 	}
-
 	//Hybris Project-4350:Verify "Join my team" button on the .com and .biz site
 	@Test
 	public void testJoinMyTeamButtonPresentOnTheComAndBizSite_4350(){
@@ -6472,6 +6490,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String lastName = null;
 		String shippingMethodId =null;
+		String shippingAddressFromUI =null;
+		String subTotalUI = null;
+		String shippingUI = null;
+		String handlingUI = null;
+		String taxUI = null;	
+		String grandTotalUI = null;
+		String shippingMethodUI = null;
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
@@ -6497,21 +6522,29 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+
+		// Get Order Number for assert
+		String autoshipNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		// get order details before cancel CRP
+		shippingAddressFromUI = storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate();
+		subTotalUI = storeFrontOrdersPage.getSubTotalFromAutoshipTemplate();
+		taxUI = storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate();
+		grandTotalUI = storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate();
+		shippingUI = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+		handlingUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+		shippingMethodUI = storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate();
+
+		storeFrontOrdersPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.clickOnCancelMyCRP();
 		//validate CRP has been cancelled..
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
-
-		// verify autoship details
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-
-		// Get Order Number for assert
-		String autoshipNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
-		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
 		//get Autoship Id Fro RFO
 		List<Map<String, Object>> autoshipIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ID_FOR_RFO, autoshipNumber),RFO_DB);
@@ -6545,28 +6578,29 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 
 		//assert shipping Address with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
+		s_assert.assertTrue(shippingAddressFromUI.trim().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+shippingAddressFromUI);
 
 		//Assert Subtotal with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"CRP autoship template subTotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		s_assert.assertTrue(subTotalUI.trim().contains(subTotalDB.trim()),"CRP autoship template subTotal on RFO is "+subTotalDB+" and on UI is "+subTotalUI);
 
 		// Assert Tax with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"CRP autoship template tax amount on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
+		s_assert.assertTrue(taxUI.trim().contains(taxDB.trim()),"CRP autoship template tax amount on RFO is "+taxDB+" and on UI is "+taxUI);
 
 		// Assert Grand Total with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"CRP autoship template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		s_assert.assertTrue(grandTotalUI.trim().contains(grandTotalDB.trim()),"CRP autoship template grand total on RFO is "+grandTotalDB+" and on UI is "+grandTotalUI);
 
 		// assert shipping amount with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		s_assert.assertTrue(shippingUI.trim().contains(shippingDB.trim()),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+shippingUI);
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		s_assert.assertTrue(handlingUI.trim().contains(handlingDB.trim()),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingUI);
 
 		// assert for shipping Method with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+		s_assert.assertTrue(shippingMethodUI.trim().contains(shippingMethodDB.trim()),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+shippingMethodUI);
 
 		s_assert.assertAll();
 	}
+
 
 	// Hybris Project-146:Autoship Update - Flow & Review and Confirm step - consultant
 	@Test
@@ -9383,6 +9417,347 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();	
 	}
+
+	
+	//Hybris Project-2317:heck View Product Details button from Quick Info pop-up
+		@Test(enabled=false)//Test In Progress
+		public void testViewProductDetailsFromQuickInfoPopup_2317() throws InterruptedException{
+			country = driver.getCountry();
+			RFO_DB = driver.getDBNameRFO();
+			int randomNum = CommonUtils.getRandomNum(1,6);
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			//login As PC User and Verify product Details.
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountIdForPCUser = null;
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForPCUser);
+
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String selectedProduct=storeFrontHomePage.getProductName(randomNum);
+			String priceOfProduct=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonOnQuickInfoPopup(),"Add to PC Perks Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonOnProductDetailPage(),"Add to PC Perks Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(priceOfProduct),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			logout();
+			driver.get(driver.getURL()+"/"+driver.getCountry());
+
+			//login as RC User And Verify Product Details.
+			List<Map<String, Object>> randomRCUserList =  null;
+			String rcUserEmailID = null;
+			String accountIdForRCUser = null;
+			while(true){
+				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+				accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForRCUser);
+
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String selectedProductName=storeFrontHomePage.getProductName(randomNum);
+			String selectedProductPrice=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(selectedProductPrice),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			logout();
+			driver.get(driver.getURL()+"/"+driver.getCountry());
+
+
+			//login as consultant and verify Product Details.
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountIdForConsultant = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForConsultant);
+
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String ProductName=storeFrontHomePage.getProductName(randomNum);
+			String productPrice=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonOnQuickInfoPopup(),"Add to CRP Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(ProductName),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonOnProductDetailPage(),"Add to CRP Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(productPrice),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			s_assert.assertAll(); 
+		}
+
+		//Hybris Project-2316:check Product Details APge Layout and information
+		@Test(enabled=false)//Test In Progress
+		public void testVerifyProductDetailsFromQuickInfoPopup_2316() throws InterruptedException{
+			country = driver.getCountry();
+			RFO_DB = driver.getDBNameRFO();
+			int randomNum = CommonUtils.getRandomNum(1,6);
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			//login As PC User and Verify product Details.
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountIdForPCUser = null;
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForPCUser);
+
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String selectedProduct=storeFrontHomePage.getProductName(randomNum);
+			String priceOfProduct=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonOnQuickInfoPopup(),"Add to PC Perks Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonOnProductDetailPage(),"Add to PC Perks Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(priceOfProduct),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			logout();
+			driver.get(driver.getURL()+"/"+driver.getCountry());
+
+			//login as RC User And Verify Product Details.
+			List<Map<String, Object>> randomRCUserList =  null;
+			String rcUserEmailID = null;
+			String accountIdForRCUser = null;
+			while(true){
+				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");		
+				accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForRCUser);
+
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String selectedProductName=storeFrontHomePage.getProductName(randomNum);
+			String selectedProductPrice=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(selectedProductPrice),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			logout();
+			driver.get(driver.getURL()+"/"+driver.getCountry());
+
+			//login as consultant and verify Product Details.
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountIdForConsultant = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForConsultant);
+
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			String ProductName=storeFrontHomePage.getProductName(randomNum);
+			String productPrice=storeFrontHomePage.getProductPrice(randomNum);
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo(randomNum);
+
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnQuickInfoPopup(),"Add to Bag Button is not present on quick info popup");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonOnQuickInfoPopup(),"Add to CRP Button is not present on quick info popup");
+			storeFrontHomePage.clickViewProductDetailLink();
+			//verify product details
+			s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductName(ProductName),"Product name is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonOnProductDetailPage(),"Add to CRP Button is not present on product detail page");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(productPrice),"Product price is not as expected");
+			s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
+			s_assert.assertAll(); 
+		}
+
+		//Hybris Project-2262:View QV/SV value in the cart
+		@Test
+		public void testCreateAdhocOrderConsultantAndVerifySVValue_2262() throws InterruptedException{
+			RFO_DB = driver.getDBNameRFO();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
+			//login as consultant and verify Product Details.
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountIdForConsultant = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForConsultant);
+
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
+			//Place order.
+			storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySVValueOnCartPage(),"SV Value is not present on cart page");
+			storeFrontUpdateCartPage.clickOnCheckoutButton();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySVValueOnOrderSummaryPage(),"SV Value is not present on order summary page");
+			storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+			storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+			storeFrontUpdateCartPage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySVValueOnOrderConfirmationPage(), "SV Value is not present on order confirmation page");
+			//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+
+			storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+
+			// Get Order Number
+			String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+			storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+			s_assert.assertTrue(storeFrontOrdersPage.verifySVValueOnOrderPage(),"Product SV Value is not present on order page.");
+			s_assert.assertAll();
+		}
+
 
 
 }

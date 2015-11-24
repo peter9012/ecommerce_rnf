@@ -422,13 +422,15 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span")).getText();
 				return gstTax;
 			}
-			else {
+			else if(driver.isElementPresent(By.id("totalTax"))){
 				tax = driver.findElement(By.id("totalTax")).getText();
+				return tax.trim();
+			}else{
+				tax = driver.findElement(By.id("crpTotalTax")).getText();
 				return tax.trim();
 			}
 		}
 	}
-
 
 	//	public boolean verifyPayeeName(String payeeNameDB){
 	//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);

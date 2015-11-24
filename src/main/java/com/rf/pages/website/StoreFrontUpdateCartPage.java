@@ -262,14 +262,17 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e){
-			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
-			logger.info("Accept New shipping address button clicked");
+			try{
+				driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+				driver.click(By.id("QAS_RefineBtn"));
+				logger.info("Accept New shipping address button clicked");
+			}catch(NoSuchElementException e1){
+
+			}
 		}
 
 		driver.waitForLoadingImageToDisappear();
 	}
-
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
 		try{
@@ -646,7 +649,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h1"));
 		String orderPlacedMessage = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']//h1")).getText();
 		System.out.println("Message from UI is  "+orderPlacedMessage);
-		if(orderPlacedMessage.equalsIgnoreCase("Thank you for your order")){
+		if(orderPlacedMessage.toLowerCase().contains("thank you")){
 			return true;
 		}else{
 			return false;
@@ -695,27 +698,40 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@value='Update more info']"));
 	}
 
-	//	public String getSubtotalFromCart(){
-	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][2]//span"));
-	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][2]//span")).getText();
-	//	}
-	//
-	//	public String getDeliveyFromCart(){
-	//		driver.waitForElementPresent(By.xpath("//div[@id='module-subtotal'][3]//span"));
-	//		return driver.findElement(By.xpath("//div[@id='module-subtotal'][3]//span")).getText();
-	//	}
-	//	public String getHandlingFromCart(){
-	//		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
-	//		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
-	//	}
-	//	public String getTaxFromCart(){
-	//		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
-	//		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
-	//	}
-	//	public String getGrandTotalFromCart(){
-	//		driver.waitForElementPresent(By.xpath("//div[@id='module-total']//span"));
-	//		return driver.findElement(By.xpath("//div[@id='module-total']//span")).getText();
-	//	}
+	public String removeProductsFromCartForPC(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//p[@id='cart-price']/span[2]")).getText();
+			driver.click(By.xpath("//div[@class='cart-items']/div["+i+"]//a[text()='Remove']"));
+			logger.info("//div[@class='cart-items']/div["+i+"]//a[text()='Remove'] clicked");
+			driver.waitForPageLoad();
+			return SVValue;
+		}catch (Exception e) {
+			logger.info("No Remove option");
+		}
+		return null;
+	}
+
+	public boolean getValueOfFlagForPC(int i){
+		try{
+			String SVValue = driver.findElement(By.xpath("//div[@class='cart-items']/div["+i+"]//p[@id='cart-price']/span[2]")).getText().split("\\$")[1];
+			System.out.println("Value of your price  "+SVValue);
+			if(Double.parseDouble(SVValue)>0){
+				return true;
+			}
+		}catch(Exception e){
+		}
+		return false;
+	}
+
+	public double compareSubtotalValue(String SVValueOfRemovedProduct, double totalSVValue){
+		System.out.println("enter in compare method");
+		String sv = SVValueOfRemovedProduct.split("\\$")[1];
+		double SVValueOfRemoved = Double.parseDouble(sv);
+		double finalSVValue = totalSVValue-SVValueOfRemoved;
+		System.out.println("Final SV Value "+finalSVValue);
+		return finalSVValue;
+
+	}
 
 	public String getSubtotalFromCart(){
 		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span"));
@@ -904,8 +920,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public String getUpdatedAddressPresentOnOrderConfirmationPage(){
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]"));
-		String shippingAddresName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[3]/div[1]/div[1]/div/span[1]")).getText();
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/div[2]//div[contains(@class,'ship-method')]/span[@class='font-bold']"));
+		String shippingAddresName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[2]//div[contains(@class,'ship-method')]/span[@class='font-bold']")).getText();
 		return shippingAddresName.trim();
 	}
 

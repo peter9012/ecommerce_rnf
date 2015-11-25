@@ -302,7 +302,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.type(By.id("last-name"),lastName);
 	}
 
-	public void enterEmailAddress(String emailAddress){		
+	public void enterEmailAddress(String emailAddress){	
+		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
@@ -1619,9 +1620,15 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.pauseExecutionFor(1000);
 			driver.click(By.id("enrollUnderLastUpline"));
 		}catch(Exception e){
-			driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
-			driver.pauseExecutionFor(1000);
-			driver.click(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
+			try{
+				driver.waitForElementPresent(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
+				driver.pauseExecutionFor(1000);
+				driver.click(By.xpath("//form[@id='inactiveConsultant180Form']//input[@id='enrollUnderLastUpline']"));
+			}catch(Exception e2){
+				driver.waitForElementPresent(By.xpath("//form[@id='inactivePc90Form']//input[@id='enrollUnderLastUpline']"));
+				driver.pauseExecutionFor(1000);
+				driver.click(By.xpath("//form[@id='inactivePc90Form']//input[@id='enrollUnderLastUpline']"));
+			}
 		}
 	}
 

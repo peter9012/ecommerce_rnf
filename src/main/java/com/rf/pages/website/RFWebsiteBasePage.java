@@ -164,6 +164,25 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
+	public void clickOnAddToPcPerksButton(){
+		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+		}
+
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+	}
+
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
 		driver.waitForElementPresent(By.id("quantity0"));
 		driver.findElement(By.id("quantity0")).clear();
@@ -1443,4 +1462,86 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	}
 
+	public boolean verifyCheckoutConfirmationPOPupPresent(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-review']"));
+		return driver.isElementPresent(By.xpath("//div[@id='popup-review']"));		  
+	}
+
+	public void clickOnOkButtonOnCheckoutConfirmationPopUp(){
+		driver.click(By.xpath("//input[@value='OK']"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyAccountInfoPageHeaderPresent(){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//span"));
+		if(driver.isElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//span"))){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean verifyCheckoutConfirmationPopUpMessagePC(){
+		if(driver.findElement(By.xpath("//div[@id='popup-review']/div/p")).getText().contains("This is not a PC Perks order. Shipping charges will be applied to this order. Please click OK to continue.")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean verifyCheckoutConfirmationPopUpMessageConsultant() {
+		if(driver.findElement(By.xpath("//div[@id='popup-review']/div/p")).getText().contains("This is not a CRP order. You will be charged for regular order. Please click OK to continue.")){
+			return true;}
+
+		else{
+			return false;
+		}
+	}
+
+	public boolean verifyRetailPriceIsAvailableOnProductsPage(){
+		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//span[@class='old-price']"));
+		}else{
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='old-price']"));
+		}
+	}
+
+	public boolean verifyYourPriceIsAvailableOnProductsPage(){
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//span[@class='your-price']"));
+		}else{
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
+		}
+	}
+
+	public boolean verifyRetailPriceIsAvailableOnAdhocCart(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.id("cart-retail-price"));
+	}
+
+	public boolean verifyYourPriceIsAvailableOnAdhocCart(){
+		return driver.isElementPresent(By.id("cart-price"));
+	}
+
+	public boolean verifyTotalSavingsIsAvailableOnAdhocCart(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//div[@class='checkout-module-content']//div[@id='module-total'][2]"));
+	}
+
+	public boolean verifyRetailPriceIsAvailableOnAutoshipCart(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//div[@class='cart-items']/div[1]//p[@id='cart-retail-price']"));
+	}
+
+	public boolean verifyYourPriceIsAvailableOnAutoshipCart(){
+		return driver.isElementPresent(By.xpath("//div[@class='cart-items']/div[1]//p[@id='cart-price']"));
+	}
+
+	public boolean verifyTotalSavingsIsAvailableOnAutoshipCart(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//div[@class='checkout-module-content']//div[@id='module-subtotal'][1]"));
+	}
 }

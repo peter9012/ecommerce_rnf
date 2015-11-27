@@ -10178,4 +10178,194 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	}
 
+	//Hybris Project-2306:Filter Product on Category
+	@Test
+	public void testFilterProductOnCategory_2306(){
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		String productNameBeforeApplyFilter = storeFrontHomePage.getProductNameBeforeApplyProductFilter();
+
+		int sizeOfProductFilter = storeFrontHomePage.getSizeOfProductFilter();
+		for(int i=1; i<=sizeOfProductFilter; i++){
+			s_assert.assertTrue(storeFrontHomePage.verifyProductFilterIsApply(i), "Product name is not similar as product filter"+" "+i );
+		}
+
+		s_assert.assertTrue(storeFrontHomePage.verifyProductNameAfterRemoveProductFilter(productNameBeforeApplyFilter), "Product name is not same as before after remove filter");
+		s_assert.assertAll();
+	}
+
+
+	// Hybris Project-3766:RC2PC User - Place Adhoc Order from Different PWS site check Sposnor of Order
+	@Test
+	public void testPlaceAdhocOrderFromDifferentPWSCheckSponsorOfOrder_3766() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		// create RC User
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, emailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
+
+
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
+
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountnumber);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
+		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Validate welcome PC Perks Message
+		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String pws = driver.getCurrentUrl();
+		System.out.println("before  "+pws);
+
+		logout();
+		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		storeFrontHomePage.loginAsPCUser(emailAddress, password);
+		// again placed adhoc order
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String pwsAfterOrderPlaced = driver.getCurrentUrl();
+		System.out.println("After "+pwsAfterOrderPlaced);
+		s_assert.assertTrue(storeFrontHomePage.verifyUrlAfterplacedAnAdhocOrder(pws, pwsAfterOrderPlaced), "pws before and are not equal");
+		s_assert.assertAll(); 
+	}
+
+
+	//Hybris Project-3822:Verify Footer Links on .COM home Page
+	@Test
+	public void testVerifyFooterLinksOnHomePage_3822(){
+		//Navgate to app home page
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//validate RF Connection link
+		s_assert.assertTrue(storeFrontHomePage.validateRFConnectionLink(),"RF Connection link is not redirecting to proper screen");
+		//validate Carrers link
+		s_assert.assertTrue(storeFrontHomePage.validateCareersLink(),"Careers link is not redirecting to proper screen");
+		//validtae Contact-Us Link
+		s_assert.assertTrue(storeFrontHomePage.validateContactUsLink(),"Contact Us link is not redirecting to proper screen");
+		//validate Disclaimer link
+		s_assert.assertTrue(storeFrontHomePage.validateDisclaimerLink(),"Disclaimer link is not redirecting to proper screen");
+		//validate Privacy-policy link
+		s_assert.assertTrue(storeFrontHomePage.validatePrivacyPolicyLink(),"PrivacyPolicy link is not redirecting to proper screen");
+		//validate Satisfaction-Guarantee link
+		s_assert.assertTrue(storeFrontHomePage.validateSatisfactionGuaranteeLink(),"SatisfactionGuarantee link is not redirecting to proper screen");
+		//validate Terms&Conditions link
+		s_assert.assertTrue(storeFrontHomePage.validateTermsConditionsLink(),"TermsConditions link is not redirecting to proper screen");
+		//validate pressroom link
+		s_assert.assertTrue(storeFrontHomePage.validatePressRoomLink(),"PressRoom link is not redirecting to proper screen");
+		//validate country flag dropdown
+		s_assert.assertTrue(storeFrontHomePage.validateCountryFlagDropDownBtn(),"Country flag Drop down button is not present in UI on homepage");
+		//validate Derm RF Link
+		s_assert.assertTrue(storeFrontHomePage.validateDermRFLink()," Derm RF link is not redirecting to proper screen");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3820:Verify the Links in the top Navigation on .COM home Page
+	@Test
+	public void testVerifyLinksInTheTopNavigationOnHomePage_3820()	{
+		//Navgate to app home page
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//click on logo and validate the homepage
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.validateHomePage(),"Home page is not displayed ");
+		//click login  link and validate username,password,login button & forgot pwd link
+		s_assert.assertTrue(storeFrontHomePage.validateLoginFunctionality(),"All the Elements of login functionality are not displayed!");
+		//validate 'shop','About' &'Become a Consultant' Menu 
+		s_assert.assertTrue(storeFrontHomePage.validateTopNavigationMenuElements(),"Top Menu Navigation Elements are not displayed/present");
+		//validate country flag dropdown
+		s_assert.assertTrue(storeFrontHomePage.validateCountryFlagDropDownBtn(),"Country flag Drop down button is not present in UI on homepage");
+		s_assert.assertAll();
+	}
+
+
+
+
 }

@@ -9965,6 +9965,217 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	
+	//Hybris Project-3819 Verify links in meet your consultant banner
+	@Test
+	public void testVerifyLinksInMeetYourConsultantBanner_3819() {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//click meet your consultant banner link
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		//validate we are navigated to "Meet your Consultant" page on .COM
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3825:Verify Top Nav as Logged in RC User(.com)
+	@Test
+	public void testVerifyTopNavLoggedInRCUser_3825() throws InterruptedException{
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountIdForRCUser = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//validate home page
+		s_assert.assertTrue(storeFrontRCUserPage.validateHomePage(),"home -page is not displayed");
+		//add product to cart..
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks(); 
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//validate adhoc cart is displayed?
+		s_assert.assertTrue(storeFrontRCUserPage.validateAdhocCartIsDisplayed(), "Ad-hoc Cart is not displayed");
+		//validate 'My Act' dropdown in the top Nav is present
+		s_assert.assertTrue(storeFrontRCUserPage.validateMyAccountDDPresentInTopNav(), "My act DD is not displayed in the top Nav");
+		s_assert.assertAll(); 
+	}
+
+
+	//Hybris Project-3765:RC2PC User - Place Adhoc Order from spsonsor's PWS site check Sposnor of Order
+	@Test
+	public void testPlaceAdhocOrderFromSponsorPWSSiteCheckSponsorOfOrder_3765() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		// create RC User
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, emailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
+
+
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
+
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountnumber);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
+		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Validate welcome PC Perks Message
+		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String pws = driver.getCurrentUrl();
+		System.out.println("before  "+pws);
+
+		logout();
+		storeFrontHomePage.openPWS(pws);
+		//storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		storeFrontHomePage.loginAsPCUser(emailAddress, password);
+		// again placed adhoc order
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		String pwsAfterOrderPlaced = driver.getCurrentUrl();
+		System.out.println("After "+pwsAfterOrderPlaced);
+		s_assert.assertTrue(storeFrontHomePage.verifyUrlAfterplacedAnAdhocOrder(pws, pwsAfterOrderPlaced), "pws before and are not equal");
+		s_assert.assertAll(); 
+	}
+
+	// Hybris Project-2305:Filter Product based on Price
+	@Test
+	public void testFilterProductBasedOnPrice_2305() throws InterruptedException{
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		String priceBeforeApplyFilter = storeFrontHomePage.getProductPriceBeforeApplyFilter();
+
+		// apply filter low to high
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		s_assert.assertTrue(storeFrontHomePage.verifyPriceFromLowToHigh(), "Prices are not in format from low to high");
+
+		// apply filter high to low
+		storeFrontHomePage.applyPriceFilterHighToLow();
+		s_assert.assertTrue(storeFrontHomePage.verifyPriceFromHighTolow(), "Prices are not in format from high to low");
+
+		//deselect the price filter
+		storeFrontHomePage.deselectPriceFilter();
+		s_assert.assertTrue(storeFrontHomePage.verifyPriceAfterDeselectThefilter(priceBeforeApplyFilter), "Price is not as before after deselect the filter");
+
+		s_assert.assertAll(); 
+
+	}
 
 }

@@ -704,4 +704,72 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 	}
 
+	public boolean verifyEnteredBirthDateFromDB(String dobDB, String consultantDayOfBirth, String consultantMonthOfBirth, String consultantYearOfBirth) {
+		String date[] = dobDB.split("\\ ");		  
+		String formattedDate = consultantYearOfBirth+"-"+consultantMonthOfBirth+"-0"+consultantDayOfBirth;
+		System.out.println(formattedDate);
+		if(date[0].equals(formattedDate.trim())){
+			return true;
+		}		  
+		return false;
+	}
+
+	public void clickOnGenderRadioButton(String consultantGender) {
+		driver.waitForElementPresent(By.id(""+consultantGender+""));
+		driver.click(By.id(""+consultantGender+""));
+		logger.info("gender radio button is clicked");
+
+	}
+
+	public void clickOnSaveAfterEnterSpouseDetails() {
+		driver.waitForElementPresent(By.id("saveAccountInfo"));
+		driver.click(By.id("saveAccountInfo"));
+		try{
+			driver.quickWaitForElementPresent(By.id("acceptSpouse"));
+			if(driver.isElementPresent(By.id("acceptSpouse"))){
+				driver.click(By.id("acceptSpouse"));
+				logger.info("acceptSpouse pop up handled");
+				driver.waitForLoadingImageToDisappear();
+				driver.click(By.id("saveAccountInfo"));
+			}
+		}catch(Exception e){
+			logger.info("acceptSpouse popup not present");
+		}
+
+		driver.waitForPageLoad();
+
+	}
+
+	public void enterBirthDateOnAccountInfoPage() {
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_YEAR_OF_BIRTH_LOC, TestConstants.CONSULTANT_YEAR_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH)));
+	}
+
+	public StoreFrontAccountInfoPage enterMobileNumber(String phoneNumberCa) {
+		driver.waitForElementPresent(By.id("mobilenumber"));
+		driver.clear(By.id("mobilenumber"));
+		driver.type(By.id("mobilenumber"), phoneNumberCa);
+		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.pauseExecutionFor(2000);
+		logger.info("Save account info button clicked");
+		return new StoreFrontAccountInfoPage(driver);		  
+	}
+
+	public void enterNameOfUser(String firstName,String lastName) {
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
+		driver.type(ACCOUNT_INFO_LAST_NAME_LOC, lastName);		  
+	}
+
+	public boolean verifyEmailAddressOnAccountInfoPage(String consultantEmailID) {
+		return driver.findElement(By.id("username-account")).getAttribute("value").contains(consultantEmailID);
+	}
+
+	public boolean validateCountryCanOrNotBeModified(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
+	}
+
 }

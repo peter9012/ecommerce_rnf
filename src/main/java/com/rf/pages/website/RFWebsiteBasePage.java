@@ -1,8 +1,10 @@
 package com.rf.pages.website;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1543,5 +1545,66 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public boolean verifyTotalSavingsIsAvailableOnAutoshipCart(){
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//div[@class='checkout-module-content']//div[@id='module-subtotal'][1]"));
+	}
+
+	public boolean validateEditYourInformationLink(){
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		return driver.isElementPresent(WELCOME_USER_DD_LOC);
+	}
+
+	public boolean validateAccessSolutionTool(){
+		//click learn more..
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.pauseExecutionFor(11000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("solutiontool")){
+					status=true;
+					driver.close();
+					return status;
+				}
+			}
+		}
+		return status;
+	}
+
+	public void enterPasswordForUpgradeRCToConsultant(){
+		driver.waitForElementPresent(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::div[@id='terminate-log-in']/div[3]/input"));
+		driver.type(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::div[@id='terminate-log-in']/div[3]/input"), driver.getPassword());
+	}
+
+	public void clickOnLoginToTerminateToMyRCAccount(){
+		//driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
+		driver.click(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+	}
+
+	public boolean verifyAccountTerminationMessage(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Your old account has been terminated successfully')]"));
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'Your old account has been terminated successfully')]"));
+	}
+
+	public void clickOnEditMyPWS(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
+		driver.click(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
+	}
+
+	public void enterPhoneNumberOnEditPWS(String number){
+		driver.waitForElementPresent(By.id("phone"));
+		driver.type(By.id("phone"), number);
+	}
+
+	public void clickOnSaveAfterEditPWS(){
+		driver.waitForElementPresent(By.xpath("//div[@class='editphotosmode']//input"));
+		driver.click(By.xpath("//div[@class='editphotosmode']//input"));
 	}
 }

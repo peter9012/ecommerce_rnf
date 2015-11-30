@@ -1200,4 +1200,28 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return null;
 	}
 
+	public boolean verifySelectedbillingProfileIsDefault(String name) {
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),"+name+")]/following::input[@checked='checked']"));
+		if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),"+name+")]/following::input[@checked='checked']"))){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean verifySelectedShippingAddressIsDefault(String newShipingAddressName) {
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),"+newShipingAddressName+")]/following::p[2]//input[@checked='checked']"));
+		if(driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),"+newShipingAddressName+")]/following::p[2]//input[@checked='checked']"))){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifySelectedShippingMethodNameOnUI(String selectedMethodName) {
+		String methodName = driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[3]/p")).getText();
+		// System.out.println("Actual Assertion 2 : "+methodName.contains(selectedMethodName.trim()));
+		return methodName.contains(selectedMethodName.trim());
+	}
+
 }

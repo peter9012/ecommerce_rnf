@@ -852,5 +852,37 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		return driver.isElementPresent(By.id("productSV"));
 	}
 
+	public boolean verifyAutoshipOrderSectionOnOrderPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div/div[2]/h3[contains(text(),'Autoship order')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/div/div[2]/h3[contains(text(),'Autoship order')]"));
+	}
+
+	public boolean verifyOrderHistorySectionOnOrderPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div/div[4]/h3[contains(text(),'order history')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/div/div[4]/h3[contains(text(),'order history')]"));
+	}
+
+	public boolean verifyReturnOrderSectionOnOrderPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div/div[6]/h3[contains(text(),'Return Order')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/div/div[6]/h3[contains(text(),'Return Order')]"));
+	}
+
+	public boolean verifyNextAutoshipDateRadioButtons(){
+		driver.quickWaitForElementPresent(By.xpath("//span[@class='radio-button selectautoshipDate']"));
+		if(driver.isElementPresent(By.xpath("//span[@class='radio-button selectautoshipDate']"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyAutoShipOrderDate(String date){
+		if(driver.findElement(AUTOSHIP_DATE_LOC).getText().equalsIgnoreCase(date)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }
 

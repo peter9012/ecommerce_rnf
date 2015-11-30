@@ -20,7 +20,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 	private Actions actions;
-
 	private final By LOGIN_LINK_LOC = By.cssSelector("li[id='log-in-button']>a");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
@@ -30,11 +29,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don’t Have an R+F Sponsor?')]");
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
-
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
-
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -50,7 +47,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 				driver.waitForLoadingImageToDisappear();
 			}
 			//do nothing
-
 		}
 		catch (Exception e) {
 			System.out.println("Policy Popup Dialog not seen.");
@@ -951,6 +947,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void enterSponsorIdDuringCreationOfPC(String sponsorID){
@@ -2584,6 +2581,196 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		logger.info("Edit For shipping address clicked.");
+	}
+
+	public String getPCPerksMessageFromModalPopup(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='quickinfo-shop']/div[5]/p"));
+		return driver.findElement(By.xpath("//div[@id='quickinfo-shop']/div[5]/p")).getText();
+	}
+
+	public boolean verifyPCPerksTermsAndConditionsPopupPresent() throws InterruptedException{
+		boolean isPCPerksTermsAndConditionsPopup = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='pcperktermsconditions']//input[@value='Ok']"));
+		isPCPerksTermsAndConditionsPopup = driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='pcperktermsconditions']//input[@value='Ok']")));
+		if(isPCPerksTermsAndConditionsPopup==true){
+			return true;
+		}
+		return false;
+	}
+
+
+	public String getPCPerksTermsAndConditionsPopupText(){
+		driver.waitForElementPresent(By.xpath("//div[@id='pcperktermsconditions']//p[1]"));
+		String textFromUI=driver.findElement(By.xpath("//div[@id='pcperktermsconditions']//p[1]")).getText();
+		logger.info("terms and candition text from UI is "+textFromUI);
+		return textFromUI;
+	}
+
+
+	public void clickPCPerksTermsAndConditionPopupOkay(){
+		driver.click(By.xpath("//div[@id='pcperktermsconditions']//input[@value='Ok']"));
+		logger.info("PC Perks terms and candition popup okay button clicked");
+	}
+
+	public boolean validateDiscountForEnrollingAsPCUser(String discountText){
+		driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'"+discountText+"')]/preceding-sibling::div/input[@class='checked']"));
+		if(driver.isElementPresent(By.xpath("//span[contains(text(),'"+discountText+"')]/preceding-sibling::div/input[@class='checked']"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickOnPCPerksPromoLink() {
+		driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[2]/div[4]/a/span"));
+		driver.click(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[2]/div[4]/a/span"));
+	}
+
+	public boolean verifyModalWindowIsPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-pcperks']"));
+		if(driver.isElementPresent(By.xpath("//div[@id='popup-pcperks']"))){
+			return true;}
+		else{
+			return false;
+		}
+	}
+
+	public void clickOnModalWindowCloseIcon() {
+		driver.click(By.xpath("//span[@class='icon-close']"));
+	}
+
+	public void clickOnOrderSummaryPCPerksPromoLink() {
+		driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']//div[@class='mg-tp-5']/following::a/span"));
+		driver.click(By.xpath("//div[@id='shopping-wrapper']//div[@class='mg-tp-5']/following::a/span"));		  
+	}
+
+	public String getPCPerksTermsAndConditionsPopupHeaderText(){
+		driver.waitForElementPresent(By.xpath("//div[@id='pcperktermsconditions']//h2"));
+		String textFromUI=driver.findElement(By.xpath("//div[@id='pcperktermsconditions']//h2")).getText();
+		logger.info("terms and candition Header text from UI is "+textFromUI);
+		return textFromUI;
+	}
+
+	public boolean verifyNotYourSponsorLinkPresent() {
+		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
+		if(driver.isElementPresent(By.xpath("//a[@id='not-your-sponsor']"))){
+			logger.info("NOT YOUR SPONSOR LINK PRESENT");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyContinueWithoutSponsorLinkIsPresent() {
+		driver.waitForElementPresent(By.xpath("//a[@id='continue-no-sponsor']"));
+		if(driver.isElementPresent(By.xpath("//a[@id='continue-no-sponsor']"))){
+			logger.info("CONTINUE WITHOUR SPONSOR LINK PRESENT");
+			return true;
+		}
+		return false;
+	}
+
+	public void clickOnSponsorName(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+	}
+
+	public boolean verifyContactBoxIsPresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='contactBox']"));
+	}
+
+	public boolean verifyEmailIdIsPresentInContactBox(){
+		return driver.isElementPresent(By.id("txtContactMe"));
+	}
+
+	public boolean verifyPhoneNumberIsPresentInContactBox(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//span[@class='icon-phone iconMsg']/following::a[1]"));
+	}
+
+	public void clickOnEditMyPWS(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
+		driver.click(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
+	}
+
+	public void enterPhoneNumberOnEditPWS(String number){
+		driver.waitForElementPresent(By.id("phone"));
+		driver.type(By.id("phone"), number);
+	}
+
+	public void clickOnSaveAfterEditPWS(){
+		driver.waitForElementPresent(By.xpath("//div[@class='editphotosmode']//input"));
+		driver.click(By.xpath("//div[@class='editphotosmode']//input"));
+	}
+
+	public void clickCancelBtnOnEditConsultantInfoPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//a[@class='btn btn-secondary editmode-cancel']"));
+		driver.click(By.xpath("//div[contains(@class,'top-save')]//a[@class='btn btn-secondary editmode-cancel']"));
+		driver.pauseExecutionFor(1000);
+	}
+
+	public boolean validateSubmissionGuideLinesLink(){
+		//click Submission Guidelines Link..
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Submission Guidelines')]"));
+		driver.click(By.xpath("//a[contains(text(),'Submission Guidelines')]"));
+		driver.pauseExecutionFor(4000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_US.pdf")){
+					status=true;
+					driver.close();
+					return status;
+				}
+			}
+		}
+		return status;
+	}
+
+	public void checkEmailFieldCBOnEditConsultantInfoPage(){
+		driver.waitForElementPresent(By.xpath("//input[@id='onlyShowContactMeForm']/.."));
+		if(!driver.isElementPresent(By.xpath("//input[@checked='checked']"))){
+			driver.click(By.xpath("//input[@id='onlyShowContactMeForm']/.."));
+		}
+	}
+
+	public void clickSaveBtnOnEditConsultantInfoPage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
+		driver.click(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
+		driver.pauseExecutionFor(1000);
+	}
+
+	public void enterUserInformationForEnrollmentWithTerminatedEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		// Actions actions = new Actions(RFWebsiteDriver.driver);
+		selectEnrollmentKitPage(kitName, regimenName);  
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterEmailAddress(emailaddress);
+		// actions.sendKeys(Keys.TAB).perform();
+		driver.waitForElementPresent(By.id("enrollUnderLastUpline"));
+		clickOnEnrollUnderLastUpline();
+		driver.pauseExecutionFor(6000);
+	}
+
+	public boolean verifyCurrentUrlContainCorp(){  
+		driver.waitForPageLoad();
+		System.out.println("current url is "+driver.getCurrentUrl());
+		return driver.getCurrentUrl().toLowerCase().contains("corp");
+	}
+
+	public boolean verifyBizUrlAfterEnrollment(String pws){
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().trim().contains(pws.trim());
+	}
+
+	public boolean verifyNotYourSponsorLinkIsPresent(){
+		driver.quickWaitForElementPresent(By.id("not-your-sponsor"));
+		return driver.isElementPresent(By.id("not-your-sponsor"));
 	}
 }
 

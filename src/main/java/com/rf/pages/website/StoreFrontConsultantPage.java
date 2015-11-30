@@ -145,7 +145,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 
 	public boolean validateMeetYourConsultantPage(){
 		driver.pauseExecutionFor(5000);
-		return driver.getCurrentUrl().contains("MeetYourConsultantPage");
+		return driver.getCurrentUrl().toLowerCase().contains("meetyourconsultant");
 	}
 
 	public boolean validateCRPCartDisplayed(){
@@ -157,6 +157,6 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//span[@class='cart-section']"));
 		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
 	}
-	
+
 }
 

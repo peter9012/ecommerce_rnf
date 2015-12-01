@@ -1,5 +1,9 @@
 package com.rf.pages.website;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -2794,6 +2798,284 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean validateConsultantNameOnTopRightCorner(){
 		driver.waitForElementPresent(By.xpath("//div[@id='dis_name']"));
 		return driver.isElementPresent(By.xpath("//div[@id='dis_name']"));
+	}
+
+	public boolean verifyHeroBannerOnLoginPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[1]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[1]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPageTitle(String expectedTitle){
+		if(driver.getTitle().contains(expectedTitle)){
+			logger.info("Title of page is "+driver.getTitle());
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPCSubscribeBenefitsContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifySolutionToolContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyProductGuaranteeContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickShopNowLinkOnHeroBanner(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[1]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[1]/div/div/div/a"));
+		driver.waitForPageLoad();
+		logger.info("Shop now link is clicked in Hero Banner block");
+	}
+
+	public boolean verifyShopNowPageAfterClickingShopNowLinkOfHeroBanner(){
+		if(driver.getCurrentUrl().toLowerCase().contains("Skincare-for-Expression-Lines".toLowerCase())&&
+				driver.getTitle().contains("ACUTE CARE™ Skincare for Expression Lines- Rodan + Fields")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickLearnMoreLinkOnPCSubscribeBenefitsContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/div/div/a"));
+		driver.waitForPageLoad();
+		logger.info("Learn More link is clicked in PC Subscribed Benefits content block");
+	}
+
+	public void clickShopNowLinkOnProductGuaranteeContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/div/div/a"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+		logger.info("Shop Now link is clicked in Product guarantee content block");
+	}
+
+	public boolean verifyProductGuaranteePageAfterClickingShopNowLinkOnCom(){
+		driver.pauseExecutionFor(3000);
+		logger.info("title of product guarantee page "+driver.getTitle());
+		if(driver.getCurrentUrl().toLowerCase().contains("products".toLowerCase())&&
+				driver.getTitle().contains("REDEFINE Products")){
+			logger.info("title of product guarantee page "+driver.getTitle());
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public void clickLearnMoreLinkOnVerifySolutionToolContentBlockOnCom(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/div/div/a"));
+		driver.waitForPageLoad();
+		logger.info("Learn More link is clicked in Solution tool content block");
+	}
+
+	public boolean verifySolutionToolPageAfterClickingLearnMoreLinkOnCom(){
+		if(driver.getCurrentUrl().toLowerCase().contains("solutiontool".toLowerCase())&&
+				driver.getTitle().contains("Rodan + Fields Solution Tool")){
+			logger.info("title of Solution tool page "+driver.getTitle());
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyPCSubscribeBenefitsPageAfterClickingLearnMoreLinkOnCom(){
+		if(driver.getCurrentUrl().toLowerCase().contains("pc-perks".toLowerCase())&&
+				driver.getTitle().contains("PC Perks | com PWS - CA")){
+			logger.info("title of PC Subscribe benefits page "+driver.getTitle());
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyMeetYourCommunityContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyStartYourJourneyContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyAttendAnEventContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/img"));
+		if(driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/img"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public boolean verifyEnrollNowPageAfterClickingEnrollNowLinkOfHeroBanner(){
+		if(driver.getCurrentUrl().toLowerCase().contains("why-rf".toLowerCase())&&
+				driver.getTitle().contains("Why R+F? | biz PWS - CA")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickLearnMoreLinkOnMeetOurCommunityContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[2]/div/div/div/a"));
+		driver.waitForPageLoad();
+		logger.info("Learn More link is clicked in meet our community content block");
+	}
+
+	public boolean verifyMeetOurCommunityPageAfterClickingLearnMoreLink(){
+		if(driver.getCurrentUrl().toLowerCase().contains("meet-our-community".toLowerCase())&&
+				driver.getTitle().contains("Meet Our Community- Rodan + Fields")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickLearnMoreLinkOnStartYourJourneyContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]/div/div/div/a"));
+		driver.waitForPageLoad();
+		logger.info("Learn More link is clicked in Start your journey content block");
+	}
+
+	public boolean verifyStartYourJourneyPageAfterClickingLearnMoreLink(){
+		if(driver.getCurrentUrl().toLowerCase().contains("programs-incentives".toLowerCase())&&
+				driver.getTitle().contains("Programs & Incentives")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickLearnMoreLinkOnAttendAnEventContentBlock(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/div/div/a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[4]/div/div/div/a"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+		logger.info("Learn more link is clicked in Attend An Event content block");
+	}
+
+	public boolean verifyAttendAnEventPageAfterClickingLearnMoreLink(){
+		if(driver.getCurrentUrl().toLowerCase().contains("events".toLowerCase())&&
+				driver.getTitle().contains("Events")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public String getOneMonthExtendAutoshipDateFromCurrentDate(String splittedDateForMonth) throws ParseException{
+		Date pstInMonthFrom=new Date(splittedDateForMonth); 
+		SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
+		String[] datePST = splittedDateForMonth.split(" ");
+		String dateForExtend = sm.format(pstInMonthFrom);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		if(Integer.parseInt(datePST[0])<=17){
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdf.parse(dateForExtend));
+			c.add(Calendar.MONTH, 1);
+			dateForExtend = sdf.format(c.getTime());
+			String extendedDate =  convertDBDateFormatToUIFormatForPulseSubscription(dateForExtend);
+			System.out.println("Final extended in words date "+extendedDate);
+			return extendedDate;
+		}else{
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdf.parse(dateForExtend));
+			c.add(Calendar.MONTH, 1);
+			dateForExtend = sdf.format(c.getTime());
+			String[] splitedDateForAfterSeventeen = dateForExtend.split("-");
+			String dateForAfterSeventeen = "17"+"-"+splitedDateForAfterSeventeen[1]+"-"+splitedDateForAfterSeventeen[2];
+			String extendedDate = convertDBDateFormatToUIFormatForPulseSubscription(dateForAfterSeventeen);
+			System.out.println("Final extended in words date "+extendedDate);
+			return extendedDate;
+		}
+	}
+
+	public String convertDBDateFormatToUIFormatForPulseSubscription(String DBDate){
+		String UIMonth=null;
+		String[] monthInWords = DBDate.split("-");
+		String date = monthInWords[0];
+		String day = ""+date.charAt(0);
+		if(day.equals("0")){
+			date = date.substring(1);
+		}
+		String month =  monthInWords[1];
+		String year = monthInWords[2];
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		return UIMonth+" "+date+", "+year;
 	}
 }
 

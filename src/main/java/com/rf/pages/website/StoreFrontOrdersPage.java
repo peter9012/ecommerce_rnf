@@ -1,5 +1,9 @@
 package com.rf.pages.website;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -882,6 +886,17 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}else{
 			return false;
 		}
+	}
+
+	public String getCurrentPSTDate(){
+		DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
+		df.setTimeZone(TimeZone.getTimeZone("PST"));
+		final String dateString = df.format(new Date());
+		String[] datePST = dateString.split(" ");
+		System.out.println(dateString);
+		String splittedDateForMonth = datePST[1]+" "+datePST[2]+" "+datePST[3];
+		System.out.println("Fianl for expand "+splittedDateForMonth);
+		return splittedDateForMonth;
 	}
 
 }

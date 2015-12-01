@@ -362,7 +362,9 @@ public class TestConstants {
 	public static final String RECEIVE_PRODUCT_TOO_OFTEN = "I received products too often";
 	public static final String DO_NOT_WANT_TO_OBLIGATED_TO_ORDER_PRODUCT = "Do not want to be obligated to order products";
 	public static final String OTHER_REASON = "Other";
-
+	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_COM_SITE="Dermatologist-Created Anti-Aging Skincare Products";
+	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_BIZ_SITE="biz PWS - CA";
+	
 }
 
 

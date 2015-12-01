@@ -94,9 +94,9 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.type(By.id("terminationComments"), "I want to terminate my account");
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
 		//driver.click(By.xpath("//input[@class='fancybox']"));
-		driver.click(By.xpath("//input[@class='fancybox btn btn-primary']"));
+		driver.click(By.xpath("//input[@value='SUBMIT']"));
 		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
-		driver.waitForLoadingImageToDisappear();  
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
@@ -162,5 +162,5 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.quickWaitForElementPresent(By.xpath("//div[@class='repaired-checkbox']"));
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
 	}
-	
+
 }

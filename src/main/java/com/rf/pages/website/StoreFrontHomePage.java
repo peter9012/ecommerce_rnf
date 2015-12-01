@@ -1565,9 +1565,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clickOnLoginToReactiveMyAccount(){
 		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(By.xpath("//input[@class='reactivatePC']"));
-		driver.click(By.xpath("//input[@class='reactivatePC']/.."));
-		driver.waitForPageLoad();
+		//  driver.waitForElementPresent(By.xpath("//input[@class='reactivatePC']"));
+		//  driver.click(By.xpath("//input[@class='reactivatePC']/.."));
+		driver.waitForElementPresent(By.xpath("//input[@value='Log In to Reactivate My Account']"));
+		driver.click(By.xpath("//input[@value='Log In to Reactivate My Account']"));
+		//  driver.waitForPageLoad();
+
 	}
 
 	public void clickOnCnacelEnrollmentForPC(){
@@ -2771,6 +2774,26 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifyNotYourSponsorLinkIsPresent(){
 		driver.quickWaitForElementPresent(By.id("not-your-sponsor"));
 		return driver.isElementPresent(By.id("not-your-sponsor"));
+	}
+
+	public void clickLearnMoreLinkUnderSolutionToolAndSwitchControl(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.pauseExecutionFor(11000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+			}
+		}
+	}
+
+	public boolean validateConsultantNameOnTopRightCorner(){
+		driver.waitForElementPresent(By.xpath("//div[@id='dis_name']"));
+		return driver.isElementPresent(By.xpath("//div[@id='dis_name']"));
 	}
 }
 

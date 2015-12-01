@@ -10730,6 +10730,251 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 	}
 
+
+	//Hybris Project-2170:Login as Existing Consultant and Place an Adhoc Order - check Alert Message
+	@Test
+	public void testExistingConsultantPlaceAnAdhocOrderAndCheckForAlertMessage_2170() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
+		//login as consultant and verify Product Details.
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountIdForConsultant = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForConsultant);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontConsultantPage.clickAddToBagButton();
+		storeFrontConsultantPage.clickOnPlaceOrderButton();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyCheckoutConfirmationPOPupPresent(),"Checkout Confirmation pop up not present");
+		s_assert.assertTrue(storeFrontConsultantPage.verifyCheckoutConfirmationPopUpMessageConsultant(),"Checkout Confirmation pop up message is not present as expected");
+
+		storeFrontConsultantPage.clickOnOkButtonOnCheckoutConfirmationPopUp();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyAccountInfoPageHeaderPresent(),"Account info page header is not present");
+		s_assert.assertAll();
+
+	}
+
+	//Hybris Project-2318:PC Perks Message
+	@Test
+	public void testVerifyPCPerksMessageOnModalPopup_2318() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country = driver.getCountry();
+			RFO_DB = driver.getDBNameRFO();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+
+			//Mouse hover product and click quick info
+			storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+			//Assert for modal window
+			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+			//verify pc perks message on modal popup
+			s_assert.assertTrue(storeFrontHomePage.getPCPerksMessageFromModalPopup().contains(TestConstants.PC_PERKS_MESSAGE_ON_MODAL_POPUP),"PC Perks message is not comming on modal popup");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-3900:Downgrade to RC on the Review / Order summary page
+	@Test
+	public void testDowngradePCToRCAtReviewOrderSummaryPage_3900() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
+			env = driver.getEnvironment();
+			String firstName = TestConstants.FIRST_NAME+randomNum;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = TestConstants.LAST_NAME+randomNum;
+			String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
+			storeFrontHomePage.enterMainAccountInfo();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter billing info
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			//Uncheck PC Perks Checkbox on Review/order summary page
+			s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
+			storeFrontHomePage.checkPCPerksCheckBox();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+
+	}
+
+	//Hybris Project-3898:Downgrade to RC on the Payment / Order summary page
+	@Test
+	public void testDowngradePCToRCAtPaymentOrderSummaryPage_3900() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
+			env = driver.getEnvironment();
+			String firstName = TestConstants.FIRST_NAME+randomNum;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = TestConstants.LAST_NAME+randomNum;
+			String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
+			//Enter main account info
+			storeFrontHomePage.enterMainAccountInfo();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter billing info
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			//Uncheck PC Perks Checkbox on Payment/order summary page
+			s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
+			storeFrontHomePage.checkPCPerksCheckBox();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-1897:To verify the Meet the consultant banner on solution tool page
+	@Test
+	public void testMeetConsultantBannerOnSolutionToolPage_1897()
+	{
+		RFO_DB = driver.getDBNameRFO();  
+		country = driver.getCountry();
+		env = driver.getEnvironment();  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String PWS = storeFrontHomePage.getBizPWS(country, env);
+		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+		storeFrontHomePage.openPWS(PWS);
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//click learn more link
+		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
+		//validate consultant info on top right corner..
+		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4024:Access Solution tool from .BIZ Site Home Page Content Block
+	@Test
+	public void testAccessSolutionToolbizSiteHomePageContantBlock_4024() {
+		if(driver.getCountry().equalsIgnoreCase("ca")){  
+			country = driver.getCountry();
+			env = driver.getEnvironment();  
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			storeFrontHomePage.openPWS(PWS);
+			//Access Solution Tool..
+			s_assert.assertFalse(storeFrontHomePage.validateAccessSolutionTool(),"Solution tool is displayed on biz Site");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-4028:Access Solution tool from .COM Site Category pages Left Menu
+	@Test
+	public void testAccessSolutionToolcomSiteCategoryPagesLeftMenu_4028()	 {
+		if(driver.getCountry().equalsIgnoreCase("ca")){  
+			country = driver.getCountry();
+			env = driver.getEnvironment();  
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			//Access Solution Tool..
+			s_assert.assertTrue(storeFrontHomePage.validateAccessSolutionTool(),"Solution tool is not giving the expected results");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
 }
 
 

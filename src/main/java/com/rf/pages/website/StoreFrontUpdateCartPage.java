@@ -148,12 +148,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
-			driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
-		}
-		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
-		driver.click(By.xpath("//div[@id='new-shipping-added']//input[@value='Next step']"));
+		driver.isElementPresent(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']"));
+		driver.click(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']"));
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -614,12 +610,20 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));
-		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
-		logger.info("Next button on billing profile clicked");		
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
+			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+			logger.info("Next button on billing profile clicked"); 
+		}
+		else{
+			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+			driver.click(By.xpath("//ul[@style='cursor: pointer;']/strong//div"));
+			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+			logger.info("Next button on billing profile clicked");
+		}
 	}
 
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
@@ -1148,8 +1152,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultBillingProfileIsPresentOrderConfirmationPage(String profileName){
-		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
-		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
+			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+		}
 	}
 
 	public String getDefaultShippingProfileName(){

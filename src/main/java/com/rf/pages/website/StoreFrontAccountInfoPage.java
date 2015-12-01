@@ -37,7 +37,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private String ACCOUNT_INFO_YEAR_OF_BIRTH_LOC = "//select[@id='yearOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
 	private final By ACCOUNT_AUTOSHIP_STATUS_LOC = By.xpath("//div[@id='left-menu']//a[text()='Autoship Status']");
-	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
+	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//label[contains(text(),'Please specify a valid phone number')]");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
 	private final By CANCEL_MY_CRP_LOC = By.xpath("//a[contains(text(),'Cancel my CRP')]");
@@ -434,10 +434,9 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("username-account")).sendKeys(username);		
 	}
 
-
-	public String getErrorMessage()	{
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+	public String getErrorMessage() {
+		driver.waitForElementPresent(By.xpath(".//*[@id='accountInfo']//label[@class='error']"));
+		String errorMessage=driver.findElement(By.xpath(".//*[@id='accountInfo']//label[@class='error']")).getText();
 		return errorMessage;
 	}
 
@@ -618,8 +617,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean errorMessagePresent(){
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		if(driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed()){
+		driver.waitForElementPresent(By.xpath(".//form[@id='accountInfo']//label[@class='error']"));
+		if(driver.findElement(By.xpath(".//form[@id='accountInfo']//label[@class='error']")).isDisplayed()){
 			return true;
 
 		}else{

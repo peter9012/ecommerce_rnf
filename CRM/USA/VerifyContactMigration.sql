@@ -22,7 +22,6 @@ IF OBJECT_ID('Rfoperations.sfdc.crm_Contacts') IS NOT NULL DROP TABLE Rfoperatio
 IF OBJECT_ID('rfoperations.sfdc.ErrorLog_Contacts') IS NOT NULL DROP TABLE rfoperations.sfdc.ErrorLog_Contacts
 IF OBJECT_ID('rfoperations.sfdc.ContactDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.ContactDifference
 IF OBJECT_ID('rfoperations.sfdc.MissingCoApplicants') IS NOT NULL DROP TABLE rfoperations.sfdc.MissingCoApplicants
-IF OBJECT_ID ('Rfoperations.dbo.AccountIDs') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountIDs
 
 --IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_Accounts
 --IF OBJECT_ID('rfoperations.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE rfoperations.sfdc.BusinessRuleFailure
@@ -46,20 +45,6 @@ DECLARE @RFOAccount BIGINT, @CRMAccount BIGINT
 
 
 DECLARE @RowCount BIGINT 
-
-SELECT DISTINCT a.AccountID INTO Rfoperations.dbo.AccountIDs --COUNT( DISTINCT a.AccountID)
-FROM RFOperations.RFO_Accounts.AccountRF (NOLOCK)a 
-JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =40
- JOIN RFOperations.RFO_Accounts.AccountContacts  (NOLOCK) d ON b.AccountID =d.AccountID 
- JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactID = D.AccountContactID 
- JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
- JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK)j ON j.AccountContactID = d.AccountContactID 
- LEFT JOIN RFOperations.RFO_Accounts.Phones  (NOLOCK) p ON j.PhoneID =p.PhoneID AND p.PhoneTypeID = 1 
- LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1 
- LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK)  f ON f.EmailAddressID =E.EmailAddressId AND EmailAddressTypeID =1 
- AND B.ServerModifiedDate>=@LastRunDate
-
-
 
 --Compare Primary Account Count
 SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND countryid=40

@@ -166,7 +166,6 @@ VALUES
 ,(0,'Site','RFOAccountID__C','SitePrefix__c','SitePrefix__c')
 ,(0,'Site','RFOAccountID__C','StartDate__c','StartDate__c')
 ,(0,'Site','RFOAccountID__C','EndDate__c','EndDate__c')
-,(0,'Site','RFOAccountID__C','LastModifiedDate','LastModifiedDate')
 ,(0,'Site','RFOAccountID__C','ChangedByApplication__c','ChangedByApplication__c')
 ,(0,'Site','RFOAccountID__C','ChangedByUser__c','ChangedByUser__c')
 ,(0,'Site','RFOAccountID__C','IsActive__c','IsActive__c')
@@ -174,7 +173,6 @@ VALUES
 ,(0,'Site','RFOAccountID__C','PrimaryDomain__c','PrimaryDomain__c')
 ,(0,'Site','RFOAccountID__C','BusinessDomain__c','BusinessDomain__c')
 ,(0,'Site','RFOAccountID__C','EmailAddress__c','EmailAddress__c')
-
 ,(0,'Policy','Account__C','Policy__c','Policy__c')
 ,(0,'Policy','Account__C','DateAccepted__c','DateAccepted__c')
 ,(0,'Policy','Account__C','ChangedByApplication__c','ChangedByApplication__c')

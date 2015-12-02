@@ -7,6 +7,8 @@ AS
 
 BEGIN
 
+DECLARE @LASTRUNDATE DATETIME='2000-01-01';
+
 IF OBJECT_ID('Rfoperations.sfdc.AccountStatusHistoryMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.AccountStatusHistoryMissing
 IF OBJECT_ID('Rfoperations.sfdc.CRM_AccountStatusHistory') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_AccountStatusHistory
 IF OBJECT_ID('Rfoperations.sfdc.RFO_AccountStatusHistory') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_AccountStatusHistory
@@ -25,11 +27,12 @@ DECLARE @RowCount BIGINT
 ------------------------------------------------------------------------------------------------------------------------------
 -- Accounts 
 -----------------------------------------------------------------------------------------------------------------------------
-SELECT @RFOPP=COUNT(DISTINCT AccountId)  --COUNT( DISTINCT a.AccountID)
-FROM    RFOperations.logging.AccountChangeLog ACL
+SELECT @RFOPP=COUNT(DISTINCT ACL.AccountId)  --COUNT( DISTINCT a.AccountID)
+FROM    RFOperations.logging.AccountChangeLog ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE ACL.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=40
 
-SELECT @CRMPP=COUNT(Account__C) FROM sfdcbackup.SFDCBKP.AccountStatus
+SELECT @CRMPP=COUNT(Account__C) FROM sfdcbackup.SFDCBKP.AccountStatus AAS, SFDCBACKUP.SFDCBKP.ACCOUNTS A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AAS.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
+--SELECT * FROM sfdcbackup.SFDCBKP.AccountStatus
 										   
 SELECT  @RFOPP AS RFO_AccountStatusHistoryCount, @CRMPP AS CRM_AccountStatusHistoryCount, (@RFOPP - @CRMPP) AS Difference 
 INTO rfoperations.sfdc.AccountStatusHistoryDifference;
@@ -41,9 +44,9 @@ SELECT  AccountId AS RFO_AccountId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.AccountStatusHistoryMissing
 FROM 
-    (SELECT AccountId FROM RFOperations.logging.AccountChangeLog ) a
+    (SELECT ACL.AccountId FROM RFOperations.logging.AccountChangeLog ACL, RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE ACL.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
-    (SELECT Account__C FROM  sfdcbackup.SFDCBKP.AccountStatus AP ,sfdcbackup.SFDCBKP.Accounts A WHERE AP.Account__C=A.ID) b 
+    (SELECT A.RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountStatus AP ,sfdcbackup.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.Account__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada') b 
 	ON cast(a.AccountId as nvarchar(max)) =b.RFOACcountID__C
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
@@ -58,7 +61,7 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 
 --Loading RFO Data
 		SELECT
-		CAST(AccountID AS NVARCHAR(MAX)) AS AccountId,
+		CAST(ACL.AccountID AS NVARCHAR(MAX)) AS AccountId,
 		AAS.NAME as AccountStatus__C,
 		RT.NAME AS Reason__C,
 		CAST(ACL.ServerModifiedDate AS DATE) ServerModifiedDate, 
@@ -66,8 +69,11 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 		ACL.ChangedByUser as ChangedByUser__C
 		INTO RFOPERATIONS.SFDC.RFO_AccountStatusHistory
 		-- join address table here.
-		FROM  Rfoperations.logging.AccountChangeLog ACL, RFOPERATIONS.RFO_REFERENCE.ACCOUNTSTATUS AAS , RFOPERATIONS.RFO_REFERENCE.REASONTYPE RT
-		WHERE AAS.ACCOUNTSTATUSID=ACL.ACCOUNTSTATUSID AND ACL.REASONID=RT.REASONtypeID
+		FROM  Rfoperations.logging.AccountChangeLog ACL
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB ON AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
+		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.ACCOUNTSTATUS AAS ON AAS.ACCOUNTSTATUSID=ACL.ACCOUNTSTATUSID
+		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.REASONTYPE RT ON ACL.REASONID=RT.REASONtypeID
+
         
 		
 		--Loading CRM data
@@ -77,9 +83,9 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 		Reason__c,
 		CAST(PP.LastModifiedDate AS DATE) LastModifiedDate,	
 		PP.ChangedByApplication__c,
-		ChangedByUser__c
+		PP.ChangedByUser__c
 		INTO RFOPERATIONS.SFDC.CRM_AccountStatusHistory
-		FROM sfdcbackup.SFDCBKP.AccountStatus PP,SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID 
+		FROM sfdcbackup.SFDCBKP.AccountStatus PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
 		
 --Load Comparison Candidates.

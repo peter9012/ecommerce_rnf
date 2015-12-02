@@ -43,7 +43,7 @@ INTO Rfoperations.sfdc.AccountStatusHistoryMissing
 FROM 
     (SELECT AccountId FROM RFOperations.logging.AccountChangeLog ) a
     FULL OUTER JOIN 
-    (SELECT Account__C FROM  sfdcbackup.SFDCBKP.AccountStatus AP ,sfdcbackup.SFDCBKP.Accounts A WHERE AP.Account__C=A.ID) b 
+    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountStatus AP ,sfdcbackup.SFDCBKP.Accounts A WHERE AP.Account__C=A.ID) b 
 	ON cast(a.AccountId as nvarchar(max)) =b.RFOACcountID__C
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 

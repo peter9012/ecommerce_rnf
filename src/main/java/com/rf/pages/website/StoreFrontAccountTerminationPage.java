@@ -94,10 +94,12 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.type(By.id("terminationComments"), "I want to terminate my account");
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
 		//driver.click(By.xpath("//input[@class='fancybox']"));
-		driver.click(By.xpath("//input[@value='SUBMIT']"));
-		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
-		driver.waitForLoadingImageToDisappear();
+		//  driver.click(By.xpath("//input[@class='fancybox btn btn-primary']"));
+		//  driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
+		driver.click(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]"));
+		driver.waitForLoadingImageToDisappear();  
 	}
+
 
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
 		if(driver.findElement(By.xpath("//div[@id='consultantTerminatePopup']")).isDisplayed()){
@@ -161,6 +163,16 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	public void clickOnAgreementCheckBox(){
 		driver.quickWaitForElementPresent(By.xpath("//div[@class='repaired-checkbox']"));
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
+	}
+
+	public boolean validateConfirmAccountTerminationPopUp(){
+		driver.waitForElementPresent(By.xpath("//div[@id='showConsultantTerminatePopUp' and @style='display: block;']"));
+		return driver.isElementPresent(By.xpath("//div[@id='showConsultantTerminatePopUp' and @style='display: block;']"));
+	}
+
+	public void clickConfirmTerminationBtn(){
+		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
+		driver.pauseExecutionFor(2000);
 	}
 
 }

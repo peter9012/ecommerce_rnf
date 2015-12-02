@@ -247,12 +247,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
 		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.click(By.id("saveCrpShippingAddress"));
-		}else{
-			driver.click(By.id("saveShippingAddreessId"));
-		}
-
+		driver.click(By.id("saveCrpShippingAddress"));
 		logger.info("Save shipping profile button clicked");
 		try{
 			driver.click(By.id("QAS_AcceptOriginal"));

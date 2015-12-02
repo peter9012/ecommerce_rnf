@@ -88,6 +88,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
 		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
 		storeFrontHomePage.clickOnCountryAtWelcomePage();
@@ -7469,6 +7471,45 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"PC autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		// Now verify the details of orders
 		storeFrontHomePage.navigateToBackPage();
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontHomePage.clickOnYourAccountDropdown();
+		storeFrontHomePage.clickOnAutoshipStatusLink();
+		if(storeFrontAccountInfoPage.validateSubscribeToPulse()==true){
+			storeFrontHomePage.cancelPulseSubscription();
+		}
+
+		s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse subscription is not cancelled for the user");
+		storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
+
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+
+		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
+		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
+		handling = storeFrontUpdateCartPage.getHandlingFromCart();
+		tax = storeFrontUpdateCartPage.getTaxFromCart();
+		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
+		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+		storeFrontUpdateCartPage.clickOnSubscribeBtn();
+
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumberOfPulse();
+
+		//Assert Subtotal with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotal),"PC autoship cart subTotal is "+subTotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		// Assert Tax with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"PC autoship cart tax amount is "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
+		// Assert Grand Total with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotal),"PC autoship cart grand total is "+grandTotal+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		// assert shipping amount with RFO
+		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"PC autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		// assert Handling Value with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"PC autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		// Now verify the details of orders
+		storeFrontHomePage.navigateToBackPage();
+
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPCPerksOrderPageHeader(),"Order Text is not present on the Page");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderDateText(),"Schedule Date Text is not present on the Page");
@@ -7517,7 +7558,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-2273:Adhoc Orders for Consultant and PC and RC --> Multiple line Item
 	@Test
-	public void testAdhocOrdersForMultiplsLineItem_2273() throws InterruptedException	 {
+	public void testAdhocOrdersForMultiplsLineItem_2273() throws InterruptedException  {
 		RFO_DB = driver.getDBNameRFO(); 
 		String country = driver.getCountry();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -7555,7 +7596,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		//Select a product with the price less than $80 and proceed to buy it
-		storeFrontHomePage.applyPriceFilterLowToHigh();
+		//storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
@@ -7781,6 +7822,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
 		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
 		storeFrontHomePage.clickOnCountryAtWelcomePage();
@@ -9343,7 +9385,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 100000);
 		String websitePrefixName = TestConstants.FIRST_NAME+randomNum;
 		storeFrontAccountInfoPage.enterWebsitePrefixName(websitePrefixName);
-		storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
+		//storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyWebsitePrefixSuggestionIsPresent(), "There are no suggestions for website prefix");
 		storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -10798,6 +10840,405 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
+
+	//Hybris Project-3898:Downgrade to RC on the Payment / Order summary page
+	@Test
+	public void testDowngradePCToRCAtPaymentOrderSummaryPage_3900() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
+			env = driver.getEnvironment();
+			String firstName = TestConstants.FIRST_NAME+randomNum;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = TestConstants.LAST_NAME+randomNum;
+			String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
+			//Enter main account info
+			storeFrontHomePage.enterMainAccountInfo();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter billing info
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			//Uncheck PC Perks Checkbox on Payment/order summary page
+			s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
+			storeFrontHomePage.checkPCPerksCheckBox();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-3900:Downgrade to RC on the Review / Order summary page
+	@Test
+	public void testDowngradePCToRCAtReviewOrderSummaryPage_3900() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
+			env = driver.getEnvironment();
+			String firstName = TestConstants.FIRST_NAME+randomNum;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = TestConstants.LAST_NAME+randomNum;
+			String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
+			storeFrontHomePage.enterMainAccountInfo();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter billing info
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			//Uncheck PC Perks Checkbox on Review/order summary page
+			s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
+			storeFrontHomePage.checkPCPerksCheckBox();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+
+	}
+
+	// Hybris Project-3896:Downgrade to RC on the Main Account page
+	@Test
+	public void testDowngradePCToRCAtMainAccountInfoPage_3900() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
+			env = driver.getEnvironment();
+			String firstName = TestConstants.FIRST_NAME+randomNum;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = TestConstants.LAST_NAME+randomNum;
+			String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+			storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
+			//Uncheck PC Perks Checkbox on Main Account Info/order summary page
+			s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
+			storeFrontHomePage.checkPCPerksCheckBox();
+			s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
+			//Enter main account info
+			storeFrontHomePage.enterMainAccountInfo();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter billing info
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-139:PC Perks - Delay
+	@Test
+	public void testDelayPCPerks_139() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> accountNameDetailsList = null;
+			List<Map<String, Object>> accountInfoDetailsList = null;
+			List<Map<String, Object>> delayCancellationLogDetailsList = null;
+			List<Map<String, Object>> delayCountAndNextScheduleDetailsList = null;
+			country = driver.getCountry();
+			int randomNum = CommonUtils.getRandomNum(1,6);
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			//login As PC User and Verify product Details.
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountIdForPCUser = null;
+			String firstNameDB = null;
+			String lastNameDB = null;
+			String accountId = null;
+			String autoshipDelayCancellationLog = null;
+			String nextScheduleDate = null;
+			String delayCount = null;
+			String autoshipNumber = null;
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForPCUser);
+
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			//Verify Order Page
+			storeFrontPCUserPage.clickOnWelcomeDropDown();
+			storeFrontOrdersPage=storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+			s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Order Page Is not Displayed");
+			//verify autoship order section on order page.
+			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoshipOrderSectionOnOrderPage(),"Autoship order section is not on order page for pc user");
+			//verify Order History section on order page.
+			s_assert.assertTrue(storeFrontOrdersPage.verifyOrderHistorySectionOnOrderPage(),"Order history section is not on order page for pc user");
+			//verify Return order section on order page.
+			s_assert.assertTrue(storeFrontOrdersPage.verifyReturnOrderSectionOnOrderPage(),"Return order section is not on order page for pc user ");
+
+			//Verify Delay And Cancell PC Perks Message
+			storeFrontPCUserPage.clickOnYourAccountDropdown();
+			storeFrontPCUserPage.clickOnPCPerksStatus();
+			s_assert.assertTrue(storeFrontPCUserPage.verifyPCPerksStatus(),"PC perks status page is not present");
+			storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+			storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
+			s_assert.assertTrue(storeFrontPCUserPage.verifyNextAutoshipDateRadioButtons(),"Next AutoShip Date radio button are not present");
+			String nextBillDate=storeFrontPCUserPage.getNextBillAndShipDate();
+			String dateAfterOneMonth=storeFrontPCUserPage.getOneMonthOutDate(nextBillDate);
+			String dateAfterTwoMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterOneMonth);
+			String dateAfterThreeMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterTwoMonth);
+
+			//assert for date after one month and after two month
+			s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterOneMonthFromUI().contains(dateAfterOneMonth),"Date After one month is not as expected");
+			s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterTwoMonthFromUI().contains(dateAfterTwoMonth),"Date after two month is not as expected");
+
+			//select autoship date one month Later.
+			storeFrontPCUserPage.selectFirstAutoshipDateAndClickSave();
+			//String autoshipDateFromOrderPage=storeFrontOrdersPage.getAutoshipOrderDate();
+
+			//verify One month later autoship date on order page
+			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterOneMonth),"Next Selected autoship order date is not updated on order page");
+			//verify one month later autoship date on PC Perks Status Page
+			storeFrontOrdersPage.clickOnYourAccountDropdown();
+			storeFrontPCUserPage.clickOnPCPerksStatus();
+			s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterOneMonth),"Next Bill and ship date one month later is not the updated one");
+
+			//Verify the updated autoship date record one month later is saved in autoship delay Cancellationlog.
+			//get first name and last name from RFO DB based on email address.
+			//					accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, pcUserEmailID), RFO_DB);
+			//					firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+			//					lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+			//					accountInfoDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ID_BASED_ON_FIRST_LAST_NAME, firstNameDB,lastNameDB), RFO_DB);
+			//					accountId = (String) getValueFromQueryResult(accountInfoDetailsList, "AccountId");
+			//					delayCancellationLogDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DELAY_CANCELLATION_LOG_BASED_ON_ACCOUNT_ID,accountId), RFO_DB);
+			//					autoshipDelayCancellationLog = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "reason");//Autoship Delayed by 30 days, next due date: 10/06/2017
+			//					autoshipNumber = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "templateId");
+			//					delayCountAndNextScheduleDetailsList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_NEXT_SCHEDULE_DATE_AND_DELAY_COUNT,autoshipNumber), RFO_DB);
+			//					nextScheduleDate = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "NextRunDate");
+			//					delayCount = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "DelayCount");
+
+			//select autoship date Two month Later.
+			storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+			storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
+			storeFrontPCUserPage.selectSecondAutoshipDateAndClickSave();
+			//verify Two month later autoship date on order page
+			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterThreeMonth),"Next Selected autoship order date is not updated on order page");
+			//verify two month later autoship date on PC Perks Status Page
+			storeFrontOrdersPage.clickOnYourAccountDropdown();
+			storeFrontPCUserPage.clickOnPCPerksStatus();
+			s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterThreeMonth),"Next Bill and ship date is two month later not the updated one");
+
+			//verify the updated autoship date record two month later is saved in autoship delay Cancellationlog.
+			//get first name and last name from RFO DB based on email address.
+			//					accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, pcUserEmailID), RFO_DB);
+			//					firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+			//					lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+			//					accountInfoDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ID_BASED_ON_FIRST_LAST_NAME, firstNameDB,lastNameDB), RFO_DB);
+			//					accountId = (String) getValueFromQueryResult(accountInfoDetailsList, "AccountId");
+			//					delayCancellationLogDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DELAY_CANCELLATION_LOG_BASED_ON_ACCOUNT_ID,accountId), RFO_DB);
+			//					autoshipDelayCancellationLog = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "reason");//Autoship Delayed by 30 days, next due date: 10/06/2017
+			//					autoshipNumber = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "templateId");
+			//					delayCountAndNextScheduleDetailsList= DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_NEXT_SCHEDULE_DATE_AND_DELAY_COUNT,autoshipNumber), RFO_DB);
+			//					nextScheduleDate = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "NextRunDate");
+			//					delayCount = (String) getValueFromQueryResult(delayCancellationLogDetailsList, "DelayCount");
+
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+
+	//Hybris Project-2090:10% off, free shipping for terms and conditions for the PC Perks Program
+	@Test
+	public void testFreeShippingTermsAndConditionsForPCPerks_2090() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		/*storeFrontHomePage.clickOnShopLink();
+	       storeFrontHomePage.clickOnAllProductsLink();*/
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product with the price less than $80 and proceed to buy it
+		//  storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		//  s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
+
+		//validate 10% discount for PC User account in order summary section
+		s_assert.assertTrue(storeFrontHomePage.validateDiscountForEnrollingAsPCUser(TestConstants.DISCOUNT_TEXT_FOR_PC_USER),"Discount text Checkbox is not checked for pc User");
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		//validate bill to this card radio button selected under billing profile section
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
+		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopupPresent(),"PC Perks terms and condition popup is not present");
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksTermsAndConditionsPopupText().toLowerCase().contains(TestConstants.PC_PERKS_TERMS_CONDITION_POPUP_TEXT.toLowerCase()),"PC perks terms and candition popup text is not as expected");
+		storeFrontHomePage.clickPCPerksTermsAndConditionPopupOkay();
+		//verify for popup saying select terms and candition to avail 10 percent discount
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(),"Congrats message is not present");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2267:check Modal window with PCPerks info as RC
+	@Test
+	public void testCheckModalWindowWithPCPerksInfoAsRC_2267() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}  
+
+		logger.info("login is successful");
+		storeFrontRCUserPage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButton();
+		storeFrontHomePage.clickOnPCPerksPromoLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present");
+		storeFrontHomePage.clickOnModalWindowCloseIcon();
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnOrderSummaryPCPerksPromoLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present");
+		s_assert.assertAll();
+	}
+
+
 
 }
 

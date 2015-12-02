@@ -385,7 +385,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			driver.turnOffImplicitWaits();
 			tax = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]//p[2]//span")).getText();
 		}catch(NoSuchElementException e){
-			tax = driver.findElement(By.id("crpTotalTax")).getText();			
+			try{
+				tax = driver.findElement(By.id("crpTotalTax")).getText();
+			}catch(Exception e1){
+				tax = driver.findElement(By.id("totalTax")).getText();
+			}
 		}
 		driver.turnOnImplicitWaits();
 		return tax.trim().substring(1);
@@ -897,6 +901,69 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		String splittedDateForMonth = datePST[1]+" "+datePST[2]+" "+datePST[3];
 		System.out.println("Fianl for expand "+splittedDateForMonth);
 		return splittedDateForMonth;
+	}
+
+	public String getReturnOrderNumber(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+		autoShipOrderNumber = driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a")).getText();
+		logger.info("autoship order number is "+autoShipOrderNumber);
+		return  autoShipOrderNumber;
+	}
+
+	public void clickReturnOrderNumber(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+	}
+
+	public String getOrderStatusFromUI(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Order status')]/following::span[1]"));
+		return driver.findElement(By.xpath("//span[contains(text(),'Order status')]/following::span[1]")).getText();
+	}
+
+	public String convertOrderStatusForReturnOrder(String orderStatusID){
+		String methodId = orderStatusID;
+		String orderStatus = null;
+		switch (Integer.parseInt(methodId)) {  
+		case 1:
+			orderStatus="FedEx 2Day";
+			break;
+
+		case 2:
+			orderStatus="FedEx 2Day";
+			break;
+
+		case 3:
+			orderStatus="FedEx Ground (HD)";
+			break;
+
+		case 4:
+			orderStatus="USPS 1Day";
+			break;
+
+		case 5:
+			orderStatus="completed";
+			break;
+
+		case 6:
+			orderStatus="USPS Grnd";
+			break;
+		}
+		return orderStatus;
+	}
+
+	public void clickAutoshipOrderNumberOfPulse(){
+		driver.waitForElementPresent(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		try{
+			driver.click(By.xpath("//div[@id='pending-autoship-orders-table']/div[3]//div[contains(@class,'ref-values')]//a"));
+		}catch(NoSuchElementException e){
+			driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		}
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 	}
 
 }

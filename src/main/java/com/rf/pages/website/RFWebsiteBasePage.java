@@ -269,8 +269,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		//  driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[2]/div[1]//form[@id='productDetailForm']/button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}
@@ -542,11 +542,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
 		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-		/*driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[3]/div"));*/
+		driver.click(By.xpath("//form[@id='placeOrderForm1']//a[contains(text(),'I agree that this agreement shall be accepted electronically.')]/ancestor::strong[1]/preceding::div[1]"));
 		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");
-
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
@@ -1358,7 +1356,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 			if(isFirstNamePresent == true){ 
 				return true;
 			}

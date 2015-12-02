@@ -674,5 +674,5 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-
+	
 }

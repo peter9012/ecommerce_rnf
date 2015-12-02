@@ -25,9 +25,9 @@ DECLARE @RowCount BIGINT
 -- Accounts 
 -----------------------------------------------------------------------------------------------------------------------------
 SELECT @RFOPP=COUNT(DISTINCT ACL.AccountId)  --COUNT( DISTINCT a.AccountID)
-FROM    RFOperations.RFO_Accounts.AccountPolicy acl , RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
+FROM    RFOperations.RFO_Accounts.AccountPolicy acl , RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=236
 
-SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.AccountPolicy AP , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada' 
+SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.AccountPolicy AP , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='United States' 
 
 										   
 SELECT  @RFOPP AS RFO_AccountPolicyCount, @CRMPP AS CRM_AccountPolicyCount, (@RFOPP - @CRMPP) AS Difference 
@@ -40,9 +40,9 @@ SELECT  AccountId AS RFO_AccountId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.AccountPolicyMissing
 FROM 
-    (SELECT ACL.AccountId FROM RFOperations.RFO_Accounts.AccountPolicy acl , RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40) a
+    (SELECT ACL.AccountId FROM RFOperations.RFO_Accounts.AccountPolicy acl , RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=236) a
     FULL OUTER JOIN 
-    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountPolicy AP ,sfdcbackup.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.Account__C=A.ID and a.country__c=c.id and c.name='Canada') b 
+    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountPolicy AP ,sfdcbackup.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.Account__C=A.ID and a.country__c=c.id and c.name='United States') b 
 	ON cast(a.AccountId as nvarchar(max)) =b.RFOACcountID__C
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
@@ -63,7 +63,7 @@ SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs m
 		ACL.ChangedByApplication as ChangedByApplication__C,
 		ACL.ChangedByUser as ChangedByUser__C
 		INTO RFOPERATIONS.SFDC.RFO_Policy
-		FROM  Rfoperations.RFO_accounts.AccountPolicy ACL, RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
+		FROM  Rfoperations.RFO_accounts.AccountPolicy ACL, RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=236
         AND NOT EXISTS (SELECT 1 FROM RFOPERATIONS.SFDC.AccountPolicyMissing APL WHERE APL.RFO_ACCOUNTID=ACL.ACCOUNTID AND MISSINGFROM='Destination')        
 		
 		--Loading CRM data
@@ -74,7 +74,7 @@ SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs m
 		PP.ChangedByApplication__c as ChangedByApplication__c,
 		PP.ChangedByUser__c as ChangedByUser__c
 		INTO RFOPERATIONS.SFDC.CRM_Policy
-		FROM sfdcbackup.SFDCBKP.AccountPolicy PP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
+		FROM sfdcbackup.SFDCBKP.AccountPolicy PP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='United States'
 
 
 --Load Comparison Candidates.

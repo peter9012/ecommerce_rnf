@@ -44,7 +44,7 @@ DECLARE @RowCount BIGINT
 -----------------------------------------------------------------------------------------------------------------------------
 SELECT @RFOPP=COUNT(DISTINCT PP.PAYMENTPROFILEID)  --COUNT( DISTINCT a.AccountID)
 FROM    RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=40
+		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=236
 		JOIN RFOperations.RFO_Reference.Currency (NOLOCK) CY ON cy.CurrencyID =ab.CurrencyID 
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
@@ -61,7 +61,7 @@ SELECT @CRMPP=COUNT(RFOPaymentProfileId__c) FROM sfdcbackup.SFDCBKP.PaymentProfi
 										  SFDCBACKUP.SFDCBKP.Accounts A ,
 										  SFDCBACKUP.SFDCBKP.COUNTRY C
 									 WHERE PP.ACCOUNT__C=A.ID AND
-										   CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
+										   CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='United States'
 
 
 SELECT  @RFOPP AS RFO_PaymentProfile, @CRMPP AS CRM_PaymentProfile, (@RFOPP - @CRMPP) AS Difference 
@@ -74,9 +74,9 @@ SELECT  PaymentProfileId AS RFO_PaymentProfileId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.PaymentProfilesMissing
 FROM 
-    (SELECT PaymentProfileId FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.PaymentProfiles pp WHERE PP.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=40) a
+    (SELECT PaymentProfileId FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.PaymentProfiles pp WHERE PP.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=236) a
     FULL OUTER JOIN 
-    (SELECT RFOPaymentProfileId__C FROM sfdcbackup.SFDCBKP.PaymentProfile PP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >= @LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='Canada') b 
+    (SELECT RFOPaymentProfileId__C FROM sfdcbackup.SFDCBKP.PaymentProfile PP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >= @LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='United States') b 
 	ON a.PaymentProfileId =b.RFOPaymentProfileId__C
  WHERE (a.PaymentProfileId IS NULL OR b.RFOPaymentProfileId__C IS NULL) 
 
@@ -93,7 +93,7 @@ SELECT PaymentProfileId, COUNT (RFOPaymentProfileId__C) AS CountofDups
 INTO rfoperations.sfdc.PaymentProfile_Dups
 FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.PaymentProfiles Rpp ,sfdcbackup.SFDCBKP.PaymentProfile PP,
 										  SFDCBACKUP.SFDCBKP.Accounts A 
-									 WHERE PP.ACCOUNT__C=A.ID AND AB.COUNTRYID=40 
+									 WHERE PP.ACCOUNT__C=A.ID AND AB.COUNTRYID=236 
 								     AND RPP.ACCOUNTID=AB.ACCOUNTID AND RPP.PaymentProfileId=RFOPaymentProfileId__C
 GROUP BY PaymentProfileId
 HAVING COUNT (RFOPaymentProfileId__C)> 1 
@@ -151,7 +151,7 @@ SELECT
 		INTO RFOPERATIONS.SFDC.RFO_PAYMENTPROFILES
 		-- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID  AND AB.COUNTRYID=40
+		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID  AND AB.COUNTRYID=236
 		JOIN RFOperations.RFO_Reference.Currency (NOLOCK) CY ON cy.CurrencyID =ab.CurrencyID 
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
@@ -194,7 +194,7 @@ SELECT
 	PP.Sub_Region__c
 	INTO RFOPERATIONS.SFDC.CRM_PaymentProfiles
 FROM sfdcbackup.SFDCBKP.PaymentProfile PP, SFDCBACKUP.SFDCBKP.COUNTRY C ,
-	 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='Canada'
+	 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='United States'
 
 		
 --Load Comparison Candidates.

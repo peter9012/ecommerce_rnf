@@ -27,7 +27,7 @@ DECLARE @RowCount BIGINT
 -----------------------------------------------------------------------------------------------------------------------------
 SELECT @RFOPP=COUNT(DISTINCT AN.AccountNoteId)  --COUNT( DISTINCT a.AccountID)
 FROM    RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND ab.CountryID =40
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND ab.CountryID =236
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesReasonType NR on NR.ReasonTypeId=AN.ReasonTypeId
 		left JOIN RFOPERATIONS.RFO_REFERENCE.NotesChannelType NC on NC.ChannelTypeId=AN.ChannelTypeId
 		left JOIN RFOPERATIONS.RFO_REFERENCE.NotesDetailType ND on ND.DetailTypeId=AN.DetailTypeId
@@ -39,7 +39,7 @@ SELECT @CRMPP=COUNT(RFOAccountNotesId__c) FROM sfdcbackup.SFDCBKP.AccountNotes P
 										  SFDCBACKUP.SFDCBKP.Accounts A ,
 										  SFDCBACKUP.SFDCBKP.COUNTRY C
 								 		  WHERE PP.ACCOUNT__C=A.ID AND
-										  CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND C.ID=A.COUNTRY__C AND C.NAME='Canada'
+										  CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND C.ID=A.COUNTRY__C AND C.NAME='United States'
 
 
 SELECT  @RFOPP AS RFO_AccountNotesCount, @CRMPP AS CRM_AccountNotesCount, (@RFOPP - @CRMPP) AS Difference 
@@ -54,9 +54,9 @@ SELECT  AccountNoteId AS RFO_AccountNoteId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.AccountNotesMissing
 FROM 
-    (SELECT AccountNoteId FROM RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AN.ServerModifiedDate>=@LastRunDate and ab.countryid=40 ) a
+    (SELECT AccountNoteId FROM RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AN.ServerModifiedDate>=@LastRunDate and ab.countryid=236 ) a
     FULL OUTER JOIN 
-    (SELECT RFOAccountNotesId__c FROM  sfdcbackup.SFDCBKP.AccountNotes PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='Canada') b 
+    (SELECT RFOAccountNotesId__c FROM  sfdcbackup.SFDCBKP.AccountNotes PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='United States') b 
 	ON a.AccountNoteId =b.RFOAccountNotesId__c
  WHERE (a.AccountNoteId IS NULL OR b.RFOAccountNotesId__c IS NULL) 
 
@@ -75,7 +75,7 @@ INTO rfoperations.sfdc.AccountNotes_Dups
 	 FROM RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB , RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ,
 	 sfdcbackup.SFDCBKP.AccountNotes PP, SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID 
 	 and AN.AccountId=AB.Accountid AND AN.ServerModifiedDate>=@LastRunDate AND PP.RFOAccountNotesId__c=AN.ACCOUNTNOTEID
-	 AND AB.COUNTRYID=40
+	 AND AB.COUNTRYID=236
 GROUP BY AccountNoteId
 HAVING COUNT (RFOAccountNotesId__c)> 1 
 
@@ -115,7 +115,7 @@ SELECT 'No Duplicates'
 		INTO RFOPERATIONS.SFDC.RFO_AccountNotes
 		-- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AB.COUNTRYID=40
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AB.COUNTRYID=236
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesReasonType NR on NR.ReasonTypeId=AN.ReasonTypeId
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesChannelType NC on NC.ChannelTypeId=AN.ChannelTypeId
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesDetailType ND on ND.DetailTypeId=AN.DetailTypeId
@@ -136,7 +136,7 @@ SELECT 'No Duplicates'
 		PP.ChangedByApplication__c,
 		PP.ChangedByUser__c
 		INTO RFOPERATIONS.SFDC.CRM_AccountNotes
-		FROM sfdcbackup.SFDCBKP.AccountNotes PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
+		FROM sfdcbackup.SFDCBKP.AccountNotes PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='United States'
 
 		
 --Load Comparison Candidates.

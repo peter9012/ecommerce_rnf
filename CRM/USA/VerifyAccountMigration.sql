@@ -9,12 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-
-
-
-
-
 ALTER PROCEDURE [dbo].[VerifyAccountMigration]  @LastRunDate DATETIME
 AS
 BEGIN
@@ -61,7 +55,7 @@ DECLARE @RowCount BIGINT
 -----------------------------------------------------------------------------------------------------------------------------
 SELECT DISTINCT a.AccountID INTO Rfoperations.dbo.AccountIDs --COUNT( DISTINCT a.AccountID)
 FROM RFOperations.RFO_Accounts.AccountRF (NOLOCK)a 
-JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =40
+JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =236
  JOIN RFOperations.RFO_Accounts.AccountContacts  (NOLOCK) d ON b.AccountID =d.AccountID 
  JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactID = D.AccountContactID 
  JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
@@ -73,9 +67,9 @@ JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.Account
 
 
 
-SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND CountryID =40
+SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND CountryID =236
 
-SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada'
+SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='United States'
 
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS CRM_Accounts, (@RFOAccount - @CRMAccount) AS Difference 
 INTO rfoperations.sfdc.AccountDifference;
@@ -89,7 +83,7 @@ INTO Rfoperations.dbo.AccountsMissing
 FROM 
     (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) a
     FULL OUTER JOIN 
-    (SELECT RFOAccountID__C FROM  SFDCBACKUP.SFDCBKP.Accounts (NOLOCK) A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada') b 
+    (SELECT RFOAccountID__C FROM  SFDCBACKUP.SFDCBKP.Accounts (NOLOCK) A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='United States') b 
 	ON a.AccountID =b.RFOAccountID__C
  WHERE (a.AccountID IS NULL OR b.RFOAccountID__C IS NULL) 
 
@@ -173,7 +167,7 @@ SELECT DISTINCT
 		INTO rfoperations.sfdc.RFO_ACCOUNTS  
 		  -- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID  AND AB.CountryID =40
+		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID  AND AB.CountryID =236
 		JOIN RFOperations.RFO_Reference.Currency (NOLOCK) CY ON cy.CurrencyID =ab.CurrencyID 
 		JOIN RFOperations.RFO_Reference.NativeLanguage (NOLOCK) LG ON lg.languageid =ab.languageID 
 		JOIN RFOPERATIONS.RFO_REFERENCE.TIMEZONE TZ on AB.TIMEZONEID=TZ.TIMEZONEID
@@ -262,7 +256,7 @@ SELECT DISTINCT
 	RT.ID=A.RECORDTYPEID AND
 	A.MAINCONTACT__C=CO.ID AND 
 	CO.ContactType__C='Primary' AND
-	C.NAME='Canada'
+	C.NAME='United States'
 
 		
 CREATE CLUSTERED INDEX MIX_AccountID ON rfoperations.sfdc.RFO_Accounts (AccountID)

@@ -34,7 +34,7 @@
 	-----------------------------------------------------------------------------------------------------------------------------
 	SELECT @RFOSP=COUNT(DISTINCT AA.AddressId)  --COUNT( DISTINCT a.AccountID)
 	FROM    RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=40
+			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=236
 			JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 			JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
 			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=2
@@ -43,7 +43,7 @@
 	SELECT @CRMSP=COUNT(SP.RFOAddressProfileId__c) FROM SFDCBACKUP.SFDCBKP.ShippingProfile SP,
 												SFDCBACKUP.SFDCBKP.Accounts A ,
 												SFDCBACKUP.SFDCBKP.COUNTRY C 
-												WHERE SP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada' and
+												WHERE SP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='United States' and
 											   CAST(SP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate
 
 
@@ -60,9 +60,9 @@
 	 END AS MissingFROM
 	INTO Rfoperations.sfdc.ShippingProfilesMissing
 	FROM 
-		(SELECT A.AddressID FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.AccountContacts AC , RFOPERATIONS.RFO_ACCOUNTS.AccountContactAddresses ACA , RFOPERATIONS.RFO_ACCOUNTS.Addresses A WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AC.ACCOUNTCONTACTID=ACA.ACCOUNTCONTACTID AND ACA.ADDRESSID=A.ADDRESSID AND A.AddressTypeiD=2 and ab.countryid=40) a
+		(SELECT A.AddressID FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.AccountContacts AC , RFOPERATIONS.RFO_ACCOUNTS.AccountContactAddresses ACA , RFOPERATIONS.RFO_ACCOUNTS.Addresses A WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AC.ACCOUNTCONTACTID=ACA.ACCOUNTCONTACTID AND ACA.ADDRESSID=A.ADDRESSID AND A.AddressTypeiD=2 and ab.countryid=236) a
 		FULL OUTER JOIN 
-		(SELECT SP.RFOAddressProfileId__C FROM sfdcbackup.SFDCBKP.ShippingProfile SP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.country c WHERE SP.ACCOUNT__C=A.ID AND CAST(SP.LASTMODIFIEDDATE AS DATE) >= @LastRunDate and a.country__c=c.id and c.name='Canada') b 
+		(SELECT SP.RFOAddressProfileId__C FROM sfdcbackup.SFDCBKP.ShippingProfile SP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.country c WHERE SP.ACCOUNT__C=A.ID AND CAST(SP.LASTMODIFIEDDATE AS DATE) >= @LastRunDate and a.country__c=c.id and c.name='United States') b 
 		ON a.AddressID =b.RFOAddressProfileId__C
 	 WHERE (a.AddressID IS NULL OR b.RFOAddressProfileId__C IS NULL) 
 
@@ -83,7 +83,7 @@
 		 RFOPERATIONS.RFO_ACCOUNTS.Addresses A ,
 		 SFDCBACKUP.SFDCBKP.Accounts HA ,
 		 SFDCBACKUP.SFDCBKP.ShippingProfile SP
-		 WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AB.COUNTRYID=40 AND
+		 WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AB.COUNTRYID=236 AND
 		 AC.ACCOUNTCONTACTID=ACA.ACCOUNTCONTACTID AND 
 		 ACA.ADDRESSID=A.ADDRESSID AND A.AddressTypeiD=2
 		 AND SP.ACCOUNT__C=HA.ID
@@ -131,7 +131,7 @@
 			INTO RFOPERATIONS.SFDC.RFO_ShippingProfiles
 			-- join address table here.
 			FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=40
+			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=236
 			JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 			JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
 			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND AA.ADDRESSTYPEID=2
@@ -160,7 +160,7 @@
 		pp.ProfileName__c
 		INTO RFOPERATIONS.SFDC.CRM_ShippingProfiles
 		FROM sfdcbackup.SFDCBKP.ShippingProfile PP, SFDCBACKUP.SFDCBKP.COUNTRY C ,
-		 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='Canada' and
+		 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='United States' and
 		 PP.LastModifiedDate>= @LastRunDate
 
 			--SELECT * FROM sfdcbackup.SFDCBKP.ShippingProfile

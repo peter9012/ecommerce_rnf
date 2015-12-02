@@ -47,14 +47,14 @@ DECLARE @RFOAccount BIGINT, @CRMAccount BIGINT
 DECLARE @RowCount BIGINT 
 
 --Compare Primary Account Count
-SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND countryid=40
-SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary' AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada'
+SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND countryid=236
+SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary' AND A.COUNTRY__C=CO.ID AND CO.NAME='United States'
 
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference , 'Primary Contact' as ContactType INTO rfoperations.sfdc.ContactDifference;
 
 --Compare Secondary Applicant Count
 SELECT @RFOAccount =COUNT(CoApplicant) FROM RFOPerations.RFO_Accounts.AccountRF (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND CoApplicant IS NOT NULL AND ServerModifiedDate> @LastRunDate
-SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C, sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c = 'Spouse'  AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada'
+SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C, sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c = 'Spouse'  AND A.COUNTRY__C=CO.ID AND CO.NAME='United States'
 INSERT INTO rfoperations.sfdc.ContactDifference
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference, 'Secondary' as ContactType ;
 
@@ -70,7 +70,7 @@ INTO Rfoperations.dbo.ContactMissing
 FROM 
     (SELECT AccountContactID FROM Rfoperations.dbo.AccountIDs AID , Rfoperations.rfo_accounts.accountcontacts AC where aid.accountid=ac.accountid AND AccountContactTypeId=1) a
     FULL OUTER JOIN 
-    (SELECT RFAccountContactID__c FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary'  AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada') b 
+    (SELECT RFAccountContactID__c FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary'  AND A.COUNTRY__C=CO.ID AND CO.NAME='United States') b 
 	ON a.AccountContactID =b.RFAccountContactID__c
  WHERE (a.AccountContactID IS NULL OR b.RFAccountContactID__c IS NULL) 
 
@@ -91,7 +91,7 @@ SELECT rfoAccountid__c,REPLACE(c.name,'  ',' ') AS Name
 	FROM SFDCBACKUP.SFDCBKP.CONTACT C,
 		 SFDCBACKUP.SFDCBKP.Accounts A,
 		 SFDCBACKUP.SFDCBKP.COUNTRY CO
-	WHERE C.ACCOUNTID=A.ID and c.contacttype__c='Spouse' AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada'
+	WHERE C.ACCOUNTID=A.ID and c.contacttype__c='Spouse' AND A.COUNTRY__C=CO.ID AND CO.NAME='United States'
 
 SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account ID and associated CoApplicant that were not migrated'
 
@@ -146,7 +146,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 		INTO rfoperations.sfdc.RFO_Contacts 
 		  -- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
-		JOIN RFOperations.RFO_Reference.AccountType (NOLOCK) ACT ON ACT.AccountTypeID = AB.AccountTypeID AND AB.COUNTRYID=40
+		JOIN RFOperations.RFO_Reference.AccountType (NOLOCK) ACT ON ACT.AccountTypeID = AB.AccountTypeID AND AB.COUNTRYID=236
 		JOIN RFOperations.RFO_Reference.AccountStatus (NOLOCK) AST ON AST.AccountStatusID = AB.AccountStatusID
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOPERATIONS.RFO_REFERENCE.Gender G ON AC.GENDERID=G.GENDERID
@@ -194,7 +194,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 	WHERE A.MAINCONTACT__C=C.ID AND 
 	C.ContactType__C='Primary' AND
 	A.COUNTRY__C=CO.ID AND
-	CO.NAME='Canada'
+	CO.NAME='United States'
 		
 CREATE CLUSTERED INDEX RF_ContactID ON rfoperations.sfdc.RFO_Contacts (RFAccountContactId__c)
 CREATE CLUSTERED INDEX Hyb_ContactID ON rfoperations.sfdc.CRM_Contacts (RFAccountContactId__c)

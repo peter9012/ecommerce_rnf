@@ -6,6 +6,7 @@ CREATE PROCEDURE sfdc.VerifySiteMigration @LastRunDate DATETIME ='2000-01-01'
 
 AS
 BEGIN
+DECLARE @LASTRUNDATE DATETIME='2000-01-01';
 DECLARE @ServerMod DATETIME =@LastRunDate
 DECLARE @RFOPP BIGINT, @CRMPP BIGINT
 DECLARE @RowCount BIGINT 
@@ -23,10 +24,12 @@ IF OBJECT_ID('tempdb.dbo.#Site') IS NOT NULL DROP TABLE #Site
 ------------------------------------------------------------------------------------------------------------------------------
 -- Accounts 
 -----------------------------------------------------------------------------------------------------------------------------
-SELECT @RFOPP=COUNT(DISTINCT AccountId)  --COUNT( DISTINCT a.AccountID)
-FROM    Rfoperations.hybris.sites
+SELECT @RFOPP=COUNT(DISTINCT S.AccountId)  --COUNT( DISTINCT a.AccountID)
+FROM    Rfoperations.hybris.sites s , rfoperations.rfo_accounts.accountbase ab where ab.accountid=s.accountid and ab.countryid=40
 
-SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.AccountSite
+--SELECT * FROM sfdcbackup.SFDCBKP.AccountSite
+SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.AccountSite AAS, sfdcbackup.SFDCBKP.Accounts S  , sfdcbackup.SFDCBKP.COUNTRY C WHERE AAS.ACCOUNT__C=S.ID AND S.COUNTRY__C=C.ID AND C.NAME='Canada'
+
 
 										   
 SELECT  @RFOPP AS RFO_AccountSiteCount, @CRMPP AS CRM_AccountSiteCount, (@RFOPP - @CRMPP) AS Difference 
@@ -39,9 +42,9 @@ SELECT  AccountId AS RFO_AccountId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.SiteMissing
 FROM 
-    (SELECT AccountId FROM Rfoperations.hybris.sites ) a
+    (SELECT S.AccountId FROM Rfoperations.hybris.sites s , rfoperations.rfo_accounts.accountbase ab where ab.accountid=s.accountid and ab.countryid=40 ) a
     FULL OUTER JOIN 
-    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountSite AP ,sfdcbackup.SFDCBKP.Accounts A WHERE AP.Account__C=A.ID) b 
+    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.AccountSite AP ,sfdcbackup.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.Account__C=A.ID AND C.ID = A.COUNTRY__C AND C.NAME='Canada') b 
 	ON cast(a.AccountId as nvarchar(max)) =b.RFOACcountID__C
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
@@ -66,7 +69,9 @@ PrimaryDomain__C,
 BusinessDomain__c,
 MailAddress as EMailAddress__c
 INTO RFOPERATIONS.SFDC.RFO_Site
-FROM Rfoperations.hybris.sites S LEFT JOIN Rfoperations.rfo_accounts.SiteMail SM ON S.siteid=sm.siteid
+FROM Rfoperations.hybris.sites S 
+JOIN RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB ON AB.ACCOUNTID=S.ACCOUNTID AND AB.COUNTRYID=40
+LEFT JOIN Rfoperations.rfo_accounts.SiteMail SM ON S.siteid=sm.siteid
 LEFT JOIN 
 (SELECT SU.SITEID,MAX(CASE WHEN SU.SITEDOMAINID=1 THEN SD.NAME ELSE NULL END) AS PRIMARYDOMAIN__C,MAX(CASE WHEN SU.SITEDOMAINID=2 THEN SD.NAME ELSE NULL END) AS BusinessDOMAIN__C
  FROM rfoperations.hybris.SiteURLs SU , RFoperations.hybris.sitedomain SD where  SU.SITEDOMAINID=SD.SiteDomainID  GROUP BY SU.SITEID) SD
@@ -89,11 +94,14 @@ PrimaryDomain__c,
 BusinessDomain__c,
 EmailAddress__c
 INTO RFOPERATIONS.SFDC.CRM_Site
-FROM SFDCBACKUP.SFDCBKP.AccountSite Site , SFDCBACKUP.SFDCBKP.Accounts A WHERE Site.ACCOUNT__C=A.ID
+FROM SFDCBACKUP.SFDCBKP.AccountSite Site , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE Site.ACCOUNT__C=A.ID AND C.ID=A.COUNTRY__C AND C.NAME='Canada'
 
 SELECT * INTO #Site FROM RFOPERATIONS.SFDC.RFO_Site
 EXCEPT 
 SELECT * FROM RFOPERATIONS.SFDC.CRM_Site
+
+--SELECT * FROM RFOPERATIONS.SFDC.CRM_Site
+--SELECT * FROM RFOPERATIONS.SFDC.RFO_Site
 
 CREATE TABLE rfoperations.sfdc.ErrorLog_Site
 (
@@ -171,6 +179,8 @@ END
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
 FROM rfoperations.sfdc.ErrorLog_Site A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
+
+
 
 end
 

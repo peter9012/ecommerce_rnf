@@ -115,7 +115,7 @@ SELECT 'No Duplicates'
 		JOIN RFOPERATIONS.RFO_REFERENCE.NotesChannelType NC on NC.ChannelTypeId=AN.ChannelTypeId
 		JOIN RFOPERATIONS.RFO_REFERENCE.NotesDetailType ND on ND.DetailTypeId=AN.DetailTypeId
 		where  AN.ServerModifiedDate>=@LastRunDate AND
-		NOT EXISTS (SELECT 1 FROM rfoperations.sfdc.AccountNotesMissing PPM WHERE PPM.RFO_AccountNoteId=an.AccountNoteId AND missingFrom='Destination')
+		NOT EXISTS (SELECT 1 FROM rfoperations.sfdc.AccountNotesMissing PPM WHERE PPM.RFOAccountNotesId__c=an.AccountNoteId AND missingFrom='Destination')
         
 		
 		--Loading CRM data

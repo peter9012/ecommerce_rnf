@@ -199,7 +199,7 @@
 	BEGIN 
 
 			SELECT  @Skip = ( SELECT   Skip
-								   FROM     Rfoperations.sfdc.CRM_Metadata_Accounts
+								   FROM     Rfoperations.sfdc.CRM_Metadata
 								   WHERE    ColID = @I
 								 );
 

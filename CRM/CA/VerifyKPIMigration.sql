@@ -25,9 +25,11 @@ IF OBJECT_ID('tempdb.dbo.#kpi') IS NOT NULL DROP TABLE #KPI
 -- Accounts 
 -----------------------------------------------------------------------------------------------------------------------------
 SELECT @RFOPP=COUNT(DISTINCT AccountId)  --COUNT( DISTINCT a.AccountID)
-FROM    commissions.sfdc.stg_commissionskpi ACL
+FROM    commissions.sfdc.stg_commissionskpi ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
 
-SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.PerformanceKPI
+SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.PerformanceKPI KPI , SFDCBACKUP.SFDCBKP.ACCOUNTS A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE KPI.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
+
+--SELECT * FROM sfdcbackup.SFDCBKP.PerformanceKPI
 
 										   
 SELECT  @RFOPP AS RFO_KPICount, @CRMPP AS CRM_KPICountCount, (@RFOPP - @CRMPP) AS Difference 
@@ -40,9 +42,9 @@ SELECT  AccountId AS RFO_AccountId,
  END AS MissingFROM
 INTO Rfoperations.sfdc.KPIMissing
 FROM 
-    (SELECT AccountId FROM commissions.sfdc.stg_commissionskpi ) a
+    (SELECT AccountId FROM commissions.sfdc.stg_commissionskpi ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
-    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.PerformanceKPI AP ,sfdcbackup.SFDCBKP.Accounts A WHERE AP.Account__C=A.ID) b 
+    (SELECT RFOACcountID__C FROM  sfdcbackup.SFDCBKP.PerformanceKPI AP ,sfdcbackup.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE AP.Account__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada') b 
 	ON cast(a.AccountId as nvarchar(max)) =b.RFOACcountID__C
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
@@ -71,7 +73,7 @@ estimatedSV as estimatedSV__C,
 [Road to RFx – L1+L2 Volume] as RFx_L1L2_Volume__c,
 [Road to RFx – L1-L6 Volume] as RFx_L1L6_Volume__c
 INTO RFOPERATIONS.SFDC.RFO_KPI
-FROM commissions.sfdc.stg_commissionskpi
+FROM commissions.sfdc.stg_commissionskpi ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
 
 SELECT 
 A.RFOAccountID__C as Account__c,
@@ -92,7 +94,7 @@ KPI.RFx_LV_ECLegs__c,
 KPI.RFx_L1L2_Volume__c,
 KPI.RFx_L1L6_Volume__c
 INTO RFOPERATIONS.SFDC.CRM_KPI
-FROM SFDCBACKUP.SFDCBKP.PerformanceKPI KPI , SFDCBACKUP.SFDCBKP.Accounts A WHERE KPI.ACCOUNT__C=A.ID
+FROM SFDCBACKUP.SFDCBKP.PerformanceKPI KPI , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE KPI.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
 SELECT * INTO #KPI FROM RFOPERATIONS.SFDC.RFO_KPI
 EXCEPT 

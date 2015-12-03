@@ -11,10 +11,6 @@ GO
 
 
 
-
-
-
-
 ALTER PROCEDURE [dbo].[VerifyAccountMigration]  @LastRunDate DATETIME
 AS
 BEGIN

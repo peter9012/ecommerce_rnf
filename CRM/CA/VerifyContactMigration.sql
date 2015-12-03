@@ -178,7 +178,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
                                                             AND PEA.IsDefault = 1
         JOIN RFOperations.RFO_Accounts.AccountRF (NOLOCK) AR ON AB.AccountID = AR.AccountID
 		WHERE AB.ServerModifiedDate>= @LastRunDate
-    
+        AND NOT EXISTS (SELECT 1 FROM Rfoperations.dbo.ContactMissing CM WHERE CM.RFO_ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID AND MISSINGFROM='Destination')
 
 	--Load Hybris Data    
 	SELECT 

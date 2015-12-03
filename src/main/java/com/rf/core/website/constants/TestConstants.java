@@ -109,11 +109,12 @@ public class TestConstants {
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT="greater than the threshold 100";
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="greater than the threshold CAD $90";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY="quantity has been updated";
-	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA_FOR_PC= "greater than the threshold CAD $90";
 	public static final String  DISCOUNT_TEXT_FOR_PC_USER = "Yes, I want to join PC Perks and receive up to 10% off all orders plus free shipping";
 	public static final String  PC_PERKS_TERMS_CONDITION_POPUP_TEXT = "To enjoy up to 10% off and free shipping";
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
+	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
 
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
@@ -178,7 +179,6 @@ public class TestConstants {
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG="removed from your cart";
-	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "Your Total SV value should be equal to or greater than the threshold 80";
 	public static final String CONSULTANT_VALID_10_DIGIT_MAIN_PHONE_NUMBER ="3423423423";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA= "Your Total SV value should be equal to or greater than the threshold 100";
 	public static final String PC_PERKS_MESSAGE_ON_MODAL_POPUP = "*Preferred Customer pricing offers up to, and in some cases more than, a 10% discount off retail price";
@@ -331,6 +331,7 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String BILLING_ADDRESS_NAME = "newBAName";
 	public static final String EDIT_BILLING_PROFILE_NAME = "newBPNameEdited";
 	public static final String ADDRESS_NAME = "newSAName";
 	public static final String SECURITY_NUMBER = "123";
@@ -353,6 +354,8 @@ public class TestConstants {
 
 	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
 	public static final String NEW_SHIPPING_PROFILE_NAME_CA = "new SP";
+	public static final String CARD_EXP_MONTH_OPTION = "9";
+	public static final String CARD_EXP_YEAR_OPTION = "11";
 
 	public static final String TOO_MUCH_PRODUCT ="Too much product";
 	public static final String  TOO_EXPENSIVE ="Too expensive";
@@ -364,7 +367,7 @@ public class TestConstants {
 	public static final String OTHER_REASON = "Other";
 	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_COM_SITE="Dermatologist-Created Anti-Aging Skincare Products";
 	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_BIZ_SITE="biz PWS - CA";
-	
+
 }
 
 

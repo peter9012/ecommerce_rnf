@@ -95,6 +95,16 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 	}
 
+	public void selectNewBillingCardExpirationDate(String month,String year){
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option["+month+"]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option["+year+"]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+	}
+
+
 	public void enterNewBillingSecurityCode(String securityCode){
 		driver.type(By.id("security-code"), securityCode);
 	}
@@ -247,7 +257,17 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
 		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
-		driver.click(By.id("saveCrpShippingAddress"));
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.click(By.id("saveCrpShippingAddress"));
+		}else{
+			try{
+				driver.click(By.id("saveCrpShippingAddress"));
+			}catch(Exception e){
+				driver.click(By.id("saveShippingAddreessId"));
+			}
+
+		}
+
 		logger.info("Save shipping profile button clicked");
 		try{
 			driver.click(By.id("QAS_AcceptOriginal"));
@@ -263,7 +283,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 
 		driver.waitForLoadingImageToDisappear();
-	}
+	}	
+
 
 	public boolean verifyNewShippingAddressSelectedOnUpdateCart(String name){		
 		try{
@@ -1011,8 +1032,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyNewlyCreatedShippingAddressIsSelectedByDefault(String name){
-		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
-		return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+		//  driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+		//  return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/../following-sibling::p//input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/../following-sibling::p//input[@checked='checked']"));
 	}
 
 	public void clickOnSaveCRPShippingInfo(){
@@ -1129,8 +1152,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isBillingProfileIsSelectedByDefault(String profileName){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
-		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::p//input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::p//input[@checked='checked']"));
 	}
 
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
@@ -1226,6 +1249,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		String methodName = driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[3]/p")).getText();
 		// System.out.println("Actual Assertion 2 : "+methodName.contains(selectedMethodName.trim()));
 		return methodName.contains(selectedMethodName.trim());
+	}
+
+	public boolean verifyErrorMessageForCreditCardSecurityCode(){
+		driver.quickWaitForElementPresent(By.xpath("//label[text()='This field is required.']"));
+		return driver.isElementPresent(By.xpath("//label[text()='This field is required.']"));
 	}
 
 }

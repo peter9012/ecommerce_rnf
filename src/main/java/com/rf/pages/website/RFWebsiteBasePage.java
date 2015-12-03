@@ -669,10 +669,24 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAllowMySpouseOrDomesticPartnerCheckbox() {
+		boolean status = false;
 		//driver.waitForElementToBeVisible(By.xpath("//input[@id='spouse-check']"), 15);
-		boolean status=driver.findElement(By.xpath("//input[@id='spouse-check']/..")).isSelected();
-		if(status==false){
-			driver.click(By.xpath("//input[@id='spouse-check']/.."));
+		try{
+			WebElement checkbox=driver.findElement(By.xpath("//input[@id='spouse-check']/.."));
+			status=checkbox.isSelected();
+			if(status==false){
+				driver.click(By.xpath("//input[@id='spouse-check']/.."));
+			}
+		}catch(NoSuchElementException e){
+			try{
+				WebElement checkboxLoc=driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
+				status=checkboxLoc.isSelected();
+				if(status==false){
+					driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
+				}
+			}catch(Exception e1){
+
+			}
 		}
 	}
 
@@ -829,19 +843,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]"));
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]")));
 		driver.pauseExecutionFor(1000);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
-
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityPC(){
-		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
-		driver.click(By.xpath("//div[@id='activePCPopup']//input[@class='cancelEnrollment']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'cancelEnrollment')]"));
+		driver.click(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.pauseExecutionFor(1000);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
@@ -876,22 +889,22 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
 		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
 			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")));
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]")));
 			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
 			driver.pauseExecutionFor(2000);
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(2000);
-			return validateHomePage();			
+			return validateHomePage();   
 		}catch(NoSuchElementException e){
-			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']"));
+			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
 		}
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
-		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
-		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'cancelEnrollment')]"));
+		driver.click(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 		return validateHomePage();

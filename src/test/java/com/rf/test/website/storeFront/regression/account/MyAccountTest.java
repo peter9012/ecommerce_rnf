@@ -1096,7 +1096,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.enterTerminationComments();
 		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 		storeFrontHomePage.loginAsRCUser(rcUserEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");  
 		s_assert.assertAll();
@@ -1115,6 +1116,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
+
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
@@ -1136,7 +1138,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.enterTerminationComments();
 		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 		storeFrontHomePage.loginAsRCUser(rcUserEmailID,password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");  
 		s_assert.assertAll();
@@ -2826,9 +2829,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage.addQuantityOfProduct(qtyOfProducts);
-		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected msg is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
+		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected msg is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
 		storeFrontHomePage.addQuantityOfProduct(newQtyOfProducts);
-		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
+		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
 
 		s_assert.assertAll(); 
 	}
@@ -5446,7 +5449,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-1747:To verify edit shipping address functionality in the CRP Edit Autoship template Page
+	/*//Hybris Project-1747:To verify edit shipping address functionality in the CRP Edit Autoship template Page
 	@Test
 	public void testEditShippingFunctionalityAtEditAutoshipTemplatePage_1747() throws InterruptedException{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -5529,7 +5532,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 
 		s_assert.assertAll(); 
-	}
+	}*/
 
 	//Hybris Phase 2-1981:Orders page UI for RC
 	@Test
@@ -8808,90 +8811,70 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	//Hybris Project-4663:Consultant Account Termination
 	@Test
 	public void testConsultantAccountTermination_4663() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		country = driver.getCountry();
-		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
-		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-		String firstName=TestConstants.FIRST_NAME+randomNum;
-
-		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;    
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		}else{
-			kitName = TestConstants.KIT_NAME_EXPRESS;
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-		}
-
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		/*storeFrontHomePage.clickOnOurBusinessLink();
-		   storeFrontHomePage.clickOnOurEnrollNowLink();*/
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-		storeFrontHomePage.clickNextButton();
-		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		//  s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		//  s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-		storeFrontHomePage.checkTheIAgreeCheckBox();
-		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
-		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-		storeFrontHomePage.clickOnConfirmAutomaticPayment();
-		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
 
-		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickTerminateMyAccount();
-		storeFrontAccountTerminationPage = new StoreFrontAccountTerminationPage(driver);
+		//1st combination for validation
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyFieldValidatonForReason(),"Field Validation Is not Present for Reason");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutComments(),"comment is required message not present on UI without select any reason");
+
 		storeFrontAccountTerminationPage.selectTerminationReason();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutComments(),"comment is required message not present on UI");
+
+		//2nd combination for validation
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutComments(),"comment is required message not present on UI without select any reason");
+
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.enterTerminationComments();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyMessageWithoutReason(),"Reason is required message not present on UI");
+
+		// 3rd combination for validation
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyFieldValidatonForReason(),"Field Validation Is not Present for Reason After enter the comments");
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.selectTerminationReason();
 		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+
+		//4th combination for validation
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyCheckBoxValidationIsPresent(),"Please click on checkbox to agree on the Terms and Conditions not present on UI");
 		storeFrontAccountTerminationPage.clickOnAgreementCheckBox();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		//  storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
 		storeFrontAccountTerminationPage.clickCancelTerminationButton();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyWelcomeDropdownToCheckUserRegistered(),"Account is Terminated");
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
 		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(),"account Termination confirmation pop up is not present");
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		storeFrontHomePage.loginAsRCUser(consultantEmailID,password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed"); 
+
 		s_assert.assertAll();
 	}
 
@@ -11238,8 +11221,263 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-2160:Place and Order and Enroll for PC during Checkout and check disclaimers
+	@Test
+	public void testPlaceOrderAndEnrollForPCDuringCheckout_2160() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		/*storeFrontHomePage.clickOnShopLink();
+		       storeFrontHomePage.clickOnAllProductsLink();*/
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product with the price less than $80 and proceed to buy it
+		//  storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		//  s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
+
+		//validate 10% discount for PC User account in order summary section
+		s_assert.assertTrue(storeFrontHomePage.validateDiscountForEnrollingAsPCUser(TestConstants.DISCOUNT_TEXT_FOR_PC_USER),"Discount text Checkbox is not checked for pc User");
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		//validate bill to this card radio button selected under billing profile section
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
+		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopupPresent(),"PC Perks terms and condition popup is not present");
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksTermsAndConditionsPopupText().toLowerCase().contains(TestConstants.PC_PERKS_TERMS_CONDITION_POPUP_TEXT.toLowerCase()),"PC perks terms and candition popup text is not as expected");
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksTermsAndConditionsPopupHeaderText().toLowerCase().contains(TestConstants.PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT.toLowerCase()),"PC perks terms and candition popup Header text is not as expected");
+		storeFrontHomePage.clickPCPerksTermsAndConditionPopupOkay();
+		//verify for popup saying select terms and candition to avail 10 percent discount
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(),"Congrats message is not present");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-145:Update PC Template -EDIT Cart , Shipping info, billing info and Save
+	@Test
+	public void testUpdatePCTemplate_145() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountID = null;
+			String lastName = "ln";
+			String newShipingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+			String newBillingAddressName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}  
+			logger.info("login is successful");
+			storeFrontPCUserPage.clickOnAutoshipCart();
+			storeFrontPCUserPage.clickOnContinueShoppingLink();
+			storeFrontPCUserPage.clickOnAddtoPCPerksButton();
+			String updatedMsg = storeFrontPCUserPage.getAutoshipTemplateUpdatedMsg();
+			s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
+			storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
+			storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
+			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
+			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
+			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingAddressName);
+			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
+			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			//storeFrontUpdateCartPage.selectNewBillingCardAddress();
+			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
+			//verify selected billing profile is default
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
+			storeFrontUpdateCartPage.clickOnEditShipping();
+			storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
+			storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
+			storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEditDuringEnrollment();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");
+			String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
+			storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
+			storeFrontUpdateCartPage.clickOnNextStepBtn();
+			storeFrontUpdateCartPage.clickUpdateCartBtn();
+			s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
+			s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newShipingAddressName+" "+lastName),"updated address not present on Updated cart page");
+			s_assert.assertAll();
+
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+
+	//Hybris Project-5138:Verify Change Sponsor functionality for RC
+	@Test
+	public void testVerifyChangeSponsorFunctionalityForRC_5138() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = "lN";
+			List<Map<String, Object>> randomConsultantList =  null;
+			List<Map<String, Object>> sponsorIdList =  null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			storeFrontHomePage.clickAddToBagButton();
+			storeFrontHomePage.clickOnPlaceOrderButton();
+			storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+			storeFrontHomePage.enterMainAccountInfo(TestConstants.ADDRESS_LINE_1_CA, TestConstants.CITY_CA, TestConstants.PROVINCE_CA, TestConstants.POSTAL_CODE_CA, TestConstants.PHONE_NUMBER_CA);
+			//get pws from query for assertion
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			String emailIdOfFirstConsultantSponser = (String) getValueFromQueryResult(randomConsultantList, "Username");  
+			String accountIDOfFirstConsultantSponser = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			// sponser search by Account Number
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIDOfFirstConsultantSponser),RFO_DB);
+			String sponserId = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponserId);
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+			s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkPresent(),"NOT YOUR SPONSOR link is not present");
+			storeFrontHomePage.clickOnNotYourSponsorLink();
+			s_assert.assertTrue(storeFrontHomePage.verifyContinueWithoutSponsorLinkIsPresent(),"CONTINUE WITHOUT SPONSOR LINK is not present on UI");
+			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			s_assert.assertAll(); 
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-5003:Add Birthday and gender and allow my sponsor information
+	@Test
+	public void testAddBirthDay_Gender_AllowMySponsorInformation_5003() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			List<Map<String, Object>> accountNameDetailsList = null;
+			String dobDB = null;
+			//login as consultant and verify Product Details.
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountIdForConsultant = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForConsultant);
+
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterBirthDateOnAccountInfoPage();
+			storeFrontAccountInfoPage.clickOnGenderRadioButton(TestConstants.CONSULTANT_GENDER);
+			storeFrontAccountInfoPage.clickOnAllowMySpouseOrDomesticPartnerCheckbox();
+			storeFrontAccountInfoPage.enterSpouseFirstName(TestConstants.SPOUSE_FIRST_NAME);
+			storeFrontAccountInfoPage.enterSpouseLastName(TestConstants.SPOUSE_LAST_NAME);
+			storeFrontAccountInfoPage.clickOnSaveAfterEnterSpouseDetails();
+			//storeFrontAccountInfoPage.clickOnSaveAfterEnterSpouseDetails();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			String genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
+			if(genderDB.equals("2")){
+				genderDB = "male";
+			}
+			else{
+				genderDB = "female";
+			}
+			assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
+			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+			dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
+			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyEnteredBirthDateFromDB(dobDB,TestConstants.CONSULTANT_DAY_OF_BIRTH,TestConstants.CONSULTANT_MONTH_OF_BIRTH,TestConstants.CONSULTANT_YEAR_OF_BIRTH));  
+
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
 
 }
-
-

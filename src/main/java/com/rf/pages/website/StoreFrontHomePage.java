@@ -1095,8 +1095,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void mouseHoverSponsorDataAndClickContinueForPCAndRC() throws InterruptedException{
-		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
+		//  actions =  new Actions(RFWebsiteDriver.driver);
+		//  actions.moveToElement(driver.findElement(By.xpath("//div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
+		//  logger.info("First result of sponsor has been clicked");
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='the-search-results']/div[1]/div[1]//input[@value='Select & Continue']")));
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -2544,6 +2547,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public int getSizeOfProductFilter(){
 		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		driver.pauseExecutionFor(4000);
 		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')]/li")).size();
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
 		return sizeOfProduct;
@@ -2576,12 +2580,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
-		driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
-		driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.click(By.xpath("//input[@value='Search']"));
+		try{
+			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+			driver.findElement(By.id("sponsor-name-id")).sendKeys(sponsor);
+		}catch(NoSuchElementException e){
+			driver.findElement(By.id("sponserparam")).sendKeys(sponsor);
 		}
-		driver.click(By.xpath("//input[@value='Search']"));
+		try{
+			driver.click(By.xpath("//input[@value='Search']"));   
+		}catch(NoSuchElementException e){
+			driver.click(By.id("search-sponsor-button"));
+
+		}
+		logger.info("Sponsor entered as "+sponsor+" and search button clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickEditShippingInShipmentOnCheckoutPage(){

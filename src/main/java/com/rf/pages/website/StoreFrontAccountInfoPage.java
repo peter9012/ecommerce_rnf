@@ -730,13 +730,16 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 				logger.info("acceptSpouse pop up handled");
 				driver.waitForLoadingImageToDisappear();
 				driver.click(By.id("saveAccountInfo"));
+			}else if(driver.isElementPresent(By.id("QAS_AcceptOriginal"))){
+				driver.click(By.id("QAS_AcceptOriginal"));
+				logger.info("Accept as original button clicked");
+				driver.waitForLoadingImageToDisappear();
 			}
 		}catch(Exception e){
 			logger.info("acceptSpouse popup not present");
 		}
-
+		driver.waitForLoadingImageToAppear();
 		driver.waitForPageLoad();
-
 	}
 
 	public void enterBirthDateOnAccountInfoPage() {
@@ -769,6 +772,32 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean validateCountryCanOrNotBeModified(){
 		driver.waitForElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
+	}
+
+	public void clickMeetYourConsultantLink(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		logger.info("Meet your consultant link is clicked");
+	}
+
+	public boolean verifyFirstNameAndLastNameAtMeetYourConsultantSection(String firstName,String lastName){
+		driver.waitForElementPresent(By.xpath("//div[@id='content-left-menu']/following-sibling::div[1]"));
+		String textOfFirstLastName = driver.findElement(By.xpath("//div[@id='content-left-menu']/following-sibling::div[1]")).getText();
+		logger.info("Fetched text of first and last name==="+textOfFirstLastName);
+		if(textOfFirstLastName.equalsIgnoreCase(firstName+" "+lastName)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyFirstNameAndLastNameAtMainAccountInfoduringPlacingAdhocOrder(String firstName,String lastName){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']/div[2]/div[1]/div[1]"));
+		String textOfFirstLastName = driver.findElement(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']/div[2]/div[1]/div[1]")).getText();
+		logger.info("Fetched text of first and last name==="+textOfFirstLastName);
+		if(textOfFirstLastName.equalsIgnoreCase(firstName+" "+lastName)){
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -359,5 +359,15 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 	}
 
+	public boolean verifyUpdateCartMessage(String message){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(message)){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
 }
 

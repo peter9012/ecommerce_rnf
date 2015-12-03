@@ -141,13 +141,22 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyMessageWithoutComments(){
-		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p[1]"));
-		String message = driver.findElement(By.xpath("//div[@id='globalMessages']//p[1]")).getText();
+		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']/following::label[@class='error']"));
+		String message = driver.findElement(By.xpath("//textarea[@id='terminationComments']/following::label[@class='error']")).getText();
 		System.out.println(message);
-		if(message.equalsIgnoreCase("Comment is required.")){
+		if(message.equalsIgnoreCase("This field is required.")){
 			return true;
 		}else{
-			return false;}
+			return false;
+		}
+	}
+
+	public boolean verifyFieldValidatonForReason(){
+		return driver.isElementPresent(By.xpath("//ul[@class='reason']//label[@class='error']"));
+	}
+
+	public boolean verifyCheckBoxValidationIsPresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='terminate-labelerrorLabel']/label"));
 	}
 
 	public boolean verifyMessageWithoutReason(){

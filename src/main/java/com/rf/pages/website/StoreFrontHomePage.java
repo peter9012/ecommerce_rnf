@@ -1275,6 +1275,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void openPWS(String pws){
 		driver.get(pws);
 		driver.waitForPageLoad();
+		while(true){
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				String bizPWS = getBizPWS(driver.getCountry(), driver.getEnvironment());
+				bizPWS = convertBizSiteToComSite(bizPWS);
+				driver.get(bizPWS);
+				driver.waitForPageLoad();
+			}else{
+				break;
+			}
+		}
 	}
 
 	public void clickOnPersonalizeMyProfileLink(){
@@ -3088,6 +3098,33 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			break;  
 		}
 		return UIMonth+" "+date+", "+year;
+	}
+
+	public boolean verifyConsultantSinceOnMeetYourConsultantPage(){
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'Consultant since')]"));
+	}
+
+	public void updateEmailOnMeetYourConsultantPage(String email){
+		driver.type(By.id("contactEmail"), email);
+	}
+
+	public String getPhoneNumberFromContactBox(){
+		String phoneNumber =  driver.findElement(By.xpath("//span[@class='icon-phone iconMsg']/following::a[1]")).getText();
+		String[] number = phoneNumber.split("\\.");
+		String finalNumber = number[0]+number[1]+number[2];
+		System.out.println("Final num is "+finalNumber);
+		return finalNumber;
+	}
+
+	public boolean verifyPhoneNumberIsPresentInContactBox(String number){
+		driver.waitForPageLoad();
+		String updatedPhoneNumber = getPhoneNumberFromContactBox();
+		return number.contains(updatedPhoneNumber.trim());
+	}
+
+	public boolean verifyEmailIdIsPresentInContactBoxAfterUpdate(String email){
+		driver.waitForPageLoad();
+		return driver.findElement(By.id("txtContactMe")).getText().trim().contains(email.trim());
 	}
 }
 

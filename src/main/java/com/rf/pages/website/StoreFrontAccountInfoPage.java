@@ -770,8 +770,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateCountryCanOrNotBeModified(){
-		driver.waitForElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
-		return driver.isElementPresent(By.xpath("//div[contains(@class,'country-read-only')]"));
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'country-read-only')]/input[@disabled='disabled']"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'country-read-only')]/input[@disabled='disabled']"));
 	}
 
 	public void clickMeetYourConsultantLink(){

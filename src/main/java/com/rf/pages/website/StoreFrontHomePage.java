@@ -2761,8 +2761,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void checkEmailFieldCBOnEditConsultantInfoPage(){
+		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[@id='onlyShowContactMeForm']/.."));
-		if(!driver.isElementPresent(By.xpath("//input[@checked='checked']"))){
+		if(driver.isElementPresent(By.xpath("//input[@id='onlyShowContactMeForm' and @class='checked']"))==false){
 			driver.click(By.xpath("//input[@id='onlyShowContactMeForm']/.."));
 		}
 	}
@@ -3125,6 +3126,26 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifyEmailIdIsPresentInContactBoxAfterUpdate(String email){
 		driver.waitForPageLoad();
 		return driver.findElement(By.id("txtContactMe")).getText().trim().contains(email.trim());
+	}
+
+	public boolean verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.id("name"));
+	}
+
+	public boolean verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.id("senderEmailId"));
+	}
+
+	public boolean verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.id("message"));
+	}
+
+	public boolean verifySubmitButtonIsPresentOnMeetMyConsultantPage(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//textarea[@id='message']/following::input[1]"));
 	}
 }
 

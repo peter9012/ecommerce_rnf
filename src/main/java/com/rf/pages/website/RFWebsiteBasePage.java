@@ -186,6 +186,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.id("quantity0"));
 		driver.findElement(By.id("quantity0")).clear();
 		driver.findElement(By.id("quantity0")).sendKeys(qty);
@@ -1617,5 +1618,26 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnSaveAfterEditPWS(){
 		driver.waitForElementPresent(By.xpath("//div[@class='editphotosmode']//input"));
 		driver.click(By.xpath("//div[@class='editphotosmode']//input"));
+	}
+	public void clickOnAddToCRPButtonAfterCancelMyCRP(){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@id='crp_noButton']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@id='crp_noButton']"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//button[@id='crp_noButton']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//button[@id='crp_noButton']"));
+		}
+	}
+
+	public boolean verifyEnrollInCRPPopupAfterClickOnAddToCRP(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//div[@id='popup'][1]"));
+	}
+	public boolean verifyUpradingToConsulTantPopupForRC(){
+		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//div[@id='activePCPopup' and @style=' display:none;']"))){
+			return true;
+		}else
+			return false;
 	}
 }

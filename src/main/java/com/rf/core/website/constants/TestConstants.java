@@ -179,6 +179,7 @@ public class TestConstants {
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG="removed from your cart";
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_FOR_CONSULTANT= "greater than the threshold 80";
 	public static final String CONSULTANT_VALID_10_DIGIT_MAIN_PHONE_NUMBER ="3423423423";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA= "Your Total SV value should be equal to or greater than the threshold 100";
 	public static final String PC_PERKS_MESSAGE_ON_MODAL_POPUP = "*Preferred Customer pricing offers up to, and in some cases more than, a 10% discount off retail price";

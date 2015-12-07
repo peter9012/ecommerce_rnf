@@ -1116,10 +1116,14 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 		return null;
 	}
-
 	public String getSVValueFromCart(){
-		logger.info(driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText());
-		return driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText();
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			logger.info(driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText());
+			return driver.findElement(By.xpath("//div[contains(text(),'Total SV')]/following::span[1]")).getText();
+		}else{
+			logger.info(driver.findElement(By.xpath("//div[@class='SV-info']//div[contains(text(),'Total SV')]/following::span[1]")).getText());
+			return driver.findElement(By.xpath("//div[@class='SV-info']//div[contains(text(),'Total SV')]/following::span[1]")).getText();
+		}
 	}
 
 	public double compareSVValue(String SVValueOfRemovedProduct, double totalSVValue){

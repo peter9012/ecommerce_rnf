@@ -1541,7 +1541,7 @@ public class DBQueries_RFO {
 			"AND ar.HardTerminationDate < DATEADD(DAY, -90,CONVERT(DATE, GETDATE())) "+
 			"ORDER BY NEWID()";
 
-	public static String GET_SPONSOR_ID = "select top 1 AccountNumber from RFO_Accounts.AccountBase where accountId IN ( "+
+	public static String GET_SPONSOR_ID = "select top 1 * from RFO_Accounts.AccountBase where accountId IN ( "+
 			"SELECT TOP 1 "+
 			"ab.AccountID "+
 			"FROM    RFO_Accounts.AccountBase AS ab "+ 

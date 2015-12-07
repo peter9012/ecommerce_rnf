@@ -1054,12 +1054,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			return false;
 		}
 	}
-
 	public void clickOnNotYourSponsorLink(){
 		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
 		driver.click(By.xpath("//a[@id='not-your-sponsor']"));
 	}
-
 	public void clickNotYourSponsorLinkOnKitPage(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Not your sponsor?']"));
 		driver.click(By.xpath("//a[text()='Not your sponsor?']"));
@@ -3146,6 +3144,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifySubmitButtonIsPresentOnMeetMyConsultantPage(){
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//textarea[@id='message']/following::input[1]"));
+	}
+	public boolean verifyRFCorporateSponsorPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
+
 	}
 }
 

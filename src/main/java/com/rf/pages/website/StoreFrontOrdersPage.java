@@ -23,7 +23,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private final By ORDER_SCHEDULE_DATE_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[2]");
 	private final By ORDER_GRAND_TOTAL_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[3]");
 	private final By ORDER_STATUS_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[4]");
-	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[2]//div[contains(@class,'ref-values')]//a");
+	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[1]");
 	private final By ORDER_AUTOSHIP_ADDRESS_LOC = By.xpath("//ul[@class='order-detail-list']/li[1]/p");
 	private final By SCHEDULE_DATE_TEXT_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'date')]");
 	private final By ORDER_STATUS_TEXT_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'Order status')]");
@@ -37,7 +37,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
 	private final By ACTIONS_BUTTON_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]");
 	private final By ACTIONS_DROPDOWN_LOC = By.xpath(" //div[@id='history-orders-table']//div[2]/div[2]/div[5]/ul/li[2]/a");
-	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div[1]/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
 	private final By AUTOSHIP_DATE_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[2]");
 
@@ -319,9 +319,15 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnFirstAdHocOrder(){
-		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-		logger.info("First order from the order history clicked");
+		try{
+			driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
+			driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
+			logger.info("First order from the order history clicked");
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath(".//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a"));
+			driver.click(By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a"));	
+			logger.info("First order from the order history clicked");
+		}
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
@@ -767,13 +773,18 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}else 
 			return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]/following::div[1]")).getText().contains("US$");
 	}
-
 	public String getAutoshipOrderDate(){
 		String autoShipOrderDate = null;
-		driver.waitForElementPresent(AUTOSHIP_DATE_LOC);
-		autoShipOrderDate = driver.findElement(AUTOSHIP_DATE_LOC).getText();
-		logger.info("autoship order Date is "+autoShipOrderDate);
-		return  autoShipOrderDate;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]"));
+			autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]")).getText();
+			return  autoShipOrderDate;
+		}else{
+			driver.waitForElementPresent(AUTOSHIP_DATE_LOC);
+			autoShipOrderDate = driver.findElement(AUTOSHIP_DATE_LOC).getText();
+			logger.info("autoship order Date is "+autoShipOrderDate);
+			return  autoShipOrderDate;
+		}
 	}
 
 	public boolean verifyAdhocOrderIsPresent(){

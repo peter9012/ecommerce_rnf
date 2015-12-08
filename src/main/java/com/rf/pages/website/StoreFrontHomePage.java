@@ -2502,46 +2502,66 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPriceFromLowToHigh(){
-		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));{
-			String firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			System.out.println("1st "+firstProductPrice);
-			System.out.println("2nd "+secondProductPrice);
-			System.out.println("3rd "+thirdProductPrice);
+		String firstProductPrice = null;
+		String secondProductPrice = null;
+		String thirdProductPrice = null;
 
-			if(Double.parseDouble(thirdProductPrice)>Double.parseDouble(secondProductPrice)){
-				if(Double.parseDouble(secondProductPrice)>Double.parseDouble(firstProductPrice)){
-					return true;
-				}else{
-					return false;
-				}
-			}return false;
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));
+			firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
+			firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
 		}
+		System.out.println("1st "+firstProductPrice);
+		System.out.println("2nd "+secondProductPrice);
+		System.out.println("3rd "+thirdProductPrice);
+
+		if(Double.parseDouble(thirdProductPrice)>Double.parseDouble(secondProductPrice)){
+			if(Double.parseDouble(secondProductPrice)>Double.parseDouble(firstProductPrice)){
+				return true;
+			}else{
+				return false;
+			}
+		}return false;
 	}
-
-
 	public boolean verifyPriceFromHighTolow(){
-		driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));{
-			String firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			System.out.println("1st "+firstProductPrice);
-			System.out.println("2nd "+secondProductPrice);
-			System.out.println("3rd "+thirdProductPrice);
+		String firstProductPrice = null;
+		String secondProductPrice = null;
+		String thirdProductPrice = null;
 
-			if(Double.parseDouble(firstProductPrice)>Double.parseDouble(secondProductPrice)){
-				if(Double.parseDouble(secondProductPrice)>Double.parseDouble(thirdProductPrice)){
-					return true;
-				}else{
-					return false;
-				}
-			}return false;
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));
+			firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
+			firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+			thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
 		}
+		System.out.println("1st "+firstProductPrice);
+		System.out.println("2nd "+secondProductPrice);
+		System.out.println("3rd "+thirdProductPrice);
 
+		if(Double.parseDouble(firstProductPrice)>Double.parseDouble(secondProductPrice)){
+			if(Double.parseDouble(secondProductPrice)>Double.parseDouble(thirdProductPrice)){
+				return true;
+			}else{
+				return false;
+			}
+		}return false;
 	}
 
 	public boolean verifyPriceAfterDeselectThefilter(String priceBeforeApplyFilter){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			return driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
+		}
 		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
 	}
 

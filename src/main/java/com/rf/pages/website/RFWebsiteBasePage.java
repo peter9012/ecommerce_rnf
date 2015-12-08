@@ -13,6 +13,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
@@ -1331,6 +1332,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String getProductPriceBeforeApplyFilter(){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			return driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+		}
 		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
 	}
 
@@ -1370,7 +1374,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			try{
+				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span")).getText().toLowerCase().contains(firstName.toLowerCase());
+			}catch(NoSuchElementException e){
+				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			}
 			if(isFirstNamePresent == true){ 
 				return true;
 			}
@@ -1560,7 +1568,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateEditYourInformationLink(){
-		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		driver.quickWaitForElementPresent(WELCOME_USER_DD_LOC);
 		return driver.isElementPresent(WELCOME_USER_DD_LOC);
 	}
 

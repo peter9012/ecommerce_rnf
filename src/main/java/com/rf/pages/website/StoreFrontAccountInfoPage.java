@@ -206,7 +206,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String completeDate[] = dob.split(" ");
 			String splittedMonth = completeDate[0].substring(0,3);
 			String day =driver.findElement(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH))).getAttribute("value");
-			String month = driver.findElement(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH))).getText();
+			String month = driver.findElement(By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]")).getAttribute("value");
 
 			switch (Integer.parseInt(month)) {  
 			case 1:
@@ -257,7 +257,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-
 	public boolean verifyBirthDateFromUIAccountInfoForCheckAccountInfo(String dob){
 		if(dob == null){
 			return false;

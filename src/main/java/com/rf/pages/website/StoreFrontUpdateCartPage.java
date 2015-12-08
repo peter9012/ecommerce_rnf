@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -1258,6 +1259,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean verifyErrorMessageForCreditCardSecurityCode(){
 		driver.quickWaitForElementPresent(By.xpath("//label[text()='This field is required.']"));
 		return driver.isElementPresent(By.xpath("//label[text()='This field is required.']"));
+	}
+	public boolean isNewlyCreatedBillingProfileIsSelectedByDefault(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::div//input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::div//input[@checked='checked']"));
 	}
 
 }

@@ -463,6 +463,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyShippingAddressIsPresentOnReviewPage(newShippingAddressName), "Terms and Conditions checkbox is not visible");storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
+		//storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();

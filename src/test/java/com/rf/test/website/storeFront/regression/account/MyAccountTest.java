@@ -3755,7 +3755,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 			s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedBillingProfileIsSelectedByDefault(newBillingProfileName+i),"New Billing Profile is not selected by default on CRP cart page");
 		}
-
+         i=1;
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickBillingEditAfterSave();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedBillingProfileIsSelectedByDefault(newBillingProfileName+i),"New Billing Profile is not selected by default on CRP cart page");
@@ -3769,7 +3769,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage.clickOnFirstAdHocOrder();
 
 		//------------------ Verify that adhoc orders template doesn't contains the newly created billing profile by verifying by name------------------------------------------------------------
-
+		
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName+i),"AdHoc Orders Template Payment Method contains new billing profile when future autoship checkbox not selected");
 		//------------------Verify that billing info page contains the newly created billing profile
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -10333,7 +10333,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
 
 
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		// sponser search by Account Number
@@ -10504,7 +10504,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(), "Yes I want to join pc perks checkboz is not selected");
 
 
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry()),RFO_DB);
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		// sponser search by Account Number

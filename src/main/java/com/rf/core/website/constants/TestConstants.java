@@ -84,6 +84,7 @@ public class TestConstants {
 	public static final String PROVINCE_NUNAVUT = "Nunavut";
 	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
 	public static final String PROVINCE_QUEBEC = "Quebec";
+	public static final String PROVINCE_US = "Alaska";
 
 
 

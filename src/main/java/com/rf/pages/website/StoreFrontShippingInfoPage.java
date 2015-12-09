@@ -254,11 +254,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 			return false;
 		}
 	}
-
 	public String getDefaultSelectedShippingAddress(){
-		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[1]"));
-		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[1]")).getText();
-	}
+		  driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
+		  return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
+		 }
 
 	public boolean verifyOldDefaultSelectAddress(String addressname, String addressnameAfterAdd){
 		return addressname.equalsIgnoreCase(addressnameAfterAdd);

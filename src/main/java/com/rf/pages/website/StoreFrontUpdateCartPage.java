@@ -1146,11 +1146,14 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//input[@checked='checked']"))==false){
 			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
 		}else{
-			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]"));
+			try{
+				driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]"));
+			}catch(NoSuchElementException e){
+				driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//a[contains(text(),'Edit')]"));
+			}
 		}
 		driver.pauseExecutionFor(5000);
 	}
-
 	public boolean isNewEditedBillingProfileIsPresentOnOrderConfirmationPage(String profileName){
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
@@ -1173,17 +1176,15 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-
 	public boolean isDefaultBillingProfileIsPresentOrderConfirmationPage(String profileName){
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
 			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
-			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
+			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h2[contains(text(),'Billing')]/following::span[contains(text(),'"+profileName+"')]"));
+			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h2[contains(text(),'Billing')]/following::span[contains(text(),'"+profileName+"')]"));
 		}
 	}
-
 	public String getDefaultShippingProfileName(){
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/ancestor::div[2]//div[contains(@class,'user-name')]")).getText();
 	}

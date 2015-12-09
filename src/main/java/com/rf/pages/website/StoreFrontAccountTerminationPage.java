@@ -99,15 +99,13 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]"));
 		driver.waitForLoadingImageToDisappear();  
 	}
-
-
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
-		if(driver.findElement(By.xpath("//div[@id='consultantTerminatePopup']")).isDisplayed()){
-			return true;
-		}else{
-			return false;
-		}
-	}
+		  if(driver.findElement(By.xpath("//div[@id='showConsultantTerminatePopUp']")).isDisplayed()){
+		   return true;
+		  }else{
+		   return false;
+		  }
+		 }
 
 	public void clickOnCloseWindowAfterTermination(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));

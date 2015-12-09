@@ -12483,4 +12483,246 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
+	//Hybris Project-1904:To Verify the cancel functionality on edit meet the consultant page from com site
+	@Test
+	public void testCancelFunctionalityOnEditMeetYourConsultantPageComSite_1904()  {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			env = driver.getEnvironment();  
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String consultantEmailID = null;
+			while(true){
+				List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(sponserList, "Username"));
+				String PWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
+				String comPWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+				storeFrontHomePage.openPWS(comPWS);
+
+				//Login with same PWS consultant
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			//click meet your consultant banner link
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			//click on 'Personalize My  Profile' link..
+			storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+			//click on cancel button on 'editConsultantInfo' page
+			storeFrontHomePage.clickCancelBtnOnEditConsultantInfoPage();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-1905:To Verify the Submission Guidelines link on edit meet the consultant page from biz site
+	@Test
+	public void testSubmissionGuidelinesLinkOnEditMeetTheConsultantPageBizSite_1905()  {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			env = driver.getEnvironment();  
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String consultantEmailID = null;
+			while(true){
+				List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(sponserList, "Username"));
+				String PWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
+				String comPWS = storeFrontHomePage.convertComSiteToBizSite(PWS);
+				storeFrontHomePage.openPWS(comPWS);
+
+				//Login with same PWS consultant
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			//click meet your consultant banner link
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			//click on 'Personalize My  Profile' link..
+			storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+			// Click on Submission Guidelines link in the MeetYourConsultant edit information page & validate SG Pdf is open..
+			s_assert.assertTrue(storeFrontHomePage.validateSubmissionGuideLinesLink(),"Submission Guoidelines link is not giving the expected results");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-1920:To verify the contact us functionality in edit meet the consultant page for com PWS site
+	@Test
+	public void testContactUsFunctionalityInEditMeetConsultantPagecomPWSSite_1920(){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			env = driver.getEnvironment(); 
+			String comPWS = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String consultantEmailID = null;
+			while(true){
+				List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(sponserList, "Username"));
+				String PWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
+				comPWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+				storeFrontHomePage.openPWS(comPWS);
+
+				//Login with same PWS consultant
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			//click meet your consultant banner link
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			//click on 'Personalize My  Profile' link..
+			storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+			//select the checkbox next to the email field and click save..
+			storeFrontHomePage.checkEmailFieldCBOnEditConsultantInfoPage();
+			storeFrontHomePage.clickOnSaveAfterEditPWS();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+
+			logout();
+
+			storeFrontHomePage.openPWS(comPWS);
+
+			//Login with same PWS consultant
+			storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			s_assert.assertFalse(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(), "Email Address is not Present in contact box After Edit");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your name box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your email box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your Message box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifySubmitButtonIsPresentOnMeetMyConsultantPage(), "Send button is not present on com site");
+
+			logout();
+
+			String bizPWS = storeFrontHomePage.convertComSiteToBizSite(comPWS);
+			storeFrontHomePage.openPWS(bizPWS);
+
+			//Login with same PWS consultant
+			storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			s_assert.assertFalse(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(), "Email Address is not Present in contact box After Edit");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your name box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your email box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your Message box is not present on com site");
+			s_assert.assertTrue(storeFrontHomePage.verifySubmitButtonIsPresentOnMeetMyConsultantPage(), "Send button is not present on com site");
+
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-4317:Soft-Terminated PC Customer enrolls to be a Consultant with his old email
+	@Test
+	public void testSoftTerminatedPCEnrollsToBeConsultant_4317() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		country = driver.getCountry();
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		RFO_DB = driver.getDBNameRFO();
+
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		/*String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+	    String lastName = "lN";*/
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		System.out.println(pcUserEmailID);
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnPcPerksStatus();
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickOnCancelPCPerks();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTerminationForPC();
+		storeFrontAccountTerminationPage.clickOnConfirmAccountTermination();
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		//storeFrontHomePage.clickOnCountryAtWelcomePage();
+		driver.get(driver.getURL());
+
+		//Again enroll as consultant with same eamil id
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_CA;    
+			regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_US;
+			regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithTerminatedEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, pcUserEmailID, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, pcUserEmailID, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll();
+	}
 }

@@ -183,4 +183,14 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		return actionButton;
 	}
+	
+	public void clickOnShippingProfileName(){ //In progress
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.switchTo().defaultContent();
 }
+}
+

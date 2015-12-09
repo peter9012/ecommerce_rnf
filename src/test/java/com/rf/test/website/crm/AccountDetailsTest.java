@@ -325,4 +325,50 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 		
 	}
+	
+	@Test//WIP
+	public void testViewBillingProfileForRC_4540() throws InterruptedException{
+		consultantEmailAddress="auto92831796394@xyz.com";
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserById("auto92831796394@xyz.com");
+		crmHomePage.clickOnAccountNameForAccountDetailPageInAccountSection();
+		int countOfBillingProfile=crmHomePage.clickOnBillingProfileAndGetNumberBillingProfile();
+		s_assert.assertTrue(crmHomePage.verifyBillingInfoActionField(),"Action field is not present");
+		assertEquals(countOfBillingProfile,crmHomePage.getCountOfBillingProfileUnderBillingProfileSection(),"Billing Addresses count is not same");
+		s_assert.assertAll();
+  }
+	@Test //WIP
+	public void testviewShippingProfileForConsultant_4542()throws InterruptedException{
+		consultantEmailAddress="auto459940@xyz.com";
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserById("auto459940@xyz.com");
+		
+	}
+	@Test //WIP
+	public void testviewShippingProfileForPC_4543()throws InterruptedException{
+		consultantEmailAddress="auto459940@xyz.com";
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserById("auto459940@xyz.com");
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+

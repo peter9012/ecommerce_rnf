@@ -36,5 +36,4 @@ public class CRMLoginPage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(ERROR_MESSAGE_LOC);
 		return driver.findElement(ERROR_MESSAGE_LOC).getText();
 	}
-
 }

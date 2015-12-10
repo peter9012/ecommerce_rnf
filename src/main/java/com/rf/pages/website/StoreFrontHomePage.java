@@ -155,6 +155,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.findElement(By.id("sponserparam")).sendKeys(cid);
 		}
 		try{
+			driver.pauseExecutionFor(2000);
 			driver.click(By.xpath("//input[@value='Search']"));			
 		}catch(NoSuchElementException e){
 			driver.click(By.id("search-sponsor-button"));

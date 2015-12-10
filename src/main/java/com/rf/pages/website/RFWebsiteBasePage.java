@@ -724,6 +724,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickYesIWantToJoinPCPerksCB(){
 		driver.waitForElementPresent(By.id("pc-customer2-div-order-summary"));
 		driver.click(By.id("pc-customer2-div-order-summary"));
+		driver.waitForPageLoad();
 	}
 
 	public void checkIAcknowledgePCAccountCheckBox(){
@@ -1368,23 +1369,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
 	}
-
-//	public boolean isTheBillingAddressPresentOnPage(String firstName){
-//		boolean isFirstNamePresent = false;
-//		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-//		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-//		for(int i=1;i<=allBillingProfiles.size();i++){   
-//			//try{
-//				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span")).getText().toLowerCase().contains(firstName.toLowerCase());
-////			}catch(NoSuchElementException e){
-////				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-//			}
-//			if(isFirstNamePresent == true){ 
-//				return true;
-//			//}
-//		}
-//		return false;
-//	}
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		  boolean isFirstNamePresent = false;
 		  driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));

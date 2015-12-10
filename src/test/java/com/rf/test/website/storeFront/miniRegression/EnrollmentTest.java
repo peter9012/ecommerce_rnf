@@ -325,7 +325,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> sponsorIdList =  null;
 
-		if(country.equalsIgnoreCase("CA")){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
 			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
 			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 

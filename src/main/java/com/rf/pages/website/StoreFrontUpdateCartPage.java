@@ -681,7 +681,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
 		driver.click(By.xpath("//select[@id='deliveryMode']"));
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
-		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'UPS Ground')]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'Ground')]"));
 		logger.info("UPS 2Day shipping method is selected"); 
 	}
 
@@ -1264,6 +1264,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean isNewlyCreatedBillingProfileIsSelectedByDefault(String profileName){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::div//input[@checked='checked']"));
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/../following-sibling::div//input[@checked='checked']"));
+	}
+
+	public String getTotalPriceOfProductForPC(){
+		String value = driver.findElement(By.xpath("//div[@id='total-shopping']//span")).getText().trim();
+		System.out.println(value);
+		return value;
 	}
 
 }

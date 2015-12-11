@@ -3169,7 +3169,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifyRFCorporateSponsorPresent() {
 		driver.waitForElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
+	}
 
+	public boolean verifyShipImmediatelyRadioButtinIsSelected(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//input[@id='immediately' and @checked='checked']"));
 	}
 }
 

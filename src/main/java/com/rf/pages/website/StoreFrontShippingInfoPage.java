@@ -229,8 +229,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
-		selectFirstCardNumber();
-		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+//		selectFirstCardNumber();
+//		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 	}	
 
 	public void clickOnNewAddressRadioButton(){

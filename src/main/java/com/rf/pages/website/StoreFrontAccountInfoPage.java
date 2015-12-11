@@ -172,12 +172,18 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyMainPhoneNumberFromUIForAccountInfo(String mainPhoneNumber){
 		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		String mainPhoneNumberFromUI = driver.findElement(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC).getAttribute("value");
-		if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
+		System.out.println("Main Phone Number from UI "+mainPhoneNumberFromUI);
+		System.out.println("Main Phone Number from DB "+mainPhoneNumber);
+		if(mainPhoneNumberFromUI.trim().equalsIgnoreCase(mainPhoneNumber.trim())){
 			System.out.println("phone selected in if block is "+mainPhoneNumberFromUI);
 			return true;
 		}else{
-			String[] mainPhone = mainPhoneNumberFromUI.split("-");
-			mainPhoneNumberFromUI = mainPhone[0]+mainPhone[1]+mainPhone[2];
+			try{
+				String[] mainPhone = mainPhoneNumberFromUI.split("-");
+				mainPhoneNumberFromUI = mainPhone[0]+mainPhone[1]+mainPhone[2];
+			}catch(Exception e){
+
+			}
 			if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
 				System.out.println("phone selected in else block is "+mainPhoneNumberFromUI);
 				return true;

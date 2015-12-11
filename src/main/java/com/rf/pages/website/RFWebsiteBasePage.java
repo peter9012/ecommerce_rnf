@@ -1235,9 +1235,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
-		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
-		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
-		logger.info("Ads new shipping profile link clicked");
+		try{
+			driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
+			driver.click(ADD_NEW_SHIPPING_LINK_LOC);
+			logger.info("Ads new shipping profile link clicked");
+		}
+		catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
+			driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
+			logger.info("Ads new shipping profile link clicked");
+		}
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
@@ -1370,17 +1377,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
 	}
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
-		  boolean isFirstNamePresent = false;
-		  driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		  List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-		  for(int i=1;i<=allBillingProfiles.size();i++){   
-		   isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-		   if(isFirstNamePresent == true){ 
-		    return true;
-		   }
-		  }
-		  return false;
-		 }
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){ 
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public String getDotComPWS(String country){
 		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[1]"));

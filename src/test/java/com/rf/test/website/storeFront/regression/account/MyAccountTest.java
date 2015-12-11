@@ -12040,78 +12040,49 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
+
 	//Hybris Project-1498:Active RC email address, during consultant enrollment under Same & Different sponsor(BIZ and CORP)
 	@Test
 	public void testActiveRCEnailAddressDuringConsultantEnrollment_1498() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			RFO_DB = driver.getDBNameRFO();
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			List<Map<String, Object>> randomRCList =  null;
-			String rcUserEmailID =null;
-			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-			regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
-			String firstName=TestConstants.FIRST_NAME+randomNum;
-			String lastName = "lN";
-			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
+		kitName = TestConstants.KIT_NAME_BIG_BUSINESS; 
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		if(driver.getCountry().equalsIgnoreCase("ca")){   
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-
-			//Enroll consultant with inactive rc user
-			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-			storeFrontHomePage.searchCID();
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
-			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
-			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-			s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
-			storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
-			storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
-			s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
-
-			storeFrontHomePage.enterFirstName(firstName);
-			storeFrontHomePage.enterLastName(lastName);
-			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-			storeFrontHomePage.enterPassword(password);
-			storeFrontHomePage.enterConfirmPassword(password);
-			storeFrontHomePage.enterAddressLine1(addressLine1);
-			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince();
-			storeFrontHomePage.enterPostalCode(postalCode);
-			storeFrontHomePage.enterPhoneNumber(phoneNumber);
-			storeFrontHomePage.clickEnrollmentNextBtn();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickEnrollmentNextBtn();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-
-			storeFrontHomePage.clickOnRodanAndFieldsLogo();
-			storeFrontHomePage.clickOnWelcomeDropDown();
-			storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-			s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
-
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		} else{
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US; 
 		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+
+		//Enroll consultant with inactive rc user
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+		s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
+		storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
+		storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
+		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
+		s_assert.assertAll();
 	}
+
 	//Hybris Project-3958:CORP: Active PC emial id during consultant enrollment under same sponsor.
 	@Test
 	public void testActivePCEmailIdDuringConsultantEnrollmentUnderSameSponsor_3958() throws InterruptedException{
@@ -13588,7 +13559,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			// assert Handling Value with RFO
 			s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount from RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
-
 			// assert for shipping Method with RFO
 			//shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"Adhoc Order template shipping method from RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());
@@ -13600,5 +13570,4 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 
 	}	
-	
 }

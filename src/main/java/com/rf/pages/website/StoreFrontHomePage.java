@@ -3175,6 +3175,107 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//input[@id='immediately' and @checked='checked']"));
 	}
+
+	public boolean validateTermsAndConditions(){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Terms and Conditions')]"));
+		return driver.isElementPresent(By.xpath("//li[contains(text(),'Terms and Conditions')]"));
+	}
+
+	public void selectNewBillingCardExpirationDateAfterEdit(){
+		driver.pauseExecutionFor(1000);
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[8]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[8]"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[8]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[8]"));
+		logger.info("expiration date is selected after edit");
+	}
+
+	public boolean verifyNewAddressPresentInMainAccountInfo(String newAddressLine1) {
+		System.out.println(newAddressLine1);
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]"));
+		System.out.println(driver.findElement(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText());
+		if(driver.findElement(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText().contains(newAddressLine1)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean validateNewShippingAddressPresentOnReviewPage(String newShippingAddName) {
+		System.out.println(newShippingAddName);
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+newShippingAddName+"')]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+newShippingAddName+"')]"))){
+			return true;
+		}
+		return false;
+	}
+
+	public void addQuantityOfProductTillThresholdPopupDisappear(String qty) throws InterruptedException{
+		if(driver.isElementPresent(By.xpath("//div[@id='popup-content']//input"))){
+			driver.click(By.xpath("//div[@id='popup-content']//input"));
+			while(true){
+				addQuantityOfProduct(qty);
+				int updateQtyValue=Integer.parseInt(qty)+Integer.parseInt(qty);
+				qty = Integer.toString(updateQtyValue);
+				if(driver.isElementPresent(By.xpath("//div[@id='popup-content']//input"))){
+					driver.click(By.xpath("//div[@id='popup-content']//input"));
+					continue;
+				}else{
+					break;
+				}
+			}
+		}else{
+			logger.info("quantity has been Updated successfully");
+		}
+	}
+
+	public void enterMainAccountInfoAndClearPreviousField(){
+		driver.pauseExecutionFor(5000);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.findElement(By.id("address.line1")).clear();
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
+			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
+			driver.findElement(By.id("address.townCity")).clear();
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA);
+			logger.info("City entered is "+TestConstants.CITY_CA);
+			try{
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
+				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+			}catch(Exception e){
+				driver.click(By.id("state"));
+				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+				driver.click(By.xpath("//select[@id='state']/option[2]")); 
+			} 
+			logger.info("state selected");
+			driver.findElement(By.id("address.postcode")).clear();
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_CA);
+			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_CA);
+			driver.findElement(By.id("address.phonenumber")).clear();
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER);
+			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER);
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.findElement(By.id("address.line1")).clear();
+			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
+			driver.findElement(By.id("address.townCity")).clear();
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
+			driver.click(By.id("state"));
+			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
+			driver.click(By.xpath("//select[@id='state']/option[2]"));
+			logger.info("state selected");
+			driver.findElement(By.id("address.postcode")).clear();
+			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
+			driver.findElement(By.id("address.phonenumber")).clear();
+			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
+		}
+
+	}
 }
 
 

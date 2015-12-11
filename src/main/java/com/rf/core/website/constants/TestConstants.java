@@ -356,6 +356,7 @@ public class TestConstants {
 
 	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
 	public static final String NEW_SHIPPING_PROFILE_NAME_CA = "new SP";
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME = "newSP";
 	public static final String CARD_EXP_MONTH_OPTION = "9";
 	public static final String CARD_EXP_YEAR_OPTION = "11";
 

@@ -1,9 +1,12 @@
 package com.rf.pages.website;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -184,13 +187,38 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		return actionButton;
 	}
 	
-	public void clickOnShippingProfileName(){ //In progress
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
-		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
-		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
-		driver.switchTo().defaultContent();
+	public void clickOnShippingProfileName(){ 
+		 driver.switchTo().frame(1);
+		 driver.waitForElementPresent(By.xpath("//*[@id='ShippingProfile__c_body']/table/tbody/tr[2]/th/a"));
+		 driver.findElement(By.xpath("//*[@id='ShippingProfile__c_body']/table/tbody/tr[2]/th/a")).click();
+		 driver.switchTo().defaultContent();
+		
 }
+	public void searchUserByFirstLastNameandSelect(String Name){
+		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
+		driver.waitForPageLoad();
+		driver.switchTo().frame(1);
+		driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/th/a")).click();
+		driver.switchTo().defaultContent();
+		driver.waitForPageLoad();
 }
+	public void EditAndSaveAccountDetails(){
+		driver.switchTo().frame(1);
+		//click Edit button
+		driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/td[1]/a")).click();
+		driver.switchTo().defaultContent();
+		//clear and enter new Address 1 
+		driver.switchTo().frame(2);
+		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).clear();
+		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).sendKeys("542 Mission St");
+		 //Click save
+		 driver.findElement(By.xpath("//*[@id='topButtonRow']/input[1]")).click();
+		 driver.switchTo().defaultContent();
+		 driver.switchTo().frame(4);
+		 //Get the text of the Updated address
+		 System.out.println(driver.findElement(By.xpath("//*[@id='00N1a000005uQGF_ileinner']")).getText());
+	}
 
+}

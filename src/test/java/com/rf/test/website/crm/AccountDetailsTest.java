@@ -1,7 +1,11 @@
 package com.rf.test.website.crm;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -340,7 +344,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		assertEquals(countOfBillingProfile,crmHomePage.getCountOfBillingProfileUnderBillingProfileSection(),"Billing Addresses count is not same");
 		s_assert.assertAll();
   }
-	@Test //WIP
+	@Test 
 	public void testviewShippingProfileForConsultant_4542()throws InterruptedException{
 		consultantEmailAddress="auto459940@xyz.com";
 		driver.get(driver.getCrmURL());
@@ -348,16 +352,67 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.searchUserById("auto459940@xyz.com");
+		crmHomePage.clickOnShippingProfileName();
+		s_assert.assertAll();
 		
 	}
-	@Test //WIP
+	@Test 
 	public void testviewShippingProfileForPC_4543()throws InterruptedException{
 		consultantEmailAddress="auto459940@xyz.com";
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserById("auto459940@xyz.com");
+		crmHomePage.searchUserById("auto808408@xyz.com");
+		crmHomePage.clickOnShippingProfileName();
+		s_assert.assertAll();	
+}
+	@Test
+	public void SearchForAccountByName_4530() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserByFirstLastNameandSelect("alan");
+		s_assert.assertAll();
+	}
+	@Test
+	public void SearchForAccountByPartialName_4533() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		//s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserByFirstLastNameandSelect("ala*");
+		s_assert.assertAll();
+	}
+	@Test//WIP
+	public void EditConsultantAccountDetails_4503() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.EditAndSaveAccountDetails();
+		s_assert.assertAll();
+		
+	}
+	public void EditPCAccountDetails_4507() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.EditAndSaveAccountDetails();
+		s_assert.assertAll();
+}
+	public void EditRCAccountDetails_4510() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.EditAndSaveAccountDetails();
+		s_assert.assertAll();
 }
 }
 

@@ -381,17 +381,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		try{
-			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
 			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
 			logger.info("Accept the original pop up was NOT present");
-		}
-		finally{
-			driver.turnOnImplicitWaits();
-		}
+		}		
 	}
 
 	public void clickNextButton(){

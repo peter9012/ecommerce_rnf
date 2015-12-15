@@ -250,10 +250,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//*[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryAddressForm']//*[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]"));
-		driver.findElement(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]")).click();
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]"));
+		driver.findElement(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]")).click();
 		//driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}
@@ -1295,6 +1295,66 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public boolean isNewEditedShippingProfileIsPresentOnOrderConfirmationPage(String profileName){
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
+	}
+
+	public boolean verifyPCPerksPromoDuringPlaceAdhocOrder(){
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
+	}
+
+	public boolean verifyShippingAddressContainsShippingMethodNameAfterPlaceOrder(String selectedShippingMethod){
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(text(),'Shipping Method')]"));
+		String methodName = driver.findElement(By.xpath("//div[contains(text(),'Shipping Method')]")).getText().split("\\:")[1].trim();
+		return selectedShippingMethod.contains(methodName);
+	}
+
+	public boolean verifyShippingAddressContainsShippingMethodName(String selectedShippingMethod){
+		String methodNameFromUI = null;
+		driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'Shipping Method')]/ancestor::p[1]"));
+		String[] methodName = driver.findElement(By.xpath("//span[contains(text(),'Shipping Method')]/ancestor::p[1]")).getText().split("\\:");
+		if(methodName[1].contains("Ground")){
+			methodNameFromUI = methodName[1].split("\\)")[0]+")";
+		}
+		if(methodName[1].contains("2Day")){
+			String[] shippingMethod = methodName[1].split("\\ ");
+			methodNameFromUI = shippingMethod[0]+" "+shippingMethod[1];
+			System.out.println("2day wala "+methodNameFromUI);
+		}
+		return selectedShippingMethod.contains(methodNameFromUI.trim());
+	}
+
+	public String getSelectedShippingMethodName(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
+		return driver.findElement(By.xpath("//select[@id='deliveryMode']/option[@selected='selected']")).getText();
+	}
+
+	public void clickOnNewShipToThisAddressRadioButton(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]"));
+		List<WebElement> allShippingAddresses = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div[contains(@class,'address-section')]"));
+		logger.info("Total shipping addresses listed are "+allShippingAddresses.size());
+		driver.pauseExecutionFor(2000);
+		if(driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//div[contains(text(),'"+name+"')]/../following-sibling::div[2]//span/input[@type='radio']")).isSelected()==false){
+			driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//div[contains(text(),'"+name+"')]/../following-sibling::div[2]//span/input[@type='radio']"));
+			driver.click(By.xpath("//div[@id='multiple-addresses-summary']//div[contains(text(),'"+name+"')]/../following-sibling::div[2]//span/input[@type='radio']/.."));
+			driver.waitForLoadingImageToDisappear();
+		}
+	}
+
+	public boolean verifyFirstNameAndLastNameAndEmailAddressFromUIOnAccountInfoPage(String name){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//div[contains(text(),'"+name+"')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//div[contains(text(),'"+name+"')]"));
+	}
+
+	public boolean verifyUserCanEditMainAccountInfoOnCartPage(){
+		return driver.findElement(By.id("addressForm")).isDisplayed();
+	}
+
+	public void clickEditMainAccountInfoOnCartPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//a"));
+		driver.click(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']//a"));
+		driver.waitForLoadingImageToDisappear();
+		logger.info("Edit main account info link clicked on cart page ");
 	}
 
 }

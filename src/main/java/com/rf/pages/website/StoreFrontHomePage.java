@@ -3190,14 +3190,20 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyNewAddressPresentInMainAccountInfo(String newAddressLine1) {
-		System.out.println(newAddressLine1);
-		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]"));
-		System.out.println(driver.findElement(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText());
-		if(driver.findElement(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText().contains(newAddressLine1)){
-			return true;
+		try{
+			if(driver.findElement(By.xpath("//div[@id='summarySection']/div[2]/div[6]/div[3]")).getText().contains(newAddressLine1)){
+				return true;
+			}
+			return false;
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[4]/div[3]/p"));
+			if(driver.findElement(By.xpath("//div[@id='summarySection']/div[4]/div[3]/p")).getText().contains(newAddressLine1)){
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
+
 
 	public boolean validateNewShippingAddressPresentOnReviewPage(String newShippingAddName) {
 		System.out.println(newShippingAddName);
@@ -3271,6 +3277,65 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		}
 
+	}
+
+	public boolean validateBillingAddressOnMainAccountInfo(String addressLine12) {
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[5]/div[3]/p"));
+		if(driver.findElement(By.xpath("//div[@id='summarySection']/div[5]/div[3]/p")).getText().contains(addressLine12)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyPhoneNumberIsPresentInAccountInfo() {
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[4]/div[3]/p/br[3]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='summarySection']/div[4]/div[3]/p/br[3]"))){
+			return true;
+		}
+		return false;
+	}
+
+	public void clickOnLiveInNorthDakotaLink() {
+		driver.quickWaitForElementPresent(By.xpath("//a[@class='north-dakota-link']"));
+		driver.click(By.xpath("//a[@class='north-dakota-link']"));
+		logger.info("I live in north dakota link is clicked");
+	}
+
+	public void enterUserInformationOnAccountInfo(String firstName, String password,String addressLine1,String city,String postalCode,String phoneNumber,String province) {
+		enterFirstName(firstName);
+		enterLastName(TestConstants.LAST_NAME);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince(province);
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	}
+
+	public boolean verifyingMessageForNextDakotaPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p"));
+		return driver.isElementPresent(By.xpath("//div[@id='globalMessages']//p"));
+	}
+
+	public boolean verifySignUpLinkIsPresent(){
+		return driver.isElementPresent(By.xpath("//span[@class='icons icon-person']"));
+	}
+
+	public boolean validateProductPricingDetailOnSumaaryPage(){
+		driver.waitForElementPresent(By.xpath("//div[@class='span-8 right last place-order-cart-total row']"));
+		return driver.isElementPresent(By.xpath("//div[@class='span-8 right last place-order-cart-total row']"));
+	}
+
+	public boolean validateRetailProductProcesAttachedToProduct(){
+		driver.waitForElementPresent(By.xpath("//p[@class='prices']"));
+		return driver.isElementPresent(By.xpath("//p[@class='prices']"));
+	}
+
+	public void hitBrowserBackBtn(){
+		driver.pauseExecutionFor(1000);
+		driver.navigate().back();
 	}
 }
 

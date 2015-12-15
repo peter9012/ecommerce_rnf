@@ -21,7 +21,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
-	private final By ADD_NEW_SHIPPING_LINK_LOC  = By.linkText("Add a new shipping address");
+	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 
 
 	public StoreFrontShippingInfoPage(RFWebsiteDriver driver) {
@@ -184,10 +184,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public boolean isShippingAddressPresentOnShippingPage(String firstName){
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));		
-		for(int i=1;i<=allBillingProfiles.size();i++){			
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
 			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){				
+			if(isFirstNamePresent == true){    
 				return true;
 			}
 		}
@@ -229,8 +229,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
-//		selectFirstCardNumber();
-//		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+		//		selectFirstCardNumber();
+		//		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 	}	
 
 	public void clickOnNewAddressRadioButton(){
@@ -255,9 +255,9 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		}
 	}
 	public String getDefaultSelectedShippingAddress(){
-		  driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
-		  return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
-		 }
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
+	}
 
 	public boolean verifyOldDefaultSelectAddress(String addressname, String addressnameAfterAdd){
 		return addressname.equalsIgnoreCase(addressnameAfterAdd);

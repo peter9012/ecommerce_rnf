@@ -976,10 +976,18 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 	}
+
 	public boolean verifyOrderStatus(String status, String orderNumber){
 		driver.waitForElementPresent(ORDER_STATUS_LOC);
 		logger.info("Order Status from UI "+driver.findElement(By.xpath(String.format("//div[@id='history-orders-table']//a[contains(text(),'%s')]/following::div[3]", orderNumber))).getText());
 		return driver.findElement(By.xpath(String.format("//div[@id='history-orders-table']//a[contains(text(),'%s')]/following::div[3]", orderNumber))).getText().toLowerCase().contains(status.toLowerCase());
+	}
+
+	public boolean verifyShippingMethodOnTemplateAfterAdhocOrderPlaced(String selectedShippingMethod){
+		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().split("\\:")[1].trim();
+		System.out.println("Order page "+shippingMethodUI);
+		logger.info("Shipping Method from UI is "+shippingMethodUI);
+		return selectedShippingMethod.trim().contains(shippingMethodUI);
 	}
 }
 

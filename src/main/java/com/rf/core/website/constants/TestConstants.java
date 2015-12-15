@@ -370,6 +370,8 @@ public class TestConstants {
 	public static final String OTHER_REASON = "Other";
 	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_COM_SITE="Dermatologist-Created Anti-Aging Skincare Products";
 	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_BIZ_SITE="biz PWS - CA";
+	
+	public static final String PROVINCE_NORTH_DAKOTA = "North Dakota";
 
 }
 

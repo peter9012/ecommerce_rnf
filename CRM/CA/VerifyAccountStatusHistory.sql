@@ -64,7 +64,7 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 		CAST(ACL.AccountID AS NVARCHAR(MAX)) AS AccountId,
 		AAS.NAME as AccountStatus__C,
 		RT.NAME AS Reason__C,
-		CAST(ACL.ServerModifiedDate AS DATE) ServerModifiedDate, 
+		CAST(DATEADD(HH,8,ACL.ServerModifiedDate) AS DATE) ServerModifiedDate, 
 		ACL.ChangedByApplication as ChangedByApplication__C,
 		ACL.ChangedByUser as ChangedByUser__C
 		INTO RFOPERATIONS.SFDC.RFO_AccountStatusHistory

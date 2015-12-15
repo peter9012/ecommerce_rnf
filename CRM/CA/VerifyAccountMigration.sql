@@ -1,155 +1,155 @@
-USE [RFOperations]
-GO
+	USE [RFOperations]
+	GO
 
-/****** Object:  StoredProcedure [dbo].[VerifyAccountMigration]    Script Date: 10/27/2015 6:53:02 PM ******/
-SET ANSI_NULLS ON
-GO
+	/****** Object:  StoredProcedure [dbo].[VerifyAccountMigration]    Script Date: 10/27/2015 6:53:02 PM ******/
+	SET ANSI_NULLS ON
+	GO
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
-
-ALTER PROCEDURE [dbo].[VerifyAccountMigration]  @LastRunDate DATETIME
-AS
-BEGIN
-
-IF OBJECT_ID('Rfoperations.dbo.AccountsMissing') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountsMissing
-IF OBJECT_ID('Rfoperations.dbo.Accounts_Dups') IS NOT NULL  DROP TABLE Rfoperations.dbo.Accounts_Dups 
-IF OBJECT_ID ('Rfoperations.dbo.AccountIDs') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountIDs
-IF OBJECT_ID('TEMPDB.dbo.#Accounts') IS NOT NULL DROP TABLE #Accounts 
-IF OBJECT_ID('TEMPDB.dbo.#ExceptReport') IS NOT NULL DROP TABLE #ExceptReport 
-IF OBJECT_ID('TEMPDB.dbo.#Column_Excepts') IS NOT NULL DROP TABLE #Column_Excepts 
-IF OBJECT_ID('TEMPDB.dbo.#Addresses') IS NOT NULL DROP TABLE #Addresses
-IF OBJECT_ID('TEMPDB.dbo.#Hybris_Accounts') IS NOT NULL DROP TABLE #Hybris_Accounts
-IF OBJECT_ID('TEMPDB.dbo.#RFO_Accounts') IS NOT NULL DROP TABLE #RFO_Accounts
-IF OBJECT_ID('TEMPDB.dbo.#RFO_Addresses') IS NOT NULL DROP TABLE #RFO_Addresses
-IF OBJECT_ID('TEMPDB.dbo.#Hybris_Addresses') IS NOT NULL DROP TABLE #Hybris_Addresses
-IF OBJECT_ID('TEMPDB.dbo.#RFO_PayInfo') IS NOT NULL DROP TABLE #RFO_PayInfo
-IF OBJECT_ID('TEMPDB.dbo.#Hybris_PayInfo') IS NOT NULL DROP TABLE #Hybris_PayInfo
-IF OBJECT_ID('TEMPDB.dbo.#PayInfo') IS NOT NULL DROP TABLE #PayInfo
-IF OBJECT_ID('Rfoperations.sfdc.RFO_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_Accounts
-IF OBJECT_ID('Rfoperations.sfdc.crm_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.crm_Accounts
-IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_Accounts
-IF OBJECT_ID('rfoperations.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE rfoperations.sfdc.BusinessRuleFailure
-IF OBJECT_ID('rfoperations.sfdc.AccountDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountDifference
-
-
-SELECT ' Refer Following tables to view test results.
-		1. Rfoperations.sfdc.AccountDifference--> Difference in RFO and CRM Accounts
-		2. Rfoperations.sfdc.AccountsMissing --> List of Missing AccountIDs from Source and Destination.
-		3. Rfoperations.sfdc.Accounts_Dups --> List of Duplicate Account IDs in CRM.
-		4. Rfoperations.sfdc.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
-		5. Rfoperations.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
-		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
-		
-
-SET ANSI_WARNINGS OFF 
-
-DECLARE @ServerMod DATETIME =@LastRunDate
-DECLARE @RFOAccount BIGINT, @CRMAccount BIGINT
-
-DECLARE @RowCount BIGINT 
-
-------------------------------------------------------------------------------------------------------------------------------
--- Accounts 
------------------------------------------------------------------------------------------------------------------------------
-SELECT DISTINCT a.AccountID INTO Rfoperations.dbo.AccountIDs --COUNT( DISTINCT a.AccountID)
-FROM RFOperations.RFO_Accounts.AccountRF (NOLOCK)a 
-JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =40
- JOIN RFOperations.RFO_Accounts.AccountContacts  (NOLOCK) d ON b.AccountID =d.AccountID 
- JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactID = D.AccountContactID 
- JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
- JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK)j ON j.AccountContactID = d.AccountContactID 
- LEFT JOIN RFOperations.RFO_Accounts.Phones  (NOLOCK) p ON j.PhoneID =p.PhoneID AND p.PhoneTypeID = 1 
- LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1 
- LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK)  f ON f.EmailAddressID =E.EmailAddressId AND EmailAddressTypeID =1 
- AND B.ServerModifiedDate>=@LastRunDate
+	SET QUOTED_IDENTIFIER ON
+	GO
 
 
 
-SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND CountryID =40
 
-SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada'
+	ALTER PROCEDURE [dbo].[VerifyAccountMigration]  @LastRunDate DATETIME
+	AS
+	BEGIN
 
-SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS CRM_Accounts, (@RFOAccount - @CRMAccount) AS Difference 
-INTO rfoperations.sfdc.AccountDifference;
-
-SELECT  AccountID AS RFO_AccountID,
- b.RFOAccountID__C AS CRM_rfAccountID , 
- CASE WHEN b.RFOAccountID__C IS NULL THEN 'Destination'
-      WHEN a.AccountID IS NULL THEN 'Source' 
- END AS MissingFROM
-INTO Rfoperations.dbo.AccountsMissing
-FROM 
-    (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) a
-    FULL OUTER JOIN 
-    (SELECT RFOAccountID__C FROM  SFDCBACKUP.SFDCBKP.Accounts (NOLOCK) A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada') b 
-	ON a.AccountID =b.RFOAccountID__C
- WHERE (a.AccountID IS NULL OR b.RFOAccountID__C IS NULL) 
-
-
-SELECT MissingFrom ,COUNT(*) from Rfoperations.dbo.AccountsMissing GROUP BY MISSINGFROM;
-
-SELECT 'Query Rfoperations.dbo.AccountsMissing to get list of AccountIDs missing from Source/Destination'
-
---------------------------------------------------------------------------------------
--- Duplicates 
---------------------------------------------------------------------------------------
-
-SELECT AccountID, COUNT (RFOAccountID__C) AS CountofDups
-INTO rfoperations.dbo.Accounts_Dups
-FROM Rfoperations.dbo.AccountIDs a JOIN SFDCBACKUP.SFDCBKP.Accounts b ON a.accountid = b.RFOAccountID__C
-GROUP BY  AccountID
-HAVING COUNT (RFOAccountID__C)> 1 
+	IF OBJECT_ID('Rfoperations.dbo.AccountsMissing') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountsMissing
+	IF OBJECT_ID('Rfoperations.dbo.Accounts_Dups') IS NOT NULL  DROP TABLE Rfoperations.dbo.Accounts_Dups 
+	IF OBJECT_ID ('Rfoperations.dbo.AccountIDs') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountIDs
+	IF OBJECT_ID('TEMPDB.dbo.#Accounts') IS NOT NULL DROP TABLE #Accounts 
+	IF OBJECT_ID('TEMPDB.dbo.#ExceptReport') IS NOT NULL DROP TABLE #ExceptReport 
+	IF OBJECT_ID('TEMPDB.dbo.#Column_Excepts') IS NOT NULL DROP TABLE #Column_Excepts 
+	IF OBJECT_ID('TEMPDB.dbo.#Addresses') IS NOT NULL DROP TABLE #Addresses
+	IF OBJECT_ID('TEMPDB.dbo.#Hybris_Accounts') IS NOT NULL DROP TABLE #Hybris_Accounts
+	IF OBJECT_ID('TEMPDB.dbo.#RFO_Accounts') IS NOT NULL DROP TABLE #RFO_Accounts
+	IF OBJECT_ID('TEMPDB.dbo.#RFO_Addresses') IS NOT NULL DROP TABLE #RFO_Addresses
+	IF OBJECT_ID('TEMPDB.dbo.#Hybris_Addresses') IS NOT NULL DROP TABLE #Hybris_Addresses
+	IF OBJECT_ID('TEMPDB.dbo.#RFO_PayInfo') IS NOT NULL DROP TABLE #RFO_PayInfo
+	IF OBJECT_ID('TEMPDB.dbo.#Hybris_PayInfo') IS NOT NULL DROP TABLE #Hybris_PayInfo
+	IF OBJECT_ID('TEMPDB.dbo.#PayInfo') IS NOT NULL DROP TABLE #PayInfo
+	IF OBJECT_ID('Rfoperations.sfdc.RFO_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_Accounts
+	IF OBJECT_ID('Rfoperations.sfdc.crm_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.crm_Accounts
+	IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_Accounts
+	IF OBJECT_ID('rfoperations.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE rfoperations.sfdc.BusinessRuleFailure
+	IF OBJECT_ID('rfoperations.sfdc.AccountDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountDifference
 
 
-SELECT @RowCount = COUNT(*) FROM rfoperations.dbo.Accounts_Dups
+	SELECT ' Refer Following tables to view test results.
+			1. Rfoperations.sfdc.AccountDifference--> Difference in RFO and CRM Accounts
+			2. Rfoperations.sfdc.AccountsMissing --> List of Missing AccountIDs from Source and Destination.
+			3. Rfoperations.sfdc.Accounts_Dups --> List of Duplicate Account IDs in CRM.
+			4. Rfoperations.sfdc.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
+			5. Rfoperations.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
+			6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
+			
 
-IF @RowCount > 0
-	BEGIN 
+	SET ANSI_WARNINGS OFF 
 
-			SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate Account(s) in CRM. Query rfoperations.dbo.Accounts_Dups to get list of duplicate AccountIDs' 
-	END 
+	DECLARE @ServerMod DATETIME =@LastRunDate
+	DECLARE @RFOAccount BIGINT, @CRMAccount BIGINT
 
-ELSE 
+	DECLARE @RowCount BIGINT 
 
-SELECT 'No Duplicates'
+	------------------------------------------------------------------------------------------------------------------------------
+	-- Accounts 
+	-----------------------------------------------------------------------------------------------------------------------------
+	SELECT DISTINCT a.AccountID INTO Rfoperations.dbo.AccountIDs --COUNT( DISTINCT a.AccountID)
+	FROM RFOperations.RFO_Accounts.AccountRF (NOLOCK)a 
+	JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =40
+	 JOIN RFOperations.RFO_Accounts.AccountContacts  (NOLOCK) d ON b.AccountID =d.AccountID 
+	 JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactID = D.AccountContactID 
+	 JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
+	 JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK)j ON j.AccountContactID = d.AccountContactID 
+	 LEFT JOIN RFOperations.RFO_Accounts.Phones  (NOLOCK) p ON j.PhoneID =p.PhoneID AND p.PhoneTypeID = 1 
+	 LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1 
+	 LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK)  f ON f.EmailAddressID =E.EmailAddressId AND EmailAddressTypeID =1 
+	 AND B.ServerModifiedDate>=@LastRunDate
 
----------------------------------------------------------------------------------------------
--- Accounts Framework 
----------------------------------------------------------------------------------------------
 
---Loading RFO Data
-SELECT DISTINCT 
+
+	SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND CountryID =40
+
+	SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada'
+
+	SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS CRM_Accounts, (@RFOAccount - @CRMAccount) AS Difference 
+	INTO rfoperations.sfdc.AccountDifference;
+
+	SELECT  AccountID AS RFO_AccountID,
+	 b.RFOAccountID__C AS CRM_rfAccountID , 
+	 CASE WHEN b.RFOAccountID__C IS NULL THEN 'Destination'
+		  WHEN a.AccountID IS NULL THEN 'Source' 
+	 END AS MissingFROM
+	INTO Rfoperations.dbo.AccountsMissing
+	FROM 
+		(SELECT AccountID FROM Rfoperations.dbo.AccountIDs) a
+		FULL OUTER JOIN 
+		(SELECT RFOAccountID__C FROM  SFDCBACKUP.SFDCBKP.Accounts (NOLOCK) A , SFDCBACKUP.SFDCBKP.Country c WHERE A.COUNTRY__C=C.ID AND C.Name='Canada') b 
+		ON a.AccountID =b.RFOAccountID__C
+	 WHERE (a.AccountID IS NULL OR b.RFOAccountID__C IS NULL) 
+
+
+	SELECT MissingFrom ,COUNT(*) from Rfoperations.dbo.AccountsMissing GROUP BY MISSINGFROM;
+
+	SELECT 'Query Rfoperations.dbo.AccountsMissing to get list of AccountIDs missing from Source/Destination'
+
+	--------------------------------------------------------------------------------------
+	-- Duplicates 
+	--------------------------------------------------------------------------------------
+
+	SELECT AccountID, COUNT (RFOAccountID__C) AS CountofDups
+	INTO rfoperations.dbo.Accounts_Dups
+	FROM Rfoperations.dbo.AccountIDs a JOIN SFDCBACKUP.SFDCBKP.Accounts b ON a.accountid = b.RFOAccountID__C
+	GROUP BY  AccountID
+	HAVING COUNT (RFOAccountID__C)> 1 
+
+
+	SELECT @RowCount = COUNT(*) FROM rfoperations.dbo.Accounts_Dups
+
+	IF @RowCount > 0
+		BEGIN 
+
+				SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate Account(s) in CRM. Query rfoperations.dbo.Accounts_Dups to get list of duplicate AccountIDs' 
+		END 
+
+	ELSE 
+
+	SELECT 'No Duplicates'
+
+	---------------------------------------------------------------------------------------------
+	-- Accounts Framework 
+	---------------------------------------------------------------------------------------------
+
+	--Loading RFO Data
+	SELECT DISTINCT 
 		CAST (AB.AccountID AS NVARCHAR (100)) AS AccountID	,			--p_rfaccountid
        	REPLACE(AC.FIRSTNAME+' '+ AC.LASTNAME,'  ',' ') AS Name  ,
 		AB.AccountNumber,
-		CAST(ISNULL(AB.ServerModifiedDate,'1900-01-01') AS DATE) as LastModifiedDate,
-		CAST(ISNULL(AB.ServerModifiedDate,'1900-01-01') AS DATE) as CreationDate,
+		CAST(ISNULL(DATEADD(HH,8,AB.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
+		CAST(ISNULL(DATEADD(HH,8,AB.ServerModifiedDate),'1900-01-01') AS DATE) as CreationDate,
 		AST.NAME as AccountStatus,
 		ACT.NAME as AccountType,
-		CAST(ACT.AccountTypeId AS NVARCHAR) as RecordTypeID,
+		ACT.NAME as RecordTypeID,
 		AB.ChangedByApplication,
 		AB.ChangedByUser,
 		CAST(C.NAME AS NVARCHAR(MAX)) CountryId,
 		CAST(CY.name AS NVARCHAR(MAX)) CurrencyId,
 		CAST(lg.English AS NVARCHAR(MAX)) Languageid,
 		CAST(tz.name AS NVARCHAR(MAX)) TimeZoneId,
-		CASE WHEN AR.ACTIVE=1 THEN 'true' ELSE 'false' END  as IsActive,
+		CAST(AR.ACTIVE AS NVARCHAR(MAX)) as IsActive,
 		CAST(AR.CoApplicant AS NVARCHAR(MAX)) CoApplicant,
 		CAST(AR.EnrollerId AS NVARCHAR(MAX)) EnrollerId,
 		CAST(AR.SponsorId AS NVARCHAR(MAX)) SponsorId, 	
-		CAST(ISNULL(AR.EnrollmentDate,'1900-01-01') AS DATE) EnrollmentDate,
-		CAST(ISNULL(AR.HardTerminationDate,'1900-01-01') AS DATE) HardTerminationDate,
-		CAST(CASE WHEN AR.IsBusinessEntity=1 THEN 'true' WHEN AR.IsBusinessEntity=0 THEN 'false' END AS NVARCHAR(MAX)) IsBusinessEntity,
-		CAST(CASE WHEN AR.IsTaxExempt= 1 THEN 'true' WHEN AR.IsTaxExempt=0 THEN 'false' END AS NVARCHAR(MAX)) IsTaxExempt,
-		CAST(ISNULL(AR.LastAutoAssignmenDate,'1900-01-01') AS DATE) LastAutoAssignmenDate,
-		CAST(ISNULL(AR.LastRenewalDate,'1900-01-01') AS DATE) LastRenewalDate,
-		CAST(ISNULL(AR.NextRenewalDate,'1900-01-01') AS DATE) NextRenewalDate,
-		CAST(ISNULL(AR.SoftTerminationDate,'1900-01-01') AS DATE) SoftTerminationDate,
-		CAST(ISNULL(AR.ServerModifiedDate,'1900-01-01') AS DATE) as LastModifiedDate_1,
+		CAST(ISNULL(DATEADD(HH,8,AR.EnrollmentDate),'1900-01-01') AS DATE) EnrollmentDate,
+		CAST(ISNULL(DATEADD(HH,8,AR.HardTerminationDate),'1900-01-01') AS DATE) HardTerminationDate,
+		CASE WHEN LEN(AR.IsBusinessEntity) <1 THEN NULL ELSE AR.IsBusinessEntity END AS IsBusinessEntity,
+		CASE WHEN LEN(AR.IsTaxExempt) <1 THEN NULL ELSE AR.IsTaxExempt END AS IsTaxExempt,
+		CAST(ISNULL(DATEADD(HH,8,AR.LastAutoAssignmenDate),'1900-01-01') AS DATE) LastAutoAssignmenDate,
+		CAST(ISNULL(DATEADD(HH,8,AR.LastRenewalDate),'1900-01-01') AS DATE) LastRenewalDate,
+		CAST(ISNULL(DATEADD(HH,8,AR.NextRenewalDate),'1900-01-01') AS DATE) NextRenewalDate,
+		CAST(ISNULL(DATEADD(HH,8,AR.SoftTerminationDate),'1900-01-01') AS DATE) SoftTerminationDate,
+		CAST(ISNULL(DATEADD(HH,8,AR.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate_1,
 		REPLACE(CAST(AC.LegalName AS NVARCHAR(MAX)),'  ',' ') LegalName,
 		CAST(AC.AccountContactID AS NVARCHAR(MAX)) As MainContact,
 		CAST(AA.AddressID AS NVARCHAR(MAX)) RFO_AddressProfileID,
@@ -192,7 +192,7 @@ SELECT DISTINCT
 		NOT EXISTS (SELECT 1 FROM RFOPERATIONS.DBO.AccountsMissing AM WHERE MISSINGFROM ='Destination' AND AM.RFO_ACCOUNTID=AB.ACCOUNTID)
 		
         
-		--SELECT * FROM SFDCBACKUP.SFDCBKP.language ORDER BY NAME
+		--SELECT * FROM SFDCBACKUP.SFDCBKP.ACCOUNTS ORDER BY NAME
 		--SELECT * FROM RFOPERATIONS.SFDC.RFO_ACCOUNTS
 		--SELECT * FROM RFOPERATIONS.RFO_REFERENCE.nativelanguage ORDER BY 3
 	
@@ -204,8 +204,8 @@ SELECT DISTINCT
 	CAST(A.LastModifiedDate AS DATE ) LastModifiedDate,
 	CAST (A.CreatedDate AS DATE) CreatedDate,
 	A.AccountStatus__c, -- To be mapped.
-	CASE WHEN A.AccountType__c = 'Preferred Customer' THEN 'PreferredCustomer' ELSE A.AccountType__c END AS AccountType__c,
-	CASE WHEN RT.NAME ='Preferred Customer' THEN 2 WHEN RT.NAME ='Consultant' THEN 1 WHEN RT.NAME ='Retail Customer' then 3 END AS RecordTypeId, -- To be mapped
+	A.AccountType__c AS AccountType__c,
+	CASE WHEN RT.NAME ='Preferred_Customer' THEN 'Preferred Customer' WHEN RT.NAME ='Retail_Customer' THEN 'Retail Customer' ELSE RT.NAME END AS RecordTypeId, -- To be mapped
 	A.ChangedByApplication__c,
 	A.ChangeByUser__c,
 	C.NAME Country__c,
@@ -218,8 +218,8 @@ SELECT DISTINCT
 	AEN.RFOAccountId__c as ParentEnroller__c,
 	CAST(ISNULL(A.EnrollmentDate__c,'1900-01-01') AS DATE) EnrollmentDate__c,
 	CAST(ISNULL(A.HardTerminationDate__c,'1900-01-01') AS DATE) HardTerminationDate__c,
-	A.IsBusinessEntity__c,
-	A.IsTaxExempt__c,
+	CASE WHEN LEN(A.IsBusinessEntity__c) < 1 THEN NULL ELSE IsBusinessEntity__c END AS IsBusinessEntity__c,
+	CASE WHEN LEN(A.IsTaxExempt__c)<1 THEN A.IsTaxExempt__c ELSE A.IsTaxExempt__c END AS IsTaxExempt__c,
 	CAST(ISNULL(A.LastAutoAssignmentDate__c,'1900-01-01') AS DATE) LastAutoAssignmentDate__c,
 	CAST(ISNULL(A.LastRenewalDate__c,'1900-01-01') AS DATE) LastRenewalDate__c,
 	CAST(ISNULL(A.NextRenewalDate__c,'1900-01-01') AS DATE) NextRenewalDate__c,
@@ -243,193 +243,191 @@ SELECT DISTINCT
 	A.TaxNumber__c
 	INTO rfoperations.sfdc.CRM_ACCOUNTS
 	FROM SFDCBACKUP.SFDCBKP.Accounts A LEFT JOIN SFDCBACKUP.SFDCBKP.Accounts ASP ON ASP.ID=A.ParentSponsor__c 
-		 LEFT JOIN SFDCBACKUP.SFDCBKP.Accounts AEN ON AEN.ID=A.ParentEnroller__c,
+		 LEFT JOIN SFDCBACKUP.SFDCBKP.Accounts AEN ON AEN.ID=A.ParentEnroller__c
+		 LEFT JOIN SFDCBACKUP.SFDCBKP.CONTACT CO ON A.MAINCONTACT__C=CO.ID AND CO.ContactType__C='Primary',
 	SFDCBACKUP.SFDCBKP.COUNTRY C,
 	SFDCBACKUP.SFDCBKP.CURRENCY CY,
 	SFDCBACKUP.SFDCBKP.LANGUAGE LG,
 	SFDCBACKUP.SFDCBKP.TIMEZONE TZ,
-	SFDCBACKUP.SFDCBKP.RECORDTYPE RT,
-	SFDCBACKUP.SFDCBKP.CONTACT CO
+	SFDCBACKUP.SFDCBKP.RECORDTYPE RT	
 	--SFDCBACKUP.SFDCBKP.ACCOUNTSTATUS AAS
 	WHERE A.COUNTRY__C=C.ID AND
 	A.CURRENCY__C=CY.ID AND
 	A.LANGUAGE__C=LG.ID AND
 	A.TIMEZONE__C=TZ.ID AND
 	RT.ID=A.RECORDTYPEID AND
-	A.MAINCONTACT__C=CO.ID AND 
-	CO.ContactType__C='Primary' AND
 	C.NAME='Canada'
 
-		
-CREATE CLUSTERED INDEX MIX_AccountID ON rfoperations.sfdc.RFO_Accounts (AccountID)
-CREATE CLUSTERED INDEX MIX_rfAccountID ON rfoperations.sfdc.CRM_Accounts (RFOAccountID__c)
+			
+	CREATE CLUSTERED INDEX MIX_AccountID ON rfoperations.sfdc.RFO_Accounts (AccountID)
+	CREATE CLUSTERED INDEX MIX_rfAccountID ON rfoperations.sfdc.CRM_Accounts (RFOAccountID__c)
 
 
---Load Comparison Candidates.
-SELECT * INTO  #Accounts FROM rfoperations.sfdc.RFO_Accounts
-EXCEPT 
-SELECT * FROM rfoperations.sfdc.CRM_Accounts
+	--Load Comparison Candidates.
+	SELECT * INTO  #Accounts FROM rfoperations.sfdc.RFO_Accounts
+	EXCEPT 
+	SELECT * FROM rfoperations.sfdc.CRM_Accounts
 
-CREATE CLUSTERED INDEX MIX_AccountID ON #Accounts (AccountID)
+	CREATE CLUSTERED INDEX MIX_AccountID ON #Accounts (AccountID)
 
----------------------------------------------------------------------------------------------
--- Business Rule Validations
----------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	-- Business Rule Validations
+	---------------------------------------------------------------------------------------------
 
-CREATE TABLE RFOPERATIONS.SFDC.BusinessRuleFailure
-(AccountId BIGINT,
- FailureReason NVARCHAR(MAX),
- FailedValue NVARCHAR(MAX)
- )
-  
---Identify Missing Enroller/Sponsor for a PC/Consultant
-INSERT INTO rfoperations.sfdc.BusinessRuleFailure
-SELECT ACCOUNTID , ' Enroller/Sponsor is not populated for a PC or a Consultant', EnrollerId
-FROM rfoperations.sfdc.Rfo_accounts RFO,
-rfoperations.sfdc.crm_accounts CRM
-where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (1,2) AND (EnrollerID IS NULL OR SponsorId IS NULL)
+	CREATE TABLE RFOPERATIONS.SFDC.BusinessRuleFailure
+	(AccountId BIGINT,
+	 FailureReason NVARCHAR(MAX),
+	 FailedValue NVARCHAR(MAX)
+	 )
+	  
+	--Identify Missing Enroller/Sponsor for a PC/Consultant
+	INSERT INTO rfoperations.sfdc.BusinessRuleFailure
+	SELECT ACCOUNTID , ' Enroller/Sponsor is not populated for a PC or a Consultant', EnrollerId
+	FROM rfoperations.sfdc.Rfo_accounts RFO,
+	rfoperations.sfdc.crm_accounts CRM
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (1,2) AND (EnrollerID IS NULL OR SponsorId IS NULL)
 
---Identify Missing Enroller/Sponsor for a RC
-INSERT INTO rfoperations.sfdc.BusinessRuleFailure
-SELECT ACCOUNTID , ' Enroller/Sponsor is not mapped to Corporate RF Account for a RC. Comma Separated value for Enroller and Sponsor is loaded in FailureValue column', EnrollerId+','+SponsorId
-FROM rfoperations.sfdc.Rfo_accounts RFO,
-rfoperations.sfdc.crm_accounts CRM
-where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (3) AND isActive='true' AND (EnrollerID <>2 OR SponsorId <>2)
+	--Identify Missing Enroller/Sponsor for a RC
+	INSERT INTO rfoperations.sfdc.BusinessRuleFailure
+	SELECT ACCOUNTID , ' Enroller/Sponsor is not mapped to Corporate RF Account for a RC. Comma Separated value for Enroller and Sponsor is loaded in FailureValue column', EnrollerId+','+SponsorId
+	FROM rfoperations.sfdc.Rfo_accounts RFO,
+	rfoperations.sfdc.crm_accounts CRM
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (3) AND isActive='true' AND (EnrollerID <>2 OR SponsorId <>2)
 
---SoftTerminationDate , HardTerminationDate, Active and AccountStatus Integrity
-INSERT INTO rfoperations.sfdc.BusinessRuleFailure
-SELECT ACCOUNTID , 'SoftTerminationDate , HardTerminationDate, Active and AccountStatus values are not in Synch', ''
-FROM rfoperations.sfdc.Rfo_accounts RFO,
-rfoperations.sfdc.crm_accounts CRM
-where RFO.ACCOUNTID=CRM.RFOAccountId__c AND 
+	--SoftTerminationDate , HardTerminationDate, Active and AccountStatus Integrity
+	INSERT INTO rfoperations.sfdc.BusinessRuleFailure
+	SELECT ACCOUNTID , 'SoftTerminationDate , HardTerminationDate, Active and AccountStatus values are not in Synch', ''
+	FROM rfoperations.sfdc.Rfo_accounts RFO,
+	rfoperations.sfdc.crm_accounts CRM
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND 
+		(
+		 (CRM.AccountStatus__c ='Active' AND (CRM.isActive__c='false' OR SoftTerminationDate__c IS NOT NULL OR HardTerminationDate__c IS NOT NULL))
+		 OR
+		 (CRM.AccountStatus__c ='Hard Terminated' AND (CRM.isActive__c='true' OR SoftTerminationDate__c IS NULL OR HardTerminationDate__c IS NULL OR (HardTerminationDate__c < SoftTerminationDate__c)))
+		 OR
+		 (CRM.AccountStatus__c ='Soft Terminated' AND (CRM.isActive__c='true' OR SoftTerminationDate__c IS NULL OR HardTerminationDate__c IS NOT NULL OR (HardTerminationDate__c < SoftTerminationDate__c)))
+		)
+
+	--Identify missing Tax ID value
+	INSERT INTO rfoperations.sfdc.BusinessRuleFailure
+	SELECT ACCOUNTID , ' Tax Number is not populated', CRM.TAXNUMBER__C 
+	FROM rfoperations.sfdc.Rfo_accounts RFO,
+	rfoperations.sfdc.crm_accounts CRM
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND LEN(CRM.TAXNUMBER__C)<1 AND AccountType='Consultant'
+
+	SELECT ' Business Rule Failures loaded in Error table'
+
+	CREATE TABLE rfoperations.sfdc.ErrorLog_Accounts
 	(
-	 (CRM.AccountStatus__c ='Active' AND (CRM.isActive__c='false' OR SoftTerminationDate__c IS NOT NULL OR HardTerminationDate__c IS NOT NULL))
-	 OR
-	 (CRM.AccountStatus__c ='Hard Terminated' AND (CRM.isActive__c='true' OR SoftTerminationDate__c IS NULL OR HardTerminationDate__c IS NULL OR (HardTerminationDate__c < SoftTerminationDate__c)))
-	 OR
-	 (CRM.AccountStatus__c ='Soft Terminated' AND (CRM.isActive__c='true' OR SoftTerminationDate__c IS NULL OR HardTerminationDate__c IS NOT NULL OR (HardTerminationDate__c < SoftTerminationDate__c)))
+	ErrorID INT  IDENTITY(1,1) PRIMARY KEY
+	, ColID INT 
+	,Identifier NVARCHAR (50)
+	, RecordID BIGINT 
+	, RFO_Value NVARCHAR (MAX)
+	, CRM_Value NVARCHAR (MAX)
 	)
 
---Identify missing Tax ID value
-INSERT INTO rfoperations.sfdc.BusinessRuleFailure
-SELECT ACCOUNTID , ' Tax Number is not populated', CRM.TAXNUMBER__C 
-FROM rfoperations.sfdc.Rfo_accounts RFO,
-rfoperations.sfdc.crm_accounts CRM
-where RFO.ACCOUNTID=CRM.RFOAccountId__c AND LEN(CRM.TAXNUMBER__C)<1 AND AccountType='Consultant'
 
-SELECT ' Business Rule Failures loaded in Error table'
-
-CREATE TABLE rfoperations.sfdc.ErrorLog_Accounts
-(
-ErrorID INT  IDENTITY(1,1) PRIMARY KEY
-, ColID INT 
-,Identifier NVARCHAR (50)
-, RecordID BIGINT 
-, RFO_Value NVARCHAR (MAX)
-, CRM_Value NVARCHAR (MAX)
-)
+	DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Accounts') , 
+	@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Accounts') 
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Accounts') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Accounts') 
+	DECLARE @DesKey NVARCHAR (50) 
+
+	DECLARE @SrcKey NVARCHAR (50) 
+
+	DECLARE @Skip  BIT 
+
+	WHILE (@I <=@c)
+
+	BEGIN 
+
+			SELECT  @Skip = ( SELECT   Skip
+								   FROM     Rfoperations.sfdc.CRM_METADATA
+								   WHERE    ColID = @I
+								 );
 
 
-DECLARE @DesKey NVARCHAR (50) 
+			IF ( @Skip = 1 )
 
-DECLARE @SrcKey NVARCHAR (50) 
+				SET @I = @I + 1;
 
-DECLARE @Skip  BIT 
-
-WHILE (@I <=@c)
-
-BEGIN 
-
-        SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_METADATA
-                               WHERE    ColID = @I
-                             );
-
-
-        IF ( @Skip = 1 )
-
-            SET @I = @I + 1;
-
-        ELSE
-BEGIN 
+			ELSE
+	BEGIN 
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+	DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
-DECLARE @DesTemp NVARCHAR (50) =(SELECT CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts' END
-			FROM  Rfoperations.sfdc.CRM_METADATA 
-			  WHERE ColID =@I
-								) 
+	DECLARE @DesTemp NVARCHAR (50) =(SELECT CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts' END
+				FROM  Rfoperations.sfdc.CRM_METADATA 
+				  WHERE ColID =@I
+									) 
 
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+	DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
-SET @SrcKey= (SELECT RFO_Key
-			  FROM Rfoperations.sfdc.CRM_METADATA 
-			  WHERE ColID =@I
-								)
+	SET @SrcKey= (SELECT RFO_Key
+				  FROM Rfoperations.sfdc.CRM_METADATA 
+				  WHERE ColID =@I
+									)
 
-                SET @DesKey = ( SELECT  CASE WHEN CRMObject= 'Accounts' THEN 'RFOAccountId__c'
-                                        END
-                                FROM    Rfoperations.sfdc.CRM_METADATA
-                                WHERE   ColID = @I
-                              ); 
-
-
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL2 NVARCHAR (MAX) = ' 
- UPDATE A 
-SET a.CRM_Value = b. ' + @DesCol +
-' FROM rfoperations.sfdc.ErrorLog_Accounts a  JOIN ' +@DesTemp+
-  ' b  ON a.RecordID= b.' + @DesKey+  
-  ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
+					SET @DesKey = ( SELECT  CASE WHEN CRMObject= 'Accounts' THEN 'RFOAccountId__c'
+											END
+									FROM    Rfoperations.sfdc.CRM_METADATA
+									WHERE   ColID = @I
+								  ); 
 
 
-
-DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO rfoperations.sfdc.ErrorLog_Accounts (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
-
-  BEGIN TRY
-  SELECT @SQL3
-   EXEC sp_executesql @SQL3, N'@ServerMod DATETIME', @ServerMod= '2014-05-01'
-
- SET @I = @I + 1
-
- END TRY
-
- BEGIN CATCH
-
- SELECT @SQL3
-
- SET @I = @I + 1
-
- END CATCH
-END 
-
-END 
+	DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+	DECLARE @SQL2 NVARCHAR (MAX) = ' 
+	 UPDATE A 
+	SET a.CRM_Value = b. ' + @DesCol +
+	' FROM rfoperations.sfdc.ErrorLog_Accounts a  JOIN ' +@DesTemp+
+	  ' b  ON a.RecordID= b.' + @DesKey+  
+	  ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 
 
-SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_Accounts A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
-GROUP BY b.ColID, RFO_Column
+	DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
+	' INSERT INTO rfoperations.sfdc.ErrorLog_Accounts (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+
+	  BEGIN TRY
+	  SELECT @SQL3
+	   EXEC sp_executesql @SQL3, N'@ServerMod DATETIME', @ServerMod= '2014-05-01'
+
+	 SET @I = @I + 1
+
+	 END TRY
+
+	 BEGIN CATCH
+
+	 SELECT @SQL3
+
+	 SET @I = @I + 1
+
+	 END CATCH
+	END 
+
+	END 
 
 
-drop index MIX_AccountID ON #RFO_Accounts 
-drop index MIX_rfAccountID ON #Hybris_Accounts
-drop index MIX_AccountID1 ON #Accounts
 
-END
+	SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
+	FROM rfoperations.sfdc.ErrorLog_Accounts A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+	GROUP BY b.ColID, RFO_Column
+
+
+	drop index MIX_AccountID ON #RFO_Accounts 
+	drop index MIX_rfAccountID ON #Hybris_Accounts
+	drop index MIX_AccountID1 ON #Accounts
+
+	END
 
 
 
 
 
 
-GO
+	GO
 
 

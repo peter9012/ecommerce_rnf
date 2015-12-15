@@ -106,7 +106,7 @@ SELECT 'No Duplicates'
 		CAST(AccountNoteId AS NVARCHAR(MAX)) as AccountNoteId,
 		CAST(AN.AccountId  AS NVARCHAR(MAX)) as Account__c,
 		an.Notes as Description__C,
-		AN.EffectiveDate as ActivityDate__c,
+		DATEADD(HH,8,AN.EffectiveDate) as ActivityDate__c,
 		NR.Name NotesReasonType__c,
 		nc.name as ChannelType__c,
 		ND.NAME AS NotesDetailType__c,

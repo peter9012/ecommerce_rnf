@@ -354,11 +354,6 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
 	}
 
-	public String getAutoshipTemplateUpdatedMsg(){
-		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
-		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
-	}
-
 	public boolean verifyUpdateCartMessage(String message){
 		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(message)){

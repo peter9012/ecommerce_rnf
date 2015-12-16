@@ -1357,4 +1357,41 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		logger.info("Edit main account info link clicked on cart page ");
 	}
 
+	public boolean verifyCartUpdateMessage(){
+		return driver.isElementPresent(By.xpath("//div[@id='content-full-page']//div[contains(text(),'Your Next cart has been updated')]"));
+	}
+
+	public String getProductCountOnAutoShipCartPage(){
+		String countOfProductInAutoShipCart=null;
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span"));
+			String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span")).getText().trim();
+			String[] arr=count.split("\\ ");
+			String []countOfProduct=arr[0].split("\\(");
+			countOfProductInAutoShipCart=countOfProduct[1];
+			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
+			String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().trim();
+			String[] arr=count.split("\\ ");
+			String []countOfProduct=arr[0].split("\\(");
+			countOfProductInAutoShipCart=countOfProduct[1];
+			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+		}
+		return countOfProductInAutoShipCart.trim();
+	}
+
+	public void selectDifferentProductAndAddItToPCPerks(){
+		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='9']"));
+		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='9']"));;
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(1000);
+	}	
 }

@@ -1195,11 +1195,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 	}
 
-	public String getAutoshipTemplateUpdatedMsg(){
-		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
-		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
-	}
-
 	public boolean validateRemoveProductsTillErrorMsgIsDisplayed(){
 		boolean flag=false;
 		while(true){
@@ -1334,7 +1329,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPWSAfterSuccessfulEnrollment(String actualPWS,String newPWS){
-		if(actualPWS.equalsIgnoreCase(newPWS)){
+		if(actualPWS.contains(newPWS)){
 			return true;
 		}
 		else
@@ -3336,6 +3331,99 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void hitBrowserBackBtn(){
 		driver.pauseExecutionFor(1000);
 		driver.navigate().back();
+	}
+
+
+	public boolean verifyPresenceOfNorthDakotaLink() {
+		return driver.findElement(By.xpath("//a[@class='north-dakota-link']")).isDisplayed();
+	}
+
+	public boolean verifyPresenceOfPopUpForExistingPC() {
+		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]"));
+		return driver.findElement(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]")).isDisplayed();
+	}
+
+	public void selectCountryUsToCan() {
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//button/img"));
+			driver.click(By.xpath("//button/img"));
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'CAN')]"));
+			driver.click(By.xpath("//a[contains(text(),'CAN')]"));
+			logger.info("country changed us to canada");
+		}
+	}
+
+	public boolean verifySponserSearchFieldIsPresent(){
+		driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+		return driver.findElement(By.id("sponsor-name-id")).isDisplayed();
+	}
+
+	public boolean isShippingAddressNextStepBtnIsPresent(){
+		return driver.isElementPresent(By.id("saveShippingInfo"));
+	}
+
+	public boolean validateContinueWithoutSponsorLinkPresentOnUI(){
+		driver.waitForElementPresent(By.xpath("//a[@id='continue-no-sponsor']"));
+		return driver.findElement(By.xpath("//a[@id='continue-no-sponsor']")).isDisplayed();
+	}
+
+	public void clickEnrollNowFromBizHomePage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
+		driver.waitForPageLoad();
+	}
+
+	public void clickEnrollNowFromWhyRFPage(){
+		driver.waitForElementPresent(By.xpath("//div[@class='whyRFenrollButton']/a"));
+		driver.click(By.xpath("//div[@class='whyRFenrollButton']/a"));
+		driver.waitForPageLoad();
+	}
+
+	public double getProductPricingOnSummaryPage(){
+		double productpricing=0.00;
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='module-subtotal']/div[contains(text(),'Subtotal')]/following-sibling::div/span"));
+		String productPricing=driver.findElement(By.xpath("//div[@id='module-subtotal']/div[contains(text(),'Subtotal')]/following-sibling::div/span")).getText();
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			productPricing.replace("$", "");
+			productpricing=Double.parseDouble(productPricing.replace("$", ""));
+		}else{
+			productPricing.replace("CAD$", "");
+			productpricing=Double.parseDouble(productPricing.replace("CAD$", ""));
+		}
+		return productpricing;
+	}
+
+	public void checkYesIWantToJoinPCPerksCBOnSummaryPage(){
+		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2' and @disabled='']/.."));
+		if(driver.isElementPresent(By.xpath("//input[@id='pc-customer2' and @disabled='']/.."))){
+			driver.click(By.xpath("//input[@id='pc-customer2' and @disabled='']/.."));
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(1500);
+		}
+	}
+
+	public double getProductPricingOnCartPage(){
+		double productpricing=0.00;
+		driver.quickWaitForElementPresent(By.xpath("//p[@id='cart-price-reatil']/span"));
+		String productPricing=driver.findElement(By.xpath("//p[@id='cart-price-reatil']/span")).getText();
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			productPricing.replace("$", "");
+			productpricing=Double.parseDouble(productPricing.replace("$", ""));
+		}else{
+			productPricing.replace("CAD$", "");
+			productpricing=Double.parseDouble(productPricing.replace("CAD$", ""));
+		}
+		return productpricing;
+	}
+
+	public boolean verifyNumberOfProductsInAutoshipCart(String numberOfProductsInCart){
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span"));
+			return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
+			return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
+		}
 	}
 }
 

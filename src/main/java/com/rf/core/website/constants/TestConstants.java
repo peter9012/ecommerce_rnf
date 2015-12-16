@@ -372,6 +372,7 @@ public class TestConstants {
 	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_BIZ_SITE="biz PWS - CA";
 	
 	public static final String PROVINCE_NORTH_DAKOTA = "North Dakota";
+	public static final String PC_PERKS_TEMPLATE_PRODUCT_ADDED = "Your next pc perks cart has been updated";
 
 }
 

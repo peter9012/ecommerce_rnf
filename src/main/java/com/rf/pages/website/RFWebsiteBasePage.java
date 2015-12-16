@@ -799,6 +799,18 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return emailAddress;
 	}
 
+	public void enterNewRCDetails(String firstName,String emailAddress) throws InterruptedException{
+		String lastName = "ln";
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).clear();
+		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		logger.info("email entered as "+emailAddress);
+		driver.pauseExecutionFor(1000);
+	}
+
 	public StoreFrontCartAutoShipPage clickEditCrpLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
 		driver.click(WELCOME_DD_EDIT_CRP_LINK_LOC);
@@ -1644,6 +1656,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//div[@id='popup'][1]"));
 	}
+
 	public boolean verifyUpradingToConsulTantPopupForRC(){
 		driver.waitForPageLoad();
 		if(driver.isElementPresent(By.xpath("//div[@id='activePCPopup' and @style=' display:none;']"))){
@@ -1651,4 +1664,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}else
 			return false;
 	}
+
+	public String getAutoshipTemplateUpdatedMsg(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+	}
+
 }

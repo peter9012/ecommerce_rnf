@@ -1656,8 +1656,40 @@ public class DBQueries_RFO {
 			"WHERE AccountID = %s";
 
 	public static String GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS = "select * from RFO_Accounts.AccountBase join RFO_Accounts.AccountContacts ON RFO_Accounts.AccountContacts.AccountId = RFO_Accounts.AccountBase.AccountID join RFO_Accounts.AccountEmails ON RFO_Accounts.AccountEmails.AccountContactId = RFO_Accounts.AccountContacts.AccountContactId join RFO_Accounts.EmailAddresses ON RFO_Accounts.EmailAddresses.EmailAddressID = RFO_Accounts.AccountEmails.EmailAddressId where RFO_Accounts.EmailAddresses.EmailAddress like '%s'";
-	
+
 	public static String GET_ACCOUNT_DETAILS_QUERY = "select top 1 * from RFO_Accounts.AccountContacts where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s'))";
+
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO = 
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+ 
+					"BEGIN TRANSACTION "+ 
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+ 
+					"[as].Username , "+                                                   
+					"'http://' + S.SitePrefix + '.' + REPLACE(SD.Name,SUBSTRING(SD.Name,6,LEN(SD.Name)-6+1),'%s') + '/%s' AS URL "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+ 
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI ON CPI.AccountId = ab.AccountID "+
+					"JOIN    Hybris.Sites AS S ON S.AccountID = ab.AccountID "+
+					"JOIN    Hybris.SiteURLs AS SUL ON SUL.SiteID = S.SiteID "+
+					"JOIN    Hybris.SiteDomain AS SD ON SD.SiteDomainID = SUL.SiteDomainID "+
+					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+					"AND ab.CountryID = %s "+
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+					/*Pulse*/
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+
+					"AND a.AutoshipTypeID = 3 "+
+					"AND a.Active = 1 ) "+
+					"ORDER BY NEWID()";
 
 	/**
 	 * 
@@ -1673,7 +1705,7 @@ public class DBQueries_RFO {
 	public static String callQueryWithArguementPWS(String query,String env,String country){
 		return String.format(query, env,country);
 	}
-	
+
 	public static String callQueryWithArguementPWS(String query,String env,String country,String countryID){
 		return String.format(query, env,country,countryID);
 	}

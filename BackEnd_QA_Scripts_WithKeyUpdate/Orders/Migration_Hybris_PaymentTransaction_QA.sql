@@ -36,7 +36,11 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(Opt.OrderPaymentTransactionID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o. OrderID
 		INNER JOIN RFOperations.Hybris.OrderPaymentTransaction opt ON opt.OrderPaymentID = oi.OrderPaymentID
@@ -49,7 +53,11 @@ WHERE   o.CountryID = @RFOCountry
 --Payment Count
 SELECT  @RFOPCount = COUNT(Oi.OrderPaymentID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o. OrderID
 		INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -114,7 +122,11 @@ SELECT  OrderPaymentID AS RFO_PaymentID,
 INTO    DataMigration.Migration.MissingOrderPayment
 FROM    ( SELECT   oi.OrderPaymentID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
 		        INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -164,7 +176,11 @@ SELECT  OrderPaymentTransactionID AS RFO_PaymentTransactionID,
 INTO    DataMigration.Migration.MissingTransaction
 FROM    ( SELECT   opt.OrderPaymentTransactionID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
 		INNER JOIN RFOperations.Hybris.OrderPaymentTransaction opt ON opt.OrderPaymentID = oi.OrderPaymentID
@@ -299,8 +315,9 @@ CAST( OrderID AS NVARCHAR (100)) AS  OrderID
  WHEN AuthorizeType = '' THEN 'CANCEL' ELSE  CAST(AuthorizeType AS NVARCHAR (100)) END AS PaymentType
 
 INTO #RFO_tran
-FROM RFoperations.Hybris.OrderPayment a JOIN 
-RFOperations.Hybris.OrderPaymentTransaction b ON a.OrderPaymentID =b.OrderPaymentID 
+FROM RFoperations.Hybris.OrderPayment a 
+
+JOIN RFOperations.Hybris.OrderPaymentTransaction b ON a.OrderPaymentID =b.OrderPaymentID 
 WHERE EXISTS (SELECT 1 FROM #LoadedTransaction lt WHERE lt.PK =b.OrderPaymentTransactionID)
 
 CREATE CLUSTERED INDEX MIX_RFtran ON #RFO_tran (OrderID)

@@ -73,9 +73,14 @@ WHERE   b.p_origination <> 'www.rodanandfields.com'
 
 SELECT  @RFOCount = COUNT(DISTINCT o.OrderID)
 FROM    RFOperations.Hybris.Orders o
-        INNER JOIN RFOperations.etl.OrderDate od ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
         LEFT JOIN RFOperations.Hybris.Autoship a ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
+		
 WHERE   o.CountryID = @RFOCountry
         AND a.autoshipid IS NULL
         AND od.startdate >= @ServerMod
@@ -111,6 +116,10 @@ INTO    DataMigration.Migration.OrdersMissing
 FROM    ( SELECT  DISTINCT
                     o.OrderID
           FROM      RFOperations.Hybris.Orders o
+					INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
                     INNER JOIN RFOperations.etl.OrderDate od ON od.Orderid = o.OrderID
                     INNER JOIN hybris..users u ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                     LEFT JOIN RFOperations.Hybris.Autoship a ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -160,6 +169,10 @@ SELECT  a.OrderNumber ,
         COUNT(pk) AS Hybris_Duplicates
 INTO    #Orders_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
         JOIN Hybris.dbo.orders (NOLOCK) b ON a.OrderNumber = b.code
 WHERE   CountryID = @RFOCountry
 GROUP BY a.OrderNumber
@@ -295,7 +308,11 @@ WITH    OrderShippingAddress
        -- CAST(SiteId AS NVARCHAR(100)) AS SiteId
     INTO    #RFO_Orders
     FROM    RFOPerations.Hybris.Orders a --JOIN RFOperations.RFO_Reference.OrderType d ON d.OrderTypeID =a.OrderTypeID 
-            JOIN RFOperations.RFO_Reference.OrderStatus e ON e.OrderStatusID = a.orderStatusID
+            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+			JOIN RFOperations.RFO_Reference.OrderStatus e ON e.OrderStatusID = a.orderStatusID
             JOIN RFOperations.RFO_Reference.Currency f ON f.CurrencyID = a.CurrencyID
             LEFT JOIN RFOperations.etl.OrderDate b ON a.OrderID = b.OrderID
             LEFT JOIN RFOperations.Hybris.OrderShipment c ON c.OrderID = a.OrderID

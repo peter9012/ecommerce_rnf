@@ -218,7 +218,7 @@
 	AEN.RFOAccountId__c as ParentEnroller__c,
 	CAST(ISNULL(A.EnrollmentDate__c,'1900-01-01') AS DATE) EnrollmentDate__c,
 	CAST(ISNULL(A.HardTerminationDate__c,'1900-01-01') AS DATE) HardTerminationDate__c,
-	CASE WHEN LEN(A.IsBusinessEntity__c) < 1 THEN NULL ELSE IsBusinessEntity__c END AS IsBusinessEntity__c,
+	CASE WHEN LEN(A.IsBusinessEntity__c) < 1 THEN NULL ELSE A.IsBusinessEntity__c END AS IsBusinessEntity__c,
 	CASE WHEN LEN(A.IsTaxExempt__c)<1 THEN A.IsTaxExempt__c ELSE A.IsTaxExempt__c END AS IsTaxExempt__c,
 	CAST(ISNULL(A.LastAutoAssignmentDate__c,'1900-01-01') AS DATE) LastAutoAssignmentDate__c,
 	CAST(ISNULL(A.LastRenewalDate__c,'1900-01-01') AS DATE) LastRenewalDate__c,

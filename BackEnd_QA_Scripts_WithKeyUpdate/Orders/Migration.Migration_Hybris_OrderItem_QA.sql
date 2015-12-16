@@ -36,7 +36,11 @@ AS
 
         SELECT  @RFOCount = COUNT(DISTINCT oi.OrderItemID)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+				INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                 INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                 INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
@@ -83,7 +87,11 @@ AS
         INTO    DataMigration.Migration.OrderItemsMissing
         FROM    ( SELECT    OrderItemID
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                            INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+							INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                             INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
                             INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                             INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
@@ -222,6 +230,9 @@ AS
                 CAST ('8796093054986' AS NVARCHAR(100)) AS UnitPK
         INTO    #RFO_Item
         FROM    RFOperations.Hybris.OrderItem a
+				INNER JOIN RodanFieldsLive.dbo.Orders rfl ON A.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
                 JOIN RFOperations.Hybris.ProductBase b ON a.ProductID = b.ProductID
         WHERE   EXISTS ( SELECT PK
                          FROM   #LoadedOrderItems loi

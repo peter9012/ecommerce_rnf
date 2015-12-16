@@ -6,7 +6,7 @@ AS
 BEGIN
 
 DECLARE @Country NVARCHAR(20)= 'US';
-DECLARE @ServerMod DATETIME = '2014-05-01' ,
+DECLARE @ServerMod DATETIME = '2014-06-01' ,
     @RFOCount BIGINT ,
     @RowCount BIGINT ,
     @HybrisCount BIGINT 
@@ -29,7 +29,11 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -71,7 +75,11 @@ SELECT  OrderShippingAddressID AS RFO_OrderShippingAddressID ,
 INTO    DataMigration.Migration.MissingSHipAddress
 FROM    ( SELECT    OrderShippingAddressID 
           FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                    INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                    INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+					INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                     INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid= cast(o.AccountID as nvarchar)
                     INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = o.OrderID
                     INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -130,7 +138,11 @@ SELECT  p_rfaddressid ,
         COUNT(B.PK) AS Hybris_Duplicates
 INTO    #ShipAdr_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = A.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = A.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(a.AccountID as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderShippingAddress oi ON oi.OrderId = a.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID
@@ -224,6 +236,10 @@ SELECT  CAST (OrderShippingAddressID AS NVARCHAR(100)) AS OrderShippingAddressID
 INTO    #RFO_Shadr
 FROM    RFoperations.Hybris.OrderShippingAddress a
         JOIN RFOPerations.Hybris.Orders b ON a.OrderID = b.OrderID
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON B.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND B.CountryID = @RFOCountry 
         JOIN RFOperations.RFO_Reference.Countries e ON e.CountryID = b.CountryID
 WHERE   EXISTS ( SELECT 1
                  FROM   #LoadedShipaddress lsa

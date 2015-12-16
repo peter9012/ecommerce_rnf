@@ -41,7 +41,11 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(o.AccountId as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -86,7 +90,11 @@ SELECT  a.OrderNoteID AS RFO_NoteID,
 INTO    DataMigration.Migration.MissingNotes
 FROM    ( SELECT   oi.OrderNoteID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID

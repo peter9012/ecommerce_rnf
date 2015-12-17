@@ -106,7 +106,7 @@ SELECT 'No Duplicates'
 		CAST(AccountNoteId AS NVARCHAR(MAX)) as AccountNoteId,
 		CAST(AN.AccountId  AS NVARCHAR(MAX)) as Account__c,
 		an.Notes as Description__C,
-		DATEADD(HH,8,AN.EffectiveDate) as ActivityDate__c,
+		DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AN.EffectiveDate >= M.DST_START AND AN.EffectiveDate < M.DST_END),AN.EffectiveDate) as ActivityDate__c,
 		NR.Name NotesReasonType__c,
 		nc.name as ChannelType__c,
 		ND.NAME AS NotesDetailType__c,

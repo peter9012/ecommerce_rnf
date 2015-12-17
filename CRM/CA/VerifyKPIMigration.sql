@@ -56,9 +56,9 @@ SELECT 'Query Rfoperations.sfdc.KPIMissing to get list of AccountIDs missing fro
 
 SELECT 
 accountid as account__c,
-CAST(ISNULL(DATEADD(HH,8,startdate),'1900-01-01') AS DATE) as PeriodStartDate__C,
-CAST(ISNULL(DATEADD(HH,8,Enddate),'1900-01-01') AS DATE) as PeriodEndDate__C,
-CAST(ISNULL(DATEADD(HH,8,Closeddate),'1900-01-01') AS DATE) as PeriodClosedDate__C,
+CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE startdate >= M.DST_START AND startdate < M.DST_END),startdate),'1900-01-01') AS DATE) as PeriodStartDate__C,
+CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE EndDate >= M.DST_START AND EndDate < M.DST_END),Enddate),'1900-01-01') AS DATE) as PeriodEndDate__C,
+CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE Closeddate >= M.DST_START AND Closeddate < M.DST_END),Closeddate),'1900-01-01') AS DATE) as PeriodClosedDate__C,
 [Sales Volume] as SalesVolume__C,
 estimatedSV as estimatedSV__C,
 [My PSQV – No Estimate] as PSQV__c,

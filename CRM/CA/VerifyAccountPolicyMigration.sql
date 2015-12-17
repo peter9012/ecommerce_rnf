@@ -59,7 +59,7 @@ SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs m
 		SELECT
 		CAST(aB.AccountID AS NVARCHAR(MAX)) AS Account__c,
 		CAST(ACL.PolicyId AS NVARCHAR(MAX)) as Policy__c,
-		CAST(DATEADD(HH,8,ACL.DateAccepted) AS DATE) as DateAccepted__C,
+		CAST(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE ACL.DateAccepted >= M.DST_START AND ACL.DateAccepted < M.DST_END),ACL.DateAccepted) AS DATE) as DateAccepted__C,
 		ACL.ChangedByApplication as ChangedByApplication__C,
 		ACL.ChangedByUser as ChangedByUser__C
 		INTO RFOPERATIONS.SFDC.RFO_Policy

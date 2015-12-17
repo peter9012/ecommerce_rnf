@@ -153,7 +153,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 		CASE WHEN LEN(AC.MiddleNAME) <1 THEN NULL ELSE AC.MiddleNAME END AS MiddleName ,
 		CASE WHEN LEN(AC.NickNAME) <1 THEN NULL ELSE REPLACE(AC.NickNAME,'  ',' ') END AS NickName__c ,
 		CASE WHEN LEN(AC.SecuredTaxNumber) <1 THEN NULL ELSE AC.SecuredTaxNumber END TaxNumber__c,
-		CAST(ISNULL(DATEADD(HH,8,AC.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AC.ServerModifiedDate >= M.DST_START AND AC.ServerModifiedDate < M.DST_END),AC.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
 		CASE WHEN LEN(MPH.PhoneNumberRaw) <1 THEN NULL ELSE MPH.PhoneNumberRaw END as MainPhone__c,
 		CASE WHEN LEN(MOB.PhoneNumberRaw) <1 THEN NULL ELSE MOB.PhoneNumberRaw END as MobilePhone,
 		CASE WHEN LEN(PEA.EmailAddress) <1 THEN NULL ELSE PEA.EmailAddress END as MainEmail__c,

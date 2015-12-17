@@ -1076,7 +1076,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void checkPCPerksCheckBox(){
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2']/.."));
-		driver.findElement(By.xpath("//input[@id='pc-customer2']/..")).click(); 
+		driver.findElement(By.xpath("//input[@id='pc-customer2']/..")).click();
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -3424,6 +3426,69 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
 			return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
 		}
+	}
+
+	public String getSubTotalOfAddedProduct() {
+		driver.waitForElementPresent(By.xpath("//div[@id='subtotal-shopping']/div[3]/span"));
+		return driver.findElement(By.xpath("//div[@id='subtotal-shopping']/div[3]/span")).getText();
+
+	}
+
+	public boolean validateSubTotalAfterQuantityIncreased(String subtotalOfAddedProduct,String quantity) {
+		int quantityAdded = Integer.parseInt(quantity);
+		String subtotalOfTwoProduct = driver.findElement(By.xpath("//div[@id='subtotal-shopping']/div[3]/span")).getText();
+		System.out.println(subtotalOfTwoProduct+"subtotal");
+		String []subTtlOfTwoProduct = subtotalOfTwoProduct.split("\\$");
+		System.out.println("subTtlAfterAddSpliteed"+subTtlOfTwoProduct[1]);
+		double finalSub1 = Double.parseDouble(subTtlOfTwoProduct[1]);
+		String []subTtlBeforeAdd = subtotalOfAddedProduct.split("\\$");
+		double subBeforeAdd = Double.parseDouble(subTtlBeforeAdd[1]);
+		double finalSub = subBeforeAdd*quantityAdded;
+
+		if(finalSub==finalSub1){
+			return true;
+		}
+		return false;
+	}
+
+	public String convertCountryInPWS(String pws){
+		String ca  = "ca";
+		String us ="us";
+		if(pws.contains(us)){
+			pws = pws.replaceAll(us,ca);
+		}else if(pws.contains(ca)){
+			pws = pws.replaceAll(ca,us);
+		}
+		return pws;
+	}
+
+	public String selectDifferentCountry() {
+		String country=null;
+		if(driver.getCurrentUrl().contains("us")){
+			driver.waitForElementPresent(By.xpath("//button/img"));
+			driver.click(By.xpath("//button/img"));
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'CAN')]"));
+			driver.click(By.xpath("//a[contains(text(),'CAN')]"));
+			logger.info("country changed us to canada");
+			country="ca";
+			return country;
+		}
+		else if(driver.getCurrentUrl().contains("ca")){
+			driver.waitForElementPresent(By.xpath("//button/img"));
+			driver.click(By.xpath("//button/img"));
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'USA')]"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[contains(text(),'USA')]")));
+			// driver.click(By.xpath("//a[contains(text(),'USA')]"));
+			logger.info("country changed Canada to Us");
+			country="us";
+			return country;
+		}
+		return country;
+	}
+
+	public boolean validateUserAbleToSerachSponsorAndContinueFlow(){
+		driver.waitForElementPresent(By.xpath("//div[@id='the-search-results']"));
+		return driver.isElementPresent(By.xpath("//div[@id='the-search-results']"));
 	}
 }
 

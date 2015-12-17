@@ -63,7 +63,7 @@
 	 JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
 	 JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK)j ON j.AccountContactID = d.AccountContactID 
 	 LEFT JOIN RFOperations.RFO_Accounts.Phones  (NOLOCK) p ON j.PhoneID =p.PhoneID AND p.PhoneTypeID = 1 
-	 LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1 
+	 LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1  AND i.enddate is nuLL
 	 LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK)  f ON f.EmailAddressID =E.EmailAddressId AND EmailAddressTypeID =1 
 	 AND B.ServerModifiedDate>=@LastRunDate
 
@@ -126,8 +126,8 @@
 		CAST (AB.AccountID AS NVARCHAR (100)) AS AccountID	,			--p_rfaccountid
        	REPLACE(AC.FIRSTNAME+' '+ AC.LASTNAME,'  ',' ') AS Name  ,
 		AB.AccountNumber,
-		CAST(ISNULL(DATEADD(HH,8,AB.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
-		CAST(ISNULL(DATEADD(HH,8,AB.ServerModifiedDate),'1900-01-01') AS DATE) as CreationDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AB.ServerModifiedDate >= M.DST_START AND AB.ServerModifiedDate < M.DST_END),AB.ServerModifiedDate),'1900-01-01') AS DATETIME) as LastModifiedDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AB.ServerModifiedDate >= M.DST_START AND AB.ServerModifiedDate < M.DST_END),AB.ServerModifiedDate),'1900-01-01') AS DATETIME) as CreationDate,
 		AST.NAME as AccountStatus,
 		ACT.NAME as AccountType,
 		ACT.NAME as RecordTypeID,
@@ -141,15 +141,15 @@
 		CAST(AR.CoApplicant AS NVARCHAR(MAX)) CoApplicant,
 		CAST(AR.EnrollerId AS NVARCHAR(MAX)) EnrollerId,
 		CAST(AR.SponsorId AS NVARCHAR(MAX)) SponsorId, 	
-		CAST(ISNULL(DATEADD(HH,8,AR.EnrollmentDate),'1900-01-01') AS DATE) EnrollmentDate,
-		CAST(ISNULL(DATEADD(HH,8,AR.HardTerminationDate),'1900-01-01') AS DATE) HardTerminationDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.EnrollmentDate >= M.DST_START AND AR.EnrollmentDate < M.DST_END),AR.EnrollmentDate),'1900-01-01') AS DATETIME) EnrollmentDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.HardTerminationDate >= M.DST_START AND AR.HardTerminationDate < M.DST_END),AR.HardTerminationDate),'1900-01-01') AS DATETIME) HardTerminationDate,
 		CASE WHEN LEN(AR.IsBusinessEntity) <1 THEN NULL ELSE AR.IsBusinessEntity END AS IsBusinessEntity,
 		CASE WHEN LEN(AR.IsTaxExempt) <1 THEN NULL ELSE AR.IsTaxExempt END AS IsTaxExempt,
-		CAST(ISNULL(DATEADD(HH,8,AR.LastAutoAssignmenDate),'1900-01-01') AS DATE) LastAutoAssignmenDate,
-		CAST(ISNULL(DATEADD(HH,8,AR.LastRenewalDate),'1900-01-01') AS DATE) LastRenewalDate,
-		CAST(ISNULL(DATEADD(HH,8,AR.NextRenewalDate),'1900-01-01') AS DATE) NextRenewalDate,
-		CAST(ISNULL(DATEADD(HH,8,AR.SoftTerminationDate),'1900-01-01') AS DATE) SoftTerminationDate,
-		CAST(ISNULL(DATEADD(HH,8,AR.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate_1,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.LastAutoAssignmenDate >= M.DST_START AND AR.LastAutoAssignmenDate < M.DST_END),AR.LastAutoAssignmenDate),'1900-01-01') AS DATETIME) LastAutoAssignmenDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.LastRenewalDate >= M.DST_START AND AR.LastRenewalDate < M.DST_END),AR.LastRenewalDate),'1900-01-01') AS DATETIME) LastRenewalDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.NextRenewalDate >= M.DST_START AND AR.NextRenewalDate < M.DST_END),AR.NextRenewalDate),'1900-01-01') AS DATETIME) NextRenewalDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.SoftTerminationDate >= M.DST_START AND AR.SoftTerminationDate < M.DST_END),AR.SoftTerminationDate),'1900-01-01') AS DATETIME) SoftTerminationDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AR.ServerModifiedDate >= M.DST_START AND AR.ServerModifiedDate < M.DST_END),AR.ServerModifiedDate),'1900-01-01') AS DATETIME) as LastModifiedDate_1,
 		REPLACE(CAST(AC.LegalName AS NVARCHAR(MAX)),'  ',' ') LegalName,
 		CAST(AC.AccountContactID AS NVARCHAR(MAX)) As MainContact,
 		CAST(AA.AddressID AS NVARCHAR(MAX)) RFO_AddressProfileID,
@@ -177,7 +177,7 @@
 		JOIN RFOperations.RFO_Reference.AccountStatus (NOLOCK) AST ON AST.AccountStatusID = AB.AccountStatusID
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
-		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=1
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=1 AND AA.ENDDATE IS NULL
 		JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK) ACPH ON ACPH.AccountContactId = AC.AccountContactId
         JOIN RFOperations.RFO_Accounts.Phones (NOLOCK) PH ON PH.PhoneID = ACPH.PhoneId
                                                     AND PH.PhoneTypeID = 1

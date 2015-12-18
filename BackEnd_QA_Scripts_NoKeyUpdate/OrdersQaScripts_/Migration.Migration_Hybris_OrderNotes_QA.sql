@@ -39,7 +39,11 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
@@ -86,7 +90,11 @@ SELECT  a.OrderNoteID AS RFO_NoteID,
 INTO    DataMigration.Migration.MissingNotes
 FROM    ( SELECT   oi.OrderNoteID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
         INNER JOIN RFOperations.Hybris.OrderNotes oi ON o.OrderID=oi.OrderID
         --INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
@@ -176,7 +184,10 @@ CAST( OrderNoteID AS NVARCHAR (100)) AS  OrderNoteID
 ,CAST (o.OrderNumber AS NVARCHAR(max)) AS OrderNumber
 
 INTO #RFO_Note
-FROM RFoperations.Hybris.OrderNotes a , rfoperations.hybris.orders o 
+FROM RFoperations.Hybris.OrderNotes a , rfoperations.hybris.orders o INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
 WHERE a.orderid=o.orderid and EXISTS  (SELECT 1 FROM #OrderNotesMigrate hon WHERE hon.p_noteid=a.ordernoteid )
 
 CREATE CLUSTERED INDEX MIX_RFNote ON #RFO_Note (OrderNoteID)

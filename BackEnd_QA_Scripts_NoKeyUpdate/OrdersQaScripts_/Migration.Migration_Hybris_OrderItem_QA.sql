@@ -37,7 +37,11 @@ AS
         SELECT  @RFOCount = 
 		COUNT(DISTINCT oi.OrderItemID)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+				INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                 INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
                 INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                 --INNER JOIN hybris..products p ON p.p_rflegacyproductid = oi.ProductID
@@ -91,7 +95,11 @@ AS
         SELECT CAST(O.ORDERNUMBER AS NVARCHAR(MAX))+'-'+CAST(OI.PRODUCTID AS NVARCHAR(MAX))+'-'+CAST(CAST(QUANTITY AS DECIMAL(30,8)) AS NVARCHAR(MAX))+'-'+CAST(CAST(TOTALPRICE AS DECIMAL(30,8)) AS NVARCHAR(MAX)) as OrderItemId
 			INTO DATAMIGRATION.MIGRATION.RFO_COMBO
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                            INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+							INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                             INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR) AND U.P_SOURCENAME='Hybris-DM'
                             INNER JOIN RFOperations.Hybris.OrderItem oi ON oi.OrderId = o.OrderID
                             LEFT JOIN RFOperations.Hybris.Autoship a WITH ( NOLOCK ) ON CAST(a.AutoshipNumber AS INT) = CAST (o.ordernumber AS INT)
@@ -216,6 +224,10 @@ AS
         INTO    #RFO_Item
         FROM    RFOperations.Hybris.OrderItem a
 				INNER JOIN Rfoperations.Hybris.orders o ON o.orderId=a.OrderID
+				INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
                 JOIN RFOperations.Hybris.ProductBase b ON a.ProductID = b.ProductID
         WHERE   EXISTS ( SELECT PK
                          FROM   #LoadedOrderItems loi

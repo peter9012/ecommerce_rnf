@@ -36,7 +36,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(Opt.OrderPaymentTransactionID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -53,7 +53,7 @@ WHERE   o.CountryID = @RFOCountry
 --Payment Count
 SELECT  @RFOPCount = COUNT(Oi.OrderPaymentID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -122,7 +122,7 @@ SELECT  OrderPaymentID AS RFO_PaymentID,
 INTO    DataMigration.Migration.MissingOrderPayment
 FROM    ( SELECT   oi.OrderPaymentID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -176,7 +176,7 @@ SELECT  OrderPaymentTransactionID AS RFO_PaymentTransactionID,
 INTO    DataMigration.Migration.MissingTransaction
 FROM    ( SELECT   opt.OrderPaymentTransactionID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 

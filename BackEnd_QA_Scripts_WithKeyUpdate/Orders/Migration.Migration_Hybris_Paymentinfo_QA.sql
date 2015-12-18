@@ -37,7 +37,7 @@ AS
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -85,7 +85,7 @@ INTO     DataMigration.Migration.MissingPayment
 FROM    ( SELECT    OrderPaymentID 
                
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -151,7 +151,7 @@ SELECT  p.code,
         COUNT(p.PK) AS Hybris_Duplicates
 INTO    #Pay_Dups
 FROM   RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -244,7 +244,7 @@ IF @RowCount > 0
                     CAST (b.AccountID AS NVARCHAR(100)) AS AccountID
             INTO    #RFO_Pay
             FROM    RFoperations.Hybris.OrderPayment a
-                    INNER JOIN RodanFieldsLive.dbo.Orders rfl ON A.OrderID = rfl.orderID
+                    INNER JOIN RodanFieldsLive.dbo.Orders rfl ON A.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                     JOIN cte b ON a.OrderPaymentID = b.OrderPaymentID

@@ -92,7 +92,7 @@ site.IsActive__c,
 CAST(ExpirationDate__c AS DATE) ExpirationDate__c,
 PrimaryDomain__c,
 BusinessDomain__c,
-EmailAddress__c
+A.EmailAddress__c
 INTO RFOPERATIONS.SFDC.CRM_Site
 FROM SFDCBACKUP.SFDCBKP.AccountSite Site , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE Site.ACCOUNT__C=A.ID AND C.ID=A.COUNTRY__C AND C.NAME='Canada'
 

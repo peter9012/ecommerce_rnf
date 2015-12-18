@@ -32,6 +32,11 @@ AS
 ------------------------------------------------------------------------------------------------------------------------
         SELECT  @RFOCount = COUNT(*)
         FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		
                 INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                 INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = o.OrderID
@@ -77,7 +82,12 @@ AS
         FROM    ( SELECT    OrderBillingAddressID ,
                             o.OrderID
                   FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                            INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+                            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		
+							INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
                             INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(o.AccountID AS NVARCHAR)
                             INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = o.OrderID
                             INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -137,7 +147,12 @@ AS
                 COUNT(b.PK) AS Hybris_Duplicates
         INTO    #BillAdr_Dups
         FROM    RFOperations.Hybris.Orders (NOLOCK) a
-                INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(a.OrderNumber AS INT)
+                INNER JOIN RodanFieldsLive.dbo.Orders rfl ON a.OrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		
+				INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(a.OrderNumber AS INT)
                 INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid  = CAST(A.AccountID AS NVARCHAR)
                 INNER JOIN RFOperations.Hybris.OrderBillingAddress oi ON oi.OrderId = a.OrderID
                 INNER JOIN Hybris..orders ho ON ho.pk = a.OrderID
@@ -230,6 +245,11 @@ AS
         INTO    #RFO_BlAdr
         FROM    RFoperations.Hybris.OrderBillingAddress a
                 JOIN RFOPerations.Hybris.Orders b ON a.OrderID = b.OrderID
+				INNER JOIN RodanFieldsLive.dbo.Orders rfl ON b.OrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		
                 JOIN DataMigration.Migration.RegionMapping rp ON rp.region = a.region
                 JOIN RFOperations.Hybris.OrderPayment d ON d.OrderID = b.OrderID
                 JOIN RFOperations.RFO_Reference.Countries e ON e.CountryID = b.CountryID

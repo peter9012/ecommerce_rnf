@@ -73,7 +73,7 @@ WHERE   b.p_origination <> 'www.rodanandfields.com'
 
 SELECT  @RFOCount = COUNT(DISTINCT o.OrderID)
 FROM    RFOperations.Hybris.Orders o
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -116,7 +116,7 @@ INTO    DataMigration.Migration.OrdersMissing
 FROM    ( SELECT  DISTINCT
                     o.OrderID
           FROM      RFOperations.Hybris.Orders o
-					INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+					INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -169,7 +169,7 @@ SELECT  a.OrderNumber ,
         COUNT(pk) AS Hybris_Duplicates
 INTO    #Orders_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
-		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -308,7 +308,7 @@ WITH    OrderShippingAddress
        -- CAST(SiteId AS NVARCHAR(100)) AS SiteId
     INTO    #RFO_Orders
     FROM    RFOPerations.Hybris.Orders a --JOIN RFOperations.RFO_Reference.OrderType d ON d.OrderTypeID =a.OrderTypeID 
-            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 

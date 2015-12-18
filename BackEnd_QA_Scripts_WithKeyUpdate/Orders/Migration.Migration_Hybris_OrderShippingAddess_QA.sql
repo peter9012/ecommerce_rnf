@@ -29,7 +29,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -75,7 +75,7 @@ SELECT  OrderShippingAddressID AS RFO_OrderShippingAddressID ,
 INTO    DataMigration.Migration.MissingSHipAddress
 FROM    ( SELECT    OrderShippingAddressID 
           FROM      RFOperations.Hybris.Orders o WITH ( NOLOCK )
-                    INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                    INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -138,7 +138,7 @@ SELECT  p_rfaddressid ,
         COUNT(B.PK) AS Hybris_Duplicates
 INTO    #ShipAdr_Dups
 FROM    RFOperations.Hybris.Orders (NOLOCK) a
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -236,7 +236,7 @@ SELECT  CAST (OrderShippingAddressID AS NVARCHAR(100)) AS OrderShippingAddressID
 INTO    #RFO_Shadr
 FROM    RFoperations.Hybris.OrderShippingAddress a
         JOIN RFOPerations.Hybris.Orders b ON a.OrderID = b.OrderID
-		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON B.OrderID = rfl.orderID
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON B.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND B.CountryID = @RFOCountry 

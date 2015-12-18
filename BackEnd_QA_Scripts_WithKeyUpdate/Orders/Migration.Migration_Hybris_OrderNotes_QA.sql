@@ -41,7 +41,7 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount= COUNT(oi.OrderNoteID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 
@@ -90,7 +90,7 @@ SELECT  a.OrderNoteID AS RFO_NoteID,
 INTO    DataMigration.Migration.MissingNotes
 FROM    ( SELECT   oi.OrderNoteID
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderNumber = rfl.orderID
                                                              AND rfl.orderTypeID NOT IN (4, 5, 9 )
                                                              AND rfl.StartDate >= @ServerMod
                                                              AND O.CountryID = @RFOCountry 

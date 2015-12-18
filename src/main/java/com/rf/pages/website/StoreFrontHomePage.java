@@ -418,8 +418,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input"));
-		return !driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input"));
+		return !driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input")).isSelected();
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsSelected(){
@@ -428,15 +428,15 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
-		return !driver.findElement(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
+		return !driver.findElement(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input")).isSelected();
 	}
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
+		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
 		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
-		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input/.."));
+		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 		logger.info("Yes,enroll me in CRP checkbox is unchecked");
 		driver.pauseExecutionFor(2000);
 	}

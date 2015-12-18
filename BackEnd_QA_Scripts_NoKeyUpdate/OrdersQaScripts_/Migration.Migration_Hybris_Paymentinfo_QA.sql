@@ -1,4 +1,4 @@
-USE DataMigration
+	USE DataMigration
 go
 
 CREATE PROCEDURE Migration.Migration_Hybris_Paymentinfo_QA @LastRun '2014-05-01'
@@ -37,7 +37,11 @@ AS
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(*)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.orderid
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON p_rfaccountid = cast(o.AccountID as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
@@ -82,7 +86,11 @@ INTO     DataMigration.Migration.MissingPayment
 FROM    ( SELECT    OrderPaymentID 
                
           FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = CAST(o.OrderNumber AS INT)
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.code = o.OrderNumber
@@ -145,7 +153,11 @@ SELECT  p.code,
         COUNT(p.PK) AS Hybris_Duplicates
 INTO    #Pay_Dups
 FROM   RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.etl.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = cast(o.AccountID as nvarchar)
         INNER JOIN RFOperations.Hybris.OrderPayment oi ON oi.OrderId = o.OrderID
         INNER JOIN Hybris..orders ho ON ho.pk = o.OrderID
@@ -234,6 +246,11 @@ IF @RowCount > 0
                     CAST (b.AccountID AS NVARCHAR(100)) AS AccountID
             INTO    #RFO_Pay
             FROM    RFoperations.Hybris.OrderPayment a
+					INNER JOIN RodanFieldsLive.dbo.Orders rfl ON A.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND A.CountryID = @RFOCountry 
+			
                     JOIN cte b ON a.OrderPaymentID = b.OrderPaymentID
                     JOIN RFOperations.Hybris.OrderBillingAddress ob ON ob.OrderID = a.OrderID
                     LEFT JOIN RodanFieldsLive.dbo.OrderPayments f ON a.OrderPaymentID = f.OrderPaymentID

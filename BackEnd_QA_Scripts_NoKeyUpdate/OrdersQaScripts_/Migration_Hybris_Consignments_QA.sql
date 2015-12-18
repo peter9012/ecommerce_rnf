@@ -37,7 +37,11 @@ DECLARE @ReturnOrderType BIGINT = ( SELECT  PK
 ------------------------------------------------------------------------------------------------------------------------
 SELECT  @RFOCount = COUNT(DISTINCT oi.OrderShipmentPackageItemID)
 FROM    RFOperations.Hybris.Orders o WITH ( NOLOCK )
-        INNER JOIN RFOperations.ETL.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
+        INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
+		INNER JOIN RFOperations.ETL.OrderDate od WITH ( NOLOCK ) ON od.Orderid = o.OrderID
         INNER JOIN RFOperations.Hybris.OrderItem (NOLOCK) ri ON ri.OrderId = o.OrderID
         INNER JOIN Hybris..users u WITH ( NOLOCK ) ON u.p_rfaccountid = CAST(o.AccountID AS NVARCHAR)
         INNER JOIN RFOperations.Hybris.OrderShipmentPackageItem oi ON oi.OrderID = o.OrderID
@@ -85,6 +89,10 @@ IF OBJECT_ID('Datamigration.migration.Diff_consignment') IS NOT NULL
 		RFOPERATIONS.HYBRIS.ORDERSHIPMENTPACKAGEITEM OSI , 
 		RFOPERATIONS.HYBRIS.ORDERITEM OI,
 		RFOPERATIONS.HYBRIS.ORDERS O
+		INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND O.CountryID = @RFOCountry 
 		WHERE 
 			O.ORDERID=OI.ORDERID AND
 			CAST(O.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM') AND
@@ -176,6 +184,10 @@ INTO    #RFO_SPItem
 FROM    RFOperations.Hybris.OrderShipmentPackageItem a
         	JOIN RFOperations.Hybris.OrderItem f ON f.OrderItemID =a.OrderItemID AND f.OrderID =a.OrderID
 			 JOIN RFOperations.Hybris.Orders b ON a.OrderID = b.OrderID and CAST(b.ACCOUNTID AS NVARCHAR) IN (SELECT P_RFACCOUNTID FROM HYBRIS.DBO.USERS WHERE P_SOURCeNAME='Hybris-DM')
+			 INNER JOIN RodanFieldsLive.dbo.Orders rfl ON B.OrderID = rfl.orderID
+                                                             AND rfl.orderTypeID NOT IN (4, 5, 9 )
+                                                             AND rfl.StartDate >= @ServerMod
+                                                             AND B.CountryID = @RFOCountry 
 	        JOIN RFOperations.Hybris.OrderShipment d ON d.OrderID = b.OrderID AND d.OrderShipmentID =a.OrderShipmentID      
 			JOIN RFOperations.Hybris.OrderShippingAddress e ON e.OrderID = b.OrderID 
 			JOIN Hybris.dbo.Addresses ad ON ad.PK =e.OrdershippingaddressID AND ad.p_rfAddressID = d.OrderShipmentID

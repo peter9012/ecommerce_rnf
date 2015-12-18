@@ -434,7 +434,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input"));
-		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/.."));
+		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
 		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input/.."));
 		logger.info("Yes,enroll me in CRP checkbox is unchecked");

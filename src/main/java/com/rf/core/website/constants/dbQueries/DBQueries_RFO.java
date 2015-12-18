@@ -1691,6 +1691,30 @@ public class DBQueries_RFO {
 					"AND a.Active = 1 ) "+
 					"ORDER BY NEWID()";
 
+	public static String GET_ALREADY_EXISTING_SITE_PREFIX_RFO =
+			"SELECT TOP 1 ab.AccountID ,AT.Name AS AccountType ,S.SitePrefix,[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"join    Hybris.Sites AS S ON [as].AccountID = S.AccountID "+
+					"WHERE   ab.CountryID = %s "+
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+
+			    /*PWS*/
+			    "AND EXISTS ( SELECT 1 "+
+			    "FROM   RFO_Accounts.ConsultantPWSInfo AS CPI "+
+			    "WHERE  CPI.AccountId = ab.AccountID ) "+
+			    "and [as].AccountID = %s "+
+
+
+			    "ORDER BY NEWID()";
+
 	/**
 	 * 
 	 * @param query

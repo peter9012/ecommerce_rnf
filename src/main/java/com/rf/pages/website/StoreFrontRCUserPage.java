@@ -58,4 +58,12 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
+	public void enterNewUserNameAndClickSaveButton(String newUserName) {
+		driver.clear(By.id("username-account"));
+		driver.findElement(By.id("username-account")).sendKeys(newUserName+"\t");
+		driver.waitForElementPresent(By.id("saveAccountInfo"));
+		driver.click(By.id("saveAccountInfo"));
+
+	}
+
 }

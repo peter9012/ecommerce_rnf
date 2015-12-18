@@ -1670,4 +1670,34 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 	}
 
+	public void clickOnConnectWithAConsultant(){
+		driver.waitForElementPresent(By.xpath("//div[@class='hidden-xs']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following::a[contains(text(),'CONNECT')][1]"));
+		driver.click(By.xpath("//div[@class='hidden-xs']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following::a[contains(text(),'CONNECT')][1]"));
+	}
+
+	public boolean verifyFindYourSponsorPage(){
+		driver.waitForPageLoad();
+		System.out.println("current url "+driver.getCurrentUrl());
+		return driver.getCurrentUrl().toLowerCase().contains("sponsorpage");
+		//return driver.isElementPresent(By.xpath("//h2[contains(text(),'Find Your R+F Sponsor')]"));
+	}
+
+	public boolean verifySponsorListIsPresentAfterClickOnSearch(){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.id("search-results"));
+	}
+
+	public boolean verifySponsorNameContainRFCorporate(){
+		driver.waitForPageLoad();
+		return driver.findElement(By.xpath("//div[@id='sponsorInfo']/span")).getText().contains("RF Corporate");
+	}
+
+	public boolean verifyIsSponsorAlreadySelected(){
+		return driver.isElementPresent(By.xpath("//div[@id='show-sponsor'][@style='display: none;']"));
+	}
+
+	public boolean verifyConfirmationMessagePresentOnUI(){
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).isDisplayed();
+	}
+
 }

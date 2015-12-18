@@ -33,6 +33,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don’t Have an R+F Sponsor?')]");
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
+	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now »')]");
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
@@ -3489,6 +3490,26 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean validateUserAbleToSerachSponsorAndContinueFlow(){
 		driver.waitForElementPresent(By.xpath("//div[@id='the-search-results']"));
 		return driver.isElementPresent(By.xpath("//div[@id='the-search-results']"));
+	}
+
+	public boolean verifyAlreadyExistingPrefixIsNotAllowed(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='pulsesubscription']//label[contains(text(),'Please fix this field')]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='pulsesubscription']//label[contains(text(),'Please fix this field')]"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public String getExistingWebsitePrefixName(){
+		driver.waitForElementPresent(By.id("webSitePrefix"));
+		return driver.findElement(By.id("webSitePrefix")).getAttribute("value");
+	}
+
+	public void clickSignUpnowOnbizSite(){
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);
+		driver.waitForElementPresent(SIGN_UP_LINK_LOC);
+		driver.click(SIGN_UP_LINK_LOC);
 	}
 }
 

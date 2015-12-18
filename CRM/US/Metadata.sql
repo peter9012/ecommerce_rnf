@@ -1,8 +1,8 @@
  USE rfoperations
  GO 
  
- IF OBJECT_ID ('rfoperations.sfdc.CRM_Metadata') IS NOT NULL 
- DROP TABLE  rfoperations.sfdc.CRM_Metadata
+ IF OBJECT_ID ('CRM.SFDC.CRM_Metadata') IS NOT NULL 
+ DROP TABLE  CRM.SFDC.CRM_Metadata
 
   IF OBJECT_ID ('CRM_ErrorLog_Accounts') IS NOT NULL 
  DROP TABLE  CRM_ErrorLog_Accounts
@@ -191,7 +191,7 @@ GO
 DECLARE @I INT = 1,
 @C INT =
      ( SELECT   MAX(ColID)
-               FROM     rfoperations.sfdc.CRM_METADATA
+               FROM     CRM.SFDC.CRM_METADATA
              );
 
 
@@ -224,13 +224,13 @@ WHILE ( @I <= @C )
 										WHEN CRMObject='Site' THEN '#Site'
 										WHEN CRMObject='Policy' THEN '#Policy'
                                      END
-                              FROM      rfoperations.sfdc.CRM_METADATA
+                              FROM      CRM.SFDC.CRM_METADATA
                               WHERE     ColID = @I
                             ); 
 
 
                 SET @SrcKey = ( SELECT  RFO_Key
-                                FROM    rfoperations.sfdc.CRM_METADATA
+                                FROM    CRM.SFDC.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
@@ -245,47 +245,47 @@ WHILE ( @I <= @C )
 										 WHEN CRMObject='Site' THEN 'RFOAccountID__C'
 										 WHEN CRMObject='Policy' THEN 'Account__C'
 									END
-                                FROM     rfoperations.sfdc.CRM_METADATA
+                                FROM     CRM.SFDC.CRM_METADATA
                                 WHERE   ColID = @I
                               ); 
 
                 SET @SRCCol = ( SELECT  RFO_Column
-                                FROM   rfoperations.sfdc.CRM_METADATA
+                                FROM   CRM.SFDC.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
 
                 SET @DesCol = ( SELECT  CRM_Column
-                                FROM    rfoperations.sfdc.CRM_METADATA
+                                FROM    CRM.SFDC.CRM_METADATA
                                 WHERE   ColID = @I
                               );
 
-				   SET @SrcTemp = ( SELECT  CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.RFO_Accounts'
-												 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.RFO_Contacts'
-												 WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.RFO_PaymentProfiles'
-												 WHEN CRMObject='ShippingProfile' THEN 'Rfoperations.sfdc.RFO_ShippingProfiles'
-												 WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.RFO_AccountNotes'
-												 WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.RFO_AccountStatusHistory'
-												 WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.rfo_kpi'
-												 WHEN CRMObject='Site' THEN 'rfoperations.sfdc.rfo_Site'
-												 WHEN CRMObject='Policy' THEN 'rfoperations.sfdc.rfo_Policy'
+				   SET @SrcTemp = ( SELECT  CASE WHEN CRMObject = 'Accounts' THEN 'CRM.SFDC.RFO_Accounts'
+												 WHEN CRMObject = 'Contacts' THEN 'CRM.SFDC.RFO_Contacts'
+												 WHEN CRMObject = 'PaymentProfile' THEN 'CRM.SFDC.RFO_PaymentProfiles'
+												 WHEN CRMObject='ShippingProfile' THEN 'CRM.SFDC.RFO_ShippingProfiles'
+												 WHEN CRMObject='AccountNotes' THEN 'CRM.SFDC.RFO_AccountNotes'
+												 WHEN CRMObject='AccountStatusHistory' THEN 'CRM.SFDC.RFO_AccountStatusHistory'
+												 WHEN CRMObject='KPI' THEN 'CRM.SFDC.rfo_kpi'
+												 WHEN CRMObject='Site' THEN 'CRM.SFDC.rfo_Site'
+												 WHEN CRMObject='Policy' THEN 'CRM.SFDC.rfo_Policy'
                                              END
-									FROM     rfoperations.sfdc.CRM_METADATA
+									FROM     CRM.SFDC.CRM_METADATA
 									WHERE    ColID = @I
                             ); 
 
 
-				SET @DesTemp = ( SELECT      CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts'
-												  WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
-												  WHEN CRMObject = 'PaymentProfile' THEN 'rfoperations.sfdc.CRM_PaymentProfiles'
-												  WHEN CRMObject ='ShippingProfile' THEN 'Rfoperations.sfdc.CRM_ShippingProfiles'
-												  WHEN CRMObject='AccountNotes' THEN 'Rfoperations.sfdc.CRM_AccountNotes'
-												  WHEN CRMObject='AccountStatusHistory' THEN 'Rfoperations.sfdc.CRM_AccountStatusHistory'
-												  WHEN CRMObject='KPI' THEN 'rfoperations.sfdc.crm_kpi'
-												  WHEN CRMObject='Site' THEN 'rfoperations.sfdc.crm_Site'
-												  WHEN CRMObject='Policy' THEN 'rfoperations.sfdc.crm_Policy'
+				SET @DesTemp = ( SELECT      CASE WHEN CRMObject = 'Accounts' THEN 'CRM.SFDC.CRM_Accounts'
+												  WHEN CRMObject = 'Contacts' THEN 'CRM.SFDC.CRM_Contacts'
+												  WHEN CRMObject = 'PaymentProfile' THEN 'CRM.SFDC.CRM_PaymentProfiles'
+												  WHEN CRMObject ='ShippingProfile' THEN 'CRM.SFDC.CRM_ShippingProfiles'
+												  WHEN CRMObject='AccountNotes' THEN 'CRM.SFDC.CRM_AccountNotes'
+												  WHEN CRMObject='AccountStatusHistory' THEN 'CRM.SFDC.CRM_AccountStatusHistory'
+												  WHEN CRMObject='KPI' THEN 'CRM.SFDC.crm_kpi'
+												  WHEN CRMObject='Site' THEN 'CRM.SFDC.crm_Site'
+												  WHEN CRMObject='Policy' THEN 'CRM.SFDC.crm_Policy'
 											 END
-									FROM     rfoperations.sfdc.CRM_METADATA
+									FROM     CRM.SFDC.CRM_METADATA
                          
                               WHERE     ColID = @I
                             ); 
@@ -310,7 +310,7 @@ SELECT @SQL1
 --SELECT @SQL3
 
 
-                UPDATE   rfoperations.sfdc.CRM_METADATA
+                UPDATE   CRM.SFDC.CRM_METADATA
                 SET     sqlstmt = @SQL1
                 WHERE   ColID = @I;
 

@@ -22,6 +22,7 @@ IF OBJECT_ID('Rfoperations.sfdc.crm_Contacts') IS NOT NULL DROP TABLE Rfoperatio
 IF OBJECT_ID('rfoperations.sfdc.ErrorLog_Contacts') IS NOT NULL DROP TABLE rfoperations.sfdc.ErrorLog_Contacts
 IF OBJECT_ID('rfoperations.sfdc.ContactDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.ContactDifference
 IF OBJECT_ID('rfoperations.sfdc.MissingCoApplicants') IS NOT NULL DROP TABLE rfoperations.sfdc.MissingCoApplicants
+IF OBJECT_ID ('Rfoperations.dbo.AccountIDs') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountIDs
 
 --IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_Accounts
 --IF OBJECT_ID('rfoperations.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE rfoperations.sfdc.BusinessRuleFailure
@@ -46,6 +47,20 @@ DECLARE @RFOAccount BIGINT, @CRMAccount BIGINT
 
 DECLARE @RowCount BIGINT 
 
+SELECT DISTINCT a.AccountID INTO Rfoperations.dbo.AccountIDs --COUNT( DISTINCT a.AccountID)
+FROM RFOperations.RFO_Accounts.AccountRF (NOLOCK)a 
+JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.AccountID  AND b.CountryID =236
+ JOIN RFOperations.RFO_Accounts.AccountContacts  (NOLOCK) d ON b.AccountID =d.AccountID 
+ JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactID = D.AccountContactID 
+ JOIN RFOperations.RFO_Accounts.AccountContactAddresses  (NOLOCK) g ON g.AccountContactID = d.AccountContactID 
+ JOIN RFOperations.RFO_Accounts.AccountContactPhones  (NOLOCK)j ON j.AccountContactID = d.AccountContactID 
+ LEFT JOIN RFOperations.RFO_Accounts.Phones  (NOLOCK) p ON j.PhoneID =p.PhoneID AND p.PhoneTypeID = 1 
+ LEFT JOIN RFOperations.RFO_Accounts.Addresses  (NOLOCK) i ON i.AddressID =g.AddressID AND i.AddressTypeID =1 AND i.IsDefault= 1 
+ LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK)  f ON f.EmailAddressID =E.EmailAddressId AND EmailAddressTypeID =1 
+ AND B.ServerModifiedDate>=@LastRunDate
+
+
+
 --Compare Primary Account Count
 SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND countryid=236
 SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary' AND A.COUNTRY__C=CO.ID AND CO.NAME='United States'
@@ -53,7 +68,7 @@ SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C , sf
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference , 'Primary Contact' as ContactType INTO rfoperations.sfdc.ContactDifference;
 
 --Compare Secondary Applicant Count
-SELECT @RFOAccount =COUNT(CoApplicant) FROM RFOPerations.RFO_Accounts.AccountRF (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND CoApplicant IS NOT NULL AND ServerModifiedDate> @LastRunDate
+SELECT @RFOAccount =COUNT(CoApplicant) FROM RFOPerations.RFO_Accounts.AccountRF (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND LEN(COAPPLICANT)>1 AND ServerModifiedDate> @LastRunDate
 SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C, sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c = 'Spouse'  AND A.COUNTRY__C=CO.ID AND CO.NAME='United States'
 INSERT INTO rfoperations.sfdc.ContactDifference
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference, 'Secondary' as ContactType ;
@@ -123,7 +138,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 -- Contacts Framework 
 ---------------------------------------------------------------------------------------------
 		--Loading RFO Data
-		SELECT DISTINCT 
+			SELECT DISTINCT 
 		CAST (Ac.AccountContactID AS NVARCHAR (100)) AS RFAccountContactId__c,			--p_rfaccountid
        	'Primary' as ContactType__c,
 		AB.ACCOUNTID as Account,
@@ -138,7 +153,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 		CASE WHEN LEN(AC.MiddleNAME) <1 THEN NULL ELSE AC.MiddleNAME END AS MiddleName ,
 		CASE WHEN LEN(AC.NickNAME) <1 THEN NULL ELSE REPLACE(AC.NickNAME,'  ',' ') END AS NickName__c ,
 		CASE WHEN LEN(AC.SecuredTaxNumber) <1 THEN NULL ELSE AC.SecuredTaxNumber END TaxNumber__c,
-		CAST(ISNULL(AC.ServerModifiedDate,'1900-01-01') AS DATE) as LastModifiedDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AC.ServerModifiedDate >= M.DST_START AND AC.ServerModifiedDate < M.DST_END),AC.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
 		CASE WHEN LEN(MPH.PhoneNumberRaw) <1 THEN NULL ELSE MPH.PhoneNumberRaw END as MainPhone__c,
 		CASE WHEN LEN(MOB.PhoneNumberRaw) <1 THEN NULL ELSE MOB.PhoneNumberRaw END as MobilePhone,
 		CASE WHEN LEN(PEA.EmailAddress) <1 THEN NULL ELSE PEA.EmailAddress END as MainEmail__c,
@@ -163,14 +178,14 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
                                                             AND PEA.IsDefault = 1
         JOIN RFOperations.RFO_Accounts.AccountRF (NOLOCK) AR ON AB.AccountID = AR.AccountID
 		WHERE AB.ServerModifiedDate>= @LastRunDate
-    
+        AND NOT EXISTS (SELECT 1 FROM Rfoperations.dbo.ContactMissing CM WHERE CM.RFO_ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID AND MISSINGFROM='Destination')
 
 	--Load Hybris Data    
 	SELECT 
 	C.RFAccountContactId__c as RFAccountContactId__c,
 	C.ContactType__c,
 	A.RFOAccountID__C as Account, 
-	CASE WHEN LEN(c.BirthDate) <1 THEN NULL ELSE c.BirthDate END AS BirthDate,
+	CASE WHEN LEN(c.BirthDate) <1 THEN NULL ELSE CAST(c.BirthDate AS DATE) END AS BirthDate,
 	CASE WHEN LEN(c.ChangedByApplication__c) <1 THEN NULL ELSE c.ChangedByApplication__c END AS ChangedByApplication__C,
 	CASE WHEN LEN(c.ChangedByUser__c) <1 THEN NULL ELSE c.ChangedByUser__c END AS ChangedByUser__c,
 	CASE WHEN LEN(C.DisplayTaxNumber__c) <1 THEN NULL ELSE C.DisplayTaxNumber__c END AS DisplayTaxNumber__c,
@@ -214,7 +229,7 @@ CREATE CLUSTERED INDEX Hyb_ContactID ON rfoperations.sfdc.CRM_Contacts (RFAccoun
 		LastName ,
 		LegalName__C ,
 		MiddleName ,
-		NickName__c ,
+		CASE WHEN LEN(NickName__c)< 1 THEN NULL ELSE NickName__c END AS NickName__c,
 		TaxNumber__c,
 		LastModifiedDate,
 		MainPhone__c,
@@ -234,7 +249,7 @@ SELECT RFAccountContactId__c,			--p_rfaccountid
 		FirstName  ,
 		Gender__c,
 		LastName ,
-		LegalName__C ,
+		REPLACE(LegalName__C,'  ','') AS LegalName__c ,
 		MiddleName ,
 		NickName__c ,
 		TaxNumber__c,

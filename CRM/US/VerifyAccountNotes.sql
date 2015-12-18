@@ -7,12 +7,12 @@ AS
 
 BEGIN
 
-IF OBJECT_ID('Rfoperations.sfdc.AccountNotesMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.AccountNotesMissing
-IF OBJECT_ID('Rfoperations.sfdc.CRM_AccountNotes') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_AccountNotes
-IF OBJECT_ID('Rfoperations.sfdc.RFO_AccountNotes') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_AccountNotes
-IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_AccountNotes') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_AccountNotes
-IF OBJECT_ID('rfoperations.sfdc.AccountNotesDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountNotesDifference
-IF OBJECT_ID('rfoperations.sfdc.AccountNotes_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountNotes_Dups
+IF OBJECT_ID('CRM.SFDC.AccountNotesMissing') IS NOT NULL  DROP TABLE CRM.SFDC.AccountNotesMissing
+IF OBJECT_ID('CRM.SFDC.CRM_AccountNotes') IS NOT NULL DROP TABLE CRM.SFDC.CRM_AccountNotes
+IF OBJECT_ID('CRM.SFDC.RFO_AccountNotes') IS NOT NULL DROP TABLE CRM.SFDC.RFO_AccountNotes
+IF OBJECT_ID('CRM.SFDC.ErrorLog_AccountNotes') IS NOT NULL DROP TABLE CRM.SFDC.ErrorLog_AccountNotes
+IF OBJECT_ID('CRM.SFDC.AccountNotesDifference') IS NOT NULL DROP TABLE CRM.SFDC.AccountNotesDifference
+IF OBJECT_ID('CRM.SFDC.AccountNotes_Dups') IS NOT NULL DROP TABLE CRM.SFDC.AccountNotes_Dups
 IF OBJECT_ID('tempdb.dbo.#AccountNotes') IS NOT NULL DROP TABLE #AccountNotes
 
 SET ANSI_WARNINGS OFF 
@@ -43,16 +43,16 @@ SELECT @CRMPP=COUNT(RFOAccountNotesId__c) FROM sfdcbackup.SFDCBKP.AccountNotes P
 
 
 SELECT  @RFOPP AS RFO_AccountNotesCount, @CRMPP AS CRM_AccountNotesCount, (@RFOPP - @CRMPP) AS Difference 
-INTO  rfoperations.sfdc.AccountNotesDifference;
+INTO  CRM.SFDC.AccountNotesDifference;
 
-SELECT * FROM rfoperations.sfdc.AccountNotesDifference
+SELECT * FROM CRM.SFDC.AccountNotesDifference
 
 SELECT  AccountNoteId AS RFO_AccountNoteId,
  b.RFOAccountNotesId__c , 
  CASE WHEN b.RFOAccountNotesId__c IS NULL THEN 'Destination'
       WHEN a.AccountNoteId IS NULL THEN 'Source' 
  END AS MissingFROM
-INTO Rfoperations.sfdc.AccountNotesMissing
+INTO CRM.SFDC.AccountNotesMissing
 FROM 
     (SELECT AccountNoteId FROM RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AN.ServerModifiedDate>=@LastRunDate and ab.countryid=236 ) a
     FULL OUTER JOIN 
@@ -60,18 +60,18 @@ FROM
 	ON a.AccountNoteId =b.RFOAccountNotesId__c
  WHERE (a.AccountNoteId IS NULL OR b.RFOAccountNotesId__c IS NULL) 
 
- --SELECT * FROM Rfoperations.sfdc.AccountNotesMissing WHERE MISSINGFROM='Destination'
+ --SELECT * FROM CRM.SFDC.AccountNotesMissing WHERE MISSINGFROM='Destination'
 
-SELECT MissingFrom ,COUNT(*) from Rfoperations.SFDC.AccountNotesMissing GROUP BY MISSINGFROM;
+SELECT MissingFrom ,COUNT(*) from CRM.SFDC.AccountNotesMissing GROUP BY MISSINGFROM;
 
-SELECT 'Query Rfoperations.sfdc.AccountNotesMissing to get list of AccountIDs missing from Source/Destination'
+SELECT 'Query CRM.SFDC.AccountNotesMissing to get list of AccountIDs missing from Source/Destination'
 
 --------------------------------------------------------------------------------------
 -- Duplicates 
 --------------------------------------------------------------------------------------
 
 SELECT AccountNoteId, COUNT (RFOAccountNotesId__c) AS CountofDups
-INTO rfoperations.sfdc.AccountNotes_Dups
+INTO CRM.SFDC.AccountNotes_Dups
 	 FROM RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB , RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ,
 	 sfdcbackup.SFDCBKP.AccountNotes PP, SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID 
 	 and AN.AccountId=AB.Accountid AND AN.ServerModifiedDate>=@LastRunDate AND PP.RFOAccountNotesId__c=AN.ACCOUNTNOTEID
@@ -80,9 +80,9 @@ GROUP BY AccountNoteId
 HAVING COUNT (RFOAccountNotesId__c)> 1 
 
 
-SELECT @RowCount = COUNT(*) FROM rfoperations.sfdc.AccountNotes_Dups
+SELECT @RowCount = COUNT(*) FROM CRM.SFDC.AccountNotes_Dups
 
---SELECT * FROM rfoperations.sfdc.PaymentProfile_Dups
+--SELECT * FROM CRM.SFDC.PaymentProfile_Dups
 --SELECT * FROM SFDCBACKUP.SFDCBKP.PAYMENTPROFILE WHERE RFOPAYMENTPROFILEID__C='1057811'
 --select * from RFOPERATIONS.RFO_ACCOUNTS.PAYMENTPROFILES WHERE PAYMENTPROFILEID=1057811
 --SELECT * FROM RFOPERATIONS.RFO_ACCOUNTS.CREDITCARDPROFILES WHERE PAYMENTPROFILEID=1057811
@@ -90,7 +90,7 @@ SELECT @RowCount = COUNT(*) FROM rfoperations.sfdc.AccountNotes_Dups
 IF @RowCount > 0
 	BEGIN 
 
-			SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate PaymentProfiles in CRM. Query rfoperations.sfdc.PaymentProfile_Dups to get list of duplicate PaymentProfileIds' 
+			SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate PaymentProfiles in CRM. Query CRM.SFDC.PaymentProfile_Dups to get list of duplicate PaymentProfileIds' 
 	END 
 
 ELSE 
@@ -106,13 +106,13 @@ SELECT 'No Duplicates'
 		CAST(AccountNoteId AS NVARCHAR(MAX)) as AccountNoteId,
 		CAST(AN.AccountId  AS NVARCHAR(MAX)) as Account__c,
 		an.Notes as Description__C,
-		AN.EffectiveDate as ActivityDate__c,
+		DATEADD(HH,(SELECT OFFSET FROM  CRM.SFDC.GMT_DST M WHERE AN.EffectiveDate >= M.DST_START AND AN.EffectiveDate < M.DST_END),AN.EffectiveDate) as ActivityDate__c,
 		NR.Name NotesReasonType__c,
 		nc.name as ChannelType__c,
 		ND.NAME AS NotesDetailType__c,
 		AN.ChangedByApplication  ChangedByApplication__c,
 		AN.ChangedByUser as ChangedByUser__c
-		INTO RFOPERATIONS.SFDC.RFO_AccountNotes
+		INTO CRM.SFDC.RFO_AccountNotes
 		-- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
 		JOIN RFOPERATIONS.RFO_ACCOUNTS.AccountNotes AN ON AN.AccountId=AB.Accountid AND AB.COUNTRYID=236
@@ -120,9 +120,9 @@ SELECT 'No Duplicates'
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesChannelType NC on NC.ChannelTypeId=AN.ChannelTypeId
 		LEFT JOIN RFOPERATIONS.RFO_REFERENCE.NotesDetailType ND on ND.DetailTypeId=AN.DetailTypeId
 		where  AN.ServerModifiedDate>=@LastRunDate AND
-		NOT EXISTS (SELECT 1 FROM rfoperations.sfdc.AccountNotesMissing PPM WHERE PPM.RFO_AccountNoteId=an.AccountNoteId AND missingFrom='Destination')
+		NOT EXISTS (SELECT 1 FROM CRM.SFDC.AccountNotesMissing PPM WHERE PPM.RFO_AccountNoteId=an.AccountNoteId AND missingFrom='Destination')
         
-		--SELECT * FROM RFOPERATIONS.SFDC.RFO_AccountNotes WHERE ACCOUNTNOTEID IN (SELECT RFO_AccountNoteId FROM RFOPERATIONS.SFDC.AccountNotesMissing)
+		--SELECT * FROM CRM.SFDC.RFO_AccountNotes WHERE ACCOUNTNOTEID IN (SELECT RFO_AccountNoteId FROM CRM.SFDC.AccountNotesMissing)
 		
 		--Loading CRM data
 		SELECT
@@ -135,18 +135,18 @@ SELECT 'No Duplicates'
 		NotesDetailType__c,
 		PP.ChangedByApplication__c,
 		PP.ChangedByUser__c
-		INTO RFOPERATIONS.SFDC.CRM_AccountNotes
+		INTO CRM.SFDC.CRM_AccountNotes
 		FROM sfdcbackup.SFDCBKP.AccountNotes PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND CAST(PP.LASTMODIFIEDDATE AS DATE) >=	@LastRunDate AND A.COUNTRY__C=C.ID AND C.NAME='United States'
 
 		
 --Load Comparison Candidates.
-SELECT * INTO  #AccountNotes FROM rfoperations.sfdc.RFO_AccountNotes
+SELECT * INTO  #AccountNotes FROM CRM.SFDC.RFO_AccountNotes
 EXCEPT 
-SELECT * FROM rfoperations.sfdc.CRM_AccountNotes
+SELECT * FROM CRM.SFDC.CRM_AccountNotes
 
 --SELECT * from #AccountNotes
 
-CREATE TABLE rfoperations.sfdc.ErrorLog_AccountNotes
+CREATE TABLE CRM.SFDC.ErrorLog_AccountNotes
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -157,15 +157,15 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'AccountNotes') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'AccountNotes') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.SFDC.CRM_METADATA WHERE CRMObject = 'AccountNotes') , 
+@C INT =  (SELECT MAX(ColID) FROM  CRM.SFDC.CRM_METADATA WHERE CRMObject = 'AccountNotes') 
 
 
 DECLARE @DesKey NVARCHAR (50) = 'RFOAccountNotesId__c'; 
 
 DECLARE @SrcKey NVARCHAR (50) ='AccountNoteId'
 
-DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_AccountNotes' 
+DECLARE @DesTemp NVARCHAR (50) ='CRM.SFDC.CRM_AccountNotes' 
 
 DECLARE @Skip  BIT 
 
@@ -174,7 +174,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_METADATA
+                               FROM     CRM.SFDC.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -188,19 +188,19 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.SFDC.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.SFDC.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.SFDC.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.crm_Value = b. ' + @DesCol +
-' FROM rfoperations.sfdc.ErrorLog_AccountNotes a  JOIN ' +@DesTemp+
+' FROM CRM.SFDC.ErrorLog_AccountNotes a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO rfoperations.sfdc.ErrorLog_AccountNotes (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO CRM.SFDC.ErrorLog_AccountNotes (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
 --  SELECT @SQL3
@@ -222,7 +222,7 @@ END
 END 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_AccountNotes A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM CRM.SFDC.ErrorLog_AccountNotes A JOIN CRM.SFDC.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 

@@ -905,8 +905,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnAddANewShippingAddress(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
-		driver.click(By.xpath("//a[contains(text(),'Add a new shipping address')]"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"));
+		driver.click(By.xpath("//a[contains(text(),'Add new shipping address')]"));
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){

@@ -1639,7 +1639,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 				driver.pauseExecutionFor(1000);
 				driver.click(By.xpath("//form[@id='inactivePc90Form']//input[@id='enrollUnderLastUpline']"));
 			}
-		}
+		}driver.waitForPageLoad();
 	}
 
 	public void enterPasswordForReactivationForConsultant(){
@@ -2162,6 +2162,24 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//input[@value='Search']"));
 	}
 
+	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
+		try{
+			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+			driver.findElement(By.id("sponsor-name-id")).sendKeys(sponsor);
+		}catch(NoSuchElementException e){
+			driver.findElement(By.id("sponserparam")).sendKeys(sponsor);
+		}
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
+			driver.click(By.xpath("//input[@value='Search']"));   
+		}catch(NoSuchElementException e){
+			driver.click(By.id("search-sponsor-button"));
+
+		}
+		logger.info("Sponsor entered as "+sponsor+" and search button clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
 	public boolean verifyPCPerksCheckBoxIsSelected(){
 		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2'][@class='checked']"));
 		return driver.isElementPresent(By.xpath("//input[@id='pc-customer2'][@class='checked']"));
@@ -2600,23 +2618,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifyProductNameAfterRemoveProductFilter(String productNameBeforeApplyFilter){
 		driver.waitForElementPresent(By.xpath("//div[@class='quick-shop-section-header']/h2"));
 		return driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim().contains(productNameBeforeApplyFilter.trim());
-	}
-
-	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
-		try{
-			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
-			driver.findElement(By.id("sponsor-name-id")).sendKeys(sponsor);
-		}catch(NoSuchElementException e){
-			driver.findElement(By.id("sponserparam")).sendKeys(sponsor);
-		}
-		try{
-			driver.click(By.xpath("//input[@value='Search']"));   
-		}catch(NoSuchElementException e){
-			driver.click(By.id("search-sponsor-button"));
-
-		}
-		logger.info("Sponsor entered as "+sponsor+" and search button clicked");
-		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickEditShippingInShipmentOnCheckoutPage(){
@@ -3357,7 +3358,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifySponserSearchFieldIsPresent(){
-		driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
+		driver.waitForElementPresent(By.id("sponsor-name-id"));
 		return driver.findElement(By.id("sponsor-name-id")).isDisplayed();
 	}
 
@@ -3510,6 +3511,47 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.click(LOGIN_LINK_LOC);
 		driver.waitForElementPresent(SIGN_UP_LINK_LOC);
 		driver.click(SIGN_UP_LINK_LOC);
+	}
+
+	public String getExpirationMonth() {
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@selected='selected']"));
+		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@selected='selected']")).getText();
+
+	}
+
+	public String getExpirationYear() {
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[@selected='selected']"));
+		return driver.findElement(By.xpath("//select[@id='expiryYear']/option[@selected='selected']")).getText();
+	}
+
+	public boolean validateBillingExpirationDate(String expirationYear) {
+		String text = driver.findElement(By.xpath("//div[@id='summarySection']/div[5]/div[2]/p")).getText();
+		String[] splittedYear = text.split("\\/");
+		if(splittedYear[1].contains(expirationYear)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean validateBillingInfoUpdated(String expirationMonth,String expirationYear) {
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/div[5]/div[2]/p"));
+		return (driver.findElement(By.xpath("//div[@id='summarySection']/div[5]/div[2]/p"))).getText().contains("4747");
+	}
+
+	public String replaceAllHTTPWithHTTPS(String pws){
+		if(pws.contains("http"))
+			pws = pws.replaceAll("http","https");
+		return pws;
+	}
+
+	public void clickCloseOnExistingUserPopUp(){
+		driver.waitForElementPresent(By.xpath("//span[@class='icon-close']"));
+		driver.click(By.xpath("//span[@class='icon-close']"));
+		driver.pauseExecutionFor(1000);
+	}
+
+	public void clearUserEmailField(){
+		driver.clear(By.id("email-account"));
 	}
 }
 

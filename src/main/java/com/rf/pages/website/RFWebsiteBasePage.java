@@ -36,7 +36,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
-
+	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
+	
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -878,18 +879,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
-		try{
-			driver.waitForElementPresent(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]"));
-			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]")));
-			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
-			driver.pauseExecutionFor(2000);
-			driver.waitForLoadingImageToDisappear();
-			driver.pauseExecutionFor(2000);
-			return validateHomePage();			
-		}catch(NoSuchElementException e){
-			return false;
-		}	
+		driver.waitForElementPresent(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]"));
+		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]")));
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password')]"));   
 	}
 
 
@@ -1698,6 +1691,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean verifyConfirmationMessagePresentOnUI(){
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).isDisplayed();
+	}
+
+	public void enterEditedCardNumber(String cardNumber){
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.id("credit-cards"));  
+		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
+		driver.pauseExecutionFor(2000);
+		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
+		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
+		logger.info("New Billing card number enterd as "+cardNumber);  
 	}
 
 }

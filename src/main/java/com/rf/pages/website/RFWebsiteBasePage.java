@@ -1383,10 +1383,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));  
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/div/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 			if(isFirstNamePresent == true){ 
 				return true;
 			}

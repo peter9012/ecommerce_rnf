@@ -1192,9 +1192,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void addAshippingProfileAndClickOnItsEdit(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
-		driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
-		logger.info("add a new shipping address clicked");
+		driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
+		driver.click(By.xpath("//a[text()='Add new shipping address »']"));
+		logger.info("add new shipping address clicked");
 		enterNewShippingAddressName(profileName+" "+TestConstants.LAST_NAME);
 		enterNewShippingAddressLine1(addressLine);
 		enterNewShippingAddressCity(city);

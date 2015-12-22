@@ -1078,8 +1078,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnPlaceOrderButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='PLACE ORDER']"));
-		driver.click(By.xpath("//input[@value='PLACE ORDER']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
+		driver.click(By.xpath("//input[@value='NEXT']"));
 		logger.info("Place order button clicked");
 		driver.waitForPageLoad();
 	}

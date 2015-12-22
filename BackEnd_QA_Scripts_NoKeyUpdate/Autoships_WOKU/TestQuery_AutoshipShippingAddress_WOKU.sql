@@ -1,5 +1,4 @@
 
-
 -- '824-AutoshipShippingAddress'; Validation.
 
 --SELECT * FROM datamigration..dm_log
@@ -30,35 +29,76 @@ DECLARE @temp TABLE
       rfo_value VARCHAR(MAX)
     );
 
+
+	/****************** Child Level Entity not required. **********************
 IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
     DROP TABLE #DuplicateAutoship;
 
-SELECT  AutoshipID
-INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
-FROM    Hybris.Autoship
-WHERE   AccountID IN (
-        SELECT  a.AccountID
-        FROM    Hybris.Autoship a
-                INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-        WHERE   ab.AccountTypeID = 1
-                AND a.CountryID = 236
-                AND a.AutoshipTypeID = 2
-                AND a.Active = 1
-        GROUP BY a.AccountID
-        HAVING  COUNT(*) > 1 )
+
+SELECT  CASE WHEN COUNT(1) > 1
+             THEN 'Accounts with duplicate Active templates found'
+             WHEN COUNT(1) = 0
+             THEN 'No Accounts with duplicate templates found'
+        END AS CheckDuplicateActiveTemplates
+FROM    ( SELECT    AccountID ,
+                    a.AutoshipTypeID ,
+                    COUNT(*) AS Counts
+          FROM      RFOperations.Hybris.Autoship a
+                    JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+          WHERE     CountryID = 236
+                    AND Active = 1
+          GROUP BY  AccountID ,
+                    a.AutoshipTypeID
+          HAVING    COUNT(*) > 1
+        ) A 
+		      
+--Loading duplicate Active autoships into temp table
+
+SELECT  AccountID ,
+        a.AutoshipTypeID
+INTO    #DuplicateAutoship
+FROM    RFOperations.Hybris.Autoship a
+        JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+WHERE   CountryID = 236
         AND Active = 1
-        AND AutoshipTypeID = 2--total 809
-EXCEPT
-SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
-FROM    Hybris.Autoship a
-        INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-WHERE   ab.AccountTypeID = 1
-        AND a.CountryID = 236
-        AND a.AutoshipTypeID = 2
-        AND a.Active = 1
-GROUP BY a.AccountID
-HAVING  COUNT(*) > 1;
-		 --total 386
+GROUP BY AccountID ,
+        a.AutoshipTypeID
+HAVING  COUNT(*) > 1
+
+
+*********************************************************/
+
+/*Old validation scripts commented
+
+--SELECT  AutoshipID
+--INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+--FROM    Hybris.Autoship
+--WHERE   AccountID IN (
+--        SELECT  a.AccountID
+--        FROM    Hybris.Autoship a
+--                INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+--        WHERE   ab.AccountTypeID = 1
+--                AND a.CountryID = 236
+--                AND a.AutoshipTypeID = 2
+--                AND a.Active = 1
+--        GROUP BY a.AccountID
+--        HAVING  COUNT(*) > 1 )
+--        AND Active = 1
+--        AND AutoshipTypeID = 2--total 809
+--EXCEPT
+
+--SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+--FROM    Hybris.Autoship a
+--        INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+--WHERE   ab.AccountTypeID = 1
+--        AND a.CountryID = 236
+--        AND a.AutoshipTypeID = 2
+--        AND a.Active = 1
+--GROUP BY a.AccountID
+--HAVING  COUNT(*) > 1;
+--            --total 386
+*/
+
 
 
 
@@ -69,6 +109,8 @@ SELECT    DISTINCT
         a.AutoshipID
 INTO    #LoadedAutoshipID
 FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipID
+                                                            AND ao.AccountID = a.AccountID
         INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
@@ -77,8 +119,7 @@ FROM    RFOperations.Hybris.Autoship (NOLOCK) a
         INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
                                          AND u.p_sourcename = 'Hybris-DM'
 WHERE   a.CountryID = 236
-        AND a.AutoshipID NOT IN ( SELECT    AutoshipID
-                                  FROM      #DuplicateAutoship );
+       -- AND a.AutoshipID NOT IN ( SELECT    AutoshipID  FROM      #DuplicateAutoship );
 
 
 
@@ -182,6 +223,7 @@ GROUP BY a.AutoshipID ,
 
 CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 CREATE NONCLUSTERED COLUMNSTORE INDEX as_cls2 ON #tempact (AutoshipNumber);
+
 
 SELECT  'Validation of column to column with no transformation in progress' AS [Step-1 Validation] ,
         GETDATE() AS StartTime;

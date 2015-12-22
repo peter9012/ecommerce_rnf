@@ -1,5 +1,4 @@
 
-
 		--SELECT *FROM hybris..addresses WHERE p_town='null' AND p_billingaddress=1 AND duplicate=1
 
 -- '824-AutoshipPaymentAddress';; Validation.
@@ -32,37 +31,77 @@ DECLARE @temp TABLE
       rfo_value VARCHAR(MAX)
     );
 
+	/*    NOT REQUIRED FOR CHILD LEVEL ENTITES......
+
 
 IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
     DROP TABLE #DuplicateAutoship;
 
-SELECT  AutoshipID
-INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
-FROM    Hybris.Autoship
-WHERE   AccountID IN (
-        SELECT  a.AccountID
-        FROM    Hybris.Autoship a
-                INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-        WHERE   ab.AccountTypeID = 1
-                AND a.CountryID = 236
-                AND a.AutoshipTypeID = 2
-                AND a.Active = 1
-        GROUP BY a.AccountID
-        HAVING  COUNT(*) > 1 )
-        AND Active = 1
-        AND AutoshipTypeID = 2--total 809
-EXCEPT
-SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
-FROM    Hybris.Autoship a
-        INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-WHERE   ab.AccountTypeID = 1
-        AND a.CountryID = 236
-        AND a.AutoshipTypeID = 2
-        AND a.Active = 1
-GROUP BY a.AccountID
-HAVING  COUNT(*) > 1;
-		 --total 386
 
+SELECT  CASE WHEN COUNT(1) > 1
+             THEN 'Accounts with duplicate Active templates found'
+             WHEN COUNT(1) = 0
+             THEN 'No Accounts with duplicate templates found'
+        END AS CheckDuplicateActiveTemplates
+FROM    ( SELECT    AccountID ,
+                    a.AutoshipTypeID ,
+                    COUNT(*) AS Counts
+          FROM      RFOperations.Hybris.Autoship a
+                    JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+          WHERE     CountryID = 236
+                    AND Active = 1
+          GROUP BY  AccountID ,
+                    a.AutoshipTypeID
+          HAVING    COUNT(*) > 1
+        ) A 
+
+--Loading duplicate Active autoships into temp table
+
+SELECT  AccountID ,
+        a.AutoshipTypeID
+INTO    #DuplicateAutoship
+FROM    RFOperations.Hybris.Autoship a
+        JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+WHERE   CountryID = 236
+        AND Active = 1
+GROUP BY AccountID ,
+        a.AutoshipTypeID
+HAVING  COUNT(*) > 1
+
+
+
+**************************************************************/
+
+/*Old validation scripts commented
+
+--SELECT  AutoshipID
+--INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
+--FROM    Hybris.Autoship
+--WHERE   AccountID IN (
+--        SELECT  a.AccountID
+--        FROM    Hybris.Autoship a
+--                INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+--        WHERE   ab.AccountTypeID = 1
+--                AND a.CountryID = 236
+--                AND a.AutoshipTypeID = 2
+--                AND a.Active = 1
+--        GROUP BY a.AccountID
+--        HAVING  COUNT(*) > 1 )
+--        AND Active = 1
+--        AND AutoshipTypeID = 2--total 809
+--EXCEPT
+
+--SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
+--FROM    Hybris.Autoship a
+--        INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
+--WHERE   ab.AccountTypeID = 1
+--        AND a.CountryID = 236
+--        AND a.AutoshipTypeID = 2
+--        AND a.Active = 1
+--GROUP BY a.AccountID
+--HAVING  COUNT(*) > 1;
+--            --total 386
+*/
 
 
 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
@@ -72,6 +111,8 @@ SELECT    DISTINCT
         a.AutoshipID
 INTO    #LoadedAutoshipID
 FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipID
+                                                            AND ao.AccountID = a.AccountID
         INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
@@ -80,9 +121,7 @@ FROM    RFOperations.Hybris.Autoship (NOLOCK) a
         INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
                                          AND u.p_sourcename = 'Hybris-DM'
 WHERE   a.CountryID = 236
-        AND a.AutoshipID NOT IN ( SELECT    AutoshipID
-                                  FROM      #DuplicateAutoship );
-
+     ---   AND a.AutoshipID NOT IN ( SELECT    AutoshipID FROM      #DuplicateAutoship );
 
 
 								  
@@ -94,7 +133,7 @@ INTO    #extra
 FROM    Hybris..orders ho
         JOIN Hybris..users u ON u.PK = ho.userpk
                                 AND ho.p_template = 1
-                               AND u.p_sourcename = 'Hybris-DM'
+                                AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..countries c ON c.PK = u.p_country
                                     AND c.isocode = 'US'
         LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
@@ -150,90 +189,49 @@ SELECT  hybris_cnt ,
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
         END Results
-FROM    ( SELECT    COUNT(DISTINCT d.OwnerPkString) hybris_cnt
-          FROM      Hybris.dbo.orders a ,
-                    Hybris.dbo.users b ,
-                    Hybris.dbo.countries c ,
-                    Hybris.dbo.addresses d ,
-                    Hybris.dbo.paymentinfos e
-          WHERE     a.userpk = b.PK
-                    AND b.p_country = c.PK
-                    AND a.PK = e.OwnerPkString
-                    AND e.PK = d.OwnerPkString
-                    AND c.isocode = 'US'
-                    AND a.p_template = 1
-                    AND d.p_billingaddress = 1
-                    AND d.duplicate = 1
-                   -- AND b.p_sourcename = 'Hybris-DM'
-					AND a.code NOT IN (SELECT code FROM #extra)
+FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
+          FROM      Hybris.dbo.orders ho
+		  JOIN      Hybris.dbo.users u ON ho.userpk=u.PK AND u.p_sourcename='Hybris-DM' AND ho.p_template=1
+		  JOIN      Hybris.dbo.countries c ON c.pk=u.p_country AND c.isocode='US'
+		  JOIN      Hybris.dbo.paymentinfos pa ON pa.OwnerPkString=ho.PK AND pa.duplicate=1
+		  JOIN      Hybris.dbo.addresses ad ON ad.OwnerPkString=pa.PK AND ad.duplicate=1
+		--  JOIN      Hybris.dbo.addresses ad ON ad.pk=pa.p_billingaddress AND ad.duplicate=1
+          WHERE    ho.code NOT IN (SELECT code FROM #extra)
         ) t1 , --1135025
-        ( SELECT    COUNT(DISTINCT f.AutoshipPaymentID) rfo_cnt
-          FROM      RFOperations.Hybris.Autoship a ,
-                    RFOperations.Hybris.AutoshipPaymentAddress b ,
-                    Hybris.dbo.users c ,
-                    Hybris..paymentinfos d ,
-                    #LoadedAutoshipID e ,
-                    Hybris.AutoshipPayment f
-          WHERE     a.AutoshipID = b.AutoShipID
-                    AND a.AutoshipID = e.AutoshipID
-                    AND a.AccountID = c.p_rfaccountid
-                    AND a.AutoshipID = f.AutoshipID
-                    AND CAST(f.AutoshipPaymentID AS NVARCHAR) = d.code
-                    AND a.CountryID = 236
-                   -- AND COALESCE(b.Address1, '') <> ''
-                   --AND COALESCE(b.Region, '') <> ''
-                   -- AND COALESCE(b.PostalCode, '') <> ''
-                   -- AND COALESCE(b.FirstName, '') <> ''
-                   -- AND COALESCE(b.LastName, '') <> ''
-                   -- AND b.Locale <> 'null'
-                   -- AND c.p_sourcename = 'Hybris-DM'
+        ( SELECT    COUNT(DISTINCT apa.AutoshipPaymentAddressID) rfo_cnt
+          FROM      RFOperations.Hybris.Autoship a 
+		  JOIN		#LoadedAutoshipID l ON l.AutoshipID=a.AutoshipID AND a.CountryID=236
+		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID
+		  JOIN      Hybris.dbo.users c ON c.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)
+		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID
+		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR)                   
+        
         ) t2; 	
 		
 		
 SELECT t1.code,t2.AutoshipPaymentID,
-        CASE WHEN t1.code IS NULL  THEN 'Missing in Hybris'
-             WHEN t2.AutoshipPaymentID IS NULL  THEN 'Missing in RFO'
+        CASE WHEN t1.code IS NULL  THEN 'Missing in AutoshipPayment in  Hybris'
+             WHEN t2.AutoshipPaymentID IS NULL  THEN 'Missing AutoshipPayment in RFO'
              END AS Results
-FROM    ( SELECT  DISTINCT e.code
-          FROM      Hybris.dbo.orders a ,
-                    Hybris.dbo.users b ,
-                    Hybris.dbo.countries c ,
-                    Hybris.dbo.addresses d ,
-                    Hybris.dbo.paymentinfos e
-          WHERE     a.userpk = b.PK
-                    AND b.p_country = c.PK
-                    AND a.PK = e.OwnerPkString
-                    AND e.PK = d.OwnerPkString
-                    AND c.isocode = 'US'
-                    AND a.p_template = 1
-                    AND d.p_billingaddress = 1
-                    AND d.duplicate = 1
-                    AND b.p_sourcename = 'Hybris-DM'
-					AND a.code NOT IN (SELECT code FROM #extra)
+FROM    (  SELECT    pa.code
+          FROM      Hybris.dbo.orders ho
+		  JOIN      Hybris.dbo.users u ON ho.userpk=u.PK AND u.p_sourcename='Hybris-DM' AND ho.p_template=1
+		  JOIN      Hybris.dbo.countries c ON c.pk=u.p_country AND c.isocode='US'
+		  JOIN      Hybris.dbo.paymentinfos pa ON pa.OwnerPkString=ho.PK AND pa.duplicate=1
+		  JOIN      Hybris.dbo.addresses ad ON ad.OwnerPkString=pa.PK AND ad.duplicate=1 AND ad.p_billingaddress=1
+		--  JOIN      Hybris.dbo.addresses ad ON ad.pk=pa.p_billingaddress AND ad.duplicate=1 AND ad.p_billingaddress=1
+          WHERE  ho.code NOT IN (SELECT code FROM #extra)
 					
         ) t1 
 		FULL OUTER JOIN 
 
-        ( SELECT    DISTINCT f.AutoshipPaymentID
-          FROM      RFOperations.Hybris.Autoship a ,
-                    RFOperations.Hybris.AutoshipPaymentAddress b ,
-                    Hybris.dbo.users c ,
-                    Hybris..paymentinfos d ,
-                    #LoadedAutoshipID e ,
-                    Hybris.AutoshipPayment f
-          WHERE     a.AutoshipID = b.AutoShipID
-                    AND a.AutoshipID = e.AutoshipID
-                    AND a.AccountID = c.p_rfaccountid
-                    AND a.AutoshipID = f.AutoshipID
-                    AND CAST(f.AutoshipPaymentID AS NVARCHAR) = d.code
-                    AND a.CountryID = 236
-                   -- AND ISNULL(b.Address1, '') <> ''
-                   -- AND Isnull(b.Region, '') <> ''
-                    --AND ISNULL(b.PostalCode, '') <> ''
-                   -- AND ISNULL(b.FirstName, '') <> ''
-                    --AND isnull(b.LastName, '') <> ''
-                    --AND b.Locale <> 'null'
-                    AND c.p_sourcename = 'Hybris-DM'					
+        ( SELECT    DISTINCT CAST(ap.AutoshipPaymentID AS NVARCHAR)AutoshipPaymentID
+          FROM      RFOperations.Hybris.Autoship a 
+		  JOIN		#LoadedAutoshipID l ON l.AutoshipID=a.AutoshipID AND a.CountryID=236
+		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID
+		  JOIN      Hybris.dbo.users c ON c.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)
+		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID
+		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR)              				
         ) t2 	ON t1.code=t2.AutoshipPaymentID
 		WHERE t1.code IS NULL OR t2.AutoshipPaymentID IS NULL 
 
@@ -250,20 +248,21 @@ IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 SELECT  a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,
-        b.PK ,
-        c.AutoshipPaymentAddressID
+        u.PK ,
+        apa.AutoshipPaymentAddressID
 INTO    #tempact
 FROM    RFOperations.Hybris.Autoship a
-        JOIN Hybris.dbo.users b ON a.AccountID = b.p_rfaccountid
-        JOIN RFOperations.Hybris.AutoshipPaymentAddress c ON a.AutoshipID = c.AutoShipID
-                                                             AND a.CountryID = 236
-                                                             AND p_sourcename = 'Hybris-DM'
-        JOIN #LoadedAutoshipID d ON d.AutoshipID = a.AutoshipID
+        JOIN #LoadedAutoshipID l ON l.AutoshipID = a.AutoshipID
+                                    AND a.CountryID = 236
+        JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = a.AutoshipID
+        JOIN Hybris.dbo.users c ON c.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
+        JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID
+        JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR)
 GROUP BY a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,
-        b.PK ,
-        c.AutoshipPaymentAddressID;
+        u.PK ,
+        apa.AutoshipPaymentAddressID;
 
 CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 CREATE NONCLUSTERED COLUMNSTORE INDEX as_cls2 ON #tempact (AutoshipNumber);

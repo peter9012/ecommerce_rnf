@@ -162,10 +162,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
-
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);

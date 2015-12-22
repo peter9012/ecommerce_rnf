@@ -37,7 +37,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
-	
+
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
 	public RFWebsiteBasePage(RFWebsiteDriver driver){		
@@ -630,13 +630,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
 		driver.pauseExecutionFor(3000);
-		if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input/.."));
-			driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[2]//input/.."));
-		}else if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.click(By.xpath("//input[@id='Terms2']/.."));
-			driver.click(By.xpath("//input[@id='Terms3']/.."));
-		}
+		driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
+		driver.click(By.xpath("//input[@id='Terms2']/.."));
+		driver.click(By.xpath("//input[@id='Terms3']/.."));
 	}
 
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){

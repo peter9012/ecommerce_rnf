@@ -133,7 +133,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 	}*/
 
 	//Hybris Project-2204 :: Version : 1 :: CORP:Express Enrollment Business Portfolio Kit(CRP:N,P:N)
-	@Test(enabled=true) // can't see ship immediately
+	@Test
 	public void testExpressEnrollmentBusinessPorfolioKitRedefineRegimen_2204() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

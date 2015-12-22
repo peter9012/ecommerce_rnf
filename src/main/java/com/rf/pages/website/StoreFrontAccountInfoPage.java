@@ -32,7 +32,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By ACCOUNT_SAVE_BUTTON_LOC = By.xpath("//input[@id='saveAccountInfo']");
 	private final By ACCOUNT_INFO_VERIFY_ADDRESS_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
 	private String ACCOUNT_INFO_DAY_OF_BIRTH_LOC = "//select[@id='dayOfBirth']//option[@value='%s']";
-	private String ACCOUNT_INFO_GENDER_LOC = "//label[@for='%s']";
+	private String ACCOUNT_INFO_GENDER_LOC = "//input[@id='%s']/..";
 	private String ACCOUNT_INFO_MONTH_OF_BIRTH_LOC = "//select[@id='monthOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_YEAR_OF_BIRTH_LOC = "//select[@id='yearOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
@@ -56,7 +56,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyAccountInfoPageIsDisplayed(){
 		driver.waitForElementPresent(ACCOUNT_INFO_TEMPLATE_HEADER_LOC);
 		return driver.getCurrentUrl().contains(TestConstants.ACCOUNT_PAGE_SUFFIX_URL);
+	}
 
+	public String getUsernameFromAccountInfoPage(){
+		return driver.findElement(By.xpath("//input[@id='username-account']")).getAttribute("value"); 
 	}
 
 	public void enterSpouseLastNameOptional(String firstName){
@@ -473,9 +476,11 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
+		driver.pauseExecutionFor(5000);
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
-		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
 		driver.pauseExecutionFor(1000);
@@ -486,10 +491,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
+		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
+		driver.pauseExecutionFor(5000);
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
@@ -497,7 +505,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
-		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+		return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
 	public void clickOnSaveButtonAfterAddressChange() throws InterruptedException{
@@ -655,8 +663,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOndelayOrCancelPCPerks(){
-		driver.quickWaitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
-		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.waitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));		
 	}
 
 	public boolean isYesChangeMyAutoshipDateButtonPresent() {
@@ -684,7 +692,14 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public void clickOnOnlySubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
 		driver.click(By.id("subscribe_pulse_button_new"));
+		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(1000);
+	}
+
+	public String getWebsitePrefixName(){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[2]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[2]")).getText();
+		return pwsUnderPulse;
 	}
 
 	public void clickOnNextDuringPulseSubscribtion(){

@@ -413,18 +413,18 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsSelected() throws InterruptedException{		
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input[@checked='checked']"));
-		return driver.isElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input[@checked='checked']"));
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[1]/input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[1]/input[@checked='checked']"));
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input"));
-		return !driver.findElement(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[1]/input"));
+		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[1]/input")).isSelected();
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsSelected(){
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input[@checked='checked']"));
-		return driver.isElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP']/preceding::div[1]/input[@checked='checked']"));
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding::div[1]/input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding::div[1]/input[@checked='checked']"));
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsNotSelected(){
@@ -574,10 +574,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifyPopUpForTermsAndConditions() throws InterruptedException{
 		boolean isPopForTermsAndConditionsVisible = false;		
-		driver.waitForElementPresent(By.xpath("//div[@class='popup-standard']/h2[text()='Please accept our terms & conditions']"));
-		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-standard']/h2[text()='Please accept our terms & conditions']")));
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']"));
+		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']")));
 		if(isPopForTermsAndConditionsVisible==true){
-			driver.click(By.xpath("//div[@class='popup-standard']/h2[text()='Please accept our terms & conditions']/following::a[@title='Close']"));
+			driver.click(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']/following::a[@title='Close']"));
 			driver.pauseExecutionFor(1000);
 			return true;
 		}
@@ -636,8 +636,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateErrorMessageWithoutSelectingAllCheckboxes(){
-		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Please accept our terms & conditions')]"));
-		return driver.findElement(By.xpath("//h2[contains(text(),'Please accept our terms & conditions')]")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']"));
+		return driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']")).isDisplayed();
 	}
 
 	public void acceptTheProvideAccessToSpousePopup(){
@@ -691,7 +691,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			}catch(Exception e1){
 
 				driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[2]/div[1]/div[2]/div[2]//button"));
-				logger.info("Add to CRP button clicked");				
+				logger.info("Add to CRP button clicked");    
 			}
 		}
 
@@ -702,6 +702,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 		}
 		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void clickNextOnCRPCartPage(){
@@ -1123,7 +1124,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateSetUpAccountPageIsDisplayed(){
-		return driver.findElement(By.xpath("//h1[contains(text(),'SetUp Account')]")).getText().contains("Account");
+		return driver.findElement(By.xpath("//h1[contains(text(),'Set Up Account')]")).getText().contains("Account");
 		//return driver.getTitle().contains("account");
 	}
 
@@ -1779,11 +1780,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyCreateAccountpageIsDisplayed(){
-		return driver.findElement(By.xpath("//h1[contains(text(),'SetUp Account')]")).getText().contains("SetUp Account");
+		return driver.findElement(By.xpath("//h1[contains(text(),'Set Up Account')]")).isDisplayed();
 	}
 
 	public boolean verifyCRPSelectionpageIsDisplayed(){
-		return driver.findElement(By.xpath("//div[@id='main-content']/div[text()='6.Consultant Replenishment Program Selection']")).getText().contains("6.Consultant Replenishment Program Selection");
+		return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Consultant Replenishment Program')]")).isDisplayed();
 	}
 
 	public void selectInvalidNewBillingCardExpirationDate(){
@@ -3552,6 +3553,22 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void clearUserEmailField(){
 		driver.clear(By.id("email-account"));
+	}
+
+	public boolean isKitPresentDuringPCEnrollment(){
+		if(driver.isElementPresent(By.xpath("//div[@id='main-content']//div[contains(@class,'enrollment-kits')]/div"))){
+			return true;
+		}else
+			return false;
+	}
+
+	public boolean verifyProductPriceAsPerCountry(String country){
+		if(country.equalsIgnoreCase("us")){
+			return getProductPrice().toLowerCase().contains("$".toLowerCase());
+		}else if(country.equalsIgnoreCase("ca")){
+			return getProductPrice().toLowerCase().contains("CAD$".toLowerCase());
+		}
+		return false;
 	}
 }
 

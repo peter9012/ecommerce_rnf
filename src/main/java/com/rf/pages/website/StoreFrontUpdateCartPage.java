@@ -412,11 +412,11 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public String getTax(){
 		driver.waitForElementPresent(By.xpath("//div[@id='module-tax']//span[@class='taxRight']"));
-		return driver.findElement(By.xpath("//div[@id='module-tax']//span[@class='taxRight']")).getText().trim();
+		return driver.findElement(By.xpath("//div[@id='module-total'][1]//b[text()='Total']/following::div[1]/span")).getText().trim();
 	}
 
 	public String getTotal(){
-		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[text()='Total']/following::div[1]/span")).getText().trim();
+		return driver.findElement(By.xpath("//div[@id='module-total'][1]//b[text()='Total']/following::div[1]/span")).getText().trim();
 	}
 
 	public String getTotalSV(){

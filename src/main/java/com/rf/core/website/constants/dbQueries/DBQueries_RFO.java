@@ -1645,6 +1645,10 @@ public class DBQueries_RFO {
 
 	public static String GET_ACCOUNT_NUMBER_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountID='%s'";
 
+	public static String GET_ACCOUNT_CONTACT_ID_FROM_ACCOUNT_ID_RFO ="select * from RFO_Accounts.AccountContacts where accountId='%s'";
+	public static String GET_EMAIL_ADDRESS_ID_FROM_ACCOUNT_CONTACT_ID_RFO ="select * from RFO_Accounts.AccountEmails where accountContactId='%s'";
+	public static String GET_PRIMARY_EMAIL_ADDRESS_FROM_EMAIL_ADDRESS_ID_RFO ="select * from RFO_Accounts.EmailAddresses where EmailAddressId='%s' and EmailAddressTypeID='1'";
+
 	public static String GET_ACCOUNT_ID = "select top 1 * from RFO_Accounts.AccountContacts where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContactAddresses  where AddressId IN (select AddressID from RFO_Accounts.Addresses where ( addresstypeid = '3' and IsDefault='1' and EndDate IS NULL and AddressId in  (select addressid from RFO_Accounts.AccountContactAddresses where AccountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s'))))))";
 
 	public static String UPDATE_ENROLL_DATE = "update RFO_Accounts.AccountRF SET "+

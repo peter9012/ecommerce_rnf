@@ -915,18 +915,18 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getReturnOrderNumber(){
-		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
-		autoShipOrderNumber = driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a")).getText();
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div[3]//a"));
+		autoShipOrderNumber = driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div[3]//a")).getText();
 		logger.info("autoship order number is "+autoShipOrderNumber);
 		return  autoShipOrderNumber;
 	}
 
 	public void clickReturnOrderNumber(){
-		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
-		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div[3]//a"));
+		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div[3]//a"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
-		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[2]//a"));
+		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div[3]//a"));
 	}
 
 	public String getOrderStatusFromUI(){

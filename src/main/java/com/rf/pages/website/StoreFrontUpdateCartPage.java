@@ -960,12 +960,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void addAshippingProfile(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
 		List<WebElement> totalShipingAddress = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div"));
 		if(totalShipingAddress.size() <= 1){
-			driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
-			driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
+			driver.waitForElementPresent(By.xpath("//a[@class='add-new-shipping-address font-sizer spacer-mobile']"));
+			driver.click(By.xpath("//a[@class='add-new-shipping-address font-sizer spacer-mobile']"));
 			logger.info("add a new shipping address clicked");
 			enterNewShippingAddressName(profileName);
 			enterNewShippingAddressLine1(addressLine);
 			enterNewShippingAddressCity(city);
+			super.selectNewShippingAddressState();
 			enterNewShippingAddressPhoneNumber(phoneNumber);
 			enterNewShippingAddressPostalCode(postalCode);
 			clickOnSaveShippingProfile();
@@ -1394,4 +1395,18 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(1000);
 	}	
+
+	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		driver.pauseExecutionFor(2000);
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
+	}
+
+	public boolean selectSecondAddressAndValidateFirstIsUnSelected(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
+		driver.pauseExecutionFor(2000);
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")).isSelected();
+	}
 }

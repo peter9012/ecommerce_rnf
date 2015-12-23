@@ -3570,6 +3570,32 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 		return false;
 	}
+
+	public boolean validateExistingConsultantPopup(){
+		driver.waitForElementPresent(By.xpath("//div[@class='fancybox-inner']"));
+		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
+	}
+
+	public void clickCreateActBtnOnChkOutPage(){
+		driver.waitForElementPresent(By.xpath("//input[@id='next-button']"));
+		driver.click(By.xpath("//input[@id='next-button']"));  
+		logger.info("Create New Account button clicked");  
+	}
+
+	public boolean validateErrorMessagesForNewCustomerFields(){
+		driver.waitForElementPresent(By.xpath("//form[@id='registerForm']//label"));
+		return driver.isElementPresent(By.xpath("//form[@id='registerForm']//label"));
+	}
+
+	public boolean validateErrorMessagesForMainActInfoFields(){
+		driver.waitForElementPresent(By.xpath("//div[@id='create_update_address_form_container_div']"));
+		return driver.isElementPresent(By.xpath("//div[@id='create_update_address_form_container_div']//label"));
+	}
+
+	public boolean validateErrorMessagesForAddNewBillingInfoFields(){
+		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']//label"));
+		return driver.isElementPresent(By.xpath("//div[@id='add-new-billing']//label"));
+	}
 }
 
 

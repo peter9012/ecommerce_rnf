@@ -1700,4 +1700,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("New Billing card number enterd as "+cardNumber);  
 	}
 
+	public void selectNewShippingAddressState(){
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.pauseExecutionFor(1000);
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		logger.info("State/Province selected");
+	}
+
 }

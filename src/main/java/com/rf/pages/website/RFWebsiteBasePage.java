@@ -430,6 +430,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
 			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
 			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
+			logger.info("City entered is "+TestConstants.CITY_US);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
@@ -619,22 +620,19 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 		return false;
 	}
-
-	//	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
-	//		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
-	//		driver.pauseExecutionFor(3000);
-	//		driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input/.."));
-	//		driver.click(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[2]//input/.."));
-	//	}
-
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
 		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
-		driver.click(By.xpath("//input[@id='Terms2']/.."));
-		driver.click(By.xpath("//input[@id='Terms3']/.."));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@class='content']/li[2]//input/.."));
+			driver.click(By.xpath("//div[@class='content']/li[1]//input/.."));
+			driver.click(By.xpath("//div[@class='content']/li[2]//input/.."));
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
+			driver.click(By.xpath("//input[@id='Terms2']/.."));
+			driver.click(By.xpath("//input[@id='Terms3']/.."));
+		}
 	}
-
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
 		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
@@ -1087,10 +1085,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}else
 			return false;
 	}
-
 	public void enterPasswordForUpgradePcToConsultant(){
-		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"));
-		driver.type(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"), driver.getPassword());
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Reactivate My Account')]/following::input[2]"));
+			driver.type(By.xpath("//h3[contains(text(),'Log In to Reactivate My Account')]/following::input[2]"), driver.getPassword());
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"));
+			driver.type(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"), driver.getPassword());
+		}
 	}
 
 	public void clickOnLoginToTerminateToMyPCAccount(){
@@ -1675,10 +1677,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.id("search-results"));
 	}
-
 	public boolean verifySponsorNameContainRFCorporate(){
 		driver.waitForPageLoad();
-		return driver.findElement(By.xpath("//div[@id='sponsorInfo']/span")).getText().contains("RF Corporate");
+		return driver.findElement(By.xpath("//div[@id='sponsorInfo']/span")).getText().contains("Corporate");
 	}
 
 	public boolean verifyIsSponsorAlreadySelected(){

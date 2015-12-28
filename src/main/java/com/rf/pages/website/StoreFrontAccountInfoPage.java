@@ -385,6 +385,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
 		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
 		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
 	}
 
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
@@ -439,7 +440,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public void enterUserName(String username) throws InterruptedException	{
 		driver.findElement(By.id("username-account")).clear();
-		driver.findElement(By.id("username-account")).sendKeys(username);		
+		driver.findElement(By.id("username-account")).sendKeys(username+"\t");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public String getErrorMessage() {
@@ -602,8 +604,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']"));
-		return driver.findElement(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']")).getText().contains("Your Username already exist");
+		driver.waitForElementPresent(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']"));
+		return driver.findElement(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']")).isDisplayed();
 	}
 
 	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{

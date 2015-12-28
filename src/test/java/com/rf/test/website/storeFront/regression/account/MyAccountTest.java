@@ -383,7 +383,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		storeFrontAccountInfoPage.enterUserName(anotherConsultantEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.errorMessageForExistingUser(),"Unable to update account details message not present on UI");
+		s_assert.assertTrue(storeFrontAccountInfoPage.errorMessageForExistingUser(),"username is getting renamed with the username of existing user");
 		logout();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.loginAsConsultant(username, password);
@@ -1943,10 +1943,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Project-4260 :: Version : 1 :: UserName Field: Edit & Login 
 	@Test
 	public void testUserNameFieldEditAndLogin_4260() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
+		String newUsername = TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO+randomNum;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -1969,30 +1971,19 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		//Enter new user name logout and validate the new user
-		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO);
+		storeFrontAccountInfoPage.enterUserName(newUsername);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		logout();
 		//login with the same user
 		//storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO,password);   
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(newUsername,password);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		//validate the new user
-		s_assert.assertTrue(TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO.equalsIgnoreCase(storeFrontAccountInfoPage.getUserName()),"Username didn't match");
-		logout();
-		//reset username
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO,password);   
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
-		storeFrontAccountInfoPage.enterUserName(consultantEmailID);
-		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+		s_assert.assertTrue(newUsername.equalsIgnoreCase(storeFrontAccountInfoPage.getUserName()),"Username didn't match");
 		s_assert.assertAll();
 	}
 

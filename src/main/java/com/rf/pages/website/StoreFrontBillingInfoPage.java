@@ -68,10 +68,17 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public String getDefaultBillingAddress(){
-		driver.waitForElementPresent(DEFAULT_BILLING_ADDRESSES_LOC);
-		String defaultBillingAddress = driver.findElement(DEFAULT_BILLING_ADDRESSES_LOC).getText();
-		logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
-		return defaultBillingAddress;
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span"));
+			String defaultBillingAddress = driver.findElement(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span")).getText();
+			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			return defaultBillingAddress;
+		}catch(Exception e){
+			driver.waitForElementPresent(DEFAULT_BILLING_ADDRESSES_LOC);
+			String defaultBillingAddress = driver.findElement(DEFAULT_BILLING_ADDRESSES_LOC).getText();
+			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			return defaultBillingAddress;
+		}
 	}
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
@@ -155,7 +162,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		logger.info("new billing profile name is "+driver.findElement(BILLING_PROFILE_NAME_LOC).getText());
 		return driver.findElement(BILLING_PROFILE_NAME_LOC).getText();
 	}
-	
+
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
 		try{
 			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));

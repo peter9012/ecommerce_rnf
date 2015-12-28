@@ -1,6 +1,5 @@
 package com.rf.pages.website;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -3038,7 +3037,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 	}
 
-	public String getOneMonthExtendAutoshipDateFromCurrentDate(String splittedDateForMonth) throws ParseException{
+	public String getOneMonthExtendAutoshipDateFromCurrentDate(String splittedDateForMonth) throws Exception{
 		Date pstInMonthFrom=new Date(splittedDateForMonth); 
 		SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
 		String[] datePST = splittedDateForMonth.split(" ");

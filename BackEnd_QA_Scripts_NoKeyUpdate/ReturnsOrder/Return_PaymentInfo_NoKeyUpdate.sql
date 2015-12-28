@@ -74,6 +74,8 @@ FROM    ( SELECT    COUNT(hpi.code) hybris_cnt
         ) t1 , --119320
         ( SELECT  COUNT(rp.ReturnPaymentId) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
+					JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                AND ro.CountryID = 236
                                                AND u.p_sourcename = 'Hybris-DM'
@@ -104,6 +106,8 @@ FROM    ( SELECT    hpi.code
         ) t1
         FULL OUTER JOIN ( SELECT    CAST(rp.ReturnPaymentId AS NVARCHAR) ReturnPaymentId
                           FROM      RFOperations.Hybris.ReturnOrder ro
+									 JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
                                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                               AND ro.CountryID = 236
                                                               AND u.p_sourcename = 'Hybris-DM'
@@ -150,6 +154,8 @@ SELECT  ro.ReturnOrderID ,
         CAST(rp.Expmonth AS NVARCHAR(25)) Expmonth
 INTO    #tempact
 FROM    RFOperations.Hybris.ReturnOrder ro
+		JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
         JOIN Hybris.dbo.users u ON ro.AccountID = u.p_rfaccountid
                                    AND CountryID = 236
                                    AND p_sourcename = 'Hybris-DM'

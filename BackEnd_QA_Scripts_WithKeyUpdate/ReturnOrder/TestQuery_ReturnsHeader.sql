@@ -114,7 +114,8 @@ FROM    ( SELECT    COUNT(a.PK) hybris_cnt
         ( SELECT    COUNT(DISTINCT ReturnOrderID) rfo_cnt
           FROM      Hybris.ReturnOrder (NOLOCK) a ,
                     Hybris.dbo.orders (NOLOCK) b ,					
-                    Hybris.dbo.users (NOLOCK) c
+                    Hybris.dbo.users (NOLOCK) c,
+					Rodanfieldslive.dbo.orders RFL
           WHERE     a.OrderID = b.pk
                     AND b.userpk = c.PK                   
                     AND a.ReturnOrderID IN ( SELECT ReturnOrderID
@@ -122,6 +123,9 @@ FROM    ( SELECT    COUNT(a.PK) hybris_cnt
                     AND CountryID = 236
                     AND p_sourcename = 'Hybris-DM'
                     AND a.ReturnStatusID = 5
+					AND a.ReturnOrderNumber=RFL.orderid 
+					AND rfl.orderTypeID = 9
+
         ) t2;
   --120379
 IF OBJECT_ID('Tempdb..#missing') IS NOT NULL
@@ -137,7 +141,8 @@ FROM    ( SELECT   DISTINCT
                     a.ReturnOrderID
           FROM      Hybris.ReturnOrder (NOLOCK) a ,
                     Hybris.dbo.orders (NOLOCK) b ,
-                    Hybris.dbo.users (NOLOCK) c
+                    Hybris.dbo.users (NOLOCK) c,
+					RODANFIELDSLIVE.DBO.ORDERS RFL
           WHERE     a.OrderID = b.PK
                     AND b.userpk = c.PK                  
                     AND CountryID = 236
@@ -145,6 +150,8 @@ FROM    ( SELECT   DISTINCT
                     AND a.ReturnStatusID = 5
 					AND a.ReturnOrderID IN ( SELECT ReturnOrderID
                                              FROM   Hybris.ReturnItem (NOLOCK) )
+					AND A.ReturnOrderID = rfl.orderID
+                    AND rfl.orderTypeID = 9
         ) t1
         FULL OUTER JOIN ( SELECT    a.pk
                           FROM      Hybris.dbo.orders (NOLOCK) a ,
@@ -194,13 +201,16 @@ INTO    #tempact
 FROM    Hybris.ReturnOrder a ,
         Hybris.dbo.orders b ,
         Hybris.dbo.users c ,
-        Hybris.ReturnItem d
+        Hybris.ReturnItem d,
+		Rodanfieldslive.dbo.Orders RFL
 WHERE   a.OrderID = b.PK 
         AND b.userpk = c.PK
         AND a.ReturnOrderID = d.ReturnOrderID
         AND a.CountryID = 236
         AND p_sourcename = 'Hybris-DM'        
         AND a.ReturnStatusID = 5
+		AND a.ReturnOrderNumber=RFL.orderid 
+		AND rfl.orderTypeID = 9
 		--AND a.ReturnOrderID NOT IN (SELECT pk FROM #missing)-- Loaded which doesn't have Items
 --AND b.p_template IS NULL AND b.TypePkString = 8796127723602
 GROUP BY a.ReturnOrderID ,

@@ -65,7 +65,8 @@
                         AND b.p_sourcename = 'Hybris-DM'
             ) t1 , --105777
             ( SELECT    COUNT(c.ReturnBillingAddressID) rfo_cnt
-              FROM      RFOperations.Hybris.ReturnOrder a ,
+              FROM      RFOperations.Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
                         Hybris.dbo.users b ,						
                         [Hybris].[ReturnBillingAddress] c ,
 						Hybris.returnpayment rp,
@@ -93,6 +94,8 @@
             c.ReturnBillingAddressID
     INTO    #tempact
     FROM    RFOperations.Hybris.ReturnOrder a
+			JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
             JOIN Hybris.dbo.users b ON a.AccountID = b.p_rfaccountid
                                        AND a.CountryID = 236
             JOIN Hybris.dbo.orders d ON a.ReturnOrderID = d.code

@@ -60,6 +60,8 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
         ) t1 , --105777
         ( SELECT    COUNT(ba.ReturnBillingAddressID) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
+					JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
                                                AND u.p_sourcename = 'Hybris-DM'
                     JOIN [Hybris].[ReturnBillingAddress] ba ON ba.ReturnOrderID = ro.ReturnOrderID
@@ -92,7 +94,9 @@ FROM    ( SELECT    ad.PK
 		FULL OUTER JOIN
         ( SELECT    ba.ReturnBillingAddressID
           FROM      RFOperations.Hybris.ReturnOrder ro
-                    JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
+                    JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
+					JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
                                                AND u.p_sourcename = 'Hybris-DM'
                     JOIN [Hybris].[ReturnBillingAddress] ba ON ba.ReturnOrderID = ro.ReturnOrderID
                     JOIN Hybris..orders ho ON ho.PK = ro.OrderID

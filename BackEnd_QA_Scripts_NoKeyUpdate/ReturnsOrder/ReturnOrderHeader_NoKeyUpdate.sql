@@ -108,14 +108,16 @@
 							AND p_sourcename = 'Hybris-DM'
 				) t1 , --120407
 				( SELECT    COUNT(DISTINCT ReturnOrderID) rfo_cnt
-				  FROM      Hybris.ReturnOrder (NOLOCK) a ,
+				  FROM      Hybris.ReturnOrder (NOLOCK) a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
 							Hybris.dbo.orders (NOLOCK) b ,
 							Hybris.dbo.users (NOLOCK) c
 				  WHERE     a.OrderID = b.code
 							AND b.userpk = c.PK
 							AND a.ReturnOrderNumber NOT IN (
 							SELECT  a.ReturnOrderNumber
-							FROM    Hybris.ReturnOrder (NOLOCK) a
+							FROM    Hybris.ReturnOrder (NOLOCK) a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 									JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
 																	 AND a.CountryID = 236 )
 						   -- AND a.ReturnOrderNumber <> '11030155' --AS no same as Return no
@@ -146,6 +148,8 @@
 							AND a.ReturnOrderNumber NOT IN (
 							SELECT  a.ReturnOrderNumber
 							FROM    Hybris.ReturnOrder (NOLOCK) a
+									JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 									JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
 																	 AND a.CountryID = 236 )
 							AND a.ReturnOrderNumber <> '11030155' --AS no same as Return no
@@ -200,7 +204,8 @@
 				a.ReturnOrderNumber,
 				b.p_associatedorder AS associatedorder
 		INTO    #tempact
-		FROM    Hybris.ReturnOrder a ,
+		FROM    Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
 				Hybris.dbo.orders b ,
 				Hybris.dbo.users c ,
 				Hybris.ReturnItem d

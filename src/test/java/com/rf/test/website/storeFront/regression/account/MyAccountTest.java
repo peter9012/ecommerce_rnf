@@ -5196,7 +5196,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String consultantEmailID = null;
 		while(true){
-			List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
@@ -9127,8 +9127,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailID= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+			String bizPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -9143,8 +9144,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		String currentCRPStatus = storeFrontAccountInfoPage.getCRPStatusFromUI();
@@ -9152,8 +9152,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String currentPulseStatus = storeFrontAccountInfoPage.getPulseStatusFromUI();
 		System.out.println(currentPulseStatus);
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickTerminateMyAccount();
-		storeFrontAccountTerminationPage = new StoreFrontAccountTerminationPage(driver);
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
 		storeFrontAccountTerminationPage.selectTerminationReason();
 		storeFrontAccountTerminationPage.enterTerminationComments();
 		storeFrontAccountTerminationPage.clickOnAgreementCheckBox();
@@ -14625,11 +14624,24 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//Open com pws of Sponser
+		storeFrontHomePage.openConsultantPWS(comPWSOfSponser);
+		while(true){
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+				emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+				comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				storeFrontHomePage.openConsultantPWS(comPWSOfSponser);	
+				continue;
+			}else
+				break;
+		}	
+		logger.info("biz pws to start enroll is "+comPWSOfSponser);
 		// sponser search by Account Number
 		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-		//Open com pws of Sponser
-		storeFrontHomePage.openConsultantPWS(comPWSOfSponser);
+
 		//Hover shop now and click all products link.
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -14711,6 +14723,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
 		String lastName = "lN";
+		List<Map<String, Object>> accountContactIdList=null;
+		List<Map<String, Object>> accountEmailIdList=null;
+		List<Map<String, Object>> primaryEmailAddressList=null;
+		String accountContactId=null;
+		String accountEmailId=null;
+		String primaryEmailAddress=null;
 		String URL=null;
 		country = driver.getCountry();
 		String firstName=TestConstants.FIRST_NAME+randomNumber;
@@ -14770,14 +14788,34 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		//Get .Biz PWS from database to start enrolling rc user and upgrading it to pc user
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
-		String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+		//String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String bizPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//Open biz pws of Sponser
+		storeFrontHomePage.openConsultantPWS(bizPWSOfSponser);
+		while(true){
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+				//String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+				bizPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				storeFrontHomePage.openConsultantPWS(bizPWSOfSponser);	
+				continue;
+			}else
+				break;
+		}	
+		logger.info("biz pws to start enroll is "+bizPWSOfSponser);
 		// sponser search by Account Number
 		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-		//Open com pws of Sponser
-		storeFrontHomePage.openConsultantPWS(bizPWSOfSponser);
+		//Get email address of consultant from account id from whom pws we have started enrolling RC
+		accountContactIdList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_FROM_ACCOUNT_ID_RFO, accountID),RFO_DB);
+		accountContactId=String.valueOf(getValueFromQueryResult(accountContactIdList, "AccountContactId"));
+		accountEmailIdList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_FROM_ACCOUNT_CONTACT_ID_RFO, accountContactId),RFO_DB);
+		accountEmailId=String.valueOf(getValueFromQueryResult(accountEmailIdList, "EmailAddressId"));
+		primaryEmailAddressList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_PRIMARY_EMAIL_ADDRESS_FROM_EMAIL_ADDRESS_ID_RFO, accountEmailId),RFO_DB);
+		primaryEmailAddress=String.valueOf(getValueFromQueryResult(primaryEmailAddressList, "EmailAddress"));
+
 		//Hover shop now and click all products link.
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		// Products are displayed?
@@ -14807,7 +14845,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNumber, emailAddress, password);
 
 		//Assert the default consultant.
-		s_assert.assertTrue(storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser().contains(emailAddressOfSponser),"Default consultant is not the one whose pws is used");
+		s_assert.assertTrue(storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser().contains(primaryEmailAddress),"Default consultant is not the one whose pws is used");
 		//Assert continue without sponser link is not present
 		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(), "Continue without Sponser link is present on pws enrollment");
 		s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(),"Not your Sponser link is not present.");
@@ -14848,6 +14886,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	
 	// Hybris Project-3883:BIZ:Join PCPerk in the Order Summary - US Sponsor WITHOUT Pulse
 	@Test
 	public void testJoinPCPerksInOrderSummarySection_3883() throws InterruptedException{
@@ -14912,7 +14951,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-		//storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		URL=driver.getCurrentUrl();
@@ -14926,7 +14964,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 		//Get .biz PWS from database to start enrolling rc user and upgrading it to pc user
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
-		//String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+		// primaryEmailAddress= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String bizPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		// sponser search by Account Number
@@ -15012,7 +15050,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(urlToAssert.contains(currentURL),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
-
 	//Hybris Project-3882:COM:Join PCPerk in the Order Summary section -US Sponsor WITH Pulse
 	@Test
 	public void testJoinPCPerksInOrderSummarySection_3882() throws InterruptedException{
@@ -15022,6 +15059,12 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
 		String lastName = "lN";
+		List<Map<String, Object>> accountContactIdList=null;
+		List<Map<String, Object>> accountEmailIdList=null;
+		List<Map<String, Object>> primaryEmailAddressList=null;
+		String accountContactId=null;
+		String accountEmailId=null;
+		String primaryEmailAddress=null;
 		country = driver.getCountry();
 		List<Map<String, Object>> randomConsultantList=null;
 		List<Map<String, Object>> sponsorIdList =null;
@@ -15053,17 +15096,28 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String urlToAssert=storeFrontHomePage.convertCountryInPWS(comURL);
 		logger.info(" pws to assert is "+urlToAssert);
 
-		//Get .com PWS from database to start enrolling rc user and upgrading it to pc user
+		//Get .biz PWS from database to start enrolling rc user and upgrading it to pc user
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
 		String emailAddressOfSponserConsultant= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String bizPWSForEnrollment=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
-		String accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		// sponser search by Account Number
-		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-		//Open com pws of Sponser
-		logger.info("biz pws to start enroll is "+bizPWSForEnrollment);
+		String accountIdOfConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//Open biz pws of Sponser
 		storeFrontHomePage.openConsultantPWS(bizPWSForEnrollment);
+		while(true){
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+				bizPWSForEnrollment=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				accountIdOfConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				storeFrontHomePage.openConsultantPWS(bizPWSForEnrollment);	
+				continue;
+			}else
+				break;
+		}	
+		logger.info("biz pws to start enroll is "+bizPWSForEnrollment);
+		// sponser search by Account Number
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIdOfConsultant),RFO_DB);
+		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
 		//Hover shop now and click all products link.
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -15135,7 +15189,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
-
 	// Hybris Project-3888:BIZ:Verify Search Again functionality on Sponsor Search section
 	@Test
 	public void testBizSearchAgainFunctionalityOnSponsorSearchSection_3888() throws InterruptedException {
@@ -15322,6 +15375,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	// Hybris Project-1281:15.North Dakota - Standard enrollment
 	@Test
 	public void testNorthDakota_StandardEnrollment_1281() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("us")){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
@@ -15370,6 +15424,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 
 		s_assert.assertAll();
+	}else{
+		logger.info("NOT EXECUTED...Test is ONLY for US env");
+	}
 	}
 
 	//Hybris Project-96:Express Enrollment Billing Info Shipping Info - New
@@ -15903,5 +15960,90 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateProductPricingDetailOnSumaaryPage(), "Pricing information related to product is not present on summary page");
 		s_assert.assertAll();
 	}
+	 //Hybris Project-2313:Check Prices as Consultant & PC log in
+	 @Test
+	 public void testProductPricesAsConsultantAndPC_2313() throws InterruptedException {
+	  RFO_DB = driver.getDBNameRFO(); 
+	  //Login as Consultant..
+	  List<Map<String, Object>> randomConsultantList =  null;
+	  String consultantEmailID = null;
+	  String accountID = null;
+	  List<Map<String, Object>> randomPCUserList =  null;
+	  String pcUserEmailID =null;
+	  String accountId = null;
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  country = driver.getCountry();
+	  while(true){
+	   randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+	   consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	   accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountID);
+	   storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	   boolean isLoginError = driver.getCurrentUrl().contains("error");
+	   if(isLoginError){
+	    logger.info("Login error for the user "+consultantEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  }
+	  logger.info("login is successful");
+	  storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
 
+	  // Products are displayed?
+	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	  logger.info("Quick shop products are displayed");
+	  //validate user is able to see various product prices attached to the product. on quick shop page
+	  s_assert.assertTrue(storeFrontHomePage.validateRetailProductProcesAttachedToProduct(), "retail product prices attached to product is not displayed");
+	  //Add product to cart & checkout..
+	  storeFrontHomePage.selectProductAndProceedToBuy();
+
+	  //Cart page is displayed?
+	  s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	  logger.info("Cart page is displayed");
+	  //Click on Check out
+	  storeFrontHomePage.clickOnCheckoutButton();
+	  //validate prices related to attched product on summary page..
+	  s_assert.assertTrue(storeFrontHomePage.validateProductPricingDetailOnSumaaryPage(), "Pricing information related to product is not present on summary page");
+	  storeFrontHomePage.hitBrowserBackBtn();
+	  logout();
+	  while(true){
+	   randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	   pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+	   accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountId);
+
+	   storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+	   boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+	   if(isSiteNotFoundPresent){
+	    logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  } 
+	  logger.info("login is successful");
+	  storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
+
+	  // Products are displayed?
+	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	  logger.info("Quick shop products are displayed");
+	  //validate user is able to see various product prices attached to the product. on quick shop page
+	  s_assert.assertTrue(storeFrontHomePage.validateRetailProductProcesAttachedToProduct(), "retail product prices attached to product is not displayed");
+	  s_assert.assertAll();
+	 }
+
+	 //Hybris Project-2314:Check Product prices without logging in
+	 @Test
+	 public void testProductPricesWithOutLoggingIn_2314(){
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  //Click All Products link
+	  storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	  // Products are displayed?
+	  s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	  logger.info("Quick shop products are displayed");
+	  //validate user is able to see various product prices attached to the product..
+	  s_assert.assertTrue(storeFrontHomePage.validateRetailProductProcesAttachedToProduct(), "retail product prices attached to product is not displayed");
+	  s_assert.assertAll();
+	 }
 }

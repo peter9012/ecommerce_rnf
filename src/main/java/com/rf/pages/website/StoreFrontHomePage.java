@@ -1098,7 +1098,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		//  actions.moveToElement(driver.findElement(By.xpath("//div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
 		//  logger.info("First result of sponsor has been clicked");
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();

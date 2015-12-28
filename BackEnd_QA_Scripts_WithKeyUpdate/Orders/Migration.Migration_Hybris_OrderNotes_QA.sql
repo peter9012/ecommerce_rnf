@@ -2,7 +2,7 @@
 USE DataMigration
 go
 
-CREATE PROCEDURE Migration.Migration_Hybris_OrderNotes_QA @LastRun DATETIME = '2014-05-01'
+CREATE PROCEDURE Migration.Migration_Hybris_OrderNotes_QA @LastRun DATETIME = '2014-06-01'
 AS
 BEGIN
  
@@ -19,7 +19,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 
 DECLARE @Country NVARCHAR(20)= 'US';
-DECLARE @ServerMod DATETIME = '2014-05-01' ,
+DECLARE @ServerMod DATETIME = '2014-06-01' ,
     @RFOCount BIGINT ,
     @RowCount BIGINT ,
     @HybrisCount BIGINT 

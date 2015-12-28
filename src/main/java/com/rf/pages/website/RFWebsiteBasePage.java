@@ -1239,13 +1239,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		try{
-			driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
-			driver.click(ADD_NEW_SHIPPING_LINK_LOC);
+			driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
+			driver.click(By.xpath("//a[text()='Add new shipping address »']"));
 			logger.info("Ads new shipping profile link clicked");
 		}
 		catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//a[text()='Add a new shipping address »']"));
-			driver.click(By.xpath("//a[text()='Add a new shipping address »']"));
+			driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
+			driver.click(ADD_NEW_SHIPPING_LINK_LOC);
 			logger.info("Ads new shipping profile link clicked");
 		}
 	}

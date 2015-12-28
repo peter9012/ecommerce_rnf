@@ -412,7 +412,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public String getTax(){
 		driver.waitForElementPresent(By.xpath("//div[@id='module-tax']//span[@class='taxRight']"));
-		return driver.findElement(By.xpath("//div[@id='module-total'][1]//b[text()='Total']/following::div[1]/span")).getText().trim();
+		return driver.findElement(By.xpath("//div[@id='module-tax']//span[@class='taxRight']")).getText().trim();
 	}
 
 	public String getTotal(){
@@ -628,22 +628,22 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
-//	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
-//		if(driver.getCountry().equalsIgnoreCase("us")){
-//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
-//			logger.info("Next button on billing profile clicked"); 
-//		}
-//		else{
-//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/strong//div"));
-//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
-//			logger.info("Next button on billing profile clicked");
-//		}
-//	}
+	//	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
+	//		if(driver.getCountry().equalsIgnoreCase("us")){
+	//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
+	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
+	//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+	//			logger.info("Next button on billing profile clicked"); 
+	//		}
+	//		else{
+	//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
+	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/strong//div"));
+	//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+	//			logger.info("Next button on billing profile clicked");
+	//		}
+	//	}
 
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));

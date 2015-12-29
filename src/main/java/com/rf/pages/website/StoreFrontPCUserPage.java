@@ -221,7 +221,7 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		String UIMonth = null;
 		if(month.equalsIgnoreCase("January")){
 			a=1;
-		}else if(month.equalsIgnoreCase("Feburary")){
+		}else if(month.equalsIgnoreCase("February")){
 			a=2;
 		}else if(month.equalsIgnoreCase("March")){
 			a=3;

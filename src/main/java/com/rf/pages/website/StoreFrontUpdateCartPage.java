@@ -801,13 +801,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public double getOrderTotal(){
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[text()='Total']/following::div[1]/span")).getText().trim();
+			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//b[text()='Total']/following::div[1]/span")).getText().trim();
 			String[] totalValue= value.split("\\s");
 			double  orderTotal = Double.parseDouble(totalValue[1]);
 			logger.info("Subtotal Value fetched is "+orderTotal);
 			return orderTotal;
 		} else if(driver.getCountry().equalsIgnoreCase("US")){
-			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[text()='Total']/following::div[1]/span")).getText().trim();
+			String value = driver.findElement(By.xpath("//div[@class='checkout-module-content']//b[text()='Total']/following::div[1]/span")).getText().trim();
 			String fetchValue = value.substring(1);
 			double  orderTotal = Double.parseDouble(fetchValue);
 			logger.info("Subtotal Value fetched is "+orderTotal);
@@ -1409,4 +1409,73 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")).isSelected();
 	}
+
+	public String selectAndGetBillingMethodName(String country) throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input"));
+		if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input")).isSelected()==false){
+			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input/.."));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input")).getText().split("-")[0]);
+			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText(); 
+		}
+		else if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input")).isSelected()==false){
+			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/.."));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input")).getText().split("-")[0]);
+			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText();  
+		}
+		else if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input")).isSelected()==false){
+			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input/.."));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input")).getText().split("-")[0]);
+			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText();  
+		}
+		return null;
+	}
+
+	public boolean verifyIsOnlyOneRadioButtonSelected(String country){
+		int noOfRadioButtonSelect =0;
+		List<WebElement> totalBillingAddress = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));
+		for(int i=1; i<=totalBillingAddress.size(); i++){
+			driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]//div[@class='billing-address-radio']//input"));
+			if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]//div[@class='billing-address-radio']//input")).isSelected()==true){
+				driver.waitForLoadingImageToDisappear();
+				noOfRadioButtonSelect++;
+			}else{
+				logger.info("//div[@id='multiple-billing-profiles']/div/div["+i+"]//div[@class='billing-address-radio']//input"+" "+"is not selected");
+			}
+		}
+		return noOfRadioButtonSelect==1;
+	}
+
+	public boolean isTheBillingAddressPresentOnPage(String firstName, int noOfBillingProfile){
+		boolean isFirstNamePresent = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		for(int i=1;i<=noOfBillingProfile;i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']")).getText().toLowerCase().contains(firstName.toLowerCase());
+			System.out.println("firstname "+firstName);
+			if(isFirstNamePresent == true){ 
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void selectDifferentBillingProfile(String profileName){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/following::div[1]//input/.."));
+		driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/following::div[1]//input/.."));
+	}
+
+	public boolean isShippingAddressNextStepBtnIsPresent(){
+		return driver.isElementPresent(By.id("saveShippingInfo"));
+	}
+
+	public String getDefaultSelectedShippingMethodName(){
+		String defaultShippingAddress=driver.findElement(By.xpath("//span[contains(@style,'radio_btn_checked.png')]/input[@id='Radio4']/../following-sibling::label")).getText();
+		String[] arr=defaultShippingAddress.split("-");
+		String defaultShipmethod=arr[0];
+		logger.info("default selected shipping method is "+defaultShipmethod.trim());
+		return defaultShipmethod.trim();
+	}
+
 }

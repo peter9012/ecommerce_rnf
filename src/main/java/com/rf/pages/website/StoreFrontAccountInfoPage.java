@@ -202,6 +202,12 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String genderFromUI = "male";
 			genderFromUI.equalsIgnoreCase(gender);
 			return true;
+		}else if(driver.findElement(By.xpath(String.format(ACCOUNT_INFO_RADIO_BUTTON_LOC, TestConstants.CONSULTANT_FEMALE_GENDER))).isSelected() == true){
+			String genderFromUI = "female";
+			genderFromUI.equalsIgnoreCase(gender);
+			return true;
+		}else if(gender.equals("others")){
+			return true;
 		}
 		return false;
 	}
@@ -587,10 +593,9 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public void enterNewUserNameAndClicKOnSaveButton(String newUserName) {
 		driver.waitForElementPresent(By.id("username-account"));
 		driver.clear(By.id("username-account"));
-		driver.type(By.id("username-account"), newUserName);
+		driver.type(By.id("username-account"), newUserName+"\t");
 		driver.click(By.id("saveAccountInfo"));
 		logger.info("save button clicked");
-
 	}
 
 	public boolean verifyProfileUpdationMessage(){
@@ -736,10 +741,21 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnGenderRadioButton(String consultantGender) {
-		driver.waitForElementPresent(By.id(""+consultantGender+""));
-		driver.click(By.id(""+consultantGender+""));
-		logger.info("gender radio button is clicked");
+		for(int i=0;i<=5;i++){
+			driver.waitForElementPresent(By.xpath("//input[@id='"+consultantGender+"']/.."));
+			driver.click(By.xpath("//input[@id='"+consultantGender+"']/.."));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("gender radio button is clicked at attempt "+i);
+			if(verifyGenderRadioBtnSelected(TestConstants.CONSULTANT_GENDER)==false){
+				continue;
+			}else{
+				break;
+			}
+		}
+	}
 
+	public boolean verifyGenderRadioBtnSelected(String gender){
+		return driver.isElementPresent(By.xpath("//input[@id='"+gender+"' and @checked='checked']/.."));
 	}
 
 	public void clickOnSaveAfterEnterSpouseDetails() {
@@ -820,6 +836,20 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			return true;
 		}
 		return false;
+	}
+
+	public String getFirstNameFromAccountInfo(){
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		String firstName=driver.findElement(ACCOUNT_INFO_FIRST_NAME_LOC).getAttribute("value");
+		logger.info("FirstName from UI is "+firstName);
+		return firstName;
+	}
+
+	public String getLastNameFromAccountInfo(){
+		driver.waitForElementPresent(ACCOUNT_INFO_LAST_NAME_LOC);
+		String firstName=driver.findElement(ACCOUNT_INFO_LAST_NAME_LOC).getAttribute("value");
+		logger.info("LastName from UI is "+firstName);
+		return firstName;
 	}
 
 }

@@ -17,8 +17,9 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By WELCOME_TXT = By.xpath("//li[@id='account-info-button']/a");
 	private static final By CRP_CART_IMG = By.id("bag-special");
 	private static final By NXT_CRP_TXT = By.xpath("//div[@id='bag-special']/following-sibling::div[1]");
-
-
+	private static final By WELCOME_DROP_DOWN = By.xpath("//li[@id='account-info-button']/a"); 
+	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Shipping Info']");
+	
 	public DSVStoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
@@ -53,6 +54,25 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	
 	public String getNextCRPText(){
 		return driver.findElement(NXT_CRP_TXT).getText();
+	}
+	
+	public DSVStoreFrontAutoshipCartPage clickOnCRPCartImg(){
+		driver.quickWaitForElementPresent(CRP_CART_IMG);
+		driver.click(CRP_CART_IMG);
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
+		return new DSVStoreFrontAutoshipCartPage(driver);
+	}
+	
+	public void clickWelcomeDropDown(){
+		driver.quickWaitForElementPresent(WELCOME_DROP_DOWN);
+		driver.click(WELCOME_DROP_DOWN);		
+	}
+	
+	public DSVStoreFrontShippingInfoPage clickShippingInfoLinkFromWelcomeDropDown(){
+		driver.quickWaitForElementPresent(SHIPPING_INFO_LINK_WELCOME_DROP_DOWN);
+		driver.click(SHIPPING_INFO_LINK_WELCOME_DROP_DOWN);
+		return new DSVStoreFrontShippingInfoPage(driver);
 	}
 	
 	

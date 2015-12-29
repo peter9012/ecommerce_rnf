@@ -700,9 +700,15 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnRequestASponsorBtn(){
-		driver.waitForElementPresent(By.xpath("//input[@value='Request a sponsor']"));
-		driver.click(By.xpath("//input[@value='Request a sponsor']"));
-		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@value='Request a sponsor']"));
+			driver.click(By.xpath("//input[@value='Request a sponsor']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//a[@id='requestsponsor']"));
+			driver.click(By.xpath("//a[@id='requestsponsor']"));
+			driver.waitForLoadingImageToDisappear();
+		}
 	}
 
 	public void clickOKOnSponsorInformationPopup(){
@@ -1379,12 +1385,13 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::input[@checked='checked']"));
 	}
+
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 			if(isFirstNamePresent == true){ 
 				return true;
 			}
@@ -1707,6 +1714,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
+	}
+
+	public String getSponsorResultAccordingToCID(String CID){
+		driver.waitForPageLoad();
+		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
 
 }

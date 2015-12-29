@@ -238,7 +238,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getShippingMethodFromAdhocOrderTemplate(){
-		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();
+		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().trim();
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
 		return shippingMethodUI;
 	}

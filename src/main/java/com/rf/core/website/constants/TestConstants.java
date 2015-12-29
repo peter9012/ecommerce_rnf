@@ -176,6 +176,7 @@ public class TestConstants {
 	public static final String CONSULTANT_MONTH_OF_BIRTH = "05";
 	public static final String CONSULTANT_YEAR_OF_BIRTH = "2010";
 	public static final String CONSULTANT_GENDER = "male";
+	public static final String CONSULTANT_FEMALE_GENDER = "female";
 	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION = "Texas";
 	public static final String CONSULTANT_INVALID_11_DIGIT_MAIN_PHONE_NUMBER = "23423423423";
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
@@ -387,7 +388,13 @@ public class TestConstants {
 	
 	public static final String DSV_PWS_SUFFIX ="myrandf.com/ca/";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
-
+	
+	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";
+	public static final String DSV_CITY_CA = "Bonnyville";
+	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
+	public static final String DSV_PHONE_NUMBER = "8067736419";
+	public static final String DSV_SECURITY_CODE = "5487";
+	
 }
 
 

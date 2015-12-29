@@ -1123,8 +1123,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateSetUpAccountPageIsDisplayed(){
-		return driver.findElement(By.xpath("//h1[contains(text(),'Set Up Account')]")).getText().contains("Account");
-		//return driver.getTitle().contains("account");
+		return driver.findElement(By.xpath("//h1[contains(text(),'Set Up Account')]")).getText().contains("SET UP ACCOUNT");
 	}
 
 	public boolean validateUpdatedMainAccountInfo(){
@@ -3159,9 +3158,10 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//textarea[@id='message']/following::input[1]"));
 	}
+
 	public boolean verifyRFCorporateSponsorPresent() {
-		driver.waitForElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
-		return driver.isElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'RF Corporate')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'R+F Corporate')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='sponsorInfo']/span[contains(text(),'R+F Corporate')]"));
 	}
 
 	public boolean verifyShipImmediatelyRadioButtinIsSelected(){
@@ -3171,8 +3171,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean validateTermsAndConditions(){
 		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Terms and Conditions')]"));
-		return driver.isElementPresent(By.xpath("//li[contains(text(),'Terms and Conditions')]"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Terms and Conditions')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Terms and Conditions')]"));
 	}
 
 	public void selectNewBillingCardExpirationDateAfterEdit(){

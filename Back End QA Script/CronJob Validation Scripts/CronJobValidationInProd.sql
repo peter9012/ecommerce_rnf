@@ -16,7 +16,7 @@
 
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users (NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -37,7 +37,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(DATEADD(DAY, 30, GETDATE()) AS D
 
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -57,7 +57,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(GETDATE() AS DATE)
 --Fetches all customers  having expiration date today.
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -76,7 +76,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(GETDATE() AS DATE)
 
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -92,7 +92,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(DATEADD(DAY, 30, GETDATE()) AS D
 --Fetches all customers  for which expiration date is 30 days  after current date.Sends reminder email.
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -114,7 +114,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(DATEADD(DAY, 30, GETDATE()) AS D
  
  
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -126,7 +126,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(DATEADD(DAY, -30, GETDATE()) AS 
 --for FailOver Condition :
 
 SELECT  COUNT(*)--should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -145,7 +145,7 @@ WHERE   CAST(u.p_expirationdate AS DATE) = CAST(DATEADD(DAY, -31, GETDATE()) AS 
 
 		
 SELECT  COUNT(*)
-FROM    Hybris..users u
+FROM    Hybris..users (NOLOCK)u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -160,7 +160,7 @@ WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DA
 --OR Alternative Validation:
 
 SELECT  COUNT(*)--Should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -188,7 +188,7 @@ WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DA
 		
 		
 SELECT  COUNT(*)
-FROM    Hybris..users u
+FROM    Hybris..users (NOLOCK)u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -203,7 +203,7 @@ WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DA
 --OR Alternative Validation:
 
 SELECT  COUNT(*)--Should be Null 
-FROM    Hybris..users u
+FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -212,7 +212,7 @@ FROM    Hybris..users u
 WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
                                                               -29, GETDATE()) AS DATE)
         AND u.PK NOT IN ( SELECT    userpk
-                          FROM      Hybris.dbo.orders
+                          FROM      Hybris.dbo.orders(NOLOCK)
                           WHERE     p_template = 1
                                     AND p_active = 1
                                     AND currencypk = 8796125855777
@@ -243,8 +243,8 @@ WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DA
 
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users(NOLOCK) u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -262,8 +262,8 @@ WHERE   ho.p_template = 1
 
 SELECT  COUNT(*) ,
         CAST(ho.p_schedulingdate AS DATE) SchedulingDate --Should be Null After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users(NOLOCK) u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -284,8 +284,8 @@ GROUP BY CAST(ho.p_schedulingdate AS DATE);
 		-- Checking If Any US Templates generated Orders During Cut Over Period:
 
 SELECT  COUNT(*)
-FROM    Hybris..orders a
-        JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
+FROM    Hybris..orders(NOLOCK) a
+        JOIN Hybris..orders(NOLOCK) ho ON a.PK = ho.p_associatedtemplate
 WHERE   a.p_template = 1
         AND a.currencypk = 8796125855777 --US
         AND a.TypePkString = 8796124676178 --CRP
@@ -306,8 +306,8 @@ WHERE   a.p_template = 1
 
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users (NOLOCK)u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -326,8 +326,8 @@ WHERE   ho.p_template = 1
 
 SELECT  COUNT(*) ,
         CAST(ho.p_schedulingdate AS DATE) SchedulingDate --Should be Same  After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users(NOLOCK) u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -350,8 +350,8 @@ GROUP BY CAST(ho.p_schedulingdate AS DATE);
 		
 
 SELECT  COUNT(*)
-FROM    Hybris..orders a
-        JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
+FROM    Hybris..orders(NOLOCK) a
+        JOIN Hybris..orders (NOLOCK)ho ON a.PK = ho.p_associatedtemplate
 WHERE   a.p_template = 1
         AND a.currencypk = 8796125855777 --US
         AND a.TypePkString = 8796124708946 --PCPerks
@@ -373,8 +373,8 @@ WHERE   a.p_template = 1
 --5. cc failure count <=3
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users(NOLOCK) u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -393,8 +393,8 @@ WHERE   ho.p_template = 1
 
 SELECT  COUNT(*) ,
         CAST(ho.p_schedulingdate AS DATE) SchedulingDate --Should be Same for all  After Updating Devs Scripts.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users (NOLOCK)u ON ho.userpk = u.PK
                                 AND u.p_country = 8796100624418
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
@@ -416,8 +416,8 @@ GROUP BY CAST(ho.p_schedulingdate AS DATE);
 		-- Checking If Any US Templates generated Orders During Cut Over Period:
 
 SELECT  COUNT(*)
-FROM    Hybris..orders a
-        JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
+FROM    Hybris..orders(NOLOCK) a
+        JOIN Hybris..orders(NOLOCK) ho ON a.PK = ho.p_associatedtemplate
 WHERE   a.p_template = 1
         AND a.currencypk = 8796125855777 --US
         AND a.TypePkString = 8796124741714 --PULSE
@@ -432,14 +432,14 @@ WHERE   a.p_template = 1
 --Credit Card is expired or about to expire (month and year expiration).
 
 SELECT  COUNT(ho.PK)
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users(NOLOCK) u ON ho.userpk = u.PK
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
                                     AND c.isocode = 'US'
                                     AND u.p_sourcename = 'Hybris-DM'
-        JOIN Hybris..paymentinfos pp ON pp.OwnerPkString = ho.PK
+        JOIN Hybris..paymentinfos(NOLOCK) pp ON pp.OwnerPkString = ho.PK
 WHERE   ho.p_template = 1
         AND ho.p_active = 1
         AND ho.currencypk = 8796125855777
@@ -463,8 +463,8 @@ WHERE   ho.p_template = 1
 -- is About to Ship (5 Days)
 
 SELECT  COUNT(ho.PK)--Should be Zero Specially for CRP and PCperks.
-FROM    Hybris..orders ho
-        JOIN Hybris..users u ON ho.userpk = u.PK
+FROM    Hybris..orders(NOLOCK) ho
+        JOIN Hybris..users (NOLOCK)u ON ho.userpk = u.PK
         JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
                                              AND v.Value = 'Active'
         JOIN Hybris..countries c ON u.p_country = c.PK
@@ -489,7 +489,7 @@ WHERE   ho.p_template = 1
 
 	
 SELECT  COUNT(ho.PK)--Should be Zero Specially for CRP and PCperks.
-FROM    Hybris..orders ho
+FROM    Hybris..orders(NOLOCK) ho
         --JOIN Hybris..users u ON ho.userpk = u.PK
         --JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
         --                                     AND v.Value = 'Active'
@@ -514,7 +514,7 @@ WHERE   ho.p_template = 1
 			
 			
 SELECT  COUNT(ho.PK)--Should be Zero Specially for CRP and PCperks.
-FROM    Hybris..orders ho
+FROM    Hybris..orders(NOLOCK) ho
 WHERE   ho.p_template = 1
         AND ho.p_active = 0
         AND ho.currencypk = 8796125855777
@@ -538,7 +538,7 @@ WHERE   ho.p_template = 1
 			
 				
 SELECT  COUNT(ho.PK)--Should be Zero Specially for CRP and PCperks.
-FROM    Hybris..orders ho
+FROM    Hybris..orders(NOLOCK) ho
 WHERE   ho.p_template = 1
         AND ho.p_active = 1
         AND ho.currencypk = 8796125855777

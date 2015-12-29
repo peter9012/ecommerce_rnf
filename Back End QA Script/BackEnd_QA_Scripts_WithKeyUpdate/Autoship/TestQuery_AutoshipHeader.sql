@@ -1,17 +1,3 @@
-
-
---SELECT * FROM datamigration..map_tab
---WHERE [owner]='824-Autoship' AND [Hybris_Column ]='statuspk'
-
-
-
-SELECT * FROM datamigration..dm_log
-WHERE test_area ='824-Autoship'
-
-SELECT ato.ConsultantID,ato.AutoshipID,ho.p_consultantIdReceivingCommiss,ho.pk FROM Hybris..orders ho
-JOIN hybris.autoship ato ON ho.pk=ato.autoshipid
-WHERE ato.ConsultantID <>ho.p_consultantIdReceivingCommiss 
-
 USE RFOperations;
 SET STATISTICS TIME ON;
 GO
@@ -37,167 +23,209 @@ DECLARE @temp TABLE
       rfo_value VARCHAR(MAX)
     );
 
-	--Validation of AUTOSHIP Counts, Dups & Columns without transformations
+--Validation of AUTOSHIP Counts, Dups & Columns without transformations
 
-	--Duplicate check on Hybris side for US
-	SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
-				 ELSE 'No duplicates - Validation Passed'
-			END AS [Step-1 Validation]
-	FROM    ( SELECT    COUNT(*) cnt ,
-						a.code AS autoshipnumber
-			  FROM      Hybris.dbo.orders a ,
-						Hybris.dbo.users b ,
-						Hybris.dbo.countries c
-			  WHERE     a.userpk = b.PK
-						AND b.p_country = c.PK
-						AND c.isocode = 'US'
-						AND a.p_template = 1 --AS
-	GROUP BY            a.code
-			  HAVING    COUNT(*) > 1
-			) t1;
-
-	--Counts check on Hybris side for US
-		IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
-			DROP TABLE #DuplicateAutoship;
-
-		SELECT  AutoshipID
-		INTO    #DuplicateAutoship  ---Loading Duplicates Autoship into Temp Table.425 records 
-		FROM    Hybris.Autoship
-		WHERE   AccountID IN (
-				SELECT  a.AccountID
-				FROM    Hybris.Autoship a
-						INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-				WHERE   ab.AccountTypeID = 1
-						AND a.CountryID = 236
-						AND a.AutoshipTypeID = 2
-						AND a.Active = 1
-				GROUP BY a.AccountID
-				HAVING  COUNT(*) > 1 )
-				AND Active = 1
-				AND AutoshipTypeID = 2--total 809
-		EXCEPT
-		SELECT  MAX(AutoshipID) AutoshipID-- INTO #maxautoship
-		FROM    Hybris.Autoship a
-				INNER JOIN RFO_Accounts.AccountBase ab ON ab.AccountID = a.AccountID
-		WHERE   ab.AccountTypeID = 1
-				AND a.CountryID = 236
-				AND a.AutoshipTypeID = 2
-				AND a.Active = 1
-		GROUP BY a.AccountID
-		HAVING  COUNT(*) > 1;
-		 --total 386
+--Duplicate check on Hybris side for US
+SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
+             ELSE 'No duplicates - Validation Passed'
+        END AS [Step-1 Validation]
+FROM    ( SELECT    COUNT(*) cnt ,
+                    a.code AS autoshipnumber
+          FROM      Hybris.dbo.orders a ,
+                    Hybris.dbo.users b ,
+                    Hybris.dbo.countries c
+          WHERE     a.userpk = b.PK
+                    AND b.p_country = c.PK
+                    AND c.isocode = 'US'
+                    AND a.p_template = 1 --AS
+GROUP BY            a.code
+          HAVING    COUNT(*) > 1
+        ) t1;
 
 
 
-		 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
-			DROP TABLE #LoadedAutoshipID;
-
-		SELECT    DISTINCT
-				a.AutoshipID
-		INTO    #LoadedAutoshipID
-		FROM    RFOperations.Hybris.Autoship (NOLOCK) a
-				INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
-				INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
-				INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
-				INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
-				INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
-				INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
-												 AND u.p_sourcename = 'Hybris-DM'
-		WHERE   a.CountryID = 236
-				AND a.AutoshipID NOT IN ( SELECT    AutoshipID
-										  FROM      #DuplicateAutoship );
+      --Counts check on Hybris side for US
+IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+    DROP TABLE #DuplicateAutoship;
 
 
-		SELECT  hybris_cnt ,
-				rfo_cnt ,
-				CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
-					 WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
-					 ELSE 'Count matches - validation passed'
-				END Results
-		FROM    ( SELECT    COUNT(a.PK) hybris_cnt
-				  FROM      Hybris.dbo.orders a ,
-							Hybris.dbo.users b ,
-							Hybris.dbo.countries c
-				  WHERE     a.userpk = b.PK
-							AND b.p_country = c.PK
-							AND c.isocode = 'US'
-							AND a.p_template = 1
-							AND p_sourcename = 'Hybris-DM'
-				) t1 ,
-				(
-				  SELECT    COUNT(DISTINCT a.AutoshipID) rfo_cnt
-				  FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-							JOIN #LoadedAutoshipID b ON a.AutoshipID=b.AutoshipID
-				  WHERE     a.CountryID = 236
-							
-										) t2;
+SELECT  CASE WHEN COUNT(1) > 1
+             THEN 'Accounts with duplicate Active templates found'
+             WHEN COUNT(1) = 0
+             THEN 'No Accounts with duplicate templates found'
+        END AS CheckDuplicateActiveTemplates
+FROM    ( SELECT    AccountID ,
+                    a.AutoshipTypeID ,
+                    COUNT(*) AS Counts
+          FROM      RFOperations.Hybris.Autoship a
+                    JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+          WHERE     CountryID = 236
+                    AND Active = 1
+          GROUP BY  AccountID ,
+                    a.AutoshipTypeID
+          HAVING    COUNT(*) > 1
+        ) A 
+		      
+		      
+--Loading duplicate Active autoships into temp table
+
+SELECT  AccountID ,
+        a.AutoshipTypeID
+INTO    #DuplicateAutoship
+FROM    RFOperations.Hybris.Autoship a
+        JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+WHERE   CountryID = 236
+        AND Active = 1
+GROUP BY AccountID ,
+        a.AutoshipTypeID
+HAVING  COUNT(*) > 1
 
 
 
-                                         IF OBJECT_ID('tempdb..#missing') IS NOT NULL
-                                            DROP TABLE #missing;
-
-                                        SELECT  t1.pk,t2.AutoshipID,CASE WHEN t1.pk IS NULL THEN 'Missing in Hybris' 
-										WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO' END  results INTO #missing
-                                        FROM    ( SELECT    a.PK
-                                                  FROM      Hybris.dbo.orders a ,
-                                                            Hybris.dbo.users b ,
-                                                            Hybris.dbo.countries c
-                                                  WHERE     a.userpk = b.PK
-                                                            AND b.p_country = c.PK
-                                                            AND c.isocode = 'US'
-                                                            AND a.p_template = 1
-                                                            AND p_sourcename = 'Hybris-DM'
-                                                ) t1 FULL OUTER JOIN 
-                                                ( SELECT    a.AutoshipID
-                                                  FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-                                                            JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
-                                                  WHERE     a.CountryID = 236
-                                                ) t2 ON t1.pk=t2.AutoshipID
-												WHERE t1.pk IS NULL OR t2.AutoshipID IS NULL 
-												SELECT COUNT(*) AS TotalMissingAutoship FROM #missing
-												SELECT *FROM #missing
-
-		--Column2Column Validation that doesn't have transformation - Autoship
 
 
+IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
+    DROP TABLE #LoadedAutoshipID;
 
-        DELETE  FROM DataMigration.dbo.dm_log
-        WHERE   test_area = '824-Autoship';
-        IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
-            DROP TABLE #tempact;
-
-
-
-			SELECT  a.AutoshipID ,
-					a.AutoshipNumber ,
-					a.AccountID ,
-					u.PK ,
-					a.AutoshipStatusID ,
-					a.AutoshipTypeID ,
-					a.StartDate ,
-				    a.TotalTax
-			into #tempact 
-			FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-			JOIN #LoadedAutoshipID b ON a.AutoshipID=b.AutoshipID
-			 JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
-												AND u.p_sourcename = 'Hybris-DM'
-			WHERE   a.CountryID = 236
-					AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
-												  FROM      Hybris.Orders
-												  WHERE     CountryID = 236 )
-												  
-			GROUP BY a.AutoshipID ,
-					a.AutoshipNumber ,
-					a.AccountID ,
-					u.PK ,
-					a.AutoshipStatusID ,
-					a.AutoshipTypeID ,
-					a.StartDate ,
-				    a.TotalTax;
+SELECT    DISTINCT
+        a.AutoshipID
+INTO    #LoadedAutoshipID
+FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipNumber
+                                                            AND ao.AccountID = a.AccountID 
+        INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
+        INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
+        INNER JOIN Hybris.dbo.users u ON a.AccountID = CAST(u.p_rfaccountid AS NVARCHAR)
+                                         AND u.p_sourcename = 'Hybris-DM'
+WHERE   a.CountryID = 236
+       -- AND a.AutoshipID NOT IN ( SELECT    AutoshipID FROM      #DuplicateAutoship );--Exclude Duplicates
 
 
-			CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
+IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+    DROP TABLE #extra;
+
+SELECT  ho.code
+INTO    #extra
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.pk
+WHERE   lo.AutoshipID IS NULL;       --124 Templates 
+
+
+		
+
+SELECT  hybris_cnt ,
+        rfo_cnt ,
+        CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
+             WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
+             ELSE 'Count matches - validation passed'
+        END Results
+FROM    ( SELECT    COUNT( DISTINCT ho.PK) hybris_cnt --1461818 Templates
+          FROM      Hybris.dbo.orders ho
+		  JOIN		Hybris.dbo.users u ON u.pk=ho.userpk AND u.p_sourcename='Hybris-DM'
+		  JOIN		Hybris.dbo.countries c ON c.pk=u.p_country AND c.isocode='US'
+          WHERE ho.p_template = 1
+                  
+        ) t1 ,
+        ( SELECT    COUNT(DISTINCT a.AutoshipID) rfo_cnt  --1461695 Templates
+          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
+                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+          WHERE     a.CountryID = 236
+        ) t2;
+
+
+
+IF OBJECT_ID('tempdb..#missing') IS NOT NULL
+    DROP TABLE #missing;
+
+
+SELECT  t1.code ,
+        t2.AutoshipID ,
+        CASE WHEN t1.code IS NULL THEN 'Missing in Hybris'
+             WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO'
+        END Results
+INTO    #missing
+FROM    ( SELECT    COUNT(DISTINCT ho.PK) hybris_cnt --1461818 Templates
+          FROM      Hybris.dbo.orders ho
+                    JOIN Hybris.dbo.users u ON u.PK = ho.userpk
+                                               AND u.p_sourcename = 'Hybris-DM'
+                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+                                                   AND c.isocode = 'US'
+          WHERE     ho.p_template = 1
+        ) t1
+        FULL OUTER JOIN ( SELECT    COUNT(DISTINCT a.AutoshipID) rfo_cnt  --1461695 Templates
+                          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
+                                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+                          WHERE     a.CountryID = 236
+                        ) t2 ON t1.code = t2.AutoshipID
+WHERE   t1.code IS NULL
+        OR t2.AutoshipID IS NULL;
+
+
+SELECT  COUNT(*)   AS MIssingHybrisCount
+FROM    #missing
+WHERE   Results = 'Missing in Hybris'
+SELECT  COUNT(*)   AS RFOMissingCount
+FROM    #missing
+WHERE   Results = 'Missing in RFO'
+SELECT TOP 10
+        *
+FROM    #missing
+WHERE   Results = 'Missing in Hybris'
+UNION
+SELECT TOP 10
+        *
+FROM    #missing
+WHERE   Results = 'Missing in RFO'
+
+
+
+
+--Column2Column Validation that doesn't have transformation - Autoship
+
+DELETE  FROM DataMigration.dbo.dm_log
+WHERE   test_area = '824-Autoship';
+IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
+    DROP TABLE #tempact;
+
+SELECT  a.AutoshipID ,
+        a.AutoshipNumber ,
+        a.AccountID ,
+        u.PK ,
+        a.AutoshipStatusID ,
+        a.AutoshipTypeID ,
+        a.StartDate ,
+        a.TotalTax
+INTO    #tempact
+FROM    RFOperations.Hybris.Autoship (NOLOCK) a
+        JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
+        JOIN Hybris.dbo.users u ON a.AccountID = CAST(u.p_rfaccountid AS NVARCHAR)
+                                   AND u.p_sourcename = 'Hybris-DM'
+WHERE   a.CountryID = 236
+        AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
+                                      FROM     RFOperations.Hybris.Orders
+                                      WHERE     CountryID = 236 )
+		--AND a.AutoshipID NOT IN (SELECT code FROM #extra)
+		--AND a.AutoshipID NOT IN (SELECT autoshipid FROM #missing WHERE autoshipid IS NOT NULL)
+GROUP BY a.AutoshipID ,
+        a.AutoshipNumber ,
+        a.AccountID ,
+        u.PK ,
+        a.AutoshipStatusID ,
+        a.AutoshipTypeID ,
+        a.StartDate ,
+        a.TotalTax;
+
+
+
+CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 
 			SELECT  'Validation of column to column with no transformation in progress' AS [Step-2 Validation] ,
 					GETDATE() AS StartTime;

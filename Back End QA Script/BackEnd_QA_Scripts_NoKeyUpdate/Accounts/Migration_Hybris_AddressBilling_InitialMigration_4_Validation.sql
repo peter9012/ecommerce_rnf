@@ -18,49 +18,66 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 ================================================================================================= */
 
 
-IF OBJECT_ID('DataMigration.Migration.Addresses_Billing_Missing') IS NOT NULL 
-DROP TABLE DataMigration.Migration.Addresses_Billing_Missing 
+IF OBJECT_ID('DataMigration.Migration.Addresses_Billing_Missing') IS NOT NULL
+    DROP TABLE DataMigration.Migration.Addresses_Billing_Missing 
 
-IF OBJECT_ID('TEMPDB.dbo.#Addresses_Dups') IS NOT NULL 
-DROP TABLE #Addresses_Dups 
+IF OBJECT_ID('TEMPDB.dbo.#Addresses_Dups') IS NOT NULL
+    DROP TABLE #Addresses_Dups 
 
 
 SET ANSI_WARNINGS OFF 
 
-DECLARE @Country NVARCHAR(20)= 'US', @LastRun DATETIME = '05/01/1901'
-DECLARE @RFOCountry INT = (SELECT CountryID  FROM RFOperations.RFO_Reference.Countries (NOLOCK) WHERE Alpha2Code = @Country),  @RowCount BIGINT ,
-		@HybCountry BIGINT = (SELECT PK FROM Hybris.dbo.Countries (NOLOCK) WHERE isocode =  @Country );
+DECLARE @Country NVARCHAR(20)= 'US' ,
+    @LastRun DATETIME = '05/01/1901'
+DECLARE @RFOCountry INT = ( SELECT  CountryID
+                            FROM    RFOperations.RFO_Reference.Countries (NOLOCK)
+                            WHERE   Alpha2Code = @Country
+                          ) ,
+    @RowCount BIGINT ,
+    @HybCountry BIGINT = ( SELECT   PK
+                           FROM     Hybris.dbo.countries (NOLOCK)
+                           WHERE    isocode = @Country
+                         );
 
 -------------------------------------------------------------------------------------------------------------
 -- Counts 
 -------------------------------------------------------------------------------------------------------------
 
 
-DECLARE @RFOAddress BIGINT,  @HYBAddress BIGINT
+DECLARE @RFOAddress BIGINT ,
+    @HYBAddress BIGINT
 
-SELECT @RFOAddress =COUNT ( DISTINCT b.AddressID) FROM RFOperations.RFO_Accounts.AccountContacts a 
-JOIN Hybris.dbo.users u ON CAST(a.AccountID AS NVARCHAR) = u.p_rfaccountid
+SELECT  @RFOAddress = COUNT(DISTINCT b.AddressID)
+FROM    RFOperations.RFO_Accounts.AccountContacts a
+        JOIN Hybris.dbo.users u ON CAST(a.AccountId AS NVARCHAR) = u.p_rfaccountid
+        JOIN RFOperations.RFO_Accounts.AccountContactAddresses b ON a.AccountContactId = b.AccountContactId
+        JOIN RFOperations.RFO_Accounts.Addresses c ON b.AddressID = c.AddressID
+                                                      AND AddressTypeID = 3
+        JOIN RFOperations.RFO_Accounts.CreditCardProfiles ccp ON ccp.BillingAddressID = c.AddressID
+        JOIN RodanFieldsLive.dbo.AccountPaymentMethods apm ON apm.AccountPaymentMethodID = ccp.PaymentProfileID
+WHERE   CountryID = @RFOCountry
+        AND u.p_sourcename = 'Hybris-DM'
 
- JOIN RFOperations.RFO_Accounts.AccountContactAddresses b ON a.AccountContactID =b.AccountContactID 
- JOIN RFOperations.RFO_Accounts.Addresses c ON b.AddressID =c.AddressID AND AddressTypeID = 3 
- JOIN RFOPerations.RFO_Accounts.CreditCardProfiles ccp ON ccp.BillingAddressID =c.AddressID 
- JOIN RodanFieldsLive.dbo.AccountPaymentMethods apm ON apm.AccountPaymentMethodID = ccp.PaymentProfileID 
- WHERE CountryID =@RFOCountry AND u.p_sourcename = 'Hybris-DM'
 
 
+SELECT  @HYBAddress = COUNT(DISTINCT p_rfaddressid)
+FROM    ( SELECT    a.PK ,
+                    a.p_rfaddressid
+          FROM      Hybris.dbo.addresses (NOLOCK) a
+                    JOIN Hybris.dbo.paymentinfos b ON a.OwnerPkString = b.PK
+                    JOIN Hybris.dbo.users u ON b.OwnerPkString = u.PK
+          WHERE     countrypk = @HybCountry
+                    AND b.OwnerPkString = b.userpk
+                    AND a.p_billingaddress = 1
+                    AND u.p_sourcename = 'Hybris-DM'
+                    AND a.duplicate = 0
+                    AND b.p_sourcename = 'Hybris-DM'
+        ) SUB
 
-SELECT @HybAddress = COUNT(DISTINCT p_rfaddressID )
-
- FROM 
- ( 
-SELECT a.PK, a.p_rfaddressID FROM Hybris.dbo.Addresses (NOLOCK) a JOIN Hybris.dbo.PaymentInfos b ON a.OwnerPkString = b.PK
-JOIN Hybris.dbo.users u ON b.OwnerPkString = u.PK
-WHERE countrypk =@HybCountry  AND b.OwnerPKString =b.userPK AND a.p_billingaddress= 1 
-AND u.p_sourcename = 'Hybris-DM' AND a.duplicate =0
-AND b.p_sourcename='Hybris-DM'
-) SUB
-
-SELECT 'Addresses',  @RFOAddress AS RFO_Count, @HYBAddress AS Hybris_Count, @RFOAddress - @HYBAddress
+SELECT  'Addresses' ,
+        @RFOAddress AS RFO_Count ,
+        @HYBAddress AS Hybris_Count ,
+        @RFOAddress - @HYBAddress
 
 
 
@@ -78,41 +95,49 @@ Stat:
 -------------------------------------------------------------------------------------------------------------
 
 
-SELECT AddressID AS RFO_AddressID,
- b.p_rfAddressid AS Hybris_rfAddressID , CASE WHEN b.p_rfAddressid IS NULL THEN 'Destination'
-											  WHEN a.AddressID IS NULL THEN 'Source' END AS MissingFROM
-INTO DataMigration.Migration.Addresses_Billing_Missing
-FROM 
-(SELECT CAST (c.AddressID AS NVARCHAR) AS AddressID  
- FROM RFOperations.RFO_Accounts.AccountContacts a 
- JOIN Hybris.dbo.users u ON CAST(a.AccountID AS NVARCHAR) = u.p_rfaccountid
- JOIN RFOperations.RFO_Accounts.AccountContactAddresses b ON a.AccountContactID =b.AccountContactID 
- JOIN RFOperations.RFO_Accounts.Addresses c ON b.AddressID =c.AddressID AND AddressTypeID = 3 
- JOIN RFOPerations.RFO_Accounts.CreditCardProfiles ccp ON ccp.BillingAddressID =c.AddressID 
- JOIN RodanFieldsLive.dbo.AccountPaymentMethods apm ON apm.AccountPaymentMethodID = ccp.PaymentProfileID 
- WHERE CountryID =@RFOCountry AND u.p_sourcename = 'Hybris-DM' )  a
-
- FULL OUTER JOIN 
- 
- 
-( 
-SELECT a.PK, a.p_rfaddressid FROM Hybris.dbo.Addresses (NOLOCK) a JOIN Hybris.dbo.PaymentInfos b ON a.OwnerPkString = b.PK
-JOIN Hybris.dbo.users u ON b.OwnerPkString = u.PK
-WHERE countrypk =@HybCountry  AND b.OwnerPKString =b.userPK AND a.p_billingaddress= 1 AND a.p_rfaddressid IS NOT NULL
-AND u.p_sourcename = 'Hybris-DM'
- )  b 
- 
- ON  b.p_rfAddressid = CAST(a.AddressID AS VARCHAR)
-WHERE (a.AddressID IS NULL OR b.p_rfAddressid IS NULL)
+SELECT  AddressID AS RFO_AddressID ,
+        b.p_rfaddressid AS Hybris_rfAddressID ,
+        CASE WHEN b.p_rfaddressid IS NULL THEN 'Destination'
+             WHEN a.AddressID IS NULL THEN 'Source'
+        END AS MissingFROM
+INTO    DataMigration.Migration.Addresses_Billing_Missing
+FROM    ( SELECT    CAST (c.AddressID AS NVARCHAR) AS AddressID
+          FROM      RFOperations.RFO_Accounts.AccountContacts a
+                    JOIN Hybris.dbo.users u ON CAST(a.AccountId AS NVARCHAR) = u.p_rfaccountid
+                    JOIN RFOperations.RFO_Accounts.AccountContactAddresses b ON a.AccountContactId = b.AccountContactId
+                    JOIN RFOperations.RFO_Accounts.Addresses c ON b.AddressID = c.AddressID
+                                                              AND AddressTypeID = 3
+                    JOIN RFOperations.RFO_Accounts.CreditCardProfiles ccp ON ccp.BillingAddressID = c.AddressID
+                    JOIN RodanFieldsLive.dbo.AccountPaymentMethods apm ON apm.AccountPaymentMethodID = ccp.PaymentProfileID
+          WHERE     CountryID = @RFOCountry
+                    AND u.p_sourcename = 'Hybris-DM'
+        ) a
+        FULL OUTER JOIN ( SELECT    a.PK ,
+                                    a.p_rfaddressid
+                          FROM      Hybris.dbo.addresses (NOLOCK) a
+                                    JOIN Hybris.dbo.paymentinfos b ON a.OwnerPkString = b.PK
+                                    JOIN Hybris.dbo.users u ON b.OwnerPkString = u.PK
+                          WHERE     countrypk = @HybCountry
+                                    AND b.OwnerPkString = b.userpk
+                                    AND a.p_billingaddress = 1
+                                    AND a.p_rfaddressid IS NOT NULL
+                                    AND u.p_sourcename = 'Hybris-DM'
+                        ) b ON b.p_rfaddressid = CAST(a.AddressID AS VARCHAR)
+WHERE   ( a.AddressID IS NULL
+          OR b.p_rfaddressid IS NULL
+        )
 
 --------------------------------------------------------------------------------------------------------------------------
-SELECT AddressID , COUNT(*) AS AddressDups
-INTO #Address_Dups
-FROM Hybris.dbo.Addresses a JOIN Hybris.dbo.Users c ON c.PK =  a.OwnerPkString
-JOIN RFOperations.RFO_Accounts.Addresses b ON a.p_rfaddressid = b.AddressID
- WHERE CountryID =236 AND b.AddressTypeID =3
-GROUP BY AddressID 
-HAVING COUNT(*) > 1 
+SELECT  AddressID ,
+        COUNT(*) AS AddressDups
+INTO    #Address_Dups
+FROM    Hybris.dbo.addresses a
+        JOIN Hybris.dbo.users c ON c.PK = a.OwnerPkString
+        JOIN RFOperations.RFO_Accounts.Addresses b ON a.p_rfaddressid = b.AddressID
+WHERE   CountryID = 236
+        AND b.AddressTypeID = 3
+GROUP BY AddressID
+HAVING  COUNT(*) > 1 
 
 
 	/*

@@ -1,14 +1,4 @@
 
-		--SELECT *FROM hybris..addresses WHERE p_town='null' AND p_billingaddress=1 AND duplicate=1
-
--- '824-AutoshipPaymentAddress';; Validation.
-
---SELECT * FROM datamigration..dm_log
---WHERE test_area='824-AutoshipPaymentAddress';
-
---SELECT * FROM datamigration..map_tab
---WHERE [owner]='824-AutoshipPaymentAddress';
-
 
 
 USE RFOperations;
@@ -153,7 +143,7 @@ FROM    ( SELECT    OwnerPkString
           WHERE     duplicate = 1
                     AND OwnerPkString IN ( SELECT DISTINCT
                                                     AutoshipID
-                                           FROM     Hybris.Autoship
+                                           FROM     RFOperations.Hybris.Autoship
                                            WHERE    CountryID = 236 )
                     AND p_billingaddress = 1
           GROUP BY  OwnerPkString
@@ -203,8 +193,8 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
 		  JOIN		#LoadedAutoshipID l ON l.AutoshipID=a.AutoshipID AND a.CountryID=236
 		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID
 		  JOIN      Hybris.dbo.users c ON c.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)
-		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID
-		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR)                   
+		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID AND ap.AutoshipPaymentID=apa.AutoshipPaymentAddressID		  
+		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR) AND hpa.duplicate=1                  
         
         ) t2; 	
 		
@@ -228,10 +218,10 @@ FROM    (  SELECT    pa.code
         ( SELECT    DISTINCT CAST(ap.AutoshipPaymentID AS NVARCHAR)AutoshipPaymentID
           FROM      RFOperations.Hybris.Autoship a 
 		  JOIN		#LoadedAutoshipID l ON l.AutoshipID=a.AutoshipID AND a.CountryID=236
-		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID
+		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID 
 		  JOIN      Hybris.dbo.users c ON c.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)
-		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID
-		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR)              				
+		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID AND apa.AutoshipPaymentAddressID=ap.AutoshipPaymentID
+		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR)  AND hpa.duplicate=1            				
         ) t2 	ON t1.code=t2.AutoshipPaymentID
 		WHERE t1.code IS NULL OR t2.AutoshipPaymentID IS NULL 
 
@@ -248,7 +238,7 @@ IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 SELECT  a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,
-        u.PK ,
+        c.PK ,
         apa.AutoshipPaymentAddressID
 INTO    #tempact
 FROM    RFOperations.Hybris.Autoship a
@@ -256,12 +246,12 @@ FROM    RFOperations.Hybris.Autoship a
                                     AND a.CountryID = 236
         JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = a.AutoshipID
         JOIN Hybris.dbo.users c ON c.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
-        JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID
-        JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR)
+        JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID AND apa.AutoshipPaymentAddressID=ap.AutoshipPaymentID
+        JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR) AND hpa.duplicate=1
 GROUP BY a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,
-        u.PK ,
+        c.PK ,
         apa.AutoshipPaymentAddressID;
 
 CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);

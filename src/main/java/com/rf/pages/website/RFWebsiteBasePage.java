@@ -409,8 +409,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
-			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA);
+			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA+"\t");
 			logger.info("City entered is "+TestConstants.CITY_CA);
+			driver.waitForLoadingImageToDisappear();
 			try{
 				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
 				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));

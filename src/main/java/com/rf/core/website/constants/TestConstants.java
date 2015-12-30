@@ -395,6 +395,10 @@ public class TestConstants {
 	public static final String DSV_PHONE_NUMBER = "8067736419";
 	public static final String DSV_SECURITY_CODE = "5487";
 	
+	public static final String DSV_CARD_NUMBER = "379622509583005";
+	public static final String DSV_EXPIRY_MONTH = "JUL";
+	public static final String DSV_EXPIRY_YEAR = "2017";
+	
 }
 
 

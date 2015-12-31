@@ -386,7 +386,7 @@ public class TestConstants {
 	public static final String DSV_RC_USERNAME = "rftestlast@mailinator.com";
 	public static final String DSV_RC_PASSWORD = "test1234";
 	
-	public static final String DSV_PWS_SUFFIX ="myrandf.com/ca/";
+	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 	
 	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";

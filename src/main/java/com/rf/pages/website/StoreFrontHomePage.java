@@ -3593,6 +3593,30 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']//label"));
 		return driver.isElementPresent(By.xpath("//div[@id='add-new-billing']//label"));
 	}
+
+	public void enterSponserNameAndClickSearchAndContinue(String url) throws InterruptedException{
+		for(int i=1;i<=2;i++){
+			if(i>1){
+				clickOnNotYourSponsorLink();
+			}
+			enterSponsorNameAndClickOnSearchForPCAndRC();
+			mouseHoverSponsorDataAndClickContinuePCAndRC(i);
+			driver.waitForLoadingImageToDisappear();
+			if(driver.getCurrentUrl().equalsIgnoreCase(url)){
+				logger.info("sponser selected successfully");
+				break;
+			}else
+				logger.info("Sponser is not selected properly in"+i+" attempt");
+			continue;
+		}
+	}
+
+	public void mouseHoverSponsorDataAndClickContinuePCAndRC(int i) throws InterruptedException{
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div["+i+"]/div[1]//input[@value='Select']")));
+		logger.info("First result of sponsor has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
 }
-
-

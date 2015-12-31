@@ -19,6 +19,14 @@ public class DSVRFWebsiteBasePage extends RFBasePage{
 	public String getBaseURL(){
 		return driver.getURL();
 	}
+	
+	public String getCurrentURL(){
+		return driver.getCurrentUrl();
+	}
+	
+	public void openURL(String URL){
+		driver.get(URL);
+	}
 
 
 }

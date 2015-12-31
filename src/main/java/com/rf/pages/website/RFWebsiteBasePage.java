@@ -1722,4 +1722,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
 
+	public boolean validateCorpCurrentUrlPresent() {
+		return driver.getCurrentUrl().contains("corp");
+
+	}
+
 }

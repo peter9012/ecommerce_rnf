@@ -190,10 +190,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
-		/*actions =  new Actions(RFWebsiteDriver.driver);
-		  actions.moveToElement(driver.findElement(By.xpath("//div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();*/
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+		try{
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[@value='Select']")));
+		}catch(Exception e){
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+		}
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();

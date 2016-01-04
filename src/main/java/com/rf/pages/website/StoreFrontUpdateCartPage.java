@@ -250,10 +250,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]"));
-		driver.findElement(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]")).click();
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+		driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]"));
+		driver.findElement(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]")).click();
 		//driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}

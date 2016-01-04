@@ -3,6 +3,9 @@ package com.rf.pages.website;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -21,6 +24,10 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Shipping Info']");
 	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Billing Info']");
 	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Account Info']");
+	private static final By OUR_BUSINESS_LINK_LOC = By.xpath("//a[@id='corp-opp']");
+	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='dropdown-menu']//a[@title='Enroll Now']"); 
+	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
+	private static final By SEARCH_BUTTON_LOC = By.id("search-sponsor-button");
 
 	public DSVStoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -32,7 +39,12 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isLoginLinkPresent(){
+		driver.quickWaitForElementPresent(LOGIN_LINK);
 		return driver.isElementPresent(LOGIN_LINK);
+	}
+
+	public boolean isWelcomeTxtPresent(){
+		return driver.isElementPresent(WELCOME_TXT);
 	}
 
 	public void enterUsername(String username){
@@ -89,9 +101,17 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public String convertComToBizOrBizToComURL(String pws){
 		if(pws.contains("com"))
-			return pws = pws.replaceAll("com", "biz");
+			pws = pws.replaceAll("com", "biz");
 		else
-			return pws = pws.replaceAll("biz", "com");
+			pws = pws.replaceAll("biz", "com");
+		logger.info("after biz/com conversion,the pws is "+pws);
+		return pws;
+	}
+
+	public String convertNonSecureURLToSecureURL(String URL){
+		URL = URL.replaceAll("http", "https");
+		logger.info("after converting non secure to secure,the URL is "+URL);
+		return URL;
 	}
 
 	public DSVStoreFrontAccountInfoPage clickAccountInfoLinkFromWelcomeDropDown(){
@@ -100,5 +120,55 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		return new DSVStoreFrontAccountInfoPage(driver);
 	}
 
+	public void hoverOnOurBusinessAndClickEnrollNow() {
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(OUR_BUSINESS_LINK_LOC);
+		WebElement ourBusiness = driver.findElement(OUR_BUSINESS_LINK_LOC);
+		actions.moveToElement(ourBusiness).pause(1000).click().build().perform();
+		WebElement enrollNow = driver.findElement(ENROLL_NOW_LINK_LOC);
+		actions.moveToElement(enrollNow).pause(1000).build().perform();
+		while(true){
+			try{
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ENROLL_NOW_LINK_LOC));
+
+				break;
+			}catch(Exception e){
+				System.out.println("element not clicked..trying again");
+				actions.moveToElement(ourBusiness).pause(1000).click().build().perform();
+
+			}
+		}
+		logger.info("Enroll Now link clicked "); 
+		driver.waitForPageLoad();
+	}
+
+	public void enterSponsorAndSearch(String dsvCanadianSponsorWithPwssponsor) {
+		driver.quickWaitForElementPresent(SPONSOR_SEARCH_FIELD_LOC);
+		driver.type(SPONSOR_SEARCH_FIELD_LOC, dsvCanadianSponsorWithPwssponsor);
+		logger.info("sponsor name entered");
+		driver.click(SEARCH_BUTTON_LOC);
+		logger.info("Search Button Clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void mouseHoverOnSponsorAndClickSelectAndContinue() {
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[@value='Select & Continue']")));
+		logger.info("sponsor's Select & Continue has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+
+	}
+
+	public boolean validateCurrentURLContainsBiz() {
+		return driver.getCurrentUrl().contains(".biz");
+	}
+
+	public boolean validateCurrentURLContainsCom() {
+		return driver.getCurrentUrl().contains("rodanandfields.com");
+
+	}
+
 
 }
+

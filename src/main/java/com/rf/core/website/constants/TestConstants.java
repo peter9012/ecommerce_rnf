@@ -375,30 +375,34 @@ public class TestConstants {
 
 	public static final String PROVINCE_NORTH_DAKOTA = "North Dakota";
 	public static final String PC_PERKS_TEMPLATE_PRODUCT_ADDED = "Your next pc perks cart has been updated";
-	
+
 	//PRODUCTION DSV DATA
 	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";
 	public static final String DSV_CONSULTANT_PASSWORD = "test1234";
-	
+
 	public static final String DSV_PC_USERNAME = "rftestpc1125@mailinator.com";
 	public static final String DSV_PC_PASSWORD = "test1234";
-	
+
 	public static final String DSV_RC_USERNAME = "rftestlast@mailinator.com";
 	public static final String DSV_RC_PASSWORD = "test1234";
-	
+
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
-	
+
 	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";
 	public static final String DSV_CITY_CA = "Bonnyville";
 	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
 	public static final String DSV_PHONE_NUMBER = "8067736419";
 	public static final String DSV_SECURITY_CODE = "5487";
-	
+
 	public static final String DSV_CARD_NUMBER = "379622509583005";
 	public static final String DSV_EXPIRY_MONTH = "JUL";
 	public static final String DSV_EXPIRY_YEAR = "2017";
-	
+
+	public static final String DSV_CANADIAN_SPONSOR_WITH_PWS = "Erica MacKinnon";
+	public static final String DSV_US_SPONSOR_WITH_PWS = "Kris Fairless";
+	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
+
 }
 
 

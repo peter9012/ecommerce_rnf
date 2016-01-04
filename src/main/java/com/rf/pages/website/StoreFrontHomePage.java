@@ -191,9 +191,9 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
 		/*actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();*/
+		  actions.moveToElement(driver.findElement(By.xpath("//div[@class='sponsorDataDiv']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();*/
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='search-results']/div[1]/div[1]//input[@value='Select']")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -3608,6 +3608,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			}else
 				logger.info("Sponser is not selected properly in"+i+" attempt");
 			continue;
+		}
+	}
+
+	public void enterSponserNameAndClickSearchAndContinue() throws InterruptedException{
+		for(int i=1;i<=2;i++){
+			if(i>1){
+				clickOnNotYourSponsorLink();
+			}
+			enterSponsorNameAndClickOnSearchForPCAndRC();
+			mouseHoverSponsorDataAndClickContinuePCAndRC(i);
+			driver.waitForLoadingImageToDisappear();
+			if(driver.getCurrentUrl().contains("corp")){
+				break;
+			}else
+				continue;
 		}
 	}
 

@@ -144,7 +144,7 @@ WHERE   a.CountryID = 236
 IF OBJECT_ID('tempdb..#extra') IS NOT NULL
     DROP TABLE #extra;
 
-SELECT  ho.pk
+SELECT  ho.code
 INTO    #extra
 FROM    Hybris..orders ho
         JOIN Hybris..users u ON u.PK = ho.userpk
@@ -194,13 +194,12 @@ SELECT  hybris_cnt ,
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
         END Results
-FROM    ( SELECT    COUNT(DISTINCT d.PK) hybris_cnt
+FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt
           FROM      Hybris.dbo.orders ho 
 		  JOIN      Hybris.dbo.users  u ON u.pk=ho.userpk AND u.p_sourcename='Hybris-DM'
 		  JOIN      Hybris.dbo.countries c ON u.p_country=c.pk AND c.isocode='US'
 		  JOIN      Hybris.dbo.orderentries oi ON oi.orderpk=ho.pk 
-          WHERE ho.pk NOT IN ( SELECT  pk
-                                        FROM    #extra )
+          WHERE ho.pk NOT IN ( SELECT code  FROM    #extra )
         ) t1 , --1710792
         ( SELECT    SUM(cnt) rfo_cnt
           FROM      ( SELECT    COUNT(c.AutoshipItemID) cnt ,
@@ -236,25 +235,25 @@ IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 
 SELECT  a.AutoshipID ,
         AutoshipNumber ,
-        b.PK ,
-        c.ProductID ,
-        c.LineItemNo ,
-        CAST(c.TotalTax AS FLOAT) AS [totaltax]
+        u.PK ,
+        ai.ProductID ,
+       ai.LineItemNo ,
+        CAST(ai.TotalTax AS FLOAT) AS [totaltax]
 INTO    #tempact
 FROM    RFOperations.Hybris.Autoship a
         JOIN Hybris.dbo.users u ON CAST(a.AccountID AS NVARCHAR) = u.p_rfaccountid
                                    AND a.CountryID = 236
         JOIN RFOperations.Hybris.AutoshipItem ai ON ai.AutoshipId = a.AutoshipID
         JOIN #LoadedAutoshipID l ON l.AutoshipID = a.AutoshipID
-WHERE   a.AutoshipNumber NOT IN ( SELECT    OrderNumber
-                                  FROM      RFOperations.Hybris.Orders
-                                  WHERE     CountryID = 236 )
+WHERE  a.AutoshipNumber NOT IN ( SELECT    a.OrderNumber  FROM      RFOperations.Hybris.Orders a
+JOIN RodanFieldsLive.dbo.orders b ON a.OrderID=b.OrderID AND b.OrderTypeID  NOT IN (4,5,9)AND  a.CountryID = 236 )
+AND a.AutoshipID NOT IN (SELECT code FROM #extra)
 GROUP BY a.AutoshipID ,
         AutoshipNumber ,
-        b.PK ,
-        c.ProductID ,
-        c.LineItemNo ,
-        c.TotalTax;
+        u.PK ,
+        ai.ProductID ,
+       ai.LineItemNo ,
+        CAST(ai.TotalTax AS FLOAT);
 
 CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
 CREATE NONCLUSTERED COLUMNSTORE INDEX as_cls2 ON #tempact (AutoshipNumber);

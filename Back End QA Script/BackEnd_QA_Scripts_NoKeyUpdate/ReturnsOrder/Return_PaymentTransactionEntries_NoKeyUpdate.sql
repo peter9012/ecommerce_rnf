@@ -74,6 +74,8 @@ FROM    ( SELECT    COUNT(hpe.PK) hybris_cnt
         ) t1 , --110286
         ( SELECT    COUNT([ReturnPaymentTransactionId]) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
+					 JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                AND u.p_sourcename = 'Hybris-DM'
                     JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
@@ -120,7 +122,8 @@ SELECT  f.ReturnPaymentTransactionId ,
         f.CardCodeResponse ,
         f.ApprovalCode
 INTO    #tempact
-FROM    RFOperations.Hybris.ReturnOrder a ,
+FROM    RFOperations.Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
         Hybris.dbo.users b ,
         RFOperations.Hybris.ReturnPayment c ,
         Hybris.dbo.paymentinfos d ,

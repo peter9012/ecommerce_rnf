@@ -155,7 +155,8 @@ CASE f.AuthorizeType
 
 
 INTO #tempact 
-from rfoperations.hybris.ReturnOrder a,
+from rfoperations.hybris.ReturnOrder a JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
 hybris.dbo.users b,
 rfoperations.hybris.ReturnPayment c,
 hybris.dbo.paymentinfos d,

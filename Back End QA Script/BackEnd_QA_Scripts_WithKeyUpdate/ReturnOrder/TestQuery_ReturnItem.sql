@@ -101,11 +101,14 @@
 					hybris.dbo.orders b,
 					hybris.dbo.users c,
 					hybris.Returnitem d,
-					Hybris.dbo.products e
+					Hybris.dbo.products e,
+					Rodanfieldslive.dbo.orders RFL
 					where a.orderid=b.pk
 					and b.userpk=c.pk 
 					AND a.ReturnOrderID=d.returnorderid
 					AND d.ProductID=e.p_rflegacyproductid
+					AND a.ReturnOrderNumber=RFL.orderid 
+					AND rfl.orderTypeID = 9
 					AND p_catalog = '8796093088344'
 					and p_catalogversion = '8796093153881'
 					AND a.returnordernumber NOT IN (SELECT a.returnordernumber FROM hybris.ReturnOrder a JOIN hybris.orders b ON a.ReturnOrderNumber=b.OrderNumber AND a.countryid = 236)
@@ -131,6 +134,8 @@
 			JOIN hybris.returnitem ri ON ri.ReturnOrderID=ro.ReturnOrderID
 			 JOIN hybris.orderitem oi ON oi.OrderItemID=ri.OrderItemID 
 			 JOIN Hybris.dbo.products hp ON hp.pk=ri.ProductID
+			 JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 			WHERE--- d.OrderItemID NOT IN (8913859641390,
 			--8907235459118,
 			--9142116909102,

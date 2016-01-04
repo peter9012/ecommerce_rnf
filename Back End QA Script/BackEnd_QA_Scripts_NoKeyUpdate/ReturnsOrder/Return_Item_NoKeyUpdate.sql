@@ -121,7 +121,8 @@ FROM    ( SELECT    COUNT(d.PK) hybris_cnt
                                 d.ReturnOrderID ,
                                 ProductID ,
                                 OrderItemID
-                      FROM      Hybris.ReturnOrder a ,
+                      FROM      Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
                                 Hybris.dbo.orders b ,
                                 Hybris.dbo.users c ,
                                 Hybris.ReturnItem d ,
@@ -168,7 +169,8 @@ SELECT DISTINCT
         e.TaxablePrice ,
         a.TotalTax
 INTO    #tempact
-FROM    Hybris.ReturnOrder a ,
+FROM    Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
         Hybris.dbo.orders b ,
         Hybris.dbo.users c ,
         Hybris.ReturnItem d ,

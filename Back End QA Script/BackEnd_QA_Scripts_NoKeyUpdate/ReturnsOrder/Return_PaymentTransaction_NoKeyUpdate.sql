@@ -69,6 +69,8 @@
 				) t1 , --105789
 				( SELECT    COUNT(DISTINCT rpt.ReturnPaymentId) rfo_cnt
 				  FROM      RFOperations.Hybris.ReturnOrder ro
+							JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 							JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
 													   AND ro.CountryID = 236
 													   AND u.p_sourcename = 'hybris-dm'
@@ -104,6 +106,8 @@
 				FULL OUTER JOIN ( SELECT    ro.ReturnOrderNumber + '_'
 											+ CAST(rp.ReturnPaymentId AS NVARCHAR) AS code
 								  FROM      RFOperations.Hybris.ReturnOrder ro
+											 JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 											JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
 																	  AND ro.CountryID = 236
 																	  AND u.p_sourcename = 'hybris-dm'
@@ -159,7 +163,8 @@
 				c.ProcessOnDate ,
 				a.ReturnOrderNumber + '_' + CAST(c.ReturnPaymentId AS NVARCHAR) AS code
 		INTO    #tempact
-		FROM    RFOperations.Hybris.ReturnOrder a ,
+		FROM    RFOperations.Hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderID = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
 				Hybris.dbo.users b ,
 				RFOperations.Hybris.ReturnPayment c ,
 				Hybris.dbo.paymentinfos d,

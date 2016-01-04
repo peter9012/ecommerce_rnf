@@ -62,6 +62,8 @@ declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column v
 						) t1 , --105789
 						( SELECT    COUNT(rpt.ReturnPaymentTransactionId) rfo_cnt
 						  FROM      RFOperations.Hybris.ReturnOrder ro
+									JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
 									JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID
 									JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
 									JOIN Hybris..orders ho ON ho.PK = ro.OrderID
@@ -92,6 +94,8 @@ declare @temp table(test_area varchar(max), test_type varchar(max), rfo_column v
             ) t1
             FULL OUTER JOIN ( SELECT    ro.ReturnOrderID
                               FROM      RFOperations.Hybris.ReturnOrder ro
+										JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9
                                         JOIN Hybris.dbo.users u ON u.p_rfaccountid = ro.AccountID AND ro.ReturnOrderID=9024957481005
                                         JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
                                         JOIN Hybris..orders ho ON ho.PK = ro.OrderID
@@ -111,7 +115,8 @@ IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
 drop table #tempact
 
 select a.returnorderid, a.orderid, returnordernumber, a.accountid, b.pk, c.returnpaymentid, c.Vendorid, c.AmountToBeAuthorized, c.ProcessOnDate into #tempact 
-from rfoperations.hybris.ReturnOrder a,
+from rfoperations.hybris.ReturnOrder a  JOIN RodanFieldsLive.dbo.Orders rfl ON A.ReturnOrderNumber = rfl.orderID
+                                                             AND rfl.orderTypeID = 9,
 hybris.dbo.users b,
 rfoperations.hybris.ReturnPayment c,
 hybris.dbo.paymentinfos d

@@ -14,7 +14,7 @@ SET NOCOUNT ON
 SET ANSI_WARNINGS OFF 
 ---------------------------------------------------------------------------------------------
 DECLARE @Country NVARCHAR(20)= 'US';
-DECLARE @ServerMod DATETIME = '2014-05-01' ,
+DECLARE @ServerMod DATETIME = '2014-06-01' ,
     @RFOCount BIGINT ,
     @RowCount BIGINT ,
     @HybrisPtCount BIGINT ,

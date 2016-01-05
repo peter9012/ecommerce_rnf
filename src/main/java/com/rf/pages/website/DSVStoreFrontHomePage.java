@@ -39,7 +39,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isLoginLinkPresent(){
-		driver.quickWaitForElementPresent(LOGIN_LINK);
+		driver.waitForElementPresent(LOGIN_LINK);
 		return driver.isElementPresent(LOGIN_LINK);
 	}
 

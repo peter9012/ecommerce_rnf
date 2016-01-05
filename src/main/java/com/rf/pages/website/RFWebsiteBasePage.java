@@ -37,6 +37,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
+	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 
 	protected RFWebsiteDriver driver;
 	private String RFO_DB = null;
@@ -1268,9 +1269,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAutoshipCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
-		driver.click(By.xpath("//div[@id='bag-special']/span"));;
-		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("CA")){  
+			driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+			driver.click(By.xpath("//div[@id='bag-special']/span"));;
+			driver.waitForPageLoad();
+
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span/span[1]"));
+			driver.click(By.xpath("//div[@id='bag-special']/span/span[1]"));;
+			driver.waitForPageLoad();
+		}
 	}
 
 	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
@@ -1724,7 +1732,24 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateCorpCurrentUrlPresent() {
 		return driver.getCurrentUrl().contains("corp");
+	}
 
+	public void updateQuantityOfProductToTheSecondProduct(String qty) throws InterruptedException{
+		driver.waitForElementPresent(By.id("quantity1"));
+		driver.findElement(By.id("quantity1")).clear();
+		driver.findElement(By.id("quantity1")).sendKeys(qty);
+		logger.info("quantity added is "+qty);
+		driver.click(By.xpath("//a[@class='updateLink']"));
+		driver.pauseExecutionFor(5500);
+		logger.info("Update button clicked after adding quantity");
+		driver.waitForPageLoad();
+	}
+	
+	public void clickUpdateCartBtn() throws InterruptedException{
+		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
+		driver.click(UPDATE_CART_BTN_LOC);		
+		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
+		driver.waitForLoadingImageToDisappear();
 	}
 
 }

@@ -600,10 +600,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
 			int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
 			for(int i=2; i<=sizeOfOrders; i++){
-				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
-				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("FAILED")){
-					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]"));
-					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]")).getText();
+				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]"));
+				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]")).getText();
 					clickOrderNumber(failedOrderNumber);
 					driver.waitForElementPresent(By.xpath("//div[@class='gray-container-info-top']/div"));
 					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("AUTOSHIPMENT")==true){

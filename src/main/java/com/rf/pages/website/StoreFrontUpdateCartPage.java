@@ -18,7 +18,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontUpdateCartPage.class.getName());
 
-	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 	private final By PAYMENT_BILLING_EDIT_BTN_LOC = By.xpath("//a[@class='editPayment']");
 	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//div[@id='multiple-billing-profiles']/descendant::span[1]");
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
@@ -28,13 +27,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public StoreFrontUpdateCartPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-
-	public void clickUpdateCartBtn() throws InterruptedException{
-		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
-		driver.click(UPDATE_CART_BTN_LOC);		
-		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
-		driver.waitForLoadingImageToDisappear();
-	}
+	
 
 	public void clickOnEditPaymentBillingProfile(){
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
@@ -228,7 +221,13 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			return true;
 		}
 		catch(NoSuchElementException e){
-			return false;
+			try{
+				driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div//div[contains(text(),'"+name+"')]"));
+				driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div//div[contains(text(),'"+name+"')]"));
+				return true;
+			}catch(NoSuchElementException e1){
+				return false;
+			}
 		}
 	}
 
@@ -250,11 +249,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]"));
-		driver.findElement(By.xpath("//form[@id='deliveryAddressForm']//select[@id='state']/option[2]")).click();
-		//driver.click(By.xpath("//select[@id='state']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]"));
+		driver.findElement(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]")).click();
 		logger.info("State/Province selected");
 	}
 
@@ -1476,6 +1474,20 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		String defaultShipmethod=arr[0];
 		logger.info("default selected shipping method is "+defaultShipmethod.trim());
 		return defaultShipmethod.trim();
+	}
+
+	public int getDifferentProductCountOnAutoShipCartPage(){
+		int count=0;
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]/div"));
+			count=driver.findElements(By.xpath("//div[@id='left-shopping']/div[2]/div")).size();
+			logger.info("Different type product in autoship cart is "+count);
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]/div"));
+			count=driver.findElements(By.xpath("//div[@id='left-shopping']/div[2]/div")).size();
+			logger.info("Different type product in autoship cart is "+count);
+		}
+		return count;
 	}
 
 }

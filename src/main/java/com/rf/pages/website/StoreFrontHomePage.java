@@ -1371,17 +1371,6 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']"));
 	}
 
-	public void updateQuantityOfProductToTheSecondProduct(String qty) throws InterruptedException{
-		driver.waitForElementPresent(By.id("quantity1"));
-		driver.findElement(By.id("quantity1")).clear();
-		driver.findElement(By.id("quantity1")).sendKeys(qty);
-		logger.info("quantity added is "+qty);
-		driver.click(By.xpath("//a[@class='updateLink']"));
-		driver.pauseExecutionFor(5500);
-		logger.info("Update button clicked after adding quantity");
-		driver.waitForPageLoad();
-	}
-
 	public void clickOnCheckoutButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
 		driver.click(By.xpath("//input[@value='NEXT']"));
@@ -3337,9 +3326,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.navigate().back();
 	}
 
-
 	public boolean verifyPresenceOfNorthDakotaLink() {
-		return driver.findElement(By.xpath("//a[@class='north-dakota-link']")).isDisplayed();
+		return driver.isElementPresent(By.xpath("//a[@class='north-dakota-link']"));
 	}
 
 	public boolean verifyPresenceOfPopUpForExistingPC() {

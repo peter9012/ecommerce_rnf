@@ -94,8 +94,9 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 				s_assert.assertFalse(dsvStoreFrontQuickShopPage.isProductFilterApplied(nonSelectedProductName),nonSelectedProductName + "product is still on the page after after applying the filter for "+selectedProduct);	
 		}
 		String selectedPrice = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedPriceFromFilter();
-		System.out.println("selected price is "+selectedPrice);
-		s_assert.assertTrue(Double.parseDouble(selectedPrice)>dsvStoreFrontQuickShopPage.getPriceOfRandomProductAfterPriceFilterApplied(), "Price filter is not applied on products");
+		Double selectedPriceDoubleValue = Double.parseDouble(selectedPrice);
+		System.out.println("maximum price os selected price range in double is "+selectedPriceDoubleValue);
+		s_assert.assertTrue(selectedPriceDoubleValue>dsvStoreFrontQuickShopPage.getPriceOfRandomProductAfterPriceFilterApplied(), "Price filter is not applied on products");
 		dsvStoreFrontQuickShopPage.clickClearAllLink();
 		String selectedOrder = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedSortOrderFromFilter();
 		s_assert.assertTrue(dsvStoreFrontQuickShopPage.isSortOrderApplied(selectedOrder),selectedOrder+" order is not applied");
@@ -107,8 +108,8 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testAccountInfoUpdateAsConsultant_5317() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
-		String fName = "RFTestC"+randomNum;
-		String lName = "RFTestU"+randomNum;
+		String fName = "RFTestF"+randomNum;
+		String lName = "RFTestL"+randomNum;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
 		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
@@ -496,7 +497,6 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	//Hybris Project-5333:Access .biz and .com with secure url
 	@Test
 	public void testAccessBizAndComWithSecureURL_5333(){
@@ -511,9 +511,11 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(dsvStoreFrontHomePage.isWelcomeTxtPresent(),"Welcome txt has not appeared after login from .com secure site");
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz secure pws");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .biz secure pws");
 		s_assert.assertAll();
 	}
+
+
 
 	//Hybris Project-5334:Select Canadian sponsor with PWS for enrolment
 	@Test

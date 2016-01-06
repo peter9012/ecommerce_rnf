@@ -46,6 +46,16 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	public boolean isWelcomeTxtPresent(){
 		return driver.isElementPresent(WELCOME_TXT);
 	}
+	
+	public boolean isLoginOrWelcomePresent(){
+		try{
+			driver.waitForElementPresent(WELCOME_TXT);
+			return driver.isElementPresent(WELCOME_TXT);
+		}catch(Exception e){
+			return driver.isElementPresent(LOGIN_LINK);
+		}
+		
+	}
 
 	public void enterUsername(String username){
 		driver.quickWaitForElementPresent(USERNAME_TXTFIELD);
@@ -109,7 +119,8 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public String convertNonSecureURLToSecureURL(String URL){
-		URL = URL.replaceAll("http", "https");
+		if(URL.contains("https")==false)
+			URL = URL.replaceAll("http", "https");
 		logger.info("after converting non secure to secure,the URL is "+URL);
 		return URL;
 	}

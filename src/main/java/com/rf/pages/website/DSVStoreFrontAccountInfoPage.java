@@ -1,11 +1,14 @@
 package com.rf.pages.website;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class DSVStoreFrontAccountInfoPage extends DSVRFWebsiteBasePage{
+	private static final Logger logger = LogManager
+			.getLogger(DSVStoreFrontAccountInfoPage.class.getName());
 
 	private static final By FIRST_NAME = By.id("first-name");
 	private static final By LAST_NAME = By.id("last-name");
@@ -65,9 +68,15 @@ public class DSVStoreFrontAccountInfoPage extends DSVRFWebsiteBasePage{
 	public void clickOnSaveButton(){
 		driver.quickWaitForElementPresent(SAVE_BUTTON);
 		driver.findElement(SAVE_BUTTON).click();
-		if(driver.findElement(QAS_POP_UP).isDisplayed()){
+		try{
+			driver.waitForElementPresent(QAS_USE_AS_ENTERED);
 			driver.findElement(QAS_USE_AS_ENTERED).click();
+		}catch(Exception e){
+			logger.info("QAS has not appeared");
 		}
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		
 	}
 
 	public boolean isSuccessMessagePresentOnPage(){

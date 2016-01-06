@@ -233,8 +233,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	}
 
 	public String getShippingMethod(){
-		logger.info("Shipping Method from UI is "+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText());
-		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText();	
+		logger.info("Shipping Method from UI is "+driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().trim());
+		return driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().trim(); 
 	}
 
 	public String getShippingMethodFromAdhocOrderTemplate(){
@@ -289,8 +289,8 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
 			int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
 			for(int i=2; i<=sizeOfOrders; i++){
-				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
-				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("SUBMITTED")){
+				driver.waitForElementPresent(By.xpath("  //div[@id='history-orders-table']/div["+i+"]/div[2]/div/div/div[4]"));
+				if(driver.findElement(By.xpath("  //div[@id='history-orders-table']/div["+i+"]/div[2]/div/div/div[4]")).getText().contains("SUBMITTED")){
 					return true;
 				}else if(driver.isElementPresent(By.xpath("//div[@id='history-orders-table']/following::div[1]//a[contains(text(),'Next Page')]"))==true){
 					isNextLinkPresent = true;

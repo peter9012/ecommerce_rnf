@@ -27,7 +27,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public StoreFrontUpdateCartPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-	
+
 
 	public void clickOnEditPaymentBillingProfile(){
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
@@ -191,19 +191,19 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 			driver.click(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[1]//span"));
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[1]//label")).getText().split("-")[0]);
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[1]//label")).getText().split("-")[0]; 
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[1]//label")).getText().split("-")[0].trim(); 
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[2]//span//input")).isSelected()==false){
 			driver.click(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[2]//span"));
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[2]//label")).getText().split("-")[0]);
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[2]//label")).getText().split("-")[0]; 
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[2]//label")).getText().split("-")[0].trim(); 
 		}
 		else if(driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[3]//span//input")).isSelected()==false){
 			driver.click(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[3]//span"));
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[3]//label")).getText().split("-")[0]);
-			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[3]//label")).getText().split("-")[0]; 
+			return driver.findElement(By.xpath("//div[@id='start-shipping-method']//div[@class='row pb2']/div[3]//label")).getText().split("-")[0].trim(); 
 		}  
 		return null;
 	}

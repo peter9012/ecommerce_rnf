@@ -23,7 +23,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	private static final By PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]");
 	private static final By ALL_PRODUCTS_FROM_PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li");
 	private static final By ALL_PRICE_FROM_PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]/following::ul[1]/li");
-	private static final By ALL_PRODUCTS_DISPLAYED_ON_PAGE = By.xpath("//div[@class='quick-product-wrapper']/div");
+	private static final By ALL_PRODUCTS_DISPLAYED_ON_PAGE = By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/following::div[@class='quick-product-wrapper'][1]/div");
 	private static final By ALL_SORT_FROM_PRICE_FILTER_DROP_DOWN = By.xpath("//select[@id='sortOptions']/option[@value]");
 
 	private static final By CLEAR_ALL_LINK = By.xpath("//a[contains(text(),'Clear All')]");
@@ -36,7 +36,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	private static String RandomOrderFromSortFilterDropDown = "//select[@id='sortOptions']/option[@value][%s]";
 	private static String SelectedProductCheckbox = "//div[@id='quick-filtered']//div[@class='repaired-checkbox checked']/input[@id='%s'][@class='checked']";
 	private static String SelectedProductAsHeadingOnProductPage = "//div[@class='quick-shop-section-header']/h2[text()='%s']";
-	private static String RandomProductPrice = "//div[@class='quick-product-wrapper'][1]/div[%s]//span[@class='old-price']";
+	private static String RandomProductPrice = "//div[@id='main-content']//div[@class='quick-shop-section-header']/following::div[@class='quick-product-wrapper'][1]/div[%s]//span[contains(@class,'your-price')]";
 
 	public DSVStoreFrontQuickShopPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -83,6 +83,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 		System.out.println("Random value is "+randomValue);
 		driver.quickWaitForElementPresent(By.xpath(String.format(RandomProductCheckboxFromProductFilterDropDown, randomValue)));
 		driver.click(By.xpath(String.format(RandomProductCheckboxFromProductFilterDropDown, randomValue)));
+		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 		return driver.getAttribute(By.xpath(String.format(RandomProductFromProductFilterDropDown, String.valueOf(randomValue))), "id");
 	}
@@ -103,14 +104,18 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 		int randomValue;
 		driver.quickWaitForElementPresent(PRICE_FILTER_DROP_DOWN);
 		driver.click(PRICE_FILTER_DROP_DOWN);
+		driver.pauseExecutionFor(1000);
 		List<WebElement> allPriceFromPriceFilterList = driver.findElements(ALL_PRICE_FROM_PRICE_FILTER_DROP_DOWN);
 		randomValue = CommonUtils.getRandomNum(1, allPriceFromPriceFilterList.size());
+		System.out.println("Random value for price filter is "+randomValue);
 		driver.quickWaitForElementPresent(By.xpath(String.format(RandomPriceFromPriceFilterDropDown, randomValue)));
 		driver.click(By.xpath(String.format(RandomPriceCheckboxFromPriceFilterDropDown, randomValue)));
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(2000);
 		String priceRangeFromUI =  driver.getAttribute(By.xpath(String.format(RandomPriceFromPriceFilterDropDown, String.valueOf(randomValue))), "id");
-		return priceRangeFromUI.split("TO")[1].substring(5);		
+		priceRangeFromUI = priceRangeFromUI.split("TO")[1].substring(5);
+		System.out.println("maximum value from selected Price range is "+priceRangeFromUI);
+		return priceRangeFromUI;
 	}
 
 	public String selectAndReturnTheSelectedSortOrderFromFilter(){
@@ -127,9 +132,13 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	}
 
 	public boolean isSortOrderApplied(String sortOrder){
-		double firstProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "1"))).getText().split(" ")[1]);
-		double secondProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "2"))).getText().split(" ")[1]);
-		double thirdProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "3"))).getText().split(" ")[1]);
+		driver.waitForElementPresent(By.xpath(String.format(RandomProductPrice, "1")));
+		double firstProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "1"))).getText().replaceAll("[^0-9.]", ""));
+		System.out.println("first product price as double  value = "+firstProductPrice);
+		double secondProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "2"))).getText().replaceAll("[^0-9.]", ""));
+		System.out.println("second product price as double  value = "+secondProductPrice);
+		double thirdProductPrice =  Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, "3"))).getText().replaceAll("[^0-9.]", ""));
+		System.out.println("third product price as double  value = "+thirdProductPrice);
 		boolean isSortOrderApplied = false;
 		if(sortOrder.toLowerCase().contains("high to low")){
 			isSortOrderApplied = (thirdProductPrice<secondProductPrice?(secondProductPrice<firstProductPrice?true:false):false);
@@ -142,10 +151,13 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 
 	public double getPriceOfRandomProductAfterPriceFilterApplied(){
 		int randomValue;
+		driver.waitForElementPresent(ALL_PRODUCTS_DISPLAYED_ON_PAGE);
 		List<WebElement> allProductsDisplayedOnPageList = driver.findElements(ALL_PRODUCTS_DISPLAYED_ON_PAGE);
 		randomValue = CommonUtils.getRandomNum(1, allProductsDisplayedOnPageList.size());
-		System.out.println(("Random price of "+randomValue+" product is "+driver.findElement(By.xpath(String.format(RandomProductPrice, randomValue))).getText().split(" ")[1]));
-		return Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, randomValue))).getText().split(" ")[1]);
+		//System.out.println(("Random price of "+randomValue+" product is "+driver.findElement(By.xpath(String.format(RandomProductPrice, randomValue))).getText().replaceAll("[^0-9.]", "")));
+		Double randomProductPrice = Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, randomValue))).getText().replaceAll("[^0-9.]", ""));
+		System.out.println("Random product price in double format is  "+randomProductPrice);
+		return randomProductPrice;
 	}
 
 }

@@ -831,11 +831,17 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickOnSwitchToExpressEnrollmentLink(){
-		driver.waitForElementPresent(By.xpath("//a[@id='lnk-switch']"));
-		driver.click(By.xpath("//a[@id='lnk-switch']"));
+		try{
+			driver.waitForElementPresent(By.xpath("//a[@id='lnk-switch']"));
+			driver.click(By.xpath("//a[@id='lnk-switch']"));
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Express Enrollment')]"));
+			driver.click(By.xpath("//a[contains(text(),'Switch to Express Enrollment')]"));
+		}
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(2000);
 	}
+
 
 	//	public boolean validateErrorMessageForActivePC(){
 	//		String ActivePC="autopc@xyz.com";

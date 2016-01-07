@@ -1719,6 +1719,24 @@ public class DBQueries_RFO {
 
 			    "ORDER BY NEWID()";
 
+	public static String GET_ACTIVE_CONSULTANT_WITH_RETURN_AUTOSHIP_ORDER = "SELECT top 1 a.AccountID,a.Username,au.AutoshipTypeID,r.ReturnStatusID,o.OrdertypeID,* FROM RFOperations.RFO_Accounts.AccountBase account "+
+			"INNER JOIN RFOperations.RFO_Accounts.AccountRF ARF ON account.AccountID = ARF.AccountID AND account.CountryID =%s "+
+			"INNER JOIN RFOperations.Security.AccountSecurity (NOLOCK) a ON ARF.AccountID = a.AccountID "+
+			"INNER JOIN RFOperations.Hybris.Autoship au ON account.AccountID = au.AccountID  and au.AutoshipstatusID =2 "+
+			"INNER JOIN RFOperations.Hybris.Orders o ON au.AutoshipID = o.AutoshipId AND o.OrderTypeID  IN (9,10,12) "+
+			"INNER JOIN RFOperations.Hybris.ReturnOrder r ON o.orderID = r.OrderID and r.ReturnStatusID = 5 "+
+			"WHERE account.AccountTypeID = 1 and account.AccountStatusID =1 order by newID()";
+
+	public static String GET_ORDER_ID_FROM_ORDER_NUMBER_FOR_RETURN_ORDER_RFO = "select * from Hybris.ReturnOrder where ReturnOrderNumber = '%s'";
+
+	public static String GET_ACTIVE_PC_WITH_RETURN_PC_PERKS_AUTOSHIP_ORDER = "SELECT top 1 a.AccountID,a.Username,au.AutoshipTypeID,au.autoshipstatusID,r.ReturnStatusID,o.OrdertypeID,* FROM RFOperations.RFO_Accounts.AccountBase account "+
+			"INNER JOIN RFOperations.RFO_Accounts.AccountRF ARF ON account.AccountID = ARF.AccountID AND account.CountryID =%s "+
+			"INNER JOIN RFOperations.Security.AccountSecurity (NOLOCK) a ON ARF.AccountID = a.AccountID "+
+			"INNER JOIN RFOperations.Hybris.Autoship au ON account.AccountID = au.AccountID  and au.AutoshipstatusID =2 and au.AutoshipTypeID = 1 "+
+			"INNER JOIN RFOperations.Hybris.Orders o ON au.AutoshipID = o.AutoshipId AND o.OrderTypeID = 9 "+
+			"INNER JOIN RFOperations.Hybris.ReturnOrder r ON o.orderID = r.OrderID and r.ReturnStatusID = 5 "+
+			"WHERE account.AccountTypeID = 2 and account.AccountStatusID =1 order by newID()";
+
 	/**
 	 * 
 	 * @param query

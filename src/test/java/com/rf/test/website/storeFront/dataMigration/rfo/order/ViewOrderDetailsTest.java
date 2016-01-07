@@ -872,9 +872,9 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			rcEmailID= (String) getValueFromQueryResult(randomRCList, "Username");
 
 			storeFrontRCUserPage= storeFrontHomePage.loginAsRCUser(rcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcEmailID);
 				driver.get(driver.getURL());
 			}
 			else

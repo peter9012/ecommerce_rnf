@@ -572,10 +572,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
 			int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
 			for(int i=2; i<=sizeOfOrders; i++){
-				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
-				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("FAILED")){
-					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]"));
-					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]/a")).getText();
+				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]"));
+				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]")).getText();
 					clickOrderNumber(failedOrderNumber);
 					driver.waitForElementPresent(By.xpath("//div[@class='gray-container-info-top']/div"));
 					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER DETAILS: CRP")==true){
@@ -592,7 +592,6 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		}while(isNextLinkPresent==true);
 		return null;
 	}
-
 
 	public String getOrderNumberFromOrderHistoryForFailedAutoshipOrdersForPC() throws InterruptedException {
 		boolean isNextLinkPresent =  false;
@@ -628,10 +627,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div"));
 			int sizeOfOrders = driver.findElements(By.xpath("//div[@id='history-orders-table']/div")).size();
 			for(int i=2; i<=sizeOfOrders; i++){
-				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]"));
-				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[4]")).getText().contains("FAILED")){
-					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]"));
-					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]/div[text()='FAILED']/preceding::div[3]")).getText();
+				driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]"));
+				if(driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(@class,'grand-total')]/following::div[1]")).getText().contains("FAILED")){
+					driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]"));
+					String failedOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/div["+i+"]/div[2]//div[contains(text(),'FAILED')]/preceding::div[3]")).getText();
 					clickOrderNumber(failedOrderNumber);
 					driver.waitForElementPresent(By.xpath("//div[@class='gray-container-info-top']/div"));
 					if(driver.findElement(By.xpath("//div[@class='gray-container-info-top']/div")).getText().contains("ORDER")==true){
@@ -988,6 +987,27 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		System.out.println("Order page "+shippingMethodUI);
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
 		return selectedShippingMethod.trim().contains(shippingMethodUI);
+	}
+
+	public int getSizeOfReturnOrders(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div"));
+		int sizeOfOrders = driver.findElements(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div")).size();
+		return sizeOfOrders;
+	}
+
+	public String getReturnOrderNumber(int i){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div["+i+"]//a"));
+		String orderNumber = driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::div[1]/div[1]/div["+i+"]//a")).getText().trim();
+		logger.info("autoship order number is "+orderNumber);
+		return  orderNumber;
+	}
+
+	public void clickReturnOrderNumber(String orderNumber){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
 	}
 }
 

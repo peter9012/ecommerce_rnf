@@ -5,7 +5,7 @@ GO
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 DECLARE @HYB_key VARCHAR(100) = 'code';
-DECLARE @RFO_key VARCHAR(100) = 'autoshipnumber';
+DECLARE @RFO_key VARCHAR(100) = 'AutoshipID';
 DECLARE @sql_gen_1 NVARCHAR(MAX);
 DECLARE @sql_gen_2 NVARCHAR(MAX);
 DECLARE @cnt INT;
@@ -223,6 +223,8 @@ WHERE   Results = 'Missing in RFO'
 
 DELETE  FROM DataMigration.dbo.dm_log
 WHERE   test_area = '824-Autoship';
+
+
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
     DROP TABLE #tempact;
 
@@ -242,9 +244,10 @@ FROM    RFOperations.Hybris.Autoship (NOLOCK) a
         JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
                                    AND u.p_sourcename = 'Hybris-DM'
 WHERE   a.CountryID = 236
-        AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
-                                      FROM      Hybris.Orders
-                                      WHERE     CountryID = 236 )
+        AND a.AutoshipNumber NOT IN ( SELECT   a.OrderNumber FROM      Hybris.Orders a
+		JOIN RodanFieldsLive.dbo.orders b ON a.OrderID=b.OrderID AND b.OrderTypeID NOT IN (4,5,9)
+		AND a.CountryID = 236 )
+		AND a.AutoShipID NOT IN (SELECT code FROM #extra)
 GROUP BY a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,
@@ -256,6 +259,80 @@ GROUP BY a.AutoshipID ,
 
 
 CREATE CLUSTERED INDEX as_cls1 ON #tempact (AutoshipID);
+CREATE NONCLUSTERED INDEX cls2 ON #tempact(AutoshipNumber)
+
+
+
+
+/*
+  CCFailureCount Validation 
+  
+  
+ 
+
+DECLARE @Date DATETIME2 = ( SELECT TOP 1
+                                    DateValue
+                            FROM    DataMigration.dbo.Configuration
+                            WHERE   Name = 'OrderLoadStartDate'
+                          )
+DECLARE @DBbackupDate DATETIME2 = ( SELECT TOP 1
+                                            DateValue
+                                    FROM    DataMigration.dbo.Configuration
+                                    WHERE   Name = 'DBbackupdate'
+                                  )
+DECLARE @Noofdays_LastProcessingdate INT  = ( SELECT TOP 1
+                                                        CAST(Value AS INT)
+                                              FROM      DataMigration.dbo.Configuration
+                                              WHERE     Name = 'Noofdays_LastProcessingdate'
+                                            )
+						
+               
+			   
+			   
+WITH    CTE_Autoshipmaxsubmitted
+          AS ( SELECT   O.AutoShipID ,
+                        MAX(O.CompletionDate) AS CompletionDate
+               FROM     RFOperations.Hybris.Orders O WITH ( NOLOCK )
+                        JOIN  #LoadedAutoshipID a ON a.AutoShipID = O.AutoShipID
+                        JOIN RFOperations.ETL.OrderDate OD ON OD.Orderid = O.OrderID
+               WHERE    OrderStatusID NOT IN ( 1, 3 )
+                        AND OD.Startdate >= '2014-06-01' --@Date
+                        AND CountryID = 236
+               GROUP BY O.AutoShipID
+             ), -- Not failed Orders Max date
+        CTE_ccfailurecount
+          AS ( SELECT   o.AutoShipID ,
+                        COUNT(*) AS ccfailurecount
+               FROM     RFOperations.Hybris.Orders o WITH ( NOLOCK )
+                        JOIN  #LoadedAutoshipID a ON a.AutoShipID = o.AutoShipID
+                        JOIN RFOperations.ETL.OrderDate OD ON OD.Orderid = o.OrderID
+                        LEFT JOIN CTE_Autoshipmaxsubmitted success ON success.AutoShipID = o.AutoShipID
+               WHERE    OrderStatusID = 1
+                        AND OD.Startdate >= '2014-06-01' --@Date
+                        AND CountryID = 236
+                        AND o.CompletionDate > ISNULL(success.CompletionDate,
+                                                      '1900-01-01') --Failed Orders 
+               GROUP BY o.AutoShipID
+             )
+    SELECT  a.ccfailurecount ,
+            b.p_ccfailurecount ,
+            a.AutoShipID ,
+            b.code
+    FROM    CTE_ccfailurecount a
+            JOIN Hybris..orders b ON a.AutoShipID = b.code
+    WHERE   a.ccfailurecount <> b.p_ccfailurecount
+
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  */
 
 SELECT  'Validation of column to column with no transformation in progress' AS [Step-2 Validation] ,
         GETDATE() AS StartTime;

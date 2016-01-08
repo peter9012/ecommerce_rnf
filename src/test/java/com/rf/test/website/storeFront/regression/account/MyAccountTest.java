@@ -17487,11 +17487,13 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String accountID = null;
-
+		String consultantEmailId = null;
 		country = driver.getCountry();
 		String sponsorID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		consultantEmailId =  String.valueOf(getValueFromQueryResult(randomConsultantList, "Username"));
+		logger.info("Consultant with PWS is "+consultantEmailId);
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("Account Id of the user is "+accountID);
 
@@ -18626,4 +18628,475 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();	
 	}
+
+	// Hybris Project-3857:Place Adhoc Order as RC - AUTOMATION ONLY
+	@Test
+	public void testPlaceAdhocOrderAsRC_3857() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, emailAddress, password);
+
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorID);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		// Placed Adhoc order with different sponsor
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		// Get Account Number
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorID);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+
+		s_assert.assertAll();	
+
+	}
+
+	//	//Hybris Project-3864:Update the PC Perks Template from different CA sponsor's COM PWS
+	//	@Test
+	//	public void testUpdatePCPerksTemplateFromDifferentCASponsorCOMPWS_3864() throws InterruptedException{
+	//		RFO_DB = driver.getDBNameRFO();
+	//		List<Map<String, Object>> randomPCUserList =  null;
+	//		String pcUserEmailID = null;
+	//		String accountId = null;
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String firstName=TestConstants.FIRST_NAME+randomNum;
+	//		String lastName = "lN";
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		while(true){
+	//			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+	//			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+	//			logger.info("Account Id of the user is "+accountId);
+	//			String bizPWS = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+	//			String comPWS = storeFrontHomePage.convertBizSiteToComSite(bizPWS);
+	//			storeFrontHomePage.openConsultantPWS(comPWS);
+	//
+	//			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+	//			boolean isError = driver.getCurrentUrl().contains("error");
+	//			if(isError){
+	//				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+	//				driver.get(driver.getURL());
+	//			}
+	//			else
+	//				break;
+	//		}	
+	//		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+	//		logger.info("login is successful");
+	//		String PWSAfterLogin = driver.getCurrentUrl();
+	//		logger.info("after login "+PWSAfterLogin);
+	//		storeFrontPCUserPage.clickOnAutoshipCart();
+	//		storeFrontPCUserPage.clickOnContinueShoppingLink();
+	//		storeFrontPCUserPage.clickOnAddToPcPerksButton();
+	//		String updatedMsg = TestConstants.PC_PERKS_TEMPLATE_PRODUCT_ADDED;
+	//		s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
+	//		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	//		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+	//		storeFrontUpdateCartPage.clickUpdateCartBtn();
+	//		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCartUpdateMessage(),"Autoship Cart has not been Updated after click on update cart");
+	//		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
+	//		logout();
+	//
+	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	//		storeFrontHomePage.clickAddToBagButton(driver.getCountry());
+	//
+	//		//assert sign up link
+	//		s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Log in or create an account page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	//
+	//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+	//		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		logger.info("Main account details entered");
+	//
+	//		storeFrontHomePage.clickOnNotYourSponsorLink();
+	//		//assert continue without sponser link is not present and request your sponser button
+	//		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue without sponser link is present");
+	//		s_assert.assertFalse(storeFrontHomePage.verifyRequestASponsorBtn(),"Request a sponser button is present");
+	//
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//		//Enter Billing Profile
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		String currentPWSUrl=driver.getCurrentUrl();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,PWSAfterLogin.split("\\:")[1]),"PWS of the RC after enrollment is not same as the one it started enrollment");		
+	//		s_assert.assertAll();
+	//
+	//	}
+
+
+	// Hybris Project-3776:Register as RC with Different US Sponsor WITH Pulse
+	@Test
+	public void testRegisterAsRCWithDifferentUSSponsorWithPulse_3776() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();  
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantWithPWSEmailID = null; //TestConstants.CONSULTANT_USERNAME;
+		String consultantPWSURL = null; //TestConstants.CONSULTANT_BIZ_URL;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String consultantEmailWithPulse = null;
+		String consultantPWSWithPulse = null;
+		String consultantPWSBIZURL = null;
+		String accountID = null;
+		String sponsorID = null;
+		country = driver.getCountry();
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+			consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL).toLowerCase();
+			storeFrontHomePage.openConsultantPWS(consultantPWSURL);
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				continue;
+			}else{
+				break;
+			}
+		}
+
+
+		while(true){
+			System.out.println("Enter again");
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantEmailWithPulse = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			consultantPWSWithPulse = (String) getValueFromQueryResult(randomConsultantList, "URL");
+			consultantPWSBIZURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontHomePage.openConsultantPWS(consultantPWSBIZURL);
+			if(driver.getCurrentUrl().contains("sitenotfound"))
+				continue;
+			else
+				break;
+		}
+
+
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailWithPulse, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		if(storeFrontAccountInfoPage.validateSubscribeToPulse()==false){
+			storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
+		}
+
+		s_assert.assertTrue(storeFrontAccountInfoPage.validateSubscribeToPulse(),"pulse subscription is not cancelled for the user");
+		logout();
+		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
+
+		addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+		city = TestConstants.NEW_ADDRESS_CITY_US;
+		postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+		phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+
+		if(country.equalsIgnoreCase("CA")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+
+
+		// create RC User
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//assert sign up link
+		s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		String rcEmailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, rcEmailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
+		//assert not your sponsor link is present
+		s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(), "Not your sponsor link is not present");
+
+		//assert continue without sponsor link is not present
+		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponsorLinkIsPresent(), "Continue without sponsor link is present");
+
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+
+		//assert continue without sponser link is not present and request your sponser button
+		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue without sponser link present");
+		s_assert.assertFalse(storeFrontHomePage.verifyRequestASponsorBtn(),"Request a sponser button is present");
+
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorID);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+
+		String currentPWSUrl=driver.getCurrentUrl();
+		logger.info("current url After "+currentPWSUrl);
+		logger.info("current url from query "+consultantPWSURL.split("\\:")[1]);
+		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,consultantPWSURL.split("\\:")[1]),"PWS of the RC after enrollment is not same as the one it started enrollment");		
+		s_assert.assertAll();
+
+	}
+
+	// Hybris Project-3777:Register as RC with Different US Sponsor WITHOUT Pulse
+	@Test
+	public void testRegisterAsRCWithDifferentUSSponsorWithoutPulse_3777() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			RFO_DB = driver.getDBNameRFO(); 
+
+			//create Sponsor without pulse
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			country = driver.getCountry();
+			enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+			regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			//storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID();
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.clickNextButton();
+			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.uncheckPulseAndCRPEnrollment();
+			s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+			storeFrontHomePage.checkTheIAgreeCheckBox();
+			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+			//storeFrontHomePage.clickOnConfirmAutomaticPayment();
+			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+
+			// create RC User
+			int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String firstNameRC=TestConstants.FIRST_NAME+randomNumber;
+			String lastName = "lN";
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+
+			//open pws site
+			String pws = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+
+			// Click on our product link that is located at the top of the page and then click in on quick shop
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+
+			//Select a product and proceed to buy it
+			storeFrontHomePage.selectProductAndProceedToBuy();
+
+			//assert sign up link
+			s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
+			//Click on Check out
+			storeFrontHomePage.clickOnCheckoutButton();
+
+			//Log in or create an account page is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+			logger.info("Login or Create Account page is displayed");
+
+			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+			String rcEmailAddress = firstNameRC+"@xyz.com";
+			storeFrontHomePage.enterNewRCDetails(firstNameRC, TestConstants.LAST_NAME+randomNum, rcEmailAddress, password);
+
+			//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+			storeFrontHomePage.enterMainAccountInfo();
+			logger.info("Main account details entered");
+
+			//assert not your sponsor link is present
+			s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(), "Not your sponsor link is not present");
+
+			//assert continue without sponsor link is not present
+			s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponsorLinkIsPresent(), "Continue without sponsor link is present");
+
+			// sponser search by Account Number
+			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,consultantEmailAddress),RFO_DB);
+			String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+			storeFrontHomePage.clickOnNotYourSponsorLink();
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorId);
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+
+			//Enter Billing Profile
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			s_assert.assertTrue(storeFrontHomePage.verifyBizUrlAfterEnrollment(pws), "User NOT stays on the checkout PWS");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for US env");
+		}
+	}
+
+	//Hybris Project-4674:During PC enrollment add email ID of RC user who is already exist. Verify the popup and follow the i
+	@Test
+	public void testDuringPCEnrollmentAddEmailIdOfExistingRCUser_4674() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnPlaceOrderButton();
+
+		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"Send mail to reset my password' button not working");	
+		s_assert.assertAll();
+	}
+
 }

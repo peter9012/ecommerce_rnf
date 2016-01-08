@@ -194,7 +194,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		try{
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[@value='Select']")));
 		}catch(Exception e){
+			try{
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+			}catch(Exception e1){
+				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),' Select')]")));
+			}
 		}
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();

@@ -58,80 +58,59 @@ SELECT    DISTINCT
         a.AutoshipID
 INTO    #LoadedAutoshipID
 FROM    RFOperations.Hybris.Autoship (NOLOCK) a
-        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipID
+        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipNumber
                                                             AND ao.AccountID = a.AccountID
         INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
-        INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+        INNER JOIN Hybris.dbo.users u ON CAST(a.AccountID AS NVARCHAR) = u.p_rfaccountid
                                          AND u.p_sourcename = 'Hybris-DM'
 WHERE   a.CountryID = 236
-        AND a.AutoshipID NOT IN ( SELECT    AutoshipID
-                                  FROM      #DuplicateAutoship );
+       -- AND a.AutoshipID NOT IN ( SELECT    AutoshipID  FROM      #DuplicateAutoship );
+	   						  
+
+IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+    DROP TABLE #extra;
+
+SELECT  ho.pk
+INTO    #extra
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.pk
+WHERE   lo.AutoshipID IS NULL; 
+
+
+IF OBJECT_ID('tempdb..#Missing') IS NOT NULL
+    DROP TABLE #Missing;
+
+SELECT lo.AutoshipID
+INTO    #Missing
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.pk
+WHERE  ho.pk IS NULL; 
+
+SELECT COUNT(*) CountExtraLoaded FROM #extra 
+SELECT COUNT(*) CountNotLoaded FROM #Missing		
 
 
 
 
-------SELECT AutoshipID INTO #LoadedAutoshipID FROM datamigration.dbo.LoadedAutoshipID
-
---Duplicate check on Hybris side for US
-SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'
-             ELSE 'No duplicates - Validation Passed'
-        END AS [Step-1 Validation]
-FROM    ( SELECT    OwnerPkString
-          FROM      Hybris.dbo.addresses(NOLOCK)
-          WHERE     duplicate = 1
-                    AND OwnerPkString IN ( SELECT DISTINCT
-                                                    AutoshipID
-                                           FROM     Hybris.Autoship
-                                           WHERE    CountryID = 236 )
-                    AND p_shippingaddress = 1
-          GROUP BY  OwnerPkString
-          HAVING    COUNT(*) > 1
-        ) t1;
-
---Counts check on Hybris side for US
-WITH    cte
-          AS ( SELECT   * ,
-                        ROW_NUMBER() OVER ( PARTITION BY AutoShipID ORDER BY Address1 DESC ) AS rn
-               FROM     Hybris.AutoshipShippingAddress
-             )
-    SELECT  hybris_cnt ,
-            rfo_cnt ,
-            CASE WHEN hybris_cnt > rfo_cnt
-                 THEN 'Hybris count more than RFO count'
-                 WHEN rfo_cnt > hybris_cnt
-                 THEN 'RFO count more than Hybris count'
-                 ELSE 'Count matches - validation passed'
-            END Results
-    FROM    ( SELECT    COUNT(DISTINCT d.PK) hybris_cnt
-              FROM      Hybris.dbo.orders (NOLOCK) ho
-                        JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
-                                                            AND u.p_sourcename = 'Hybris-DM'
-                                                            AND ho.p_template = 1
-                        JOIN Hybris.dbo.countries (NOLOCK) c ON c.PK = u.p_country
-                                                              AND c.isocode = 'US'
-                        JOIN Hybris.dbo.addresses (NOLOCK) had ON had.OwnerPkString = ho.PK
-                                                              AND had.duplicate = 1
-                                                              AND had.p_shippingaddress = 1
-                        JOIN #LoadedAutoshipID l ON CAST(l.AutoshipID AS NVARCHAR) = ho.code
-            ) t1 , --909344
-            ( SELECT    COUNT(DISTINCT c.AutoshipShippingAddressID) rfo_cnt
-              FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-                        JOIN Hybris.dbo.users (NOLOCK) u ON u.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
-                        JOIN Hybris.AutoshipShippingAddress (NOLOCK) asa ON asa.AutoShipID = a.AutoshipID
-                        JOIN #LoadedAutoshipID l ON l.AutoshipID = a.AutoshipID
-                        JOIN cte e ON e.AutoShipID = a.AutoshipID
-                                      AND e.rn = 1
-              WHERE     a.CountryID = 236
-            ) t2;
- --909463
 
 
 DELETE  FROM DataMigration.dbo.dm_log
 WHERE   test_area = '824-AutoshipShippingAddress';
+
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
     DROP TABLE #tempact;
 
@@ -156,6 +135,8 @@ WITH    cte
                                                               AND a.CountryID = 236
                                                               AND p_sourcename = 'Hybris-DM'
             JOIN #LoadedAutoshipID d ON a.AutoshipID = d.AutoshipID
+			WHERE a.AutoshipID NOT IN (SELECT pk FROM #extra)
+			AND a.AutoshipID NOT IN (SELECT AutoshipID FROM #Missing)
     GROUP BY a.AutoshipID ,
             a.AutoshipNumber ,
             a.AccountID ,

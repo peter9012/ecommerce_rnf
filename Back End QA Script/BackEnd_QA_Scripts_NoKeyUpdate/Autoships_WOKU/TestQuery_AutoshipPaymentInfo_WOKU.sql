@@ -123,8 +123,39 @@ FROM    RFOperations.Hybris.Autoship (NOLOCK) a
 WHERE   a.CountryID = 236
         AND a.AutoshipID NOT IN ( SELECT    AutoshipID FROM      #DuplicateAutoship );
 
+		
+
+IF OBJECT_ID('tempdb..#extra') IS NOT NULL
+    DROP TABLE #extra;
+
+SELECT  ho.code
+INTO    #extra
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+WHERE   lo.AutoshipID IS NULL;
+       --124 Templates 
 
 
+	   
+
+IF OBJECT_ID('tempdb..#Missing') IS NOT NULL
+    DROP TABLE #Missing;
+
+SELECT  lo.AutoshipID
+INTO    #Missing
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+WHERE    ho.code IS NULL;
 
 
 --Duplicate check on Hybris side for US
@@ -160,7 +191,8 @@ FROM    ( SELECT    COUNT(DISTINCT d.PK) hybris_cnt
 		  JOIN      Hybris.dbo.users u ON u.pk=ho.userpk AND u.p_sourcename='Hybris-DM'
 		  JOIN      Hybris.dbo.countries c ON c.pk=u.p_country AND c.isocode='US'
 		  JOIN      Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString=ho.pk AND ho.p_template=1
-		  AND hpi.duplicate=1          
+		  AND hpi.duplicate=1 AND hpi.p_sourcename='Hybris-DM' 
+		  AND ho.code NOT IN (SELECT code FROM #Extra)       
         ) t1 , --1093729
         ( SELECT    COUNT(DISTINCT AutoshipPaymentID) rfo_cnt
           FROM      RFOperations.Hybris.Autoship a 
@@ -168,6 +200,9 @@ FROM    ( SELECT    COUNT(DISTINCT d.PK) hybris_cnt
 		  JOIN      Hybris.dbo.users u ON u.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)AND u.p_sourcename='Hybris-DM'
 		  JOIN      RFOperations.Hybris.AutoshipPayment asp ON asp.AutoshipID=a.AutoshipID
 		  JOIN  	RodanFieldsLive.dbo.OrderPayments lop ON lop.OrderPaymentID=asp.AutoshipPaymentID
+		  WHERE lop.BillingFirstName<>''
+		  and lop.BillingLastName<>''
+		  AND a.AutoshipID NOT IN (SELECT AutoshipID FROM #Missing)
         ) t2;--986577
 
 	
@@ -243,8 +278,9 @@ WHERE   CAST( a.AccountID AS NVARCHAR) = b.p_rfaccountid
         AND CAST(c.AutoshipPaymentID  AS VARCHAR)= d.code
 		AND a.AutoshipID=e.AutoshipID
         AND CountryID = 236
-       -- AND b.p_sourcename = 'Hybris-DM'
---and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
+         AND b.p_sourcename = 'Hybris-DM'
+		 AND d.p_sourcename='Hybris-DM'
+ 
 GROUP BY a.AutoshipID ,
         AutoshipNumber ,
         a.AccountID ,

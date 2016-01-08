@@ -107,7 +107,7 @@ WHERE   a.CountryID = 236
 IF OBJECT_ID('tempdb..#extra') IS NOT NULL
     DROP TABLE #extra;
 
-SELECT  ho.code
+SELECT  ho.pk
 INTO    #extra
 FROM    Hybris..orders ho
         JOIN Hybris..users u ON u.PK = ho.userpk
@@ -119,6 +119,22 @@ FROM    Hybris..orders ho
 WHERE   lo.AutoshipID IS NULL;       --124 Templates 
 
 
+IF OBJECT_ID('tempdb..#Missing') IS NOT NULL
+    DROP TABLE #Missing;
+
+SELECT lo.AutoshipID
+INTO    #Missing
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.pk
+WHERE  ho.pk IS NULL; 
+
+SELECT COUNT(*) CountExtraLoaded FROM #extra 
+SELECT COUNT(*) CountNotLoaded FROM #Missing		
 		
 
 SELECT  hybris_cnt ,
@@ -142,48 +158,6 @@ FROM    ( SELECT    COUNT( DISTINCT ho.PK) hybris_cnt --1461818 Templates
 
 
 
-IF OBJECT_ID('tempdb..#missing') IS NOT NULL
-    DROP TABLE #missing;
-
-
-SELECT  t1.code ,
-        t2.AutoshipID ,
-        CASE WHEN t1.code IS NULL THEN 'Missing in Hybris'
-             WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO'
-        END Results
-INTO    #missing
-FROM    ( SELECT    COUNT(DISTINCT ho.PK) hybris_cnt --1461818 Templates
-          FROM      Hybris.dbo.orders ho
-                    JOIN Hybris.dbo.users u ON u.PK = ho.userpk
-                                               AND u.p_sourcename = 'Hybris-DM'
-                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
-                                                   AND c.isocode = 'US'
-          WHERE     ho.p_template = 1
-        ) t1
-        FULL OUTER JOIN ( SELECT    COUNT(DISTINCT a.AutoshipID) rfo_cnt  --1461695 Templates
-                          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-                                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
-                          WHERE     a.CountryID = 236
-                        ) t2 ON t1.code = t2.AutoshipID
-WHERE   t1.code IS NULL
-        OR t2.AutoshipID IS NULL;
-
-
-SELECT  COUNT(*)   AS MIssingHybrisCount
-FROM    #missing
-WHERE   Results = 'Missing in Hybris'
-SELECT  COUNT(*)   AS RFOMissingCount
-FROM    #missing
-WHERE   Results = 'Missing in RFO'
-SELECT TOP 10
-        *
-FROM    #missing
-WHERE   Results = 'Missing in Hybris'
-UNION
-SELECT TOP 10
-        *
-FROM    #missing
-WHERE   Results = 'Missing in RFO'
 
 
 
@@ -212,8 +186,8 @@ WHERE   a.CountryID = 236
         AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
                                       FROM     RFOperations.Hybris.Orders
                                       WHERE     CountryID = 236 )
-		--AND a.AutoshipID NOT IN (SELECT code FROM #extra)
-		--AND a.AutoshipID NOT IN (SELECT autoshipid FROM #missing WHERE autoshipid IS NOT NULL)
+		--AND a.AutoshipID NOT IN (SELECT pk FROM #extra)
+		--AND a.AutoshipID NOT IN (SELECT autoshipid FROM #missing  )
 GROUP BY a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,

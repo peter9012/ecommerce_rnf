@@ -165,7 +165,7 @@
 												ProductID)  
 			--AND d.ReturnStatusID <> 6
 
-			SELECT * FROM #tempact
+			--SELECT * FROM #tempact
 
 
 			create nonclustered index as_cls1 on #tempact (returnorderid)

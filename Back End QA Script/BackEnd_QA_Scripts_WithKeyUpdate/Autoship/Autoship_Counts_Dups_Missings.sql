@@ -92,14 +92,14 @@ SELECT    DISTINCT
         a.AutoshipID
 INTO    #LoadedAutoshipID          --1461695 Templates with timetaken 32 sec	Dry:1501895 templates with time:25 sec
 FROM    RFOperations.Hybris.Autoship (NOLOCK) a
-        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipID
+        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = a.AutoshipNumber
                                                             AND ao.AccountID = a.AccountID
         INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPayment (NOLOCK) ap ON ap.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShipment (NOLOCK) ash ON ash.AutoshipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipPaymentAddress (NOLOCK) apa ON apa.AutoShipID = a.AutoshipID
         INNER JOIN RFOperations.Hybris.AutoshipShippingAddress (NOLOCK) asha ON asha.AutoShipID = a.AutoshipID
-        INNER JOIN Hybris.dbo.users u ON a.AccountID = u.p_rfaccountid
+        INNER JOIN Hybris.dbo.users u ON CAST(a.AccountID AS NVARCHAR) = u.p_rfaccountid
                                          AND u.p_sourcename = 'Hybris-DM'
 WHERE   a.CountryID = 236;
      -- AND a.AutoshipID NOT IN ( SELECT    AutoshipID FROM      #DuplicateAutoship );
@@ -109,7 +109,7 @@ CREATE CLUSTERED INDEX cls_autoship ON #LoadedAutoshipID(AutoshipID);
 IF OBJECT_ID('tempdb..#extra') IS NOT NULL
     DROP TABLE #extra;
 
-SELECT  ho.code ,
+SELECT  ho.Pk ,
         c.modifiedTS
 INTO    #extra                        --131 Templates with timetaken 2 sec. Dry:97 Templates 2 Sec.
 FROM    Hybris..orders ho
@@ -118,7 +118,7 @@ FROM    Hybris..orders ho
                                 AND u.p_sourcename = 'Hybris-DM'
         JOIN Hybris..countries c ON c.PK = u.p_country
                                     AND c.isocode = 'US'
-        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+        LEFT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.Pk
 WHERE   lo.AutoshipID IS NULL; 
 
 
@@ -138,8 +138,8 @@ FROM    Hybris..orders ho
                                 AND ho.p_template = 1
         JOIN Hybris..countries c ON c.PK = u.p_country
                                     AND c.isocode = 'US'
-        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
-WHERE   ho.code IS NULL; 
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.Pk
+WHERE   ho.PK IS NULL; 
 
 
 SELECT  COUNT(*) AS [NotLoaded IN Hybris]
@@ -148,7 +148,7 @@ FROM    #missing;
 
 SELECT  hybris_cnt ,
         rfo_cnt ,
-		t1.hybris_cnt-t2.rfo_cnt AS Diff,
+		t1.hybris_cnt-t2.rfo_cnt AS diff,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
@@ -159,8 +159,8 @@ FROM    ( SELECT    COUNT(ho.PK) hybris_cnt                        --1461694
                                                AND u.p_country = 8796100624418
                                                AND ho.p_template = 1
                                                AND p_sourcename = 'Hybris-DM'
-                                               AND code NOT IN ( SELECT
-                                                              code
+                                               AND ho.pk NOT IN ( SELECT
+                                                              Pk
                                                               FROM
                                                               #extra )
         ) t1 ,
@@ -233,7 +233,7 @@ SELECT  @StartedTime AS StartedTime ,
 		
 
 INSERT  INTO DataMigration.dbo.ExecResult
-        SELECT  'Autoship Header' AS Entity ,
+        SELECT  'Autoship Header WithKey' AS Entity ,
                 'Counts,Dups,Missing' AS Types ,
                 @StartedTime AS StartedTime ,
                 @EndTime AS CompletionTime ,
@@ -289,7 +289,6 @@ GROUP BY            d.orderpk ,
 --Counts check on Hybris side for US
 SELECT  hybris_cnt ,
         rfo_cnt ,
-		t1.hybris_cnt-t2.rfo_cnt AS Diff,
         t1.hybris_cnt - t2.rfo_cnt AS diff ,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
@@ -303,18 +302,15 @@ FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt
                                                    AND c.isocode = 'US'
                     JOIN Hybris.dbo.orderentries oi ON oi.orderpk = ho.PK
                                                        AND ho.p_template = 1
-          WHERE     ho.code NOT IN ( SELECT code
+          WHERE     ho.pk NOT IN ( SELECT Pk
                                      FROM   #extra )   --Excluding Extra added Templates in Hybris.
         ) t1 , --1710792
         ( SELECT    COUNT(c.AutoshipItemID) rfo_cnt
-          FROM      RFOperations.Hybris.Autoship a ,
-                    Hybris.dbo.users b ,
-                    RFOperations.Hybris.AutoshipItem c ,
-                    #LoadedAutoshipID d
-          WHERE     a.AccountID = b.p_rfaccountid
-                    AND a.AutoshipID = c.AutoshipId
-                    AND a.AutoshipID = d.AutoshipID
-                    AND CountryID = 236
+          FROM      RFOperations.Hybris.Autoship a 
+		  JOIN      Hybris.dbo.users u ON a.AccountID=u.p_rfaccountid
+		  JOIN      RFOperations.Hybris.AutoshipItem c ON a.AutoshipID=c.AutoshipId
+		  JOIN      #LoadedAutoshipID lo ON lo.AutoshipID=a.AutoshipID
+		  WHERE      CountryID = 236
                     AND p_sourcename = 'Hybris-DM'
                     AND a.AutoshipID NOT IN ( SELECT    AutoshipID
                                               FROM      #missing )
@@ -325,12 +321,12 @@ FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt
 
  
 --Counts check on Hybris side for US
-SELECT  t1.code ,
+SELECT  t1.pk ,
         t2.AutoshipID ,
         t1.hybris_cnt ,
         t2.rfo_cnt
 FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt ,
-                    ho.code
+                    ho.pk
           FROM      Hybris.dbo.orders ho
                     JOIN Hybris.dbo.users u ON u.PK = ho.userpk
                                                AND u.p_sourcename = 'Hybris-DM'
@@ -340,7 +336,7 @@ FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt ,
                     JOIN Hybris.dbo.orderentries oi ON oi.orderpk = ho.PK
           WHERE     ho.code NOT IN ( SELECT code
                                      FROM   #extra )   --Excluding Extra added Templates in Hybris.
-          GROUP BY  ho.code
+          GROUP BY  ho.pk
         ) t1
         JOIN --1710792
         ( SELECT    COUNT(c.AutoshipItemID) rfo_cnt ,
@@ -358,7 +354,7 @@ FROM    ( SELECT    COUNT(DISTINCT oi.PK) hybris_cnt ,
                                               FROM      #missing )
           GROUP BY  a.AutoshipID
 											-- Excluding Missing Templates in Hybris.
-        ) t2 ON t1.code = t2.AutoshipID
+        ) t2 ON t1.pk = t2.AutoshipID
 WHERE   t1.hybris_cnt <> t2.rfo_cnt;
  --1712145
 
@@ -387,7 +383,7 @@ SELECT  @StartedTime AS StartedTime ,
         'Autoship Items' AS Entity; 
 
 INSERT  INTO DataMigration.dbo.ExecResult
-        SELECT  'Autoship Items' AS Entity ,
+        SELECT  'Autoship Items WithKey' AS Entity ,
 		'Counts,Dups,Missing' AS Types,
                 @StartedTime AS StartedTime ,
                 @EndTime AS CompletionTime ,
@@ -462,8 +458,9 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.PK) hybris_cnt
                                                AND u.p_sourcename = 'Hybris-DM'
                     JOIN RFOperations.Hybris.AutoshipPayment asp ON asp.AutoshipID = a.AutoshipID
                     JOIN RodanFieldsLive.dbo.OrderPayments lop ON lop.OrderPaymentID = asp.AutoshipPaymentID
-          WHERE     a.AutoshipID NOT IN ( SELECT    AutoshipID 
-                                          FROM      #missing  )--Excluding Missing in Hybris.
+          WHERE     a.AutoshipID NOT IN ( SELECT    AutoshipID
+                                          FROM      #missing
+                                            )--Excluding Missing in Hybris.
         ) t2;
 --986577   --1501196
 
@@ -524,24 +521,24 @@ FROM    ( SELECT    *  --COUNT(*) CNT
                             AND a.p_template = 1
                             AND d.duplicate = 1
                             AND b.p_sourcename = 'Hybris-DM' )
-                    AND OrderID IN ( SELECT code
+                    AND OrderID IN ( SELECT pk
                                      FROM   Hybris..orders
                                      WHERE  p_template = 1 )
-                    --AND AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
-                    --AND ( LTRIM(RTRIM(BillingFirstName)) <> ''
-                    --      OR LTRIM(RTRIM(BillingLastName)) <> ''
-                    --    )
+                    AND AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
+                    AND ( LTRIM(RTRIM(BillingFirstName)) <> ''
+                          OR LTRIM(RTRIM(BillingLastName)) <> ''
+                        )
         ) b;
 
 		---Missing In hybris= PaymentId 8841933
 		
 ----Counts check on Hybris side for US
-SELECT  t1.code ,
+SELECT  t1.pk ,
         t2.AutoshipID ,
         t1.hybris_cnt ,
         t2.rfo_cnt
 FROM    ( SELECT    COUNT(hpi.PK) hybris_cnt ,
-                    ho.code
+                    ho.pk
           FROM      Hybris.dbo.orders ho
                     JOIN Hybris.dbo.users u ON u.PK = ho.userpk
                                                AND u.p_sourcename = 'Hybris-DM'
@@ -552,7 +549,7 @@ FROM    ( SELECT    COUNT(hpi.PK) hybris_cnt ,
                                                         AND hpi.duplicate = 1
           WHERE     ho.code NOT IN ( SELECT code
                                      FROM   #extra ) --EXcluding Extra Templates added in Hybris. 
-          GROUP BY  ho.code
+          GROUP BY  ho.pk
         ) t1 --1093729
         JOIN ( SELECT   COUNT(asp.AutoshipPaymentID) rfo_cnt ,
                         a.AutoshipID
@@ -568,7 +565,7 @@ FROM    ( SELECT    COUNT(hpi.PK) hybris_cnt ,
                                               WHERE     code IS NOT NULL )--Excluding Missing in Hybris.
                GROUP BY a.AutoshipID
              ) t2 ---986577
-        ON t1.code = t2.AutoshipID
+        ON t1.pk = t2.AutoshipID
 WHERE   t1.hybris_cnt <> t2.rfo_cnt;
 
 
@@ -583,7 +580,7 @@ SELECT  @StartedTime AS StartedTime ,
         'Autoship PaymentInfos' AS Entity; 
 
 INSERT  INTO DataMigration.dbo.ExecResult
-        SELECT  'Autoship PaymentInfos' AS Entity ,
+        SELECT  'Autoship PaymentInfos WithKey' AS Entity ,
 		'Counts,Dups,Missing' AS Types,
                 @StartedTime AS StartedTime ,
                 @EndTime AS CompletionTime ,
@@ -646,7 +643,7 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
                                                     AND ad.duplicate = 1
                                                     AND pa.p_sourcename = 'Hybris-DM'
                                                     AND ad.p_billingaddress = 1
-          WHERE     ho.code NOT IN ( SELECT code
+          WHERE     ho.pk NOT IN ( SELECT pk
                                      FROM   #extra )
         ) t1 , --1135025
         ( SELECT    COUNT(DISTINCT apa.AutoshipPaymentAddressID) rfo_cnt
@@ -656,18 +653,18 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
                     JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = a.AutoshipID
                     JOIN Hybris.dbo.users c ON c.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
                     JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID
-                                                              AND apa.AutoshipPaymentAddressID = ap.AutoshipPaymentID
-                    JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR)
+                                                              --AND apa.AutoshipPaymentAddressID = ap.AutoshipPaymentID
+                    JOIN Hybris..paymentinfos hpa ON hpa.pk =  ap.AutoshipPaymentID  
                                                      AND hpa.duplicate = 1
-          WHERE     a.AutoshipID NOT IN ( SELECT    code
-                                          FROM      #extra )
+          WHERE     a.AutoshipID NOT IN ( SELECT    AutoshipID
+                                          FROM      #missing )
         ) t2; 	
 		
 
 SELECT  t1.* ,
         t2.*
 FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
-                    pa.code
+                    pa.pk
           FROM      Hybris.dbo.orders ho
                     JOIN Hybris.dbo.users u ON ho.userpk = u.PK
                                                AND u.p_sourcename = 'Hybris-DM'
@@ -679,9 +676,8 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
                     JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = pa.PK
                                                     AND ad.duplicate = 1
 		--  JOIN      Hybris.dbo.addresses ad ON ad.pk=pa.p_billingaddress AND ad.duplicate=1
-          WHERE     ho.code NOT IN ( SELECT code
-                                     FROM   #extra )
-          GROUP BY  pa.code
+          WHERE     ho.pk NOT IN ( SELECT pk FROM   #extra )
+          GROUP BY  pa.pk
         ) t1 --1135025
         JOIN ( SELECT   COUNT(DISTINCT apa.AutoshipPaymentAddressID) rfo_cnt ,
                         ap.AutoshipPaymentID
@@ -691,11 +687,12 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
                         JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = a.AutoshipID
                         JOIN Hybris.dbo.users c ON c.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
                         JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID
-                                                              AND ap.AutoshipPaymentID = apa.AutoshipPaymentAddressID
-                        JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR)
+                                                             -- AND ap.AutoshipPaymentID = apa.AutoshipPaymentAddressID
+                        JOIN Hybris..paymentinfos hpa ON hpa.pk =  ap.AutoshipPaymentID  
                                                          AND hpa.duplicate = 1
+							WHERE a.AutoshipID NOT IN (SELECT AutoshipID FROM #missing)
                GROUP BY ap.AutoshipPaymentID
-             ) t2 ON t1.code = t2.AutoshipPaymentID
+             ) t2 ON t1.pk = t2.AutoshipPaymentID
 WHERE   t1.hybris_cnt <> t2.rfo_cnt;	
 		
 
@@ -710,52 +707,16 @@ WHERE   t1.hybris_cnt <> t2.rfo_cnt;
    
  
  */
-		
---SELECT  t1.code ,
---        t2.AutoshipPaymentID ,
---        CASE WHEN t1.code IS NULL THEN 'Missing in AutoshipPayment in  Hybris'
---             WHEN t2.AutoshipPaymentID IS NULL
---             THEN 'Missing AutoshipPayment in RFO'
---        END AS Results
---FROM    ( SELECT    pa.code
---          FROM      Hybris.dbo.orders ho
---                    JOIN Hybris.dbo.users u ON ho.userpk = u.PK
---                                               AND u.p_sourcename = 'Hybris-DM'
---                                               AND ho.p_template = 1
---                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
---                                                   AND c.isocode = 'US'
---                    JOIN Hybris.dbo.paymentinfos pa ON pa.OwnerPkString = ho.PK
---                                                       AND pa.duplicate = 1
---                                                       AND pa.p_sourcename = 'Hybris-DM'
---                    JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = pa.PK
---                                                    AND ad.duplicate = 1
---                                                    AND ad.p_billingaddress = 1
---		--  JOIN      Hybris.dbo.addresses ad ON ad.pk=pa.p_billingaddress AND ad.duplicate=1 AND ad.p_billingaddress=1
---          WHERE     ho.code NOT IN ( SELECT code
---                                     FROM   #extra )
---        ) t1
---        FULL OUTER JOIN ( SELECT    DISTINCT
---                                    CAST(ap.AutoshipPaymentID AS NVARCHAR) AutoshipPaymentID
---                          FROM      RFOperations.Hybris.Autoship a
---                                    JOIN #LoadedAutoshipID l ON l.AutoshipID = a.AutoshipID
---                                                              AND a.CountryID = 236
---                                    JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = a.AutoshipID
---                                    JOIN Hybris.dbo.users c ON c.p_rfaccountid = CAST(a.AccountID AS NVARCHAR)
---                                    JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = a.AutoshipID
---                                    JOIN Hybris..paymentinfos hpa ON hpa.code = CAST(ap.AutoshipPaymentID AS NVARCHAR)
---                                                              AND hpa.duplicate = 1
---                        ) t2 ON t1.code = t2.AutoshipPaymentID
---WHERE   t1.code IS NULL
---        OR t2.AutoshipPaymentID IS NULL; 
+	
 
 
 		
-SELECT  t1.code AS AutoshipNumber ,
+SELECT  t1.pk ,
         t2.AutoshipID ,
         t1.hybris_cnt ,
         t2.rfo_cnt
 FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
-                    ho.code
+                    ho.pk
           FROM      Hybris.dbo.orders ho
                     JOIN Hybris.dbo.users u ON ho.userpk = u.PK
                                                AND u.p_sourcename = 'Hybris-DM'
@@ -768,9 +729,9 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
                     JOIN Hybris.dbo.addresses ad ON ad.OwnerPkString = pa.PK
                                                     AND ad.duplicate = 1
 		--  JOIN      Hybris.dbo.addresses ad ON ad.pk=pa.p_billingaddress AND ad.duplicate=1
-          WHERE     ho.code NOT IN ( SELECT code
+          WHERE     ho.pk NOT IN ( SELECT pk
                                      FROM   #extra )
-          GROUP BY  ho.code
+          GROUP BY  ho.pk
         ) t1 --1135025
         JOIN ( SELECT   COUNT(DISTINCT apa.AutoshipPaymentAddressID) rfo_cnt ,
                         a.AutoshipID
@@ -785,7 +746,7 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt ,
                WHERE    a.AutoshipID NOT IN ( SELECT    AutoshipID
                                               FROM      #missing )  --To Avoid Missing in Hybris.
                GROUP BY a.AutoshipID
-             ) t2 ON t1.code = t2.AutoshipID
+             ) t2 ON t1.pk = t2.AutoshipID
 WHERE   t1.hybris_cnt <> t2.rfo_cnt;
 
 
@@ -801,7 +762,7 @@ SELECT  @StartedTime AS StartedTime ,
 
 
 INSERT  INTO DataMigration.dbo.ExecResult
-        SELECT  'Autoship payment Address' AS Entity ,
+        SELECT  'Autoship paymentAddress WithKey' AS Entity ,
 		'Counts,Dups,Missing' AS Types,
                 @StartedTime AS StartedTime ,
                 @EndTime AS CompletionTime ,
@@ -858,11 +819,11 @@ WITH    cte
                                                             AND u.p_country = 8796100624418
                                                             AND u.p_sourcename = 'Hybris-DM'
                         JOIN Hybris.dbo.addresses (NOLOCK) had ON had.OwnerPkString = ho.PK
-                        JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+                        JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.Pk
               WHERE     ho.p_template = 1
                         AND had.p_shippingaddress = 1
                         AND duplicate = 1
-						AND ho.code NOT IN (SELECT code FROM #extra)
+						AND ho.pk NOT IN (SELECT Pk FROM #extra)
             ) t1 , --1502046
             ( SELECT    COUNT(DISTINCT c.AutoshipShippingAddressID) rfo_cnt
               FROM      RFOperations.Hybris.Autoship (NOLOCK) a
@@ -899,23 +860,23 @@ WITH    cte
                         ROW_NUMBER() OVER ( PARTITION BY AutoShipID ORDER BY Address1 DESC ) AS rn
                FROM     RFOperations.Hybris.AutoshipShippingAddress
              )
-    SELECT  t1.code ,
+    SELECT  t1.PK ,
             t2.AutoshipID ,
             t1.hybris_cnt ,
             t2.rfo_cnt
     FROM    ( SELECT    COUNT(DISTINCT had.PK) hybris_cnt ,
-                        ho.code
+                        ho.pk
               FROM      Hybris.dbo.orders (NOLOCK) ho
                         JOIN Hybris.dbo.users (NOLOCK) u ON ho.userpk = u.PK
                                                             AND u.p_country = 8796100624418
                                                             AND u.p_sourcename = 'Hybris-DM'
                         JOIN Hybris.dbo.addresses (NOLOCK) had ON had.OwnerPkString = ho.PK
-                        JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+                        JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.PK
               WHERE     ho.p_template = 1
                         AND had.p_shippingaddress = 1
                         AND duplicate = 1
-						AND ho.code NOT IN (SELECT code FROM #extra)
-              GROUP BY  ho.code
+						AND ho.pk NOT IN (SELECT PK FROM #extra)
+              GROUP BY  ho.Pk
             ) t1
             JOIN ( SELECT   COUNT(DISTINCT c.AutoshipShippingAddressID) rfo_cnt ,
                             a.AutoshipID
@@ -929,7 +890,7 @@ WITH    cte
                                       AND e.rn = 1
 									  AND a.AutoshipID NOT IN (SELECT AutoshipID FROM #missing)
                    GROUP BY a.AutoshipID
-                 ) t2 ON t1.code = t2.AutoshipID
+                 ) t2 ON t1.PK = t2.AutoshipID
     WHERE   t1.hybris_cnt <> t2.rfo_cnt;
  
 

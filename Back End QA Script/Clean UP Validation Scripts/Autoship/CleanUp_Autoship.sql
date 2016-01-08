@@ -75,8 +75,9 @@ WITH    Autoship
                         LEFT JOIN RFOperations.Hybris.Orders o ON o.AutoShipID = a.AutoshipID
                GROUP BY a.AccountID ,
                         a.AutoshipID
-             )
-    SELECT  a.AutoshipID ,
+             ),
+			 Selected AS 
+   (SELECT  a.AutoshipID ,
             a.AccountID ,
             a.AutoshipTypeID ,
             a.Active ,
@@ -84,19 +85,10 @@ WITH    Autoship
             ROW_NUMBER() OVER ( PARTITION BY a.AccountID ORDER BY b.MaxOrderCompletion DESC ) AS rown
     FROM    RFOperations.Hybris.Autoship a
             JOIN MAXAutoDate b ON a.AutoshipID = b.AutoshipID
-    WHERE   a.Active <> 1
-            AND ROW_NUMBER() OVER ( PARTITION BY a.AccountID ORDER BY b.MaxOrderCompletion DESC ) = 1
-    UNION ALL
-    SELECT  a.AutoshipID ,
-            a.AccountID ,
-            a.AutoshipTypeID ,
-            a.Active ,
-            b.MaxOrderCompletion ,
-            ROW_NUMBER() OVER ( PARTITION BY a.AccountID ORDER BY b.MaxOrderCompletion DESC ) AS rown
-    FROM    RFOperations.Hybris.Autoship a
-            JOIN MAXAutoDate b ON a.AutoshipID = b.AutoshipID
-    WHERE   a.Active = 1
-            AND ROW_NUMBER() OVER ( PARTITION BY a.AccountID ORDER BY b.MaxOrderCompletion DESC ) > 1;
+    WHERE   a.Active <> 1)
+	SELECT * FROM Selected WHERE (Selected.Active<>1
+	AND rown=1) OR (Selected.Active=1 AND rown<>1)
+   
 
 
 
@@ -119,12 +111,13 @@ SELECT  COUNT(*)-- Should be NULL after Clean UP
 FROM    RFOperations.Hybris.Autoship a
         JOIN RodanFieldsLive.dbo.Orders b ON a.AutoshipID = b.OrderID
         JOIN RodanFieldsLive.dbo.Accounts ac ON ac.AccountID = a.AccountID
-WHERE   ac.Active = 1
-        AND b.OrderStatusID = 4
+WHERE   ac.Active <> 1
+        AND b.OrderStatusID = 4 --Submitted
         AND a.Active=1
         AND a.CountryID = 236;
-
-
+		
+	
+	
 
 SELECT  COUNT(*)-- Should be NULL after Clean UP
 FROM    RFOperations.Hybris.Autoship a

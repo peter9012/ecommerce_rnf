@@ -49,6 +49,38 @@ GROUP BY            a.OwnerPkString ,
 	
 
 	
+IF OBJECT_ID('tempdb..#DuplicateAutoship') IS NOT NULL
+    DROP TABLE #DuplicateAutoship;
+
+SELECT  CASE WHEN COUNT(1) > 1
+             THEN 'Accounts with duplicate Active templates found'
+             WHEN COUNT(1) = 0
+             THEN 'No Accounts with duplicate templates found'
+        END AS CheckDuplicateActiveTemplates
+FROM    ( SELECT    AccountID ,
+                    a.AutoshipTypeID ,
+                    COUNT(*) AS Counts
+          FROM      RFOperations.Hybris.Autoship a
+                    JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+          WHERE     CountryID = 236
+                    AND Active = 1
+          GROUP BY  AccountID ,
+                    a.AutoshipTypeID
+          HAVING    COUNT(*) > 1
+        ) A 
+
+--Loading duplicate Active autoships into temp table
+
+SELECT  AccountID ,
+        a.AutoshipTypeID
+INTO    #DuplicateAutoship
+FROM    RFOperations.Hybris.Autoship a
+        JOIN Hybris..users u ON CAST(a.AccountID AS VARCHAR) = u.p_rfaccountid
+WHERE   CountryID = 236
+        AND Active = 1
+GROUP BY AccountID ,
+        a.AutoshipTypeID
+HAVING  COUNT(*) > 1
 
 
 IF OBJECT_ID('tempdb..#LoadedAutoshipID') IS NOT NULL
@@ -74,7 +106,7 @@ WHERE   a.CountryID = 236;
 IF OBJECT_ID('tempdb..#extra') IS NOT NULL
     DROP TABLE #extra;
 
-SELECT  ho.code
+SELECT  ho.pk
 INTO    #extra
 FROM    Hybris..orders ho
         JOIN Hybris..users u ON u.PK = ho.userpk
@@ -87,36 +119,22 @@ WHERE   lo.AutoshipID IS NULL;
        --124 Templates 
 
 
+
+IF OBJECT_ID('tempdb..#Missing') IS NOT NULL
+    DROP TABLE #Missing;
+
+SELECT  lo.AutoshipID
+INTO    #Missing
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.pk
+WHERE    ho.pk IS NULL;
 		
 
-
-IF OBJECT_ID('tempdb..#missing') IS NOT NULL
-    DROP TABLE #missing;
-
-
-SELECT  t1.PK ,
-        t2.AutoshipID ,
-        CASE WHEN t1.code IS NULL THEN 'Missing in Hybris'
-             WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO'
-        END Results
-INTO    #missing
-FROM    ( SELECT    DISTINCT
-                    ho.PK --1461818 Templates
-          FROM      Hybris.dbo.orders ho
-                    JOIN Hybris.dbo.users u ON u.PK = ho.userpk
-                                               AND u.p_sourcename = 'Hybris-DM'
-                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
-                                                   AND c.isocode = 'US'
-          WHERE     ho.p_template = 1
-        ) t1
-        FULL OUTER JOIN ( SELECT  DISTINCT
-                                    a.AutoshipID --1461695 Templates
-                          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-                                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
-                          WHERE     a.CountryID = 236
-                        ) t2 ON t1.code = t2.AutoshipID
-WHERE   t1.PK IS NULL
-        OR t2.AutoshipID IS NULL;
 
 
 
@@ -158,6 +176,8 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.code) hybris_cnt
                     JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
                                                         AND ho.p_template = 1
                                                         AND hpi.duplicate = 1
+														AND hpi.p_sourcename='Hybris-DM'
+					AND ho.pk NOT IN (SELECT pk FROM #extra)
         ) t1 , --1093729
         ( SELECT    COUNT(DISTINCT AutoshipPaymentID) rfo_cnt
           FROM      RFOperations.Hybris.Autoship a
@@ -167,6 +187,9 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.code) hybris_cnt
                                                AND u.p_sourcename = 'Hybris-DM'
                     JOIN RFOperations.Hybris.AutoshipPayment asp ON asp.AutoshipID = a.AutoshipID
                     JOIN RodanFieldsLive.dbo.OrderPayments lop ON lop.OrderPaymentID = asp.AutoshipPaymentID
+					WHERE lop.BillingFirstName<>''
+					AND lop.BillingLastName<>''
+					AND a.AutoshipID NOT IN (SELECT AutoshipID FROM #Missing)
         ) t2;
 --986577
 
@@ -210,13 +233,13 @@ FROM    ( SELECT    COUNT(*) CNT
                             AND a.p_template = 1
                             AND d.duplicate = 1
                             AND b.p_sourcename = 'Hybris-DM' )
-                    AND OrderID IN ( SELECT code
+                    AND OrderID IN ( SELECT pk
                                      FROM   Hybris..orders
                                      WHERE  p_template = 1 )
-                    --AND AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
-                    --AND ( LTRIM(RTRIM(BillingFirstName)) <> ''
-                    --      OR LTRIM(RTRIM(BillingLastName)) <> ''
-                    --    )
+                    AND AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
+                    AND ( LTRIM(RTRIM(BillingFirstName)) <> ''
+                          OR LTRIM(RTRIM(BillingLastName)) <> ''
+                        )
         ) b;
 	
 
@@ -245,7 +268,8 @@ WHERE   CAST(a.AccountID AS NVARCHAR) = b.p_rfaccountid
         AND CAST(c.AutoshipPaymentID AS VARCHAR) = d.code
         AND a.AutoshipID = e.AutoshipID
         AND CountryID = 236
-       -- AND b.p_sourcename = 'Hybris-DM'
+        AND b.p_sourcename = 'Hybris-DM'
+		AND d.p_sourcename='Hybris-DM'
 GROUP BY a.AutoshipID ,
         AutoshipNumber ,
         a.AccountID ,
@@ -259,7 +283,9 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX as_cls2 ON #tempact (AutoshipNumber);
 
 
 SELECT  'Validation of column to column with no transformation in progress' AS [Step-2 Validation] ,
-        GETDATE() AS StartTime;
+        GETDATE() AS StartTime; 
+
+
 SET @cnt = 1;
 SELECT  @lt_1 = COUNT(*)
 FROM    DataMigration.dbo.map_tab
@@ -777,6 +803,14 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                         );
 
 
+
+        DELETE  FROM @temp;
+
+        SET @cnt = @cnt + 1;
+
+    END;
+
+	
         UPDATE  DataMigration.dbo.map_tab
         SET     [prev_run_err] = 0
         WHERE   [owner] = '824-AutoshipPaymentInfo'
@@ -788,11 +822,6 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                 WHERE   test_area = '824-AutoshipPaymentInfo'
                         AND test_type = 'manual' );
 
-        DELETE  FROM @temp;
-
-        SET @cnt = @cnt + 1;
-
-    END;
 
 SELECT  'VALIDATION COMPLETED' [Status] ,
         [total no of columns] ,

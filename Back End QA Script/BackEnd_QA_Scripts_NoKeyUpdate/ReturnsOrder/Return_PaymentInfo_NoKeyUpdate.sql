@@ -35,7 +35,7 @@ DECLARE @temp TABLE
       rfo_value VARCHAR(MAX)
     );
 
-	/**Validation of AUTOSHIP Counts, Dups & Columns without transformations  ***/
+	/**Validation of Returns Counts, Dups & Columns without transformations  ***/
 
 		--Duplicate check on Hybris side for US
 SELECT  CASE WHEN COUNT(1) > 0 THEN 'Duplicates Found'

@@ -1609,7 +1609,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 				driver.switchTo().window(childWindowID);
 				if(driver.getCurrentUrl().contains("solutiontool")){
 					status=true;
+					driver.waitForPageLoad();
 					driver.close();
+					driver.switchTo().window(parentWindowID);
 					return status;
 				}
 			}
@@ -1744,7 +1746,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Update button clicked after adding quantity");
 		driver.waitForPageLoad();
 	}
-	
+
 	public void clickUpdateCartBtn() throws InterruptedException{
 		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
 		driver.click(UPDATE_CART_BTN_LOC);		

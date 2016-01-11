@@ -195,7 +195,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[@value='Select']")));
 		}catch(Exception e){
 			try{
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
 			}catch(Exception e1){
 				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),' Select')]")));
 			}
@@ -3172,8 +3172,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean validateTermsAndConditions(){
 		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Terms and Conditions')]"));
-		return driver.isElementPresent(By.xpath("//a[contains(text(),'Terms and Conditions')]"));
+		driver.waitForElementPresent(By.xpath("//*[@id='reviewOrderDiv']/div[2]"));
+		return driver.isElementPresent(By.xpath("//*[@id='reviewOrderDiv']/div[2]"));
 	}
 
 	public void selectNewBillingCardExpirationDateAfterEdit(){
@@ -3632,6 +3632,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+	}
+
+	public boolean verifyAnotherConsultantPrefixIsNotAllowed(String sitePrefix){
+		driver.quickWaitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfostg.com/ca/ is not available')]"));
+		if(driver.isElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfostg.com/ca/ is not available')]"))){
+			return true;
+		}else
+			return false;
 	}
 
 }

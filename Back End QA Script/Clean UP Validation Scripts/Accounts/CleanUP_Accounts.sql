@@ -14,11 +14,12 @@ WHERE   CountryID = 236
 		
 		
 SELECT  ab.AccountStatusID ,
-        ar.*
+        ar.Active,ar.AccountID,s.Name,ar.SoftTerminationDate,ar.HardTerminationDate
 FROM    RFOperations.RFO_Accounts.AccountRF ar
         INNER JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = ar.AccountID
+		JOIN RFOperations.RFO_Reference.AccountStatus s ON s.AccountStatusID = ab.AccountStatusID
 WHERE   CountryID = 236
-        AND Active = 0
+        AND Active =0
         AND SoftTerminationDate IS NOT NULL
         AND HardTerminationDate IS NOT NULL
         AND ab.AccountStatusID NOT IN ( 10, 2 );
@@ -28,8 +29,7 @@ FROM    RFOperations.RFO_Accounts.AccountRF ar
         INNER JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = ar.AccountID
 WHERE   CountryID = 236
         AND Active = 1
-        AND AccountStatusID <> 1;
-
+        AND AccountStatusID <> 1; 
 
 SELECT  COUNT(*)
 FROM    RFOperations.RFO_Accounts.AccountRF (NOLOCK) ar

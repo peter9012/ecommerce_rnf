@@ -178,7 +178,9 @@ select @lt_2 = count(*) from datamigration.dbo.map_tab  where flag = 'defaults' 
 
 while (@cnt<=@lt_1 and @cnt<=@lt_2)
 begin
-	if (select count(*) from datamigration.dbo.map_tab   where flag = 'defaults' and [owner] = '853-ReturnPaymentTransactionEntries' and [rfo_reference table] = 'NULL') >=1
+	if (select count(*) FROM datamigration.dbo.map_tab  
+	 where flag = 'defaults' and 
+	 [owner] = '853-ReturnPaymentTransactionEntries' and [rfo_reference table] = 'NULL') >=1
 	begin
         SELECT  @sql_gen_1 = 'use rfoperations
 		select distinct ''' + [owner] + ''' as test_area, ''' + flag
@@ -419,16 +421,18 @@ where ((coalesce(hyb_key, '~') <> coalesce(rfo_key,'~'))
 or (coalesce(hyb_value,'~') <> coalesce(rfo_value,'~')))
 
 
+delete from @temp
+
+set @cnt=@cnt+1
+
+END
+
+
 update datamigration.dbo.map_tab
 set [prev_run_err] = 0
 where [owner] = '853-ReturnPaymentTransactionEntries' and flag = 'manual'
 and hybris_column not in (select distinct hybris_column from datamigration..dm_log where test_area = '853-ReturnPaymentTransactionEntries' and test_type = 'manual')
 
-delete from @temp
-
-set @cnt=@cnt+1
-
-end
 
 select 'VALIDATION COMPLETED' [Status], [total no of columns], [columns passed],[total no of columns]-[columns passed] as [Required Analysis],
 getdate() as EndTime

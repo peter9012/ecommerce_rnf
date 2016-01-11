@@ -124,6 +124,7 @@ FROM    #missing;
 --Counts check on Hybris side for US
 SELECT  hybris_cnt ,
         rfo_cnt ,
+		t1.hybris_cnt-t2.rfo_cnt AS diff,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
@@ -157,6 +158,8 @@ FROM    ( SELECT    COUNT(DISTINCT oe.PK) hybris_cnt
 
 DELETE  FROM DataMigration.dbo.dm_log
 WHERE   test_area = '824-AutoshipItem';
+
+
 IF OBJECT_ID('tempdb..#tempact') IS NOT NULL
     DROP TABLE #tempact;
 
@@ -175,10 +178,10 @@ WHERE   a.AccountID = b.p_rfaccountid
         AND CountryID = 236
         AND p_sourcename = 'Hybris-DM'
 --and a.autoshipid not in (8809794175021, 8816660840493) --offshore team updated these values
-        AND b.modifiedTS <= '2015-07-14 06:00:00.000'
-        AND a.AutoshipNumber NOT IN ( SELECT    OrderNumber
-                                      FROM      Hybris.Orders
-                                      WHERE     CountryID = 236 )
+        AND a.AutoshipID NOT IN (SELECT pk FROM #extra)
+		AND a.AutoshipID NOT IN (SELECT AutoshipID FROM #missing)
+       AND a.AutoshipNumber NOT IN  ( SELECT    a.OrderNumber  FROM      RFOperations.Hybris.Orders a
+JOIN RodanFieldsLive.dbo.orders b ON a.OrderNumber=b.OrderID AND b.OrderTypeID  NOT IN (4,5,9)AND  a.CountryID = 236 )
 GROUP BY a.AutoshipID ,
         AutoshipNumber ,
         b.PK ,
@@ -710,6 +713,13 @@ WHILE @cnt <= @lt_1
                                                               '~') )
                         );
 
+
+        DELETE  FROM @temp;
+
+        SET @cnt = @cnt + 1;
+
+    END;
+	
         UPDATE  DataMigration.dbo.map_tab
         SET     [prev_run_err] = 0
         WHERE   [owner] = '824-AutoshipItem'
@@ -720,12 +730,6 @@ WHILE @cnt <= @lt_1
                 FROM    DataMigration..dm_log
                 WHERE   test_area = '824-AutoshipItem'
                         AND test_type = 'manual' );
-
-        DELETE  FROM @temp;
-
-        SET @cnt = @cnt + 1;
-
-    END;
 
 SELECT  'VALIDATION COMPLETED' [Status] ,
         [total no of columns] ,

@@ -784,7 +784,16 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                                                               '~') )
                         );
 
-        UPDATE  DataMigration.dbo.map_tab
+      
+
+        DELETE  FROM @temp;
+
+        SET @cnt = @cnt + 1;
+
+    END;
+
+
+	  UPDATE  DataMigration.dbo.map_tab
         SET     [prev_run_err] = 0
         WHERE   [owner] = '824-AutoshipItem'
                 AND flag = 'manual'
@@ -795,11 +804,7 @@ ON A.' + @HYB_key + '=B.' + @RFO_key + ''
                 WHERE   test_area = '824-AutoshipItem'
                         AND test_type = 'manual' );
 
-        DELETE  FROM @temp;
 
-        SET @cnt = @cnt + 1;
-
-    END;
 
 SELECT  'VALIDATION COMPLETED' [Status] ,
         [total no of columns] ,

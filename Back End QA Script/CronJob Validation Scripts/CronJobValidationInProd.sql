@@ -445,7 +445,7 @@ WHERE   ho.p_template = 1
         AND ho.currencypk = 8796125855777
         AND CAST(ho.p_schedulingdate AS DATE) = CAST(DATEADD(DAY, 10,
                                                              GETDATE()) AS DATE)
-        AND DATEPART(YEAR, GETDATE()) = pp.p_validtoyear
+        AND CAST(DATEPART(YEAR, GETDATE()) AS NVARCHAR) = pp.p_validtoyear
         AND DATEPART(MONTH, GETDATE()) >= pp.p_validtomonth;
 
 

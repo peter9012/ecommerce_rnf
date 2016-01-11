@@ -175,6 +175,8 @@ from (select count(distinct d.ownerpkstring) hybris_cnt
 		
 SELECT  hybris_cnt ,
         rfo_cnt ,
+		t1.hybris_cnt-t2.rfo_cnt AS Diff,
+		t1.hybris_cnt-t2.rfo_cnt AS Diff,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
@@ -194,7 +196,7 @@ FROM    ( SELECT    COUNT(DISTINCT ad.PK) hybris_cnt
 		  JOIN      RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID=a.AutoshipID
 		  JOIN      Hybris.dbo.users c ON c.p_rfaccountid=CAST(a.AccountID AS NVARCHAR)
 		  JOIN		RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID=a.AutoshipID AND ap.AutoshipPaymentID=apa.AutoshipPaymentAddressID		  
-		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR) AND hpa.duplicate=1                  
+		  JOIN      Hybris..paymentinfos hpa ON hpa.code=CAST(ap.AutoshipPaymentID AS NVARCHAR) AND hpa.duplicate=1 AND hpa.p_sourcename='Hybris-DM'                  
         
         ) t2; 	
 		

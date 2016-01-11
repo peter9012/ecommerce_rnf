@@ -146,8 +146,22 @@ FROM    Hybris..orders ho
 WHERE   lo.AutoshipID IS NULL; 
 
 
+IF OBJECT_ID('tempdb..#Missing') IS NOT NULL
+    DROP TABLE #Missing;
 
-		
+SELECT lo.AutoshipID
+INTO    #Missing
+FROM    Hybris..orders ho
+        JOIN Hybris..users u ON u.PK = ho.userpk
+                                AND ho.p_template = 1
+                                AND u.p_sourcename = 'Hybris-DM'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'US'
+        RIGHT JOIN #LoadedAutoshipID lo ON lo.AutoshipID = ho.code
+WHERE  ho.code IS NULL; 
+
+SELECT COUNT(*) CountExtraLoaded FROM #extra 
+SELECT COUNT(*) CountNotLoaded FROM #Missing		
 
 SELECT  hybris_cnt ,
         rfo_cnt ,
@@ -171,50 +185,7 @@ FROM    ( SELECT    COUNT(a.PK) hybris_cnt
           WHERE     a.CountryID = 236
         ) t2;
 
-IF OBJECT_ID('tempdb..#missing') IS NOT NULL
-    DROP TABLE #missing
 
-
-SELECT  t1.code ,
-        t2.AutoshipID ,
-        CASE WHEN t1.code IS NULL THEN 'Missing in Hybris'
-             WHEN t2.AutoshipID IS NULL THEN 'Missing in RFO'
-        END Results
-INTO    #missing
-FROM    ( SELECT    a.code
-          FROM      Hybris.dbo.orders a ,
-                    Hybris.dbo.users b ,
-                    Hybris.dbo.countries c
-          WHERE     a.userpk = b.PK
-                    AND b.p_country = c.PK
-                    AND c.isocode = 'US'
-                    AND a.p_template = 1
-                    AND p_sourcename = 'Hybris-DM'
-        ) t1
-        FULL OUTER JOIN ( SELECT    a.AutoshipID
-                          FROM      RFOperations.Hybris.Autoship (NOLOCK) a
-                                    JOIN #LoadedAutoshipID b ON a.AutoshipID = b.AutoshipID
-                          WHERE     a.CountryID = 236
-                        ) t2 ON t1.code = t2.AutoshipID
-WHERE   t1.code IS NULL
-        OR t2.AutoshipID IS NULL
-
-
-SELECT  COUNT(*) AS MIssingHybrisCount
-FROM    #missing
-WHERE   Results = 'Missing in Hybris'
-SELECT  COUNT(*) AS RFOMissingCount
-FROM    #missing
-WHERE   Results = 'Missing in RFO'
-SELECT TOP 10
-        *
-FROM    #missing
-WHERE   Results = 'Missing in Hybris'
-UNION
-SELECT TOP 10
-        *
-FROM    #missing
-WHERE   Results = 'Missing in RFO'
 
 
           ----  Column2Column Validation that doesn't have transformation - Autoship
@@ -248,6 +219,7 @@ WHERE   a.CountryID = 236
 		JOIN RodanFieldsLive.dbo.orders b ON a.OrderID=b.OrderID AND b.OrderTypeID NOT IN (4,5,9)
 		AND a.CountryID = 236 )
 		AND a.AutoShipID NOT IN (SELECT code FROM #extra)
+		AND a.AutoShipID NOT IN (SELECT AutoshipID FROM #Missing)
 GROUP BY a.AutoshipID ,
         a.AutoshipNumber ,
         a.AccountID ,

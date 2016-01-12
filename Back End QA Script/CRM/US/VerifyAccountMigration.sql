@@ -285,14 +285,14 @@
 	SELECT ACCOUNTID , ' Enroller/Sponsor is not populated for a PC or a Consultant', EnrollerId
 	FROM CRM.SFDC.Rfo_accounts RFO,
 	CRM.SFDC.crm_accounts CRM
-	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (1,2) AND (EnrollerID IS NULL OR SponsorId IS NULL)
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN ('Consultant','Preferred Customer') AND (EnrollerID IS NULL OR SponsorId IS NULL)
 
 	--Identify Missing Enroller/Sponsor for a RC
 	INSERT INTO CRM.SFDC.BusinessRuleFailure
 	SELECT ACCOUNTID , ' Enroller/Sponsor is not mapped to Corporate RF Account for a RC. Comma Separated value for Enroller and Sponsor is loaded in FailureValue column', EnrollerId+','+SponsorId
 	FROM CRM.SFDC.Rfo_accounts RFO,
 	CRM.SFDC.crm_accounts CRM
-	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN (3) AND isActive='true' AND (EnrollerID <>2 OR SponsorId <>2)
+	where RFO.ACCOUNTID=CRM.RFOAccountId__c AND RFO.RECORDTYPEID IN ('Retail Customer') AND isActive='true' AND (EnrollerID <>2 OR SponsorId <>2)
 
 	--SoftTerminationDate , HardTerminationDate, Active and AccountStatus Integrity
 	INSERT INTO CRM.SFDC.BusinessRuleFailure

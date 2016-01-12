@@ -249,10 +249,10 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-		driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]"));
-		driver.findElement(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']/option[2]")).click();
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.pauseExecutionFor(1000);
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}
 
@@ -717,6 +717,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public void clickOnUpdateMoreInfoButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Update more info']"));
 		driver.click(By.xpath("//input[@value='Update more info']"));
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
 	}
 
 	public String removeProductsFromCartForPC(int i){
@@ -1382,7 +1384,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 	public void selectDifferentProductAndAddItToPCPerks(){
 		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='9']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='9']"));;
+		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='7']"));;
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
@@ -1392,7 +1394,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(1000);
-	}	
+	}
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));

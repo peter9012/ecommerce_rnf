@@ -35,11 +35,11 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstName) throws InterruptedException{
 		try{
-			boolean flag=driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input")).isSelected();
+			boolean flag=driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span[@checked='address.defaultAddress']")).isSelected();
 			return flag;
 		}catch(NoSuchElementException e){
 			String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
-			if(driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/ancestor::div[1]/form/span/input")).isSelected()){
+			if(driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/ancestor::div[1]/form/span/[@checked='address.defaultAddress']")).isSelected()){
 				return true;
 			}else{
 				return false;
@@ -98,18 +98,21 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.waitForElementPresent(By.id("new-address-1"));
 		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
 		logger.info("New Shipping Address is "+addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
+		driver.waitForElementPresent(By.id("townCity"));
 		driver.findElement(By.id("townCity")).clear();
 		driver.findElement(By.id("townCity")).sendKeys(city);
 		logger.info("New Shipping City is "+city);
 	}
 
 	public void selectNewShippingAddressState(){
+		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
@@ -118,11 +121,13 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.waitForElementPresent(By.id("postcode"));
 		driver.findElement(By.id("postcode")).clear();
 		driver.findElement(By.id("postcode")).sendKeys(postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.waitForElementPresent(By.id("phonenumber"));
 		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
 	}

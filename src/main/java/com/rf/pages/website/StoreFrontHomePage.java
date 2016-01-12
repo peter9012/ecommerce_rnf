@@ -3376,8 +3376,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickEnrollNowFromWhyRFPage(){
-		driver.waitForElementPresent(By.xpath("//div[@class='whyRFenrollButton']/a"));
-		driver.click(By.xpath("//div[@class='whyRFenrollButton']/a"));
+		driver.waitForElementPresent(By.xpath("//div[@class='editorial-pages whyR+F']//div[@class='container']/div[2]/a"));
+		driver.click(By.xpath("//div[@class='editorial-pages whyR+F']//div[@class='container']/div[2]/a"));
 		driver.waitForPageLoad();
 	}
 

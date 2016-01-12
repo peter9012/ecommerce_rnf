@@ -1400,7 +1400,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
+			try{
+				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
+			}catch(Exception e){
+				System.out.println("IN EXCEPTION");
+				isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			}
 			if(isFirstNamePresent == true){ 
 				return true;
 			}
@@ -1752,6 +1757,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(UPDATE_CART_BTN_LOC);		
 		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
 		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 }

@@ -86,11 +86,19 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 
 	public void clickAutoshipOrderNumber(){
 		driver.waitForElementPresent(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
-		getAutoshipOrderNumber();		
+		//getAutoshipOrderNumber();		
 		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+	}
+	
+	public void clickAutoshipOrderNumber(String orderNumber){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'"+orderNumber+"')]"));
+		driver.findElement(By.xpath("//a[contains(text(),'"+orderNumber+"')]")).click();
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		logger.info("autoship order clicked " +orderNumber);
 	}
 
 	public String getAutoshipOrderNumber(){

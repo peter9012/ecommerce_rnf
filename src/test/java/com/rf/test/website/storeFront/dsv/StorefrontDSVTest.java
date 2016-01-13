@@ -29,7 +29,6 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	private DSVStoreFrontAccountInfoPage dsvStoreFrontAccountInfoPage;
 	//-----------------------------------------------------------------------------------------------------------------
 
-
 	//Hybris Project-5314:User Account login As Consultant
 	@Test
 	public void testUserAccountLoginAsConsultant_5314(){
@@ -514,8 +513,6 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .biz secure pws");
 		s_assert.assertAll();
 	}
-
-
 
 	//Hybris Project-5334:Select Canadian sponsor with PWS for enrolment
 	@Test

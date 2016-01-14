@@ -38,7 +38,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private String profileName = null;
 	private String phoneNumber = null;
 	private String postalCode = null;
-	private String profileNameSecond = null;
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;

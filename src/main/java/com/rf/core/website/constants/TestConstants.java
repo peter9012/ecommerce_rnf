@@ -376,6 +376,11 @@ public class TestConstants {
 	public static final String PROVINCE_NORTH_DAKOTA = "North Dakota";
 	public static final String PC_PERKS_TEMPLATE_PRODUCT_ADDED = "Your next pc perks cart has been updated";
 
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_CA = "20.00";
+	public static final String HANDLING_CHARGES_FOR_UPS2DAY_CA = "2.50";
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_US = "19.00";
+	public static final String HANDLING_CHARGES_FOR_UPS2DAY_US = "2.50";
+
 	//PRODUCTION DSV DATA
 	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";
 	public static final String DSV_CONSULTANT_PASSWORD = "test1234";

@@ -1492,4 +1492,23 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		return count;
 	}
 
+	public String getShippingChargesAtOrderConfirmationPage(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]"));
+		return driver.findElement(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]")).getText();
+	}
+
+	public String getHandlingChargesAtOrderConfirmationPage(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Handling')]/following::span[1]"));
+		return driver.findElement(By.xpath("//span[contains(text(),'Handling')]/following::span[1]")).getText();
+	}
+
+	public void selectNewlyAddedBillingAddressName(String name){
+		driver.waitForElementPresent(By.id("addressBookdropdown"));
+		driver.click(By.id("addressBookdropdown"));
+		driver.waitForElementPresent(By.xpath("//*[@id='addressBookdropdown']/option[@firstname='"+name+"']"));
+		driver.click(By.xpath("//*[@id='addressBookdropdown']/option[@firstname='"+name+"']"));
+		logger.info("New Billing card address selected");
+		driver.pauseExecutionFor(2000);
+	}
+
 }

@@ -3370,9 +3370,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void clickEnrollNowFromBizHomePage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
-		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
-		driver.waitForPageLoad();
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Enroll Now')]"));
+			driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Enroll Now')]"));
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
+			driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
+		}driver.waitForPageLoad();
 	}
 
 	public void clickEnrollNowFromWhyRFPage(){
@@ -3641,5 +3645,16 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else
 			return false;
 	}
+
+	public boolean validateTermsAndConditionsForRC(){
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//p[contains(text(),'you confirm that you have read and accepted')]"));
+			return driver.isElementPresent(By.xpath("//p[contains(text(),'you confirm that you have read and accepted')]"));
+		}else{
+			driver.waitForElementPresent(By.xpath("//p[contains(text(),'I confirm that I have read and accept')]"));
+			return driver.isElementPresent(By.xpath("//p[contains(text(),'I confirm that I have read and accept')]"));
+		}
+	}
+
 
 }

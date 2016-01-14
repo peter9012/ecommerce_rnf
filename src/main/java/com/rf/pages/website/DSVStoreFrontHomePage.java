@@ -46,18 +46,20 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	public boolean isWelcomeTxtPresent(){
 		return driver.isElementPresent(WELCOME_TXT);
 	}
-	
+
 	public boolean isLoginOrWelcomePresent(){
 		try{
-			driver.waitForElementPresent(WELCOME_TXT);
-			return driver.isElementPresent(WELCOME_TXT);
+			driver.waitForElementPresent(LOGIN_LINK);
+			return driver.isElementPresent(LOGIN_LINK);			
 		}catch(Exception e){
-			return driver.isElementPresent(LOGIN_LINK);
+			System.out.println("Login Link not found");
+			return driver.isElementPresent(WELCOME_TXT);
 		}
-		
+
 	}
 
 	public void enterUsername(String username){
+		logger.info("Username is "+username);
 		driver.quickWaitForElementPresent(USERNAME_TXTFIELD);
 		driver.type(USERNAME_TXTFIELD, username);
 	}
@@ -172,7 +174,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean validateCurrentURLContainsBiz() {
-		return driver.getCurrentUrl().contains(".biz");
+		return driver.getCurrentUrl().contains("myrandf.biz");
 	}
 
 	public boolean validateCurrentURLContainsCom() {

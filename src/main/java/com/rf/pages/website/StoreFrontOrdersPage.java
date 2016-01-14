@@ -92,7 +92,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 	}
-	
+
 	public void clickAutoshipOrderNumber(String orderNumber){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'"+orderNumber+"')]"));
 		driver.findElement(By.xpath("//a[contains(text(),'"+orderNumber+"')]")).click();
@@ -1014,6 +1014,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+	}
+
+	public boolean validateBillingAddressOnOrderPage(String name) {
+		return driver.isElementPresent(By.xpath("//span[@id='idBillingAddress']/following::p[1]/span[contains(text(),'"+name+"')]"));
 	}
 }
 

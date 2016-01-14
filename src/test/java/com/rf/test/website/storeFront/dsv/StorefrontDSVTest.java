@@ -107,8 +107,8 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testAccountInfoUpdateAsConsultant_5317() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
-		String fName = "RFTestF"+randomNum;
-		String lName = "RFTestL"+randomNum;
+		String fName = "RFTestC"+randomNum;
+		String lName = "RFTestU"+randomNum;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
 		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
@@ -133,10 +133,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5318:Adding new and Editing existing Shipping Profile AS Consultant
 	@Test
 	public void testAddAndEditShippingProfileAsConsultant() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "SP"+randomNum;
-		String lName2 = "SP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -162,10 +162,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5319:Adding new and Editing existing Billing Profile AS Consultant
 	@Test
 	public void testAddAndEditBillingProfileAsConsultant() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String lName2 = "BP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -191,10 +191,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5320:Deleting Billing Profile for Consultant
 	@Test
 	public void testDeleteBillingProfileAsConsultant_5320() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String name1 = fName+" "+lName1;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String name1 = fName+" "+lName1;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
 		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
@@ -260,12 +260,12 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	// Hybris Project-5324:Adding new and Editing existing Shipping Profile As PC
 	@Test
 	public void testAddAndEditShippingProfileAsPC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "SP"+randomNum;
-		String lName2 = "SP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
-		String name2 = fName+" "+lName2;			
+		String name2 = fName+" "+lName2;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -290,10 +290,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5325:Adding new and Editing existing Billing Profile As PC
 	@Test
 	public void testAddAndEditBillingProfileAsPC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String lName2 = "BP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -321,10 +321,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5326:Deleting Billing Profile for PC
 	@Test
 	public void testDeleteBillingProfileAsPC_5326() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String name1 = fName+" "+lName1;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;		
+		String name1 = fName+" "+lName1;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -393,10 +393,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5329:Adding new and Editing existing Shipping Profile As RC
 	@Test
 	public void testAddAndEditShippingProfileAsRC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "SP"+randomNum;
-		String lName2 = "SP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -423,10 +423,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5330:Adding new and Editing existing Billing Profile As RC
 	@Test
 	public void testAddAndEditBillingProfileAsRC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String lName2 = "BP"+randomNum;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -454,10 +454,10 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5331:Deleting Billing Profile for RC
 	@Test
 	public void testDeleteBillingProfileAsRC_5331() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String fName = "New";
-		String lName1 = "BP"+randomNum;
-		String name1 = fName+" "+lName1;
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;		
+		String name1 = fName+" "+lName1;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();

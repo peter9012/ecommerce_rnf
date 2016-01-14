@@ -46,7 +46,8 @@ public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 		return false;
 	}
 
-	public void clickAddToCRPButton(String country){
+	public void clickAddToCRPButton(String country) throws InterruptedException{
+		applyPriceFilterHighToLow();
 		if(country.equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
 			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
@@ -69,7 +70,6 @@ public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 			driver.click(By.xpath("//input[@value='OK']"));
 			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
-
 		}
 	}
 

@@ -160,6 +160,34 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 
 	}
+	
+	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
+		driver.waitForPageLoad();
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+
+		}
+		else if(driver.getCountry().equalsIgnoreCase("US")){
+			try{
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			}catch(Exception e){
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+				driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
+			}
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+		}
+
+	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));

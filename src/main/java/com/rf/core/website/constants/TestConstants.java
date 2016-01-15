@@ -72,7 +72,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US="1686295";
 	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "411111111111111#";
 
-	public static final String PROVINCE_YUKON = "Yukon";
+	public static final String PROVINCE_YUKON = "Yukon Territory";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
 	public static final String PROVINCE_PRINCE_EDWARD_ISLAND = "Prince Edward Island";
 	public static final String PROVINCE_NEW_BRUNSWICK = "New Brunswick";

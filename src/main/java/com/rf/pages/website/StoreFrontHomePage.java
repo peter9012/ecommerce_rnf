@@ -578,11 +578,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean verifyPopUpForTermsAndConditions() throws InterruptedException{
-		boolean isPopForTermsAndConditionsVisible = false;		
-		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']"));
-		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']")));
+		boolean isPopForTermsAndConditionsVisible = false;  
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]"));
+		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]")));
 		if(isPopForTermsAndConditionsVisible==true){
-			driver.click(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']/following::a[@title='Close']"));
+			driver.click(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]/following::a[@title='Close']"));
 			driver.pauseExecutionFor(1000);
 			return true;
 		}
@@ -957,7 +957,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void mouseHoverSponsorDataAndClickContinueForPC() throws InterruptedException{
 		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select & Continue']"))).build().perform();
+		actions.moveToElement(driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select']"))).build().perform();
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();

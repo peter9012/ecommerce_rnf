@@ -1383,8 +1383,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void selectDifferentProductAndAddItToPCPerks(){
-		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='9']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='7']"));;
+		driver.waitForElementNotPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));;
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));

@@ -160,7 +160,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		}
 
 	}
-	
+
 	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
 		driver.waitForPageLoad();
 		if(driver.getCountry().equalsIgnoreCase("CA")){
@@ -220,12 +220,21 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
 		driver.pauseExecutionFor(1000);
-		driver.waitForElementPresent(By.id("quantity0"));
-		driver.findElement(By.id("quantity0")).clear();
-		driver.findElement(By.id("quantity0")).sendKeys(qty);
-		logger.info("quantity added is "+qty);
-		driver.click(By.xpath("//a[@class='updateLink']"));
-		logger.info("Update button clicked after adding quantity");
+		try{
+			driver.waitForElementPresent(By.id("quantity0"));
+			driver.findElement(By.id("quantity0")).clear();
+			driver.findElement(By.id("quantity0")).sendKeys(qty);
+			logger.info("quantity added is "+qty);
+			driver.click(By.xpath("//div[@id='left-shopping']/div[2]/div[1]//a[@class='updateLink']"));
+			logger.info("Update button clicked after adding quantity");
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.id("quantity1"));
+			driver.findElement(By.id("quantity1")).clear();
+			driver.findElement(By.id("quantity1")).sendKeys(qty);
+			logger.info("quantity added is "+qty);
+			driver.click(By.xpath("//div[@id='left-shopping']/div[2]/div[1]//a[@class='updateLink']"));
+			logger.info("Update button clicked after adding quantity");
+		}
 		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 	}
@@ -1175,7 +1184,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
-	public void clickAddToBagButton(String country){
+	public void clickAddToBagButton(String country) throws InterruptedException{
+		applyPriceFilterHighToLow();
 		if(country.equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
 			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
@@ -1431,14 +1441,17 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
 			try{
 				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
 			}catch(Exception e){
-				System.out.println("IN EXCEPTION");
-				isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+				try{					
+					isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+				}catch(ExceptionInInitializerError e2){
+					isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+				}
 			}
 			if(isFirstNamePresent == true){ 
 				return true;

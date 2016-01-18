@@ -30,7 +30,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	//-----------------------------------------------------------------------------------------------------------------
 
 	//Hybris Project-5314:User Account login As Consultant
-	@Test
+	@Test(priority=1)
 	public void testUserAccountLoginAsConsultant_5314(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -45,7 +45,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5315:Edit CRP Autoship Template
-	@Test
+	@Test(priority=2)
 	public void testEditCRPAutoshipTemplate_5315(){
 		String quantityOfProduct = "10";
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -72,7 +72,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5316:Filtering on all Products Page for Consultant CRP Edit Template
-	@Test
+	@Test(priority=3)
 	public void testFilteringAllProductsOnEditCRPAutoshipTemplate_5316(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -88,7 +88,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String selectedProduct = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedProductFromFilter();
 		System.out.println("selected product is "+selectedProduct);
 		s_assert.assertTrue(dsvStoreFrontQuickShopPage.isProductFilterApplied(selectedProduct),"Product filter is not applied on products");
-		for(String nonSelectedProductName : allProductsList){
+		for(String nonSelectedProductName : allProductsList){			
 			if(nonSelectedProductName.equalsIgnoreCase(selectedProduct)==false)
 				s_assert.assertFalse(dsvStoreFrontQuickShopPage.isProductFilterApplied(nonSelectedProductName),nonSelectedProductName + "product is still on the page after after applying the filter for "+selectedProduct);	
 		}
@@ -103,7 +103,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5317 Updating Account info As Consultant
-	@Test
+	@Test(priority=4)
 	public void testAccountInfoUpdateAsConsultant_5317() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
@@ -131,7 +131,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5318:Adding new and Editing existing Shipping Profile AS Consultant
-	@Test
+	@Test(priority=6)
 	public void testAddAndEditShippingProfileAsConsultant() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -160,7 +160,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5319:Adding new and Editing existing Billing Profile AS Consultant
-	@Test
+	@Test(priority=5)
 	public void testAddAndEditBillingProfileAsConsultant() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -189,7 +189,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5320:Deleting Billing Profile for Consultant
-	@Test
+	@Test(priority=7)
 	public void testDeleteBillingProfileAsConsultant_5320() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -215,7 +215,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5321:User Account login As PC
-	@Test
+	@Test(priority=8)
 	public void testUserAccountLoginAsPC_5321(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();	
@@ -229,7 +229,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5323 Updating Account info As PC
-	@Test
+	@Test(priority=9)
 	public void testAccountInfoUpdateAsPC_5323() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
@@ -258,7 +258,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5324:Adding new and Editing existing Shipping Profile As PC
-	@Test
+	@Test(priority=11)
 	public void testAddAndEditShippingProfileAsPC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -288,7 +288,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5325:Adding new and Editing existing Billing Profile As PC
-	@Test
+	@Test(priority=10)
 	public void testAddAndEditBillingProfileAsPC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -319,7 +319,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-5326:Deleting Billing Profile for PC
-	@Test
+	@Test(priority=12)
 	public void testDeleteBillingProfileAsPC_5326() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -346,7 +346,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5327:User Account login As RC
-	@Test
+	@Test(priority=13)
 	public void testUserAccountLoginAsRC(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();		
@@ -361,7 +361,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5328 Updating Account info As RC
-	@Test
+	@Test(priority=14)
 	public void testAccountInfoUpdateAsRC_5327() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
@@ -391,7 +391,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5329:Adding new and Editing existing Shipping Profile As RC
-	@Test
+	@Test(priority=16)
 	public void testAddAndEditShippingProfileAsRC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -421,7 +421,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5330:Adding new and Editing existing Billing Profile As RC
-	@Test
+	@Test(priority=15)
 	public void testAddAndEditBillingProfileAsRC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -452,7 +452,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5331:Deleting Billing Profile for RC
-	@Test
+	@Test(priority=17)
 	public void testDeleteBillingProfileAsRC_5331() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -480,7 +480,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5332:Access .biz and .com with non-secure url
-	@Test
+	@Test(priority=18)
 	public void testAccessBizAndComWithNonSecureURL_5332(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -497,7 +497,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5333:Access .biz and .com with secure url
-	@Test
+	@Test(priority=19)
 	public void testAccessBizAndComWithSecureURL_5333(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
@@ -515,7 +515,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5334:Select Canadian sponsor with PWS for enrolment
-	@Test
+	@Test(priority=20)
 	public void testCanadianSponsorWithPwsForEnrollment_5334(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
@@ -526,7 +526,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5335:Select US sponsor for enrolment 
-	@Test
+	@Test(priority=21)
 	public void testSelectUSSponsorForEnrolment_5335(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
@@ -537,7 +537,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5336:Select Canadian sponsor with no PWS for enrolment
-	@Test
+	@Test(priority=22)
 	public void testSelectCanadianSponsorWithNoPWSForEnrolment_5336(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();

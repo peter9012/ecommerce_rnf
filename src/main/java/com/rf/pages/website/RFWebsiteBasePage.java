@@ -1195,13 +1195,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("Add To Bag button clicked");
 			driver.waitForLoadingImageToDisappear();
 		}else if(country.equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			else
+			try{
+				driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			}catch(Exception e){
 				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
+				logger.info("Add To Bag button clicked");
+				driver.waitForLoadingImageToDisappear();
+			}
 		}
 	}
 

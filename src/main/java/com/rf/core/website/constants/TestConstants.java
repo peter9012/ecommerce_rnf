@@ -378,8 +378,9 @@ public class TestConstants {
 
 	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_CA = "20.00";
 	public static final String HANDLING_CHARGES_FOR_UPS2DAY_CA = "2.50";
-	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_US = "19.00";
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_US = "16.00";
 	public static final String HANDLING_CHARGES_FOR_UPS2DAY_US = "2.50";
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99 = "24.00";
 
 	//PRODUCTION DSV DATA
 	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";
@@ -398,17 +399,20 @@ public class TestConstants {
 	public static final String DSV_CITY_CA = "Bonnyville";
 	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
 	public static final String DSV_PHONE_NUMBER = "8067736419";
-	public static final String DSV_SECURITY_CODE = "5487";
+	//public static final String DSV_SECURITY_CODE = "5487";
+	public static final String DSV_SECURITY_CODE = "7475";
 
-	public static final String DSV_CARD_NUMBER = "379622509583005";
-	public static final String DSV_EXPIRY_MONTH = "JUL";
-	public static final String DSV_EXPIRY_YEAR = "2017";
+	//public static final String DSV_CARD_NUMBER = "379622509583005";
+	public static final String DSV_CARD_NUMBER = "379064060092003";	
+	public static final String DSV_EXPIRY_MONTH = "SEP";
+	public static final String DSV_EXPIRY_YEAR = "2019";
 
 	public static final String DSV_CANADIAN_SPONSOR_WITH_PWS = "Erica MacKinnon";
 	public static final String DSV_US_SPONSOR_WITH_PWS = "Kris Fairless";
 	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
 
 }
+
 
 
 

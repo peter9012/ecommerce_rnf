@@ -89,7 +89,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	}
 
 	public boolean isProductFilterApplied(String selectedProduct){
-		driver.quickWaitForElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)));
+		//driver.quickWaitForElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)));
 		return driver.isElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)))
 				&& driver.isElementPresent(By.xpath(String.format(SelectedProductAsHeadingOnProductPage, selectedProduct)));
 	}

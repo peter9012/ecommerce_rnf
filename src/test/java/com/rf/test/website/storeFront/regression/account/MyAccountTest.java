@@ -5507,11 +5507,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.navigateToCountry();
 			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 			String lastName = "lN";
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			String province = TestConstants.PROVINCE_ALABAMA_US;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			String province = TestConstants.PROVINCE_ALBERTA;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			// Click on our product link that is located at the top of the page and then click in on quick shop
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -5556,14 +5556,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			//Select a product and proceed to buy it
 			storeFrontHomePage.clickAddToBagButton("us");
 
-			//Cart page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-			logger.info("Cart page is displayed");
-
-			//Two products are in the Shopping Cart?
-			s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("2"), "number of products in the cart is NOT 1");
-			logger.info("1 product is successfully added to the cart");
-
 			//Click on Check out
 			storeFrontHomePage.clickOnCheckoutButton();
 
@@ -5592,13 +5584,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			storeFrontHomePage.navigateToCountry();
 			s_assert.assertAll();
 		}
 		else{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
-
 	}
 
 	/*//Hybris Project-1747:To verify edit shipping address functionality in the CRP Edit Autoship template Page

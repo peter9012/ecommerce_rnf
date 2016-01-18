@@ -39,23 +39,39 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isLoginLinkPresent(){
-		driver.waitForElementPresent(LOGIN_LINK);
-		return driver.isElementPresent(LOGIN_LINK);
+		boolean isLoginPresent = false;
+		try{
+			driver.waitForElementPresent(LOGIN_LINK);
+			driver.findElement(LOGIN_LINK);	
+			isLoginPresent = true;			
+		}catch(Exception e){				
+		}		
+		return isLoginPresent;
 	}
 
 	public boolean isWelcomeTxtPresent(){
-		return driver.isElementPresent(WELCOME_TXT);
+		boolean isWelcomePresent = false;
+		try{
+			driver.waitForElementPresent(WELCOME_TXT);
+			driver.findElement(WELCOME_TXT);	
+			isWelcomePresent = true;			
+		}catch(Exception e){				
+		}		
+		return isWelcomePresent;
 	}
 
 	public boolean isLoginOrWelcomePresent(){
+		boolean isLoginOrWelcomePresent = false;
 		try{
 			driver.waitForElementPresent(LOGIN_LINK);
-			return driver.isElementPresent(LOGIN_LINK);			
+			driver.findElement(LOGIN_LINK);	
+			isLoginOrWelcomePresent = true;			
 		}catch(Exception e){
 			System.out.println("Login Link not found");
-			return driver.isElementPresent(WELCOME_TXT);
-		}
-
+			driver.findElement(WELCOME_TXT);
+			isLoginOrWelcomePresent = true;			
+		}		
+		return isLoginOrWelcomePresent;
 	}
 
 	public void enterUsername(String username){

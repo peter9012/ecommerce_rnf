@@ -225,14 +225,14 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.id("quantity0")).clear();
 			driver.findElement(By.id("quantity0")).sendKeys(qty);
 			logger.info("quantity added is "+qty);
-			driver.click(By.xpath("//div[@id='left-shopping']/div[2]/div[1]//a[@class='updateLink']"));
+			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
 		}catch(NoSuchElementException e){
 			driver.waitForElementPresent(By.id("quantity1"));
 			driver.findElement(By.id("quantity1")).clear();
 			driver.findElement(By.id("quantity1")).sendKeys(qty);
 			logger.info("quantity added is "+qty);
-			driver.click(By.xpath("//div[@id='left-shopping']/div[2]/div[1]//a[@class='updateLink']"));
+			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
 		}
 		driver.pauseExecutionFor(1000);
@@ -319,8 +319,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForPageLoad();
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
-			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
+			driver.waitForElementPresent(By.xpath("//*[@id='main-content']/div[5]/div[1]//button"));
+			driver.click(By.xpath("//*[@id='main-content']/div[5]/div[1]//button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}
@@ -1334,8 +1334,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForLoadingImageToDisappear();
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[2]/div[2]/div[1]//button[@class='btn btn-primary']"));
+			driver.waitForElementPresent(By.xpath("//*[@class='quickshop-section yellow productCatPage']/div[2]/div[1]//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//*[@class='quickshop-section yellow productCatPage']/div[2]/div[1]//button[@class='btn btn-primary']"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForLoadingImageToDisappear();   
 		}

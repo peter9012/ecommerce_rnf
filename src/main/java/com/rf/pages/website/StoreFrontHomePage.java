@@ -641,8 +641,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateErrorMessageWithoutSelectingAllCheckboxes(){
-		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']"));
-		return driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted our Policy and Procedures and Terms and Conditions.']")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted the Rodan + Fields Policies and Procedures and the terms and conditions of the Consultant Replenishment Program (CRP) and Pulse Pro.']"));
+		return driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted the Rodan + Fields Policies and Procedures and the terms and conditions of the Consultant Replenishment Program (CRP) and Pulse Pro.']")).isDisplayed();
 	}
 
 	public void acceptTheProvideAccessToSpousePopup(){

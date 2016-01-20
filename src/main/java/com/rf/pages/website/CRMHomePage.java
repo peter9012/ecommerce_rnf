@@ -166,8 +166,8 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		logger.info("Billing profile link is clicked");
 		driver.switchTo().defaultContent();
 		return Integer.parseInt(countOfBillingProfile[1].substring(0, countOfBillingProfile[1].length()-1));
-		
 	}
+	
 	public int getCountOfBillingProfileUnderBillingProfileSection(){
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]")));
@@ -178,6 +178,7 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		logger.info("billing count from UI "+rowCount);
 		return rowCount;
 	}
+	
 	public boolean verifyBillingInfoActionField(){
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]//iframe[1]")));
@@ -192,8 +193,20 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		 driver.waitForElementPresent(By.xpath("//*[@id='ShippingProfile__c_body']/table/tbody/tr[2]/th/a"));
 		 driver.findElement(By.xpath("//*[@id='ShippingProfile__c_body']/table/tbody/tr[2]/th/a")).click();
 		 driver.switchTo().defaultContent();
-		
 }
+	public void clickEditShipping(){
+		driver.switchTo().frame(1);
+		//click on edit 
+		driver.waitForElementPresent(By.xpath("//*[@id='0015500000BaVVi_00N1a000005tJN3_body']/table/tbody/tr[2]/td[1]/a[1]"));
+		driver.findElement(By.xpath("//*[@id='0015500000BaVVi_00N1a000005tJN3_body']/table/tbody/tr[2]/td[1]/a[1]"));
+		driver.switchTo().defaultContent();
+		//clear and enter new locale
+		driver.waitForElementPresent(By.xpath("//*[@id='00N1a000005tJNH']"));
+		driver.findElement(By.xpath("//*[@id='00N1a000005tJNH']")).clear();
+		driver.findElement(By.xpath("//*[@id='00N1a000005tJNH']")).sendKeys("San Francisco");
+		driver.switchTo().defaultContent();
+	}
+	
 	public void searchUserByFirstLastNameandSelect(String Name){
 		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
@@ -204,21 +217,32 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForPageLoad();
 }
-	public void EditAndSaveAccountDetails(){
+	
+	public void EditAccountDetails(){
 		driver.switchTo().frame(1);
 		//click Edit button
 		driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/td[1]/a")).click();
 		driver.switchTo().defaultContent();
+	}
+	
+	public void EnterNewAddress(){
 		//clear and enter new Address 1 
 		driver.switchTo().frame(2);
 		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).clear();
 		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).sendKeys("542 Mission St");
-		 //Click save
-		 driver.findElement(By.xpath("//*[@id='topButtonRow']/input[1]")).click();
 		 driver.switchTo().defaultContent();
-		 driver.switchTo().frame(4);
-		 //Get the text of the Updated address
+	}
+	
+	public void ClickSave(){
+		 //Click save
+		driver.switchTo().frame(2);
+		 driver.findElement(By.xpath("//*[@id='topButtonRow']/input[1]")).click();
+		 driver.switchTo().defaultContent();	 
+	}
+	
+	public void GetUpdatedAddress(){
+		//Get the text of the Updated address
+		driver.switchTo().frame(4);
 		 System.out.println(driver.findElement(By.xpath("//*[@id='00N1a000005uQGF_ileinner']")).getText());
 	}
-
 }

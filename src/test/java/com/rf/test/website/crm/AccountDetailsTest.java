@@ -391,29 +391,85 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.clickaccountNameForAccountDetailsPage("");
-		crmHomePage.EditAndSaveAccountDetails();
+		crmHomePage.clickaccountNameForAccountDetailsPage("mstd03@test.com");
+		crmHomePage.EditAccountDetails();
+		crmHomePage.EnterNewAddress();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
 		s_assert.assertAll();
 		
 	}
+	@Test
 	public void EditPCAccountDetails_4507() throws InterruptedException{
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.clickaccountNameForAccountDetailsPage("");
-		crmHomePage.EditAndSaveAccountDetails();
+		crmHomePage.EditAccountDetails();
+		crmHomePage.EnterNewAddress();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
 		s_assert.assertAll();
 }
+	@Test
 	public void EditRCAccountDetails_4510() throws InterruptedException{
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.clickaccountNameForAccountDetailsPage("");
-		crmHomePage.EditAndSaveAccountDetails();
+		crmHomePage.EditAccountDetails();
+		crmHomePage.EnterNewAddress();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
 		s_assert.assertAll();
 }
+	@Test
+	public void EditShippingDetailsConsultant_4513() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.clickEditShipping();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
+		s_assert.assertAll();
+	}
+	@Test
+	public void EditShippingDetailsPC_4514() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.clickEditShipping();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
+		s_assert.assertAll();
+	}
+	@Test
+	public void EditShippingDetailsRC_4515() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+		crmHomePage.clickEditShipping();
+		crmHomePage.ClickSave();
+		crmHomePage.GetUpdatedAddress();
+		s_assert.assertAll();
+	}
+	@Test
+	public void ChangeAccountStatusFromActiveToInactive_4518() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.clickaccountNameForAccountDetailsPage("");
+	
+	}
 }
 
 

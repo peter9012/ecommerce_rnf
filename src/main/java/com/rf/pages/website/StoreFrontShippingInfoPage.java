@@ -21,7 +21,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
-	private final By ADD_NEW_SHIPPING_LINK_LOC  = By.linkText("Add a new shipping address");
+	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 
 
 	public StoreFrontShippingInfoPage(RFWebsiteDriver driver) {
@@ -34,7 +34,32 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isDefaultAddressRadioBtnSelected(String defaultAddressFirstName) throws InterruptedException{
-		return driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input")).isSelected();
+		try{
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input[@checked='checked']"));
+			boolean flag=driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input[@checked='checked']")).isSelected();
+			return flag;
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
+			if(driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/ancestor::div[1]/form/span/[@checked='address.defaultAddress']")).isSelected()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			return driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+		}catch(NoSuchElementException e){
+			String word = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
+			if(driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"))){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	}
 
 	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
@@ -74,30 +99,36 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.waitForElementPresent(By.id("new-address-1"));
 		driver.findElement(By.id("new-address-1")).clear();
 		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
 		logger.info("New Shipping Address is "+addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
+		driver.waitForElementPresent(By.id("townCity"));
 		driver.findElement(By.id("townCity")).clear();
 		driver.findElement(By.id("townCity")).sendKeys(city);
 		logger.info("New Shipping City is "+city);
 	}
 
 	public void selectNewShippingAddressState(){
+		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
+		driver.waitForElementPresent(By.id("postcode"));
 		driver.findElement(By.id("postcode")).clear();
 		driver.findElement(By.id("postcode")).sendKeys(postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
+		driver.waitForElementPresent(By.id("phonenumber"));
 		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
 	}
@@ -123,6 +154,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
+		driver.pauseExecutionFor(3000);
 		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 	}
 
@@ -158,32 +190,25 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	public boolean isShippingAddressPresentOnShippingPage(String firstName){
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));		
-		for(int i=1;i<=allBillingProfiles.size();i++){			
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){				
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));  
+		for(int i=1;i<=allBillingProfiles.size();i++){   
+			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+			if(isFirstNamePresent == true){    
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean isAutoshipOrderAddressTextPresent(String firstName){
-		try{
-			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
-			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
-			return true;
-		}catch(NoSuchElementException e){
-			return false;
-		}
-	}
-
 	public String getAddressUpdateConfirmationMessageFromUI(){
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 
 	}
+
 	public String getErrorMessageForUSAddressFromUI(){
-		return driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		//  return driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+		System.out.println(driver.findElement(By.xpath("//input[@id='postcode']/following::label")).getText());
+		return driver.findElement(By.xpath("//input[@id='postcode']/following::label")).getText();  
 	}
 
 	public void changeMainAddressToQuebec(){
@@ -210,8 +235,8 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		driver.findElement(By.id("phonenumber")).clear();
 		driver.findElement(By.id("phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
-		selectFirstCardNumber();
-		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+		//		selectFirstCardNumber();
+		//		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 	}	
 
 	public void clickOnNewAddressRadioButton(){
@@ -234,6 +259,23 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		else{
 			return false;
 		}
+	}
+	public String getDefaultSelectedShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
+	}
+
+	public boolean verifyOldDefaultSelectAddress(String addressname, String addressnameAfterAdd){
+		return addressname.equalsIgnoreCase(addressnameAfterAdd);
+	}
+
+	public boolean verifyRadioButtonNotSelectedByDefault(String name){
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+name+"')]/following::input[@checked='checked']"));
+	}
+
+	public boolean verifyRadioButtonIsSelectedByDefault(String name) {
+		String shippingname = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+shippingname+"')]/following::input[@checked='checked']"));
 	}
 }
 

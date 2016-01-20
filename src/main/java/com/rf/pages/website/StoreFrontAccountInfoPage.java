@@ -32,12 +32,12 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By ACCOUNT_SAVE_BUTTON_LOC = By.xpath("//input[@id='saveAccountInfo']");
 	private final By ACCOUNT_INFO_VERIFY_ADDRESS_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
 	private String ACCOUNT_INFO_DAY_OF_BIRTH_LOC = "//select[@id='dayOfBirth']//option[@value='%s']";
-	private String ACCOUNT_INFO_GENDER_LOC = "//label[@for='%s']";
+	private String ACCOUNT_INFO_GENDER_LOC = "//input[@id='%s']/..";
 	private String ACCOUNT_INFO_MONTH_OF_BIRTH_LOC = "//select[@id='monthOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_YEAR_OF_BIRTH_LOC = "//select[@id='yearOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
 	private final By ACCOUNT_AUTOSHIP_STATUS_LOC = By.xpath("//div[@id='left-menu']//a[text()='Autoship Status']");
-	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
+	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//label[contains(text(),'Please specify a valid phone number')]");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
 	private final By LEFT_MENU_ACCOUNT_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='ACCOUNT INFO']");
 	private final By CANCEL_MY_CRP_LOC = By.xpath("//a[contains(text(),'Cancel my CRP')]");
@@ -56,7 +56,10 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyAccountInfoPageIsDisplayed(){
 		driver.waitForElementPresent(ACCOUNT_INFO_TEMPLATE_HEADER_LOC);
 		return driver.getCurrentUrl().contains(TestConstants.ACCOUNT_PAGE_SUFFIX_URL);
+	}
 
+	public String getUsernameFromAccountInfoPage(){
+		return driver.findElement(By.xpath("//input[@id='username-account']")).getAttribute("value"); 
 	}
 
 	public void enterSpouseLastNameOptional(String firstName){
@@ -172,12 +175,18 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyMainPhoneNumberFromUIForAccountInfo(String mainPhoneNumber){
 		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		String mainPhoneNumberFromUI = driver.findElement(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC).getAttribute("value");
-		if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
+		System.out.println("Main Phone Number from UI "+mainPhoneNumberFromUI);
+		System.out.println("Main Phone Number from DB "+mainPhoneNumber);
+		if(mainPhoneNumberFromUI.trim().equalsIgnoreCase(mainPhoneNumber.trim())){
 			System.out.println("phone selected in if block is "+mainPhoneNumberFromUI);
 			return true;
 		}else{
-			String[] mainPhone = mainPhoneNumberFromUI.split("-");
-			mainPhoneNumberFromUI = mainPhone[0]+mainPhone[1]+mainPhone[2];
+			try{
+				String[] mainPhone = mainPhoneNumberFromUI.split("-");
+				mainPhoneNumberFromUI = mainPhone[0]+mainPhone[1]+mainPhone[2];
+			}catch(Exception e){
+
+			}
 			if(mainPhoneNumberFromUI.equalsIgnoreCase(mainPhoneNumber)){
 				System.out.println("phone selected in else block is "+mainPhoneNumberFromUI);
 				return true;
@@ -193,6 +202,12 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String genderFromUI = "male";
 			genderFromUI.equalsIgnoreCase(gender);
 			return true;
+		}else if(driver.findElement(By.xpath(String.format(ACCOUNT_INFO_RADIO_BUTTON_LOC, TestConstants.CONSULTANT_FEMALE_GENDER))).isSelected() == true){
+			String genderFromUI = "female";
+			genderFromUI.equalsIgnoreCase(gender);
+			return true;
+		}else if(gender.equals("others")){
+			return true;
 		}
 		return false;
 	}
@@ -206,7 +221,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 			String completeDate[] = dob.split(" ");
 			String splittedMonth = completeDate[0].substring(0,3);
 			String day =driver.findElement(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH))).getAttribute("value");
-			String month = driver.findElement(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH))).getText();
+			String month = driver.findElement(By.xpath("//select[@id='monthOfBirth']//option[@selected='selected'][2]")).getAttribute("value");
 
 			switch (Integer.parseInt(month)) {  
 			case 1:
@@ -257,7 +272,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return false;
 	}
-
 	public boolean verifyBirthDateFromUIAccountInfoForCheckAccountInfo(String dob){
 		if(dob == null){
 			return false;
@@ -377,6 +391,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
 		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
 		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
 	}
 
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
@@ -431,13 +446,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public void enterUserName(String username) throws InterruptedException	{
 		driver.findElement(By.id("username-account")).clear();
-		driver.findElement(By.id("username-account")).sendKeys(username);		
+		driver.findElement(By.id("username-account")).sendKeys(username+"\t");
+		driver.waitForLoadingImageToDisappear();
 	}
 
-
-	public String getErrorMessage()	{
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		String errorMessage=driver.findElement(By.xpath("//div[@class='tipsy-inner']")).getText();
+	public String getErrorMessage() {
+		driver.waitForElementPresent(By.xpath(".//*[@id='accountInfo']//label[@class='error']"));
+		String errorMessage=driver.findElement(By.xpath(".//*[@id='accountInfo']//label[@class='error']")).getText();
 		return errorMessage;
 	}
 
@@ -469,9 +484,11 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
+		driver.pauseExecutionFor(5000);
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
-		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
 		driver.pauseExecutionFor(1000);
@@ -482,10 +499,13 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
+		actions = new Actions(RFWebsiteDriver.driver);
 		String spouseFirstName="Mary";
 		String spouseLastName="Rose";
-		//driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		//driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
+		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
+		driver.pauseExecutionFor(5000);
+		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
 		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
@@ -493,7 +513,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
-		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+		return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
 	public void clickOnSaveButtonAfterAddressChange() throws InterruptedException{
@@ -566,17 +586,16 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean validateSubscribeToPulse(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.quickWaitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 	}
 
 	public void enterNewUserNameAndClicKOnSaveButton(String newUserName) {
 		driver.waitForElementPresent(By.id("username-account"));
 		driver.clear(By.id("username-account"));
-		driver.type(By.id("username-account"), newUserName);
+		driver.type(By.id("username-account"), newUserName+"\t");
 		driver.click(By.id("saveAccountInfo"));
 		logger.info("save button clicked");
-
 	}
 
 	public boolean verifyProfileUpdationMessage(){
@@ -590,8 +609,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']"));
-		return driver.findElement(By.xpath("//p[text()='Your Username already exist,Please Enter the Different Username']")).getText().contains("Your Username already exist");
+		driver.waitForElementPresent(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']"));
+		return driver.findElement(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']")).isDisplayed();
 	}
 
 	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{
@@ -616,13 +635,221 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 		return true;
 	}
+
 	public boolean errorMessagePresent(){
-		driver.waitForElementPresent(By.xpath("//div[@class='tipsy-inner']"));
-		if(driver.findElement(By.xpath("//div[@class='tipsy-inner']")).isDisplayed()){
+		driver.waitForElementPresent(By.xpath(".//form[@id='accountInfo']//label[@class='error']"));
+		if(driver.findElement(By.xpath(".//form[@id='accountInfo']//label[@class='error']")).isDisplayed()){
 			return true;
 
 		}else{
 			return false;
 		}
 	}
+
+	public boolean verifyCrpStatusAfterReactivation() {
+		driver.quickWaitForElementPresent(By.id("crp-enroll"));
+		return driver.isElementPresent(By.id("crp-enroll"));
+
+	}
+
+	public boolean verifyPulseStatusAfterReactivation(String currentPulseStatus) {
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span"));
+		if(driver.findElement(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span")).getText().equals(currentPulseStatus)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public String getCRPStatusFromUI() {
+		return driver.findElement(By.xpath("//div[@id='currentCRPStatus']/span")).getText();
+	}
+
+	public String getPulseStatusFromUI() {
+		return driver.findElement(By.xpath("//div[@id='currentPulseSubscriptionStatus']/span")).getText();
+	}
+
+	public void clickOndelayOrCancelPCPerks(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));		
+	}
+
+	public boolean isYesChangeMyAutoshipDateButtonPresent() {
+		driver.waitForElementPresent(By.id("change-autoship-button"));
+		return driver.isElementPresent(By.id("change-autoship-button"));
+	}
+
+	public boolean isCancelPCPerksLinkPresent() {
+		driver.waitForElementPresent(By.xpath("//a[@id='cancel-pc-perks-button']"));
+		return driver.isElementPresent(By.xpath("//a[@id='cancel-pc-perks-button']"));
+
+	}
+
+	public void clickOnCancelMyPulseSubscription(){
+		try{
+			if(validateSubscribeToPulse()==true){
+				cancelPulseSubscription();
+			}
+		}catch(Exception e){
+
+		}
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnOnlySubscribeToPulseBtn(){
+		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
+		driver.click(By.id("subscribe_pulse_button_new"));
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(1000);
+	}
+
+	public String getWebsitePrefixName(){
+		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[2]"));
+		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[2]")).getText();
+		return pwsUnderPulse;
+	}
+
+	public void clickOnNextDuringPulseSubscribtion(){
+		driver.waitForElementPresent(By.id("pulse-enroll"));
+		driver.click(By.id("pulse-enroll"));
+		driver.waitForPageLoad();
+	}
+
+	public void enterWebsitePrefixName(String name){
+		driver.waitForElementPresent(By.id("webSitePrefix"));
+		driver.type(By.id("webSitePrefix"), name);
+		clickOnNextDuringPulseSubscribtion();
+	}
+
+	public boolean verifyWebsitePrefixSuggestionIsPresent(){
+		List<WebElement> noOfSuggestions = driver.findElements(By.xpath("//p[@id='prefix-validation']/span"));
+		if(noOfSuggestions.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyEnteredBirthDateFromDB(String dobDB, String consultantDayOfBirth, String consultantMonthOfBirth, String consultantYearOfBirth) {
+		String date[] = dobDB.split("\\ ");		  
+		String formattedDate = consultantYearOfBirth+"-"+consultantMonthOfBirth+"-0"+consultantDayOfBirth;
+		System.out.println(formattedDate);
+		if(date[0].equals(formattedDate.trim())){
+			return true;
+		}		  
+		return false;
+	}
+
+	public void clickOnGenderRadioButton(String consultantGender) {
+		for(int i=0;i<=5;i++){
+			driver.waitForElementPresent(By.xpath("//input[@id='"+consultantGender+"']/.."));
+			driver.click(By.xpath("//input[@id='"+consultantGender+"']/.."));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("gender radio button is clicked at attempt "+i);
+			if(verifyGenderRadioBtnSelected(TestConstants.CONSULTANT_GENDER)==false){
+				continue;
+			}else{
+				break;
+			}
+		}
+	}
+
+	public boolean verifyGenderRadioBtnSelected(String gender){
+		return driver.isElementPresent(By.xpath("//input[@id='"+gender+"' and @checked='checked']/.."));
+	}
+
+	public void clickOnSaveAfterEnterSpouseDetails() {
+		driver.waitForElementPresent(By.id("saveAccountInfo"));
+		driver.click(By.id("saveAccountInfo"));
+		try{
+			driver.quickWaitForElementPresent(By.id("acceptSpouse"));
+			if(driver.isElementPresent(By.id("acceptSpouse"))){
+				driver.click(By.id("acceptSpouse"));
+				logger.info("acceptSpouse pop up handled");
+				driver.waitForLoadingImageToDisappear();
+				driver.click(By.id("saveAccountInfo"));
+			}else if(driver.isElementPresent(By.id("QAS_AcceptOriginal"))){
+				driver.click(By.id("QAS_AcceptOriginal"));
+				logger.info("Accept as original button clicked");
+				driver.waitForLoadingImageToDisappear();
+			}
+		}catch(Exception e){
+			logger.info("acceptSpouse popup not present");
+		}
+		driver.waitForLoadingImageToAppear();
+		driver.waitForPageLoad();
+	}
+
+	public void enterBirthDateOnAccountInfoPage() {
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_YEAR_OF_BIRTH_LOC, TestConstants.CONSULTANT_YEAR_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH)));
+	}
+
+	public StoreFrontAccountInfoPage enterMobileNumber(String phoneNumberCa) {
+		driver.waitForElementPresent(By.id("mobilenumber"));
+		driver.clear(By.id("mobilenumber"));
+		driver.type(By.id("mobilenumber"), phoneNumberCa);
+		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.pauseExecutionFor(2000);
+		logger.info("Save account info button clicked");
+		return new StoreFrontAccountInfoPage(driver);		  
+	}
+
+	public void enterNameOfUser(String firstName,String lastName) {
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
+		driver.type(ACCOUNT_INFO_LAST_NAME_LOC, lastName);		  
+	}
+
+	public boolean verifyEmailAddressOnAccountInfoPage(String consultantEmailID) {
+		return driver.findElement(By.id("username-account")).getAttribute("value").contains(consultantEmailID);
+	}
+
+	public boolean validateCountryCanOrNotBeModified(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'country-read-only')]/input[@disabled='disabled']"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'country-read-only')]/input[@disabled='disabled']"));
+	}
+
+	public void clickMeetYourConsultantLink(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		logger.info("Meet your consultant link is clicked");
+	}
+
+	public boolean verifyFirstNameAndLastNameAtMeetYourConsultantSection(String firstName,String lastName){
+		driver.waitForElementPresent(By.xpath("//div[@id='content-left-menu']/following-sibling::div[1]"));
+		String textOfFirstLastName = driver.findElement(By.xpath("//div[@id='content-left-menu']/following-sibling::div[1]")).getText();
+		logger.info("Fetched text of first and last name==="+textOfFirstLastName);
+		if(textOfFirstLastName.equalsIgnoreCase(firstName+" "+lastName)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyFirstNameAndLastNameAtMainAccountInfoduringPlacingAdhocOrder(String firstName,String lastName){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']/div[2]/div[1]/div[1]"));
+		String textOfFirstLastName = driver.findElement(By.xpath("//div[@id='checkout_summary_deliveryaddress_div']/div[2]/div[1]/div[1]")).getText();
+		logger.info("Fetched text of first and last name==="+textOfFirstLastName);
+		if(textOfFirstLastName.equalsIgnoreCase(firstName+" "+lastName)){
+			return true;
+		}
+		return false;
+	}
+
+	public String getFirstNameFromAccountInfo(){
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		String firstName=driver.findElement(ACCOUNT_INFO_FIRST_NAME_LOC).getAttribute("value");
+		logger.info("FirstName from UI is "+firstName);
+		return firstName;
+	}
+
+	public String getLastNameFromAccountInfo(){
+		driver.waitForElementPresent(ACCOUNT_INFO_LAST_NAME_LOC);
+		String firstName=driver.findElement(ACCOUNT_INFO_LAST_NAME_LOC).getAttribute("value");
+		logger.info("LastName from UI is "+firstName);
+		return firstName;
+	}
+
 }

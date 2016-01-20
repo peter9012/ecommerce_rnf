@@ -59,6 +59,7 @@ public class TestConstants {
 	public static final String ADDRESS_LINE_1_QUEBEC = "2 Rue des Jardins";
 	public static final String CITY_QUEBEC = "Quebec";
 	public static final String CARD_NUMBER = "4111111111111111";
+	public static final String CARD_NUMBER_SECOND = "4747474747474747";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
 	public static final String SECURITY_CODE = "123";
@@ -71,7 +72,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US="1686295";
 	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "411111111111111#";
 
-	public static final String PROVINCE_YUKON = "Yukon";
+	public static final String PROVINCE_YUKON = "Yukon Territory";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
 	public static final String PROVINCE_PRINCE_EDWARD_ISLAND = "Prince Edward Island";
 	public static final String PROVINCE_NEW_BRUNSWICK = "New Brunswick";
@@ -84,6 +85,7 @@ public class TestConstants {
 	public static final String PROVINCE_NUNAVUT = "Nunavut";
 	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
 	public static final String PROVINCE_QUEBEC = "Quebec";
+	public static final String PROVINCE_US = "Alaska";
 
 
 
@@ -93,7 +95,7 @@ public class TestConstants {
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHANUMERIC_CHARS_WITH_SPCLCHAR="!abcd1234!";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_NUMBERS="123456789";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHABETS="11maidenfghi";
-	
+
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR="abcdef#$";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SPCL_CHAR_COMB="$abcd%et";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR="abcdef+";
@@ -106,11 +108,16 @@ public class TestConstants {
 	public static final String CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO = "con0708@yopmail.com";
 	public static final String PC_USER_STG = "autopcstg@xyz.com";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG="Your next autoship cart has been updated";
-	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT="Your Total SV value should be equal to or greater than the threshold 100";
-	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="Please add products in your PC cart greater than the threshold CAD $90";
+	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_CONSULTANT="greater than the threshold 100";
+	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="greater than the threshold CAD $90";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY="quantity has been updated";
-	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated";
-	
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA_FOR_PC= "greater than the threshold CAD $90";
+	public static final String  DISCOUNT_TEXT_FOR_PC_USER = "Yes, I want to join PC Perks and receive up to 10% off all orders plus free shipping";
+	public static final String  PC_PERKS_TERMS_CONDITION_POPUP_TEXT = "To enjoy up to 10% off and free shipping";
+	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
+	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
+
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
@@ -169,15 +176,17 @@ public class TestConstants {
 	public static final String CONSULTANT_MONTH_OF_BIRTH = "05";
 	public static final String CONSULTANT_YEAR_OF_BIRTH = "2010";
 	public static final String CONSULTANT_GENDER = "male";
+	public static final String CONSULTANT_FEMALE_GENDER = "female";
 	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION = "Texas";
 	public static final String CONSULTANT_INVALID_11_DIGIT_MAIN_PHONE_NUMBER = "23423423423";
 	public static final String CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER = "13423423423";
 	public static final String CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER = "Please specify a valid phone number";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_REMOVED_MSG="removed from your cart";
-	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "Your Total SV value should be equal to or greater than the threshold 80";
+	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_FOR_CONSULTANT= "greater than the threshold 80";
 	public static final String CONSULTANT_VALID_10_DIGIT_MAIN_PHONE_NUMBER ="3423423423";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA= "Your Total SV value should be equal to or greater than the threshold 100";
-	
+	public static final String PC_PERKS_MESSAGE_ON_MODAL_POPUP = "*Preferred Customer pricing offers up to, and in some cases more than, a 10% discount off retail price";
+
 	//	//PWS STAGING
 	//	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
 	//	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "test1234";
@@ -326,37 +335,92 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String BILLING_ADDRESS_NAME = "newBAName";
+	public static final String EDIT_BILLING_PROFILE_NAME = "newBPNameEdited";
 	public static final String ADDRESS_NAME = "newSAName";
 	public static final String SECURITY_NUMBER = "123";
 	public static final String NEW_ADDRESS_LINE1_US = "123 J street";
 	public static final String NEW_ADDRESS_CITY_US="San Francisco";
 	public static final String NEW_ADDRESS_POSTAL_CODE_US="99294";
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US="4155555555";
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME_CA = "newCA";
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME_US = "newUS";
+	public static final String NEW_ADDRESS_LINE_PHONE_NUMBER_CA = "8067736418";
+	public static final String NEW_ADDRESS_LINE_1_CITY_CA = "Bonnyville";
 
 	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
 	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
-	/**
-	 * 
-	 */
-	//public static final String CRM_LOGIN_USERNAME = "testautomation@rodanandfields.com.qa2";
-	//public static final String CRM_LOGIN_PASSWORD = "RFtest1234";
-	//public static final String CRM_LOGIN_USERNAME = "crmqaguest@rodanandfields.com.qa2";
-	//public static final String CRM_LOGIN_PASSWORD = "crmrocks1";
-	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.tst3";
-	public static final String CRM_LOGIN_PASSWORD = "test1234";
-	public static final String PC_FIRST_NAME = "PC";
-	public static final String RC_FIRST_NAME = "RCUser";
-	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 	public static final String NEW_RC_USER_NAME = "updatedUserName";
 	public static final String PROVINCE_ALABAMA_US ="Alabama";
 
 	public static final String NEW_SHIPPING_PROFILE_NAME_US = "new SP";
 	public static final String NEW_SHIPPING_PROFILE_NAME_CA = "new SP";
+	public static final String NEW_SHIPPING_PROFILE_FIRST_NAME = "newSP";
+	public static final String CARD_EXP_MONTH_OPTION = "9";
+	public static final String CARD_EXP_YEAR_OPTION = "11";
+
+	public static final String TOO_MUCH_PRODUCT ="Too much product";
+	public static final String  TOO_EXPENSIVE ="Too expensive";
+	public static final String ENROLLED_IN_AUTOSHIP_PROGRAM="Did not know I was enrolled in an autoship program";
+	public static final String PRODUCT_NOT_RIGHT = "Products were not right for me";
+	public static final String UPGRADING_TO_CONSULTANT = "I am upgrading to a Consultant";
+	public static final String RECEIVE_PRODUCT_TOO_OFTEN = "I received products too often";
+	public static final String DO_NOT_WANT_TO_OBLIGATED_TO_ORDER_PRODUCT = "Do not want to be obligated to order products";
+	public static final String OTHER_REASON = "Other";
+	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_COM_SITE="Dermatologist-Created Anti-Aging Skincare Products";
+	public static final String TITLE_OF_HERO_BANNER_PAGE_ON_BIZ_SITE="biz PWS - CA";
+
+	public static final String PROVINCE_NORTH_DAKOTA = "North Dakota";
+	public static final String PC_PERKS_TEMPLATE_PRODUCT_ADDED = "Your next pc perks cart has been updated";
+
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_CA = "20.00";
+	public static final String HANDLING_CHARGES_FOR_UPS2DAY_CA = "2.50";
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_US = "16.00";
+	public static final String HANDLING_CHARGES_FOR_UPS2DAY_US = "2.50";
+	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99 = "24.00";
+	public static final String AMERICAN_EXPRESS_CARD_NUMBER = "378282246310005";
+	public static final String DISCOVER_CARD_NUMBER = "6011000990139424";
+	public static final String SECURITY_CODE_FOR_SPECIAL_CARDS = "1234";
+	public static final String MASTER_CARD_NUMBER = "5555555555554444";
+
+	//PRODUCTION DSV DATA
+	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";
+	public static final String DSV_CONSULTANT_PASSWORD = "test1234";
+
+	public static final String DSV_PC_USERNAME = "rftestpc1125@mailinator.com";
+	public static final String DSV_PC_PASSWORD = "test1234";
+
+	public static final String DSV_RC_USERNAME = "rftestlast@mailinator.com";
+	public static final String DSV_RC_PASSWORD = "test1234";
+
+	public static final String DSV_PWS_SUFFIX ="myrandf";
+	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
+
+	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";
+	public static final String DSV_CITY_CA = "Bonnyville";
+	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
+	public static final String DSV_PHONE_NUMBER = "8067736419";
+	//public static final String DSV_SECURITY_CODE = "5487";
+	public static final String DSV_SECURITY_CODE = "7475";
+
+	//public static final String DSV_CARD_NUMBER = "379622509583005";
+	public static final String DSV_CARD_NUMBER = "379064060092003";	
+	public static final String DSV_EXPIRY_MONTH = "SEP";
+	public static final String DSV_EXPIRY_YEAR = "2019";
+
+	public static final String DSV_CANADIAN_SPONSOR_WITH_PWS = "Erica MacKinnon";
+	public static final String DSV_US_SPONSOR_WITH_PWS = "Kris Fairless";
+	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
+	
+	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.tst3";
+	public static final String CRM_LOGIN_PASSWORD = "test1234";
+	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 
 }
+
 
 
 

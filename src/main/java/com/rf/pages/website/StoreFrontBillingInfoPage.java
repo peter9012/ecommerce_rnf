@@ -18,7 +18,7 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	private final By BILLING_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'Billing info')]");
 	private final By TOTAL_BILLING_ADDRESSES_LOC =  By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'col-sm-4')]");
 	private final By DEFAULT_BILLING_ADDRESSES_LOC = By.xpath("//input[@class='paymentAddress' and @checked='checked']/ancestor::li[1]/p[1]");
-	private final By ADD_NEW_BILLING_LINK_LOC = By.xpath("//a[contains(text(),'Add a new billing profile')]");
+	private final By ADD_NEW_BILLING_LINK_LOC = By.xpath("//a[@class='add-new-billing-profile']");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 	private final By ADD_NEW_BILLING_CARD_NAME_LOC = By.id("card-name");
 	private final By ADD_NEW_BILLING_CARD_EXP_MONTH_LOC = By.id("expiryMonth");
@@ -68,10 +68,17 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public String getDefaultBillingAddress(){
-		driver.waitForElementPresent(DEFAULT_BILLING_ADDRESSES_LOC);
-		String defaultBillingAddress = driver.findElement(DEFAULT_BILLING_ADDRESSES_LOC).getText();
-		logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
-		return defaultBillingAddress;
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span"));
+			String defaultBillingAddress = driver.findElement(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span")).getText();
+			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			return defaultBillingAddress;
+		}catch(Exception e){
+			driver.waitForElementPresent(DEFAULT_BILLING_ADDRESSES_LOC);
+			String defaultBillingAddress = driver.findElement(DEFAULT_BILLING_ADDRESSES_LOC).getText();
+			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			return defaultBillingAddress;
+		}
 	}
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
@@ -156,16 +163,13 @@ public class StoreFrontBillingInfoPage extends RFWebsiteBasePage{
 		return driver.findElement(BILLING_PROFILE_NAME_LOC).getText();
 	}
 
-	public boolean isTheBillingAddressPresentOnPage(String firstName){
-		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){ 
-				return true;
-			}
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		try{
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
+			driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));   
+			return true;
+		}catch(NoSuchElementException e){
+			return false;
 		}
-		return false;
 	}
 }

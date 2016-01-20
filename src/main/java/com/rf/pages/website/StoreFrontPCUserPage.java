@@ -125,5 +125,244 @@ public class StoreFrontPCUserPage extends RFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 
 	}
+
+	public String getAccountterminationReasonTooMuchProduct(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[2]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[2]")).getText();
+	}
+
+	public String getAccountterminationReasonTooExpensive(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[3]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[3]")).getText();
+	}
+	public String getAccountterminationReasonEnrolledInAutoShipProgram(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[4]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[4]")).getText();
+	}
+	public String getAccountterminationReasonProductNotRight(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[5]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[5]")).getText();
+	}
+	public String getAccountterminationReasonUpgradingToConsultant(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[6]")).getText();
+	}
+	public String getAccountterminationReasonReceiveProductTooOften(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[7]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[7]")).getText();
+	}
+	public String getAccountterminationReasonDoNotWantToObligated(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[8]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[8]")).getText();
+	}
+	public String getAccountterminationReasonOther(){
+		driver.waitForElementPresent(By.id("problemType"));
+		driver.click(By.id("problemType"));
+		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[9]"));
+		return driver.findElement(By.xpath("//select[@id='problemType']/option[9]")).getText();
+	}
+
+	public boolean verifyToSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[1]/div[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[1]/div[2]"));
+	}
+	public boolean verifySubjectSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[2]/div[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[2]/div[2]"));
+	}
+
+	public boolean verifyMessageSectionInSendcancellationMessageSection(){
+		driver.quickWaitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
+		return driver.isElementPresent(By.xpath("//textarea[@id='terminationComments']"));
+	}
+
+	public boolean verifyIHaveChangedMyMindButton(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[1]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[1]"));
+	}
+
+	public boolean verifySendAnEmailToCancelAccountButton(){
+		driver.quickWaitForElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[2]"));
+		return driver.isElementPresent(By.xpath("//form[@id='CancelAutoshipAccountForm']/div[2]/div[4]/div[2]/input[2]"));
+	}
+
+	public boolean validatePCPerkCartDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
+		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));
+	}
+
+	public String getNextBillAndShipDate(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='pc-perks-status']/div[3]/span[2]"));
+		return driver.findElement(By.xpath("//div[@id='pc-perks-status']/div[3]/span[2]")).getText();
+	}		
+
+	public String getOneMonthOutDate(String date){
+		String completeDate[] = date.split(" ");
+		String []splittedDay =completeDate[1].split("\\,");
+		String day =splittedDay[0];
+		String year =completeDate[2];
+		String month=completeDate[0];
+		int a = 0;
+		int b = 0;
+		String UIMonth = null;
+		if(month.equalsIgnoreCase("January")){
+			a=1;
+		}else if(month.equalsIgnoreCase("February")){
+			a=2;
+		}else if(month.equalsIgnoreCase("March")){
+			a=3;
+		}
+		else if(month.equalsIgnoreCase("April")){
+			a=4;
+		}
+		else if(month.equalsIgnoreCase("May")){
+			a=5;
+		}
+		else if(month.equalsIgnoreCase("June")){
+			a=6;
+		}
+		else if(month.equalsIgnoreCase("July")){
+			a=7;
+		}
+		else if(month.equalsIgnoreCase("August")){
+			a=8;
+		}
+		else if(month.equalsIgnoreCase("September")){
+			a=9;
+		}
+		else if(month.equalsIgnoreCase("October")){
+			a=10;
+		}
+		else if(month.equalsIgnoreCase("November")){
+			a=11;
+		}else if(month.equalsIgnoreCase("December")){
+			a=12;
+		}else{
+			a=0;
+		}
+		a=a+1;
+		if(a==13){
+			a=1;
+			b=1;
+		}
+		switch (a) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		if(b==1){
+			int yearly=Integer.parseInt(year)+1;
+			year=Integer.toString(yearly);
+		}
+		String dateAfterOneMonth=UIMonth+" "+day+","+" "+year;
+		logger.info("created date is "+dateAfterOneMonth);
+		return dateAfterOneMonth;
+	}
+
+	public boolean verifyPCPerksStatus(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']//div[contains(text(),'PC perks status')]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='main-content']//div[contains(text(),'PC perks status')]"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public String getShipAndBillDateAfterOneMonthFromUI(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']/li[2]/ul/li[1]/span[2]"));
+		String dateList=driver.findElement(By.xpath("//ul[@id='autoship-date']/li[2]/ul/li[1]/span[2]")).getText();
+		logger.info("bill and ship date after one month is "+dateList);
+		return dateList;
+	}
+
+	public String getShipAndBillDateAfterTwoMonthFromUI(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']/li[2]/ul/li[2]/span[2]"));
+		String dateList=driver.findElement(By.xpath("//ul[@id='autoship-date']/li[2]/ul/li[2]/span[2]")).getText();
+		logger.info("bill and ship date after two month is "+dateList);
+		return dateList;
+	}
+
+	public void selectFirstAutoshipDateAndClickSave(){
+		//  driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//li[1]/span[1]"));
+		//  driver.click(By.xpath("//ul[@id='autoship-date']//li[1]/span[1]"));
+		logger.info("pc perks delayed date selected");
+		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
+		driver.click(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
+		logger.info("save button clicked after different date selected");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyNextAutoshipDateRadioButtons(){
+		driver.quickWaitForElementPresent(By.xpath("//span[@class='radio-button selectautoshipDate']"));
+		if(driver.isElementPresent(By.xpath("//span[@class='radio-button selectautoshipDate']"))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void clickOnAddtoPCPerksButton(){
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+	}
+
+	public boolean verifyUpdateCartMessage(String message){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(message)){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
 }
 

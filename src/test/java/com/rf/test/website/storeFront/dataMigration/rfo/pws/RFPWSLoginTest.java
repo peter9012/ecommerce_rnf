@@ -31,7 +31,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
@@ -53,7 +53,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
@@ -77,14 +77,14 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String country = driver.getCountry();
 
 		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		// Get consultant's PWS from database.
 		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
 		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -130,7 +130,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -156,7 +156,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
 
 		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -225,7 +225,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		//sponsorPWSList = DBUtil.performDatabaseQuery(,RFO_DB);
 		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -274,7 +274,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO,RFO_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -319,7 +319,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		randomPCWithNoSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WITH_NO_SPONSOR_RFO,RFO_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,country),RFO_DB);
+		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);

@@ -130,17 +130,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.selectNewShippingAddressState();
 			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_QUEBEC);
 			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
-			storeFrontShippingInfoPage.selectFirstCardNumber();
-			storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
+//			storeFrontShippingInfoPage.selectFirstCardNumber();
+//			storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 			s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
-			storeFrontShippingInfoPage.clickOnNewAddressRadioButton();
-			storeFrontShippingInfoPage.clickOnPopUpAfterClickingRadioButton();
-			//--------------- Verify that Newly added Shipping is not listed in the Shipping profiles section-----------------------------------------------------------------------------------------------------
-			s_assert.assertTrue(storeFrontShippingInfoPage.verifyChangeInDefaultAddressForShippingAddress(),"Failed to change in default address message is not present");
-
-
-
 			s_assert.assertAll();
 
 		}

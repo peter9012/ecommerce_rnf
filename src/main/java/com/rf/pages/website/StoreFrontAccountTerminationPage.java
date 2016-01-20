@@ -93,19 +93,16 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//select[@id='reason']/option[contains(text(),'Other')]"));
 		driver.type(By.id("terminationComments"), "I want to terminate my account");
 		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
-		//driver.click(By.xpath("//input[@class='fancybox']"));
-		driver.click(By.xpath("//input[@class='fancybox btn btn-primary']"));
-		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
+		driver.click(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]"));
 		driver.waitForLoadingImageToDisappear();  
 	}
-
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
-		if(driver.findElement(By.xpath("//div[@id='consultantTerminatePopup']")).isDisplayed()){
-			return true;
-		}else{
-			return false;
-		}
-	}
+		  if(driver.findElement(By.xpath("//div[@id='showConsultantTerminatePopUp']")).isDisplayed()){
+		   return true;
+		  }else{
+		   return false;
+		  }
+		 }
 
 	public void clickOnCloseWindowAfterTermination(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
@@ -137,4 +134,49 @@ public class StoreFrontAccountTerminationPage extends RFWebsiteBasePage {
 		driver.click(By.xpath("//input[@id='confirmpcTemrminate']"));
 		driver.waitForLoadingImageToDisappear();   
 	}
+
+	public boolean verifyMessageWithoutComments(){
+		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']/following::label[@class='error']"));
+		String message = driver.findElement(By.xpath("//textarea[@id='terminationComments']/following::label[@class='error']")).getText();
+		System.out.println(message);
+		if(message.equalsIgnoreCase("This field is required.")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean verifyFieldValidatonForReason(){
+		return driver.isElementPresent(By.xpath("//ul[@class='reason']//label[@class='error']"));
+	}
+
+	public boolean verifyCheckBoxValidationIsPresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='terminate-labelerrorLabel']/label"));
+	}
+
+	public boolean verifyMessageWithoutReason(){
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p[1]"));
+		String message = driver.findElement(By.xpath("//div[@id='globalMessages']//p[1]")).getText();
+		System.out.println(message);
+		if(message.equalsIgnoreCase("Reason is required.")){
+			return true;
+		}else{
+			return false;}
+	}
+
+	public void clickOnAgreementCheckBox(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@class='repaired-checkbox']"));
+		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
+	}
+
+	public boolean validateConfirmAccountTerminationPopUp(){
+		driver.waitForElementPresent(By.xpath("//div[@id='showConsultantTerminatePopUp' and @style='display: block;']"));
+		return driver.isElementPresent(By.xpath("//div[@id='showConsultantTerminatePopUp' and @style='display: block;']"));
+	}
+
+	public void clickConfirmTerminationBtn(){
+		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
+		driver.pauseExecutionFor(2000);
+	}
+
 }

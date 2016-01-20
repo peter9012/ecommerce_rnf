@@ -1,5 +1,8 @@
 package com.rf.pages.website;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import org.apache.logging.log4j.LogManager;
@@ -21,8 +24,8 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 
 	public boolean verifyRCUserPage(String username) throws InterruptedException{
 		try{
-		driver.quickWaitForElementPresent(WELCOME_USER_LOC);
-		return driver.isElementPresent(WELCOME_USER_LOC);
+			driver.quickWaitForElementPresent(WELCOME_USER_LOC);
+			return driver.isElementPresent(WELCOME_USER_LOC);
 		}catch(Exception e){
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='account-info-button']/a/span[2]"));
 			return driver.isElementPresent(By.xpath("//div[@id='account-info-button']/a/span[2]"));
@@ -30,11 +33,11 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 
 	}
 
-//	public void clickOnWelcomeDropDown() throws InterruptedException{	
-//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-//		driver.click(WELCOME_USER_DD_LOC);
-//		logger.info("welcome drop down clicked");
-//	}
+	//	public void clickOnWelcomeDropDown() throws InterruptedException{	
+	//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+	//		driver.click(WELCOME_USER_DD_LOC);
+	//		logger.info("welcome drop down clicked");
+	//	}
 
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
 		return driver.isElementPresent(By.linkText(link));
@@ -47,13 +50,20 @@ public class StoreFrontRCUserPage extends RFWebsiteBasePage{
 		return new StoreFrontShippingInfoPage(driver);
 	}
 
-	
+
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
 		logger.info("Account info link from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}
-	
+
+	public void enterNewUserNameAndClickSaveButton(String newUserName) {
+		driver.clear(By.id("username-account"));
+		driver.findElement(By.id("username-account")).sendKeys(newUserName+"\t");
+		driver.waitForElementPresent(By.id("saveAccountInfo"));
+		driver.click(By.id("saveAccountInfo"));
+
+	}
 
 }

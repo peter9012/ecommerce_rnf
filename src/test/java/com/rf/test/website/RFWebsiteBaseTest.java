@@ -1,3 +1,4 @@
+
 package com.rf.test.website;
 
 import java.util.ArrayList;
@@ -45,20 +46,24 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
-		s_assert = new SoftAssert();
-		String country = driver.getCountry();
-		driver.get(driver.getURL()+"/"+country);
-		if(country.equalsIgnoreCase("ca"))
-			countryId = "40";
-		else if(country.equalsIgnoreCase("us"))
-			countryId = "236";
+		s_assert = new SoftAssert();		
+		if(driver.getURL().contains("cscockpit")==true)
+			driver.get(driver.getURL());
+		else{
+			String country = driver.getCountry();
+			driver.get(driver.getURL()+"/"+country);
+			if(country.equalsIgnoreCase("ca"))
+				countryId = "40";
+			else if(country.equalsIgnoreCase("us"))
+				countryId = "236";
 
-		setPassword(driver.getPassword());
-		try{
-			logout();
-		}catch(NoSuchElementException e){
+			setPassword(driver.getPassword());
+			try{
+				logout();
+			}catch(NoSuchElementException e){
 
-		}		
+			}	
+		}
 	}
 
 	/**

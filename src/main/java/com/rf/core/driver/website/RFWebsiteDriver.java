@@ -42,7 +42,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 50;
+	private static int DEFAULT_TIMEOUT = 10;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -119,6 +119,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getPassword(){
 		return propertyFile.getProperty("password");
 	}
+	
+	public String getCSCockpitURL(){
+		return propertyFile.getProperty("csCockpitUrl");
+	}
+	
+	public String getStoreFrontURL(){
+		return propertyFile.getProperty("storeFrontUrl");
+	}
 
 	/**
 	 * @param locator
@@ -157,7 +165,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				continue;
 			}
 		}
-
 	}
 
 	public void quickWaitForElementPresent(By locator){
@@ -195,6 +202,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
+		logger.info("Waiting for loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("loading image disappears");
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+
+	}
+	
+	public void waitForCSCockpitLoadingImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@class='z-loading-indicator']");
 		logger.info("Waiting for loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
 			try{

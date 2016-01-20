@@ -16,5 +16,4 @@ public class RFBasePage {
 	public WebDriver getWebdriver(){
 		return webdriver;
 	}
-
 }

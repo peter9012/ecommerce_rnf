@@ -20568,86 +20568,363 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1880:Create Adhoc Order with Multiple line items
-	 @Test
-	 public void testCreateAdhocOrderWithMultipleLineItems_1880() throws InterruptedException{
-	  RFO_DB = driver.getDBNameRFO();
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  List<Map<String, Object>> randomPCUserList =  null;
-	  String pcUserEmailID = null;
-	  String accountId = null;
-	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-	  String lastName = "lN";
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  while(true){
-	   randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	   pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-	   accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-	   logger.info("Account Id of the user is "+accountId);
-	   storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-	   boolean isError = driver.getCurrentUrl().contains("error");
-	   if(isError){
-	    logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-	    driver.get(driver.getURL());
-	   }
-	   else
-	    break;
-	  } 
-	  logger.info("login is successful");
-	  storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-	  storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-	  String firstProductName = storeFrontUpdateCartPage.clickAddToBagAndGetProductName("1");
-	  storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-	  String secondProductName = storeFrontUpdateCartPage.clickAddToBagAndGetProductName("2");
-	  storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-	  String thirdProductName = storeFrontPCUserPage.clickAddToBagAndGetProductName("3");
-	  storeFrontUpdateCartPage.clickOnCheckoutButton();
-	  // get details of adhoc order
-	  String subtotal = storeFrontUpdateCartPage.getSubtotal();
-	  logger.info("subtotal ="+subtotal);
-	  String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-	  logger.info("deliveryCharges ="+deliveryCharges);
-	  String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-	  logger.info("handlingCharges ="+handlingCharges);
-	  String tax = storeFrontUpdateCartPage.getTax();
-	  logger.info("tax ="+tax);
-	  String total = storeFrontUpdateCartPage.getTotal();
-	  logger.info("total ="+total);
-	  String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-	  logger.info("shippingMethod ="+shippingMethod);
-	  storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-	  String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-	  logger.info("BillingAddress ="+BillingAddress);
-	  storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
-	  storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-	  storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	  storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-	  storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	  storeFrontUpdateCartPage.selectNewBillingCardAddress();
-	  storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-	  storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
-	  storeFrontUpdateCartPage.clickPlaceOrderBtn();
-	  s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-	  //assert product names
-	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2"));
-	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3"));
-	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4").contains(thirdProductName),"When select third product, Product name "+thirdProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4"));
-	  storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-	  storeFrontPCUserPage.clickOnWelcomeDropDown();
-	  storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
-	  // Get Order Number
-	  String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-	  storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-	  s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-	  s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
-	  s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-	  s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-	  s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-	  //assert product names at adhoc template
-	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("2"));
-	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("3"));
-	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("4").contains(thirdProductName),"When select third product, Product name "+thirdProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("4"));
-	  s_assert.assertAll();
-	 }
+	//----
+
+	//Hybris Project-3613:20150203-11:53:35 Express Enrollment for Yukon province
+	@Test
+	public void testExpressEnrollmentForYukonProvince_3613() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			country = driver.getCountry();
+			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+			regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+			String firstName=TestConstants.FIRST_NAME+randomNum;
+			String emailAddress = firstName+"@xyz.com";
+			String province = TestConstants.PROVINCE_YUKON;
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
+
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID();
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, emailAddress,password, addressLine1, city,province, postalCode, phoneNumber);
+			storeFrontHomePage.clickNextButton();
+			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+			storeFrontHomePage.checkTheIAgreeCheckBox();
+			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+			s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for policies and procedures is not visible");
+			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+			storeFrontHomePage.clickOnConfirmAutomaticPayment();
+			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-2140:Check Shipping and Handling Fee for Order total 0-99.99
+	@Test
+	public void testCheckShippingAndHandlingFeeForOrderTotal0To99_2140() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.applyPriceFilterLowToHigh();
+		while(true){
+			storeFrontConsultantPage.selectProductAndProceedToBuyWithoutFilter();
+			String total = storeFrontUpdateCartPage.getTotalPriceOfProduct();
+			String orderTotal = total.split("\\$")[1].trim();
+			System.out.println("Order total for consultant"+orderTotal);
+			double totalFromUI = Double.parseDouble(orderTotal);
+			if(totalFromUI<99 && totalFromUI>0){
+				break;
+			}else{
+				storeFrontConsultantPage.navigateToBackPage();
+				continue;
+			}
+		}
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
+		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+		}
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+		//assert shipping and handling fee
+		deliveryCharges = storeFrontUpdateCartPage.getShippingChargesAtOrderConfirmationPage();
+		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
+		logger.info("deliveryCharges 1 ="+deliveryCharges);
+		logger.info("handlingCharges 1 ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+		}
+		//storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+
+		// Get Order Number
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+		logger.info("deliveryCharges 2 ="+deliveryCharges);
+		logger.info("handlingCharges 2 ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+		}
+
+		// assert for order total > 100
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
+		while(true){
+			storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+			String total = storeFrontUpdateCartPage.getTotalPriceOfProduct();
+			String orderTotal = total.split("\\$")[1].trim();
+			System.out.println("Order total for consultant"+orderTotal);
+			double totalFromUI = Double.parseDouble(orderTotal);
+			if(totalFromUI>99){
+				break;
+			}else{
+				storeFrontConsultantPage.navigateToBackPage();
+				continue;
+			}
+		}
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
+
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		System.out.println("shipping charges at shipping page "+deliveryCharges);
+		System.out.println("handlin charges at shipping page "+handlingCharges);
+		logger.info("deliveryCharges 3 ="+deliveryCharges);
+		logger.info("handlingCharges 3 ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page ");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+		//assert shipping and handling fee
+		deliveryCharges = storeFrontUpdateCartPage.getShippingChargesAtOrderConfirmationPage();
+		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
+		logger.info("deliveryCharges 4 ="+deliveryCharges);
+		logger.info("handlingCharges 4 ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		// Get Order Number
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+		logger.info("deliveryCharges 5 ="+deliveryCharges);
+		logger.info("handlingCharges 5 ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			//Assert of shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
+			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2214:CC enrollment who has terminated his account for LESS than 6 months enrolling under different sponso
+	@Test
+	public void testTerminatedConsultantEnrollmentWithIn6MonthUnderDifferentSponsor_2214() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			country = driver.getCountry();
+			enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+			regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+			if(country.equalsIgnoreCase("CA")){
+				kitName = TestConstants.KIT_NAME_EXPRESS;    
+				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+				city = TestConstants.CITY_CA;
+				postalCode = TestConstants.POSTAL_CODE_CA;
+				phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			}else{
+				kitName = TestConstants.KIT_NAME_EXPRESS;
+				addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+				city = TestConstants.CITY_US;
+				postalCode = TestConstants.POSTAL_CODE_US;
+				phoneNumber = TestConstants.PHONE_NUMBER_US;
+			}
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+				consultantEmailID= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+			storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+			storeFrontAccountTerminationPage.selectTerminationReason();
+			storeFrontAccountTerminationPage.enterTerminationComments();
+			storeFrontAccountTerminationPage.clickOnAgreementCheckBox();
+			storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+			storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+			storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+			storeFrontHomePage.clickOnCountryAtWelcomePage();
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			//get sponsor
+			List<Map<String, Object>> randomConsultantListForSponsor = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantListForSponsor, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			// Get Account Number
+			List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+			String sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+			storeFrontHomePage.searchCID(sponsorID);
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+			storeFrontHomePage.enterEmailAddress(consultantEmailID);
+			storeFrontHomePage.clickOnEnrollUnderLastUpline();
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+			storeFrontHomePage.enterEmailAddress(consultantEmailID);
+			//  storeFrontHomePage.clickOnEnrollmentNextButton();
+			storeFrontHomePage.enterPasswordForReactivationForConsultant();
+			storeFrontHomePage.clickOnLoginToReactiveMyAccountForConsultant();
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-2268:Check for PC Perk Promo as PC User and Consultant
+	@Test
+	public void testCheckForPcPerkPromoAsPCAndConsultant_2268() throws InterruptedException{
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksInfoOnModalWindow(),"PC Perks promo message is not present at modal window as a customer");
+		storeFrontHomePage.clickOnModalWindowCloseIcon();
+		//login as consultant
+		while(true){
+			List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertFalse(storeFrontHomePage.verifyPCPerksInfoOnModalWindow(),"PC Perks promo message is not present at modal window as a customer");
+		storeFrontHomePage.clickOnModalWindowCloseIcon();
+		//logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		while(true){
+			List<Map<String, Object>> randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			String pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertAll();	
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		s_assert.assertFalse(storeFrontHomePage.verifyPCPerksInfoOnModalWindow(),"PC Perks promo message is not present at modal window as a customer");
+		storeFrontHomePage.clickOnModalWindowCloseIcon();
+	}
 }
 

@@ -1019,5 +1019,11 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 	public boolean validateBillingAddressOnOrderPage(String name) {
 		return driver.isElementPresent(By.xpath("//span[@id='idBillingAddress']/following::p[1]/span[contains(text(),'"+name+"')]"));
 	}
+
+	public String getCreditCardNumber(){
+		driver.waitForElementPresent(By.xpath("//ul[@class='order-detail-list']/li[3]/p"));
+		String cardNumber= driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).getText();
+		return cardNumber;
+	}
 }
 

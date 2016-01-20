@@ -2765,6 +2765,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 				if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_US.pdf")){
 					status=true;
 					driver.close();
+					driver.switchTo().window(parentWindowID);
 					return status;
 				}
 			}

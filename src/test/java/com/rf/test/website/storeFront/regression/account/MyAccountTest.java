@@ -20568,5 +20568,86 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-1880:Create Adhoc Order with Multiple line items
+	 @Test
+	 public void testCreateAdhocOrderWithMultipleLineItems_1880() throws InterruptedException{
+	  RFO_DB = driver.getDBNameRFO();
+	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	  List<Map<String, Object>> randomPCUserList =  null;
+	  String pcUserEmailID = null;
+	  String accountId = null;
+	  String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+	  String lastName = "lN";
+	  storeFrontHomePage = new StoreFrontHomePage(driver);
+	  while(true){
+	   randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	   pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+	   accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+	   logger.info("Account Id of the user is "+accountId);
+	   storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+	   boolean isError = driver.getCurrentUrl().contains("error");
+	   if(isError){
+	    logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+	    driver.get(driver.getURL());
+	   }
+	   else
+	    break;
+	  } 
+	  logger.info("login is successful");
+	  storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+	  storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	  String firstProductName = storeFrontUpdateCartPage.clickAddToBagAndGetProductName("1");
+	  storeFrontUpdateCartPage.clickOnContinueShoppingLink();
+	  String secondProductName = storeFrontUpdateCartPage.clickAddToBagAndGetProductName("2");
+	  storeFrontUpdateCartPage.clickOnContinueShoppingLink();
+	  String thirdProductName = storeFrontPCUserPage.clickAddToBagAndGetProductName("3");
+	  storeFrontUpdateCartPage.clickOnCheckoutButton();
+	  // get details of adhoc order
+	  String subtotal = storeFrontUpdateCartPage.getSubtotal();
+	  logger.info("subtotal ="+subtotal);
+	  String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
+	  logger.info("deliveryCharges ="+deliveryCharges);
+	  String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+	  logger.info("handlingCharges ="+handlingCharges);
+	  String tax = storeFrontUpdateCartPage.getTax();
+	  logger.info("tax ="+tax);
+	  String total = storeFrontUpdateCartPage.getTotal();
+	  logger.info("total ="+total);
+	  String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+	  logger.info("shippingMethod ="+shippingMethod);
+	  storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+	  String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+	  logger.info("BillingAddress ="+BillingAddress);
+	  storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
+	  storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	  storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	  storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+	  storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	  storeFrontUpdateCartPage.selectNewBillingCardAddress();
+	  storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+	  storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+	  storeFrontUpdateCartPage.clickPlaceOrderBtn();
+	  s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+	  //assert product names
+	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2"));
+	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3"));
+	  s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4").contains(thirdProductName),"When select third product, Product name "+thirdProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4"));
+	  storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+	  storeFrontPCUserPage.clickOnWelcomeDropDown();
+	  storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+	  // Get Order Number
+	  String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+	  storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+	  s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+	  s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+	  s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+	  s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+	  s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+	  //assert product names at adhoc template
+	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("2"));
+	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("3"));
+	  s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("4").contains(thirdProductName),"When select third product, Product name "+thirdProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("4"));
+	  s_assert.assertAll();
+	 }
 }
 

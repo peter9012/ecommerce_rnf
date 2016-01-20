@@ -1613,8 +1613,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void uncheckPulseCheckBox(){
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse']/preceding::div[1]/input/.."));
-		if(driver.isElementPresent(By.xpath("//input[@checked='checked']"))){
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse')]/preceding::div[1]/input/.."));
+		if(driver.isElementPresent(By.xpath("//input[@id='pulse-check' and @checked='checked']"))){
 			driver.click(By.xpath("//input[@id='pulse-check']/.."));
 		}
 	}
@@ -3654,6 +3654,33 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}else{
 			driver.waitForElementPresent(By.xpath("//p[contains(text(),'I confirm that I have read and accept')]"));
 			return driver.isElementPresent(By.xpath("//p[contains(text(),'I confirm that I have read and accept')]"));
+		}
+	}
+
+	public String selectShippingMethodUPSStandardOvernightUnderShippingSectionAndGetName(){
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method1']/div[3]//input/.."));
+		driver.click(By.xpath("//div[@id='start-shipping-method1']/div[3]//input/.."));
+		driver.pauseExecutionFor(1500);
+		logger.info("UPS Standard Overnight shipping method is selected"); 
+		return driver.findElement(By.xpath("//div[@id='start-shipping-method1']/div[3]//span[2]")).getText();
+	}
+
+	public String selectShippingMethodUPS2DayUnderShippingSectionAndGetName(){
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method1']/div[2]//input/.."));
+		driver.click(By.xpath("//div[@id='start-shipping-method1']/div[2]//input/.."));
+		driver.pauseExecutionFor(1500);
+		logger.info("UPS Standard Overnight shipping method is selected"); 
+		return driver.findElement(By.xpath("//div[@id='start-shipping-method1']/div[2]//span[2]")).getText();
+	}
+
+	public boolean verifyEnrolledUserStatus(String statusID){
+		int a=Integer.parseInt(statusID);
+		if(a==1){
+			logger.info("status of enrolled user is active in database");
+			return true;
+		}else{
+			logger.info("status of enrolled user is not active in database");
+			return true;
 		}
 	}
 

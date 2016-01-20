@@ -1393,6 +1393,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='sortOptions']"));
 		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
 		logger.info("filter done for high to low price");
+		driver.waitForPageLoad();
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{
@@ -1415,11 +1416,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
 		}
 		catch(Exception e){
-			driver.click(By.xpath("//div[@id='left-shopping']//a[contains(text(),'Continue')]"));			
+			driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));   
 		}
 		driver.waitForPageLoad();
 	}
-
 
 	public void selectAProductAndAddItToPCPerks(){
 		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));
@@ -1811,6 +1811,21 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public boolean verifyPCPerksInfoOnModalWindow(){
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'pc-perks fancybox')]"));
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'pc-perks fancybox')]"));
+	}
+
+	public String clickAddToBagAndGetProductName(String productNumber){
+		String productName = null;
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/div[2]/div[1]//button"));
+			productName = driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/h3/a")).getText();
+			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/div[2]/div[1]//button"));
+			return productName.trim();
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/div[2]/div[1]//button"));
+			productName = driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/h3/a")).getText();
+			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/div[2]/div[1]//button"));
+			return productName.trim();
+		}
 	}
 
 }

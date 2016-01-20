@@ -1025,5 +1025,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 		String cardNumber= driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).getText();
 		return cardNumber;
 	}
+
+	public String getProductNameFromAdhocTemplate(String productNumber){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'order-products orders-table')]/div["+productNumber+"]//p[2]"));
+		return driver.findElement(By.xpath("//div[contains(@class,'order-products orders-table')]/div["+productNumber+"]//p[2]")).getText().trim();
+	}
 }
 

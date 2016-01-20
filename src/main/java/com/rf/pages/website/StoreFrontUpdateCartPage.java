@@ -1511,4 +1511,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 	}
 
+	public String getProductNameAtOrderConfirmationPage(String productNumber){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'order-products checkout-confirm')]/div["+productNumber+"]//p[2]"));
+		return driver.findElement(By.xpath("//div[contains(@class,'order-products checkout-confirm')]/div["+productNumber+"]//p[2]")).getText().trim();
+	}
+
 }

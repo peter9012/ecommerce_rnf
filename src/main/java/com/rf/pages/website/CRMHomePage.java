@@ -207,7 +207,7 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 	}
 	
-	public void searchUserByFirstLastNameandSelect(String Name){
+	public void searchUserandSelect(String Name){
 		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
@@ -217,6 +217,14 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForPageLoad();
 }
+	public void searchUser(String Name){
+		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
+		driver.waitForPageLoad();
+		driver.switchTo().frame(1);
+		System.out.println(driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/th/a")).getText());
+	}
 	
 	public void EditAccountDetails(){
 		driver.switchTo().frame(1);

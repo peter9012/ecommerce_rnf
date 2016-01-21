@@ -386,6 +386,36 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		crmHomePage.searchUser("testuser10 usertest10");
 		s_assert.assertAll();
 	}
+	
+	@Test//complete
+	public void Consultantdetailviewpage_4546() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect("testuser10 usertest10");
+		s_assert.assertAll();
+		
+	}
+	
+	@Test//complete
+	public void PCdetailviewpage_4548() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect("testuser10 usertest10");
+		s_assert.assertAll();
+	}
+	@Test//complete
+	public void RCdetailviewpage_4548() throws InterruptedException{
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect("testuser10 usertest10");
+		s_assert.assertAll();
+	}
 	@Test
 	public void SearchForAccountByPartialName_4533() throws InterruptedException{
 		driver.get(driver.getCrmURL());

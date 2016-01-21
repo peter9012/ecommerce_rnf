@@ -1,6 +1,7 @@
 package com.rf.test.website.crm;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +10,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.CRMHomePage;
 import com.rf.pages.website.CRMLoginPage;
 import com.rf.pages.website.StoreFrontAccountInfoPage;
@@ -38,6 +41,8 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	private String pcUserEmailAddress =null;
 	private String rcUserEmailAddress = null;
 	private String consultantEmailAddress = null;
+	
+	private String RFO_DB = null;
 	
 	//Test enroll an Consultant and verify its details in crm.
 	@Test(priority=1)
@@ -370,22 +375,77 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	
 	@Test//complete 
 	public void SearchForAccountByEmail_4527() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUser("testuser10@xyz.com");
+		crmHomePage.searchUser(consultantEmailID);
 		s_assert.assertAll();
 	}
 	@Test//complete
 	public void SearchForAccountByName_4530() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomFirstName =  null;
+		//String consultantEmailID = null;
+		String FirstName = null;
+		randomFirstName = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_FirstName_RFO,countryId),RFO_DB);
+		//consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+		FirstName = (String) getValueFromQueryResult(randomFirstName, "FirstName");
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUser("testuser10 usertest10");
+		crmHomePage.searchUser(FirstName);
 		s_assert.assertAll();
 	}
+	@Test
+	public void ConsultantDetailViewPage_4546() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect(consultantEmailID);
+		s_assert.assertAll();
+	}
+	@Test
+	public void PCDetailViewPage_4548() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");	
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect(pcUserEmailID);
+		s_assert.assertAll();
+	}
+	@Test
+	public void RCDetailViewPage_4550() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");	
+		driver.get(driver.getCrmURL());
+		crmLoginpage = new CRMLoginPage(driver);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.searchUserandSelect(rcUserEmailID);
+		s_assert.assertAll();
+	}
+	
 	@Test
 	public void SearchForAccountByPartialName_4533() throws InterruptedException{
 		driver.get(driver.getCrmURL());

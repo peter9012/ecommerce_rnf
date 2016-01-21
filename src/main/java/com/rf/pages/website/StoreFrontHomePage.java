@@ -1166,8 +1166,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		addressLine1=driver.findElement(By.xpath("//input[@id='address-1']")).getText();
 		city=driver.findElement(By.xpath("//input[@id='city']")).getText();
 		postalCode=driver.findElement(By.xpath("//input[@id='postcode']")).getText();
-		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(driver.getPassword());
-		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(driver.getPassword());
+		driver.findElement(By.xpath("//input[@id='new-password-account']")).sendKeys(driver.getStoreFrontPassword());
+		driver.findElement(By.xpath("//input[@id='new-password-account2']")).sendKeys(driver.getStoreFrontPassword());
 		clickNextButton();
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1564,7 +1564,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterPasswordAfterTermination(){
 		driver.waitForElementPresent(By.xpath("//input[@class='password-field']"));
-		driver.type(By.xpath("//input[@class='password-field']"), driver.getPassword());
+		driver.type(By.xpath("//input[@class='password-field']"), driver.getStoreFrontPassword());
 	}
 
 	public boolean verifyReactiveYourPCAccountPopup(){
@@ -1646,7 +1646,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public void enterPasswordForReactivationForConsultant(){
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::input[2]"));
-		driver.type(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::input[2]"), driver.getPassword());
+		driver.type(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::input[2]"), driver.getStoreFrontPassword());
 	}
 
 	public void clickOnLoginToReactiveMyAccountForConsultant(){

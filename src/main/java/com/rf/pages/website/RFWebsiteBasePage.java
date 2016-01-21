@@ -1139,10 +1139,10 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public void enterPasswordForUpgradePcToConsultant(){
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Reactivate My Account')]/following::input[2]"));
-			driver.type(By.xpath("//h3[contains(text(),'Log In to Reactivate My Account')]/following::input[2]"), driver.getPassword());
+			driver.type(By.xpath("//h3[contains(text(),'Log In to Reactivate My Account')]/following::input[2]"), driver.getStoreFrontPassword());
 		}catch(Exception e){
 			driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"));
-			driver.type(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"), driver.getPassword());
+			driver.type(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::input[2]"), driver.getStoreFrontPassword());
 		}
 	}
 
@@ -1676,7 +1676,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void enterPasswordForUpgradeRCToConsultant(){
 		driver.waitForElementPresent(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::div[@id='terminate-log-in']/div[3]/input"));
-		driver.type(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::div[@id='terminate-log-in']/div[3]/input"), driver.getPassword());
+		driver.type(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::div[@id='terminate-log-in']/div[3]/input"), driver.getStoreFrontPassword());
 	}
 
 	public void clickOnLoginToTerminateToMyRCAccount(){

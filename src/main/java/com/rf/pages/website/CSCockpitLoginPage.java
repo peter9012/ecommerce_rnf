@@ -15,11 +15,16 @@ public class CSCockpitLoginPage extends CSCockpitRFWebsiteBasePage{
 	protected RFWebsiteDriver driver;
 	
 	private static final By LOGIN_BTN = By.xpath("//td[text()='Login']");
+	private static final By USERNAME_TXT_FIELD = By.name("j_username");
 		
 	public CSCockpitLoginPage(RFWebsiteDriver driver) {
 		super(driver);
 		this.driver = driver;
 	}	
+	
+	public void enterUsername(String userName){
+		driver.type(USERNAME_TXT_FIELD, userName);
+	}
 
 	public CSCockpitHomePage clickLoginBtn(){
 		driver.waitForElementPresent(LOGIN_BTN);

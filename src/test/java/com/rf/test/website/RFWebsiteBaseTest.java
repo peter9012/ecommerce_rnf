@@ -46,24 +46,23 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
-		s_assert = new SoftAssert();		
+		s_assert = new SoftAssert();
+		String country = driver.getCountry();
 		if(driver.getURL().contains("cscockpit")==true)
 			driver.get(driver.getURL());
 		else{
-			String country = driver.getCountry();
 			driver.get(driver.getURL()+"/"+country);
-			if(country.equalsIgnoreCase("ca"))
-				countryId = "40";
-			else if(country.equalsIgnoreCase("us"))
-				countryId = "236";
-
-			setPassword(driver.getPassword());
 			try{
 				logout();
 			}catch(NoSuchElementException e){
 
 			}	
 		}
+		if(country.equalsIgnoreCase("ca"))
+			countryId = "40";
+		else if(country.equalsIgnoreCase("us"))
+			countryId = "236";	
+		setStoreFrontPassword(driver.getStoreFrontPassword());
 	}
 
 	/**
@@ -75,16 +74,16 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.quit();
 	}
 
-	public void setPassword(String pass){
+	public void setStoreFrontPassword(String pass){
 		password=pass;
 	}
-	 public void crmLogout(){
-			driver.findElement(By.id("userNavLabel")).click();
-			driver.waitForElementPresent(By.id("app_logout"));
-			driver.findElement(By.id("app_logout")).click();
-			logger.info("Logout");
-			
-		}
+	public void crmLogout(){
+		driver.findElement(By.id("userNavLabel")).click();
+		driver.waitForElementPresent(By.id("app_logout"));
+		driver.findElement(By.id("app_logout")).click();
+		logger.info("Logout");
+
+	}
 
 	public void logout(){
 		driver.quickWaitForElementPresent(By.id("account-info-button"));

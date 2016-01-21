@@ -27,6 +27,7 @@ public class DSVRFWebsiteBasePage extends RFBasePage{
 	public void openURL(String URL){
 		driver.get(URL);
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 

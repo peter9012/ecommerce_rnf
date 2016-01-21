@@ -116,14 +116,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return propertyFile.getProperty("environment");
 	}
 
-	public String getPassword(){
-		return propertyFile.getProperty("password");
+	public String getStoreFrontPassword(){
+		return propertyFile.getProperty("storeFrontPassword");
 	}
-		
+
 	public String getCSCockpitURL(){
 		return propertyFile.getProperty("csCockpitUrl");
 	}
-	
+
 	public String getStoreFrontURL(){
 		return propertyFile.getProperty("storeFrontUrl");
 	}
@@ -149,6 +149,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("wait started for "+locator);
 		int timeout = 10;
 		turnOffImplicitWaits();
+		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		
 			try{
 				if(driver.findElements(locator).size()==0){
@@ -157,6 +158,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 					continue;
 				}else{
 					logger.info("wait over,element found");
+					isElementFound =true;
 					turnOnImplicitWaits();
 					pauseExecutionFor(1000);
 					break;
@@ -165,6 +167,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				continue;
 			}
 		}
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");		
 	}
 
 	public void quickWaitForElementPresent(By locator){
@@ -242,7 +246,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-	
+
 	public void waitForLoadingImageToAppear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
@@ -321,10 +325,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void type(By locator, String input) {
-/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-*/		waitForElementPresent(locator);
-		findElement(locator).clear();
-		findElement(locator).sendKeys(input);
+		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		 */		waitForElementPresent(locator);
+		 findElement(locator).clear();
+		 findElement(locator).sendKeys(input);
 	}
 
 	public void quit() {
@@ -699,7 +703,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		logger.info("Switched to second window");
 	}
-	
+
 	public String getCrmURL(){
 		return propertyFile.getProperty("crmUrl");
 	}

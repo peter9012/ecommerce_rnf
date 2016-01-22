@@ -391,10 +391,8 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	public void SearchForAccountByName_4530() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomFirstName =  null;
-		//String consultantEmailID = null;
 		String FirstName = null;
-		randomFirstName = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_FirstName_RFO,countryId),RFO_DB);
-		//consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+		randomFirstName = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_FirstName_RFO,countryId),RFO_DB);	
 		FirstName = (String) getValueFromQueryResult(randomFirstName, "FirstName");
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
@@ -405,48 +403,18 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 	@Test
 	public void ConsultantDetailViewPage_4546() throws InterruptedException{
-		/*RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	*/
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserandSelect("testuser10@xyz.com");
+		crmHomePage.searchUserandSelect(consultantEmailID);
 		crmHomePage.AccountDetailsPage();
-		s_assert.assertAll();
-	}
-	
-	@Test//complete
-	public void Consultantdetailviewpage_4546() throws InterruptedException{
-		driver.get(driver.getCrmURL());
-		crmLoginpage = new CRMLoginPage(driver);
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserandSelect("testuser10 usertest10");
-		s_assert.assertAll();
-		
-	}
-	
-	@Test//complete
-	public void PCdetailviewpage_4548() throws InterruptedException{
-		driver.get(driver.getCrmURL());
-		crmLoginpage = new CRMLoginPage(driver);
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserandSelect("testuser10 usertest10");
-		s_assert.assertAll();
-	}
-	@Test//complete
-	public void RCdetailviewpage_4548() throws InterruptedException{
-		driver.get(driver.getCrmURL());
-		crmLoginpage = new CRMLoginPage(driver);
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserandSelect("testuser10 usertest10");
-		s_assert.assertAll();
+		s_assert.assertAll();	
 	}
 	@Test
 	public void PCDetailViewPage_4548() throws InterruptedException{
@@ -460,6 +428,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.searchUserandSelect(pcUserEmailID);
+		crmHomePage.AccountDetailsPage();
 		s_assert.assertAll();
 	}
 	@Test
@@ -474,6 +443,7 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.searchUserandSelect(rcUserEmailID);
+		crmHomePage.AccountDetailsPage();
 		s_assert.assertAll();
 	}
 	

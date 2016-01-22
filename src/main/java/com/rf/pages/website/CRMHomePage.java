@@ -213,17 +213,23 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
 		driver.switchTo().frame(1);
-		driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/th/a")).click();
+		driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a")).click();
+		//driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/th/a")).click();
 		driver.switchTo().defaultContent();
 		driver.waitForPageLoad();
 }
+	public void AccountDetailsPage(){
+    System.out.println(driver.findElement(By.xpath("//div[starts-with(@id,'ext-gen')]/div/div[contains(text(),'Account Number')]/following::div[2]")).getText());
+	}
+	
+	
 	public void searchUser(String Name){
 		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
 		driver.switchTo().frame(1);
-		System.out.println(driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/th/a")).getText());
+		System.out.println(driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a")).getText());
 	}
 	
 	public void EditAccountDetails(){

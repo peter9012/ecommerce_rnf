@@ -421,10 +421,15 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");	
-		driver.get(driver.getCrmURL());
-		crmLoginpage = new CRMLoginPage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			System.out.println(randomPCUserList);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+			System.out.println(pcUserEmailID);
+			driver.get(driver.getCrmURL());
+			crmLoginpage = new CRMLoginPage(driver);
+			break;
+		}
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.searchUserandSelect(pcUserEmailID);

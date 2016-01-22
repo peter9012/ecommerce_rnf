@@ -405,16 +405,17 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 	@Test
 	public void ConsultantDetailViewPage_4546() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();	
+		/*RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	*/
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.searchUserandSelect(consultantEmailID);
+		crmHomePage.searchUserandSelect("testuser10@xyz.com");
+		crmHomePage.AccountDetailsPage();
 		s_assert.assertAll();
 	}
 	@Test

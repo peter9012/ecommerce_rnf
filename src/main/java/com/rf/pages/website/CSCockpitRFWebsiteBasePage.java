@@ -2,6 +2,7 @@ package com.rf.pages.website;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -10,6 +11,7 @@ import com.rf.pages.RFBasePage;
 public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitRFWebsiteBasePage.class.getName());
+	
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(WebDriver driver) {
 		super(driver);
@@ -27,7 +29,6 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public void openURL(String URL){
 		driver.get(URL);
 		driver.waitForPageLoad();
-	}
-	
-		
+	}	
+			
 }

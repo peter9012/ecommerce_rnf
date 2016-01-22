@@ -11,7 +11,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.pages.RFBasePage;
 
-public class CSCockpitHomePage extends RFBasePage{
+public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitHomePage.class.getName());
 
@@ -26,6 +26,7 @@ public class CSCockpitHomePage extends RFBasePage{
 	private static String addedOrderNoteLoc = "//span[contains(text(),'%s')]";
 	private static String addedOrderNoteEditBtnLoc = "//span[contains(text(),'%s')]/following::td[(contains(text(),'Edit'))]";
 	private static String orderNumberFromOrdersResultLoc = "//div[@class='csSearchContainer']//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr[%s]//a";
+	private static String refundDropDownOptionLoc =  "//td[@class='z-combo-item-text' and contains(text(),'%s')]";
 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']"); 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='Search']");
@@ -57,6 +58,29 @@ public class CSCockpitHomePage extends RFBasePage{
 	private static final By TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT = By.xpath("//div[@class='csSearchContainer']//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr");
 	private static final By TRANSACTION_STATUS_LINK = By.xpath("//div[@class='orderPaymentTransactionsWidget']//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr[1]/td[6]//a[contains(@class,'z-toolbar-button')]");
 	private static final By ENTER_EMAIL_ID = By.xpath("//span[contains(text(),'Email Address')]/following::input[1]");
+	private static final By TEST_ORDER_CHKBOX = By.xpath("//label[contains(text(),'Test Order')]/preceding::input[1]");
+	private static final By ORDER_STATUS = By.xpath("//span[contains(text(),'Order Status')]/following::span[1]");
+	private static final By DO_NOT_SHIP_CHKBOX = By.xpath("//label[contains(text(),'Do-not-ship')]/preceding::input[1]");
+	private static final By ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB = By.xpath("//span[text()='Order Number']/following::input[1]");
+	private static final By REFUND_ORDER_BTN_ORDER_TAB = By.xpath("//td[text()='REFUND ORDER'][@class='z-button-cm']");
+	private static final By RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP = By.xpath("//label[text()='Return Complete Order']/preceding::input[1]");
+	private static final By DISABLED_PRODUCT_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='z-listbox-body'][1]//tbody[2]/tr[1]/td[1]//input[@type='checkbox' and @disabled]");
+	private static final By DISABLED_RESTOCKING_FEE_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='z-listbox-body'][1]//tbody[2]/tr[1]/td[8]//input[@type='checkbox' and @disabled]");
+	private static final By DISABLED_RETURN_TAX_ONLY_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='z-listbox-body'][1]//tbody[2]/tr[1]/td[9]//input[@type='checkbox' and @disabled]");
+	private static final By DISABLED_RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCheckbox'][1]//label[contains(text(),'Return Only tax')]/preceding::input[1][@disabled]");
+	private static final By DISABLED_RETURN_SHIPPING_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCheckbox'][1]//label[contains(text(),'Return Shipping')]/preceding::input[1][@disabled]");
+	private static final By RETURN_SHIPPING_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCheckbox'][1]//label[contains(text(),'Return Shipping')]/preceding::input[1]");
+	private static final By DISABLED_RETURN_HANDLING_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCheckbox'][1]//label[contains(text(),'Return Handling')]/preceding::input[1][@disabled]");
+	private static final By RETURN_HANDLING_CHKBOX_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCheckbox'][1]//label[contains(text(),'Return Handling')]/preceding::input[1]");
+	private static final By REFUND_REASON_DROP_DOWN_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCombo'][2]/span[1]//img");
+	private static final By REFUND_TYPE_DROP_DOWN_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCombo'][2]/span[3]//img");
+	private static final By RETURN_ACTION_DROP_DOWN_REFUND_POPUP = By.xpath("//span[text()='Refund']/following::div[@class='returnHeaderCombo'][2]/span[2]//img");
+	private static final By CREATE_BTN_REFUND_POPUP = By.xpath("//td[@class='z-button-cm'][text()='Create']");
+	private static final By CONFIRM_BTN_CONFIRMATION_POPUP = By.xpath("//td[@class='z-button-cm'][text()='Confirm']");
+	private static final By OK_BTN_RMA_POPUP = By.xpath("//td[@class='z-button-cm'][text()='OK']");
+	private static final By NO_REFUNDABLE_ITEMS_LBL = By.xpath("//span[text()='No refundable items']");
+	private static final By FIRST_REFUND_TYPE_FROM_DD_REFUND_POPUP = By.xpath("//div[@class='z-combobox-pp'][@zk_ckval='refund type']//tr[1]/td[2]");
+	private static final By FIRST_RETURN_ACTION_FROM_DD_REFUND_POPUP = By.xpath("//div[@class='z-combobox-pp'][@zk_ckval='return action' or @zk_ckval='CREDITCARD' ]//tr[1]/td[2]");
 
 	protected RFWebsiteDriver driver;
 
@@ -93,6 +117,7 @@ public class CSCockpitHomePage extends RFBasePage{
 		}catch(Exception e){
 			driver.click(SEARCH_BTN_ANOTHER_LOCATOR);	
 		}
+		logger.info("Search button clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
@@ -327,7 +352,14 @@ public class CSCockpitHomePage extends RFBasePage{
 	public void clickOrderSearchTab(){
 		driver.waitForElementPresent(ORDER_SEARCH_TAB_BTN);
 		driver.click(ORDER_SEARCH_TAB_BTN);
+		logger.info("Order Search tab clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterOrderNumberInOrderSearchTab(String orderNumber){
+		driver.waitForElementPresent(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);
+		driver.type(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB, orderNumber);
+		logger.info("Order number entered for search is "+orderNumber);
 	}
 
 	public int getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab(){
@@ -357,6 +389,127 @@ public class CSCockpitHomePage extends RFBasePage{
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){
 		driver.waitForElementPresent(ENTER_EMAIL_ID);
 		driver.type(ENTER_EMAIL_ID, emailId);
+	}
+
+	public void clickTestOrderCheckBoxInCheckoutTab(){
+		driver.waitForElementPresent(TEST_ORDER_CHKBOX);
+		driver.click(TEST_ORDER_CHKBOX);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifyTestOrderCheckBoxIsSelectedInOrderTab(){
+		driver.isElementPresent(TEST_ORDER_CHKBOX);
+		return driver.findElement(TEST_ORDER_CHKBOX).isSelected();
+	}
+
+	public String getOrderStatusAfterPlaceOrderInOrderTab(){
+		driver.waitForElementPresent(ORDER_STATUS);
+		return driver.findElement(ORDER_STATUS).getText();
+	}
+
+	public void clickDoNotShipCheckBoxInCheckoutTab(){
+		driver.waitForElementPresent(DO_NOT_SHIP_CHKBOX);
+		driver.click(DO_NOT_SHIP_CHKBOX);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifyDoNotShipCheckBoxIsSelectedInOrderTab(){
+		driver.isElementPresent(DO_NOT_SHIP_CHKBOX);
+		return driver.findElement(DO_NOT_SHIP_CHKBOX).isSelected();
+	}
+
+	public int clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(String orderNumber){
+		driver.waitForElementPresent(By.linkText(orderNumber));
+		driver.click(By.linkText(orderNumber));
+		logger.info(orderNumber+" link clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.waitForElementPresent(ORDERS_DETAIL_ITEMS_LBL);
+		return driver.findElements(TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS).size();
+	}
+
+	public void clickRefundOrderBtnOnOrderTab(){
+		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+		driver.click(REFUND_ORDER_BTN_ORDER_TAB);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void checkReturnCompleteOrderChkBoxOnRefundPopUp(){
+		driver.waitForElementPresent(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);
+		if(driver.isElementPresent(By.xpath("//span[contains(text(),'This Order was placed over 120 days ago')]"))==false){
+			driver.click(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);				
+		}
+		else{
+			driver.click(RETURN_SHIPPING_CHKBOX_REFUND_POPUP);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			driver.click(RETURN_HANDLING_CHKBOX_REFUND_POPUP);
+		}
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(){
+		driver.waitForElementPresent(DISABLED_PRODUCT_CHKBOX_REFUND_POPUP);
+		return driver.isElementPresent(DISABLED_PRODUCT_CHKBOX_REFUND_POPUP)&&
+				driver.isElementPresent(DISABLED_RESTOCKING_FEE_CHKBOX_REFUND_POPUP)&&
+				driver.isElementPresent(DISABLED_RETURN_TAX_ONLY_CHKBOX_REFUND_POPUP)&&
+				driver.isElementPresent(DISABLED_RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP)&&
+				driver.isElementPresent(DISABLED_RETURN_SHIPPING_CHKBOX_REFUND_POPUP)&&
+				driver.isElementPresent(DISABLED_RETURN_HANDLING_CHKBOX_REFUND_POPUP);	
+	}
+
+	public void selectRefundReasonOnRefundPopUp(String reason){
+		driver.click(REFUND_REASON_DROP_DOWN_REFUND_POPUP);
+		driver.waitForElementPresent(By.xpath(String.format(refundDropDownOptionLoc, reason)));
+		driver.click(By.xpath(String.format(refundDropDownOptionLoc, reason)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectFirstReturnActionOnRefundPopUp(){
+		driver.click(RETURN_ACTION_DROP_DOWN_REFUND_POPUP);
+		driver.waitForElementPresent(FIRST_RETURN_ACTION_FROM_DD_REFUND_POPUP);
+		driver.click(FIRST_RETURN_ACTION_FROM_DD_REFUND_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectFirstRefundTypeOnRefundPopUp(){
+		driver.click(REFUND_TYPE_DROP_DOWN_REFUND_POPUP);
+		driver.waitForElementPresent(FIRST_REFUND_TYPE_FROM_DD_REFUND_POPUP);
+		driver.click(FIRST_REFUND_TYPE_FROM_DD_REFUND_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCreateBtnOnRefundPopUp(){
+		driver.waitForElementPresent(CREATE_BTN_REFUND_POPUP);
+		driver.click(CREATE_BTN_REFUND_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickConfirmBtnOnConfirmPopUp(){
+		driver.waitForElementPresent(CONFIRM_BTN_CONFIRMATION_POPUP);
+		driver.click(CONFIRM_BTN_CONFIRMATION_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickOKBtnOnRMAPopUp(){
+		driver.waitForElementPresent(OK_BTN_RMA_POPUP);
+		driver.click(OK_BTN_RMA_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isNoRefundableItemsTxtPresent(){
+		driver.waitForElementPresent(NO_REFUNDABLE_ITEMS_LBL);
+		return driver.isElementPresent(NO_REFUNDABLE_ITEMS_LBL);
+	}
+
+	public void closeNoRefundableItemPopUp(){
+		driver.findElement(By.xpath("//div[contains(@class,'csReturnRequestCreateWidget')]//div[contains(@class,'close')]"));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
+	}
+	
+	public void refreshPage(){
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 }
 

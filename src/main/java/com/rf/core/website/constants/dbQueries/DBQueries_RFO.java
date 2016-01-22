@@ -1570,7 +1570,19 @@ public class DBQueries_RFO {
 			"AND a.Active = 1 ) "+
 			"ORDER BY NEWID() )";
 
-	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_RETURN_ORDERS_RFO = "select Top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressId IN (select EmailAddressId from RFO_Accounts.AccountEmails where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContacts where AccountId  IN (select AccountID from Hybris.Autoship where Active = 1 AND AccountID IN (select AccountID from RFO_Accounts.AccountBase where AccountTypeID = 1 AND AccountID IN (select AccountID from Hybris.ReturnOrder where CountryID='%s'))))) order by newID()";
+	 public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_RETURN_ORDERS_RFO = 
+		        "SELECT AB.ACCOUNTID,EA.EMAILADDRESS "+
+		        "FROM "+
+		        "(SELECT DISTINCT ACCOUNTID "+
+		        "FROM RFOPERATIONS.HYBRIS.RETURNORDER WHERE ORDERID IN (SELECT ORDERID FROM RFOPERATIONS.HYBRIS.ORDERS WHERE AUTOSHIPID IS NOT NULL )) ARO, "+
+		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTRF AB , "+
+		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE A , "+
+		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTCONTACTS AC , "+
+		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTEMAILS ACE , "+
+		        "RFOPERATIONS.RFO_ACCOUNTS.EMAILADDRESSES EA "+
+		        "WHERE ARO.ACCOUNTID=AB.ACCOUNTID AND AB.ACCOUNTID=A.ACCOUNTID AND A.COUNTRYID=%s "+
+		        "AND  AB.ACCOUNTID=AC.ACCOUNTID  AND ACE.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID "+
+		        "AND EA.EMAILADDRESSID=ACE.EMAILADDRESSID AND ISDEFAULT=1 AND A.ACCOUNTTYPEID=1 AND AB.ACTIVE=1";
 
 	public static String GET_ORDER_DETAILS_RFO = "select  * from Hybris.ReturnOrder where ReturnOrderNumber='%s'";
 

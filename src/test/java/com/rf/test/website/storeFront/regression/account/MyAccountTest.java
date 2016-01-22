@@ -13928,84 +13928,84 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-2409:Check Return order information on the Order history page. (Returning Consultant Autoship Order)
-	@Test
-	public void testConsultantAutoshipReturnOrderInformation_2409() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String subTotalDB = null;
-		String taxDB = null; 
-		String grandTotalDB = null;
-		String consultantEmailID = null;
-		String orderId = null;
-		String returnOrderNumber = null;
-		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String,Object>> getOrderDetailsList = null;
-		DecimalFormat df = new DecimalFormat("#.00");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_RETURN_AUTOSHIP_ORDER,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-
-		//get size of return orders
-		int noOfReturnOrders = storeFrontOrdersPage.getSizeOfReturnOrders();
-		for(int i=3; i<=noOfReturnOrders; i=i+2){
-			returnOrderNumber = storeFrontOrdersPage.getReturnOrderNumber(i);
-			System.out.println("Order number is "+returnOrderNumber);
-			getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_RFO,returnOrderNumber),RFO_DB);
-			orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
-			//get order type ID
-			List<Map<String,Object>> orderTypeIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4286_RFO,orderId),RFO_DB);
-			String ordertTypeID = String.valueOf(getValueFromQueryResult(orderTypeIdList, "OrderTypeID"));
-			if(ordertTypeID.contains("10")){
-				break;
-			}else{
-				continue;
-			}
-		}
-
-		storeFrontOrdersPage.clickReturnOrderNumber(returnOrderNumber);
-		grandTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "Total")));
-		taxDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "TotalTax")));
-		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "SubTotal")));
-		String orderStatusID = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "ReturnStatusID"));
-		//Assert Subtotal with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc Order template subtotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-		// Assert Tax with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"Adhoc Order template tax on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
-		// Assert Grand Total with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"Adhoc Order template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-		//  // assert shipping amount with RFO
-		//  s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
-		//  // assert Handling Value with RFO
-		//  s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-
-		// assert return order status
-
-		String createdOrderStatus = storeFrontOrdersPage.convertOrderStatusForReturnOrder(orderStatusID);    
-		s_assert.assertTrue(storeFrontOrdersPage.getOrderStatusFromUI().toLowerCase().trim().contains(createdOrderStatus.toLowerCase().trim()),"Adhoc Order template handling amount on RFO is "+createdOrderStatus+" and on UI is "+storeFrontOrdersPage.getOrderStatusFromUI());
-
-		s_assert.assertAll();
-
-	}
+//	//Hybris Project-2409:Check Return order information on the Order history page. (Returning Consultant Autoship Order)
+//	@Test
+//	public void testConsultantAutoshipReturnOrderInformation_2409() throws InterruptedException{
+//		RFO_DB = driver.getDBNameRFO();
+//		String subTotalDB = null;
+//		String taxDB = null; 
+//		String grandTotalDB = null;
+//		String consultantEmailID = null;
+//		String orderId = null;
+//		String returnOrderNumber = null;
+//		List<Map<String, Object>> randomConsultantList =  null;
+//		List<Map<String,Object>> getOrderDetailsList = null;
+//		DecimalFormat df = new DecimalFormat("#.00");
+//		storeFrontHomePage = new StoreFrontHomePage(driver);
+//
+//		while(true){
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_CONSULTANT_WITH_RETURN_AUTOSHIP_ORDER,countryId),RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");  
+//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+//			boolean isLoginError = driver.getCurrentUrl().contains("error");
+//			if(isLoginError){
+//				logger.info("Login error for the user "+consultantEmailID);
+//				driver.get(driver.getURL());
+//			}
+//			else
+//				break;
+//		}
+//
+//		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+//		logger.info("login is successful");
+//		storeFrontConsultantPage.clickOnWelcomeDropDown();
+//		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+//		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+//
+//		//get size of return orders
+//		int noOfReturnOrders = storeFrontOrdersPage.getSizeOfReturnOrders();
+//		for(int i=3; i<=noOfReturnOrders; i=i+2){
+//			returnOrderNumber = storeFrontOrdersPage.getReturnOrderNumber(i);
+//			System.out.println("Order number is "+returnOrderNumber);
+//			getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_RFO,returnOrderNumber),RFO_DB);
+//			orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
+//			//get order type ID
+//			List<Map<String,Object>> orderTypeIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4286_RFO,orderId),RFO_DB);
+//			String ordertTypeID = String.valueOf(getValueFromQueryResult(orderTypeIdList, "OrderTypeID"));
+//			if(ordertTypeID.contains("10")){
+//				break;
+//			}else{
+//				continue;
+//			}
+//		}
+//
+//		storeFrontOrdersPage.clickReturnOrderNumber(returnOrderNumber);
+//		grandTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "Total")));
+//		taxDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "TotalTax")));
+//		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "SubTotal")));
+//		String orderStatusID = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "ReturnStatusID"));
+//		//Assert Subtotal with RFO
+//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc Order template subtotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+//		// Assert Tax with RFO
+//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(taxDB),"Adhoc Order template tax on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+//		// Assert Grand Total with RFO
+//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"Adhoc Order template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+//		//  // assert shipping amount with RFO
+//		//  s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+//		//  // assert Handling Value with RFO
+//		//  s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+//
+//		// assert return order status
+//
+//		String createdOrderStatus = storeFrontOrdersPage.convertOrderStatusForReturnOrder(orderStatusID);    
+//		s_assert.assertTrue(storeFrontOrdersPage.getOrderStatusFromUI().toLowerCase().trim().contains(createdOrderStatus.toLowerCase().trim()),"Adhoc Order template handling amount on RFO is "+createdOrderStatus+" and on UI is "+storeFrontOrdersPage.getOrderStatusFromUI());
+//
+//		s_assert.assertAll();
+//
+//	}
 
 	//Hybris Project-4459:Check Return order information on the Order history page. (Returning PC Perks Autoship Order)
-	@Test(enabled=false)
+	@Test
 	public void testPCAutoshipReturnOrderInformation_4459() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String subTotalDB = null;
@@ -14078,9 +14078,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		// Assert Grand Total with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"Adhoc Order template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		// assert shipping amount with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		String createdOrderStatus = storeFrontOrdersPage.convertOrderStatusForReturnOrder(orderStatusID);    
 		s_assert.assertTrue(storeFrontOrdersPage.getOrderStatusFromUI().toLowerCase().trim().contains(createdOrderStatus.toLowerCase().trim()),"Adhoc Order template handling amount on RFO is "+createdOrderStatus+" and on UI is "+storeFrontOrdersPage.getOrderStatusFromUI());

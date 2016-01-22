@@ -23,13 +23,17 @@ public class CSCockpitLoginPage extends CSCockpitRFWebsiteBasePage{
 	}	
 	
 	public void enterUsername(String userName){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(USERNAME_TXT_FIELD);
 		driver.type(USERNAME_TXT_FIELD, userName);
 	}
 
 	public CSCockpitHomePage clickLoginBtn(){
+		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.waitForElementPresent(LOGIN_BTN);
 		driver.click(LOGIN_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
 		return new CSCockpitHomePage(driver);
 	}
 }

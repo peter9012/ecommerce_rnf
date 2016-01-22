@@ -65,7 +65,7 @@ public class RFBaseTest{
 			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
 			logger.info("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
-			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));						
+			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));			
 		}
 		// clear screenshots folder
 		try {

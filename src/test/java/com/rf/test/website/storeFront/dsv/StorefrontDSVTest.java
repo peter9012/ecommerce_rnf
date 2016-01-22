@@ -488,11 +488,11 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.isWelcomeTxtPresent(),"Welcome txt has not appeared after login from .com site");
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz pws");
-		//. biz is verified in below assertion
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());		
+		s_assert.assertTrue(dsvStoreFrontHomePage.isWelcomeTxtPresent(),"Welcome txt has not appeared after login from .com secure site");
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .biz secure pws");
 		s_assert.assertAll();
 	}
 

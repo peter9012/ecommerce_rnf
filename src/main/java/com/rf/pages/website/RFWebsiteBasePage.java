@@ -321,8 +321,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.waitForPageLoad();
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//*[@id='main-content']/div[5]/div[1]//button"));
-			driver.click(By.xpath("//*[@id='main-content']/div[5]/div[1]//button"));
+			driver.waitForElementPresent(By.xpath("//*[@id='main-content']/div[5]/div[2]//button"));
+			driver.click(By.xpath("//*[@id='main-content']/div[5]/div[2]//button"));
 			logger.info("Buy Now button clicked and another product selected");
 			driver.waitForPageLoad();
 		}

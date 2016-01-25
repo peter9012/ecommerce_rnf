@@ -27,9 +27,14 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static String addedOrderNoteEditBtnLoc = "//span[contains(text(),'%s')]/following::td[(contains(text(),'Edit'))]";
 	private static String orderNumberFromOrdersResultLoc = "//div[@class='csSearchContainer']//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr[%s]//a";
 	private static String refundDropDownOptionLoc =  "//td[@class='z-combo-item-text' and contains(text(),'%s')]";
+	private static String orderTypeOptionLoc = "//span[contains(@class,'orderSearchType')]//option[text()='%s']";
+	private static String orderStatusOptionLoc = "//span[contains(text(),'Order Status')]//option[text()='%s']";
+	private static String selectMonthDDLoc = "//td[text()='%s']";
+	private static String selectYearDDLoc = "//td[text()='%s']";
+	private static String selectCardTypeDDLoc = "//td[text()='%s']";
 
-	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']"); 
-	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='Search']");
+	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
+	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']");
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
 	private static final By CATALOG_DD = By.xpath("//span[contains(text(),'Select Catalog')]/following::select[1]");
 	private static final By CATALOG_DD_OPTION = By.xpath("//span[contains(text(),'Select Catalog')]/following::select[1]/option");
@@ -81,13 +86,67 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static final By NO_REFUNDABLE_ITEMS_LBL = By.xpath("//span[text()='No refundable items']");
 	private static final By FIRST_REFUND_TYPE_FROM_DD_REFUND_POPUP = By.xpath("//div[@class='z-combobox-pp'][@zk_ckval='refund type']//tr[1]/td[2]");
 	private static final By FIRST_RETURN_ACTION_FROM_DD_REFUND_POPUP = By.xpath("//div[@class='z-combobox-pp'][@zk_ckval='return action' or @zk_ckval='CREDITCARD' ]//tr[1]/td[2]");
-
+	private static final By ORDER_TYPE_DD = By.xpath("//span[contains(@class,'orderSearchType')]/select");
+	private static final By ORDER_STATUS_DD = By.xpath("//span[contains(text(),'Order Status')]/select");
+	private static final By CID_CUSTOMER_NAME_TXT_FIELD = By.xpath("//span[contains(text(),'Customer Name or CID')]/following::input[1]");
+	private static final By RMA_TREE_BTN = By.xpath("//span[contains(text(),'Return Requests')]/following::div[1]//div[@class='z-listbox-body']//tbody[2]//tr[1]/td[1]//a");
+	private static final By FIND_CUSTOMER_LBL = By.xpath("//span[text()='Find Customer']");
+	private static final By ORDER_SEARCH_LBL = By.xpath("//div[contains(@class,'csContentArea')]//span[text()='Order Search']");
+	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
+	private static final By ORIGINATION_VALUE_LBL = By.xpath("//span[contains(text(),'Origination')]/following::span[1]");
+	private static final By REFUND_TOTAL_LBL = By.xpath("//span[text()='REFUND TOTAL']/following::span[1]");
+	private static final By RETURN_REQUEST_SECTION = By.xpath("//div[@class='orderReturnRequestsWidget']//span[text()='Return Requests']");
+	private static final By ORDER_NUMBER_CSCOCKPIT_UI_LOC = By.xpath("//span[contains(text(),'Order #')]//following::span[1]");
+	private static final By UPDATE_BUTTON_LOC = By.xpath("//td[contains(text(),'UPDATE')]");
+	private static final By CV2_TEXT_FIELD_LOC = By.xpath("//input[@class='z-textbox']");
+	private static final By USE_THIS_CARD_BUTTON_LOC = By.xpath("//td[contains(text(),'Use this card')]");
+	private static final By CREDIT_CARD_VALIDATION_FAILED_OK_LOC = By.xpath("//td[contains(text(),'OK')]");
+	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
+	private static final By ADD_NEW = By.xpath("//span[text()='Payment']/following::td[contains(text(),'Add New')]");
+	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
+	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
+	private static final By POSTAL_CODE_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
+	private static final By CLOSE_POPUP_OF_PAYMENT_ADDRESS = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
+	private static final By POPUP_SAVE_BUTTON = By.xpath("//td[text()='SAVE']");
+	private static final By POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/following::span[2]");
+	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
+	private static final By ADD_NEW_ADDRESS = By.xpath("//span[text()='Delivery Address']/following::td[contains(text(),'New Address')]");
+	private static final By CLOSE_POPUP_OF_DELIVERY_ADDRESS = By.xpath("//div[contains(text(),'Create Delivery Address')]/div[contains(@id,'close')]");
+	private static final By DELIVERY_ADDRESS_POPUP_SAVE_BUTTON = By.xpath("//td[text()='Create new address']");
+	private static final By DELIVERY_ADDRESS_POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ZK')]/following::span[1]");
+	private static final By DELIVERY_ADDRESS_POPUP_OKAY_BUTTON = By.xpath("//td[text()='OK']");
+	private static final By USE_AS_ENTERED_POPUP = By.xpath("//td[contains(text(),'Use Entered Address >>')]");
+	private static final By DELIVERY_ADDRESS_DROPDOWN = By.xpath("//select[contains(@class,'DeliveryAddressList')]");
+	private static final By DELIVERY_ADDRESS_DROPDOWN_VALUE = By.xpath("//select[contains(@class,'DeliveryAddressList')]/option[1]");
+	private static final By ATTENDENT_NAME_TEXT_BOX = By.xpath("//span[text()='Attention']/following::input[1]");
+	private static final By CITY_TOWN_TEXT_BOX = By.xpath("//span[text()='City/Town']/following::input[1]");
+	private static final By POSTAL_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
+	private static final By COUNTRY_TEXT_BOX = By.xpath("//span[text()='Country']/following::input[1]");
+	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
+	private static final By PHONE_TEXT_BOX = By.xpath("//span[text()='Phone1']/following::input[1]");
+	private static final By POPUP_CARD_NUMBER_TEXT_BOX = By.xpath("//span[text()='Card Number']/following::input[1]");
+	private static final By POPUP_NAME_ON_CARD_TEXT_BOX = By.xpath("//span[text()='Name on card']/following::input[1]");
+	private static final By POPUP_SECURITY_CODE_TEXT_BOX = By.xpath("//span[text()='Security Code']/following::input[1]");
+	private static final By POPUP_BILLING_PROFILE_MONTH_DD = By.xpath("//span[text()='Expiration Date']/../../following-sibling::td[1]/div/span/span[1]/span/img");
+	private static final By POPUP_BILLING_PROFILE_YEAR_DD = By.xpath("//span[text()='Expiration Date']/../../following-sibling::td[1]/div/span/span[2]/span/img");
+	private static final By POPUP_BILLING_PROFILE_CARD_TYPE_DD = By.xpath("//span[text()='Card Type']/../../following-sibling::td[1]/div/span/span[1]/span/img");
+	
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitHomePage(RFWebsiteDriver driver) {
 		super(driver);
 		this.driver = driver;
-	}	
+	}
+
+	public boolean isCustomerSearchPageDisplayed(){
+		driver.waitForElementPresent(FIND_CUSTOMER_LBL);
+		return driver.IsElementVisible(driver.findElement(FIND_CUSTOMER_LBL));
+	}
+
+	public boolean isOrderSearchPageDisplayed(){
+		driver.waitForElementPresent(ORDER_SEARCH_LBL);
+		return driver.IsElementVisible(driver.findElement(ORDER_SEARCH_LBL));
+	}
 
 	public void selectCustomerTypeFromDropDownInCustomerSearchTab(String customerType){
 		driver.waitForElementPresent(By.xpath(String.format(customerTypeDDLoc, customerType)));
@@ -113,12 +172,17 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	public void clickSearchBtn(){
 		driver.quickWaitForElementPresent(SEARCH_BTN);
 		try{
-			driver.click(SEARCH_BTN);
+			driver.click(SEARCH_BTN);				
 		}catch(Exception e){
-			driver.click(SEARCH_BTN_ANOTHER_LOCATOR);	
+			driver.click(SEARCH_BTN_ANOTHER_LOCATOR);
 		}
 		logger.info("Search button clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isNoResultDisplayed(){
+		driver.quickWaitForElementPresent(By.xpath("//span[text()='No Results']"));
+		return driver.isElementPresent(By.xpath("//span[text()='No Results']"));
 	}
 
 	public String getEmailIdOfTheCustomerInCustomerSearchTab(String customerSequenceNumber){
@@ -146,6 +210,12 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
 		driver.click(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getCIDNumberInCustomerSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
+		return driver.findElement(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber))).getText();
+
 	}
 
 	public void clickPlaceOrderButtonInCustomerTab(){
@@ -262,7 +332,12 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 
 	public String getOrderNumberInOrderTab(){
 		driver.waitForElementPresent(ORDER_NUMBER);
-		return driver.findElement(ORDER_NUMBER).getText();
+		return driver.findElement(ORDER_NUMBER).getText().split("-")[0].trim();
+	}
+
+	public String getFirstOrderNumberFromResultInOrderSearchTab(){
+		driver.waitForElementPresent(By.xpath("//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr[1]/td[1]//a"));
+		return driver.findElement(By.xpath("//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr[1]/td[1]//a")).getText();
 	}
 
 	public void clickCustomerTab(){
@@ -356,6 +431,26 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
+	public void selectOrderTypeOnOrderSearchTab(String orderType){
+		driver.waitForElementPresent(ORDER_TYPE_DD);
+		driver.click(ORDER_TYPE_DD);
+		driver.click(By.xpath(String.format(orderTypeOptionLoc, orderType)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectOrderStatusOnOrderSearchTab(String orderStatus){
+		driver.waitForElementPresent(ORDER_STATUS_DD);
+		driver.click(ORDER_STATUS_DD);
+		driver.click(By.xpath(String.format(orderStatusOptionLoc, orderStatus)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterCIDOnOrderSearchTab(String CID){
+		driver.waitForElementPresent(CID_CUSTOMER_NAME_TXT_FIELD);
+		driver.type(CID_CUSTOMER_NAME_TXT_FIELD, CID);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
 	public void enterOrderNumberInOrderSearchTab(String orderNumber){
 		driver.waitForElementPresent(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);
 		driver.type(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB, orderNumber);
@@ -433,17 +528,24 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public void checkReturnCompleteOrderChkBoxOnRefundPopUp(){
+	public boolean checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse(){
 		driver.waitForElementPresent(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);
 		if(driver.isElementPresent(By.xpath("//span[contains(text(),'This Order was placed over 120 days ago')]"))==false){
-			driver.click(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);				
+			driver.click(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);
+			logger.info("Return Complete Order checkbox clicked");
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			return true;
 		}
 		else{
 			driver.click(RETURN_SHIPPING_CHKBOX_REFUND_POPUP);
+			logger.info("Return Shipping checkbox clicked");
 			driver.waitForCSCockpitLoadingImageToDisappear();
 			driver.click(RETURN_HANDLING_CHKBOX_REFUND_POPUP);
+			logger.info("Return Handling checkbox clicked");
+			driver.waitForCSCockpitLoadingImageToDisappear();
 		}
-		driver.waitForCSCockpitLoadingImageToDisappear();
+		return false;
+
 	}
 
 	public boolean areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(){
@@ -483,6 +585,10 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
+	public String getRefundTotalFromRefundConfirmationPopUp(){
+		return driver.findElement(REFUND_TOTAL_LBL).getText();
+	}
+
 	public void clickConfirmBtnOnConfirmPopUp(){
 		driver.waitForElementPresent(CONFIRM_BTN_CONFIRMATION_POPUP);
 		driver.click(CONFIRM_BTN_CONFIRMATION_POPUP);
@@ -495,6 +601,12 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
+	public void clickRMATreeBtnUnderReturnRequestOnOrderTab(){
+		driver.waitForElementPresent(RMA_TREE_BTN);
+		driver.click(RMA_TREE_BTN);
+		driver.waitForLoadingImageToDisappear();
+	}
+
 	public boolean isNoRefundableItemsTxtPresent(){
 		driver.waitForElementPresent(NO_REFUNDABLE_ITEMS_LBL);
 		return driver.isElementPresent(NO_REFUNDABLE_ITEMS_LBL);
@@ -505,11 +617,234 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 	}
-	
+
 	public void refreshPage(){
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+
+	public void clickChangeOrderLinkOnLeftNavigation(){
+		driver.waitForElementPresent(CHANGE_ORDER_LINK);
+		driver.click(CHANGE_ORDER_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getOriginationValuePresentAsPerSearchedOrder(){
+		return driver.findElement(ORIGINATION_VALUE_LBL).getText();
+	}
+
+	public boolean isReturnRequestSectionDisplayed(){
+		driver.waitForElementPresent(RETURN_REQUEST_SECTION);
+		return driver.findElement(RETURN_REQUEST_SECTION).isDisplayed();
+	}
+
+	public void updateOrderNoteOnCheckOutPage(String updateOrderNote){
+		driver.waitForElementPresent(ORDER_NOTES_TXT_FIELD);
+		driver.clear(ORDER_NOTES_TXT_FIELD);
+		driver.type(ORDER_NOTES_TXT_FIELD, updateOrderNote);
+		driver.click(UPDATE_BUTTON_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterInvalidCV2OnPaymentInfoSection(String invalidCv2){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(CV2_TEXT_FIELD_LOC);
+		driver.findElement(CV2_TEXT_FIELD_LOC).sendKeys(invalidCv2);
+	}
+
+	public void entervalidCV2OnPaymentInfoSection(String validCv2){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(CV2_TEXT_FIELD_LOC);
+		driver.findElement(CV2_TEXT_FIELD_LOC).sendKeys(validCv2);
+	}
+
+	public void clickOnUseThisCardButtonOnCheckoutPage(){
+		driver.waitForElementPresent(USE_THIS_CARD_BUTTON_LOC);
+		driver.click(USE_THIS_CARD_BUTTON_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+	public void clickOkForCreditCardValidationFailedPopUp(){
+		driver.waitForElementPresent(CREDIT_CARD_VALIDATION_FAILED_OK_LOC);
+		driver.click(CREDIT_CARD_VALIDATION_FAILED_OK_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getOrderNumberFromCsCockpitUI() {
+		return driver.findElement(ORDER_NUMBER_CSCOCKPIT_UI_LOC).getText();
+	}
+
+	public void clickOnOrderNoteEditButton(String orderNote){
+		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
+		driver.click(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
+	}
+
+	public void clickAddNewPaymentAddressInCheckoutTab(){
+		driver.waitForElementPresent(ADD_NEW);
+		driver.click(ADD_NEW);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+
+	public void clickAddNewAddressLinkInPopUpInCheckoutTab(){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(ADD_NEW_ADDRESS_LINK);
+		driver.click(ADD_NEW_ADDRESS_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+
+	public boolean verifyAddressTextBoxInPopUpInCheckoutTab(){
+		driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
+		return driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
+	}
+
+
+	public boolean verifyPostalCodeTextBoxInPopUpInCheckoutTab(){
+		driver.isElementPresent(POSTAL_CODE_TEXT_BOX);
+		return driver.isElementPresent(POSTAL_CODE_TEXT_BOX);
+	}
+
+
+	public void clickCloseOfPaymentAddressPopUpInCheckoutTab(){
+		driver.waitForElementPresent(CLOSE_POPUP_OF_PAYMENT_ADDRESS);
+		driver.click(CLOSE_POPUP_OF_PAYMENT_ADDRESS);
+	}
+
+	public void clickSaveOfShippingAddressPopUpInCheckoutTab(){
+		driver.pauseExecutionFor(5000);
+		driver.waitForElementPresent(POPUP_SAVE_BUTTON);
+		driver.click(POPUP_SAVE_BUTTON);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		logger.info("Save button clicked after entering billing and shipping address. ");
+		driver.pauseExecutionFor(4000);
+	}
+
+	public String getErrorMessageOfPopupWithoutFillingDataInCheckoutTab(){
+		driver.waitForElementPresent(POPUP_ERROR_TEXT);
+		return driver.findElement(POPUP_ERROR_TEXT).getText();
+	}
+
+	public void enterPaymentDetailsInPopUpInCheckoutTab(String cardNumber,String nameOnCard,String securityCode,String month,String year,String cardType){
+		driver.waitForElementPresent(POPUP_CARD_NUMBER_TEXT_BOX);
+		driver.type(POPUP_CARD_NUMBER_TEXT_BOX,cardNumber);
+		logger.info("card number entered is "+cardNumber);
+		driver.waitForElementPresent(POPUP_NAME_ON_CARD_TEXT_BOX);
+		driver.type(POPUP_NAME_ON_CARD_TEXT_BOX, nameOnCard);
+		logger.info("Name on card  entered is "+nameOnCard);
+		driver.waitForElementPresent(POPUP_SECURITY_CODE_TEXT_BOX);
+		driver.type(POPUP_SECURITY_CODE_TEXT_BOX, securityCode);
+		logger.info("Security code entered is "+securityCode);
+		selectBillingCardExpirationDate(month,year);
+		selectCardType(cardType);
+
+	}
+
+	public void enterShippingDetailsInPopUpInCheckoutTab(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+		driver.clear(ATTENDENT_NAME_TEXT_BOX);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
+		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+		logger.info("Address line 1 entered is "+addressLine);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+		driver.type(CITY_TOWN_TEXT_BOX, city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(POSTAL_TEXT_BOX);
+		driver.type(POSTAL_TEXT_BOX, postalCode);
+		logger.info("Postal code entered is "+postalCode);
+		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+		driver.type(COUNTRY_TEXT_BOX, Country);
+		logger.info("Country entered is "+Country);
+		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+		driver.type(PROVINCE_TEXT_BOX, province);
+		logger.info("Province entered is "+province);
+		driver.waitForElementPresent(PHONE_TEXT_BOX);
+		driver.type(PHONE_TEXT_BOX, phoneNumber);
+		logger.info("Phone number entered is "+phoneNumber);
+
+	}
+
+	public String getNewBillingAddressNameInCheckoutTab(){
+		driver.waitForElementPresent(NEW_BILLING_ADDRESS);
+		return driver.findElement(NEW_BILLING_ADDRESS).getText();
+	}
+
+	public void clickCloseOfDeliveryAddressPopUpInCheckoutTab(){
+		driver.waitForElementPresent(CLOSE_POPUP_OF_DELIVERY_ADDRESS);
+		driver.click(CLOSE_POPUP_OF_DELIVERY_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String clickAndGetOrderNumberInCustomerTab(){
+		driver.waitForElementPresent(ORDER_NUMBER_IN_CUSTOMER_ORDER);
+		String orderNumber=driver.findElement(ORDER_NUMBER_IN_CUSTOMER_ORDER).getText();
+		logger.info("Order number fetched is "+orderNumber);
+		driver.click(ORDER_NUMBER_IN_CUSTOMER_ORDER);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return orderNumber;
+	}
+
+	public void clickAddNewAddressUnderDeliveryAddressInCheckoutTab(){
+		driver.waitForElementPresent(ADD_NEW_ADDRESS);
+		driver.click(ADD_NEW_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickSaveOfDeliveryAddressPopUpInCheckoutTab(){
+		driver.waitForElementPresent(DELIVERY_ADDRESS_POPUP_SAVE_BUTTON);
+		driver.click(DELIVERY_ADDRESS_POPUP_SAVE_BUTTON);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		logger.info("Save button clicked after entering billing and shipping address. ");
+		driver.pauseExecutionFor(4000);
+	}
+
+	public String getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab(){
+		driver.waitForElementPresent(DELIVERY_ADDRESS_POPUP_ERROR_TEXT);
+		return driver.findElement(DELIVERY_ADDRESS_POPUP_ERROR_TEXT).getText();
+	}
+
+	public void clickOKOfDeliveryAddressPopupInCheckoutTab(){
+		driver.waitForElementPresent(DELIVERY_ADDRESS_POPUP_OKAY_BUTTON);
+		driver.click(DELIVERY_ADDRESS_POPUP_OKAY_BUTTON);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(4000);
+	}
+
+	public void clickUseAsEnteredPopupOkayInCheckoutTab(){
+		driver.waitForElementPresent(USE_AS_ENTERED_POPUP);
+		driver.click(USE_AS_ENTERED_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getNewlyCreatedDeliveryAddressNameInCheckoutTab(){
+		driver.waitForElementPresent(DELIVERY_ADDRESS_DROPDOWN);
+		driver.click(DELIVERY_ADDRESS_DROPDOWN);
+		driver.waitForElementPresent(DELIVERY_ADDRESS_DROPDOWN_VALUE);
+		return driver.findElement(DELIVERY_ADDRESS_DROPDOWN_VALUE).getText();
+	}
+
+	public void selectBillingCardExpirationDate(String month,String year){
+		driver.waitForElementPresent(POPUP_BILLING_PROFILE_MONTH_DD);
+		driver.click(POPUP_BILLING_PROFILE_MONTH_DD);
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format(selectMonthDDLoc, month)));
+		logger.info("new billing month selected as "+month.toUpperCase());
+		driver.waitForElementPresent(POPUP_BILLING_PROFILE_YEAR_DD);
+		driver.click(POPUP_BILLING_PROFILE_YEAR_DD);
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format(selectYearDDLoc, year)));
+		logger.info("new billing year selected as "+year);
+	}
+
+	public void selectCardType(String cardType){
+		driver.waitForElementPresent(POPUP_BILLING_PROFILE_CARD_TYPE_DD);
+		driver.click(POPUP_BILLING_PROFILE_CARD_TYPE_DD);
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format(selectCardTypeDDLoc, cardType)));
+		logger.info("new billing card type selected as "+cardType);
+	}
+
 }
 

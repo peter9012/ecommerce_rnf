@@ -64,8 +64,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.id("credit-cards"));		
+//		driver.waitForPageLoad();
+		driver.quickWaitForElementPresent(By.id("card-nr"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
@@ -325,6 +325,30 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForPageLoad();
 
 	}
+	
+	public void clickOnBuyNowButton(String country) throws InterruptedException{
+
+		if(country.equalsIgnoreCase("ca")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			else
+				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+			logger.info("Add To Bag button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		else{
+			driver.waitForElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button"));
+			if(driver.findElement(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//button")).isEnabled()==true)
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]/descendant::button[1]"));
+			else
+				driver.click(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[2]/descendant::button[1]"));
+			logger.info("Buy Now button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}
+		driver.waitForPageLoad();
+
+	}
 
 	public void clickOnAddToCRPButton() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
@@ -365,7 +389,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@value='NEXT']"));
 		logger.info("checkout button clicked");
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
 			logger.info("Confirmation OK button clicked");
 			driver.waitForLoadingImageToDisappear();
@@ -490,9 +514,9 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public String getOrderNumberAfterPlaceOrder(){
-		driver.waitForElementPresent(By.id("order-confirm"));
-		logger.info("Order Number after placing order is "+driver.findElement(By.id("order-confirm")).getText().split(":")[1].trim());
-		return driver.findElement(By.xpath("//div[@id='order-confirm']")).getText().split(":")[1].trim();
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h4"));
+		logger.info("Order Number after placing order is "+driver.findElement(By.xpath("//div[@id='confirm-left-shopping']//h4")).getText().split("#")[1].trim());
+		return driver.findElement(By.xpath("//div[@id='confirm-left-shopping']//h4")).getText().split("#")[1].trim();
 	}
 
 	public void editShippingAddress() throws InterruptedException{

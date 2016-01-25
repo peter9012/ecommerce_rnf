@@ -43,7 +43,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderNumber = null;
 		String orderHistoryNumber = null;
 		RFO_DB = driver.getDBNameRFO();
-		
+
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -156,5 +156,91 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-2017:To verify that Return Complete Order functionality
+	@Test
+	public void testVerifyReturnCompleteOrderFunctionality_2017() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String orderNumber = null;
+		String orderHistoryNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		RFO_DB = driver.getDBNameRFO();
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitHomePage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitHomePage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitHomePage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitHomePage.getRandomCustomerFromSearchResult());
+		cscockpitHomePage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitHomePage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitHomePage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitHomePage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitHomePage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitHomePage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitHomePage.searchSKUValueInCartTab(SKUValue);
+		cscockpitHomePage.clickAddToCartBtnInCartTab();
+		cscockpitHomePage.clickCheckoutBtnInCartTab();
+		s_assert.assertTrue(cscockpitHomePage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitHomePage.getCreditCardNumberInCheckoutTab());
+		s_assert.assertTrue(cscockpitHomePage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitHomePage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitHomePage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
+		cscockpitHomePage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitHomePage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
+		cscockpitHomePage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
+		cscockpitHomePage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitHomePage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitHomePage.clickPlaceOrderButtonInCheckoutTab();
+		orderNumber = cscockpitHomePage.getOrderNumberInOrderTab();
+		logger.info("RETURN ORDER NUMBER IS "+orderNumber);		
+		s_assert.assertTrue(cscockpitHomePage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitHomePage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitHomePage.clickRefundOrderBtnOnOrderTab();
+		boolean isReturnCompleteOrderChecked = cscockpitHomePage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitHomePage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitHomePage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitHomePage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitHomePage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitHomePage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitHomePage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitHomePage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitHomePage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitHomePage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		cscockpitHomePage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitHomePage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitHomePage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitHomePage.isNoRefundableItemsTxtPresent(), "Order Number = "+orderNumber+" has NOT refund Successfully");
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+
+		s_assert.assertAll();		
+	}
+
 
 }

@@ -1030,9 +1030,42 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return PWS;
 	}
 
+	public String getComPWS(String country,String env){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomActiveSitePrefixList =  null;
+		String activeSitePrefix = null;
+		String PWS = null;
+		String countryID =null;
+
+		if(country.equalsIgnoreCase("ca")){
+			countryID="40";
+		}
+		else if(country.equalsIgnoreCase("us")){
+			countryID="236";
+		} 
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".com/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);
+		return PWS;
+	}
+
+
 	public String openPWSSite(String country,String env){
 		while(true){
 			driver.get(getBizPWS(country, env));
+			driver.waitForPageLoad();
+			if(driver.getCurrentUrl().contains("sitenotfound"))
+				continue;
+			else
+				break;
+		}	
+		return driver.getCurrentUrl();
+	}
+
+	public String openComPWSSite(String country,String env){
+		while(true){
+			driver.get(getComPWS(country, env));
 			driver.waitForPageLoad();
 			if(driver.getCurrentUrl().contains("sitenotfound"))
 				continue;

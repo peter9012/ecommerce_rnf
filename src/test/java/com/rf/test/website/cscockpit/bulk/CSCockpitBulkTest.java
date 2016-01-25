@@ -35,7 +35,7 @@ public class CSCockpitBulkTest extends RFWebsiteBaseTest{
 		cscockpitHomePage.clickSearchBtn();
 		s_assert.assertTrue(cscockpitHomePage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(returnOrderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitHomePage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
 		cscockpitHomePage.clickRefundOrderBtnOnOrderTab();
-		cscockpitHomePage.checkReturnCompleteOrderChkBoxOnRefundPopUp();
+		cscockpitHomePage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
 		cscockpitHomePage.selectRefundReasonOnRefundPopUp("Test");
 		cscockpitHomePage.selectFirstReturnActionOnRefundPopUp();
 		cscockpitHomePage.selectFirstRefundTypeOnRefundPopUp();

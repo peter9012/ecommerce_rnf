@@ -414,20 +414,31 @@ public class TestConstants {
 	public static final String DSV_CANADIAN_SPONSOR_WITH_PWS = "Erica MacKinnon";
 	public static final String DSV_US_SPONSOR_WITH_PWS = "Kris Fairless";
 	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
-	
+
 	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.tst3";
 	public static final String CRM_LOGIN_PASSWORD = "test1234";
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
-	
+
 	//CSCockpit Constants
-	
+
 	public static final String ADMIN_USERNAME = "admin";
 	public static final String CS_AGENT_USERNAME = "CSAGENT";
 	public static final String CS_COMMISION_ADMIN_USERNAME = "CSCOMMISSIONADMIN";
 	public static final String CS_SALES_SUPERVISORY_USERNAME = "CSSALESSUPERVISORY";
 	public static final String ORDER_NOTE = "For automation";
+	public static final String ORDER_TYPE_DD_VALUE = "Consultant Order";
+	public static final String COUNTRY_DD_VALUE_US = "United States";
+	public static final String COUNTRY_DD_VALUE_CA = "Canada";
+	public static final String ORDER_STATUS_DD_VALUE = "Submitted";
+	public static final String INVALID_CV2_NUMBER = "10000";
+	public static final String VALID_CV2_NUMBER = "123";
+	public static final String UPDATED_ORDER_NOTE = "For automation updated";
+	public static final String USE_THIS_ADDRESS_LINE1_US = "2616 FILSON CT";
+	public static final String USE_THIS_CITY_US="CHARLOTTE";
+	public static final String USE_THIS_POSTAL_CODE_US="28214-5037";
+	public static final String USE_THIS_PROVINCE_US ="North Carolina";
 
 }
 

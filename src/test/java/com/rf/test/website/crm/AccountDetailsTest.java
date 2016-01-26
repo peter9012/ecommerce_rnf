@@ -421,15 +421,12 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
-		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			System.out.println(randomPCUserList);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 			System.out.println(pcUserEmailID);
 			driver.get(driver.getCrmURL());
 			crmLoginpage = new CRMLoginPage(driver);
-			break;
-		}
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.searchUserandSelect(pcUserEmailID);
@@ -463,42 +460,58 @@ public class AccountDetailsTest extends RFWebsiteBaseTest{
 	}
 	@Test//WIP
 	public void EditConsultantAccountDetails_4503() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();	
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.clickaccountNameForAccountDetailsPage("mstd03@test.com");
-		crmHomePage.EditAccountDetails();
-		crmHomePage.EnterNewAddress();
-		crmHomePage.ClickSave();
-		crmHomePage.GetUpdatedAddress();
-		s_assert.assertAll();
-		
-	}
+		crmHomePage.searchUser(consultantEmailID);
+        crmHomePage.EditAccountDetails();
+        crmHomePage.EnterNewLocale();
+        crmHomePage.ClickSave();
+        crmHomePage.GetUpdatedAddress();
+        s_assert.assertAll();
+		 }
 	@Test
 	public void EditPCAccountDetails_4507() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			System.out.println(randomPCUserList);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+			System.out.println(pcUserEmailID);
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.clickaccountNameForAccountDetailsPage("");
-		crmHomePage.EditAccountDetails();
-		crmHomePage.EnterNewAddress();
-		crmHomePage.ClickSave();
-		crmHomePage.GetUpdatedAddress();
-		s_assert.assertAll();
+		crmHomePage.searchUser(pcUserEmailID);
+        crmHomePage.EditAccountDetails();
+        crmHomePage.EnterNewLocale();
+        crmHomePage.ClickSave();
+        crmHomePage.GetUpdatedAddress();
+        s_assert.assertAll();
 }
 	@Test
 	public void EditRCAccountDetails_4510() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");
 		driver.get(driver.getCrmURL());
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.clickaccountNameForAccountDetailsPage("");
-		crmHomePage.EditAccountDetails();
-		crmHomePage.EnterNewAddress();
-		crmHomePage.ClickSave();
-		crmHomePage.GetUpdatedAddress();
+		crmHomePage.searchUser(rcUserEmailID);
+        crmHomePage.EditAccountDetails();
+        crmHomePage.EnterNewLocale();
+        crmHomePage.ClickSave();
+        crmHomePage.GetUpdatedAddress();
 		s_assert.assertAll();
 }
 	@Test

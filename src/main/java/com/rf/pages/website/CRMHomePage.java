@@ -40,8 +40,10 @@ public class CRMHomePage extends RFWebsiteBasePage {
     private final By AUTOSHIP_TITLE_LOC =By.xpath("//span[@class='listTitle' and contains(text(),'Autoships')]");
     private final By PERFORMANCE_KPI_LOC = By.xpath("//span[@class='listTitle' and contains(text(),'Performance KPIs')]");
     private final By ACCOUNT_ACTIVITIES_LOC = By.xpath("//span[@class='listTitle' and contains(text(),'Account Policies')]");
-    private final By EDIT_ACCOUNT_BUTTON_LOC = By.xpath("//td[@id='topButtonRow']/input[@value='Edit Account']");
-    private final By SAVE_BUTTON_LOC = By.xpath("//td[@id='bottomButtonRow']/input[@title='Save']");
+    //private final By EDIT_ACCOUNT_BUTTON_LOC = By.xpath("//td[@id='topButtonRow']/input[@value='Edit Account']");
+    private final By EDIT_ACCOUNT_BUTTON_LOC = By.className("actionLink"); //New
+    //private final By SAVE_BUTTON_LOC = By.xpath("//td[@id='bottomButtonRow']/input[@title='Save']");
+    private final By SAVE_BUTTON_LOC = By.xpath("//*[@id='bottomButtonRow']/input[1]");
     private final By BACK_TO_SERVICE_CLOUD_CONSOLE_LOC = By.linkText("Back to Service Cloud Console");
 	static String  firstName = null;
 	public CRMHomePage(RFWebsiteDriver driver) {
@@ -77,10 +79,9 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
 		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
-		driver.switchTo().defaultContent();
-		
-		
+		driver.switchTo().defaultContent();	
 	}
+	
 	public boolean verifyAccountTypeForRCUser(){
 		driver.waitForElementPresent(ACCOUNT_TYPE);
 		logger.info("Account Type from UI "+driver.findElement(ACCOUNT_TYPE).getText());
@@ -230,33 +231,44 @@ public class CRMHomePage extends RFWebsiteBasePage {
 		driver.waitForPageLoad();
 		driver.switchTo().frame(1);
 		System.out.println(driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a")).getText());
+		driver.switchTo().defaultContent();
 	}
-	
+
 	public void EditAccountDetails(){
 		driver.switchTo().frame(1);
 		//click Edit button
-		driver.findElement(By.xpath("//*[@id='Account_body']/table/tbody/tr[2]/td[1]/a")).click();
+		driver.click(EDIT_ACCOUNT_BUTTON_LOC);
+		//driver.waitForPageLoad();
+		//driver.findElement(By.xpath("//*[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[2]/td[1]/a")).click();
 		driver.switchTo().defaultContent();
 	}
 	
-	public void EnterNewAddress(){
-		//clear and enter new Address 1 
+	public void EnterNewLocale(){
+		//clear and enter new locale
+		driver.switchTo().defaultContent();
+		List<WebElement> frames = driver.findElements(By.tagName("iframe"));
+		 System.out.println("Number of frames" + frames.size());
+		 for(int i=0;i<frames.size();i++){
+			 driver.switchTo().frame(i);
+			 int s = driver.findElements(By.xpath("//*[@id='00N1a000005uQGL']")).size();
+			 driver.switchTo().defaultContent();
 		driver.switchTo().frame(2);
-		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).clear();
-		 driver.findElement(By.xpath("//*[@id='00N1a000005uQGF']")).sendKeys("542 Mission St");
-		 driver.switchTo().defaultContent();
+		driver.findElement(By.xpath("//*[@id='00N1a000005uQGL']")).clear();
+		driver.findElement(By.xpath("//*[@id='00N1a000005uQGL']")).sendKeys("San Francisco");
+		driver.switchTo().defaultContent();}
 	}
 	
 	public void ClickSave(){
-		 //Click save
-		driver.switchTo().frame(2);
-		 driver.findElement(By.xpath("//*[@id='topButtonRow']/input[1]")).click();
-		 driver.switchTo().defaultContent();	 
+			 driver.switchTo().defaultContent();
+		 driver.switchTo().frame(2);
+		 driver.click(SAVE_BUTTON_LOC);
+		 driver.switchTo().defaultContent();	
 	}
 	
 	public void GetUpdatedAddress(){
 		//Get the text of the Updated address
-		driver.switchTo().frame(4);
-		 System.out.println(driver.findElement(By.xpath("//*[@id='00N1a000005uQGF_ileinner']")).getText());
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(2);
+		 System.out.println(driver.findElement(By.xpath("//*[@id='ep']/div[2]/div[5]/table/tbody/tr[4]/td[2]")).getText());
 	}
 }

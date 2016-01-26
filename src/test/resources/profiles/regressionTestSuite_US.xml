@@ -28,7 +28,7 @@
 			<class
 				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest" />
 			<class
-				name="com.rf.test.website.storeFront.regression.account.MyAccountTest" />
+				name="com.rf.test.website.storeFront.regression.AccountTest" />
 			<class
 				name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest" />
 			<class

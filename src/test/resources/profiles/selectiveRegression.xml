@@ -13,7 +13,7 @@
 			</methods>
 			</class> -->
 			
-			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
+			<class name="com.rf.test.website.storeFront.regression.AccountTest">
 			<methods>
 <!-- 			<include name="testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143" />
 			<include name="testOrdersPageUIForRCUser_HP2_1981" /> -->

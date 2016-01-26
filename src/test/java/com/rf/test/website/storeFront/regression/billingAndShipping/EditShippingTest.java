@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.regression.account;
+package com.rf.test.website.storeFront.regression.billingAndShipping;
 
 import java.util.List;
 import java.util.Map;

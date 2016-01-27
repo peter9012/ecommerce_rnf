@@ -2258,14 +2258,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		}
 	}
 
-
-
-
-
-
-
-
-
 	//Hybris Project-2091:Switch From Retail Customer to Prefered Customer
 	@Test
 	public void testSwitchFronRCToPC_2091() throws InterruptedException{
@@ -2369,163 +2361,161 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4674:During PC enrollment add email ID of RC user who is already exist. Verify the popup and follow the i
-		@Test
-		public void testDuringPCEnrollmentAddEmailIdOfExistingRCUser_4674() throws InterruptedException{
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
-			// Click on our product link that is located at the top of the page and then click in on quick shop
+	@Test
+	public void testDuringPCEnrollmentAddEmailIdOfExistingRCUser_4674() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		// Click on our product link that is located at the top of the page and then click in on quick shop
 
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-			// Products are displayed?
-			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-			logger.info("Quick shop products are displayed");
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
 
-			//Select a product and proceed to buy it
-			storeFrontHomePage.selectProductAndProceedToBuy();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
 
-			//Cart page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-			logger.info("Cart page is displayed");
-			//Click on place order
-			storeFrontHomePage.clickOnPlaceOrderButton();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnPlaceOrderButton();
 
-			//Validate Existing PC Popup during RC Registration by entering existing PC mailid
-			s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
-			s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"Send mail to reset my password' button not working");	
-			s_assert.assertAll();
-		}
+		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"Send mail to reset my password' button not working");	
+		s_assert.assertAll();
+	}
 
+	//Hybris Project-4675:RC2PC : During PC enrollment add email ID of RC user who is already exist
+	@Test
+	public void testDuringPCEnrollmentFromComSiteAddEmailIdOfExistingRCUser_4675() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String bizPWS = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		String comPWS = storeFrontHomePage.convertBizSiteToComSite(bizPWS);
+		storeFrontHomePage.openConsultantPWS(comPWS);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
 
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-		//Hybris Project-4675:RC2PC : During PC enrollment add email ID of RC user who is already exist
-		@Test
-		public void testDuringPCEnrollmentFromComSiteAddEmailIdOfExistingRCUser_4675() throws InterruptedException{
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			String bizPWS = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
-			String comPWS = storeFrontHomePage.convertBizSiteToComSite(bizPWS);
-			storeFrontHomePage.openConsultantPWS(comPWS);
-			// Click on our product link that is located at the top of the page and then click in on quick shop
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
 
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
 
-			// Products are displayed?
-			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-			logger.info("Quick shop products are displayed");
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnPlaceOrderButton();
 
-			//Select a product and proceed to buy it
-			storeFrontHomePage.selectProductAndProceedToBuy();
+		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"Send mail to reset my password' button not working");	
+		s_assert.assertAll();
+	}
 
-			//Cart page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-			logger.info("Cart page is displayed");
-			//Click on place order
-			storeFrontHomePage.clickOnPlaceOrderButton();
-
-			//Validate Existing PC Popup during RC Registration by entering existing PC mailid
-			s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
-			s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"Send mail to reset my password' button not working");	
-			s_assert.assertAll();
-		}
-
-		// Hybris Project-4694:COM: Terminate RC, Enroll RC and Upgrade 2 PC
-		@Test
-		public void testTerminateRCEnrollRCUpgradeToPC_4694() throws InterruptedException{
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-			String firstName=TestConstants.FIRST_NAME+randomNum;
-			String lastName = "lN";
-			String RCEmailAddress = firstName+randomNum+"@xyz.com";
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			// Click on our product link that is located at the top of the page and then click in on quick shop
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-			//Select a product and proceed to buy it
-			storeFrontHomePage.selectProductAndProceedToBuy();
-			//Click on Check out
-			storeFrontHomePage.clickOnCheckoutButton();
-			//Log in or create an account page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-			logger.info("Login or Create Account page is displayed");
-			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-			storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,RCEmailAddress, password);
-			//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-			storeFrontHomePage.enterMainAccountInfo();
-			logger.info("Main account details entered");
-			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-			//Enter Billing Profile
-			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.selectNewBillingCardAddress();
-			storeFrontHomePage.clickOnSaveBillingProfile();
-			storeFrontHomePage.clickOnBillingNextStepBtn();
-			storeFrontHomePage.clickPlaceOrderBtn();
-			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			//terminate rc account
-			storeFrontHomePage.clickOnWelcomeDropDown();
-			storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-			storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
-			storeFrontAccountTerminationPage.selectTerminationReason();
-			storeFrontAccountTerminationPage.enterTerminationComments();
-			storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
-			storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-			s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
-			storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-			storeFrontHomePage.loginAsRCUser(RCEmailAddress,password);
-			s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
-			storeFrontHomePage.clickOnRodanAndFieldsLogo();
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-			//Select a product and proceed to buy it
-			storeFrontHomePage.selectProductAndProceedToBuy();
-			//Click on Check out
-			storeFrontHomePage.clickOnCheckoutButton();
-			//Log in or create an account page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-			logger.info("Login or Create Account page is displayed");
-			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-			storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,RCEmailAddress, password);
-			//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-			storeFrontHomePage.enterMainAccountInfo();
-			logger.info("Main account details entered");
-			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-			//Enter Billing Profile
-			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.selectNewBillingCardAddress();
-			storeFrontHomePage.clickOnSaveBillingProfile();
-			storeFrontHomePage.clickOnBillingNextStepBtn();
-			storeFrontHomePage.clickPlaceOrderBtn();
-			s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			//upgrade to pc
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-			storeFrontHomePage.selectProductAndProceedToBuy();
-			storeFrontHomePage.clickOnCheckoutButton();
-			storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
-			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-			storeFrontHomePage.clickOnBillingNextStepBtn();
-			storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
-			storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickPlaceOrderBtn();
-			storeFrontHomePage.clickOnRodanAndFieldsLogo();
-			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			storeFrontHomePage.clickOnWelcomeDropDown();
-			s_assert.assertTrue(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "User NOT upgrade successfully to PC");
-			s_assert.assertAll();	
-		}
+	// Hybris Project-4694:COM: Terminate RC, Enroll RC and Upgrade 2 PC
+	@Test
+	public void testTerminateRCEnrollRCUpgradeToPC_4694() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		String RCEmailAddress = firstName+randomNum+"@xyz.com";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,RCEmailAddress, password);
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//terminate rc account
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		storeFrontHomePage.loginAsRCUser(RCEmailAddress,password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,RCEmailAddress, password);
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//upgrade to pc
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.checkIAcknowledgePCAccountCheckBox();
+		storeFrontHomePage.checkPCPerksTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "User NOT upgrade successfully to PC");
+		s_assert.assertAll();	
+	}
 
 
 }

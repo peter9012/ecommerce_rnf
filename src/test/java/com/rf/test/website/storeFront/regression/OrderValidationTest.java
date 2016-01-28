@@ -653,7 +653,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-2272:Adhoc Orders fro Consultant and PC and RC --> Single line Item
+	//Hybris Project-2272:Adhoc Orders from Consultant and PC and RC --> Single line Item
 	@Test
 	public void testAdhocOrdersFromConsultantAndPc_2272() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
@@ -680,10 +680,10 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAddToBagButton();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		String quantityOfProductsOrdered = storeFrontUpdateCartPage.getQuantityOfProductOnCartPage();
-		String totalPrice = storeFrontUpdateCartPage.getTotalPriceOfProduct();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		String totalPrice = storeFrontUpdateCartPage.getSubtotal();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isOrderPlacedSuccessfully(),"order is not placed successfully");
 		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
@@ -692,7 +692,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		String orderNumber=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber); 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyQuantityOnOrdersDetails(quantityOfProductsOrdered),"quantity is not matched in order detail page");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyTotalValueOfProductOnOrderDetails(totalPrice));
+		s_assert.assertTrue(storeFrontOrdersPage.verifyTotalValueOfProductOnOrderDetails(totalPrice),"Price mismatch");
 		s_assert.assertAll();
 	}
 
@@ -1512,7 +1512,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		taxDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "TotalTax")));
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOrderDetailsList, "SubTotal")));
 		String orderStatusID = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "ReturnStatusID"));
-		
+
 		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc Order template subtotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		// Assert Tax with RFO

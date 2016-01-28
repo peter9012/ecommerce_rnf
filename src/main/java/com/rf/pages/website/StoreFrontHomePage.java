@@ -3686,5 +3686,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		}
 	}
 
+	public boolean verifyILiveInNorthDakotaLinkIsNotPresentForCA() {
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'continue without purchasing a Business Portfolio or enrollment kit.')]"));
+	}
 
 }

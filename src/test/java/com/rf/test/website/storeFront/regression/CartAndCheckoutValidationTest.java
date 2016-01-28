@@ -4436,97 +4436,97 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	}
 
-	// Hybris Project-3866:Update PC Perks template from sponsor's PWS site
-	@Test
-	public void testUpdatePCPerksTemplateFromSponserComPWS_3866() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String lastName = "lN";
-		country = driver.getCountry();
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String firstName=TestConstants.FIRST_NAME+randomNum;
-		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
-
-		//Hover shop now and click all products link.
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
-		//Select a product and proceed to buy it
-		storeFrontHomePage.selectProductAndProceedToBuy();
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		//1 product is in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-		logger.info("1 product is successfully added to the cart");
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
-		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
-
-		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-		storeFrontHomePage.enterMainAccountInfo();
-		logger.info("Main account details entered");
-
-		//Get Sponser from database.
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		// sponser search by Account Number
-		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-
-		//Search for sponser and ids.
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountnumber);
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-
-		//Enter Billing Profile
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		//Add new product and verify products of autoship cart
-		storeFrontHomePage.clickOnAutoshipCart();
-		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
-		int getProductCountOnCartPage=Integer.parseInt(storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage());
-		int expectedProductCount=getProductCountOnCartPage+1;
-		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-		storeFrontUpdateCartPage.selectDifferentProductAndAddItToPCPerks();
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInAutoshipCart(Integer.toString(expectedProductCount)), "Product in Autoship cart is not as expected");
-		//update quantity of existing product.
-		int getNewProductCountOnCartPage=storeFrontUpdateCartPage.getDifferentProductCountOnAutoShipCartPage();
-		if(getNewProductCountOnCartPage<=2){
-			storeFrontUpdateCartPage.addQuantityOfProduct("5");
-		}else{
-			storeFrontUpdateCartPage.updateQuantityOfProductToTheSecondProduct("5");
-		}
-		s_assert.assertTrue(storeFrontUpdateCartPage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg());
-		s_assert.assertAll(); 
-
-	}
+	//	// Hybris Project-3866:Update PC Perks template from sponsor's PWS site
+	//	@Test
+	//	public void testUpdatePCPerksTemplateFromSponserComPWS_3866() throws InterruptedException{
+	//		RFO_DB = driver.getDBNameRFO();
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String lastName = "lN";
+	//		country = driver.getCountry();
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		String firstName=TestConstants.FIRST_NAME+randomNum;
+	//		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+	//
+	//		//Hover shop now and click all products link.
+	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	//
+	//		// Products are displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	//		logger.info("Quick shop products are displayed");
+	//
+	//		//Select a product and proceed to buy it
+	//		storeFrontHomePage.selectProductAndProceedToBuy();
+	//
+	//		//Cart page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	//		logger.info("Cart page is displayed");
+	//
+	//		//1 product is in the Shopping Cart?
+	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+	//		logger.info("1 product is successfully added to the cart");
+	//
+	//		//Click on Check out
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//
+	//		//Log in or create an account page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	//		logger.info("Login or Create Account page is displayed");
+	//
+	//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+	//		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
+	//
+	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		logger.info("Main account details entered");
+	//
+	//		//Get Sponser from database.
+	//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+	//		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	//		// sponser search by Account Number
+	//		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+	//		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+	//
+	//		//Search for sponser and ids.
+	//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountnumber);
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//
+	//		//Enter Billing Profile
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	//		//Add new product and verify products of autoship cart
+	//		storeFrontHomePage.clickOnAutoshipCart();
+	//		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+	//		int getProductCountOnCartPage=Integer.parseInt(storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage());
+	//		int expectedProductCount=getProductCountOnCartPage+1;
+	//		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
+	//		storeFrontUpdateCartPage.selectDifferentProductAndAddItToPCPerks();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInAutoshipCart(Integer.toString(expectedProductCount)), "Product in Autoship cart is not as expected");
+	//		//update quantity of existing product.
+	//		int getNewProductCountOnCartPage=storeFrontUpdateCartPage.getDifferentProductCountOnAutoShipCartPage();
+	//		if(getNewProductCountOnCartPage<=2){
+	//			storeFrontUpdateCartPage.addQuantityOfProduct("5");
+	//		}else{
+	//			storeFrontUpdateCartPage.updateQuantityOfProductToTheSecondProduct("5");
+	//		}
+	//		s_assert.assertTrue(storeFrontUpdateCartPage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg());
+	//		s_assert.assertAll(); 
+	//
+	//	}
 
 	//Hybris Project-3860:Update the PC Perks Template from US sponsor's COMPWS who has Pulse/ PWS
 	@Test
@@ -5664,6 +5664,63 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterAdhocOrderPlaced(selectedShippingMethod), "Selected Shipping Method didn't match with the method on Orders page!!");
 		s_assert.assertAll(); 
 	}
+
+	//Hybris Project-1890:Create Order With Shipping Method UPS 2Day-CAD$20.00
+	@Test
+	public void testCreateOrderWithShippingMethodUPS2Day_1890() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontOrdersPage=new StoreFrontOrdersPage(driver);
+		storeFrontRCUserPage=new StoreFrontRCUserPage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//click edit next to shipment Section 
+		storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
+		//select UPS 2 Day shipping method
+		String selectedShippingMethod=storeFrontHomePage.selectShippingMethodUPS2DayUnderShippingSectionAndGetName();
+		//click next on shipping section
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		//click place order
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//Navigate to Orders Page
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		//click on first adhoc order placed
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+		//validate the shipping Method as selected on Orders detail page
+		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterAdhocOrderPlaced(selectedShippingMethod), "Selected Shipping Method didn't match with the method on Orders page!!");
+		s_assert.assertAll(); 
+	}
+
 
 }
 

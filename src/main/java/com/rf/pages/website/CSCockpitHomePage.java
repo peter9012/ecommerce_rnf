@@ -7,6 +7,8 @@ import java.util.TimeZone;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.pages.RFBasePage;
@@ -32,6 +34,10 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static String selectMonthDDLoc = "//td[text()='%s']";
 	private static String selectYearDDLoc = "//td[text()='%s']";
 	private static String selectCardTypeDDLoc = "//td[text()='%s']";
+	private static String orderStatusLoc = "//a[text()='%s']//following::td[7]//span";
+	private static String shipToCountryValueLoc = "//span[contains(text(),'Ship To Country')]/select/option[contains(text(),'%s')]";
+	private static String orderTypeValueLoc = "//span[contains(text(),'Order Type')]/select/option[contains(text(),'%s')]";
+	private static String orderStatusValueLoc = "//span[contains(text(),'Order Status')]/select/option[contains(text(),'%s')]";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']");
@@ -88,6 +94,7 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static final By FIRST_RETURN_ACTION_FROM_DD_REFUND_POPUP = By.xpath("//div[@class='z-combobox-pp'][@zk_ckval='return action' or @zk_ckval='CREDITCARD' ]//tr[1]/td[2]");
 	private static final By ORDER_TYPE_DD = By.xpath("//span[contains(@class,'orderSearchType')]/select");
 	private static final By ORDER_STATUS_DD = By.xpath("//span[contains(text(),'Order Status')]/select");
+	private static final By SHIP_TO_COUNTRY_DD = By.xpath("//span[contains(text(),'Ship To Country')]/select");
 	private static final By CID_CUSTOMER_NAME_TXT_FIELD = By.xpath("//span[contains(text(),'Customer Name or CID')]/following::input[1]");
 	private static final By RMA_TREE_BTN = By.xpath("//span[contains(text(),'Return Requests')]/following::div[1]//div[@class='z-listbox-body']//tbody[2]//tr[1]/td[1]//a");
 	private static final By FIND_CUSTOMER_LBL = By.xpath("//span[text()='Find Customer']");
@@ -130,6 +137,18 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static final By POPUP_BILLING_PROFILE_MONTH_DD = By.xpath("//span[text()='Expiration Date']/../../following-sibling::td[1]/div/span/span[1]/span/img");
 	private static final By POPUP_BILLING_PROFILE_YEAR_DD = By.xpath("//span[text()='Expiration Date']/../../following-sibling::td[1]/div/span/span[2]/span/img");
 	private static final By POPUP_BILLING_PROFILE_CARD_TYPE_DD = By.xpath("//span[text()='Card Type']/../../following-sibling::td[1]/div/span/span[1]/span/img");
+	private static final By FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a");
+	private static final By EXISTING_SPONSER_NAME = By.xpath("//span[@class='csCartDetailsValue']");
+	private static final By CHANGE_SPONSER_LINK = By.xpath("//a[text()='Change']");
+	private static final By SPONSER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Consultant Name or CID']/following::input");
+	private static final By SELECT_BUTTON_TO_SELECT_SPONSER = By.xpath("//td[text()='SELECT']");
+	private static final By ORDER_NUMBER_CUSTOMER_TAB_LOC = By.xpath("//div[@class='customerOrderHistoryWidget']//tr[2]//a");
+	private static final By FIND_ORDER_LINK_LEFT_NAVIGATION_LOC = By.xpath("//a[contains(text(),'Find Order')]");
+	private static final By CUSTOMER_SEARCH_TAB_LOC = By.xpath("//span[text()='Customer Search']");
+	private static final By CUSTOMER_NAME_OR_CID_TXT_FIELD = By.xpath("//span[contains(text(),'Customer Name or CID')]/following::input[1]");
+	private static final By ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'Account Status:')]/following::span[1]");
+	private static final By CV_QV_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']"); 
+	private static final By CV_QV_DISABLED_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']/ancestor::table[1][@class='z-button z-button-disd']");
 	
 	protected RFWebsiteDriver driver;
 
@@ -146,6 +165,30 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	public boolean isOrderSearchPageDisplayed(){
 		driver.waitForElementPresent(ORDER_SEARCH_LBL);
 		return driver.IsElementVisible(driver.findElement(ORDER_SEARCH_LBL));
+	}
+
+	public boolean isOrderTypeDDDisplayedOnOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(ORDER_TYPE_DD));
+	}
+
+	public boolean isShipToCountryDDDisplayedOnOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(SHIP_TO_COUNTRY_DD));
+	}
+
+	public boolean isOrderStatusDDDisplayedOnOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(ORDER_STATUS_DD));
+	}
+
+	public boolean isOrderTypeDDValuePresentOnOrderSearchTab(String orderTypeValue){
+		return driver.isElementPresent(By.xpath(String.format(orderTypeValueLoc, orderTypeValue)));	
+	}
+
+	public boolean isOrderStatusDDValuePresentOnOrderSearchTab(String orderStatusValue){
+		return driver.isElementPresent(By.xpath(String.format(orderStatusValueLoc, orderStatusValue)));	
+	}
+
+	public boolean isShipToCountryDDValuePresentOnOrderSearchTab(String shipToCountryValue){
+		return driver.isElementPresent(By.xpath(String.format(shipToCountryValueLoc, shipToCountryValue)));	
 	}
 
 	public void selectCustomerTypeFromDropDownInCustomerSearchTab(String customerType){
@@ -209,6 +252,13 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	public void clickCIDNumberInCustomerSearchTab(String customerSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
 		driver.click(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
+		logger.info("CID sequence number is "+customerSequenceNumber);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickFirstOrderInCustomerTab(){
+		driver.waitForElementPresent(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);
+		driver.click(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
@@ -256,7 +306,7 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 			logger.info("Add to cart button clicked");
 			driver.waitForCSCockpitLoadingImageToDisappear();
 			try{
-				driver.waitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+				driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
 				driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
 				clearCatalogSearchFieldAndClickSearchBtn();
 				searchSKUValueInCartTab(getCustomerSKUValueInCartTab(String.valueOf(getRandomProductWithSKUFromSearchResult())));
@@ -451,6 +501,10 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
+	public boolean isOrderNumberTxtFieldDisplayedInOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB));
+	}
+
 	public void enterOrderNumberInOrderSearchTab(String orderNumber){
 		driver.waitForElementPresent(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);
 		driver.type(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB, orderNumber);
@@ -479,6 +533,11 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		}catch(Exception e){
 			return false;
 		}
+	}
+
+	public boolean isQVandCVUpdateBtnDisabledOnOrderTab(){
+		driver.waitForElementPresent(CV_QV_UPDATE_BTN);
+		return driver.isElementPresent(CV_QV_DISABLED_UPDATE_BTN);
 	}
 
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){
@@ -659,7 +718,7 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.findElement(CV2_TEXT_FIELD_LOC).sendKeys(validCv2);
 	}
 
-	public void clickOnUseThisCardButtonOnCheckoutPage(){
+	public void clickUseThisCardButtonOnCheckoutPage(){
 		driver.waitForElementPresent(USE_THIS_CARD_BUTTON_LOC);
 		driver.click(USE_THIS_CARD_BUTTON_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
@@ -670,11 +729,14 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public String getOrderNumberFromCsCockpitUI() {
-		return driver.findElement(ORDER_NUMBER_CSCOCKPIT_UI_LOC).getText();
+	public String getOrderNumberFromCsCockpitUIOnOrderTab() {
+		String orderNumberOnOrderTab = driver.findElement(ORDER_NUMBER_CSCOCKPIT_UI_LOC).getText();
+		String []orderNumber = orderNumberOnOrderTab.split("\\ ");
+		System.out.println(orderNumber[0]);
+		return orderNumber[0];
 	}
 
-	public void clickOnOrderNoteEditButton(String orderNote){
+	public void clickOrderNoteEditButton(String orderNote){
 		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
 		driver.click(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
 	}
@@ -846,5 +908,90 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		logger.info("new billing card type selected as "+cardType);
 	}
 
-}
+	public String getExistingSponserNameInOrderTab(){
+		driver.waitForElementPresent(EXISTING_SPONSER_NAME);
+		return driver.findElement(EXISTING_SPONSER_NAME).getText();
+	}
 
+	public void clickChangeSponserLinkInOrderTab(){
+		driver.waitForElementPresent(CHANGE_SPONSER_LINK);
+		driver.click(CHANGE_SPONSER_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterConsultantCIDAndClickSearchInOrderTab(String cid){
+		driver.waitForElementPresent(SPONSER_SEARCH_TEXT_BOX);
+		driver.type(SPONSER_SEARCH_TEXT_BOX, cid);
+		driver.click(SEARCH_BTN_ANOTHER_LOCATOR);
+	}
+
+	public void clickSelectToSelectSponserInOrderTab(){
+		driver.waitForElementPresent(SELECT_BUTTON_TO_SELECT_SPONSER);
+		driver.click(SELECT_BUTTON_TO_SELECT_SPONSER);
+	}
+
+	public String getNewSponserNameFromUIInOrderTab(){
+		driver.waitForElementPresent(EXISTING_SPONSER_NAME);
+		return driver.findElement(EXISTING_SPONSER_NAME).getText().trim();
+	}
+
+	public String getOrderNumberInCustomerTab() {
+		driver.waitForElementPresent(ORDER_NUMBER_CUSTOMER_TAB_LOC);
+		return driver.findElement(ORDER_NUMBER_CUSTOMER_TAB_LOC).getText();
+
+	}
+
+	public void clickFindOrderLinkOnLeftNavigation() {
+		driver.waitForElementPresent(FIND_ORDER_LINK_LEFT_NAVIGATION_LOC);
+		driver.click(FIND_ORDER_LINK_LEFT_NAVIGATION_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean validateOrderStatusOnOrderSearchTab(String orderNumber) {
+		driver.waitForElementPresent(By.xpath(String.format(orderStatusLoc, orderNumber)));
+		String orderStatus = driver.findElement(By.xpath(String.format(orderStatusLoc, orderNumber))).getText();
+		System.out.println("orderStatus"+orderStatus);
+		if(orderStatus.contains("Submitted")){
+			return true;
+		}
+		return false;
+	}
+
+	public void clickCustomerSearchTab() {
+		driver.waitForElementPresent(CUSTOMER_SEARCH_TAB_LOC);
+		driver.click(CUSTOMER_SEARCH_TAB_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isCustomerNameOrCIDTxtFieldDisplayedOnOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(CUSTOMER_NAME_OR_CID_TXT_FIELD));
+	}
+
+	public boolean isSearchBtnDisplayedOnOrderSearchTab(){
+		return driver.IsElementVisible(driver.findElement(SEARCH_BTN));
+	}
+
+	public String getValueSelectedByDefaultOnOrderSearchTab(String dropDownName){
+		Select dropDown;
+		String getValueIsSelectedByDefaultOnOrderSearchTab = null;
+		if(dropDownName.equalsIgnoreCase("Order Type")){
+			dropDown = new Select(driver.findElement(ORDER_TYPE_DD));
+			getValueIsSelectedByDefaultOnOrderSearchTab = dropDown.getFirstSelectedOption().getText();			
+		}
+		else if(dropDownName.equalsIgnoreCase("Ship To Country")){
+			dropDown = new Select(driver.findElement(SHIP_TO_COUNTRY_DD));
+			getValueIsSelectedByDefaultOnOrderSearchTab = dropDown.getFirstSelectedOption().getText();
+		}
+		else if(dropDownName.equalsIgnoreCase("Order Status")){
+			dropDown = new Select(driver.findElement(ORDER_STATUS_DD));
+			getValueIsSelectedByDefaultOnOrderSearchTab = dropDown.getFirstSelectedOption().getText();
+		}
+		return getValueIsSelectedByDefaultOnOrderSearchTab;
+	}
+
+	public String validateAccountStatusOnCustomerTab() {
+		driver.waitForElementPresent(ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC);
+		return driver.findElement(ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC).getText();
+	}
+
+}

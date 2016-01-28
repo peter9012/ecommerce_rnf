@@ -32,7 +32,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
-//	private StoreFrontRCUserPage storeFrontRCUserPage;
+	//	private StoreFrontRCUserPage storeFrontRCUserPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
@@ -1326,7 +1326,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 
 		// open pws site
 		storeFrontHomePage.openPWSSite(country, env);
-//		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+		//		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 
 		//s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -7190,7 +7190,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
-//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
@@ -7519,7 +7519,156 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
+	// Hybris Project-98:SSN Validation for active consultant trying to re enroll
+	@Test
+	public void testValidateActiveConsultantReEnroll_98() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		//Get Sponser from database.
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+		String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(sponsorId);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseCheckBox();
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.applyPriceFilterHighToLow();
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.clickNextOnCRPCartPage();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Get Status and account id of newly created Consultant from database.
+		List<Map<String, Object>> consultantDetails=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,emailAddress),RFO_DB);
+		String accountStatusId= String.valueOf(getValueFromQueryResult(consultantDetails, "AccountStatusId"));
+		String accountNumberOfEnrolled = String.valueOf(getValueFromQueryResult(consultantDetails, "AccountNumber"));
+		//assert account status is active in dataBase.
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrolledUserStatus(accountStatusId), "Status of enrolled user is not active in database");
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(accountNumberOfEnrolled);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME+randomNumber, TestConstants.FIRST_NAME+randomNumber+TestConstants.EMAIL_ADDRESS_SUFFIX, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumber);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(), "Existing consultant popup is not present");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-99:SSN Validation for consultant trying to enroll under Sponsor
+	@Test
+	public void testSSNValidationForConsultantEnrollingUnderSponser_99() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_EXPRESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		//Get Sponser from database.
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+		String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(sponsorId);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.uncheckPulseCheckBox();
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.applyPriceFilterHighToLow();
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.clickNextOnCRPCartPage();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Get Status id of newly created Consultant from database.
+		List<Map<String, Object>> consultantDetails=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,emailAddress),RFO_DB);
+		String accountStatusId= String.valueOf(getValueFromQueryResult(consultantDetails, "AccountStatusId"));
+		//assert account status is active in dataBase.
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrolledUserStatus(accountStatusId), "Status of enrolled user is not active in database");
+		s_assert.assertAll();
+	}
 
 }
 

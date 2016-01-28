@@ -840,7 +840,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
-		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");

@@ -427,7 +427,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));  
-		logger.info("Create New Account button clicked");  
+		logger.info("Create New Account button clicked"); 
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isPopUpForPCThresholdPresent() throws InterruptedException{
@@ -1077,6 +1078,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void switchToChildWindow(){
 		driver.switchToSecondWindow();
+		driver.waitForPageLoad();
 	}
 
 	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
@@ -1183,8 +1185,11 @@ public class RFWebsiteBasePage extends RFBasePage{
 		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
 		driver.click(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
-		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();	
 		driver.pauseExecutionFor(3000);
+		driver.waitForLoadingImageToDisappear();
+		
 	}
 
 	public void navigateToCountry(){

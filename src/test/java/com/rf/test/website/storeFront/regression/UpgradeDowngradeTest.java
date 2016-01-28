@@ -324,7 +324,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-4775 :: Version : 1 :: Consultant to PC downgrade and PC to Consultant for same User for US
 	@Test
-	public void testConsultantToPCDowngradeANdPCToConsultantForSameForUS_4775() throws InterruptedException{
+	public void testConsultantToPCDowngradeAndPCToConsultantForSameForUS_4775() throws InterruptedException{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String socialInsuranceNumberForReEnrollment = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		RFO_DB = driver.getDBNameRFO();	
@@ -472,18 +472,18 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
 		storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
-		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
-		storeFrontHomePage.enterFirstName(firstName);
-		storeFrontHomePage.enterLastName(lastName);
+		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();		
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterConfirmPassword(password);
+		storeFrontHomePage.enterFirstName(firstName);
+		storeFrontHomePage.enterLastName(lastName);
 		storeFrontHomePage.enterAddressLine1(addressLine1);
 		storeFrontHomePage.enterCity(city);
 		storeFrontHomePage.selectProvince();
 		storeFrontHomePage.enterPostalCode(postalCode);
-		storeFrontHomePage.enterPhoneNumber(phoneNumber);
-		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterPhoneNumber(phoneNumber);		
+		storeFrontHomePage.clickEnrollmentNextBtn();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -787,7 +787,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4777:Consultant to RC downgrade(Cross Country)
-	@Test 
+	@Test
 	public void testConsultantToRCDowngrade_4777() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2516,7 +2516,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "User NOT upgrade successfully to PC");
 		s_assert.assertAll();	
 	}
-
 
 }
 

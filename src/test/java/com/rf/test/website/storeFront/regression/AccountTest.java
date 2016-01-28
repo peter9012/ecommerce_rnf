@@ -961,23 +961,28 @@ public class AccountTest extends RFWebsiteBaseTest{
 		//assert First Name with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, addressProfileName), RFO_DB);
 		firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+		logger.info("First Name from DB is "+firstNameDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), "First Name on UI is different from DB");
 
 		// assert Last Name with RFO
 		lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+		logger.info("Last Name from DB is "+lastNameDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), "Last Name on UI is different from DB");
 
 		// assert City with RFO
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_RFO, addressProfileName), RFO_DB);
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Locale");
+		logger.info("city from DB is "+cityDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB), "City on UI is different from DB");
 
 		// assert State with RFO
 		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
+		logger.info("State from DB is "+provinceDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB), "Province on UI is different from DB");
 
 		//assert Postal Code with RFO
 		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
+		logger.info("postal code from DB is "+postalCodeDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB), "Postal Code on UI is different from DB");
 
 		// assert Main Phone Number with RFO
@@ -986,6 +991,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		//  assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 
 		genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
+		logger.info("gender from DB is "+genderDB);
 		if(genderDB.equals("2")){
 			genderDB = "male";
 		}
@@ -999,6 +1005,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 
 		// assert BirthDay with RFO
 		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
+		logger.info("Date of birth from DB is "+dobDB);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB), "DOB on UI is different from DB");  
 
 		s_assert.assertAll();
@@ -1589,6 +1596,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
 		String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+		logger.info("COM PWS of sponsor is "+comPWSOfSponser);
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		// sponser search by Account Number
 		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
@@ -1672,6 +1680,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
+		logger.info("Current URL is "+currentURL);
 		s_assert.assertTrue(currentURL.contains(comPWSOfSponser),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}

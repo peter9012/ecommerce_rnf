@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="regressionTestSuite">
-	<listeners>
-		<listener class-name="org.uncommons.reportng.HTMLReporter" />
-		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-	</listeners>
-	<test name="EnrollmentRegression">
-	<classes>
-			<!-- ACCOUNTS -->
-	 <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
-     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"/> -->
-     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest"/> -->
-     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
-     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.PersonalResultsKitTest"/> -->
-   	 <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
-     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest"/> -->
-     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/> -->
+ <listeners>
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+ </listeners>
+ <test name="EnrollmentRegression">
+ <classes>
+   <!-- ACCOUNTS -->
+ <class name="com.rf.test.website.storeFront.regression.AccountTest"/>
+    <class name="com.rf.test.website.storeFront.regression.CartAndCheckoutValidationTest"/>
+ <class name="com.rf.test.website.storeFront.regression.EnrollmentValidationTest"/>
+ <class name="com.rf.test.website.storeFront.regression.HomePageFunctionalityTest"/>
+ <class name="com.rf.test.website.storeFront.regression.OrderValidationTest"/>
+ <class name="com.rf.test.website.storeFront.regression.UpgradeDowngradeTest"/>
+
+     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/> -->
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
      <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/> -->
-     <!-- <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"/> -->
-     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/>
-     <class name="com.rf.test.website.storeFront.regression.AccountTest"/>
+     <!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/> -->
+     <class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
+     
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
+     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
+     
      <class name="com.rf.test.website.storeFront.regression.billingAndShipping.AddBillingTest"/>
      <class name="com.rf.test.website.storeFront.regression.billingAndShipping.AddShippingTest"/>
      <class name="com.rf.test.website.storeFront.regression.billingAndShipping.EditBillingTest"/>
      <class name="com.rf.test.website.storeFront.regression.billingAndShipping.EditShippingTest"/>
-     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
-     <class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
   </classes>
-	</test>
-</suite>
+ </test>
+</suite

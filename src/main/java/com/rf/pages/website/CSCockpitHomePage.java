@@ -38,7 +38,15 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static String shipToCountryValueLoc = "//span[contains(text(),'Ship To Country')]/select/option[contains(text(),'%s')]";
 	private static String orderTypeValueLoc = "//span[contains(text(),'Order Type')]/select/option[contains(text(),'%s')]";
 	private static String orderStatusValueLoc = "//span[contains(text(),'Order Status')]/select/option[contains(text(),'%s')]";
-
+	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[3]//span";
+	private static String firstName = "//span[contains(text(),'%s')]";
+	private static String orderStatusDDLoc = "//span[contains(text(),'Order Status')]//option[text()='%s']";
+	private static String orderTypeDDloc = "//span[contains(text(),'Order Type')]//option[text()='%s']";
+	private static String orderSectionLoc ="//div[text()='%s']";
+	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[1]/td[4]//span";
+	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
+	private static String orderTypeCustomerTabLoc = "//div[@class='z-listbox-body']//a[contains(text(),'%s')]//following::td[2]//span";
+	
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']");
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -149,7 +157,60 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	private static final By ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'Account Status:')]/following::span[1]");
 	private static final By CV_QV_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']"); 
 	private static final By CV_QV_DISABLED_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']/ancestor::table[1][@class='z-button z-button-disd']");
-	
+	private static final By BASE_PRICE = By.xpath("//span[contains(text(),'Base Price')]");
+	private static final By TOTAL_PRICE = By.xpath("//span[contains(text(),'Total Price')]");
+	private static final By ENTRY_CV = By.xpath("//span[contains(text(),'Entry CV')]");
+	private static final By ENTRY_QV = By.xpath("//span[contains(text(),'Entry QV')]");
+	private static final By SELECTED_DELIVERY_ADDRESS = By.xpath("//select[contains(@class,'csDeliveryAddressList')]//option[@selected='selected']");
+	private static final By NEW_ADDRESS_IN_DELIVERY_SECTION = By.xpath("//td[contains(text(),'New Address')]");
+	private static final By SUBTOTAL_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Subtotal')]");
+	private static final By DISCOUNT_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Discount')]");
+	private static final By DELIVERY_COSTS_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Delivery Costs')]");
+	private static final By HANDLING_COSTS_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Handling Costs')]");
+	private static final By TAXES_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Taxes')]");
+	private static final By TOTAL_PRICE_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Total Price')]");
+	private static final By TOTAL_CV_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Total CV')]");
+	private static final By TOTAL_QV_TXT_TOTALS_SECTION = By.xpath("//span[contains(text(),'Total QV')]");
+	private static final By COMMISSION_DATE_TXT = By.xpath("//span[contains(text(),'Commission Date')]");
+	private static final By ORDER_NOTES_TXT_LOCATOR = By.xpath("//span[contains(text(),'Order Notes')]");
+	private static final By ORDER_NOTE_ADD_BTN = By.xpath("//span[contains(text(),'Order Notes')]/following::td[text()='ADD'][1]");
+	private static final By NO_PROMOTION_TXT_LOCATOR = By.xpath("//span[contains(text(),'Applied Promotions')]/following::div[contains(text(),'No Promotions')]");
+	private static final By CREDIT_CARD_NUMBER_TXT_LOCATOR = By.xpath("//div[contains(text(),'Credit Card number')]");
+	private static final By CREDIT_CARD_OWNER_TXT_LOCATOR = By.xpath("//div[contains(text(),'Credit Card Owner')]");
+	private static final By CREDIT_CARD_TYPE_TXT_LOCATOR = By.xpath("//div[contains(text(),'Type')]");
+	private static final By CREDIT_CARD_MONTH_TXT_LOCATOR = By.xpath("//div[contains(text(),'Month')]");
+	private static final By CREDIT_CARD_VALID_TO_YEAR_TXT_LOCATOR = By.xpath("//div[contains(text(),'Valid to year')]");
+	private static final By PAYMENT_BILLING_ADDRESS_TXT_LOCATOR = By.xpath("//div[contains(text(),'Billing address')]");
+	private static final By PAYMENT_AMOUNT_TXT_LOCATOR = By.xpath("//div[contains(text(),'Amount')]");
+	private static final By CREDIT_CARD_CV2_TXT_LOCATOR = By.xpath("//div[contains(text(),'Cv2')]");
+	private static final By PERFORM_SOO_BTN_LOCATOR = By.xpath("//div[contains(text(),'Cv2')]");
+	private static final By FIND_ORDER = By.xpath("//a[contains(text(),'Find Order')]");
+	private static final By ORDER_LINK_SECTION_LOCATOR = By.xpath("//div[contains(@class,'listbox-body')]/table/tbody[2]/tr[1]/td[1]//a");
+	private static final By ORDER_HISTORY_NO_ENTRIES = By.xpath("//div[@class='csOrderHistory']//div[contains(text(),'No Entries')]");
+	private static final By MODIFICATION_HISTORY_NO_ENTRIES = By.xpath("//span[text()='Modification History']/following::div[contains(text(),'No Entries')]");
+	private static final By MENU_BTN_LOCATOR = By.xpath("//span[text()='Menu']");
+	private static final By LOGOUT_BTN_LOCATOR = By.xpath("//a[contains(text(),'Logout')]");
+	private static final By CV_TXT_BOX_LOCATOR = By.xpath("//div[text()='Total CV']/following::input[1]");
+	private static final By QV_TXT_BOX_LOCATOR = By.xpath("//div[text()='Total QV']/following::input[2]");
+	private static final By CANCEL_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='Cancel']");
+	private static final By OK_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='OK']");
+	private static final By CUSTOMER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Customer Name or CID']/following::input[1]");
+	private static final By INVALID_CID_SEARCH_RESULT = By.xpath("//span[text()='No Results']");
+	private static final By PERFROM_SOO_BUTTON_LOC = By.xpath("//td[text()='PERFORM SOO']");
+	private static final By PERFORM_SOO_POPUP_PRICE_LOC = By.xpath("//div[@class='soo-popup-items']//td[4]//input");
+	private static final By PERFORM_SOO_POPUP_CV_LOC = By.xpath("//div[@class='soo-popup-items']//td[6]//input");
+	private static final By PERFORM_SOO_POPUP_QV_LOC = By.xpath("//div[@class='soo-popup-items']//td[7]//input");
+	private static final By PERFORM_SOO_POPUP_DC_LOC = By.xpath("//div[@class='order-totals']//div[3]//input");
+	private static final By PERFORM_SOO_POPUP_HC_LOC = By.xpath("//div[@class='order-totals']//div[4]//input");
+	private static final By PERFORM_SOO_OVERRIDE_REASON_DEPT_DD_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[2]//img");
+	private static final By SELECT_OVERRIDE_REASON_DEPT_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'IT')]");
+	private static final By PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[3]//img");
+	private static final By SELECT_OVERRIDE_REASON_TYPE_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'Appeasement')]");
+	private static final By PERFORM_SOO_REASON_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[4]//img");
+	private static final By SELECT_SOO_REASON_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'Damaged')]");
+	private static final By SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC = By.xpath("//td[contains(text(),'UPDATE')]");
+
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitHomePage(RFWebsiteDriver driver) {
@@ -254,6 +315,14 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		driver.click(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
 		logger.info("CID sequence number is "+customerSequenceNumber);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String clickAndReturnCIDNumberInCustomerSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
+		String orderNumber = driver.findElement((By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)))).getText();
+		driver.click(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return orderNumber;
 	}
 
 	public void clickFirstOrderInCustomerTab(){
@@ -533,11 +602,6 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 		}catch(Exception e){
 			return false;
 		}
-	}
-
-	public boolean isQVandCVUpdateBtnDisabledOnOrderTab(){
-		driver.waitForElementPresent(CV_QV_UPDATE_BTN);
-		return driver.isElementPresent(CV_QV_DISABLED_UPDATE_BTN);
 	}
 
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){
@@ -992,6 +1056,404 @@ public class CSCockpitHomePage extends CSCockpitRFWebsiteBasePage{
 	public String validateAccountStatusOnCustomerTab() {
 		driver.waitForElementPresent(ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC);
 		return driver.findElement(ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC).getText();
+	}
+
+	public boolean verifyBasePriceIsPresentInCartSectionInCheckoutTab(){
+		driver.waitForElementPresent(BASE_PRICE);
+		return driver.isElementPresent(BASE_PRICE);
+	}
+
+	public boolean verifyTotalPriceIsPresentInCartSectionInCheckoutTab(){
+		driver.waitForElementPresent(TOTAL_PRICE);
+		return driver.isElementPresent(TOTAL_PRICE);
+	}
+
+	public boolean verifyEntryCVIsPresentInCartSectionInCheckoutTab(){
+		driver.waitForElementPresent(ENTRY_CV);
+		return driver.isElementPresent(ENTRY_CV);
+	}
+
+	public boolean verifyEntryQVIsPresentInCartSectionInCheckoutTab(){
+		driver.waitForElementPresent(ENTRY_QV);
+		return driver.isElementPresent(ENTRY_QV);
+	}
+
+	public String getSelectedDeliveryAddressInCheckoutTab(){
+		driver.waitForElementPresent(SELECTED_DELIVERY_ADDRESS);
+		return driver.findElement(SELECTED_DELIVERY_ADDRESS).getText();
+	}
+
+	public boolean verifyNewAddressIsPresentInDeliverySectionInCheckoutTab(){
+		driver.waitForElementPresent(NEW_ADDRESS_IN_DELIVERY_SECTION);
+		return driver.isElementPresent(NEW_ADDRESS_IN_DELIVERY_SECTION);
+	}
+
+	public boolean verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(SUBTOTAL_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(SUBTOTAL_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(DISCOUNT_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(DISCOUNT_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(DELIVERY_COSTS_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(DELIVERY_COSTS_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyHandlingCostsTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(HANDLING_COSTS_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(HANDLING_COSTS_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyTaxesTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(TAXES_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(TAXES_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyTotalPriceTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(TOTAL_PRICE_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(TOTAL_PRICE_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyTotalCVTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(TOTAL_CV_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(TOTAL_CV_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyTotalQVTxtIsPresentInTotalsSectionInCheckoutTab(){
+		driver.waitForElementPresent(TOTAL_QV_TXT_TOTALS_SECTION);
+		return driver.isElementPresent(TOTAL_QV_TXT_TOTALS_SECTION);
+	}
+
+	public boolean verifyCommissionDateTxtIsPresentInCustomSectionInCheckoutTab(){
+		driver.waitForElementPresent(COMMISSION_DATE_TXT);
+		return driver.isElementPresent(COMMISSION_DATE_TXT);
+	}
+
+	public boolean verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(){
+		driver.waitForElementPresent(COMMISSION_DATE);
+		return driver.isElementPresent(COMMISSION_DATE);
+	}
+
+	public boolean verifyOrderNotesTextInOrderInfoSectionInCheckoutTab(){
+		driver.waitForElementPresent(ORDER_NOTES_TXT_LOCATOR);
+		return driver.isElementPresent(ORDER_NOTES_TXT_LOCATOR);
+	}
+
+	public boolean verifyOrderNotesTextAreaInOrderInfoSectionInCheckoutTab(){
+		driver.waitForElementPresent(ORDER_NOTES_TXT_LOCATOR);
+		return driver.isElementPresent(ORDER_NOTES_TXT_LOCATOR);
+	}
+
+	public boolean verifyOrderNoteAddBtnInOrderInfoSectionInCheckoutTab(){
+		driver.waitForElementPresent(ORDER_NOTE_ADD_BTN);
+		return driver.isElementPresent(ORDER_NOTE_ADD_BTN);
+	}
+
+	public boolean verifyNoPromotionsAppliedInAppliedPromotionsSectionInCheckoutTab(){
+		driver.waitForElementPresent(NO_PROMOTION_TXT_LOCATOR);
+		return driver.isElementPresent(NO_PROMOTION_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardNumberSectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_NUMBER_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_NUMBER_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardOwnerSectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_OWNER_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_OWNER_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardTypeSectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_TYPE_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_TYPE_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardMonthSectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_MONTH_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_MONTH_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardValidToYearSectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_VALID_TO_YEAR_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_VALID_TO_YEAR_TXT_LOCATOR);
+	}
+
+	public boolean verifyPaymentBillingAddressSectionInCheckoutTab(){
+		driver.waitForElementPresent(PAYMENT_BILLING_ADDRESS_TXT_LOCATOR);
+		return driver.isElementPresent(PAYMENT_BILLING_ADDRESS_TXT_LOCATOR);
+	}
+
+	public boolean verifyPaymentAmountSectionInCheckoutTab(){
+		driver.waitForElementPresent(PAYMENT_AMOUNT_TXT_LOCATOR);
+		return driver.isElementPresent(PAYMENT_AMOUNT_TXT_LOCATOR);
+	}
+
+	public boolean verifyCreditCardCv2SectionInCheckoutTab(){
+		driver.waitForElementPresent(CREDIT_CARD_CV2_TXT_LOCATOR);
+		return driver.isElementPresent(CREDIT_CARD_CV2_TXT_LOCATOR);
+	}
+
+	public boolean verifyUseThisCardBtnInCheckoutTab(){
+		driver.waitForElementPresent(USE_THIS_CARD_BTN);
+		return driver.isElementPresent(USE_THIS_CARD_BTN);
+	}
+
+	public boolean verifyPlaceOrderBtnIsPresentInCheckoutTab(){
+		driver.waitForElementPresent(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
+		return driver.isElementPresent(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
+	}
+
+	public boolean verifyPerformSOOBtnIsPresentInCheckoutTab(){
+		driver.waitForElementPresent(PERFORM_SOO_BTN_LOCATOR);
+		return driver.isElementPresent(PERFORM_SOO_BTN_LOCATOR);
+	}
+
+	public boolean verifyTestOrderChkBoxIsPresentInCheckoutTab(){
+		driver.waitForElementPresent(TEST_ORDER_CHKBOX);
+		return driver.isElementPresent(TEST_ORDER_CHKBOX);
+	}
+
+	public boolean verifyDoNotShipChkBoxIsPresentInCheckoutTab(){
+		driver.waitForElementPresent(DO_NOT_SHIP_CHKBOX);
+		return driver.isElementPresent(DO_NOT_SHIP_CHKBOX);
+	}
+
+	public String getfirstNameOfTheCustomerInCustomerSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber)));
+		String firstname = driver.findElement(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber))).getText();
+		logger.info("Selected Cutomer first Name is = "+firstname);
+		return firstname;
+	}
+
+	public void clickOnFindOrderInCustomerSearchTab(){
+		driver.waitForElementPresent(FIND_ORDER);
+		driver.click(FIND_ORDER);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectOrderStatusFromDropDownInOrderTab(String orderStatus){
+		driver.waitForElementPresent(By.xpath(String.format(orderStatusDDLoc, orderStatus)));
+		driver.click(By.xpath(String.format(orderStatusDDLoc, orderStatus)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+	public void selectOrderTypeInOrderSearchTab(String orderType){
+		driver.waitForElementPresent(By.xpath(String.format(orderTypeDDloc,orderType)));
+		driver.click(By.xpath(String.format(orderTypeDDloc,orderType)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifyOrderNumberSectionIsPresentWithClickableLinksInOrderSearchTab(){
+		driver.waitForElementPresent(ORDER_LINK_SECTION_LOCATOR);
+		return driver.isElementPresent(ORDER_LINK_SECTION_LOCATOR);
+	}
+
+	public boolean verifySectionsIsPresentInOrderSearchTab(String sectionName){
+		driver.waitForElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
+		return driver.isElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
+	}
+
+	public boolean verifyOrderDetailsIsPresentInOrderTab(String Name){
+		driver.waitForElementPresent(By.xpath(String.format(orderSectionLoc, Name)));
+		return driver.isElementPresent(By.xpath(String.format(orderSectionLoc, Name)));
+	}
+
+	public boolean verifyReturnOrderBtnIsPresentInOrderTab(){
+		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+		return driver.isElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+	}
+
+	public boolean verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(){
+		driver.waitForElementPresent(PLACE_ORDER_BUTTON);
+		return driver.isElementPresent(PLACE_ORDER_BUTTON);
+	}
+
+	public boolean verifyOrderHistoryInOrderTab(){
+		driver.waitForElementPresent(ORDER_HISTORY_NO_ENTRIES);
+		return driver.isElementPresent(ORDER_HISTORY_NO_ENTRIES);
+	} 
+
+	public boolean verifyModificationHistoryInOrderTab(){
+		driver.waitForElementPresent(MODIFICATION_HISTORY_NO_ENTRIES);
+		return driver.isElementPresent(MODIFICATION_HISTORY_NO_ENTRIES);
+	} 
+
+	public void clickMenuButton(){
+		driver.waitForElementPresent(MENU_BTN_LOCATOR);
+		driver.click(MENU_BTN_LOCATOR);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickLogoutButton(){
+		driver.waitForElementPresent(LOGOUT_BTN_LOCATOR);
+		driver.click(LOGOUT_BTN_LOCATOR);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getCVValueInOrderTab(){
+		driver.waitForElementPresent(CV_TXT_BOX_LOCATOR);
+		String CVValue = driver.findElement(CV_TXT_BOX_LOCATOR).getAttribute("value");
+		return CVValue;
+	}
+
+	public String getQVValueInOrderTab(){
+		driver.waitForElementPresent(QV_TXT_BOX_LOCATOR);
+		String QVValue = driver.findElement(QV_TXT_BOX_LOCATOR).getAttribute("value");
+		return QVValue;
+	}
+
+	public void enterCVValueInOrderTab(String value){
+		driver.waitForElementPresent(CV_TXT_BOX_LOCATOR);
+		driver.type(CV_TXT_BOX_LOCATOR, value);
+	}
+
+	public void enterQVValueInOrderTab(String value){
+		driver.waitForElementPresent(QV_TXT_BOX_LOCATOR);
+		driver.type(QV_TXT_BOX_LOCATOR, value);
+	} 
+
+	public void clickupdateButtonForCVAndQVInOrderTab(){
+		driver.waitForElementPresent(CV_QV_UPDATE_BTN);
+		driver.click(CV_QV_UPDATE_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCancelBtnAfterUpdateCVAndQVInOrderTab(){
+		driver.waitForElementPresent(CANCEL_BUTTON_LOCATOR_FOR_UPDATE_QV_CV);
+		driver.click(CANCEL_BUTTON_LOCATOR_FOR_UPDATE_QV_CV);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickOKBtnAfterUpdateCVAndQVInOrderTab(){
+		driver.waitForElementPresent(OK_BUTTON_LOCATOR_FOR_UPDATE_QV_CV);
+		driver.click(OK_BUTTON_LOCATOR_FOR_UPDATE_QV_CV);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isQVandCVUpdateBtnDisabledOnOrderTab(){
+		driver.waitForElementPresent(CV_QV_UPDATE_BTN);
+		return driver.isElementPresent(CV_QV_DISABLED_UPDATE_BTN);
+	}
+
+	public String getNameFromCartSectionInCheckoutTab(String name){
+		driver.waitForElementPresent(By.xpath(String.format(firstName, name)));
+		String fullName = driver.findElement(By.xpath(String.format(firstName, name))).getText();
+		logger.info("Selected Cutomer first Name is = "+fullName);
+		return fullName;
+	}
+
+	public String getLastNameOfTheCustomerInOrderSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(customerLastNameInSearchResultsLoc, customerSequenceNumber)));
+		String firstname = driver.findElement(By.xpath(String.format(customerLastNameInSearchResultsLoc, customerSequenceNumber))).getText();
+		logger.info("Selected Cutomer first Name is = "+firstname);
+		return firstname;
+	}
+
+	public String getEmailIdOfTheCustomerInOrderSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(anotherCustomerEmailIdInSearchResultsLoc, customerSequenceNumber)));
+		String customerEmailId = driver.findElement(By.xpath(String.format(anotherCustomerEmailIdInSearchResultsLoc, customerSequenceNumber))).getText();
+		logger.info("Selected Cutomer email Id is = "+customerEmailId);
+		return customerEmailId;
+	}
+
+	public void enterCIDInOrderSearchTab(String cid){
+		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
+		driver.type(CUSTOMER_SEARCH_TEXT_BOX, cid);
+		logger.info("Entered Cid is "+cid);
+	}
+
+	public boolean verifyNoResultFoundForInvalidCID(){
+		driver.isElementPresent(INVALID_CID_SEARCH_RESULT);
+		return driver.isElementPresent(INVALID_CID_SEARCH_RESULT);  
+	}
+
+	public void clearOrderNumberFieldInOrderSearchTab(){
+		driver.waitForElementPresent(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);
+		driver.clear(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);		  
+	}
+
+	public void clearCidFieldInOrderSearchTab(){
+		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
+		driver.clear(CUSTOMER_SEARCH_TEXT_BOX);		  
+	}
+
+	public void clickPerformSooButton() {
+		driver.waitForElementPresent(PERFROM_SOO_BUTTON_LOC);
+		driver.click(PERFROM_SOO_BUTTON_LOC);
+		driver.waitForLoadingImageToDisappear();
+
+	}
+
+	public void enterPriceValueInSalesOrderOverridePopUp(String price) {
+		driver.waitForElementPresent(PERFORM_SOO_POPUP_PRICE_LOC);
+		driver.type(PERFORM_SOO_POPUP_PRICE_LOC, price);
+	}
+
+	public void enterCVValueInSalesOrderOverrridePoPuP(String cv){
+		driver.waitForElementPresent(PERFORM_SOO_POPUP_CV_LOC);
+		driver.type(PERFORM_SOO_POPUP_CV_LOC, cv);
+		logger.info("CV VALUE ENTERED IN SALES OVERRIDE POPUP");
+	}
+
+	public void enterQVValueInSalesOrderOvverridePopUp(String qv){
+		driver.waitForElementPresent(PERFORM_SOO_POPUP_QV_LOC);
+		driver.type(PERFORM_SOO_POPUP_QV_LOC, qv);
+		logger.info("QV VALUE ENTERED IN SALES OVERRIDE POPUP");
+	}
+
+	public void enterDeliveryCostsInSalesOrderOvverridePopUp(String dc){
+		driver.waitForElementPresent(PERFORM_SOO_POPUP_DC_LOC);
+		driver.type(PERFORM_SOO_POPUP_DC_LOC, dc);
+		logger.info("DC VALUE ENTERED IN SALES OVERRIDE POPUP");
+	}
+
+	public void enterHandlingCostsInSalesOrderOvveridePOpUp(String hc){
+		driver.waitForElementPresent(PERFORM_SOO_POPUP_HC_LOC);
+		driver.type(PERFORM_SOO_POPUP_HC_LOC, hc);
+		logger.info("HC VALUE ENTERED IN SALES OVERRIDE POPUP");
+
+	}
+
+	public void selectOverrideReasonSooDept(){
+		driver.waitForElementPresent(PERFORM_SOO_OVERRIDE_REASON_DEPT_DD_LOC);
+		driver.click(PERFORM_SOO_OVERRIDE_REASON_DEPT_DD_LOC);
+		logger.info("SOO DEPT DD CLICKED IN SALES OVERRIDE POPUP");
+		driver.waitForElementPresent(SELECT_OVERRIDE_REASON_DEPT_LOC);
+		driver.click(SELECT_OVERRIDE_REASON_DEPT_LOC);
+		logger.info("SOO DEPT DD VALUE SELECTED IN SALES OVERRIDE POPUP");
+	}
+
+	public void selectOverrideReasonSooType(){
+		driver.waitForElementPresent(PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC);
+		driver.click(PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC);
+		logger.info("SOO TYPE DD CLICKED IN SALES OVERRIDE POPUP");
+		driver.waitForElementPresent(SELECT_OVERRIDE_REASON_TYPE_LOC);
+		driver.click(SELECT_OVERRIDE_REASON_TYPE_LOC);
+		logger.info("SOO TYPE DD VALUE SELECTED IN SALES OVERRIDE POPUP");
+	}
+
+	public void selectOverrideReasonSooReason(){
+		driver.waitForElementPresent(PERFORM_SOO_REASON_LOC);
+		driver.click(PERFORM_SOO_REASON_LOC);
+		logger.info("SOO REASON DD CLICKED IN SALES OVERRIDE POPUP");
+		driver.waitForElementPresent(SELECT_SOO_REASON_LOC);
+		driver.click(SELECT_SOO_REASON_LOC);
+		logger.info("SOO REASON DD VALUE SELECTED");
+	}
+
+	public void clickUpdateButtonSalesOverridePopUp(){
+		driver.waitForElementPresent(SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC);
+		driver.click(SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC);
+		driver.waitForLoadingImageToDisappear();
+	}
+	public String getOrderTypeOnCustomerTab(String orderNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderTypeCustomerTabLoc,orderNumber)));
+		return driver.findElement(By.xpath(String.format(orderTypeCustomerTabLoc, orderNumber))).getText();
+
 	}
 
 }

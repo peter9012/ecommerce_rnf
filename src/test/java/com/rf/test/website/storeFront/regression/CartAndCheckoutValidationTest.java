@@ -5722,5 +5722,151 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	}
 
 
+	//Hybris Project-2143:Check Shipping and Handling Fee for UPS Ground for Order total 0-999999-PC Perk Autoship
+	@Test
+	public void testCheckShippingAndHandlingFeeForUPSGround_2143() throws InterruptedException	{
+		if(driver.getCountry().equalsIgnoreCase("ca")){ 
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountId = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful"); 
+			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+			storeFrontUpdateCartPage.clickOnCheckoutButton();
+			storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
+			double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+			logger.info("subtotal ="+subtotal);
+			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+			logger.info("deliveryCharges ="+deliveryCharges);
+			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+			logger.info("handlingCharges ="+handlingCharges);
+			if(subtotal<=999999){
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+			}else{
+				logger.info(" Order total is not in required range");
+			}
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-2146:Check Shipping and Handling Fee for UPS 2Day for Order total 0-999999-PCPerk Autoship
+	@Test
+	public void testCheckShippingAndHandlingFeeForUPS2Day_2146() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){ 
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountId = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful"); 
+			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+			storeFrontUpdateCartPage.clickOnCheckoutButton();
+			storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
+			double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+			logger.info("subtotal ="+subtotal);
+			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+			logger.info("deliveryCharges ="+deliveryCharges);
+			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+			logger.info("handlingCharges ="+handlingCharges);
+			if(subtotal<=999999){
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+			}else{
+				logger.info(" Order total is not in required range");
+			}
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-2150:Check Shipping and Handling Fee for UPS 1Day for Order total 0-999999-PCPerk
+	@Test
+	public void testCheckShippingAndHandlingFeeForUPS1Day_2150() throws InterruptedException		{
+		if(driver.getCountry().equalsIgnoreCase("ca")){ 
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountId = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful"); 
+			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+			storeFrontUpdateCartPage.clickOnCheckoutButton();
+			storeFrontUpdateCartPage.selectShippingMethodUPStandardOvernightInOrderSummary();
+			double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+			logger.info("subtotal ="+subtotal);
+			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+			logger.info("deliveryCharges ="+deliveryCharges);
+			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+			logger.info("handlingCharges ="+handlingCharges);
+			if(subtotal<=999999){
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$30.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+			}else{
+				logger.info(" Order total is not in required range");
+			}
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
 }
 

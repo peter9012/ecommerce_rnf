@@ -33,6 +33,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
 	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now »')]");
+	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//a[text()='Policy and Procedures']");
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
@@ -517,7 +518,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public void enterNameAsItAppearsOnCard(String nameOnCard){
-		driver.findElement(By.id("name-on-card")).sendKeys(nameOnCard);
+		driver.findElement(By.id("name-on-card")).sendKeys(nameOnCard+" last");
 		logger.info("name on card entered is "+nameOnCard);
 	}
 
@@ -615,7 +616,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifyCongratsMessage(){
 		driver.waitForElementPresent(By.id("Congrats"));
-		return driver.IsElementVisible(driver.findElement(By.id("Congrats")));
+		return driver.isElementPresent(By.id("Congrats"));
 	}
 
 
@@ -714,6 +715,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public void clickNextOnCRPCartPage(){
 		driver.waitForElementPresent(By.id("submitForm"));
 		driver.click(By.id("submitForm"));
+		driver.waitForLoadingImageToDisappear();
 	}
 	public void clickSwitchToExpressEnrollmentOnRecurringMonthlyChargesSection(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Express')]"));
@@ -3688,6 +3690,12 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 	public boolean verifyILiveInNorthDakotaLinkIsNotPresentForCA() {
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'continue without purchasing a Business Portfolio or enrollment kit.')]"));
+	}
+
+	public void clickPolicyAndProcedureLink(){
+		driver.waitForElementPresent(POLICY_AND_PROCEDURE_LINK);
+		driver.click(POLICY_AND_PROCEDURE_LINK);
+		driver.pauseExecutionFor(2000);
 	}
 
 }

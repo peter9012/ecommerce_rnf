@@ -1570,19 +1570,19 @@ public class DBQueries_RFO {
 			"AND a.Active = 1 ) "+
 			"ORDER BY NEWID() )";
 
-	 public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_RETURN_ORDERS_RFO = 
-		        "SELECT AB.ACCOUNTID,EA.EMAILADDRESS "+
-		        "FROM "+
-		        "(SELECT DISTINCT ACCOUNTID "+
-		        "FROM RFOPERATIONS.HYBRIS.RETURNORDER WHERE ORDERID IN (SELECT ORDERID FROM RFOPERATIONS.HYBRIS.ORDERS WHERE AUTOSHIPID IS NOT NULL )) ARO, "+
-		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTRF AB , "+
-		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE A , "+
-		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTCONTACTS AC , "+
-		        "RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTEMAILS ACE , "+
-		        "RFOPERATIONS.RFO_ACCOUNTS.EMAILADDRESSES EA "+
-		        "WHERE ARO.ACCOUNTID=AB.ACCOUNTID AND AB.ACCOUNTID=A.ACCOUNTID AND A.COUNTRYID=%s "+
-		        "AND  AB.ACCOUNTID=AC.ACCOUNTID  AND ACE.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID "+
-		        "AND EA.EMAILADDRESSID=ACE.EMAILADDRESSID AND ISDEFAULT=1 AND A.ACCOUNTTYPEID=1 AND AB.ACTIVE=1";
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_RETURN_ORDERS_RFO = 
+			"SELECT AB.ACCOUNTID,EA.EMAILADDRESS "+
+					"FROM "+
+					"(SELECT DISTINCT ACCOUNTID "+
+					"FROM RFOPERATIONS.HYBRIS.RETURNORDER WHERE ORDERID IN (SELECT ORDERID FROM RFOPERATIONS.HYBRIS.ORDERS WHERE AUTOSHIPID IS NOT NULL )) ARO, "+
+					"RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTRF AB , "+
+					"RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE A , "+
+					"RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTCONTACTS AC , "+
+					"RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTEMAILS ACE , "+
+					"RFOPERATIONS.RFO_ACCOUNTS.EMAILADDRESSES EA "+
+					"WHERE ARO.ACCOUNTID=AB.ACCOUNTID AND AB.ACCOUNTID=A.ACCOUNTID AND A.COUNTRYID=%s "+
+					"AND  AB.ACCOUNTID=AC.ACCOUNTID  AND ACE.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID "+
+					"AND EA.EMAILADDRESSID=ACE.EMAILADDRESSID AND ISDEFAULT=1 AND A.ACCOUNTTYPEID=1 AND AB.ACTIVE=1";
 
 	public static String GET_ORDER_DETAILS_RFO = "select  * from Hybris.ReturnOrder where ReturnOrderNumber='%s'";
 
@@ -1646,7 +1646,7 @@ public class DBQueries_RFO {
 	public static String GET_CONSULTANT_EMAIL_ID_FROM_ACCOUNT_ID = "select Top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressId IN (select EmailAddressId from RFO_Accounts.AccountEmails where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContacts where AccountId = '%s'))";
 
 	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";
-	
+
 	public static String GET_ACCOUNT_FirstName_RFO = "select top 1 FirstName from RFO_Accounts.AccountContacts where FirstName IS not NULL order by servermodifieddate desc";
 
 	public static String GET_EMAIL_ADDRESS_ID_RFO = "select top 1 * from RFO_Accounts.AccountEmails where AccountContactId = '%s'";
@@ -1750,6 +1750,8 @@ public class DBQueries_RFO {
 			"INNER JOIN RFOperations.Hybris.Orders o ON au.AutoshipID = o.AutoshipId AND o.OrderTypeID = 9 "+
 			"INNER JOIN RFOperations.Hybris.ReturnOrder r ON o.orderID = r.OrderID and r.ReturnStatusID = 5 "+
 			"WHERE account.AccountTypeID = 2 and account.AccountStatusID =1 order by newID()";
+
+	public static String GET_ORDER_NUMBER_FROM_ACCOUNT_ID="select top 1 * from Hybris.Orders where AccountID='%s' ";
 
 	/**
 	 * 

@@ -439,6 +439,22 @@ public class TestConstants {
 	public static final String USE_THIS_CITY_US="CHARLOTTE";
 	public static final String USE_THIS_POSTAL_CODE_US="28214-5037";
 	public static final String USE_THIS_PROVINCE_US ="North Carolina";
+	public static final String ORDER_TYPE_DD_VALUE_SHIPPED = "Shipped";
+	public static final String CV_VALUE = "10.00";
+	public static final String QV_VALUE = "11.00";
+	public static final String ORDER_TYPE_DD_FIRST_VALUE = "PC Order";
+	public static final String ORDER_TYPE_DD_THIRD_VALUE = "Retail Order";
+	public static final String ORDER_TYPE_DD_FOURTH_VALUE = "Override Order";
+	public static final String ORDER_TYPE_DD_FIFTH_VALUE = "PCPerks Autoship";
+	public static final String ORDER_TYPE_DD_SIXTH_VALUE = "CRP Autoship";
+	public static final String ORDER_TYPE_DD_SEVENTH_VALUE = "Drop-Ship";
+	public static final String ORDER_TYPE_DD_EIGHT_VALUE = "POS Order";
+	public static final String ORDER_TYPE_DD_NINTH_VALUE = "Pulse Autoship";
+	public static final String ORDER_TYPE_DD_TENTH_VALUE = "Return";
+	public static final String ORDER_STATUS_DD_FIRST_VALUE = "Cancelled";
+	public static final String ORDER_STATUS_DD_SECOND_VALUE = "Failed";
+	public static final String ORDER_STATUS_DD_THIRD_VALUE = "Partially_Shipped";
+	public static final String ORDER_STATUS_DD_FOURTH_VALUE = "Shipped";
 
 }
 

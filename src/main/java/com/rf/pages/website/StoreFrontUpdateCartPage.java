@@ -64,7 +64,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-//		driver.waitForPageLoad();
+		//		driver.waitForPageLoad();
 		driver.quickWaitForElementPresent(By.id("card-nr"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
@@ -325,7 +325,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForPageLoad();
 
 	}
-	
+
 	public void clickOnBuyNowButton(String country) throws InterruptedException{
 
 		if(country.equalsIgnoreCase("ca")){
@@ -711,12 +711,21 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 
 
 	public double getSubtotalValue(){
-		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
-		String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
-		String[] totalValue= value.split("\\s");
-		double  subtotal = Double.parseDouble(totalValue[1]);
-		logger.info("Subtotal Value fetched is "+subtotal);
-		return subtotal;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+			String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
+			String[] totalValue= value.split("\\s");
+			double  subtotal = Double.parseDouble(totalValue[1]);
+			logger.info("Subtotal Value fetched is "+subtotal);
+			return subtotal;
+		}else{
+			driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+			String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
+			String subtotal= value.replace('$', ' ');
+			double Subtotal=Double.parseDouble(subtotal);
+			logger.info("Subtotal Value fetched is "+subtotal);
+			return Subtotal;
+		}
 	}
 
 	public void changeCreditCardDate(){
@@ -1538,6 +1547,14 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	public String getProductNameAtOrderConfirmationPage(String productNumber){
 		driver.waitForElementPresent(By.xpath("//div[contains(@class,'order-products checkout-confirm')]/div["+productNumber+"]//p[2]"));
 		return driver.findElement(By.xpath("//div[contains(@class,'order-products checkout-confirm')]/div["+productNumber+"]//p[2]")).getText().trim();
+	}
+
+	public void selectShippingMethodUPStandardOvernightInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'Overnight')]"));
+		logger.info("UPS Standard Overnight/1day shipping method is selected"); 
 	}
 
 }

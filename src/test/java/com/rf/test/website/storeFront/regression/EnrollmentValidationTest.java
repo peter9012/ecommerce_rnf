@@ -2199,6 +2199,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//At autoship options page check only the CRP check box and proceed..
 		storeFrontHomePage.uncheckPulseCheckBox(); 
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.applyPriceFilterHighToLow();
 		//Add a product to CRP..
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.clickNextOnCRPCartPage();
@@ -7668,7 +7669,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//assert account status is active in dataBase.
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrolledUserStatus(accountStatusId), "Status of enrolled user is not active in database");
 		s_assert.assertAll();
-	}
+	}	
 
 }
 

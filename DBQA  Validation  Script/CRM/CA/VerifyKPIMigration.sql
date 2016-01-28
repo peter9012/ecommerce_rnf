@@ -12,13 +12,13 @@ DECLARE @RFOPP BIGINT, @CRMPP BIGINT
 DECLARE @RowCount BIGINT 
 
 
-IF OBJECT_ID('rfoperations.sfdc.KPIDifference') IS NOT NULL  DROP TABLE rfoperations.sfdc.KPIDifference
-IF OBJECT_ID('Rfoperations.sfdc.KPIMissing') IS NOT NULL DROP TABLE Rfoperations.sfdc.KPIMissing
-IF OBJECT_ID('Rfoperations.sfdc.RFO_KPI') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_KPI
-IF OBJECT_ID('Rfoperations.sfdc.CRM_KPI') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_KPI
-IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_KPI') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_KPI
-IF OBJECT_ID('rfoperations.sfdc.AccountPolicyDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountPolicyDifference
-IF OBJECT_ID('rfoperations.sfdc.AccountPolicy_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountPolicy_Dups
+IF OBJECT_ID('CRM.sfdc.KPIDifference') IS NOT NULL  DROP TABLE CRM.sfdc.KPIDifference
+IF OBJECT_ID('CRM.sfdc.KPIMissing') IS NOT NULL DROP TABLE CRM.sfdc.KPIMissing
+IF OBJECT_ID('CRM.sfdc.RFO_KPI') IS NOT NULL DROP TABLE CRM.sfdc.RFO_KPI
+IF OBJECT_ID('CRM.sfdc.CRM_KPI') IS NOT NULL DROP TABLE CRM.sfdc.CRM_KPI
+IF OBJECT_ID('CRM.sfdc.ErrorLog_KPI') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_KPI
+IF OBJECT_ID('CRM.sfdc.AccountPolicyDifference') IS NOT NULL DROP TABLE CRM.sfdc.AccountPolicyDifference
+IF OBJECT_ID('CRM.sfdc.AccountPolicy_Dups') IS NOT NULL DROP TABLE CRM.sfdc.AccountPolicy_Dups
 IF OBJECT_ID('tempdb.dbo.#kpi') IS NOT NULL DROP TABLE #KPI
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -33,14 +33,14 @@ SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.PerformanceKPI 
 
 										   
 SELECT  @RFOPP AS RFO_KPICount, @CRMPP AS CRM_KPICountCount, (@RFOPP - @CRMPP) AS Difference 
-INTO rfoperations.sfdc.KPIDifference;
+INTO CRM.sfdc.KPIDifference;
 
 SELECT  AccountId AS RFO_AccountId,
  b.RFOACcountID__C as CRM_AccountId , 
  CASE WHEN b.RFOACcountID__C IS NULL THEN 'Destination'
       WHEN a.AccountId IS NULL THEN 'Source' 
  END AS MissingFROM
-INTO Rfoperations.sfdc.KPIMissing
+INTO CRM.sfdc.KPIMissing
 FROM 
     (SELECT AccountId FROM commissions.sfdc.stg_commissionskpi ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
@@ -49,16 +49,16 @@ FROM
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
 
-SELECT MissingFrom ,COUNT(*) from Rfoperations.sfdc.KPIMissing GROUP BY MISSINGFROM;
+SELECT MissingFrom ,COUNT(*) from CRM.sfdc.KPIMissing GROUP BY MISSINGFROM;
 
-SELECT 'Query Rfoperations.sfdc.KPIMissing to get list of AccountIDs missing from Source/Destination'
+SELECT 'Query CRM.sfdc.KPIMissing to get list of AccountIDs missing from Source/Destination'
 
 
 SELECT 
 accountid as account__c,
-CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE startdate >= M.DST_START AND startdate < M.DST_END),startdate),'1900-01-01') AS DATE) as PeriodStartDate__C,
-CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE EndDate >= M.DST_START AND EndDate < M.DST_END),Enddate),'1900-01-01') AS DATE) as PeriodEndDate__C,
-CAST(ISNULL(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE Closeddate >= M.DST_START AND Closeddate < M.DST_END),Closeddate),'1900-01-01') AS DATE) as PeriodClosedDate__C,
+CAST(ISNULL(DATEADD(HH,8,startdate),'1900-01-01') AS DATE) as PeriodStartDate__C,
+CAST(ISNULL(DATEADD(HH,8,Enddate),'1900-01-01') AS DATE) as PeriodEndDate__C,
+CAST(ISNULL(DATEADD(HH,8,Closeddate),'1900-01-01') AS DATE) as PeriodClosedDate__C,
 [Sales Volume] as SalesVolume__C,
 estimatedSV as estimatedSV__C,
 [My PSQV – No Estimate] as PSQV__c,
@@ -72,7 +72,7 @@ estimatedSV as estimatedSV__C,
 [Road to RFx – LV EC Legs] as RFx_LV_ECLegs__c,
 [Road to RFx – L1+L2 Volume] as RFx_L1L2_Volume__c,
 [Road to RFx – L1-L6 Volume] as RFx_L1L6_Volume__c
-INTO RFOPERATIONS.SFDC.RFO_KPI
+INTO CRM.sfdc.RFO_KPI
 FROM commissions.sfdc.stg_commissionskpi ACL , RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
 
 SELECT 
@@ -93,14 +93,14 @@ KPI.RFx_ECLegs__c,
 KPI.RFx_LV_ECLegs__c,
 KPI.RFx_L1L2_Volume__c,
 KPI.RFx_L1L6_Volume__c
-INTO RFOPERATIONS.SFDC.CRM_KPI
+INTO CRM.sfdc.CRM_KPI
 FROM SFDCBACKUP.SFDCBKP.PerformanceKPI KPI , SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE KPI.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
-SELECT * INTO #KPI FROM RFOPERATIONS.SFDC.RFO_KPI
+SELECT * INTO #KPI FROM CRM.sfdc.RFO_KPI
 EXCEPT 
-SELECT * FROM RFOPERATIONS.SFDC.CRM_KPI
+SELECT * FROM CRM.sfdc.CRM_KPI
 
-CREATE TABLE rfoperations.sfdc.ErrorLog_KPI
+CREATE TABLE CRM.sfdc.ErrorLog_KPI
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -111,8 +111,8 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'KPI') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'KPI') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'KPI') , 
+@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'KPI') 
 
 
 DECLARE @Skip  BIT 
@@ -122,7 +122,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_METADATA
+                               FROM     CRM.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -136,21 +136,21 @@ BEGIN
 
 DECLARE @DesKey NVARCHAR (50) = 'Account__c'; 
 DECLARE @SrcKey NVARCHAR (50) ='Account__c';
-DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_KPI' 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesTemp NVARCHAR (50) ='CRM.sfdc.CRM_KPI' 
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_METADATA WHERE ColID = @I)
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.CRM_Value = b. ' + @DesCol +
-' FROM rfoperations.sfdc.ErrorLog_KPI a  JOIN ' +@DesTemp+
+' FROM CRM.sfdc.ErrorLog_KPI a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO rfoperations.sfdc.ErrorLog_KPI (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO CRM.sfdc.ErrorLog_KPI (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
   --SELECT @SQL3
@@ -174,7 +174,7 @@ END
 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_kpi A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM CRM.sfdc.ErrorLog_kpi A JOIN CRM.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 end

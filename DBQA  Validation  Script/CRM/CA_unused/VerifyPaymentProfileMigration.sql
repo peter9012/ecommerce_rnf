@@ -15,12 +15,12 @@ BEGIN
 
 
 DECLARE @LASTRUNDATE DATETIME='2000-01-01';
-IF OBJECT_ID('CRM.sfdc.PaymentProfilesMissing') IS NOT NULL  DROP TABLE CRM.sfdc.PaymentProfilesMissing
-IF OBJECT_ID('CRM.sfdc.CRM_PaymentProfiles') IS NOT NULL DROP TABLE CRM.sfdc.CRM_PaymentProfiles
-IF OBJECT_ID('CRM.sfdc.RFO_PaymentProfiles') IS NOT NULL DROP TABLE CRM.sfdc.RFO_PaymentProfiles
-IF OBJECT_ID('CRM.sfdc.ErrorLog_PaymentProfiles') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_PaymentProfiles
-IF OBJECT_ID('CRM.sfdc.PaymentProfileDifference') IS NOT NULL DROP TABLE CRM.sfdc.PaymentProfileDifference
-IF OBJECT_ID('CRM.sfdc.PaymentProfile_Dups') IS NOT NULL DROP TABLE CRM.sfdc.PaymentProfile_Dups
+IF OBJECT_ID('Rfoperations.sfdc.PaymentProfilesMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.PaymentProfilesMissing
+IF OBJECT_ID('Rfoperations.sfdc.CRM_PaymentProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_PaymentProfiles
+IF OBJECT_ID('Rfoperations.sfdc.RFO_PaymentProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_PaymentProfiles
+IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_PaymentProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_PaymentProfiles
+IF OBJECT_ID('rfoperations.sfdc.PaymentProfileDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.PaymentProfileDifference
+IF OBJECT_ID('rfoperations.sfdc.PaymentProfile_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.PaymentProfile_Dups
 IF OBJECT_ID('tempdb.dbo.#PaymentProfiles') IS NOT NULL DROP TABLE #PaymentProfiles
 
 SELECT ' Refer Following tables to view test results.
@@ -28,8 +28,8 @@ SELECT ' Refer Following tables to view test results.
 		2. Rfoperations.dbo.AccountsMissing --> List of Missing AccountIDs from Source and Destination.
 		3. Rfoperations.dbo.Accounts_Dups --> List of Duplicate Account IDs in CRM.
 		4. Rfoperations.dbo.BusinessRuleFailure --> List of Accounts failed due to business rule failure.
-		5. CRM.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
-		6. CRM.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
+		5. Rfoperations.sfdc.ErrorLog_Accounts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
+		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
 		
 
 SET ANSI_WARNINGS OFF 
@@ -48,7 +48,7 @@ FROM    RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
 		JOIN RFOperations.RFO_Reference.Currency (NOLOCK) CY ON cy.CurrencyID =ab.CurrencyID 
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
-		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=1 AND AA.ENDDATE IS NULL  AND AA.ISDEFAULT=1
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=1 AND AA.ENDDATE IS NULL
 		JOIN RFOPERATIONS.RFO_ACCOUNTS.PAYMENTPROFILES PP ON PP.ACCOUNTID=AB.ACCOUNTID
 		JOIN RFOPERATIONS.RFO_Accounts.CreditCardProfiles CCP ON CCP.PAYMENTPROFILEID=PP.PAYMENTPROFILEID
 		JOIN RFOPERATIONS.RFO_REFERENCE.CREDITCARDVENDORS CCV ON CCV.VENDORID=CCP.VENDORID
@@ -65,14 +65,14 @@ SELECT @CRMPP=COUNT(RFOPaymentProfileId__c) FROM sfdcbackup.SFDCBKP.PaymentProfi
 
 
 SELECT  @RFOPP AS RFO_PaymentProfile, @CRMPP AS CRM_PaymentProfile, (@RFOPP - @CRMPP) AS Difference 
-INTO CRM.sfdc.PaymentProfileDifference;
+INTO rfoperations.sfdc.PaymentProfileDifference;
 
 SELECT  PaymentProfileId AS RFO_PaymentProfileId,
  b.RFOPaymentProfileId__C AS CRM , 
  CASE WHEN b.RFOPaymentProfileId__C IS NULL THEN 'Destination'
       WHEN a.PaymentProfileId IS NULL THEN 'Source' 
  END AS MissingFROM
-INTO CRM.sfdc.PaymentProfilesMissing
+INTO Rfoperations.sfdc.PaymentProfilesMissing
 FROM 
     (SELECT PaymentProfileId FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.PaymentProfiles pp WHERE PP.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
@@ -81,16 +81,16 @@ FROM
  WHERE (a.PaymentProfileId IS NULL OR b.RFOPaymentProfileId__C IS NULL) 
 
 
-SELECT MissingFrom ,COUNT(*) from CRM.sfdc.PaymentProfilesMissing GROUP BY MISSINGFROM;
+SELECT MissingFrom ,COUNT(*) from Rfoperations.SFDC.PaymentProfilesMissing GROUP BY MISSINGFROM;
 
-SELECT 'Query CRM.sfdc.PaymentProfilesMissing to get list of AccountIDs missing from Source/Destination'
+SELECT 'Query Rfoperations.sfdc.PaymentProfilesMissing to get list of AccountIDs missing from Source/Destination'
 
 --------------------------------------------------------------------------------------
 -- Duplicates 
 --------------------------------------------------------------------------------------
 
 SELECT PaymentProfileId, COUNT (RFOPaymentProfileId__C) AS CountofDups
-INTO CRM.sfdc.PaymentProfile_Dups
+INTO rfoperations.sfdc.PaymentProfile_Dups
 FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.PaymentProfiles Rpp ,sfdcbackup.SFDCBKP.PaymentProfile PP,
 										  SFDCBACKUP.SFDCBKP.Accounts A 
 									 WHERE PP.ACCOUNT__C=A.ID AND AB.COUNTRYID=40 
@@ -99,9 +99,9 @@ GROUP BY PaymentProfileId
 HAVING COUNT (RFOPaymentProfileId__C)> 1 
 
 
-SELECT @RowCount = COUNT(*) FROM CRM.sfdc.PaymentProfile_Dups
+SELECT @RowCount = COUNT(*) FROM rfoperations.sfdc.PaymentProfile_Dups
 
---SELECT * FROM CRM.sfdc.PaymentProfile_Dups
+--SELECT * FROM rfoperations.sfdc.PaymentProfile_Dups
 --SELECT * FROM SFDCBACKUP.SFDCBKP.PAYMENTPROFILE WHERE RFOPAYMENTPROFILEID__C='1057811'
 --select * from RFOPERATIONS.RFO_ACCOUNTS.PAYMENTPROFILES WHERE PAYMENTPROFILEID=1057811
 --SELECT * FROM RFOPERATIONS.RFO_ACCOUNTS.CREDITCARDPROFILES WHERE PAYMENTPROFILEID=1057811
@@ -109,7 +109,7 @@ SELECT @RowCount = COUNT(*) FROM CRM.sfdc.PaymentProfile_Dups
 IF @RowCount > 0
 	BEGIN 
 
-			SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate PaymentProfiles in CRM. Query CRM.sfdc.PaymentProfile_Dups to get list of duplicate PaymentProfileIds' 
+			SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate PaymentProfiles in CRM. Query rfoperations.sfdc.PaymentProfile_Dups to get list of duplicate PaymentProfileIds' 
 	END 
 
 ELSE 
@@ -130,8 +130,8 @@ SELECT
 		CAST(CCP.ExpYear AS NVARCHAR(MAX)) ExpYear,
 		REPLACE(CCP.NameOnCard,'  ',' ') AS NameOnCard,
 		CCV.NAME AS Vendor,
-		CAST(CASE WHEN DATEADD(HH,8,PP.StartDate) IS NULL THEN '1900-01-01' ELSE pp.StartDate END AS DATE) StartDate,
-		CAST(CASE WHEN DATEADD(HH,8,PP.EndDate) IS NULL THEN '1900-01-01' ELSE pp.EndDate END AS DATE) EndDate,
+		CAST(CASE WHEN DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE PP.StartDate >= M.DST_START AND PP.StartDate < M.DST_END),PP.StartDate) IS NULL THEN '1900-01-01' ELSE pp.StartDate END AS DATE) StartDate,
+		CAST(CASE WHEN DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE PP.EndDate >= M.DST_START AND PP.EndDate < M.DST_END),PP.EndDate) IS NULL THEN '1900-01-01' ELSE pp.EndDate END AS DATE) EndDate,
 		casE WHEN PP.IsDefault= 1 then 'true' ELSE 'false' END AS IsDefault,
 		PT.NAME PaymentType,
 		CASE WHEN LEN(PP.PROFILENAME)<1 THEN NULL ELSE PP.PROFILENAME END AS PROFILENAME,
@@ -148,20 +148,20 @@ SELECT
 		CAST(CASE WHEN LEN(AA.Region)<1 THEN NULL ELSE AA.Region END AS NVARCHAR(MAX)) Region,
 		CAST(CASE WHEN LEN(AA.PostalCode)<1 THEN NULL ELSE AA.PostalCode END AS NVARCHAR(MAX)) PostalCode,
 		CAST(CASE WHEN LEN(AA.SubRegion)< 1 THEN NULL ELSE AA.SubRegion END AS NVARCHAR(MAX)) SubRegion
-		INTO CRM.sfdc.RFO_PAYMENTPROFILES
+		INTO RFOPERATIONS.SFDC.RFO_PAYMENTPROFILES
 		-- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
 		JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID  AND AB.COUNTRYID=40
 		JOIN RFOperations.RFO_Reference.Currency (NOLOCK) CY ON cy.CurrencyID =ab.CurrencyID 
 		JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 		JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
-		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=3 AND AA.ENDDATE IS NULL  AND AA.ISDEFAULT=1
+		JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=3 AND AA.ENDDATE IS NULL
 		JOIN RFOPERATIONS.RFO_ACCOUNTS.PAYMENTPROFILES PP ON PP.ACCOUNTID=AB.ACCOUNTID
 		JOIN RFOPERATIONS.RFO_Accounts.CreditCardProfiles CCP ON CCP.PAYMENTPROFILEID=PP.PAYMENTPROFILEID
 		JOIN RFOPERATIONS.RFO_REFERENCE.CREDITCARDVENDORS CCV ON CCV.VENDORID=CCP.VENDORID
 		JOIN RFOPERATIONS.RFO_REFERENCE.paymenttype PT ON PT.PAYMENTTYPEID=PP.PAYMENTTYPEID
 		WHERE PP.ServerModifiedDate>= @LastRunDate AND
-		NOT EXISTS (SELECT 1 FROM CRM.sfdc.PaymentProfilesMissing PPM WHERE PPM.RFO_PaymentProfileId=PP.PAYMENTPROFILEID AND missingFrom='Destination')
+		NOT EXISTS (SELECT 1 FROM rfoperations.sfdc.PaymentProfilesMissing PPM WHERE PPM.RFO_PaymentProfileId=PP.PAYMENTPROFILEID AND missingFrom='Destination')
         
 		
 	--Loading CRM data
@@ -192,17 +192,17 @@ SELECT
 	PP.Region__c,
 	PP.Postal_Code__c,
 	PP.Sub_Region__c
-	INTO CRM.sfdc.CRM_PaymentProfiles
+	INTO RFOPERATIONS.SFDC.CRM_PaymentProfiles
 FROM sfdcbackup.SFDCBKP.PaymentProfile PP, SFDCBACKUP.SFDCBKP.COUNTRY C ,
 	 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='Canada'
 
 		
 --Load Comparison Candidates.
-SELECT * INTO  #PaymentProfiles FROM CRM.sfdc.RFO_PaymentProfiles
+SELECT * INTO  #PaymentProfiles FROM rfoperations.sfdc.RFO_PaymentProfiles
 EXCEPT 
-SELECT * FROM CRM.sfdc.CRM_PaymentProfiles
+SELECT * FROM rfoperations.sfdc.CRM_PaymentProfiles
 
-CREATE TABLE CRM.sfdc.ErrorLog_PaymentProfiles
+CREATE TABLE rfoperations.sfdc.ErrorLog_PaymentProfiles
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -213,15 +213,15 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') , 
-@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') , 
+@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'PaymentProfile') 
 
 
 DECLARE @DesKey NVARCHAR (50) = 'RFOPaymentProfileID__C'; 
 
 DECLARE @SrcKey NVARCHAR (50) ='PaymentProfileId'
 
-DECLARE @DesTemp NVARCHAR (50) ='CRM.sfdc.CRM_PAYMENTPROFILES' 
+DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_PAYMENTPROFILES' 
 
 DECLARE @Skip  BIT 
 
@@ -230,7 +230,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     CRM.sfdc.CRM_METADATA
+                               FROM     Rfoperations.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -244,19 +244,19 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.crm_Value = b. ' + @DesCol +
-' FROM CRM.sfdc.ErrorLog_PaymentProfiles a  JOIN ' +@DesTemp+
+' FROM rfoperations.sfdc.ErrorLog_PaymentProfiles a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO CRM.sfdc.ErrorLog_PaymentProfiles (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO rfoperations.sfdc.ErrorLog_PaymentProfiles (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
 --  SELECT @SQL3
@@ -279,7 +279,7 @@ END
 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM CRM.sfdc.ErrorLog_PaymentProfiles A JOIN CRM.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM rfoperations.sfdc.ErrorLog_PaymentProfiles A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 

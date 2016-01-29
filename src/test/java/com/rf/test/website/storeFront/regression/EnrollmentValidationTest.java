@@ -11,15 +11,15 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontAccountInfoPage;
-import com.rf.pages.website.StoreFrontAccountTerminationPage;
-import com.rf.pages.website.StoreFrontCartAutoShipPage;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
-import com.rf.pages.website.StoreFrontOrdersPage;
-import com.rf.pages.website.StoreFrontPCUserPage;
-import com.rf.pages.website.StoreFrontShippingInfoPage;
-import com.rf.pages.website.StoreFrontUpdateCartPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
+import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class EnrollmentValidationTest extends RFWebsiteBaseTest{
@@ -7670,6 +7670,29 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrolledUserStatus(accountStatusId), "Status of enrolled user is not active in database");
 		s_assert.assertAll();
 	}	
+
+	//Hybris Project-1282:16.North Dakota rule out US
+	@Test
+	public void testNorthDakotaRuleOutUS_1282() throws InterruptedException{
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.selectCountryUsToCan();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		s_assert.assertFalse(storeFrontHomePage.verifyILiveInNorthDakotaLinkIsNotPresentForCA(),"I live in north dakota link is present On CA");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-5274:Verify Ploicies and procedures link in sponsor selection page for enrolling consultant corp site US
+	@Test
+	public void testVerifyPolicyAndProcedureLinkOnEnrollmentPage_5274() throws InterruptedException {
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.clickPolicyAndProcedureLink();
+		storeFrontHomePage.switchToChildWindow();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+		s_assert.assertAll();
+	}
 
 }
 

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{

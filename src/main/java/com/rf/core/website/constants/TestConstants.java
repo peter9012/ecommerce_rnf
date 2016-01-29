@@ -385,6 +385,7 @@ public class TestConstants {
 	public static final String DISCOVER_CARD_NUMBER = "6011000990139424";
 	public static final String SECURITY_CODE_FOR_SPECIAL_CARDS = "1234";
 	public static final String MASTER_CARD_NUMBER = "5555555555554444";
+	public static final String NEW_EMAIL_ADDRESS_SUFFIX = "@xyp.com";
 
 	//PRODUCTION DSV DATA
 	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";

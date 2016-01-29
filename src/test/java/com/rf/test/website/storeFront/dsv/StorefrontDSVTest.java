@@ -8,12 +8,12 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.DSVStoreFrontAccountInfoPage;
-import com.rf.pages.website.DSVStoreFrontAutoshipCartPage;
-import com.rf.pages.website.DSVStoreFrontBillingInfoPage;
-import com.rf.pages.website.DSVStoreFrontHomePage;
-import com.rf.pages.website.DSVStoreFrontQuickShopPage;
-import com.rf.pages.website.DSVStoreFrontShippingInfoPage;
+import com.rf.pages.website.dsv.DSVStoreFrontAccountInfoPage;
+import com.rf.pages.website.dsv.DSVStoreFrontAutoshipCartPage;
+import com.rf.pages.website.dsv.DSVStoreFrontBillingInfoPage;
+import com.rf.pages.website.dsv.DSVStoreFrontHomePage;
+import com.rf.pages.website.dsv.DSVStoreFrontQuickShopPage;
+import com.rf.pages.website.dsv.DSVStoreFrontShippingInfoPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class StorefrontDSVTest extends RFWebsiteBaseTest{

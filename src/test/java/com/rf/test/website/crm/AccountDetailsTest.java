@@ -13,12 +13,12 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.CRMHomePage;
-import com.rf.pages.website.CRMLoginPage;
-import com.rf.pages.website.StoreFrontAccountInfoPage;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
-import com.rf.pages.website.StoreFrontUpdateCartPage;
+import com.rf.pages.website.crm.CRMHomePage;
+import com.rf.pages.website.crm.CRMLoginPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class AccountDetailsTest extends RFWebsiteBaseTest{

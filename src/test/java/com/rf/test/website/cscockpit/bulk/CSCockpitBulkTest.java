@@ -8,9 +8,11 @@ import org.testng.annotations.Test;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.SoftAssert;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.CSCockpitHomePage;
-import com.rf.pages.website.CSCockpitLoginPage;
-import com.rf.pages.website.RFWebsiteBasePage;
+import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
+import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 
@@ -19,7 +21,9 @@ public class CSCockpitBulkTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitBulkTest.class.getName());
 	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitHomePage cscockpitHomePage; 
+	private CSCockpitCustomerSearchTabPage cscockpitHomePage;
+	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
+	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 
 	@BeforeMethod
 	public void loginToCSCockpit(){		
@@ -30,22 +34,22 @@ public class CSCockpitBulkTest extends RFWebsiteBaseTest{
 	@Test(dataProvider="rfTestData")
 	public void testBulkReturnOrders(String returnOrderNumber){	
 		logger.info("RETURN ORDER NUMBER IS "+returnOrderNumber);
-		cscockpitHomePage.clickOrderSearchTab();
-		cscockpitHomePage.enterOrderNumberInOrderSearchTab(returnOrderNumber);
-		cscockpitHomePage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitHomePage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(returnOrderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitHomePage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
-		cscockpitHomePage.clickRefundOrderBtnOnOrderTab();
-		cscockpitHomePage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
-		cscockpitHomePage.selectRefundReasonOnRefundPopUp("Test");
-		cscockpitHomePage.selectFirstReturnActionOnRefundPopUp();
-		cscockpitHomePage.selectFirstRefundTypeOnRefundPopUp();
-		cscockpitHomePage.clickCreateBtnOnRefundPopUp();
-		cscockpitHomePage.clickConfirmBtnOnConfirmPopUp();
-		cscockpitHomePage.clickOKBtnOnRMAPopUp();
-		cscockpitHomePage.clickOrderSearchTab();
-		s_assert.assertTrue(cscockpitHomePage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(returnOrderNumber)>0, "Order Details Section has not been reached");
-		cscockpitHomePage.clickRefundOrderBtnOnOrderTab();
-		s_assert.assertTrue(cscockpitHomePage.isNoRefundableItemsTxtPresent(), "Order Number = "+returnOrderNumber+" has NOT refund Successfully");
+		cscockpitOrderSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(returnOrderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(returnOrderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.clickOrderSearchTab();
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(returnOrderNumber)>0, "Order Details Section has not been reached");
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.isNoRefundableItemsTxtPresent(), "Order Number = "+returnOrderNumber+" has NOT refund Successfully");
 		s_assert.assertAll();		
 	} 
 

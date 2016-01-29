@@ -3,7 +3,7 @@ package com.rf.test.website.storeFront.regression.expressEnrollment.biz;
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class PersonalResultsKitTest extends RFWebsiteBaseTest{

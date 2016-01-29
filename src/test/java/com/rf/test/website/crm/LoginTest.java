@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.CRMHomePage;
-import com.rf.pages.website.CRMLoginPage;
+import com.rf.pages.website.crm.CRMHomePage;
+import com.rf.pages.website.crm.CRMLoginPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 import com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddBillingTest;
 

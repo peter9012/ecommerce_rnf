@@ -11,13 +11,13 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontAccountInfoPage;
-import com.rf.pages.website.StoreFrontCartAutoShipPage;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
-import com.rf.pages.website.StoreFrontOrdersPage;
-import com.rf.pages.website.StoreFrontShippingInfoPage;
-import com.rf.pages.website.StoreFrontUpdateCartPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class AddShippingTest extends RFWebsiteBaseTest{

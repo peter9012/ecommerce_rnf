@@ -15,8 +15,8 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class LoginTest extends RFWebsiteBaseTest{

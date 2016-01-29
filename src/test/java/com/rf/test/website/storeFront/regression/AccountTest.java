@@ -3,6 +3,8 @@ package com.rf.test.website.storeFront.regression;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
@@ -11,15 +13,16 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontAccountInfoPage;
-import com.rf.pages.website.StoreFrontAccountTerminationPage;
-import com.rf.pages.website.StoreFrontBillingInfoPage;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
-import com.rf.pages.website.StoreFrontOrdersPage;
-import com.rf.pages.website.StoreFrontPCUserPage;
-import com.rf.pages.website.StoreFrontRCUserPage;
-import com.rf.pages.website.StoreFrontUpdateCartPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
+import com.rf.pages.website.storeFront.StoreFrontBillingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class AccountTest extends RFWebsiteBaseTest{
@@ -35,6 +38,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	private StoreFrontRCUserPage storeFrontRCUserPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;

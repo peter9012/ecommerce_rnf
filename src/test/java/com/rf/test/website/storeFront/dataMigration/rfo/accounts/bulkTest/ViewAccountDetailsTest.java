@@ -11,14 +11,14 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.StoreFrontAccountInfoPage;
-import com.rf.pages.website.StoreFrontBillingInfoPage;
-import com.rf.pages.website.StoreFrontConsultantPage;
-import com.rf.pages.website.StoreFrontHomePage;
-import com.rf.pages.website.StoreFrontOrdersAutoshipStatusPage;
-import com.rf.pages.website.StoreFrontOrdersPage;
-import com.rf.pages.website.StoreFrontPCUserPage;
-import com.rf.pages.website.StoreFrontRCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontBillingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontOrdersAutoshipStatusPage;
+import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class ViewAccountDetailsTest extends RFWebsiteBaseTest{

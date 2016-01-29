@@ -2,8 +2,8 @@ package com.rf.test.website.storeFront.dsv;
 
 import org.testng.annotations.Test;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.DSVStoreFrontBillingInfoPage;
-import com.rf.pages.website.DSVStoreFrontHomePage;
+import com.rf.pages.website.dsv.DSVStoreFrontBillingInfoPage;
+import com.rf.pages.website.dsv.DSVStoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{

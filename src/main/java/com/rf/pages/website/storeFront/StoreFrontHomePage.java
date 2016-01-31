@@ -352,7 +352,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void selectProvince(){		
-		driver.click(By.id("state"));
+		driver.click(By.xpath("//select[@id='state']"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("state selected");

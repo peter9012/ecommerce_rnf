@@ -909,7 +909,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
-	@Test
+	@Test(enabled=false)
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> accountNameDetailsList = null;

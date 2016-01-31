@@ -232,7 +232,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnPlaceOrderButton();
 
 		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
-		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
 		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityConsultant(),"Send Mail To Reset My Password button not working");	
 
 		s_assert.assertAll(); 
@@ -850,11 +850,11 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.navigateToCountry();
 			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 			String lastName = "lN";
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			String province = TestConstants.PROVINCE_ALBERTA;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			String province = TestConstants.PROVINCE_US;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			// Click on our product link that is located at the top of the page and then click in on quick shop
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -1724,7 +1724,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	//Hybris Project-3963:Inactive RC email address, during consultant enrollment under same/different sponsor(BIZ & CORP)
 	@Test
 	public void testInactiveRCEmailAddressDuringConsultantEnrollment_3963() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
+		if(driver.getCountry().equalsIgnoreCase("ca")&& driver.getEnvironment().equalsIgnoreCase("stg")){
 			RFO_DB = driver.getDBNameRFO();
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 			List<Map<String, Object>> randomRCList =  null;

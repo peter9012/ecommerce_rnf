@@ -97,7 +97,7 @@ public class DBQueries_RFO {
 
 			       /* Orders Check*/
 			       "AND EXISTS ( SELECT 1 "+
-			       "FROM   Hybris.Orders AS o, [172.16.15.210\\Hybris].Hybris.dbo.orders o1 "+
+			       "FROM   Hybris.Orders AS o, Hybris.dbo.orders o1 "+
 			       "WHERE  o.AccountID = ab.AccountID "+
 			       "AND o.orderid=o1.pk "+   
 			       "AND o.OrderTypeID = 1) "+
@@ -777,7 +777,7 @@ public class DBQueries_RFO {
 					"AND ar.active = 1 "+
 					/*Failed orders*/
 					"AND EXISTS ( SELECT 1 "+
-					"FROM   Hybris.Orders o, [172.16.15.210\\Hybris].Hybris.dbo.orders o1 "+
+					"FROM   Hybris.Orders o, Hybris.dbo.orders o1 "+
 					"WHERE  o.AccountID = ab.AccountID "+
 					"AND o.orderid=o1.pk "+
 					"AND o.OrderTypeID = 1 "+
@@ -1389,7 +1389,7 @@ public class DBQueries_RFO {
 
 			       /* Orders Check*/
 			       "AND EXISTS ( SELECT 1 "+
-			       "FROM   Hybris.Orders AS o, [172.16.15.210\\Hybris].Hybris.dbo.orders o1 "+
+			       "FROM   Hybris.Orders AS o, Hybris.dbo.orders o1 "+
 			       "WHERE  o.AccountID = ab.AccountID "+
 			       "AND o.orderid=o1.pk "+   
 			       "AND o.OrderTypeID = 1) "+

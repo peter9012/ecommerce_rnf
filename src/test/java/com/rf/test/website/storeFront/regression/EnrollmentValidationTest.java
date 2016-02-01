@@ -40,6 +40,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private String regimenName = null;
 	private String enrollmentType = null;
 	private String addressLine1 = null;
+	private String addressLine2 = null;
 	private String city = null;
 	private String postalCode = null;
 	private String phoneNumber = null;
@@ -7693,6 +7694,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
 		s_assert.assertAll();
 	}
+
 
 }
 

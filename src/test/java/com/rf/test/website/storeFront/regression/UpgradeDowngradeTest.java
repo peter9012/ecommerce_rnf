@@ -17,6 +17,7 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
@@ -30,6 +31,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;
+	private StoreFrontUpdateCartPage storeFrontUpdateCartPage; 
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;
@@ -1683,41 +1685,63 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	//Hybris Project-2267:check Modal window with PCPerks info as RC
 	@Test
 	public void testCheckModalWindowWithPCPerksInfoAsRC_2267() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomRCUserList =  null;
-		String rcUserEmailID = null;
-		String accountID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		String emailAddress = firstName+"@xyz.com";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
 
-		while(true){
-			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}  
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
 
-		logger.info("login is successful");
-		storeFrontRCUserPage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.clickAddToBagButton();
-		storeFrontHomePage.clickOnPCPerksPromoLink();
-		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present");
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		storeFrontHomePage.clickOnPCPerksLearnMoreLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present on cart page after ADD TO BAG");
 		storeFrontHomePage.clickOnModalWindowCloseIcon();
+
+		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstName, lastName, emailAddress, password);
+
+		/*//CheckoutPage is displayed?
+			s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
+			logger.info("Checkout page has displayed");*/
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickOnOrderSummaryPCPerksPromoLink();
-		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present");
+		storeFrontHomePage.clickOnPCPerksLearnMoreLink();		
+		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present on order summary page");
 		s_assert.assertAll();
 	}
 

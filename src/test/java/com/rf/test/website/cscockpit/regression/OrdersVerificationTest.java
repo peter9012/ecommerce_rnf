@@ -13,6 +13,7 @@ import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
@@ -42,12 +43,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
+	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private StoreFrontHomePage storeFrontHomePage; 
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;	
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -63,6 +66,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderNumber = null;
 		String orderHistoryNumber = null;
 		RFO_DB = driver.getDBNameRFO();
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
@@ -81,8 +90,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		logger.info("login is successful");		
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -187,6 +195,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
@@ -210,7 +224,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}	
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
@@ -327,6 +341,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
@@ -336,7 +356,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"236"),RFO_DB);
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,"236"),RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -352,7 +372,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		}
 		logger.info("login is successful");
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
@@ -398,7 +418,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		//-------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"40"),RFO_DB);
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,"40"),RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -614,7 +634,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1924:Verify the ability to mark Test Order functionality for all users
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyTheAbilityToMarkTestOrderFunctionalityForAllUsers_1924(){
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -670,7 +690,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1925:Verify the ability to mark donotship Order functionality for all users
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyTheAbilityToMarkDoNotShipOrderFunctionality_1925(){
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -727,7 +747,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1926:Verify the ability to mark Test Order and donot ship functionality for all users
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyTheAbilityToMarkTestOrderAndDoNotShipFunctionality_1926(){
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -3255,6 +3275,297 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
 		s_assert.assertAll();
+	}
+
+	//Hybris Project-1777:To verify User permission for customer search
+	@Test(enabled=false) //WIP
+	public void testVerifyUserPermissionForCustomerSearch_1777(){
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_AGENT_USERNAME);
+		driver.get(driver.getCSCockpitURL());
+
+		//		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
+		//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		//		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.ADMIN_USERNAME);
+		driver.get(driver.getCSCockpitURL());
+		//		
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		driver.get(driver.getCSCockpitURL());
+
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1778:To verify User permission for order search
+	@Test(enabled=false) //WIP
+	public void testVerifyUserPermissionForOrderSearch_1778(){
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_AGENT_USERNAME);
+		driver.get(driver.getCSCockpitURL());
+
+		//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		//		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
+		//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		//		cscockpitOrderSearchTabPage.clickSearchBtn();
+		//		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.ADMIN_USERNAME);
+		//		driver.get(driver.getCSCockpitURL());
+
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		driver.get(driver.getCSCockpitURL());
+
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4074:CsCockpit CRP and PC Perks autoship order
+	@Test(enabled=false) //WIP
+	public void testCsCockpitCRPandPCPerksAutoshipOrder_4074(){
+		String randomCustomerSequenceNumber = null;
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		driver.pauseExecutionFor(5000);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+		//-----------------FOR CA-----------------------
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1927:Verify the Find Customer Page UI
+	@Test(enabled=false) //WIP
+	public void testToVerifyTheFindCustomerPageUI_1927(){
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerTypePresenceOnPage(),"customer type select DD not present on customerSearchPage");
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerCountryPresenceOnPage(),"customer country select DD not present on customerSearchPage");
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyAccountStatusPresenceOnPage(),"customer account status DD not present on customerSearchPage");
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerNameFieldPresenceOnPage(),"customer name field not presenct on customerSearchPage");
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyPostcodeFieldPresenceOnPage(),"postcode field not present on customerSearchPage");
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyEmailAddressFieldPresenceOnPage(),"EmailAddress field not present on customerSearchPage");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-1949:To verify the order Type in the Order Detail page
+	@Test(enabled=false)//WIP
+	public void testToVerifyTheOrderTypeInTheOrderDetailPage_1949(){
+		String randomOrderSequenceNumber = null;
+		String orderTypeConsultant = "Consultant Order";
+		String orderTypePulseAutoship = "Pulse Autoship";
+		String orderTypeCRPAutoship = "CRP Autoship";
+		String orderTypePCPerksAutoship = "PCPerks Autoship";
+		String orderTypePCOrder = "PC Order";
+		String orderTypeRetailOrder = "Retail Order";
+		String orderTypeReturn = "Return";
+		String orderTypeOverrideOrder = "Override Order";
+
+		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		driver.pauseExecutionFor(5000);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeCRPAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeCRPAutoship),"Order Type is not CRP Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeConsultant);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeConsultant),"Order Type is not consultant order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePulseAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePulseAutoship),"Order Type is not Pulse Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCPerksAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCPerksAutoship),"Order Type is not PCPerks Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCOrder),"Order Type is not PC Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeRetailOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeRetailOrder),"Order Type is not Retail Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeReturn);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("All");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeReturn),"Order Type is not Return Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeOverrideOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("All");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeOverrideOrder),"Order Type is not Override Order");
+		//-------------------------FOR CA------------------------------
+		driver.get(driver.getCSCockpitURL());
+		driver.pauseExecutionFor(5000);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeCRPAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeCRPAutoship),"Order Type is not CRP Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeConsultant);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeConsultant),"Order Type is not consultant order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePulseAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePulseAutoship),"Order Type is not Pulse Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCPerksAutoship);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCPerksAutoship),"Order Type is not PCPerks Autoship");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCOrder),"Order Type is not PC Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeRetailOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeRetailOrder),"Order Type is not Retail Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeReturn);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeReturn),"Order Type is not Return Order");
+		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeOverrideOrder);
+		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("All");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeOverrideOrder),"Order Type is not Override Order");
+		s_assert.assertAll();	   	   
 	}
 
 }

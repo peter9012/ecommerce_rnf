@@ -33,8 +33,9 @@ public class TestListner extends TestListenerAdapter {
 
 	@Override
 	public void onTestFailure(ITestResult tr) {
+		logger.info("Test has failed with TestResult status = "+tr.getStatus());
 		if (tr.getStatus() == ITestResult.FAILURE){
-			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]");
+			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]. The reason is "+tr.getThrowable());
 			try {
 				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, tr.getMethod().getMethodName());
 			} catch (Exception e) {

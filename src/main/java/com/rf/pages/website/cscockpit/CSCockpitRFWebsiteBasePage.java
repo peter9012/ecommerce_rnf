@@ -26,9 +26,9 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By CUSTOMER_SEARCH_TAB_LOC = By.xpath("//span[text()='Customer Search']");
 	
 	protected RFWebsiteDriver driver;
-	public CSCockpitRFWebsiteBasePage(WebDriver driver) {
+	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
+		this.driver=driver;
 	}
 
 	public String getBaseURL(){

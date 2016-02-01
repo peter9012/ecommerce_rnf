@@ -668,8 +668,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	//	}
 
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
-		driver.click(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));		
+		driver.click(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyEditShippingAddressNameSlectedOnUpdateCart(String name){
@@ -1555,6 +1558,27 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
 		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'Overnight')]"));
 		logger.info("UPS Standard Overnight/1day shipping method is selected"); 
+	}
+
+	public void clickOnSaveShippingProfileWithoutAcceptingQASValidationPopUp(){
+		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
+		try{
+			driver.click(By.id("saveCrpShippingAddress"));
+		}catch(NoSuchElementException e){
+			try{
+				driver.click(By.id("saveCrpShippingAddress"));
+			}catch(Exception e1){
+				driver.click(By.id("saveShippingAddreessId"));
+			}
+
+		}
+		driver.waitForLoadingImageToDisappear();
+		logger.info("Save shipping profile button clicked");
+	}
+
+	public boolean validateQASValidationPopUpIsDisplayed(){
+		driver.waitForElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
+		return driver.isElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
 	}
 
 }

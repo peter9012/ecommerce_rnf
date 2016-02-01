@@ -32,6 +32,8 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ADD_NEW_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Customer Address')]/following::td[text()='Add']");
 	private static final By CREATE_NEW_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]");
 	private static final By AUTOSHIP_ID_FIRST = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div[contains(@class,'listbox-body')]//tr[2]//a");
+	private static final By AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'crpAutoship')]//preceding::td[1]//a");
+	private static final By AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'pcAutoship')]//preceding::td[1]//a");
 
 	protected RFWebsiteDriver driver;
 
@@ -125,7 +127,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(ADD_CARD_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public boolean isEditButtonForCreditCardPresentInCustomerTab(){
 		driver.isElementPresent(CREDIT_CARD_EDIT_BTN);
 		return driver.isElementPresent(CREDIT_CARD_EDIT_BTN);  
@@ -175,5 +177,16 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(CREATE_NEW_ADDRESS);  
 	}
 
-	
+	public void clickAutoshipIdOnCustomerTab() {
+		try{
+			driver.waitForElementPresent(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
+			driver.click(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+			driver.waitForElementPresent(AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC);
+			driver.click(AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC);
+			driver.waitForLoadingImageToDisappear();
+		}
+	}
+
 }

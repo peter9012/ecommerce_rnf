@@ -59,6 +59,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CANCEL_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='Cancel']");
 	private static final By OK_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='OK']");
 	private static final By ORDER_TEMPLATE = By.xpath("//span[contains(text(),'Order #')]");
+	private static final By ORDER_TYPE_LOC = By.xpath("//span[contains(text(),'Order Type')]/following::span[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -252,7 +253,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.findElement(RETURN_REQUEST_SECTION).isDisplayed();
 	}
 
-	
+
 	public void selectOrderStatusFromDropDownInOrderTab(String orderStatus){
 		driver.waitForElementPresent(By.xpath(String.format(orderStatusDDLoc, orderStatus)));
 		driver.click(By.xpath(String.format(orderStatusDDLoc, orderStatus)));
@@ -329,8 +330,14 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(CV_QV_DISABLED_UPDATE_BTN);
 	}
 
-
-
+	public boolean validateOrderTypeOnOrderTab(String orderTypeConsultant) {
+		driver.waitForElementPresent(ORDER_TYPE_LOC);
+		String orderTypeOnUI = driver.findElement(ORDER_TYPE_LOC).getText();
+		if(orderTypeOnUI.equalsIgnoreCase(orderTypeConsultant)){
+			return true;
+		}
+		return false;
+	}
 
 
 }

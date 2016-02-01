@@ -116,6 +116,7 @@ public class DBQueries_RFO {
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
 			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
+			"AND ab.AccountStatusID = 1" +
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
 			"FROM   RFO_Accounts.AccountRF AS ar "+

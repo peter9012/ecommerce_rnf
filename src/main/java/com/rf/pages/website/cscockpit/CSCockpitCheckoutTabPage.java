@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.website.constants.TestConstants;
 
 public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final Logger logger = LogManager
@@ -15,7 +16,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String selectYearDDLoc = "//td[text()='%s']";
 	private static String selectCardTypeDDLoc = "//td[text()='%s']";
 	private static String firstName = "//span[contains(text(),'%s')]";
-	
+
 	private static final By CREDIT_CARD = By.xpath("//div[contains(text(),'************')]");
 	private static final By DELIVERY_MODE = By.xpath("//span[contains(text(),'Delivery Mode')]/following::option[@selected='selected']");
 	private static final By COMMISSION_DATE = By.xpath("//span[contains(text(),'Commission Date')]/following::input[@autocomplete ='off']");
@@ -101,8 +102,19 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SELECT_SOO_REASON_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'Damaged')]");
 	private static final By SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC = By.xpath("//td[contains(text(),'UPDATE')]");
 	private static final By CLOSE_POPUP_OF_EDIT_PAYMENT_ADDRESS = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div[contains(@id,'close')]");
-	
-
+	private static final By CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Number']/following::input[1]");
+	private static final By NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Number']/following::input[1]");
+	private static final By CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Type']/following::img[1]");
+	private static final By CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='VISA']");
+	private static final By EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Expiration Date']/following::img[1]");
+	private static final By EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='12']");
+	private static final By EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Expiration Date']/following::img[1]");
+	private static final By EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='2025']");
+	private static final By SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Security Code']/following::input[1]");
+	private static final By BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::img[1]");
+	private static final By BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::td[@class='z-combo-item-text'][1]");
+	private static final By SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//td[@class='z-button-cm'][text()='SAVE']");
+	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCheckoutTabPage(RFWebsiteDriver driver) {
@@ -110,7 +122,25 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		this.driver = driver;
 	}
 
-	public String getCreditCardNumberInCheckoutTab(){
+	public String getCreditCardNumberInCheckoutTab(){		
+		driver.waitForElementPresent(ADD_NEW_BILLING_PROFILE_BTN);
+		if(driver.isElementPresent(CREDIT_CARD)==false){
+			driver.click(ADD_NEW_BILLING_PROFILE_BTN);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+			driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
+			driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+			driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
 		driver.waitForElementPresent(CREDIT_CARD);
 		return driver.findElement(CREDIT_CARD).getText();
 	}
@@ -128,6 +158,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public void clickPlaceOrderButtonInCheckoutTab(){
 		driver.waitForElementPresent(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
+		driver.pauseExecutionFor(3000);
 		driver.click(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}

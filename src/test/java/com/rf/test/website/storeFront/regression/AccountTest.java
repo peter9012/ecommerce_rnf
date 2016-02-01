@@ -1754,5 +1754,353 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4274:UserName Field Validation
+	@Test
+	public void testVerifyUserNameFieldValidation_4274() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			int randomNum = CommonUtils.getRandomNum(10000, 100000);
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			storeFrontHomePage=new StoreFrontHomePage(driver);
+			String alphanumericUserName=RandomStringUtils.randomAlphanumeric(6);
+			String specialSymbolUsername="@"+randomNum;
+
+			//Get CA consultant from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(alphanumericUserName);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(alphanumericUserName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterUserName(specialSymbolUsername);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(specialSymbolUsername, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-4275:verify Uniqueness of Username
+	@Test
+	public void testVerifyUniqnessOfUsername_4275() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+			int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+			List<Map<String, Object>> randomConsultantList =  null;
+			List<Map<String, Object>>randomPCUserList=null;
+			List<Map<String, Object>>randomRCList=null;
+			String consultantEmailID = null;
+			String crossCountryConsultantEmailID = null;
+			String pcUserEmailID = null;
+			String crossCountryPCUserEmailID = null;
+			String rcUserEmailID = null;
+			String crossCountryRCUserEmailID = null;
+			String twoWords="West coast"+randomNum;
+			String userName="WestCoast"+randomNum;
+
+			storeFrontHomePage=new StoreFrontHomePage(driver);
+			//Get US Consultant from database
+			driver.get(driver.getStoreFrontURL()+"/us");
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+				crossCountryConsultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(crossCountryConsultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+crossCountryConsultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logout();
+
+			//Get CA consultant from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(consultantEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			//s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(crossCountryConsultantEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(twoWords);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			//again login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			logout();
+			twoWords="West coast"+randomNumber;
+			userName="WestCoast"+randomNumber;
+			//For PC User
+			//Get US PC User from database
+			driver.get(driver.getStoreFrontURL()+"/us");
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+				crossCountryPCUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(crossCountryPCUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("Login Error for the user "+crossCountryPCUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			logout();
+			//Get CA PC User from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("Login Error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(pcUserEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			//s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(crossCountryPCUserEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(twoWords);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			//again login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			logout();
+			twoWords="West coast"+randomNumbers;
+			userName="WestCoast"+randomNumbers;
+			//For RC User
+			//Get US RC User from database
+			driver.get(driver.getStoreFrontURL()+"/us");
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,"236"),RFO_DB);
+				crossCountryRCUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(crossCountryRCUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+crossCountryRCUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logout();
+			//Get CA RC User from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(rcUserEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			//s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(crossCountryRCUserEmailID);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(twoWords);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			//again login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+
+	}
+
+	// Hybris Project-4276:VErify 2 fields for emails address and USerName is present
+	@Test
+	public void testVerifyUserNameAndEmailAddressFieldsValidation_4276() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			int randomNum = CommonUtils.getRandomNum(10000, 100000);
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			storeFrontHomePage=new StoreFrontHomePage(driver);
+			String userName="WestCoast"+randomNum;
+			String EmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.NEW_EMAIL_ADDRESS_SUFFIX;
+
+			//Get CA consultant from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.enterEmailAddress(EmailAddress);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(EmailAddress, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//  Hybris Project-4277:Email and USer NAme has different values
+	@Test
+	public void testVerifyUserNameAndEmailAddressFieldsValidationWithDifferentValues_4277() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			int randomNum = CommonUtils.getRandomNum(10000, 100000);
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			storeFrontHomePage=new StoreFrontHomePage(driver);
+			String userName="WestCoast"+randomNum;
+			String EmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.NEW_EMAIL_ADDRESS_SUFFIX;
+
+			//Get CA consultant from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.enterEmailAddress(EmailAddress);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(EmailAddress, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
 }
 

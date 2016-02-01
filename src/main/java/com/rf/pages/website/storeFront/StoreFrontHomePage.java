@@ -2666,9 +2666,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 	}
 
-	public void clickOnPCPerksPromoLink() {
-		driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[2]/div[4]/a/span"));
-		driver.click(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[2]/div[4]/a/span"));
+	public void clickOnPCPerksLearnMoreLink() {
+		driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']//a[text()='Learn more']"));
+		driver.click(By.xpath("//div[@id='shopping-wrapper']//a[text()='Learn more']"));
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyModalWindowIsPresent() {

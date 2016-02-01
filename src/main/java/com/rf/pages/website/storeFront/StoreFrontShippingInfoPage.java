@@ -277,6 +277,18 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		String shippingname = Character.toUpperCase(name.charAt(0)) + name.substring(1);
 		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+shippingname+"')]/following::input[@checked='checked']"));
 	}
+
+	public boolean validateUpdateAutoShipPopUpPresent(){
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-quickinfo']"));
+			boolean status= driver.isElementPresent(By.xpath("//div[@id='popup-quickinfo']"));
+			driver.click(By.xpath("//input[@class='shippingAddresspopup btn btn-primary']"));
+			return status;
+		}catch(Exception e){
+			return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
+		}
+	}
+
 }
 
 

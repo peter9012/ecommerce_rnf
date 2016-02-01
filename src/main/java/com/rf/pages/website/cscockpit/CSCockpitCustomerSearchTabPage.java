@@ -15,14 +15,20 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String accountStatusDDLoc = "//span[contains(text(),'Account Status')]/select/option[text()='%s']";
 	private static String customerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
-		
+
 	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[3]//span";
-	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']");
+	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']");
 	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
 	private static final By ENTER_EMAIL_ID = By.xpath("//span[contains(text(),'Email Address')]/following::input[1]");
 	private static final By FIND_CUSTOMER_LBL = By.xpath("//span[text()='Find Customer']");
 	private static final By FIND_ORDER = By.xpath("//a[contains(text(),'Find Order')]");
-	
+	private static final By CUSTOMER_TYPE_LOC = By.xpath("//span[@class='customerSearchType onethird']");
+	private static final By CUSTOMER_COUNTRY_LOC = By.xpath("//span[@class='countryValues onethird']");
+	private static final By CUSTOMER_ACCOUNT_STATUS = By.xpath("//span[@class='rfaccountstatus onethird']");
+	private static final By CUSOMER_NAME_CID_FIELD_LOC = By.xpath("//span[text()='Customer Name or CID']");
+	private static final By POST_CODE_FIELD_LOC = By.xpath("//span[text()='Postcode']");
+	private static final By EMAIL_ADD_FIELD_LOC = By.xpath("//span[text()='Email Address']//following::input[1]");
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerSearchTabPage(RFWebsiteDriver driver) {
@@ -72,10 +78,17 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public int getRandomCustomerFromSearchResult(){
+		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
 		int totalCustomersFromResultsSearchFirstPage =  driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
+		logger.info("total customers in the customer search result is "+totalCustomersFromResultsSearchFirstPage);
 		int randomCustomerFromSearchResult = CommonUtils.getRandomNum(1, totalCustomersFromResultsSearchFirstPage);
 		logger.info("Random Customer sequence number is "+randomCustomerFromSearchResult);
 		return randomCustomerFromSearchResult;		
+	}
+
+	public int getTotalResultsInCustomerSearchOnCustomerSearchTab(){
+		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
+		return driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
 	}
 
 	public void clickCIDNumberInCustomerSearchTab(String customerSequenceNumber){
@@ -104,7 +117,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(ENTER_EMAIL_ID);
 		driver.type(ENTER_EMAIL_ID, emailId);
 	}
-	
+
 	public String getfirstNameOfTheCustomerInCustomerSearchTab(String customerSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber)));
 		String firstname = driver.findElement(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber))).getText();
@@ -116,6 +129,28 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(FIND_ORDER);
 		driver.click(FIND_ORDER);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifyCustomerTypePresenceOnPage() {
+		return driver.isElementPresent(CUSTOMER_TYPE_LOC);
+	}
+
+	public boolean verifyCustomerCountryPresenceOnPage(){ 
+		return driver.isElementPresent(CUSTOMER_COUNTRY_LOC);
+	}
+	public boolean verifyAccountStatusPresenceOnPage(){
+		return driver.isElementPresent(CUSTOMER_ACCOUNT_STATUS);
+	}
+
+	public boolean verifyCustomerNameFieldPresenceOnPage() {
+		return driver.isElementPresent(CUSOMER_NAME_CID_FIELD_LOC);
+	}
+	public boolean verifyPostcodeFieldPresenceOnPage(){
+		return driver.isElementPresent(POST_CODE_FIELD_LOC);
+	}
+
+	public boolean verifyEmailAddressFieldPresenceOnPage() {
+		return driver.isElementPresent(EMAIL_ADD_FIELD_LOC);
 	}
 
 }

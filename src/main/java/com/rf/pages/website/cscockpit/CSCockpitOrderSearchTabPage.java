@@ -23,8 +23,9 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String orderSectionLoc ="//div[text()='%s']";
 	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[1]/td[4]//span";
 	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
+	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
 
-	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']"); 
+	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']"); 
 	private static final By TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS = By.xpath("//div[@class='orderDetailOrderItemsWidget']//div[@class='z-listbox-body']/table/tbody[2]/tr");
 	private static final By ORDERS_DETAIL_ITEMS_LBL = By.xpath("//span[contains(text(),'Order Detail Items')]");
 	private static final By TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT = By.xpath("//div[@class='csSearchContainer']//div[@class='csListboxContainer']//div[@class='z-listbox-body']//tbody[2]/tr");
@@ -121,6 +122,11 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		int randomOrderFromSearchResult = CommonUtils.getRandomNum(1, totalOrdersFromSearchResultFirstPage);
 		logger.info("Random Order sequence number is "+randomOrderFromSearchResult);
 		return randomOrderFromSearchResult;
+	}
+	
+	public int getTotalOrderSearchResultsInOrderSearchTab(){
+		driver.waitForElementPresent(TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT);
+		return driver.findElements(TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT).size();
 	}
 
 	public void clickOrderNumberInOrderSearchResultsInOrderSearchTab(String orderSequenceNumber){
@@ -227,6 +233,13 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(INVALID_CID_SEARCH_RESULT);  
 	}
 
-
+	public void selectCountryFromDropDownInCustomerSearchTab(String country){
+		  driver.waitForElementPresent(By.xpath(String.format(countryDDLoc, country)));
+		  driver.click(By.xpath(String.format(countryDDLoc, country)));
+		  driver.waitForCSCockpitLoadingImageToDisappear();
+		  logger.info("************************************************************************************************************");
+		  logger.info("COUNTRY SELECTED = "+country);
+	}
+	
 
 }

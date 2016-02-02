@@ -26,19 +26,6 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
 
-	//	public void clickOnWelcomeDropDown() throws InterruptedException{	
-	//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-	//		driver.click(WELCOME_USER_DD_LOC);	
-	//		logger.info("Welcome Drop down clicked "+WELCOME_USER_DD_LOC);
-	//	}
-
-	//	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
-	//		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-	//		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
-	//		logger.info("Orders link from welcome drop down clicked "+WELCOME_DD_ORDERS_LINK_LOC);
-	//		return new StoreFrontOrdersPage(driver);
-	//	}
-
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
@@ -113,7 +100,7 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickChangeMyAutoshipDateButton(){
 		driver.waitForElementPresent(By.id("change-autoship-button"));
-		driver.findElement(By.id("change-autoship-button")).click();
+		driver.click(By.id("change-autoship-button"));
 	}
 
 	public void selectSecondAutoshipDateAndClickSave(){
@@ -331,9 +318,6 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectFirstAutoshipDateAndClickSave(){
-		//  driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//li[1]/span[1]"));
-		//  driver.click(By.xpath("//ul[@id='autoship-date']//li[1]/span[1]"));
-		logger.info("pc perks delayed date selected");
 		driver.waitForElementPresent(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
 		driver.click(By.xpath("//ul[@id='autoship-date']//input[@value='save']"));
 		logger.info("save button clicked after different date selected");

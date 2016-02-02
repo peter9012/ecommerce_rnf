@@ -175,8 +175,6 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyMainPhoneNumberFromUIForAccountInfo(String mainPhoneNumber){
 		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
 		String mainPhoneNumberFromUI = driver.findElement(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC).getAttribute("value");
-		System.out.println("Main Phone Number from UI "+mainPhoneNumberFromUI);
-		System.out.println("Main Phone Number from DB "+mainPhoneNumber);
 		if(mainPhoneNumberFromUI.trim().equalsIgnoreCase(mainPhoneNumber.trim())){
 			System.out.println("phone selected in if block is "+mainPhoneNumberFromUI);
 			return true;
@@ -375,15 +373,15 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterOldPassword(String oldPassword){
-		driver.findElement(By.id("old-password-account")).sendKeys(oldPassword);
+		driver.type(By.id("old-password-account"), oldPassword);		
 	}
 
 	public void enterNewPassword(String newPassword){
-		driver.findElement(By.id("new-password-account")).sendKeys(newPassword);
+		driver.type(By.id("new-password-account"), newPassword);		
 	}
 
 	public void enterConfirmedPassword(String newPassword){
-		driver.findElement(By.id("new-password-account2")).sendKeys(newPassword);
+		driver.type(By.id("new-password-account2"), newPassword);		
 	}
 
 	public void clickSaveAccountPageInfo(){
@@ -445,8 +443,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterUserName(String username) throws InterruptedException	{
-		driver.findElement(By.id("username-account")).clear();
-		driver.findElement(By.id("username-account")).sendKeys(username+"\t");
+		driver.clear(By.id("username-account"));
+		driver.type(By.id("username-account"),username+"\t");
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -469,14 +467,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		try{
 			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/ancestor::div[1][@class='repaired-checkbox checked']"));
 			System.out.println("checkbox already checked");
-			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+			driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
 			driver.pauseExecutionFor(1000);
 		}
 		catch(Exception e){
 
 		}
 
-		driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")).click();
+		driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
 		driver.pauseExecutionFor(1000);
 	}
 
@@ -486,10 +484,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
+		driver.clear(By.xpath("//input[@id='spouse-first']"));
+		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
+		driver.clear(By.xpath("//input[@id='spouse-last']"));
+		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
 		driver.pauseExecutionFor(1000);
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
@@ -504,10 +502,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).clear();
-		driver.findElement(By.xpath("//input[@id='spouse-first']")).sendKeys(spouseFirstName);
-		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(spouseLastName);
+		driver.clear(By.xpath("//input[@id='spouse-first']"));
+		driver.clear(By.xpath("//input[@id='spouse-last']"));
+		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
+		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
 		driver.pauseExecutionFor(1000);
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
@@ -853,8 +851,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterEmailAddress(String email) throws InterruptedException {
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(email+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),email+"\t");
 		logger.info("entered Email Adrress is "+email);
 		driver.waitForLoadingImageToDisappear();
 	}

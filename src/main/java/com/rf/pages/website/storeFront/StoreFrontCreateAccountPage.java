@@ -19,16 +19,16 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterFirstName(String firstName){
 		driver.waitForElementPresent(By.id("first-name"));
-		driver.findElement(By.id("first-name")).sendKeys(firstName);
+		driver.type(By.id("first-name"),firstName);
 		logger.info("first name entered as "+firstName);
 	}
 
 	public void enterLastName(String lastName){
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 	}
 
 	public void enterEmailAddress(String emailAddress){		
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress);		
+		driver.type(By.id("email-account"),emailAddress);		
 	}
 
 	public void closePopUp(){
@@ -36,7 +36,7 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
-		driver.findElement(By.id("email-account")).sendKeys("\t");		
+		driver.type(By.id("email-account"),"\t");		
 		try{
 			driver.findElement(By.xpath("//div[text()='Please fix this field.']"));
 			return true;
@@ -46,19 +46,19 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterPassword(String password){
-		driver.findElement(By.id("new-password-account")).sendKeys(password);
+		driver.type(By.id("new-password-account"),password);
 	}
 
 	public void enterConfirmPassword(String password){
-		driver.findElement(By.id("new-password-account2")).sendKeys(password);
+		driver.type(By.id("new-password-account2"),password);
 	}
 
 	public void enterAddressLine1(String addressLine1){
-		driver.findElement(By.id("address-1")).sendKeys(addressLine1);
+		driver.type(By.id("address-1"),addressLine1);
 	}
 
 	public void enterCity(String city){
-		driver.findElement(By.id("city")).sendKeys(city);
+		driver.type(By.id("city"),city);
 	}
 
 	public void selectProvince(String province){
@@ -67,11 +67,11 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterPostalCode(String postalCode){
-		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+		driver.type(By.id("postcode"),postalCode);
 	}
 
 	public void enterPhoneNumber(String phnNum){
-		driver.findElement(By.id("phonenumber")).sendKeys(phnNum);
+		driver.type(By.id("phonenumber"),phnNum);
 	}
 
 	public void clickEnrollmentNextBtn(){
@@ -83,11 +83,11 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterCardNumber(String cardNumber){
-		driver.findElement(By.id("card-nr")).sendKeys(cardNumber);
+		driver.type(By.id("card-nr"),cardNumber);
 	}
 
 	public void enterNameOnCard(String nameOnCard){
-		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
+		driver.type(By.id("card-name"),nameOnCard);
 	}
 
 	public void selectExpirationDate(String month,String year){
@@ -98,15 +98,15 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterSecurityCode(String securityCode){
-		driver.findElement(By.id("security-code")).sendKeys(securityCode);
+		driver.type(By.id("security-code"),securityCode);
 	}
 
 	public void enterSocialInsuranceNumber(String sin){
-		driver.findElement(By.id("S-S-N")).sendKeys(sin);
+		driver.type(By.id("S-S-N"),sin);
 	}
 
 	public void enterNameAsItAppearsOnCard(String nameOnCard){
-		driver.findElement(By.id("name-on-card")).sendKeys(nameOnCard);
+		driver.type(By.id("name-on-card"),nameOnCard);
 	}
 
 	public void checKThePoliciesAndProceduresCheckBox(){

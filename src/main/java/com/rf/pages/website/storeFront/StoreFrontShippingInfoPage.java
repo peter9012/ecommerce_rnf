@@ -93,22 +93,22 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewShippingAddressName(String name){
 		driver.waitForElementPresent(By.id("new-attention"));
-		driver.findElement(By.id("new-attention")).clear();
-		driver.findElement(By.id("new-attention")).sendKeys(name);
+		driver.clear(By.id("new-attention"));
+		driver.type(By.id("new-attention"),name);
 		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
 		driver.waitForElementPresent(By.id("new-address-1"));
-		driver.findElement(By.id("new-address-1")).clear();
-		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
+		driver.clear(By.id("new-address-1"));
+		driver.type(By.id("new-address-1"),addressLine1);
 		logger.info("New Shipping Address is "+addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
 		driver.waitForElementPresent(By.id("townCity"));
-		driver.findElement(By.id("townCity")).clear();
-		driver.findElement(By.id("townCity")).sendKeys(city);
+		driver.clear(By.id("townCity"));
+		driver.type(By.id("townCity"),city);
 		logger.info("New Shipping City is "+city);
 	}
 
@@ -123,14 +123,14 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
 		driver.waitForElementPresent(By.id("postcode"));
-		driver.findElement(By.id("postcode")).clear();
-		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+		driver.clear(By.id("postcode"));
+		driver.type(By.id("postcode"),postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
 		driver.waitForElementPresent(By.id("phonenumber"));
-		driver.findElement(By.id("phonenumber")).clear();
-		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
+		driver.clear(By.id("phonenumber"));
+		driver.type(By.id("phonenumber"),phoneNumber);
 	}
 
 	public void selectFirstCardNumber() throws InterruptedException{
@@ -149,8 +149,8 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressSecurityCode(String securityCode){
-		driver.findElement(By.id("security-code")).clear();
-		driver.findElement(By.id("security-code")).sendKeys(securityCode);
+		driver.clear(By.id("security-code"));
+		driver.type(By.id("security-code"),securityCode);
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
@@ -220,23 +220,21 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void changeAddressToUSAddress() throws InterruptedException{
 		driver.waitForElementPresent(By.id("new-address-1"));
-		driver.findElement(By.id("new-address-1")).clear();
-		driver.findElement(By.id("new-address-1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+		driver.clear(By.id("new-address-1"));
+		driver.type(By.id("new-address-1"),TestConstants.ADDRESS_LINE_1_US);
 		logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
-		driver.findElement(By.id("townCity")).clear();
-		driver.findElement(By.id("townCity")).sendKeys(TestConstants.CITY_US);
+		driver.clear(By.id("townCity"));
+		driver.type(By.id("townCity"),TestConstants.CITY_US);
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//select[@id='state']/option[2]"));
 		logger.info("state selected");
-		driver.findElement(By.id("postcode")).clear();
-		driver.findElement(By.id("postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+		driver.clear(By.id("postcode"));
+		driver.type(By.id("postcode"),TestConstants.POSTAL_CODE_US);
 		logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
-		driver.findElement(By.id("phonenumber")).clear();
-		driver.findElement(By.id("phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+		driver.clear(By.id("phonenumber"));
+		driver.type(By.id("phonenumber"),TestConstants.PHONE_NUMBER_US);
 		logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
-		//		selectFirstCardNumber();
-		//		enterNewShippingAddressSecurityCode(TestConstants.SECURITY_CODE);
 	}	
 
 	public void clickOnNewAddressRadioButton(){
@@ -283,12 +281,10 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-quickinfo']"));
 			boolean status= driver.isElementPresent(By.xpath("//div[@id='popup-quickinfo']"));
 			driver.click(By.xpath("//input[@class='shippingAddresspopup btn btn-primary']"));
+			driver.waitForLoadingImageToDisappear();
 			return status;
 		}catch(Exception e){
 			return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		}
 	}
-
 }
-
-

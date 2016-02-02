@@ -1,8 +1,5 @@
 package com.rf.pages.website.storeFront;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -15,7 +12,6 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 			.getLogger(StoreFrontRCUserPage.class.getName());
 
 	private final By WELCOME_USER_LOC = By.xpath("//a[contains(text(),'Welcome')]");
-	//private final By WELCOME_USER_DD_LOC = By.cssSelector("li[id='account-info-button']");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 
@@ -33,12 +29,6 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 		}
 
 	}
-
-	//	public void clickOnWelcomeDropDown() throws InterruptedException{	
-	//		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-	//		driver.click(WELCOME_USER_DD_LOC);
-	//		logger.info("welcome drop down clicked");
-	//	}
 
 	public boolean isLinkPresentOnWelcomeDropDown(String link){
 		return driver.isElementPresent(By.linkText(link));
@@ -61,10 +51,9 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewUserNameAndClickSaveButton(String newUserName) {
 		driver.clear(By.id("username-account"));
-		driver.findElement(By.id("username-account")).sendKeys(newUserName+"\t");
+		driver.type(By.id("username-account"),newUserName+"\t");
 		driver.waitForElementPresent(By.id("saveAccountInfo"));
 		driver.click(By.id("saveAccountInfo"));
-
 	}
 
 }

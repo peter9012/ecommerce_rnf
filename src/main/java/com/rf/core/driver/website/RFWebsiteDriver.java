@@ -316,17 +316,19 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void click(By locator) {		
 		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
+		quickWaitForElementPresent(locator);
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
 			retryingFindClick(locator);
 		}
-		//waitForLoadingImageToAppear();
+		waitForLoadingImageToDisappear();
 	}
 
 	public void type(By locator, String input) {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		 */		waitForElementPresent(locator);
+		 */		
+		 quickWaitForElementPresent(locator);
 		 findElement(locator).clear();
 		 findElement(locator).sendKeys(input);
 	}
@@ -396,6 +398,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void clear(By by) {
+		waitForElementPresent(by);
 		findElement(by).clear();
 	}
 

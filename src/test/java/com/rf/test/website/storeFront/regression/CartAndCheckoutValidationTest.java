@@ -5951,5 +5951,123 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-2108:Do not update billing profile for autoship on changing default selection
+	@Test
+	public void testDoNotUpdateBillingProfileForAutoShipOnChangingDefaultSelection_2108() throws InterruptedException	 {
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			RFO_DB = driver.getDBNameRFO();
+			String country = driver.getCountry();
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+			String accountID = null;
+			String lastName = "lN";
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontBillingInfoPage=storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+			//Add a new Billing Profile
+			storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+			storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+			storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontBillingInfoPage.selectNewBillingCardAddress();
+			//storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+			storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+			//Make the newly created billing profile as default Profile
+			storeFrontBillingInfoPage.makeBillingProfileDefault(newBillingProfileName);
+			//validate billing profile updated
+			s_assert.assertTrue(storeFrontBillingInfoPage.validateBillingProfileUpdated(),"Billing Profile is not updated!!");
+			//Go to Autoship cart
+			storeFrontHomePage.clickOnAutoshipCart();
+			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+			//validate newly selected billing profile is NOT reflected under billing profile Autoship Order
+			s_assert.assertFalse(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(newBillingProfileName),"Newly selected default biiling profile is updated under Autoship Billing Section");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-2390:Shipping address selected in autoship cart.
+	@Test
+	public void testShippingAddressSelectedInAutoShipCart_2390() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			RFO_DB = driver.getDBNameRFO();
+			String country = driver.getCountry();
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			String lastName = "lN";
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+			if(country.equalsIgnoreCase("us")){
+				addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+				city = TestConstants.CITY_US;
+				postalCode = TestConstants.POSTAL_CODE_US;
+			}
+			else if(country.equalsIgnoreCase("ca")){
+				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+				city = TestConstants.CITY_CA;
+				postalCode = TestConstants.POSTAL_CODE_CA;
+			} 
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontShippingInfoPage=storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
+
+			storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
+			String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+			storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+			storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+			storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
+			storeFrontShippingInfoPage.selectNewShippingAddressState();
+			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+			storeFrontShippingInfoPage.clickOnSaveShippingProfile();
+			//change default shipping profile selection and validate Update AutoShip PopUp
+			storeFrontShippingInfoPage.makeShippingProfileAsDefault(newShippingAddressName);
+			s_assert.assertTrue(storeFrontShippingInfoPage.validateUpdateAutoShipPopUpPresent(), "Update AutoShip PopUp is not present!!");
+			//Go to Autoship cart
+			storeFrontHomePage.clickOnAutoshipCart();
+			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+			//validate newly selected Shipping profile is reflected under shipment section under Autoship Order
+			s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(newShippingAddressName+" "+lastName),"Newly selected default Shipping profile is NOT updated under Autoship Shipping Section");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
 }
 

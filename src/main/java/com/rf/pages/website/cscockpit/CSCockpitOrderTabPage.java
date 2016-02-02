@@ -60,6 +60,8 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By OK_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='OK']");
 	private static final By ORDER_TEMPLATE = By.xpath("//span[contains(text(),'Order #')]");
 	private static final By ORDER_TYPE_LOC = By.xpath("//span[contains(text(),'Order Type')]/following::span[1]");
+	private static final By PLACE_ORDER_BUTTON_LOC = By.xpath("//td[text()='PLACE AN ORDER']");
+	private static final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//span[text()='Payment Info ']//following::div[1]/span");
 
 	protected RFWebsiteDriver driver;
 
@@ -339,5 +341,17 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return false;
 	}
 
+	public void clickPlaceAnOrderButtonInOrderTab(){
+		driver.waitForElementPresent(PLACE_ORDER_BUTTON_LOC);
+		driver.click(PLACE_ORDER_BUTTON_LOC);
+	}
+
+	public boolean validateNewAddressOnOrderTabPage(String newBillingProfileName) {
+		driver.waitForElementPresent(PAYMENT_PROFILE_NAME_LOC);
+		if(driver.findElement(PAYMENT_PROFILE_NAME_LOC).getText().contains(newBillingProfileName)){
+			return true;
+		}
+		return false;
+	}
 
 }

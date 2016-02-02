@@ -115,6 +115,9 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::td[@class='z-combo-item-text'][1]");
 	private static final By SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//td[@class='z-button-cm'][text()='SAVE']");
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
+	private static final By CLOSE_POPUP_ADD_NEW_PAYMENT_LOC = By.xpath("//div[@class='z-window-highlighted-header']/div");
+	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCheckoutTabPage(RFWebsiteDriver driver) {
@@ -243,6 +246,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickCloseOfPaymentAddressPopUpInCheckoutTab(){
 		driver.waitForElementPresent(CLOSE_POPUP_OF_PAYMENT_ADDRESS);
 		driver.click(CLOSE_POPUP_OF_PAYMENT_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void clickSaveOfShippingAddressPopUpInCheckoutTab(){
@@ -574,6 +578,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(USE_THIS_CARD_BUTTON_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+
 	public void clickOkForCreditCardValidationFailedPopUp(){
 		driver.waitForElementPresent(CREDIT_CARD_VALIDATION_FAILED_OK_LOC);
 		driver.click(CREDIT_CARD_VALIDATION_FAILED_OK_LOC);
@@ -583,13 +588,14 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickOrderNoteEditButton(String orderNote){
 		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
 		driver.click(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 
 	public void clickPerformSooButton() {
 		driver.waitForElementPresent(PERFROM_SOO_BUTTON_LOC);
 		driver.click(PERFROM_SOO_BUTTON_LOC);
-		driver.waitForLoadingImageToDisappear();
+		driver.waitForCSCockpitLoadingImageToDisappear();
 
 	}
 
@@ -653,8 +659,25 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickUpdateButtonSalesOverridePopUp(){
 		driver.waitForElementPresent(SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC);
 		driver.click(SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC);
-		driver.waitForLoadingImageToDisappear();
+
 	}
 
+	public void clickCloseAddNewPaymentProfilePopUp() {
+		driver.waitForElementPresent(CLOSE_POPUP_ADD_NEW_PAYMENT_LOC);
+		driver.click(CLOSE_POPUP_ADD_NEW_PAYMENT_LOC);
+		logger.info("Pop Up closed");
+	}
+
+	public void clickSaveAddNewPaymentProfilePopUP() {
+		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
+		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterSecurityCodeInPaymentPopUpInCheckOutTab(String securityCode){
+		driver.waitForElementPresent(POPUP_SECURITY_CODE_TEXT_BOX);
+		driver.type(POPUP_SECURITY_CODE_TEXT_BOX, securityCode);
+		logger.info("Security code entered is "+securityCode);
+	}
 
 }

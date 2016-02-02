@@ -39,7 +39,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
-	
+
 	//-----------------------------------------------------------------------------------------------------------------
 
 	private String RFO_DB = null;
@@ -54,6 +54,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderNumber = null;
 		String orderHistoryNumber = null;
 		RFO_DB = driver.getDBNameRFO();
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
@@ -72,8 +78,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		logger.info("login is successful");		
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");

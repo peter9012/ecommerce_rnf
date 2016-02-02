@@ -51,7 +51,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	} 
 
 	public boolean validateErrorMessageWithSpclCharsOnPulseSubscription(){
-		driver.findElement(By.xpath("//input[@id='webSitePrefix']")).sendKeys("!@");
+		driver.type(By.xpath("//input[@id='webSitePrefix']"),"!@");
 		driver.click(By.id("pulse-enroll"));
 		return (driver.findElement(By.xpath("//img[@id='prefixIsAvailableImage']")).isDisplayed()||driver.findElement(By.xpath("//span[@class='prefix unavailable']")).isDisplayed());
 	}
@@ -159,4 +159,3 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 }
-

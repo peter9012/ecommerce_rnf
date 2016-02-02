@@ -2102,5 +2102,53 @@ public class AccountTest extends RFWebsiteBaseTest{
 		}
 	}
 
+	// Hybris Project-4279:Change User Name Multiple Times and SAve
+	@Test
+	public void testVerifyChangeUserNameFieldsMultipleTimeAndValidateLoginWithLastChange_4279() throws InterruptedException {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			int randomNum = CommonUtils.getRandomNum(10000, 100000);
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			storeFrontHomePage=new StoreFrontHomePage(driver);
+			String userName="WestCoast"+randomNum;
+			int i=0;
+			//Get CA consultant from database .
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
+			for(i=1;i<=3;i++){
+				storeFrontAccountInfoPage.enterUserName(userName+i);
+				storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			}
+			logout();
+			// login with new username.
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName+(i-1), password);
+			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
 }
 

@@ -69,15 +69,15 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
+		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
+		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
 		driver.waitForElementPresent(By.id("card-name"));
-		driver.findElement(By.id("card-name")).clear();
-		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
+		driver.clear(By.id("card-name"));
+		driver.type(By.id("card-name"),nameOnCard);
 	}
 
 	public void selectNewBillingCardExpirationDate(){
@@ -233,19 +233,19 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewShippingAddressName(String name){
 		driver.waitForElementPresent(By.id("new-attention"));
-		driver.findElement(By.id("new-attention")).clear();
-		driver.findElement(By.id("new-attention")).sendKeys(name);
+		driver.clear(By.id("new-attention"));
+		driver.type(By.id("new-attention"),name);
 		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){
-		driver.findElement(By.id("new-address-1")).clear();
-		driver.findElement(By.id("new-address-1")).sendKeys(addressLine1);
+		driver.clear(By.id("new-address-1"));
+		driver.type(By.id("new-address-1"),addressLine1);
 	}
 
 	public void enterNewShippingAddressCity(String city){
-		driver.findElement(By.id("townCity")).clear();
-		driver.findElement(By.id("townCity")).sendKeys(city);
+		driver.clear(By.id("townCity"));
+		driver.type(By.id("townCity"),city);
 	}
 
 	public void selectNewShippingAddressState(){
@@ -303,7 +303,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnBuyNowButton() throws InterruptedException{
-
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
@@ -361,14 +360,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnAddToCRPButtonDuringEnrollment() throws InterruptedException{
-		//  try{
-		//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-		//   driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select"));
-		//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
-		//   driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//select/option[2]"));
-		//  }catch(NoSuchElementException e){
-		//
-		//  }
 		driver.waitForElementPresent(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
 		driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[2]//input[@value='Add to crp']"));
 		logger.info("Add to CRP button clicked");
@@ -377,8 +368,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnCRPCheckout(){
 		driver.waitForElementPresent(By.xpath("//input[@id='quantity0']"));
-		driver.findElement(By.xpath("//input[@id='quantity0']")).clear();
-		driver.findElement(By.xpath("//input[@id='quantity0']")).sendKeys("5");
+		driver.clear(By.xpath("//input[@id='quantity0']"));
+		driver.type(By.xpath("//input[@id='quantity0']"),"5");
 		driver.click(By.xpath("//form[@id='updateCartForm0']/a"));
 		driver.waitForElementPresent(By.id("crpCheckoutButton"));
 		driver.click(By.id("crpCheckoutButton"));
@@ -399,23 +390,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 		}
 	}
-
-	//	public boolean verifyCheckoutConfirmation(){
-	//		try{
-	//			driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
-	//			return true;
-	//		}catch(NoSuchElementException e){
-	//			return false;
-	//		}
-	//	}
-	//
-	//	public void clickOnConfirmationOK(){
-	//		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
-	//		driver.click(By.xpath("//input[@value='OK']"));
-	//		logger.info("Confirmation OK button clicked");
-	//		driver.waitForLoadingImageToDisappear();
-	//		driver.waitForPageLoad();
-	//	}
 
 	public String getSubtotal(){
 		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
@@ -544,16 +518,16 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewBillingAddressName(String name){
 		driver.waitForElementPresent(By.id("billingAddressattention"));
-		driver.findElement(By.id("billingAddressattention")).sendKeys(name);
+		driver.type(By.id("billingAddressattention"),name);
 		logger.info("New Billing Address name is "+name);
 	}
 
 	public void enterNewBillingAddressLine1(String addressLine1){
-		driver.findElement(By.id("billingAddressline1")).sendKeys(addressLine1);
+		driver.type(By.id("billingAddressline1"),addressLine1);
 	}
 
 	public void enterNewBillingAddressCity(String city){
-		driver.findElement(By.id("billingAddresstownCity")).sendKeys(city);
+		driver.type(By.id("billingAddresstownCity"),city);
 	}
 
 	public void selectNewBillingAddressState() throws InterruptedException{
@@ -564,12 +538,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterNewBillingAddressPostalCode(String postalCode){
-		driver.findElement(By.id("billingAddresspostcode")).sendKeys(postalCode+"\t");
+		driver.type(By.id("billingAddresspostcode"),postalCode+"\t");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterNewBillingAddressPhoneNumber(String phoneNumber){
-		driver.findElement(By.id("billingAddressPhonenumber")).sendKeys(phoneNumber);
+		driver.type(By.id("billingAddressPhonenumber"),phoneNumber);
 	}
 
 	public void clickAddANewAddressLink() throws InterruptedException {
@@ -615,7 +589,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 			}
 		}
-
 		return null;
 	}
 
@@ -650,23 +623,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	//	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
-	//		if(driver.getCountry().equalsIgnoreCase("us")){
-	//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[2]/div"));
-	//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
-	//			logger.info("Next button on billing profile clicked"); 
-	//		}
-	//		else{
-	//			driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-	//			driver.click(By.xpath("//ul[@style='cursor: pointer;']/strong//div"));
-	//			driver.click(By.xpath("//input[@value='Setup CRP Account']"));
-	//			logger.info("Next button on billing profile clicked");
-	//		}
-	//	}
-
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
@@ -696,7 +652,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyOrderPlacedConfirmationMessage(){
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h1"));
 		String orderPlacedMessage = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']//h1")).getText();
-		System.out.println("Message from UI is  "+orderPlacedMessage);
 		if(orderPlacedMessage.toLowerCase().contains("thank you")){
 			return true;
 		}else{
@@ -897,13 +852,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public String getTotalPriceOfProduct(){
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
-			System.out.println(value);
 			return value;
 
 
 		} else if(driver.getCountry().equalsIgnoreCase("US")){
 			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
-			System.out.println(value);
 			return value;
 
 		}
@@ -1031,8 +984,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyUpdatedAddressPresentUpdateCartPg(String profileNameSecond){
 		driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[2]/p/span[1]"));
 		String name = driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[2]/p/span[1]")).getText();
-		System.out.println(name);
-		System.out.println(profileNameSecond);
 		if(name.equalsIgnoreCase(profileNameSecond)){
 			return true;
 		}else{
@@ -1072,8 +1023,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean verifyNewlyCreatedShippingAddressIsSelectedByDefault(String name){
-		//  driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
-		//  return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/following::span[@class='radio-button shiptothis']/input[@checked='checked']"));
 		driver.waitForElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/../following-sibling::p//input[@checked='checked']"));
 		return driver.isElementPresent(By.xpath("//div[@id='new-shipping-added']//span[contains(text(),'"+name+"')]/../following-sibling::p//input[@checked='checked']"));
 	}
@@ -1215,6 +1164,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}
 		return false;
 	}
+
 	public boolean isDefaultBillingProfileIsPresentOrderConfirmationPage(String profileName){
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//span[contains(text(),'"+profileName+"')]"));
@@ -1224,6 +1174,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h2[contains(text(),'Billing')]/following::span[contains(text(),'"+profileName+"')]"));
 		}
 	}
+
 	public String getDefaultShippingProfileName(){
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/ancestor::div[2]//div[contains(@class,'user-name')]")).getText();
 	}
@@ -1292,7 +1243,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean verifySelectedShippingMethodNameOnUI(String selectedMethodName) {
 		String methodName = driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[3]/p")).getText();
-		// System.out.println("Actual Assertion 2 : "+methodName.contains(selectedMethodName.trim()));
 		return methodName.contains(selectedMethodName.trim());
 	}
 
@@ -1307,7 +1257,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public String getTotalPriceOfProductForPC(){
 		String value = driver.findElement(By.xpath("//div[@id='total-shopping']//span")).getText().trim();
-		System.out.println(value);
 		return value;
 	}
 
@@ -1354,7 +1303,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		if(methodName[1].contains("2Day")){
 			String[] shippingMethod = methodName[1].split("\\ ");
 			methodNameFromUI = shippingMethod[0]+" "+shippingMethod[1];
-			System.out.println("2day wala "+methodNameFromUI);
 		}
 		return selectedShippingMethod.contains(methodNameFromUI.trim());
 	}
@@ -1489,7 +1437,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		for(int i=1;i<=noOfBillingProfile;i++){   
 			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']")).getText().toLowerCase().contains(firstName.toLowerCase());
-			System.out.println("firstname "+firstName);
 			if(isFirstNamePresent == true){ 
 				return true;
 			}
@@ -1579,6 +1526,16 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public boolean validateQASValidationPopUpIsDisplayed(){
 		driver.waitForElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
 		return driver.isElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
+	}
+
+	public boolean validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(String profileName){
+		driver.waitForElementPresent(By.xpath("//p[@id='selectedPaymentInfo']/span[1]"));
+		return driver.findElement(By.xpath("//p[@id='selectedPaymentInfo']/span[1]")).getText().trim().equalsIgnoreCase(profileName);
+	}
+
+	public boolean validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(String profileName){
+		driver.waitForElementPresent(By.xpath("//p[@id='selectedAddress']/span[1]"));
+		return driver.findElement(By.xpath("//p[@id='selectedAddress']/span[1]")).getText().trim().equalsIgnoreCase(profileName.trim());
 	}
 
 }

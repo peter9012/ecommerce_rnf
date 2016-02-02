@@ -28,7 +28,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontRFWebsiteBasePage.class.getName());
 
-	//private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-middle-top']//a");//fixed
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
@@ -224,15 +223,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(1000);
 		try{
 			driver.waitForElementPresent(By.id("quantity0"));
-			driver.findElement(By.id("quantity0")).clear();
-			driver.findElement(By.id("quantity0")).sendKeys(qty);
+			driver.clear(By.id("quantity0"));
+			driver.type(By.id("quantity0"),qty);
 			logger.info("quantity added is "+qty);
 			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
 		}catch(NoSuchElementException e){
 			driver.waitForElementPresent(By.id("quantity1"));
-			driver.findElement(By.id("quantity1")).clear();
-			driver.findElement(By.id("quantity1")).sendKeys(qty);
+			driver.clear(By.id("quantity1"));
+			driver.type(By.id("quantity1"),qty);
 			logger.info("quantity added is "+qty);
 			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
@@ -252,49 +251,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/h1"));
 		return driver.IsElementVisible(driver.findElement(By.xpath("//div[@id='left-shopping']/h1")));
 	}
-
-	//	public void addAnotherProduct() throws InterruptedException{
-	//		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-	//		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-	//		logger.info("Continue shopping link clicked");
-	//		driver.waitForPageLoad();
-	//		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-	//		if(driver.getCountry().equalsIgnoreCase("CA")){
-	//			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-	//			logger.info("Buy Now button clicked and another product selected");
-	//			driver.waitForPageLoad();
-	//		}
-	//		else if(driver.getCountry().equalsIgnoreCase("US")){
-	//			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-	//			logger.info("Buy Now button clicked and another product selected");
-	//			driver.waitForPageLoad();
-	//		}
-	//
-	//	}
-
-	//	public void addAnotherProduct() throws InterruptedException{
-	//		Actions action = new Actions(RFWebsiteDriver.driver);
-	//		driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-	//		action.moveToElement(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).doubleClick(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).build().perform();
-	//		//driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-	//		logger.info("Continue shopping link clicked");
-	//		driver.pauseExecutionFor(2000);
-	//		driver.waitForPageLoad();
-	//		//  driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-	//		if(driver.getCountry().equalsIgnoreCase("CA")){
-	//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-	//			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-	//			logger.info("Buy Now button clicked and another product selected");
-	//			driver.waitForPageLoad();
-	//		}
-	//		else if(driver.getCountry().equalsIgnoreCase("US")){
-	//			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
-	//			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[contains(@class,'quick-product')]/div[contains(@class,'product-third-module')][2]//form[@action='/us/cart/add']/button"));
-	//			logger.info("Buy Now button clicked and another product selected");
-	//			driver.waitForPageLoad();
-	//		}
-	//
-	//	}
 
 	public void addAnotherProduct() throws InterruptedException{
 		try{
@@ -348,18 +304,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterNewRCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String emailAddress = firstName+randomNum+"@xyz.com";
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));		
 		logger.info("Create New Account button clicked");
@@ -369,18 +325,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	//overloaded method for email address
 	public void enterNewRCDetails(String firstName,String lastName,String emailAddress,String password) throws InterruptedException{
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
@@ -391,18 +347,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterNewPCDetails(String firstName,String lastName,String password) throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String emailAddress = firstName+randomNum+"@xyz.com";
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
@@ -411,18 +367,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewPCDetails(String firstName,String lastName,String password, String emailID) throws InterruptedException{
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(emailID+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),emailID+"\t");
 		logger.info("email entered as "+emailID);
 		driver.pauseExecutionFor(1000);
 		driver.waitForSpinImageToDisappear();
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
@@ -450,9 +406,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterMainAccountInfo(){
 		driver.pauseExecutionFor(5000);
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
+			driver.type(By.id("address.line1"),TestConstants.ADDRESS_LINE_1_CA);
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
-			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA+"\t");
+			driver.type(By.id("address.townCity"),TestConstants.CITY_CA+"\t");
 			logger.info("City entered is "+TestConstants.CITY_CA);
 			driver.waitForLoadingImageToDisappear();
 			try{
@@ -465,23 +421,23 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.click(By.xpath("//select[@id='state']/option[2]"));	
 			}	
 			logger.info("state selected");
-			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_CA);
+			driver.type(By.id("address.postcode"),TestConstants.POSTAL_CODE_CA);
 			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_CA);
-			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER);
+			driver.type(By.id("address.phonenumber"),TestConstants.PHONE_NUMBER);
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER);
 		}
 		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
+			driver.type(By.id("address.line1"),TestConstants.ADDRESS_LINE_1_US);
 			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
-			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
+			driver.type(By.id("address.townCity"),TestConstants.CITY_US);
 			logger.info("City entered is "+TestConstants.CITY_US);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
 			logger.info("state selected");
-			driver.findElement(By.id("address.postcode")).sendKeys(TestConstants.POSTAL_CODE_US);
+			driver.type(By.id("address.postcode"),TestConstants.POSTAL_CODE_US);
 			logger.info("postal code entered is "+TestConstants.POSTAL_CODE_US);
-			driver.findElement(By.id("address.phonenumber")).sendKeys(TestConstants.PHONE_NUMBER_US);
+			driver.type(By.id("address.phonenumber"),TestConstants.PHONE_NUMBER_US);
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		}
 
@@ -489,18 +445,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterMainAccountInfo(String address1,String city,String province,String postalCode,String phoneNumber){
 		driver.waitForElementPresent(By.id("address.line1"));
-		driver.findElement(By.id("address.line1")).sendKeys(address1);
+		driver.type(By.id("address.line1"),address1);
 		logger.info("Address Line 1 entered is "+address1);
-		driver.findElement(By.id("address.townCity")).sendKeys(city);
+		driver.type(By.id("address.townCity"),city);
 		logger.info("City entered is "+city);
 		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		logger.info("state selected");
-		driver.findElement(By.id("address.postcode")).sendKeys(postalCode);
+		driver.type(By.id("address.postcode"),postalCode);
 		logger.info("postal code entered is "+postalCode);
-		driver.findElement(By.id("address.phonenumber")).sendKeys(phoneNumber);
+		driver.type(By.id("address.phonenumber"),phoneNumber);
 		logger.info("phone number entered is "+phoneNumber);
 	}
 
@@ -543,8 +499,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
 		driver.waitForElementPresent(By.id("card-name"));
-		driver.findElement(By.id("card-name")).clear();
-		driver.findElement(By.id("card-name")).sendKeys(nameOnCard);
+		driver.clear(By.id("card-name"));
+		driver.type(By.id("card-name"),nameOnCard);
 		logger.info("card name entered is "+nameOnCard);
 	}
 
@@ -695,7 +651,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 	public void clearPasswordField(){
-		driver.findElement(By.id("new-password-account")).clear();
+		driver.clear(By.id("new-password-account"));
 		logger.info("password field cleared");
 	}
 
@@ -733,13 +689,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterSpouseFirstName(String firstName){
 		driver.waitForElementPresent(By.id("spouse-first"));
-		driver.findElement(By.id("spouse-first")).sendKeys(firstName);
+		driver.type(By.id("spouse-first"),firstName);
 		logger.info("Spouse first name entered as "+firstName);
 	}
 
 	public void enterSpouseLastName(String firstName){
 		driver.waitForElementPresent(By.id("spouse-last"));
-		driver.findElement(By.id("spouse-last")).sendKeys(firstName);
+		driver.type(By.id("spouse-last"),firstName);
 		logger.info("Spouse last name entered as "+firstName);
 	}
 
@@ -803,16 +759,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public String createNewPC(String firstName,String lastName,String password) throws InterruptedException{
 		String emailAddress = firstName+"@xyz.com";
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
@@ -826,16 +782,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//		String firstName="RCUser";
 		//		String lastName = "Test";
 		String emailAddress = firstName+randomNum+"@xyz.com";
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
-		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
@@ -846,12 +802,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewRCDetails(String firstName,String emailAddress) throws InterruptedException{
 		String lastName = "ln";
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
-		driver.findElement(By.id("email-account")).clear();
-		driver.findElement(By.id("email-account")).sendKeys(emailAddress+"\t");
+		driver.clear(By.id("email-account"));
+		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
 		driver.pauseExecutionFor(1000);
 	}
@@ -873,9 +829,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		driver.type(By.id("first-Name"),firstName);
 		logger.info("first name entered as "+firstName);
-		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		driver.type(By.id("last-name"),lastName);
 		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -1343,13 +1299,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
-		driver.findElement(By.id("postcode")).clear();
-		driver.findElement(By.id("postcode")).sendKeys(postalCode);
+		driver.clear(By.id("postcode"));
+		driver.type(By.id("postcode"),postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
-		driver.findElement(By.id("phonenumber")).clear();
-		driver.findElement(By.id("phonenumber")).sendKeys(phoneNumber);
+		driver.clear(By.id("phonenumber"));
+		driver.type(By.id("phonenumber"),phoneNumber);
 	}
 
 	public void clickOnAutoshipCart(){
@@ -1691,24 +1647,21 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//click learn more..
 		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-		driver.pauseExecutionFor(11000);
-		String parentWindowID=driver.getWindowHandle();
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.id("mirror"));
+//		String parentWindowID=driver.getWindowHandle();
+//		Set<String> set=driver.getWindowHandles();
+//		Iterator<String> it=set.iterator();
 		boolean status=false;
-		while(it.hasNext()){
-			String childWindowID=it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("solutiontool")){
-					status=true;
-					driver.waitForPageLoad();
-					driver.close();
-					driver.switchTo().window(parentWindowID);
-					return status;
+//		while(it.hasNext()){
+//			String childWindowID=it.next();
+//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+//				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
+					status=true;					
 				}
-			}
-		}
+//			}
+//		}
 		return status;
 	}
 
@@ -1807,8 +1760,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
+		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
+		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);  
 	}
 
@@ -1831,8 +1784,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void updateQuantityOfProductToTheSecondProduct(String qty) throws InterruptedException{
 		driver.waitForElementPresent(By.id("quantity1"));
-		driver.findElement(By.id("quantity1")).clear();
-		driver.findElement(By.id("quantity1")).sendKeys(qty);
+		driver.clear(By.id("quantity1"));
+		driver.type(By.id("quantity1"),qty);
 		logger.info("quantity added is "+qty);
 		driver.click(By.xpath("//a[@class='updateLink']"));
 		driver.pauseExecutionFor(5500);

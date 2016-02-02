@@ -94,8 +94,8 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).clear();
-		driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC).sendKeys(cardNumber);
+		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
+		driver.type((ADD_NEW_BILLING_CARD_NUMBER_LOC),cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
 
@@ -172,5 +172,10 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		}catch(NoSuchElementException e){
 			return false;
 		}
+	}
+
+	public boolean validateBillingProfileUpdated(){
+		driver.waitForElementPresent(By.xpath("//div[@class='successMessage']/span"));
+		return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 	}
 }

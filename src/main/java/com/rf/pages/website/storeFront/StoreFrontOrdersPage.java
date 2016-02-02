@@ -95,7 +95,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickAutoshipOrderNumber(String orderNumber){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'"+orderNumber+"')]"));
-		driver.findElement(By.xpath("//a[contains(text(),'"+orderNumber+"')]")).click();
+		driver.click(By.xpath("//a[contains(text(),'"+orderNumber+"')]"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("autoship order clicked " +orderNumber);
@@ -452,10 +452,6 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		}
 	}
 
-	//	public boolean verifyPayeeName(String payeeNameDB){
-	//		return driver.findElement(By.xpath("")).getText().contains(payeeNameDB);
-	//	}
-
 	public boolean verifyCardType(String cardTypeDB){	
 		String cardType = cardTypeDB.toLowerCase();
 		if(cardType.contains("master")){		
@@ -655,11 +651,6 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		return null;
 	}
 
-	//	public void clickOnFirstAdhocOrder() throws InterruptedException {
-	//		driver.waitForElementPresent(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));
-	//		driver.click(By.xpath("//table[@id='history-orders-table']/tbody/tr[2]/td/a"));		
-	//	}
-
 	public String orderDetails_getTotalSV()	{
 		return driver.findElement(By.xpath("//LI[text()='Total SV:']/span")).getText();
 	}
@@ -731,7 +722,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	public void clickDetailsUnderActionsForFirstOrderUnderOrderHistory(){
 		String firstOrderNumber=getFirstOrderNumberFromOrderHistory();
 		driver.waitForElementPresent(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
-		driver.findElement(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]")).click();
+		driver.click(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
 		driver.click(By.linkText("Details"));
 		driver.waitForPageLoad();
 	}
@@ -739,13 +730,6 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	public String validateOrderDetailsPageIsDisplayedForSimilarOrderNo(){
 		return driver.findElement(By.xpath("//div[@class='gray-container-info-top']")).getText();
 	}
-
-	//	public boolean validateOrderDetails(){
-	//		driver.pauseExecutionFor(2000);
-	//		return driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[1]/p")).size()>0 
-	//				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
-	//				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
-	//	}
 
 	public String getTotalSV(){
 		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'SV')]/following::div[1]/span")).getText().substring(0,3);
@@ -990,7 +974,6 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean verifyShippingMethodOnTemplateAfterAdhocOrderPlaced(String selectedShippingMethod){
 		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().split("\\:")[1].trim();
-		System.out.println("Order page "+shippingMethodUI);
 		logger.info("Shipping Method from UI is "+shippingMethodUI);
 		return selectedShippingMethod.trim().contains(shippingMethodUI);
 	}
@@ -1031,4 +1014,3 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[contains(@class,'order-products orders-table')]/div["+productNumber+"]//p[2]")).getText().trim();
 	}
 }
-

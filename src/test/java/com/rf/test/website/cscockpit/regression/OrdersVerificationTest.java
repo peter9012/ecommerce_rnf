@@ -36,14 +36,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 	//-------------------------------------------------Pages---------------------------------------------------------
 	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitAutoshipSearchTabPage cscockpitAutoshipSearchTabPage;
 	private CSCockpitCheckoutTabPage cscockpitCheckoutTabPage;
 	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
 	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
 	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
-	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private StoreFrontHomePage storeFrontHomePage; 
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
@@ -51,8 +49,23 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	private StoreFrontRCUserPage storeFrontRCUserPage;	
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 
-
 	//-----------------------------------------------------------------------------------------------------------------
+
+	public OrdersVerificationTest() {
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
+		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
+		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	}
 
 	private String RFO_DB = null;
 
@@ -66,17 +79,10 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderNumber = null;
 		String orderHistoryNumber = null;
 		RFO_DB = driver.getDBNameRFO();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
-		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
-		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		List<Map<String, Object>> randomConsultantList =  null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -121,7 +127,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()));
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -144,9 +149,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
-
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
@@ -195,20 +198,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
-		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
-		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-
+		
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		String RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String accountId = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+	
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
@@ -285,7 +282,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
@@ -321,7 +318,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()).contains("PC Order"),"CSCockpit Customer tab Order type expected = PC Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()));
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -341,20 +337,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
-		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
-		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-
+		
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		String RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomRCList =  null;
 		String rcUserEmailID =null;
 		String accountId = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,"236"),RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
@@ -434,7 +423,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		}
 		logger.info("login is successful");
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
@@ -479,122 +467,11 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1810:To verify that cscommissionadmin can place order
-	@Test
-	public void testVerifyCSCommissionAdminCanPlaceOrder_1810() throws InterruptedException{
-		String randomCustomerSequenceNumber = null;
-		String randomProductSequenceNumber = null;
-		String SKUValue = null;
-
-		//-------------------FOR US----------------------------------
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder()>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder()>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1820:To verify that cssalessupervisory can place order
-	@Test
-	public void testVerifyCSSalesSuperVisoryCanPlaceOrder_1820() throws InterruptedException{
-		String randomCustomerSequenceNumber = null;
-		String randomProductSequenceNumber = null;
-		String SKUValue = null;
-
-		//-------------------FOR US----------------------------------
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder()>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder()>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-1780:To verify user permission for transaction status change in Order detail page
 	@Test
 	public void testVerifyUserPermissionForTransactionStatus_1780(){
 		String randomOrderSequenceNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.clickSearchBtn();
@@ -639,7 +516,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -695,7 +572,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -752,7 +629,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -807,7 +684,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1948:To Verify the Display Order Origination In the Order Detail Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyTheDisplayOrderOrigination_1948() throws InterruptedException{
 		// CREATE ADHOC ORDER FROM CORP
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -821,8 +698,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
 		RFO_DB = driver.getDBNameRFO();
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		
 		driver.get(driver.getStoreFrontURL()+"/us");
 
 		while(true){
@@ -949,7 +825,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully from COM PWS site");
 
 		//open cscockpit
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(customerEmailID);
@@ -1000,363 +876,9 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-1733:To verify create payment address functionality in the Checkout Page
-	@Test(enabled=false)//WIP
-	public void testVerifyCreatePaymentAddressOnCheckoutPage_1733() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-		String randomProductSequenceNumber = null;
-		String consultantEmailID = null;
-		String SKUValue = null;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
-		String attendeeLastName="IN";
-		String orderNumber=null;
-		String orderNumberOfOrderTab=null;
-		String orderHistoryNumber=null;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String securityCode=TestConstants.SECURITY_CODE;
-		String cardNumber=TestConstants.CARD_NUMBER;
-		String attendeeFirstName=TestConstants.FIRST_NAME+randomNum;
-		String addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
-		String city=TestConstants.NEW_ADDRESS_CITY_US;
-		String postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-		String Country=TestConstants.COUNTRY_DD_VALUE_US;
-		String Province=TestConstants.PROVINCE_ALABAMA_US;
-		String phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		List<Map<String, Object>> randomConsultantList =  null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		logger.info("clicked order number 1 is "+orderNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyAddressTextBoxInPopUpInCheckoutTab(),"Address Line 1 text box is not present in popup at checkout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPostalCodeTextBoxInPopUpInCheckoutTab(),"Postal code text box is not present in popup at checkout tab");
-		cscockpitCheckoutTabPage.clickCloseOfPaymentAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		// cscockpitCheckoutTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
-		cscockpitCheckoutTabPage.enterPaymentDetailsInPopUpInCheckoutTab(cardNumber, newBillingProfileName,securityCode,"09","2023","VISA");
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		orderNumberOfOrderTab = cscockpitOrderTabPage.getOrderNumberInOrderTab();
-		logger.info("order number 2 in order tab is "+orderNumberOfOrderTab);
-		cscockpitOrderTabPage.clickCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()));
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		logger.info("order number 3 from order history is "+orderHistoryNumber);
-		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-
-		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
-		securityCode=TestConstants.SECURITY_CODE;
-		cardNumber=TestConstants.CARD_NUMBER;
-		attendeeFirstName=TestConstants.FIRST_NAME+randomNumber;
-		addressLine=TestConstants.ADDRESS_LINE_1_CA;
-		city=TestConstants.CITY_CA;
-		postalCode=TestConstants.POSTAL_CODE_CA;
-		Country=TestConstants.COUNTRY_DD_VALUE_CA;
-		Province=TestConstants.PROVINCE_CA;
-		phoneNumber=TestConstants.PHONE_NUMBER_CA;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyAddressTextBoxInPopUpInCheckoutTab(),"Address Line 1 text box is not present in popup at checkout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPostalCodeTextBoxInPopUpInCheckoutTab(),"Postal code text box is not present in popup at checkout tab");
-		cscockpitCheckoutTabPage.clickCloseOfPaymentAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		// cscockpitCheckoutTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
-		cscockpitCheckoutTabPage.enterPaymentDetailsInPopUpInCheckoutTab(cardNumber, newBillingProfileName,securityCode,"09","2023","VISA");
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		orderNumberOfOrderTab = cscockpitOrderTabPage.getOrderNumberInOrderTab();
-		cscockpitOrderTabPage.clickCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()));
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-		s_assert.assertAll();
-	}
-
-	//  Hybris Project-1734:To verify create delivery address functionality in the Checkout Page
-	@Test
-	public void testVerifyCreateDeliveryAddressOnCheckoutPage_1734() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-		String randomProductSequenceNumber = null;
-		String consultantEmailID = null;
-		String SKUValue = null;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
-		String attendeeLastName="IN";
-		String orderNumberOfOrderTab=null;
-		String orderHistoryNumber=null;
-		String attendeeFirstName=TestConstants.FIRST_NAME+randomNum;
-		String attendeeNewFirstName=TestConstants.FIRST_NAME+randomNumber;
-		String addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
-		String city=TestConstants.NEW_ADDRESS_CITY_US;
-		String postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-		String Country=TestConstants.COUNTRY_DD_VALUE_US;
-		String Province=TestConstants.PROVINCE_ALABAMA_US;
-		String phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-		String newAddressLine=TestConstants.USE_THIS_ADDRESS_LINE1_US;
-		String newCity=TestConstants.USE_THIS_CITY_US;
-		String newPostalCode=TestConstants.USE_THIS_POSTAL_CODE_US;
-		String newProvince=TestConstants.USE_THIS_PROVINCE_US;
-
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		List<Map<String, Object>> randomConsultantList =  null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyAddressTextBoxInPopUpInCheckoutTab(),"Address Line 1 text box is not present in popup at checkout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPostalCodeTextBoxInPopUpInCheckoutTab(),"Postal code text box is not present in popup at checkout tab");
-		cscockpitCheckoutTabPage.clickCloseOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab().contains("Attention should contain First Name and Last Name"),"CSCockpit checkout tab popup error message expected = Attention should contain First Name and Last Name and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab());
-		cscockpitCheckoutTabPage.clickOKOfDeliveryAddressPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickUseAsEnteredPopupOkayInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created Delivery address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeNewFirstName,attendeeLastName,newAddressLine,newCity,newPostalCode,Country,newProvince,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickUseAsEnteredPopupOkayInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab().contains(attendeeNewFirstName),"CSCockpit checkout tab newly created Delivery address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		orderNumberOfOrderTab = cscockpitOrderTabPage.getOrderNumberInOrderTab();
-		cscockpitOrderTabPage.clickCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()));
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddress().contains(attendeeNewFirstName),"CSCockpit Delivery Address expected = attendeeNewFirstName and on UI = " +storeFrontOrdersPage.getShippingAddress());
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		randomNumber=CommonUtils.getRandomNum(10000, 1000000);
-		attendeeFirstName=TestConstants.FIRST_NAME+randomNumber;
-		addressLine=TestConstants.ADDRESS_LINE_1_CA;
-		city=TestConstants.CITY_CA;
-		postalCode=TestConstants.POSTAL_CODE_CA;
-		Country=TestConstants.COUNTRY_DD_VALUE_CA;
-		Province=TestConstants.PROVINCE_CA;
-		phoneNumber=TestConstants.PHONE_NUMBER_CA;
-		newAddressLine=TestConstants.ADDRESS_LINE_1_CA;
-		newCity=TestConstants.CITY_CA;
-		newPostalCode=TestConstants.POSTAL_CODE_CA;
-		newProvince=TestConstants.PROVINCE_CA;
-		attendeeFirstName=TestConstants.FIRST_NAME+randomNum;
-		attendeeNewFirstName=TestConstants.FIRST_NAME+randomNumber;
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyAddressTextBoxInPopUpInCheckoutTab(),"Address Line 1 text box is not present in popup at checkout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPostalCodeTextBoxInPopUpInCheckoutTab(),"Postal code text box is not present in popup at checkout tab");
-		cscockpitCheckoutTabPage.clickCloseOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab().contains("Attention should contain First Name and Last Name"),"CSCockpit checkout tab popup error message expected = Attention should contain First Name and Last Name and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab());
-		cscockpitCheckoutTabPage.clickOKOfDeliveryAddressPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickUseAsEnteredPopupOkayInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created Delivery address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeNewFirstName,attendeeLastName,newAddressLine,newCity,newPostalCode,Country,newProvince,phoneNumber);
-		cscockpitCheckoutTabPage.clickSaveOfDeliveryAddressPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.clickUseAsEnteredPopupOkayInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab().contains(attendeeNewFirstName),"CSCockpit checkout tab newly created Delivery address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewlyCreatedDeliveryAddressNameInCheckoutTab());
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		orderNumberOfOrderTab = cscockpitOrderTabPage.getOrderNumberInOrderTab();
-		cscockpitOrderTabPage.clickCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()));
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddress().contains(attendeeNewFirstName),"CSCockpit Delivery Address expected = attendeeNewFirstName and on UI = " +storeFrontOrdersPage.getShippingAddress());
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-1951:To verify place order from Order detail Page
 	@Test
 	public void testToVerifyPlaceOrderFromOrderDetailPage_1951() throws InterruptedException{
-
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -1366,8 +888,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		driver.get(driver.getStoreFrontURL()+"/us");		
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -1382,7 +903,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		}
 		logout();
 		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -1423,7 +943,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		//--------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -1438,7 +957,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		}
 		logout();
 		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -1478,120 +996,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1945:To verify csr place order through Cart Page Find customer
-	@Test(enabled=false) //WIP
-	public void testVerifyCSRPlaceOrderThroughCartPageFindCustomer_1945() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String randomProductSequenceNumber = null;
-		String randomCustomerSequenceNumber = null;
-		String SKUValue = null;
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
 
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
-		String getOrderNumberFromCsCockpitUIOnOrderTabOnCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-
-		s_assert.assertTrue(getOrderNumberFromCsCockpitUIOnOrderTabOnCA.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of CA");
-
-		//----------------For US---------------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
-		String getOrderNumberFromCsCockpitUIOnOrderTab = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(getOrderNumberFromCsCockpitUIOnOrderTab.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
-		s_assert.assertAll();
-	}
 
 	//Hybris Project-1818:To verify user permission for update QV and CV in Order detail page
-	@Test(enabled=false) //WIP
+	@Test 
 	public void testVerifyUserPermissionsForQVandCVUpdate_1818(){
 		String randomCustomerSequenceNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -1639,10 +1050,10 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1779:To verify user permission for order status change in Order detail page
-	@Test(enabled=false) //ISSUE change link is not present for any user
+	@Test(enabled=false)//WIP //ISSUE change link is not present for any user
 	public void testVerifyUserPermissionsForOrderStatus_1779(){
 		String randomCustomerSequenceNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -1689,155 +1100,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4661:Change the Sponsor of RC user from Cscockpit
-	@Test//(enabled=false) //WIP
-	public void testChangeSponserOfRCFromCSCockpit_4661() throws InterruptedException{
-		String randomCustomerSequenceNumber = null;
-		String consultantEmailID = null;
-		String accountID=null;
-		String orderNumber = null;
-		String existingSponserName=null;
-		RFO_DB = driver.getDBNameRFO();
 
-		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String, Object>> randomRCList =  null;
-		String rcUserEmailID =null;
-		String accountId = null;
-
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the consultant user is "+accountId);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		//Get account number from account id.
-		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-		String	sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-		logger.info("login is successful");
-		//Get random active RC User
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"236"),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			logger.info("Account Id of the RC user is "+accountId);
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		} 
-		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitLoginPage.enterUsername("cscommissionadmin");
-		cscockpitCustomerSearchTabPage =cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		logger.info("Order Number fetched from UI is  "+orderNumber);
-		existingSponserName=cscockpitOrderTabPage.getExistingSponserNameInOrderTab();
-		logger.info("Existing Sponser name and account no on UI is  "+existingSponserName);
-		cscockpitOrderTabPage.clickChangeSponserLinkInOrderTab();
-		cscockpitOrderTabPage.enterConsultantCIDAndClickSearchInOrderTab(sponsorID);
-		cscockpitOrderTabPage.clickSelectToSelectSponserInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getNewSponserNameFromUIInOrderTab().contains(sponsorID),"CSCockpit Sponser CID expected = "+sponsorID+" and on UI = " +cscockpitOrderTabPage.getNewSponserNameFromUIInOrderTab());
-		//		//Verify the sponser change in RFO Database.
-		//		randomUserDetailList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderNumber),RFO_DB);
-		//		String newSponserAccountId=String.valueOf(getValueFromQueryResult(randomUserDetailList, "AccountID"));
-		//		//Get account number from account id of newly selected sponser.
-		//		List<Map<String, Object>> newSponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,newSponserAccountId),RFO_DB);
-		//		String	AccountNumberDB = (String) getValueFromQueryResult(newSponsorIdList, "AccountNumber");
-		//		s_assert.assertTrue(AccountNumberDB.contains(sponsorID),"CSCockpit Sponser CID expected = "+sponsorID+" and In Database  = "+AccountNumberDB);
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the consultant user is "+accountId);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		//Get account number from account id.
-		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-		sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-		logger.info("login is successful");
-		//Get random active RC User
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"40"),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			logger.info("Account Id of the RC user is "+accountId);
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		} 
-		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitLoginPage.enterUsername("cscommissionadmin");
-		cscockpitCustomerSearchTabPage =cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		logger.info("Order Number fetched from UI is  "+orderNumber);
-		existingSponserName=cscockpitOrderTabPage.getExistingSponserNameInOrderTab();
-		logger.info("Existing Sponser name and account no on UI is  "+existingSponserName);
-		cscockpitOrderTabPage.clickChangeSponserLinkInOrderTab();
-		cscockpitOrderTabPage.enterConsultantCIDAndClickSearchInOrderTab(sponsorID);
-		cscockpitOrderTabPage.clickSelectToSelectSponserInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getNewSponserNameFromUIInOrderTab().contains(sponsorID),"CSCockpit Sponser CID expected = "+sponsorID+" and on UI = " +cscockpitOrderTabPage.getNewSponserNameFromUIInOrderTab());
-		//		//Verify the sponser change in RFO Database.
-		//		randomUserDetailList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderNumber),RFO_DB);
-		//		newSponserAccountId=String.valueOf(getValueFromQueryResult(randomUserDetailList, "AccountID"));
-		//		//Get account number from account id of newly selected sponser.
-		//		newSponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,newSponserAccountId),RFO_DB);
-		//		AccountNumberDB = (String) getValueFromQueryResult(newSponsorIdList, "AccountNumber");
-		//		s_assert.assertTrue(AccountNumberDB.contains(sponsorID),"CSCockpit Sponser CID expected = "+sponsorID+" and In Database  = "+AccountNumberDB);
-		s_assert.assertAll();	
-	}
 
 	//Hybris Project-1937:To verify for created new user the order status should be submitted
-	@Test(enabled=false) //WIP
+	@Test
 	public void testToVerifyForCreatedNewUserTheOrderStatusShouldBeSubmitted_1937(){
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null; 
 		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -1940,7 +1210,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1946:Verify the Find order page UI
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)//WIP
 	public void testVerifyFindOrderPageUI_1946(){
 		String shipToCountryDDValue_All = "All";
 		String shipToCountryDDValue_United_States = "United States";
@@ -1965,7 +1235,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderStatusDDValue_Shipped = "Shipped";
 		String orderStatusDDValue_Submitted = "Submitted";
 
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
@@ -2009,15 +1278,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1940:To verify for created new user the Account status should be Active
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)//WIP 
 	public void testToVerifyForCreatedNewUserTheAccountStatusShouldBeActive_1940(){
 		String randomCustomerSequenceNumber = null;
 		String randomCustomerSequenceNumberForRC = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		
 		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
@@ -2112,125 +1380,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1944:To verify Checkout Page UI while placing the order
-	@Test(enabled=false) //WIP
-	public void testVerifyCheckoutPageUIWhilePlacingOrder_1944(){
-		String randomProductSequenceNumber = null;
-		String SKUValue = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		//-------------------FOR US----------------------------------
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String firstName = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		String fullName = cscockpitCheckoutTabPage.getNameFromCartSectionInCheckoutTab(firstName);
-		s_assert.assertTrue(fullName.contains(firstName),"full name on UI in cart section"+fullName+"while expected "+firstName);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyBasePriceIsPresentInCartSectionInCheckoutTab(), "Base price is not present in cart section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceIsPresentInCartSectionInCheckoutTab(), "Total price is not present in cart section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryCVIsPresentInCartSectionInCheckoutTab(), "Entry CV is not present in cart section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryQVIsPresentInCartSectionInCheckoutTab(), "Entry QV is not present in cart section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().contains(firstName),"selected delivery address on UI "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+firstName);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNewAddressIsPresentInDeliverySectionInCheckoutTab(), "New address button is not present in delivery section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(), "Subtotal is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyHandlingCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Handling Costs is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTaxesTxtIsPresentInTotalsSectionInCheckoutTab(), "taxes is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceTxtIsPresentInTotalsSectionInCheckoutTab(), "Total price is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalCVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total CV is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalQVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total QV is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(), "Commission date calender icon is not present in custom section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNotesTextInOrderInfoSectionInCheckoutTab(), "Order notes text is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNotesTextAreaInOrderInfoSectionInCheckoutTab(), "Order notes text area is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNoteAddBtnInOrderInfoSectionInCheckoutTab(), "Order notes add button is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNoPromotionsAppliedInAppliedPromotionsSectionInCheckoutTab(), "No promotion txt is not present in promotion section of checkeout tab");
-		//payment Section
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardNumberSectionInCheckoutTab(), "Credit card number section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardOwnerSectionInCheckoutTab(), "Credit card owner section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardTypeSectionInCheckoutTab(), "Credit card type section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardMonthSectionInCheckoutTab(), "Credit card month section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardValidToYearSectionInCheckoutTab(), "Credit card valid to year section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPaymentBillingAddressSectionInCheckoutTab(), "Billing address section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPaymentAmountSectionInCheckoutTab(), "Payment amount section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardCv2SectionInCheckoutTab(), "Credit Card Cv2 section is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyUseThisCardBtnInCheckoutTab(), "Use this card button is not present in order note info section of checkeout tab");
-		//Place Order Section
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPlaceOrderBtnIsPresentInCheckoutTab(), "Place order button is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPerformSOOBtnIsPresentInCheckoutTab(), "Perform SOO button is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTestOrderChkBoxIsPresentInCheckoutTab(), "Txt order checkbox is not present in order note info section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDoNotShipChkBoxIsPresentInCheckoutTab(), "Do Not Ship checkbox is not present in order note info section of checkeout tab");
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		firstName = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		fullName = cscockpitCheckoutTabPage.getNameFromCartSectionInCheckoutTab(firstName);
-		s_assert.assertTrue(fullName.contains(firstName),"full name on UI in cart section_CA"+fullName+"while expected "+firstName);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyBasePriceIsPresentInCartSectionInCheckoutTab(), "Base price is not present in cart section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceIsPresentInCartSectionInCheckoutTab(), "Total price is not present in cart section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryCVIsPresentInCartSectionInCheckoutTab(), "Entry CV is not present in cart section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryQVIsPresentInCartSectionInCheckoutTab(), "Entry QV is not present in cart section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().contains(firstName),"selected delivery address on UI_CA "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+firstName);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNewAddressIsPresentInDeliverySectionInCheckoutTab(), "New address button is not present in delivery section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI_CA = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(), "Subtotal is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyHandlingCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Handling Costs is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceTxtIsPresentInTotalsSectionInCheckoutTab(), "Total price is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalCVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total CV is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalQVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total QV is not present in totals section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(), "Commission date calender icon is not present in custom section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNotesTextInOrderInfoSectionInCheckoutTab(), "Order notes text is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNotesTextAreaInOrderInfoSectionInCheckoutTab(), "Order notes text area is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyOrderNoteAddBtnInOrderInfoSectionInCheckoutTab(), "Order notes add button is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNoPromotionsAppliedInAppliedPromotionsSectionInCheckoutTab(), "No promotion txt is not present in promotion section of checkeout tab_CA");
-		//payment Section
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardNumberSectionInCheckoutTab(), "Credit card number section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardOwnerSectionInCheckoutTab(), "Credit card owner section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardTypeSectionInCheckoutTab(), "Credit card type section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardMonthSectionInCheckoutTab(), "Credit card month section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardValidToYearSectionInCheckoutTab(), "Credit card valid to year section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPaymentBillingAddressSectionInCheckoutTab(), "Billing address section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPaymentAmountSectionInCheckoutTab(), "Payment amount section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyCreditCardCv2SectionInCheckoutTab(), "Credit Card Cv2 section is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyUseThisCardBtnInCheckoutTab(), "Use this card button is not present in order note info section of checkeout tab_CA");
-		//Place Order Section
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPlaceOrderBtnIsPresentInCheckoutTab(), "Place order button is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyPerformSOOBtnIsPresentInCheckoutTab(), "Perform SOO button is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTestOrderChkBoxIsPresentInCheckoutTab(), "Test order checkbox is not present in order note info section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDoNotShipChkBoxIsPresentInCheckoutTab(), "Do Not Ship checkbox is not present in order note info section of checkeout tab_CA");
-		s_assert.assertAll();
-	}
 
 	//Hybris Project-1950:Verify the Order Detail Page UI
 	@Test
@@ -2271,9 +1420,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String amount = "Amount";
 		String transactionStatus = "Transaction status";
 
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		//-------------------FOR US----------------------------------
-		driver.pauseExecutionFor(5000);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
@@ -2450,7 +1597,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		List<Map<String, Object>> randomConsultantList =  null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -2468,7 +1614,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		orderHistoryNumber= storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		logout();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
@@ -2566,7 +1711,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1947:Verify the Order Search Criteria functionality
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)//WIP
 	public void testVerifyOrderSearchCriteriaFunctionality_1947() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String orderDate = "Order Date";
@@ -2584,8 +1729,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID=null;
 		String accountId=null;
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -2607,9 +1751,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> orderNumberList=DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_NUMBER_FROM_ACCOUNT_ID,accountId),RFO_DB);
 		String	orderNumber = String.valueOf(getValueFromQueryResult(orderNumberList, "OrderNumber"));
 
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
@@ -2810,625 +1952,63 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1953:To verify Sales Override from Customer detail Page
-	@Test(enabled=false) //WIP
-	public void testToVerifySalesOverrideFromCustomerDetailPage_1953() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-		String randomProductSequenceNumber = null;
-		String consultantEmailID = null;
-		String SKUValue = null;
-		String priceValue = "500";
-		String cvValue = "500";
-		String qvValue = "500";
-		String delCost = "20";
-		String handCost = "5";
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		List<Map<String, Object>> randomConsultantList =  null;
-
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-
-		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.clickOrderNoteEditButton(TestConstants.ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.updateOrderNoteOnCheckOutPage(TestConstants.UPDATED_ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
-		cscockpitCheckoutTabPage.clickPerformSooButton();
-		cscockpitCheckoutTabPage.enterPriceValueInSalesOrderOverridePopUp(priceValue);
-		cscockpitCheckoutTabPage.enterCVValueInSalesOrderOverrridePoPuP(cvValue);
-		cscockpitCheckoutTabPage.enterQVValueInSalesOrderOvverridePopUp(qvValue);
-		cscockpitCheckoutTabPage.enterDeliveryCostsInSalesOrderOvverridePopUp(delCost);
-		cscockpitCheckoutTabPage.enterHandlingCostsInSalesOrderOvveridePOpUp(handCost);
-		cscockpitCheckoutTabPage.selectOverrideReasonSooDept();
-		cscockpitCheckoutTabPage.selectOverrideReasonSooType();
-		cscockpitCheckoutTabPage.selectOverrideReasonSooReason();
-		cscockpitCheckoutTabPage.clickUpdateButtonSalesOverridePopUp();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
-		String orderNumber = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		cscockpitOrderTabPage.clickCustomerTab();
-
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(orderNumber).contains("Override Order"),"This is not Override Order");
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-
-		s_assert.assertTrue(orderNumber.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
-		//----------------------FOR CA------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.clickOrderNoteEditButton(TestConstants.ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.updateOrderNoteOnCheckOutPage(TestConstants.UPDATED_ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
-		cscockpitCheckoutTabPage.clickPerformSooButton();
-		cscockpitCheckoutTabPage.enterPriceValueInSalesOrderOverridePopUp(priceValue);
-		cscockpitCheckoutTabPage.enterCVValueInSalesOrderOverrridePoPuP(cvValue);
-		cscockpitCheckoutTabPage.enterQVValueInSalesOrderOvverridePopUp(qvValue);
-		cscockpitCheckoutTabPage.enterDeliveryCostsInSalesOrderOvverridePopUp(delCost);
-		cscockpitCheckoutTabPage.enterHandlingCostsInSalesOrderOvveridePOpUp(handCost);
-		cscockpitCheckoutTabPage.selectOverrideReasonSooDept();
-		cscockpitCheckoutTabPage.selectOverrideReasonSooType();
-		cscockpitCheckoutTabPage.selectOverrideReasonSooReason();
-		cscockpitCheckoutTabPage.clickUpdateButtonSalesOverridePopUp();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully on CA");
-		String orderNumberForCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		cscockpitOrderTabPage.clickCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(orderNumberForCA).contains("Override Order"),"This is not Override Order on CA");
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(orderNumberForCA.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of CA");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1929:Verify Consultant Customer detail page UI
-	@Test(enabled=false) //WIP
-	public void testVerifyConsultantCustomerDetailPageUI_1929(){
-		String randomCustomerSequenceNumber = null;
-		String accountStatus = "Account Status";
-		String consultant = "CONSULTANT";
-		String customerPhone = "Customer Phone";
-		String mainAddress = "Main Address"; 
-		String email = "Email";
-		String sponsor = "Sponsor"; 
-		String autoshipTemplateID = "ID";
-		String autoshipTemplateType = "Type";
-		String autoshipTemplateStatus = "Status";
-		String autoshipTemplateActive = "Active";
-		String autoshipTemplateCreationDate = "Creation Date";
-		String autoshipTemplateTemplateTotal = "Template Total";
-		String autoshipTemplateNextDueDate = "Next Due Date";
-		String autoshipTemplateOfOrders = "# of Orders";
-		String orderType = "Order Type";
-		String orderStatus = "Order Status";
-		String orderTotal = "Order Total";
-		String orderDate = "Order Date";
-		String orderNotes = "Order Notes";
-		String creditCardNumber = "Credit Card number";
-		String creditCardOwner = "Credit Card Owner";
-		String type = "Type";
-		String month = "Month";
-		String validToYear = "Valid to year";
-		String billingAddress = "Billing address";
-		String lastName = "Last Name";
-		String line1 = "Line 1";
-		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
-		String postalCode = "Postal Code";
-		String country = "Country";
-		String stateOrProvince = "State/Province";
-		String addressType = "Address Type";
-
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String CID = cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//assert account details
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID).contains(CID), "order number in customer tab"+CID+"and on UI "+cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID));
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(accountStatus), "Account status is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerTypeIsPresentInCustomerTab(consultant), "Account type  is not consultant in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(customerPhone), "customer phone is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(mainAddress), "Main address is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(email), "Email is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(sponsor), "sponsor is not present in customer tab");
-		//assert autoship template details
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateID), "Autoship Template ID is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateType), "Autoship Template type is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateStatus), "Autoship Template Status is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateActive), "Autoship Template Active is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateCreationDate), "Autoship Template Creation Date is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateTemplateTotal), "Autoship Template Template total is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateNextDueDate), "Autoship Template Next Due Date is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateOfOrders), "Autoship Template # pf orders is not present in customer tab");
-		cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
-		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isAutoshipTemplateDisplayedInAutoshipTemplateTab(), "Autoship template page is not displayed");
-		cscockpitAutoshipSearchTabPage.clickCustomerTab();
-		//assert customer orders
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderType), "Order type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderStatus), "Order status section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderTotal), "Order total section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderDate), "Order Date section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderNotes), "Order Notes section is not present in customer tab");
-		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.isOrderTemplateDisplayedInOrderTab(), "Order template page is not displayed");
-		cscockpitOrderTabPage.clickCustomerTab();
-		//assert billing information section
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardNumber), "Credit card number section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardOwner), "credit card owner section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(type), "type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(month), "Month section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(validToYear), "Valid to year section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(billingAddress), "billing address section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddCardButtonPresentInCustomerTab(), "Add card button is not present in billing section of customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditButtonForCreditCardPresentInCustomerTab(), "Edit button for credit card is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickAddCardButtonInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddNewPaymentProfilePopupPresentInCustomerTab(), "Add new payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfPaymentAddressPopUpInCheckoutTab();
-		cscockpitCustomerTabPage.clickEditButtonForCreditCardInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditPaymentProfilePopupPresentInCustomerTab(), "Edit payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfEditPaymentAddressPopUpInCheckoutTab();
-		//assert customer address
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(lastName), "Last Name section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line1), "Line 1 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line2), "Line 2 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(cityOrTown), "City/Town section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(postalCode), "Postal Code section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(country), "Country section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(stateOrProvince), "State/Province section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(addressType), "Address type section is not present in customer tab");
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1930:Verify Preferred Customer detail page UI
-	@Test(enabled=false)//WIP
-	public void testVerifyPreferredCustomerDetailPageUI_1930(){
-		String randomCustomerSequenceNumber = null;
-		String accountStatus = "Account Status";
-		String pc = "PC";
-		String customerPhone = "Customer Phone";
-		String mainAddress = "Main Address"; 
-		String email = "Email";
-		String sponsor = "Sponsor"; 
-		String autoshipTemplateID = "ID";
-		String autoshipTemplateType = "Type";
-		String autoshipTemplateStatus = "Status";
-		String autoshipTemplateActive = "Active";
-		String autoshipTemplateCreationDate = "Creation Date";
-		String autoshipTemplateTemplateTotal = "Template Total";
-		String autoshipTemplateNextDueDate = "Next Due Date";
-		String autoshipTemplateOfOrders = "# of Orders";
-		String orderType = "Order Type";
-		String orderStatus = "Order Status";
-		String orderTotal = "Order Total";
-		String orderDate = "Order Date";
-		String orderNotes = "Order Notes";
-		String creditCardNumber = "Credit Card number";
-		String creditCardOwner = "Credit Card Owner";
-		String type = "Type";
-		String month = "Month";
-		String validToYear = "Valid to year";
-		String billingAddress = "Billing address";
-		String lastName = "Last Name";
-		String line1 = "Line 1";
-		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
-		String postalCode = "Postal Code";
-		String country = "Country";
-		String stateOrProvince = "State/Province";
-		String addressType = "Address Type";
-
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String CID = cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//assert account details
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID).contains(CID), "order number in customer tab"+CID+"and on UI "+cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID));
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(accountStatus), "Account status is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerTypeIsPresentInCustomerTab(pc), "Account type  is not consultant in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(customerPhone), "customer phone is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(mainAddress), "Main address is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(email), "Email is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(sponsor), "sponsor is not present in customer tab");
-		//assert autoship template details
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateID), "Autoship Template ID is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateType), "Autoship Template type is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateStatus), "Autoship Template Status is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateActive), "Autoship Template Active is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateCreationDate), "Autoship Template Creation Date is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateTemplateTotal), "Autoship Template Template total is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateNextDueDate), "Autoship Template Next Due Date is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateOfOrders), "Autoship Template # pf orders is not present in customer tab");
-		cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
-		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isAutoshipTemplateDisplayedInAutoshipTemplateTab(), "Autoship template page is not displayed");
-		cscockpitAutoshipSearchTabPage.clickCustomerTab();
-		//assert customer orders
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderType), "Order type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderStatus), "Order status section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderTotal), "Order total section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderDate), "Order Date section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderNotes), "Order Notes section is not present in customer tab");
-		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.isOrderTemplateDisplayedInOrderTab(), "Order template page is not displayed");
-		cscockpitOrderTabPage.clickCustomerTab();
-		//assert billing information section
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardNumber), "Credit card number section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardOwner), "credit card owner section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(type), "type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(month), "Month section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(validToYear), "Valid to year section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(billingAddress), "billing address section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddCardButtonPresentInCustomerTab(), "Add card button is not present in billing section of customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditButtonForCreditCardPresentInCustomerTab(), "Edit button for credit card is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickAddCardButtonInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddNewPaymentProfilePopupPresentInCustomerTab(), "Add new payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfPaymentAddressPopUpInCheckoutTab();
-		cscockpitCustomerTabPage.clickEditButtonForCreditCardInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditPaymentProfilePopupPresentInCustomerTab(), "Edit payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfEditPaymentAddressPopUpInCheckoutTab();
-		//assert customer address
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(lastName), "Last Name section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line1), "Line 1 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line2), "Line 2 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(cityOrTown), "City/Town section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(postalCode), "Postal Code section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(country), "Country section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(stateOrProvince), "State/Province section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(addressType), "Address type section is not present in customer tab");
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1931:Verify Retail Customer detail page UI
-	@Test(enabled=false)//WIP
-	public void testVerifyRetailCustomerDetailPageUI_1931(){
-		String randomCustomerSequenceNumber = null;
-		String accountStatus = "Account Status";
-		String rc = "RETAIL";
-		String mainAddress = "Main Address"; 
-		String email = "Email";
-		String sponsor = "Sponsor"; 
-		String autoshipTemplateID = "ID";
-		String orderType = "Order Type";
-		String orderStatus = "Order Status";
-		String orderTotal = "Order Total";
-		String orderDate = "Order Date";
-		String orderNotes = "Order Notes";
-		String creditCardNumber = "Credit Card number";
-		String creditCardOwner = "Credit Card Owner";
-		String type = "Type";
-		String month = "Month";
-		String validToYear = "Valid to year";
-		String billingAddress = "Billing address";
-		String lastName = "Last Name";
-		String line1 = "Line 1";
-		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
-		String postalCode = "Postal Code";
-		String country = "Country";
-		String stateOrProvince = "State/Province";
-		String addressType = "Address Type";
-		String randomProductSequenceNumber = null;
-		String SKUValue = null;
-
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab(rc);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String CID = cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-
-		//place an order
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		cscockpitCheckoutTabPage.clickCustomerTab();
-
-		//assert account details
-		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID).contains(CID), "order number in customer tab"+CID+"and on UI "+cscockpitCustomerTabPage.getOrderDetailsInCustomerTab(CID));
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(accountStatus), "Account status is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerTypeIsPresentInCustomerTab(rc), "Account type  is not consultant in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(mainAddress), "Main address is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(email), "Email is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.getAccountDetailsInCustomerTab(sponsor), "sponsor is not present in customer tab");
-		//assert autoship template details
-		s_assert.assertFalse(cscockpitCustomerTabPage.verifyAutoshipTemplateDetailsInCustomerTab(autoshipTemplateID), "Autoship Template ID is not present in customer tab");
-		//assert customer orders
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderType), "Order type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderStatus), "Order status section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderTotal), "Order total section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderDate), "Order Date section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(orderNotes), "Order Notes section is not present in customer tab");
-		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.isOrderTemplateDisplayedInOrderTab(), "Order template page is not displayed");
-		cscockpitCheckoutTabPage.clickCustomerTab();
-		//assert billing information section
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardNumber), "Credit card number section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(creditCardOwner), "credit card owner section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(type), "type section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(month), "Month section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(validToYear), "Valid to year section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(billingAddress), "billing address section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddCardButtonPresentInCustomerTab(), "Add card button is not present in billing section of customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditButtonForCreditCardPresentInCustomerTab(), "Edit button for credit card is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickAddCardButtonInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isAddNewPaymentProfilePopupPresentInCustomerTab(), "Add new payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfPaymentAddressPopUpInCheckoutTab();
-		cscockpitCustomerTabPage.clickEditButtonForCreditCardInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditPaymentProfilePopupPresentInCustomerTab(), "Edit payment profile popup is not present in billing section of customer tab");
-		cscockpitCheckoutTabPage.clickCloseOfEditPaymentAddressPopUpInCheckoutTab();
-		//assert customer address
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(lastName), "Last Name section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line1), "Line 1 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(line2), "Line 2 section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(cityOrTown), "City/Town section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(postalCode), "Postal Code section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(country), "Country section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(stateOrProvince), "State/Province section is not present in customer tab");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifySectionsIsPresentInCustomerTab(addressType), "Address type section is not present in customer tab");
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1777:To verify User permission for customer search
-	@Test(enabled=false) //WIP
-	public void testVerifyUserPermissionForCustomerSearch_1777(){
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_AGENT_USERNAME);
-		driver.get(driver.getCSCockpitURL());
-
-		//		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
-		//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		//		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		//		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.ADMIN_USERNAME);
-		driver.get(driver.getCSCockpitURL());
-		//		
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()>0, "Customer search result has not displayed any result for user = "+TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1778:To verify User permission for order search
-	@Test(enabled=false) //WIP
-	public void testVerifyUserPermissionForOrderSearch_1778(){
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_AGENT_USERNAME);
-		driver.get(driver.getCSCockpitURL());
-
-		//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		//		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
-		//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		//		cscockpitOrderSearchTabPage.clickSearchBtn();
-		//		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.ADMIN_USERNAME);
-		//		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		driver.get(driver.getCSCockpitURL());
-
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.getTotalOrderSearchResultsInOrderSearchTab()>0, "Order search result has not displayed for user ="+TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-4074:CsCockpit CRP and PC Perks autoship order
-	@Test(enabled=false) //WIP
-	public void testCsCockpitCRPandPCPerksAutoshipOrder_4074(){
-		String randomCustomerSequenceNumber = null;
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
-		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
-		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-		//-----------------FOR CA-----------------------
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
-		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1927:Verify the Find Customer Page UI
-	@Test(enabled=false) //WIP
-	public void testToVerifyTheFindCustomerPageUI_1927(){
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerTypePresenceOnPage(),"customer type select DD not present on customerSearchPage");
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerCountryPresenceOnPage(),"customer country select DD not present on customerSearchPage");
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyAccountStatusPresenceOnPage(),"customer account status DD not present on customerSearchPage");
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerNameFieldPresenceOnPage(),"customer name field not presenct on customerSearchPage");
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyPostcodeFieldPresenceOnPage(),"postcode field not present on customerSearchPage");
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyEmailAddressFieldPresenceOnPage(),"EmailAddress field not present on customerSearchPage");
-		s_assert.assertAll();
-	}
+//	//Hybris Project-4074:CsCockpit CRP and PC Perks autoship order
+//	@Test 
+//	public void testCsCockpitCRPandPCPerksAutoshipOrder_4074(){
+//		String randomCustomerSequenceNumber = null;
+//		driver.get(driver.getCSCockpitURL());
+//		
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+//		//-----------------FOR CA-----------------------
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+//		s_assert.assertAll();
+//	}
+//
 
 	// Hybris Project-1949:To verify the order Type in the Order Detail page
 	@Test(enabled=false)//WIP
@@ -3443,11 +2023,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderTypeReturn = "Return";
 		String orderTypeOverrideOrder = "Override Order";
 
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeCRPAutoship);

@@ -32,7 +32,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	private String env = null;
 
 	//Hybris Project-4350:Verify "Join my team" button on the .com and .biz site
-	@Test
+	@Test 
 	public void testJoinMyTeamButtonPresentOnTheComAndBizSite_4350(){
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
@@ -50,7 +50,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4332:Verify Meet Your Consultant Page from .biz site after clicking on Personalize My Profile link
-	@Test
+	@Test 
 	public void testMeetyourConsultantPageFromBizSiteAfterClickOnPersonalizeMyProfileLink_4332(){
 		RFO_DB = driver.getDBNameRFO();  
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -78,7 +78,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4333:Verify Meet Your Consultant Page from .com site after clicking on Personalize My Profile link.
-	@Test
+	@Test 
 	public void testMeetyourConsultantPageFromComSiteAfterClickOnPersonalizeMyProfileLink_4333(){
 		RFO_DB = driver.getDBNameRFO();  
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -106,7 +106,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3832:Verify ABOUT SECTION of Meet Your Consultant Page
-	@Test
+	@Test 
 	public void testAboutSectionOfMeetYourConsultantPage_3832(){
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -140,7 +140,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3836:Verify 3 Content Block SECTION of Meet Your Consultant Page
-	@Test
+	@Test 
 	public void testContentBlockSectionOfMeetYourConsultantPage_3836(){
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -177,7 +177,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-3844:Verify links in Meet Your consultant Banner
-	@Test
+	@Test 
 	public void testVerifyLinksInMeetYourConsultantBanner_3844() {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -208,7 +208,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3847:Verify Footer Links on .COM home Page
-	@Test
+	@Test 
 	public void testVerifyFooterLinksOnHomePage_3847()	 {
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -236,7 +236,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3845:Verify the Links in the top Navigation on .COM home Page
-	@Test
+	@Test 
 	public void testVerifyLinksInTheTopNavigationOnHomePage_3845()	 {
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -253,7 +253,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3823:Verify Top Nav as Logged in Consultant(.com)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInConsultant_3823() throws InterruptedException	 {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -290,7 +290,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3841:Verify Top Nav as Logged in Consultant(.biz)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInConsultantbizSite_3841() throws InterruptedException{
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
@@ -334,7 +334,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3824:Verify Top Nav as Logged in PC User(.com)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInPCUser_3824() throws InterruptedException{
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
@@ -373,7 +373,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3842:Verify Top Nav as Logged in PC User(.biz)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInPCUserbizSite_3842() throws InterruptedException	{
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
@@ -418,7 +418,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3840:Verify Top Nav as Logged in RC User(.biz)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInRCUserbizSite_3840() throws InterruptedException	{
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
@@ -458,7 +458,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3819 Verify links in meet your consultant banner
-	@Test
+	@Test 
 	public void testVerifyLinksInMeetYourConsultantBanner_3819() {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -488,7 +488,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3825:Verify Top Nav as Logged in RC User(.com)
-	@Test
+	@Test 
 	public void testVerifyTopNavLoggedInRCUser_3825() throws InterruptedException{
 		List<Map<String, Object>> randomRCUserList =  null;
 		String rcUserEmailID = null;
@@ -522,7 +522,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3820:Verify the Links in the top Navigation on .COM home Page
-	@Test
+	@Test 
 	public void testVerifyLinksInTheTopNavigationOnHomePage_3820()	{
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -539,7 +539,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3822:Verify Footer Links on .COM home Page
-	@Test
+	@Test 
 	public void testVerifyFooterLinksOnHomePage_3822(){
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -567,7 +567,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4677:Verify that Country cannot be modified
-	@Test
+	@Test 
 	public void testCountryCannotBeModified_4677() throws InterruptedException  {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -603,7 +603,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4031:from .com  Login as a existing RC and access Solution Tool
-	@Test
+	@Test 
 	public void testLoginAsExstingRCAndAccessSolutionTool_4031(){
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -618,7 +618,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			String rcUserEmailID = null;
 			String accountIdForRCUser = null;
 			while(true){
-				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
 				accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
 				logger.info("Account Id of the user is "+accountIdForRCUser);
@@ -642,7 +642,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1895:To verify the Meet the consultant banner on PWS sites
-	@Test
+	@Test 
 	public void testValidateMeetConsultantBannerPWSSite_1895()  {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			country = driver.getCountry();
@@ -665,7 +665,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1904:To Verify the cancel functionality on edit meet the consultant page from com site
-	@Test
+	@Test 
 	public void testCancelFunctionalityOnEditMeetYourConsultantPageComSite_1904()  {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -708,7 +708,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1905:To Verify the Submission Guidelines link on edit meet the consultant page from biz site
-	@Test
+	@Test 
 	public void testSubmissionGuidelinesLinkOnEditMeetTheConsultantPageBizSite_1905()  {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -749,7 +749,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1920:To verify the contact us functionality in edit meet the consultant page for com PWS site
-	@Test
+	@Test 
 	public void testContactUsFunctionalityInEditMeetConsultantPagecomPWSSite_1920(){
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -822,7 +822,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1898:To verify the contact your sponsor section in getting started page
-	@Test
+	@Test 
 	public void testContactYourSponsorSectionInGettingStartedPage_1898() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -874,7 +874,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4030:from .com  Login as a existing PC and access Solution Tool
-	@Test
+	@Test 
 	public void testLoginAsExstingPCAndAccessSolutionTool_4030()  {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -898,7 +898,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 				boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 				if(isSiteNotFoundPresent){
-					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					logger.info("login error for the user "+pcUserEmailID);
 					driver.get(driver.getURL());
 				}
 				else
@@ -915,7 +915,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1897:To verify the Meet the consultant banner on solution tool page
-	@Test
+	@Test 
 	public void testMeetConsultantBannerOnSolutionToolPage_1897(){
 		RFO_DB = driver.getDBNameRFO();  
 		country = driver.getCountry();
@@ -950,7 +950,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4028:Access Solution tool from .COM Site Category pages Left Menu
-	@Test
+	@Test 
 	public void testAccessSolutionToolcomSiteCategoryPagesLeftMenu_4028()	 {
 		if(driver.getCountry().equalsIgnoreCase("ca")){  
 			country = driver.getCountry();
@@ -968,7 +968,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3977:Search for a sponsor from "Connect with a consultant" page
-	@Test
+	@Test 
 	public void testSearchForASponsorFromConnectWithAConsultantPage_3977() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;

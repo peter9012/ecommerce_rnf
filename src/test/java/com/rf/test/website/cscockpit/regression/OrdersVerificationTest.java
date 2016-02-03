@@ -198,14 +198,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
-		
+
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		String RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String accountId = null;
-	
+
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
@@ -282,7 +282,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
-		
+
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
@@ -337,7 +337,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
-		
+
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		String RFO_DB = driver.getDBNameRFO(); 
@@ -387,11 +387,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
 		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
 		String orderNotevalueFromUI = cscockpitCheckoutTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getPSTDate().contains(cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim()),"CSCockpit added order note date in checkout tab expected"+cscockpitCheckoutTabPage.getPSTDate()+"and on UI" +cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitCheckoutTabPage.getPSTDate()),"CSCockpit added order note date in checkout tab expected"+cscockpitCheckoutTabPage.getPSTDate()+"and on UI" +cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
 		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		driver.pauseExecutionFor(2000);
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		orderNumber = cscockpitOrderTabPage.getOrderNumberInOrderTab();
 		cscockpitOrderTabPage.clickCustomerTab();
@@ -403,7 +404,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-
+		logout();
 		//-------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		while(true){
@@ -447,9 +448,9 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
 		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
 		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		orderNotevalueFromUI = cscockpitCheckoutTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getPSTDate().contains(cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim()),"CSCockpit added order note date in checkout tab expected"+cscockpitCheckoutTabPage.getPSTDate()+"and on UI" +cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
-		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
+		//orderNotevalueFromUI = cscockpitCheckoutTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		//s_assert.assertTrue(cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitCheckoutTabPage.getPSTDate()),"CSCockpit added order note date in checkout tab expected"+cscockpitCheckoutTabPage.getPSTDate()+"and on UI" +cscockpitCheckoutTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		//s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
@@ -516,7 +517,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		
+
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -572,7 +573,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		
+
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -629,7 +630,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		
+
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -698,7 +699,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
 		RFO_DB = driver.getDBNameRFO();
-		
+
 		driver.get(driver.getStoreFrontURL()+"/us");
 
 		while(true){
@@ -1002,7 +1003,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	@Test 
 	public void testVerifyUserPermissionsForQVandCVUpdate_1818(){
 		String randomCustomerSequenceNumber = null;
-		
+
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -1053,7 +1054,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	@Test(enabled=false)//WIP //ISSUE change link is not present for any user
 	public void testVerifyUserPermissionsForOrderStatus_1779(){
 		String randomCustomerSequenceNumber = null;
-		
+
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -1284,7 +1285,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumberForRC = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		
+
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
@@ -1729,7 +1730,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID=null;
 		String accountId=null;
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -1952,63 +1953,63 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-//	//Hybris Project-4074:CsCockpit CRP and PC Perks autoship order
-//	@Test 
-//	public void testCsCockpitCRPandPCPerksAutoshipOrder_4074(){
-//		String randomCustomerSequenceNumber = null;
-//		driver.get(driver.getCSCockpitURL());
-//		
-//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-//		cscockpitCustomerSearchTabPage.clickSearchBtn();
-//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
-//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-//		cscockpitCustomerSearchTabPage.clickSearchBtn();
-//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
-//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-//		//-----------------FOR CA-----------------------
-//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-//		cscockpitCustomerSearchTabPage.clickSearchBtn();
-//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
-//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-//		cscockpitCustomerSearchTabPage.clickSearchBtn();
-//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
-//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
-//		s_assert.assertAll();
-//	}
-//
+	//	//Hybris Project-4074:CsCockpit CRP and PC Perks autoship order
+	//	@Test 
+	//	public void testCsCockpitCRPandPCPerksAutoshipOrder_4074(){
+	//		String randomCustomerSequenceNumber = null;
+	//		driver.get(driver.getCSCockpitURL());
+	//		
+	//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+	//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+	//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+	//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+	//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+	//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+	//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+	//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+	//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+	//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+	//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+	//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+	//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+	//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+	//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+	//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+	//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+	//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+	//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+	//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+	//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+	//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+	//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
+	//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+	//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+	//		//-----------------FOR CA-----------------------
+	//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+	//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+	//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+	//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+	//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+	//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+	//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+	//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+	//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+	//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+	//		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+	//		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+	//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+	//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+	//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+	//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+	//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+	//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+	//		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+	//		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+	//		cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
+	//		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for CA");
+	//		s_assert.assertAll();
+	//	}
+	//
 
 	// Hybris Project-1949:To verify the order Type in the Order Detail page
 	@Test(enabled=false)//WIP

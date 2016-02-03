@@ -34,6 +34,11 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By AUTOSHIP_ID_FIRST = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div[contains(@class,'listbox-body')]//tr[2]//a");
 	private static final By AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'crpAutoship')]//preceding::td[1]//a");
 	private static final By AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'pcAutoship')]//preceding::td[1]//a");
+	private static final By AUTOSHIP_TEMPLATE = By.xpath("//span[text()='Autoship Templates']");
+	private static final By CUSTOMER_ORDER_SECTION = By.xpath("//span[text()='Customer Orders']");
+	private static final By CUSTOMER_BILLING_INFO = By.xpath("//span[text()='Billing Information']");
+	private static final By CUSTOMER_ADDRESS = By.xpath("//span[text()='Customer Addresses']");
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
 
 	protected RFWebsiteDriver driver;
 
@@ -179,7 +184,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public void clickAutoshipIdOnCustomerTab() {
 		try{
-			driver.waitForElementPresent(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
+			driver.quickWaitForElementPresent(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
 			driver.click(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
 			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
@@ -188,5 +193,35 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.waitForLoadingImageToDisappear();
 		}
 	}
+
+	public boolean verifyAutoshipTemplateSectionInCustomerTab(){
+		driver.isElementPresent(AUTOSHIP_TEMPLATE);
+		return driver.isElementPresent(AUTOSHIP_TEMPLATE);  
+	}
+
+	public boolean verifyCustomerOrderSectionInCustomerTab(){
+		driver.isElementPresent(CUSTOMER_ORDER_SECTION);
+		return driver.isElementPresent(CUSTOMER_ORDER_SECTION);  
+	}
+
+	public boolean verifyCustomerBillingInfoSectionInCustomerTab(){
+		driver.isElementPresent(CUSTOMER_BILLING_INFO);
+		return driver.isElementPresent(CUSTOMER_BILLING_INFO);  
+	}
+
+	public boolean verifyCustomerAddressSectionInCustomerTab(){
+		driver.isElementPresent(CUSTOMER_ADDRESS);
+		return driver.isElementPresent(CUSTOMER_ADDRESS);  
+	}
+
+	public String getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
+
 
 }

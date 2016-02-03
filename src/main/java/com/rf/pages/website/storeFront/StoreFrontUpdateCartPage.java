@@ -1504,7 +1504,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(By.xpath("//select[@id='deliveryMode']"));
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
 		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'Overnight')]"));
-		logger.info("UPS Standard Overnight/1day shipping method is selected"); 
+		logger.info("UPS Standard Overnight/1day shipping method is selected");
+		
 	}
 
 	public void clickOnSaveShippingProfileWithoutAcceptingQASValidationPopUp(){
@@ -1536,6 +1537,13 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public boolean validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(String profileName){
 		driver.waitForElementPresent(By.xpath("//p[@id='selectedAddress']/span[1]"));
 		return driver.findElement(By.xpath("//p[@id='selectedAddress']/span[1]")).getText().trim().equalsIgnoreCase(profileName.trim());
+	}
+
+	public void selectShippingMethodUPStandardOvernightUnderShippingMethodOnAutoShipOrderPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']/div//div[3]//label[contains(text(),'Standard Overnight')]/preceding-sibling::span"));
+		driver.click(By.xpath("//div[@id='delivery_modes_dl']/div//div[3]//label[contains(text(),'Standard Overnight')]/preceding-sibling::span"));
+		driver.waitForLoadingImageToAppear();
+		logger.info("UPS Standard Overnight/1day shipping method is selected"); 
 	}
 
 }

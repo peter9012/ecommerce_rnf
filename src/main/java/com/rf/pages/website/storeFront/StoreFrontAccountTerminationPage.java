@@ -35,7 +35,7 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 			driver.click(SUBMIT_BOX_LOC);
 		}catch(Exception e){
 			driver.click(By.xpath("//input[@value='submit']"));
-		}
+		}		
 		logger.info("Submit to terminate account button clicked ");
 	}
 
@@ -107,7 +107,8 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 
 	public void clickOnCloseWindowAfterTermination(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
-		driver.click(By.xpath("//input[@value='Close window']"));
+		driver.click(By.xpath("//input[@value='Close window']"));		
+		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
 

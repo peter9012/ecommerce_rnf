@@ -24,7 +24,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SELECT_PAYMENT_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please select payment details')]");
 	private static final By PAYMENT_DETAILS_POPUP_OK_BTN = By.xpath("//td[text()='OK']");
 	private static final By CVV2_SEARCH_TXT_FIELD = By.xpath("//div[contains(text(),'Action')]/following::td[contains(text(),'Use this card')][1]/preceding::input[1]");
-	private static final By USE_THIS_CARD_BTN = By.xpath("//td[contains(text(),'Use this card')]");
+	private static final By USE_THIS_CARD_BTN = By.xpath("//span[contains(text(),'Stored Credit Cards')]/following::div[@class='z-listbox-body']//tbody[2]/tr[1]//td[contains(text(),'Use this card')]");
 	private static final By ORDER_NOTES_TXT_FIELD = By.xpath("//span[contains(text(),'Order Notes')]/following::textarea[1]");
 	private static final By ADD_BTN = By.xpath("//td[text()='ADD']");
 	private static final By TEST_ORDER_CHKBOX = By.xpath("//label[contains(text(),'Test Order')]/preceding::input[1]");
@@ -103,12 +103,12 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SALES_OVERRIDE_POPUP_UPDATE_BUTTON_LOC = By.xpath("//td[contains(text(),'UPDATE')]");
 	private static final By CLOSE_POPUP_OF_EDIT_PAYMENT_ADDRESS = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div[contains(@id,'close')]");
 	private static final By CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Number']/following::input[1]");
-	private static final By NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Number']/following::input[1]");
+	private static final By NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Number']/following::input[2]");
 	private static final By CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Card Type']/following::img[1]");
 	private static final By CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='VISA']");
 	private static final By EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Expiration Date']/following::img[1]");
 	private static final By EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='12']");
-	private static final By EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Expiration Date']/following::img[1]");
+	private static final By EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Expiration Date']/following::img[2]");
 	private static final By EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//td[text()='2025']");
 	private static final By SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Security Code']/following::input[1]");
 	private static final By BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::img[1]");
@@ -117,6 +117,9 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By CLOSE_POPUP_ADD_NEW_PAYMENT_LOC = By.xpath("//div[@class='z-window-highlighted-header']/div");
 	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
+	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
+	private static final By NO_STORED_CREDIT_CARD_DETAILS = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
+	private static final By NO_SELECTED_DELIVERY_ADDRESS_DETAILS = By.xpath("//select[contains(@class,'csDeliveryAddressList')]//option[@selected='selected'][contains(text(),'Non')]");
 
 	protected RFWebsiteDriver driver;
 
@@ -169,24 +172,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean verifySelectPaymentDetailsPopupInCheckoutTab(){
 		driver.waitForElementPresent(SELECT_PAYMENT_DETAILS_POPUP);
 		return driver.isElementPresent(SELECT_PAYMENT_DETAILS_POPUP);
-	}
-
-	public void clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab(){
-		driver.waitForElementPresent(PAYMENT_DETAILS_POPUP_OK_BTN);
-		driver.click(PAYMENT_DETAILS_POPUP_OK_BTN);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-	public void enterCVVValueInCheckoutTab(String CVV){
-		driver.waitForElementPresent(CVV2_SEARCH_TXT_FIELD);
-		driver.type(CVV2_SEARCH_TXT_FIELD, CVV);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-	public void clickUseThisCardBtnInCheckoutTab(){
-		driver.waitForElementPresent(USE_THIS_CARD_BTN);
-		driver.click(USE_THIS_CARD_BTN);
-		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void enterOrderNotesInCheckoutTab(String orderNote){
@@ -678,6 +663,60 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(POPUP_SECURITY_CODE_TEXT_BOX);
 		driver.type(POPUP_SECURITY_CODE_TEXT_BOX, securityCode);
 		logger.info("Security code entered is "+securityCode);
+	}
+
+	public void addANewBillingProfileIfThereIsNoStoredCreditCard(){
+		if(driver.isElementPresent(NO_STORED_CREDIT_CARD_DETAILS)==true){
+			driver.click(ADD_NEW_BILLING_PROFILE_BTN);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+			driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
+			driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+			driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+			driver.waitForPageLoad();
+			enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+			driver.click(USE_THIS_CARD_BTN);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
+	}
+
+	public void addDeliveryAddressIfNonSelected(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		if(driver.isElementPresent(NO_SELECTED_DELIVERY_ADDRESS_DETAILS)==true){
+			driver.click(ADD_NEW_ADDRESS);
+			driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+			driver.clear(ATTENDENT_NAME_TEXT_BOX);
+			driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
+			logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+			driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+			driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+			logger.info("Address line 1 entered is "+addressLine);
+			driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+			driver.type(CITY_TOWN_TEXT_BOX, city);
+			logger.info("City entered is "+city);
+			driver.waitForElementPresent(POSTAL_TEXT_BOX);
+			driver.type(POSTAL_TEXT_BOX, postalCode);
+			logger.info("Postal code entered is "+postalCode);
+			driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+			driver.type(COUNTRY_TEXT_BOX, Country);
+			logger.info("Country entered is "+Country);
+			driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+			driver.type(PROVINCE_TEXT_BOX, province);
+			logger.info("Province entered is "+province);
+			driver.waitForElementPresent(PHONE_TEXT_BOX);
+			driver.type(PHONE_TEXT_BOX, phoneNumber);
+			logger.info("Phone number entered is "+phoneNumber);
+			driver.click(USE_AS_ENTERED_POPUP);
+			driver.click(DELIVERY_ADDRESS_POPUP_SAVE_BUTTON);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
 	}
 
 }

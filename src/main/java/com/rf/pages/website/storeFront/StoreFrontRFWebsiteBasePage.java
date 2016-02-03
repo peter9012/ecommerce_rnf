@@ -1145,7 +1145,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();	
 		driver.pauseExecutionFor(3000);
 		driver.waitForLoadingImageToDisappear();
-		
+
 	}
 
 	public void navigateToCountry(){
@@ -1167,13 +1167,25 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickAddToBagButton() throws InterruptedException{
 		applyPriceFilterHighToLow();
 		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
+			//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
 			//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
 			//   driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
+		}
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void clickAddToBagButtonWithoutFilter() throws InterruptedException{		
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+		}else{
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
 		}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -1192,7 +1204,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.waitForLoadingImageToDisappear();
 		}else if(country.equalsIgnoreCase("US")){
 			try{
-				driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
 			}catch(Exception e){
 				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[1]//button"));
@@ -1287,7 +1299,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		try{
-			driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
+			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
 			driver.click(By.xpath("//a[text()='Add new shipping address »']"));
 			logger.info("Ads new shipping profile link clicked");
 		}
@@ -1445,9 +1457,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
 			}catch(Exception e){
 				try{					
-					isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-				}catch(ExceptionInInitializerError e2){
-					isFirstNamePresent = driver.findElement(By.xpath(" //div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+					isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+				}catch(Exception e2){
+					isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 				}
 			}
 			if(isFirstNamePresent == true){ 
@@ -1649,19 +1661,19 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
-//		String parentWindowID=driver.getWindowHandle();
-//		Set<String> set=driver.getWindowHandles();
-//		Iterator<String> it=set.iterator();
+		//		String parentWindowID=driver.getWindowHandle();
+		//		Set<String> set=driver.getWindowHandles();
+		//		Iterator<String> it=set.iterator();
 		boolean status=false;
-//		while(it.hasNext()){
-//			String childWindowID=it.next();
-//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-//				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
-					status=true;					
-				}
-//			}
-//		}
+		//		while(it.hasNext()){
+		//			String childWindowID=it.next();
+		//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+		//				driver.switchTo().window(childWindowID);
+		if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
+			status=true;					
+		}
+		//			}
+		//		}
 		return status;
 	}
 

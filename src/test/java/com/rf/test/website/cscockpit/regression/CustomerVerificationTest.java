@@ -458,10 +458,16 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String addressType = "Address Type";
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-
+		String csCockpitCountry = null;
+		if(driver.getCountry().equalsIgnoreCase("Us")){
+			csCockpitCountry = "United States";
+		}else{
+			csCockpitCountry = "Canada";
+		}
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab(rc);
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(csCockpitCountry);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -476,6 +482,33 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		String addressLine = null;
+		String attendentFirstName = TestConstants.FIRST_NAME;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String Country = null;
+		String province = null;
+		String phoneNumber = null;
+		String contry = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			contry = "Canada";
+
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			contry = "United States";
+		}
+		cscockpitCheckoutTabPage.addDeliveryAddressIfNonSelected(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCheckoutTabPage.addANewBillingProfileIfThereIsNoStoredCreditCard();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
@@ -530,6 +563,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
 		s_assert.assertAll();
 	}
+
 
 
 }

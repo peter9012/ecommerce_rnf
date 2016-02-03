@@ -151,6 +151,6 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public boolean verifyEmailAddressFieldPresenceOnPage() {
 		return driver.isElementPresent(EMAIL_ADD_FIELD_LOC);
-	}
+	}	
 
 }

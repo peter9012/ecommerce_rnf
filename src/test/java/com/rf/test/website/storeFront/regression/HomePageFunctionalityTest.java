@@ -1008,6 +1008,107 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-1892:To verify the Meet the consultant page UI for com and biz site
+	@Test
+	public void testVerifyMeetConsultantPage_1892() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			country = driver.getCountry();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+
+			//Get Biz PWS from database to login. 
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			String bizPWS=(String) getValueFromQueryResult(randomConsultantList, "URL"); 
+			//Open Biz PWS.
+			storeFrontHomePage.openConsultantPWS(bizPWS);
+			while(true){
+				if(driver.getCurrentUrl().contains("sitenotfound")){
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+					bizPWS=(String) getValueFromQueryResult(randomConsultantList, "URL");  
+					storeFrontHomePage.openConsultantPWS(bizPWS); 
+					continue;
+				}else
+					break;
+			} 
+			logger.info("biz pws to login is "+bizPWS);
+
+			//Verify details on biz site.
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+				consultantEmailID= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					storeFrontHomePage.openConsultantPWS(bizPWS);  
+				}
+				else
+					break;
+			}
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			//Validate Contact me section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"Contact me section is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your Name functionality is not present on meet your consultant page");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your email functionality is not present on meet your consultant page");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your Message functionality is not present on meet your consultant page");
+			//Validate Follow me section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyFollowMeSectionIsPresent(),"Follow me section is not present");
+			//Validate Footer section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyPrivacyPolicyLink(),"Privacy Policy Link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifySatisfactionGuaranteeLink(),"Satisfaction guarantee link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyDisclaimerLink(),"Disclaimer link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyContactUsLink(),"Contact us link is not present");
+			logout();
+			//Verify details on com site.
+			//Get com PWS from database to login. 
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			String comPWS=(String) getValueFromQueryResult(randomConsultantList, "URL"); 
+			//Open Biz PWS.
+			storeFrontHomePage.openConsultantPWS(comPWS);
+			while(true){
+				if(driver.getCurrentUrl().contains("sitenotfound")){
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+					comPWS=(String) getValueFromQueryResult(randomConsultantList, "URL");  
+					storeFrontHomePage.openConsultantPWS(comPWS); 
+					continue;
+				}else
+					break;
+			} 
+			logger.info("com pws to login is "+comPWS);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			//Validate Contact me section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"Contact me section is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your Name functionality is not present on meet your consultant page");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your email functionality is not present on meet your consultant page");
+			s_assert.assertTrue(storeFrontHomePage.verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(),"Enter your Message functionality is not present on meet your consultant page");
+			//Validate Follow me section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyFollowMeSectionIsPresent(),"Follow me section is not present");
+			//Validate Footer section on meet your consultant page.
+			s_assert.assertTrue(storeFrontHomePage.verifyPrivacyPolicyLink(),"Privacy Policy Link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifySatisfactionGuaranteeLink(),"Satisfaction guarantee link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyDisclaimerLink(),"Disclaimer link is not present");
+			s_assert.assertTrue(storeFrontHomePage.verifyContactUsLink(),"Contact us link is not present");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
 
 }
 

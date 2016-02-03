@@ -354,4 +354,9 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return false;
 	}
 
+	public boolean verifyRefundOrderButtonPresentOnOrderTab() {
+		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+		return driver.isElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+	}
+
 }

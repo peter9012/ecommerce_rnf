@@ -316,7 +316,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void click(By locator) {		
 		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
-		quickWaitForElementPresent(locator);
+		//quickWaitForElementPresent(locator);
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
@@ -328,7 +328,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void type(By locator, String input) {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		 */		
-		 quickWaitForElementPresent(locator);
+		// quickWaitForElementPresent(locator);
 		 findElement(locator).clear();
 		 findElement(locator).sendKeys(input);
 	}

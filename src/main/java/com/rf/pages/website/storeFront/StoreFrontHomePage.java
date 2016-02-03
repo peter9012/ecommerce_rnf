@@ -2500,7 +2500,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
 		driver.pauseExecutionFor(4000);
-		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')]/li")).size();
+		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li")).size();
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
 		return sizeOfProduct;
 	}
@@ -2508,15 +2508,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean verifyProductFilterIsApply(int i){
 		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
-		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')]/li[1]"));
-		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
-		driver.click(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[@class='pull-right']//input/.."));
+		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li[1]"));
+		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
+		driver.click(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[@class='pull-right']//input/.."));
 		driver.waitForPageLoad();
 		String productNameFromUI = driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim();
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
-		driver.click(By.xpath("//input[@class='refine-products-button']"));
-		driver.pauseExecutionFor(1000);
-		driver.click(By.xpath("//ul[contains(@class,'refine-products')]/li["+i+"]//div[@class='pull-right']//input/.."));
+		driver.click(By.xpath("//a[contains(text(),'Clear All')]"));
 		driver.waitForPageLoad();
 		return productNameFromUI.contains(productNameFromfilter);
 	}
@@ -3627,6 +3624,32 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean verifyContactUsLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Contact Us')]"));
 		return driver.isElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Contact Us')]"));
+	}
+
+	public String getHandlingChargesOnReviewOrderPage(){
+		driver.waitForElementPresent(By.xpath("//span[@id='handlingCost']"));
+		String value= driver.findElement(By.xpath("//span[@id='handlingCost']")).getText();
+		return value;
+	}
+
+	public String getShippingChargesOnReviewOrderPage(){
+		driver.waitForElementPresent(By.xpath("//span[@id='deliveryCost']"));
+		String value= driver.findElement(By.xpath("//span[@id='deliveryCost']")).getText();
+		return value;
+	}
+
+	public void selectProductAndProceedToAddToCRPfterLogin(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']")).isEnabled()==true){
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForPageLoad();
+		}
+		else{
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
+			logger.info("Add to CRP button clicked");
+			driver.waitForPageLoad();
+		}
 	}
 
 }

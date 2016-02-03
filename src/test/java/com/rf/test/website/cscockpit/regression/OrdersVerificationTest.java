@@ -1211,7 +1211,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1946:Verify the Find order page UI
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyFindOrderPageUI_1946(){
 		String shipToCountryDDValue_All = "All";
 		String shipToCountryDDValue_United_States = "United States";
@@ -1279,7 +1279,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1940:To verify for created new user the Account status should be Active
-	@Test(enabled=false)//WIP 
+	@Test 
 	public void testToVerifyForCreatedNewUserTheAccountStatusShouldBeActive_1940(){
 		String randomCustomerSequenceNumber = null;
 		String randomCustomerSequenceNumberForRC = null;
@@ -1712,7 +1712,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1947:Verify the Order Search Criteria functionality
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyOrderSearchCriteriaFunctionality_1947() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String orderDate = "Order Date";

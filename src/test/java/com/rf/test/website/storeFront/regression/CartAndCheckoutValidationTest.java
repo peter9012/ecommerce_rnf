@@ -855,7 +855,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String qtyReduce = "1";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.clickAddToBagButton();
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
@@ -892,7 +893,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String qtyReduce = "1";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.clickAddToBagButton();
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
@@ -4970,10 +4972,10 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnCheckoutButton();
 		//add a shipping address(if<=1)
 		if(country.equalsIgnoreCase("us")){
-			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_US, TestConstants.ADDRESS_LINE_1_US, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum, TestConstants.PHONE_NUMBER_US, TestConstants.POSTAL_CODE_US);
+			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_US, TestConstants.ADDRESS_LINE_1_US, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum+" last", TestConstants.PHONE_NUMBER_US, TestConstants.POSTAL_CODE_US);
 		}
 		else{
-			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_CA, TestConstants.ADDRESS_LINE_1_CA, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum, TestConstants.PHONE_NUMBER_CA, TestConstants.POSTAL_CODE_CA);
+			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_CA, TestConstants.ADDRESS_LINE_1_CA, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum+" last", TestConstants.PHONE_NUMBER_CA, TestConstants.POSTAL_CODE_CA);
 		}
 		//In shipment section,validate selecting 2 shipping address(only one radio button shld be selected at a time)
 		//Select first radio button and validate 2nd is un selected..

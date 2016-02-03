@@ -1284,9 +1284,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean verifyPCPerksPromoDuringPlaceAdhocOrder(){
-		return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
+//		return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'Subscribe and save')]"));
 	}
-
+	
 	public boolean verifyShippingAddressContainsShippingMethodNameAfterPlaceOrder(String selectedShippingMethod){
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(text(),'Shipping Method')]"));
 		String methodName = driver.findElement(By.xpath("//div[contains(text(),'Shipping Method')]")).getText().split("\\:")[1].trim();

@@ -19,7 +19,7 @@
 
 				</methods>
 			</class>
-			<class name="com.rf.test.website.crm.AccountDetailsTest">
+<!-- 			<class name="com.rf.test.website.crm.AccountDetailsTest">
 				<methods>
 					<include name="SearchForAccountByName_4530" />
 					<include name="PCDetailViewPage_4548" />
@@ -27,7 +27,7 @@
 					<include name="SearchForAccountByEmail_4527" />
 					<include name="ConsultantDetailViewPage_4546" />
 				</methods>
-			</class>
+			</class> -->
 		</classes>
 	</test>
 </suite>

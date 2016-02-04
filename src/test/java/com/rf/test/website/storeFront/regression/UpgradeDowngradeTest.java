@@ -1323,7 +1323,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
 			logger.info("Login or Create Account page is displayed");
 			storeFrontHomePage.enterEmailAddress(consultantEmailID);
-			s_assert.assertTrue(storeFrontHomePage.verifyInvalidSponsorPopupIsPresent(), "Invalid Sponsor popup is not present");
+			//s_assert.assertTrue(storeFrontHomePage.verifyInvalidSponsorPopupIsPresent(), "Invalid Sponsor popup is not present");
 			storeFrontHomePage.clickOnEnrollUnderLastUpline();
 			// Enroll Deactivated Consultant as PC
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();

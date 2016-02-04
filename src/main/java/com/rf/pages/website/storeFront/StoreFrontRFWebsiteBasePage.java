@@ -222,13 +222,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
 		driver.pauseExecutionFor(1000);
 		try{
-			driver.waitForElementPresent(By.id("quantity0"));
+			driver.quickWaitForElementPresent(By.id("quantity0"));
 			driver.clear(By.id("quantity0"));
 			driver.type(By.id("quantity0"),qty);
 			logger.info("quantity added is "+qty);
 			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
-		}catch(NoSuchElementException e){
+		}catch(NoSuchElementException e){			
 			driver.waitForElementPresent(By.id("quantity1"));
 			driver.clear(By.id("quantity1"));
 			driver.type(By.id("quantity1"),qty);
@@ -287,6 +287,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean verifyNumberOfProductsInCart(String numberOfProductsInCart){
 		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/h1/span"));
 		return driver.findElement(By.xpath("//div[@id='left-shopping']/h1/span")).getText().contains(numberOfProductsInCart);
+	}
+
+	public boolean isCartHasZeroItems(){
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']//span[contains(text(),'0 item')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='left-shopping']//span[contains(text(),'0 item')]"));
 	}
 
 	public void clickOnCheckoutButton(){
@@ -1430,14 +1435,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectAProductAndAddItToPCPerks(){
-		driver.waitForElementNotPresent(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));
-		driver.click(By.xpath("//input[@class='btn btn-primary' and @value='ADD to PC Perks' and @tabindex='5']"));;
+		driver.waitForElementNotPresent(By.xpath("//div[@id='main-content']/div[5]/div[3]//input[@value='ADD to PC Perks']"));
+		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[3]//input[@value='ADD to PC Perks']"));;
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
 			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
-
 		}
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(1000);

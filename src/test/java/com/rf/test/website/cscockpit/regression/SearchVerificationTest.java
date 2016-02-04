@@ -74,7 +74,7 @@ public class SearchVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-1927:Verify the Find Customer Page UI
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyTheFindCustomerPageUI_1927(){
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();

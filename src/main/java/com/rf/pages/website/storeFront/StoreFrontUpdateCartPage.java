@@ -209,9 +209,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnEditShipping() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));		
-		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a"));
-		logger.info("Edit Shipping link clicked "+"//div[@id='checkout_summary_deliverymode_div']//a");		
+		//driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a/ancestor::div[@style='display: block;']"));		
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")));
+		logger.info("Edit Shipping link clicked");			
 	}
 
 	public boolean isShippingAddressPresent(String name){
@@ -1284,10 +1285,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean verifyPCPerksPromoDuringPlaceAdhocOrder(){
-//		return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
+		//		return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
 		return driver.isElementPresent(By.xpath("//span[contains(text(),'Subscribe and save')]"));
 	}
-	
+
 	public boolean verifyShippingAddressContainsShippingMethodNameAfterPlaceOrder(String selectedShippingMethod){
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(text(),'Shipping Method')]"));
 		String methodName = driver.findElement(By.xpath("//div[contains(text(),'Shipping Method')]")).getText().split("\\:")[1].trim();
@@ -1506,7 +1507,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[1]"));
 		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'Overnight')]"));
 		logger.info("UPS Standard Overnight/1day shipping method is selected");
-		
+
 	}
 
 	public void clickOnSaveShippingProfileWithoutAcceptingQASValidationPopUp(){

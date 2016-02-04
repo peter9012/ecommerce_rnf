@@ -682,6 +682,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	public String convertShippingMethodNameAsOnUI(String shippingMethodID){
 
 		String methodId = shippingMethodID;
+		if(methodId=="null"){
+			methodId="9";
+		}
 		String shippingMethodName = null;
 		switch (Integer.parseInt(methodId)) {  
 		case 1:
@@ -714,6 +717,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 		case 8:
 			shippingMethodName="POS Drop-Ship";
+			break;
+
+		case 9:
+			shippingMethodName="";
 			break;
 		}
 		return shippingMethodName;

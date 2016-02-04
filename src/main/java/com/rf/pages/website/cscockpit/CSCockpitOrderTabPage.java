@@ -1,8 +1,12 @@
 package com.rf.pages.website.cscockpit;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
@@ -12,6 +16,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String refundDropDownOptionLoc =  "//td[@class='z-combo-item-text' and contains(text(),'%s')]";
 	private static String orderStatusDDLoc = "//span[contains(text(),'Order Status')]//option[text()='%s']";
 	private static String orderSectionLoc ="//div[text()='%s']";
+	private static String returnQuantityLoc = "//td[text()='%s']";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -62,6 +67,15 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ORDER_TYPE_LOC = By.xpath("//span[contains(text(),'Order Type')]/following::span[1]");
 	private static final By PLACE_ORDER_BUTTON_LOC = By.xpath("//td[text()='PLACE AN ORDER']");
 	private static final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//span[text()='Payment Info ']//following::div[1]/span");
+	private static final By CLOSE_CONFIRMATION_POPUP_LOC = By.xpath("//div[contains(text(),'Refund confirmation')]/div");
+	private static final By RETURN_QUANTITY_ON_POPUP_LOC = By.xpath("//div[@class='expectedQtyDropDown']//img");
+	private static final By PRODUCT_INFO_CHECBOX_LOC = By.xpath("//div[@class='editorWidgetEditor']//input[@type='checkbox']");
+	private static final By CLOSE_POPUP_ADD_NEW_PAYMENT_LOC = By.xpath("//div[@class='z-window-highlighted-header']/div");
+	private static final By REFUND_REQUEST_HEADER_LOC = By.xpath("//span[text()='Refund']");
+	private static final By ORDER_LEVEL_SECTION_CHECKBOXES_LOC = By.xpath("//label[contains(text(),'Return')]//preceding::input[1]");
+	private static final By REFUND_REASON_DD_ON_POPUP_LOC = By.xpath("//input[@value='Refund Reason']//ancestor::span[1]");
+	private static final By CREDIT_CARD_DD_ON_POPUP_LOC = By.xpath("//input[@value='CREDITCARD']//ancestor::span[1]");
+	private static final By REFUND_TYPE_DD_ON_POPUP_LOC = By.xpath("//input[@value='Refund Type']//ancestor::span[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -357,6 +371,56 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean verifyRefundOrderButtonPresentOnOrderTab() {
 		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
 		return driver.isElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+	}
+
+	public boolean verifyRefundRequestPopUpPresent() {
+		driver.waitForElementPresent(REFUND_REQUEST_HEADER_LOC);
+		return driver.isElementPresent(REFUND_REQUEST_HEADER_LOC);
+	}
+
+	public boolean verifyOrderLevelCheckBoxSection() {
+		List<WebElement> checkBoxes = driver.findElements(ORDER_LEVEL_SECTION_CHECKBOXES_LOC);
+		int numberOfCheckBox = checkBoxes.size();
+		if(numberOfCheckBox == 4){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyRefundReasonDDPresent() {
+		return driver.isElementPresent(REFUND_REASON_DD_ON_POPUP_LOC);
+	}
+
+	public boolean verifyCreditCardDDPresent(){
+		return driver.isElementPresent(CREDIT_CARD_DD_ON_POPUP_LOC);
+	}
+
+	public boolean verifyRefundTypeDDPresent() {
+		return driver.isElementPresent(REFUND_TYPE_DD_ON_POPUP_LOC);
+	}
+
+	public void clickCloseRefundRequestPopUP(){
+		driver.waitForElementPresent(CLOSE_POPUP_ADD_NEW_PAYMENT_LOC);
+		driver.click(CLOSE_POPUP_ADD_NEW_PAYMENT_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void checkProductInfoCheckboxInPopUp() {
+		driver.click(PRODUCT_INFO_CHECBOX_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectReturnQuantityOnPopUp(String quantity) {
+		driver.click(RETURN_QUANTITY_ON_POPUP_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.click(By.xpath(String.format(returnQuantityLoc, quantity)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCloseRefundConfirmationPopUP() {
+		driver.click(CLOSE_CONFIRMATION_POPUP_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+
 	}
 
 }

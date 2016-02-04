@@ -20,6 +20,9 @@ import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 
@@ -29,17 +32,36 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 	//-------------------------------------------------Pages---------------------------------------------------------
 	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitCustomerSearchTabPage cscockpitHomePage; 
-	private StoreFrontHomePage storeFrontHomePage; 
-	private StoreFrontConsultantPage storeFrontConsultantPage;
-	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private CSCockpitCheckoutTabPage cscockpitCheckoutTabPage;
 	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
 	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
 	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
+	private StoreFrontHomePage storeFrontHomePage; 
+	private StoreFrontConsultantPage storeFrontConsultantPage;
+	private StoreFrontOrdersPage storeFrontOrdersPage;
+	private StoreFrontPCUserPage storeFrontPCUserPage;
+	private StoreFrontRCUserPage storeFrontRCUserPage;	
+	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 
+	//-----------------------------------------------------------------------------------------------------------------
+
+	public OrdersVerificationTest() {
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
+		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
+		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	}
 	//-----------------------------------------------------------------------------------------------------------------
 
 	private String RFO_DB = null;
@@ -204,11 +226,11 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());		
-		cscockpitHomePage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitHomePage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitHomePage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitHomePage.getRandomCustomerFromSearchResult());
-		cscockpitHomePage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
 		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
 		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	

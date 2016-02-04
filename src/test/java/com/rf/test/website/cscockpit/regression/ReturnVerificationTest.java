@@ -240,4 +240,82 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is not present on order tab for CA");
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-2014:To verify the refund Request Popup UI
+	@Test(enabled=false) //WIP
+	public void testToVerifyTheRefundRequestPopUpUI_2014(){
+		String randomCustomerSequenceNumber = null;
+		String returnQuantity = "1";
+		String refundReason = "Unsatisfactory";
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderLevelCheckBoxSection(),"order level checkBoxes not present as expected on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundReasonDDPresent(),"Refund Reason DD not present on pop up on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyCreditCardDDPresent(),"credit card DD not present on pop up on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundTypeDDPresent(),"Refund Type DD not present on pop up on us");
+		cscockpitOrderTabPage.clickCloseRefundRequestPopUP();
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp(refundReason);
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickCloseRefundConfirmationPopUP();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(),"This is not Order Page on US");
+		//----------------------FOR CA---------------------------
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on ca");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderLevelCheckBoxSection(),"order level checkBoxes not present as expected on ca");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundReasonDDPresent(),"Refund Reason DD not present on pop up on ca");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyCreditCardDDPresent(),"credit card DD not present on pop up on ca");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundTypeDDPresent(),"Refund Type DD not present on pop up on ca");
+		cscockpitOrderTabPage.clickCloseRefundRequestPopUP();
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp(refundReason);
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickCloseRefundConfirmationPopUP();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(),"This is not Order Page on CA");
+		s_assert.assertAll();
+	}
 }

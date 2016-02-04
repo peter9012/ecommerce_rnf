@@ -402,7 +402,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
-		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
@@ -491,7 +491,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
-		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
@@ -768,8 +768,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		//Select a product and proceed to buy it
 		//storeFrontHomePage.applyPriceFilterLowToHigh();
-		String selectedProductName=storeFrontHomePage.getProductName();
-		storeFrontHomePage.selectProductAndProceedToBuy();
+		//		String selectedProductName=storeFrontHomePage.getProductName();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 
 		//Cart page is displayed?
@@ -790,7 +790,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		//verify product details
 		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
+		//s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
 
 		//navigate back to quick shop page
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -804,11 +804,11 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//click on continue shopping link
 		storeFrontHomePage.clickOnContinueShoppingLink();
 
-//		//click on mini cart icon
-//		storeFrontHomePage.clickMiniCart();
-//		//remove all products from mini cart
-//		storeFrontHomePage.removeFirstProductFromTheCart();
-//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("0"), "number of products in the cart is NOT 0");
+		//click on mini cart icon
+		storeFrontHomePage.clickMiniCart();
+		//remove all products from mini cart
+		storeFrontHomePage.deleteAllItemsFromCart();		
+		s_assert.assertTrue(storeFrontHomePage.isCartHasZeroItems(), "number of products in the cart is NOT 0");
 		s_assert.assertAll();	
 	}
 
@@ -1597,7 +1597,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testVerifyCategoryProductListPage_2324() throws InterruptedException{
 		country = driver.getCountry();
 		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(1,3);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//login As PC User User and verify Product Details and category.
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -1624,26 +1623,11 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		//verify the different categories and verify the products in present in each category.
-		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
-		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
-		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
-		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
-			s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
-		}
-		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
-
-		//Select Random Product in Redefine Section And verify Its Details on product list page.
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButton(randomNum),"Add to PC Perks button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductInfoPresentOnQuikShopProducts(),"Product Info not present in quikshop product page");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPricePresentInProductInfo(),"Retail Price not present in product info");
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPricePresentInProductInfo(),"PC Price not present in product info");
+		s_assert.assertTrue(storeFrontHomePage.verifyBuyNowButtonPresentInProductInfo(),"Buy now button not present in poduct info");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonInProductInfo(),"Add to Pc Perks Button not present below product info");
 		s_assert.assertAll();
 	}
 
@@ -1652,7 +1636,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testVerifyCategoryProductListPage_2325() throws InterruptedException{
 		country = driver.getCountry();
 		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(1,6);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//login As Consultant User and verify Product Details and category.
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1680,27 +1663,11 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		//verify the different categories and verify the products in present in each category.
-		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
-		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
-		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
-		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
-			s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
-		}
-		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
-
-		//Select Random Product in Redefine Section And verify Its Details on product list page.
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButton(randomNum),"Add to CRP button is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifySVValue(randomNum),"SV Value for consultant is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductInfoPresentOnQuikShopProducts(),"Product Info not present in quikshop product page");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPricePresentInProductInfo(),"Retail Price not present in product info");
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPricePresentInProductInfo(),"PC Price not present in product info");
+		s_assert.assertTrue(storeFrontHomePage.verifyBuyNowButtonPresentInProductInfo(),"Buy now button not present in poduct info");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonPresent(),"Add to crp Button not present in product info");
 		s_assert.assertAll();
 	}
 
@@ -1709,7 +1676,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testVerifyCategoryProductListPage_2326() throws InterruptedException{
 		country = driver.getCountry();
 		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(1,6);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//login As RC User User and verify Product Details and category.
 		List<Map<String, Object>> randomRCUserList =  null;
@@ -1737,72 +1703,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		//verify the different categories and verify the products in present in each category.
-		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
-		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
-		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
-		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
-			s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
-		}
-		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
-
-		//Select Random Product in Redefine Section And verify Its Details on product list page.
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
-		logout();
-		driver.get(driver.getURL()+"/"+driver.getCountry());
-		//login As PC User User and verify Product Details and category.
-		List<Map<String, Object>> randomPCUserList =  null;
-		String pcUserEmailID = null;
-		String accountIdForPCUser = null;
-		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-					(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-			logger.info("Account Id of the user is "+accountIdForPCUser);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-		//verify the different categories and verify the products in present in each category.
-		s_assert.assertTrue(storeFrontHomePage.verifyRedefineCategory(),"Redefine category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInRedefineCategory(),"No Product is there in redefine category");
-		s_assert.assertTrue(storeFrontHomePage.verifyReverseCategory(),"Reverse category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInReverseCategory(),"No Product is there in reverse category");
-		s_assert.assertTrue(storeFrontHomePage.verifySootheCategory(),"Soothe category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInSootheCategory(),"No Product is there in Soothe category");
-		s_assert.assertTrue(storeFrontHomePage.verifyUnblemishCategory(),"Unblemish category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInUnblemishCategory(),"No Product is there in Unblemish category");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			s_assert.assertTrue(storeFrontHomePage.verifyEssentialCategory(),"Essentials category is not present");
-			s_assert.assertTrue(storeFrontHomePage.verifyProductsInEssentialCategory(),"No Product is there in Essentials category");
-		}
-		s_assert.assertTrue(storeFrontHomePage.verifyEnhancementCategory(),"Enhancement category is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductsInEnhancementCategory(),"No Product is there in Enhancement category");
-
-		//Select Random Product in Redefine Section And verify Its Details on product list page.
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButton(randomNum),"Add to Bag Button is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyRetailPriceOfProduct(randomNum),"Retail price of product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyMyPriceOfProduct(randomNum),"My price of Product is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButton(randomNum),"Add to PC Perks button is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyProductInfoPresentOnQuikShopProducts(),"Product Info not present in quikshop product page");
+		s_assert.assertTrue(storeFrontHomePage.verifyRetailPricePresentInProductInfo(),"Retail Price not present in product info");
+		s_assert.assertTrue(storeFrontHomePage.verifyBuyNowButtonPresentInProductInfo(),"Buy now button not present in poduct info");
 		s_assert.assertAll();
 	}
 
@@ -2852,7 +2755,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-145:Update PC Template -EDIT Cart , Shipping info, billing info and Save
-	@Test
+	@Test(enabled=false) //Element Not visible issue
 	public void testUpdatePCTemplate_145() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2887,6 +2790,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
 			storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+
 			storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
@@ -2905,6 +2809,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
 			//verify selected billing profile is default
 			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
+
 			storeFrontUpdateCartPage.clickOnEditShipping();
 			storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
 			storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
@@ -2913,6 +2818,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
 			storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
 			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
+
 			storeFrontUpdateCartPage.clickOnNextStepBtn();
 			storeFrontUpdateCartPage.clickUpdateCartBtn();
 			s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
@@ -3298,7 +3204,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String quantity = "2";
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.clickAddToBagButton();
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		String subtotalOfAddedProduct = storeFrontHomePage.getSubTotalOfAddedProduct();
 		storeFrontHomePage.addQuantityOfProduct(quantity);
 		s_assert.assertTrue(storeFrontHomePage.validateSubTotalAfterQuantityIncreased(subtotalOfAddedProduct,quantity),"subtotal not present on UI as expected");

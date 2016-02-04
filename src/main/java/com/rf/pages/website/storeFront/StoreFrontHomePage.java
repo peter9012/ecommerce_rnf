@@ -33,7 +33,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
 	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now »')]");
-	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//a[text()='Policy and Procedures']");
+	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//a[contains(text(),'Policy and Procedures')]");
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
@@ -581,10 +581,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifyPopUpForTermsAndConditions() throws InterruptedException{
 		boolean isPopForTermsAndConditionsVisible = false;  
-		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]"));
-		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]")));
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-standard tcpopup']//p"));
+		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-standard tcpopup']//p")));
 		if(isPopForTermsAndConditionsVisible==true){
-			driver.click(By.xpath("//div[@class='popup-gray']/p[contains(text(),'In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted')]/following::a[@title='Close']"));
+			driver.click(By.xpath("//div[@class='popup-standard tcpopup']//p/following::a[@title='Close']"));
 			driver.pauseExecutionFor(1000);
 			return true;
 		}
@@ -643,8 +643,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateErrorMessageWithoutSelectingAllCheckboxes(){
-		driver.waitForElementPresent(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted the Rodan + Fields Policies and Procedures and the terms and conditions of the Consultant Replenishment Program (CRP) and Pulse Pro.']"));
-		return driver.findElement(By.xpath("//div[@class='popup-gray']/p[text()='In order to complete enrollment, please select the checkboxes to indicate that you have read and accepted the Rodan + Fields Policies and Procedures and the terms and conditions of the Consultant Replenishment Program (CRP) and Pulse Pro.']")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@class='popup-standard tcpopup']//p"));
+		return driver.findElement(By.xpath("//div[@class='popup-standard tcpopup']//p")).isDisplayed();
 	}
 
 	public void acceptTheProvideAccessToSpousePopup(){
@@ -1440,6 +1440,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(1500);
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(3000);
+	}
+
+	public void deleteAllItemsFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[@class='cartItems']/descendant::a[text()='Delete'][1]"));
+		if(driver.isElementPresent(By.xpath("//div[@class='cartItems']/descendant::a[text()='Delete'][1]"))==true){
+			driver.click(By.xpath("//div[@class='cartItems']/descendant::a[text()='Delete'][1]"));
+			driver.waitForLoadingImageToDisappear();
+			driver.waitForPageLoad();
+		}
 	}
 
 	public void removeSecondProductFromTheCart(){
@@ -2631,7 +2640,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyEmailIdIsPresentInContactBox(){
-		return driver.isElementPresent(By.id("txtContactMe"));
+		return driver.isElementPresent(By.xpath("//a[@id='txtContactMe']"));
 	}
 
 	public boolean verifyPhoneNumberIsPresentInContactBox(){
@@ -2673,7 +2682,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			String childWindowID=it.next();
 			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
 				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_US.pdf")){
+				if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_CAN.pdf")){
 					status=true;
 					driver.close();
 					driver.switchTo().window(parentWindowID);
@@ -3548,8 +3557,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyAnotherConsultantPrefixIsNotAllowed(String sitePrefix){
-		driver.quickWaitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfostg.com/ca/ is not available')]"));
-		if(driver.isElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfostg.com/ca/ is not available')]"))){
+		driver.quickWaitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/ca/ is not available')]"));
+		if(driver.isElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/ca/ is not available')]"))){
 			return true;
 		}else
 			return false;
@@ -3650,6 +3659,61 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("Add to CRP button clicked");
 			driver.waitForPageLoad();
 		}
+	}
+
+	public boolean verifyRetailPricePresentInProductInfo() {
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/p[contains(text(),'Retail:')]"));
+		else
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/p[contains(text(),'Retail:')]"));
+	}
+
+	public boolean verifyPCPricePresentInProductInfo(){
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/p[contains(text(),'Retail:')]/span[contains(text(),'Your')]"));
+		else
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/p[contains(text(),'Retail:')]/span[contains(text(),'Your')]"));
+	}
+
+	public boolean verifyBuyNowButtonPresentInProductInfo(){
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			try{
+				return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+			}catch(NoSuchElementException ne){
+				return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
+			}
+		else
+			try{
+				return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			}catch(NoSuchElementException ne){
+				return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			}
+	}
+
+	public boolean verifyAddToCRPButtonPresent(){
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/autoship-cart/add']/button"));
+		else
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/div[2]/div[2]/form[@action='/us/autoship-cart/add']/button"));
+	}
+
+	public boolean verifyAddToPCPerksButtonInProductInfo() {
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+		else
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+	}
+
+	public boolean verifyProductInfoPresentOnQuikShopProducts() {
+		if(driver.getCountry().equalsIgnoreCase("ca"))
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/h3/a"));
+		else
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]/h3/a"));
+	}
+
+	public String getSocialInsuranceNumberTxtFldPlaceHolderValue(){
+		driver.waitForElementPresent(By.xpath("//input[@id='S-S-N']"));
+		return driver.findElement(By.xpath("//input[@id='S-S-N']")).getAttribute("placeholder").trim();
 	}
 
 }

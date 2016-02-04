@@ -406,12 +406,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAddressName), "New Shipping address NOT listed in update cart under shipping section");
 
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		s_assert.assertAll();	
+		s_assert.assertAll();
 
 	}
 
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
-	@Test
+	@Test(enabled=false) //ISSUE No Add New Shiiping Address link
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

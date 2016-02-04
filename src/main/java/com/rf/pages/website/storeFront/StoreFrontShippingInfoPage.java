@@ -39,8 +39,8 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 			boolean flag=driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span/input[@checked='checked']")).isSelected();
 			return flag;
 		}catch(NoSuchElementException e){
-			String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
-			if(driver.findElement(By.xpath("//span[contains(text(),'"+word+"')]/ancestor::div[1]/form/span/[@checked='address.defaultAddress']")).isSelected()){
+			//String word = Character.toUpperCase(defaultAddressFirstName.charAt(0)) + defaultAddressFirstName.substring(1);
+			if(driver.findElement(By.xpath("//span[contains(text(),'"+defaultAddressFirstName+"')]/ancestor::div[1]/form/span[@checked='address.defaultAddress']")).isSelected()){
 				return true;
 			}else{
 				return false;

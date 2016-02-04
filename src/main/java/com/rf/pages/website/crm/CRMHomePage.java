@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
@@ -51,9 +52,24 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		super(driver);
 	}
 	public boolean verifyHomePage() throws InterruptedException{		
-		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
+		closeAllOpenedTabs();
 		return driver.isElementPresent(USER_NAVIGATION_LABEL_LOC);	
 	}
+	
+	public void closeAllOpenedTabs(){
+		int totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+		logger.info("total opened tabs = "+totalOpenedTabs);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		for(int i=totalOpenedTabs;i>=1;i--){
+			//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+			actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+			//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+			driver.pauseExecutionFor(1000);
+		}
+	}
+	
 	public void searchUserById(String emailId){
 		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(emailId);
@@ -225,14 +241,55 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	}
 	
 	
-	public void searchUser(String Name){
-		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
-		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Name);
+	public void enterTextInSearchFieldAndHitEnter(String text){
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
-		driver.switchTo().frame(1);
-		System.out.println(driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a")).getText());
+	}
+	
+	public String getNameOnFirstRowInSearchResults(){
+		String nameOnfirstRow = null;
 		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		nameOnfirstRow = driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a")).getText();		
+		return nameOnfirstRow;
+	}
+	
+	public String getEmailOnFirstRowInSearchResults(){
+		String emailOnfirstRow = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Email Address')]/following::tr[1]/td[9]/a")).getText();		
+		return emailOnfirstRow;
+	}
+	
+	public void clickNameOnFirstRowInSearchResults(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.switchTo().defaultContent();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+	
+	public boolean isAccountLinkPresentInLeftNaviagation(){
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//a[starts-with(@title,'Accounts')]"));
+	}
+	
+	public boolean isContactsLinkPresentInLeftNaviagation(){
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//a[starts-with(@title,'Contacts')]"));
+	}
+	
+	public boolean isAccountActivitiesLinkPresentInLeftNaviagation(){
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//a[starts-with(@title,'Account Activities')]"));
 	}
 
 	public void EditAccountDetails(){

@@ -678,77 +678,72 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	// Hybris Phase 2-2341:Add new billing profile | My Account | checkbox UN-CHECKED
 	@Test
 	public void testAddBillingProfileMyAccountFutureAutoshipCheckboxNotChecked_2341() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO(); 
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO(); 
 
-			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
 
-			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-			String lastName = "lN";
-			String accountID = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-			while(true){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("Account Id of the user is "+accountID);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-				boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-				if(isSiteNotFoundPresent){
-					logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL());
 			}
-
-			logger.info("login is successful");
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-			s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-
-			storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
-			storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
-			storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontBillingInfoPage.selectNewBillingCardAddress();  
-			storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-
-			//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-
-			s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
-
-			//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-			storeFrontOrdersPage.clickAutoshipOrderNumber();
-
-			//------------------ Verify that autoship template doesn't contains the newly created billing profile ------------------------------------------------------------  
-
-			s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the new billing profile even when future autoship checkbox not selected");
-
-			//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-			storeFrontOrdersPage.clickOnFirstAdHocOrder();
-
-			//------------------ Verify that adhoc orders template doesn't contains the newly created billing profile by verifying by name------------------------------------------------------------
-
-			s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains new billing profile when future autoship checkbox not selected");
-
-			//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-			s_assert.assertAll(); 
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			else
+				break;
 		}
 
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+
+		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();  
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber();
+
+		//------------------ Verify that autoship template doesn't contains the newly created billing profile ------------------------------------------------------------  
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the new billing profile even when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly created billing profile by verifying by name------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"AdHoc Orders Template Payment Method contains new billing profile when future autoship checkbox not selected");
+
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		s_assert.assertAll(); 
 	}
 
 }

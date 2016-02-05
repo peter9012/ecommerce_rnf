@@ -76,16 +76,16 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("login link clicked");
 		logger.info("login username is: "+username);
 		logger.info("login password is: "+password);
+		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);			
-		driver.click(LOGIN_BTN_LOC);	
+		driver.type(PASSWORD_TXTFLD_LOC, password);   
+		driver.click(LOGIN_BTN_LOC); 
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		return new StoreFrontConsultantPage(driver);
 	}
-
 
 	public StoreFrontRCUserPage loginAsRCUser(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
@@ -2682,12 +2682,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			String childWindowID=it.next();
 			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
 				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_CAN.pdf")){
-					status=true;
-					driver.close();
-					driver.switchTo().window(parentWindowID);
-					return status;
+				if(driver.getCountry().equalsIgnoreCase("CA")){
+					if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_CAN.pdf")){
+						status=true;
+					}
+				}else{
+					if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_US.pdf")){
+						status=true;
+					}
+
 				}
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+				return status;
+
 			}
 		}
 		return status;
@@ -3557,8 +3565,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyAnotherConsultantPrefixIsNotAllowed(String sitePrefix){
-		driver.quickWaitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/ca/ is not available')]"));
-		if(driver.isElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/ca/ is not available')]"))){
+		driver.quickWaitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/"+driver.getCountry()+"/ is not available')]"));
+		if(driver.isElementPresent(By.xpath("//p[@id='prefix-validation']/span[contains(text(),'"+sitePrefix+".myrfo"+driver.getEnvironment()+".com/"+driver.getCountry()+"/ is not available')]"))){
 			return true;
 		}else
 			return false;
@@ -3714,6 +3722,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public String getSocialInsuranceNumberTxtFldPlaceHolderValue(){
 		driver.waitForElementPresent(By.xpath("//input[@id='S-S-N']"));
 		return driver.findElement(By.xpath("//input[@id='S-S-N']")).getAttribute("placeholder").trim();
+	}
+
+	public void addFollowMeSection(String link){
+		if(driver.isElementPresent(By.xpath("//div[@class='contactBox']//div/a"))==false){
+			clickOnPersonalizeMyProfileLink();
+			driver.waitForPageLoad();
+			driver.type(By.id("consultant-facebook"), link);
+			clickSaveBtnOnEditConsultantInfoPage();
+		}
 	}
 
 }

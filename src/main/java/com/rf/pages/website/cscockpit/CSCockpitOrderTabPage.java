@@ -15,7 +15,8 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 
 	private static String refundDropDownOptionLoc =  "//td[@class='z-combo-item-text' and contains(text(),'%s')]";
 	private static String orderStatusDDLoc = "//span[contains(text(),'Order Status')]//option[text()='%s']";
-	private static String orderSectionLoc ="//div[text()='%s']";
+	private static String cartSectionLoc ="//div[@class='csCartDetailRow']//span[contains(text(),'%s')]";
+	private static String orderSectionLoc ="//div[@class='csOrderDetailRow']//span[contains(text(),'%s')]";
 	private static String returnQuantityLoc = "//td[text()='%s']";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
@@ -50,15 +51,15 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ORIGINATION_VALUE_LBL = By.xpath("//span[contains(text(),'Origination')]/following::span[1]");
 	private static final By REFUND_TOTAL_LBL = By.xpath("//span[text()='REFUND TOTAL']/following::span[1]");
 	private static final By RETURN_REQUEST_SECTION = By.xpath("//div[@class='orderReturnRequestsWidget']//span[text()='Return Requests']");
-	private static final By ORDER_NUMBER_CSCOCKPIT_UI_LOC = By.xpath("//span[contains(text(),'Order #')]//following::span[1]");
+	private static final By ORDER_TITLE_CSCOCKPIT_UI_LOC = By.xpath("//span[contains(text(),'Order #')]//following::span[1]");
 	private static final By EXISTING_SPONSER_NAME = By.xpath("//span[@class='csCartDetailsValue']");
 	private static final By CHANGE_SPONSER_LINK = By.xpath("//a[text()='Change']");
 	private static final By SPONSER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Consultant Name or CID']/following::input");
 	private static final By SELECT_BUTTON_TO_SELECT_SPONSER = By.xpath("//td[text()='SELECT']");
 	private static final By CV_QV_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']"); 
 	private static final By CV_QV_DISABLED_UPDATE_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[1]//td[@class='z-button-cm'][text()='Update']/ancestor::table[1][@class='z-button z-button-disd']");
-	private static final By ORDER_HISTORY_NO_ENTRIES = By.xpath("//div[@class='csOrderHistory']//div[contains(text(),'No Entries')]");
-	private static final By MODIFICATION_HISTORY_NO_ENTRIES = By.xpath("//span[text()='Modification History']/following::div[contains(text(),'No Entries')]");
+	private static final By ORDER_HISTORY = By.xpath("//div[@class='csOrderHistory']/div");
+	private static final By MODIFICATION_HISTORY = By.xpath("//span[text()='Modification History']");
 	private static final By CV_TXT_BOX_LOCATOR = By.xpath("//div[text()='Total CV']/following::input[1]");
 	private static final By QV_TXT_BOX_LOCATOR = By.xpath("//div[text()='Total QV']/following::input[2]");
 	private static final By CANCEL_BUTTON_LOCATOR_FOR_UPDATE_QV_CV = By.xpath("//td[text()='Cancel']");
@@ -76,6 +77,8 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By REFUND_REASON_DD_ON_POPUP_LOC = By.xpath("//input[@value='Refund Reason']//ancestor::span[1]");
 	private static final By CREDIT_CARD_DD_ON_POPUP_LOC = By.xpath("//input[@value='CREDITCARD']//ancestor::span[1]");
 	private static final By REFUND_TYPE_DD_ON_POPUP_LOC = By.xpath("//input[@value='Refund Type']//ancestor::span[1]");
+	private static final By SHIPPING_ADDRESS_AT_TOP_SECTION_LOC = By.xpath("//div[@class='csOrderDetailsAddress']//span[contains(text(),'Shipping Address')]");
+	private static final By PAYMENT_INFO_AT_TOP_SECTION_LOC = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//span[contains(text(),'Payment Info')]");
 
 	protected RFWebsiteDriver driver;
 
@@ -132,10 +135,16 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public String getOrderNumberFromCsCockpitUIOnOrderTab() {
-		String orderNumberOnOrderTab = driver.findElement(ORDER_NUMBER_CSCOCKPIT_UI_LOC).getText();
+		String orderNumberOnOrderTab = driver.findElement(ORDER_TITLE_CSCOCKPIT_UI_LOC).getText();
 		String []orderNumber = orderNumberOnOrderTab.split("\\ ");
 		System.out.println(orderNumber[0]);
 		return orderNumber[0];
+	}
+
+	public String getOrderTitleFromCsCockpitUIOnOrderTab() {
+		String orderTitle = driver.findElement(ORDER_TITLE_CSCOCKPIT_UI_LOC).getText();
+		System.out.println(orderTitle);
+		return orderTitle;
 	}
 
 	public String getExistingSponserNameInOrderTab(){
@@ -281,6 +290,21 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath(String.format(orderSectionLoc, Name)));
 	}
 
+	public boolean verifyShippingAddressDetailsArePresentInOrderTab(){
+		driver.waitForElementPresent(SHIPPING_ADDRESS_AT_TOP_SECTION_LOC);
+		return driver.isElementPresent(SHIPPING_ADDRESS_AT_TOP_SECTION_LOC);
+	}
+	
+	public boolean verifyPaymentInfoDetailsArePresentInOrderTab(){
+		driver.waitForElementPresent(PAYMENT_INFO_AT_TOP_SECTION_LOC);
+		return driver.isElementPresent(PAYMENT_INFO_AT_TOP_SECTION_LOC);
+	}
+
+	public boolean verifyCartDetailsIsPresentInOrderTab(String Name){
+		driver.waitForElementPresent(By.xpath(String.format(cartSectionLoc, Name)));
+		return driver.isElementPresent(By.xpath(String.format(cartSectionLoc, Name)));
+	}
+
 	public boolean verifyReturnOrderBtnIsPresentInOrderTab(){
 		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
 		return driver.isElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
@@ -292,13 +316,13 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyOrderHistoryInOrderTab(){
-		driver.waitForElementPresent(ORDER_HISTORY_NO_ENTRIES);
-		return driver.isElementPresent(ORDER_HISTORY_NO_ENTRIES);
+		driver.waitForElementPresent(ORDER_HISTORY);
+		return driver.isElementPresent(ORDER_HISTORY);
 	} 
 
 	public boolean verifyModificationHistoryInOrderTab(){
-		driver.waitForElementPresent(MODIFICATION_HISTORY_NO_ENTRIES);
-		return driver.isElementPresent(MODIFICATION_HISTORY_NO_ENTRIES);
+		driver.waitForElementPresent(MODIFICATION_HISTORY);
+		return driver.isElementPresent(MODIFICATION_HISTORY);
 	} 
 
 	public String getCVValueInOrderTab(){

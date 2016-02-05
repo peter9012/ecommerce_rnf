@@ -158,4 +158,83 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath("//span[@class='cart-section']"));
 	}
 
+	public void addNewContentOfYourOwnCopy() {
+		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
+		driver.clear(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
+		driver.type(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"), "newly added content");
+		driver.pauseExecutionFor(1000);
+	}
+
+	public boolean verifyDefaultContentReseted() {
+		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
+		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]")).getText();
+		if(content.contains("Rodan + Fields has brought confidence")){
+			return true;
+		}
+		return false;
+
+	}
+	public void clickSaveButton() {
+		driver.waitForElementPresent(By.xpath("//div[@id='consultant-container']//input[1]"));
+		driver.click(By.xpath("//div[@id='consultant-container']//input[1]"));
+		driver.waitForLoadingImageToDisappear();
+
+	}
+
+	public boolean verifyNewlyAddedContentSaved() {
+		driver.waitForElementPresent(By.xpath("//div[@class='content-left-side1']/p"));
+		return driver.isElementPresent(By.xpath("//div[@class='content-left-side1']/p"));
+	}
+
+	public void clickResetToDefaultCopyLink() {
+		driver.waitForElementPresent(By.xpath("//a[@id='aboutMeBizReset']"));
+		driver.click(By.xpath("//a[@id='aboutMeBizReset']"));
+	}
+
+	public void addNewContentOfYourOwnCopyInComPWS() {
+		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]"));
+		driver.clear(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]"));
+		driver.type(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]"), "newly added content in com pws");
+		driver.pauseExecutionFor(1000);
+	}
+
+	public void clickResetToDefaultCopyLinkInComPWS() {
+		driver.waitForElementPresent(By.xpath("//a[@id='aboutMeComReset']"));
+		driver.click(By.xpath("//a[@id='aboutMeComReset']"));
+	}
+
+	public boolean verifyDefaultContentResetedForComPWS() {
+		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]"));
+		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]")).getText();
+		if(content.contains("No matter your age")){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyPersonalizeMyProfileLinkPresent() {
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Personalize')]"));
+	}
+
+	public boolean validateEditedPhoneNumberSaved(String phoneNumber) {
+		driver.waitForElementPresent(By.xpath("//div[@class='contactBox']//a[1]"));
+		String editedPhoneNumber = driver.findElement(By.xpath("//div[@class='contactBox']//a[1]")).getText();
+		String number[] = editedPhoneNumber.split("\\.");
+		String requiredNumber = number[0]+number[1]+number[2];
+		if(requiredNumber.contains(phoneNumber))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean verifyShopSkinCareLinkPresent() {
+		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='SHOP SKINCARE']"));
+	}
+
+	public boolean verifyAboutRFLinkPresent() {
+		return driver.isElementPresent(By.xpath("//div[@id='header']//li[@id='CompanyBar']/a[contains(text(),'ABOUT')]"));
+
+	}
+
 }

@@ -317,7 +317,7 @@ public class TestConstants {
 
 	public static final String RCUSER_USERNAME_TST4 = "Kasey";
 
-
+	public static final String FACEBOOK_LINK = "http://www.facebook.com";
 
 	/*
 	 * New Shipping Address US

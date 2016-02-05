@@ -1665,19 +1665,19 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
-		//		String parentWindowID=driver.getWindowHandle();
-		//		Set<String> set=driver.getWindowHandles();
-		//		Iterator<String> it=set.iterator();
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
 		boolean status=false;
-		//		while(it.hasNext()){
-		//			String childWindowID=it.next();
-		//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-		//				driver.switchTo().window(childWindowID);
-		if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
-			status=true;					
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
+					status=true;					
+				}
+			}
 		}
-		//			}
-		//		}
 		return status;
 	}
 

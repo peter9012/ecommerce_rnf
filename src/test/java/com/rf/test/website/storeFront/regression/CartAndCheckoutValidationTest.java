@@ -158,7 +158,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-143:CRP Template - Check Threshold by Add/remove products and increase/decrease qty
-	@Test(enabled=true) //WIP
+	@Test(enabled=true) 
 	public void testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 
@@ -570,52 +570,55 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2142:Check Shipping and Handling Fee for UPS Ground for Order total 0-999999
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPSGround_2142() throws InterruptedException	{
-		if(driver.getCountry().equalsIgnoreCase("ca")){			
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;			
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			while(true){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-				boolean isLoginError = driver.getCurrentUrl().contains("error");
-				if(isLoginError){
-					logger.info("Login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
+	public void testCheckShippingAndHandlingFeeForUPSGround_2142() throws InterruptedException {  
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;   
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
 			}
-			s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
-			logger.info("login is successful");
-			storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
-			storeFrontUpdateCartPage.clickOnCheckoutButton();
-			storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
-			double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
-			logger.info("subtotal ="+subtotal);
-			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
-			logger.info("deliveryCharges ="+deliveryCharges);
-			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-			logger.info("handlingCharges ="+handlingCharges);
-			if(subtotal<=999999){
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
+		double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+		logger.info("subtotal ="+subtotal);
+		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		if(subtotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("ca")){
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
 				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-			}else{
-				logger.info(" Order total is not in required range");
+			}else if(driver.getCountry().equalsIgnoreCase("us")){
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$17.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
 			}
-			s_assert.assertAll();
 		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			logger.info(" Order total is not in required range");
 		}
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-2144:Check Shipping and Handling Fee for UPS 2Day for Order total 0- 0-999999
@@ -2572,111 +2575,103 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-2318:PC Perks Message
 	@Test
 	public void testVerifyPCPerksMessageOnModalPopup_2318() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			country = driver.getCountry();
-			RFO_DB = driver.getDBNameRFO();
-			storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-			// Click on our product link that is located at the top of the page and then click in on quick shop
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-			// Products are displayed?
-			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-			logger.info("Quick shop products are displayed");
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
 
-			//Mouse hover product and click quick info
-			storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
-			//Assert for modal window
-			s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
-			//verify pc perks message on modal popup
-			s_assert.assertTrue(storeFrontHomePage.getPCPerksMessageFromModalPopup().contains(TestConstants.PC_PERKS_MESSAGE_ON_MODAL_POPUP),"PC Perks message is not comming on modal popup");
-			s_assert.assertAll();
-		}
-		else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
+		//Mouse hover product and click quick info
+		storeFrontHomePage.mouseHoverProductAndClickQuickInfo();
+		//Assert for modal window
+		s_assert.assertTrue(storeFrontHomePage.isModalWindowExists(),"modal window not exists");
+		//verify pc perks message on modal popup
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksMessageFromModalPopup().contains(TestConstants.PC_PERKS_MESSAGE_ON_MODAL_POPUP),"PC Perks message is not comming on modal popup");
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-139:PC Perks - Delay
 	@Test
 	public void testDelayPCPerks_139() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			RFO_DB = driver.getDBNameRFO(); 
-			country = driver.getCountry();
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			//login As PC User and Verify product Details.
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountIdForPCUser = null;
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
-				accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountIdForPCUser);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
+
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//login As PC User and Verify product Details.
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountIdForPCUser = null;
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
 			}
-			logger.info("login is successful");
-			//Verify Order Page
-			storeFrontPCUserPage.clickOnWelcomeDropDown();
-			storeFrontOrdersPage=storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
-			s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Order Page Is not Displayed");
-			//verify autoship order section on order page.
-			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoshipOrderSectionOnOrderPage(),"Autoship order section is not on order page for pc user");
-			//verify Order History section on order page.
-			s_assert.assertTrue(storeFrontOrdersPage.verifyOrderHistorySectionOnOrderPage(),"Order history section is not on order page for pc user");
-			//verify Return order section on order page.
-			s_assert.assertTrue(storeFrontOrdersPage.verifyReturnOrderSectionOnOrderPage(),"Return order section is not on order page for pc user ");
-
-			//Verify Delay And Cancel PC Perks Message
-			storeFrontPCUserPage.clickOnYourAccountDropdown();
-			storeFrontPCUserPage.clickOnPCPerksStatus();
-			s_assert.assertTrue(storeFrontPCUserPage.verifyPCPerksStatus(),"PC perks status page is not present");
-			storeFrontPCUserPage.clickDelayOrCancelPCPerks();
-			storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
-			s_assert.assertTrue(storeFrontPCUserPage.verifyNextAutoshipDateRadioButtons(),"Next AutoShip Date radio button are not present");
-			String nextBillDate=storeFrontPCUserPage.getNextBillAndShipDate();
-			String dateAfterOneMonth=storeFrontPCUserPage.getOneMonthOutDate(nextBillDate);
-			String dateAfterTwoMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterOneMonth);
-			String dateAfterThreeMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterTwoMonth);
-
-			//assert for date after one month and after two month
-			s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterOneMonthFromUI().contains(dateAfterOneMonth),"Date After one month is not as expected");
-			s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterTwoMonthFromUI().contains(dateAfterTwoMonth),"Date after two month is not as expected");
-
-			//select autoship date one month Later.
-			storeFrontPCUserPage.selectFirstAutoshipDateAndClickSave();
-			//String autoshipDateFromOrderPage=storeFrontOrdersPage.getAutoshipOrderDate();
-
-			//verify One month later autoship date on order page
-			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterOneMonth),"Next Selected autoship order date is not updated on order page");
-			//verify one month later autoship date on PC Perks Status Page
-			storeFrontOrdersPage.clickOnYourAccountDropdown();
-			storeFrontPCUserPage.clickOnPCPerksStatus();
-			s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterOneMonth),"Next Bill and ship date one month later is not the updated one");
-
-			//select autoship date Two month Later.
-			storeFrontPCUserPage.clickDelayOrCancelPCPerks();
-			storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
-			storeFrontPCUserPage.selectSecondAutoshipDateAndClickSave();
-			//verify Two month later autoship date on order page
-			s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterThreeMonth),"Next Selected autoship order date is not updated on order page");
-			//verify two month later autoship date on PC Perks Status Page
-			storeFrontOrdersPage.clickOnYourAccountDropdown();
-			storeFrontPCUserPage.clickOnPCPerksStatus();
-			s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterThreeMonth),"Next Bill and ship date is two month later not the updated one");
-			s_assert.assertAll();
+			else
+				break;
 		}
-		else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
+		logger.info("login is successful");
+		//Verify Order Page
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage=storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Order Page Is not Displayed");
+		//verify autoship order section on order page.
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAutoshipOrderSectionOnOrderPage(),"Autoship order section is not on order page for pc user");
+		//verify Order History section on order page.
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderHistorySectionOnOrderPage(),"Order history section is not on order page for pc user");
+		//verify Return order section on order page.
+		s_assert.assertTrue(storeFrontOrdersPage.verifyReturnOrderSectionOnOrderPage(),"Return order section is not on order page for pc user ");
+
+		//Verify Delay And Cancel PC Perks Message
+		storeFrontPCUserPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCPerksStatus(),"PC perks status page is not present");
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
+		s_assert.assertTrue(storeFrontPCUserPage.verifyNextAutoshipDateRadioButtons(),"Next AutoShip Date radio button are not present");
+		String nextBillDate=storeFrontPCUserPage.getNextBillAndShipDate();
+		String dateAfterOneMonth=storeFrontPCUserPage.getOneMonthOutDate(nextBillDate);
+		String dateAfterTwoMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterOneMonth);
+		String dateAfterThreeMonth=storeFrontPCUserPage.getOneMonthOutDate(dateAfterTwoMonth);
+
+		//assert for date after one month and after two month
+		s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterOneMonthFromUI().contains(dateAfterOneMonth),"Date After one month is not as expected");
+		s_assert.assertTrue(storeFrontPCUserPage.getShipAndBillDateAfterTwoMonthFromUI().contains(dateAfterTwoMonth),"Date after two month is not as expected");
+
+		//select autoship date one month Later.
+		storeFrontPCUserPage.selectFirstAutoshipDateAndClickSave();
+		//String autoshipDateFromOrderPage=storeFrontOrdersPage.getAutoshipOrderDate();
+
+		//verify One month later autoship date on order page
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterOneMonth),"Next Selected autoship order date is not updated on order page");
+		//verify one month later autoship date on PC Perks Status Page
+		storeFrontOrdersPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterOneMonth),"Next Bill and ship date one month later is not the updated one");
+
+		//select autoship date Two month Later.
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontPCUserPage.clickChangeMyAutoshipDateButton();
+		storeFrontPCUserPage.selectSecondAutoshipDateAndClickSave();
+		//verify Two month later autoship date on order page
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAutoShipOrderDate(dateAfterThreeMonth),"Next Selected autoship order date is not updated on order page");
+		//verify two month later autoship date on PC Perks Status Page
+		storeFrontOrdersPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		s_assert.assertTrue(storeFrontPCUserPage.getNextBillAndShipDate().equalsIgnoreCase(dateAfterThreeMonth),"Next Bill and ship date is two month later not the updated one");
+		s_assert.assertAll();
 	}
+
 
 	//Hybris Project-2090:10% off, free shipping for terms and conditions for the PC Perks Program
 	@Test
@@ -2757,78 +2752,74 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-145:Update PC Template -EDIT Cart , Shipping info, billing info and Save
 	@Test(enabled=false) //Element Not visible issue
 	public void testUpdatePCTemplate_145() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountID = null;
-			String lastName = "ln";
-			String newShipingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-			String newBillingAddressName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountID);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}  
-			logger.info("login is successful");
-			storeFrontPCUserPage.clickOnAutoshipCart();
-			storeFrontPCUserPage.clickOnContinueShoppingLink();
-			storeFrontPCUserPage.clickOnAddtoPCPerksButton();
-			String updatedMsg = storeFrontPCUserPage.getAutoshipTemplateUpdatedMsg();
-			s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
-			storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
-			storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountID = null;
+		String lastName = "ln";
+		String newShipingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		String newBillingAddressName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}  
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnAutoshipCart();
+		storeFrontPCUserPage.clickOnContinueShoppingLink();
+		storeFrontPCUserPage.clickOnAddtoPCPerksButton();
+		String updatedMsg = storeFrontPCUserPage.getAutoshipTemplateUpdatedMsg();
+		s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
+		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
+		storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 
-			storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
-			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
-			storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingAddressName);
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
-			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			//storeFrontUpdateCartPage.selectNewBillingCardAddress();
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
-			//verify selected billing profile is default
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
+		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingAddressName);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		//storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
+		//verify selected billing profile is default
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
 
-			storeFrontUpdateCartPage.clickOnEditShipping();
-			storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
-			storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
-			storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEditDuringEnrollment();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");
-			String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
-			storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEditDuringEnrollment();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");
+		String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
+		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
 
-			storeFrontUpdateCartPage.clickOnNextStepBtn();
-			storeFrontUpdateCartPage.clickUpdateCartBtn();
-			s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newShipingAddressName+" "+lastName),"updated address not present on Updated cart page");
-			s_assert.assertAll();
-		}
-		else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newShipingAddressName+" "+lastName),"updated address not present on Updated cart page");
+		s_assert.assertAll();
 	}
+
 
 	//Hybris Project-4781:Update PC Template -ADD Cart , Shipping info, billing info and Save
 	@Test
@@ -4338,7 +4329,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		}
 		s_assert.assertTrue(storeFrontUpdateCartPage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg());
 		s_assert.assertAll(); 
-
 	}
 
 	//	// Hybris Project-3866:Update PC Perks template from sponsor's PWS site

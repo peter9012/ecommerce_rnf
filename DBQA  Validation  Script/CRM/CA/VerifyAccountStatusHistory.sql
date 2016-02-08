@@ -9,12 +9,12 @@ BEGIN
 
 DECLARE @LASTRUNDATE DATETIME='2000-01-01';
 
-IF OBJECT_ID('Rfoperations.sfdc.AccountStatusHistoryMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.AccountStatusHistoryMissing
-IF OBJECT_ID('Rfoperations.sfdc.CRM_AccountStatusHistory') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_AccountStatusHistory
-IF OBJECT_ID('Rfoperations.sfdc.RFO_AccountStatusHistory') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_AccountStatusHistory
-IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_AccountStatusHistory') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_AccountStatusHistory
-IF OBJECT_ID('rfoperations.sfdc.AccountStatusHistoryDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountStatusHistoryDifference
-IF OBJECT_ID('rfoperations.sfdc.AccountStatusHistory_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountStatusHistory_Dups
+IF OBJECT_ID('CRM.sfdc.AccountStatusHistoryMissing') IS NOT NULL  DROP TABLE CRM.sfdc.AccountStatusHistoryMissing
+IF OBJECT_ID('CRM.sfdc.CRM_AccountStatusHistory') IS NOT NULL DROP TABLE CRM.sfdc.CRM_AccountStatusHistory
+IF OBJECT_ID('CRM.sfdc.RFO_AccountStatusHistory') IS NOT NULL DROP TABLE CRM.sfdc.RFO_AccountStatusHistory
+IF OBJECT_ID('CRM.sfdc.ErrorLog_AccountStatusHistory') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_AccountStatusHistory
+IF OBJECT_ID('CRM.sfdc.AccountStatusHistoryDifference') IS NOT NULL DROP TABLE CRM.sfdc.AccountStatusHistoryDifference
+IF OBJECT_ID('CRM.sfdc.AccountStatusHistory_Dups') IS NOT NULL DROP TABLE CRM.sfdc.AccountStatusHistory_Dups
 IF OBJECT_ID('tempdb.dbo.#AccountStatusHistory') IS NOT NULL DROP TABLE #AccountStatusHistory
 
 SET ANSI_WARNINGS OFF 
@@ -35,14 +35,14 @@ SELECT @CRMPP=COUNT(Account__C) FROM sfdcbackup.SFDCBKP.AccountStatus AAS, SFDCB
 --SELECT * FROM sfdcbackup.SFDCBKP.AccountStatus
 										   
 SELECT  @RFOPP AS RFO_AccountStatusHistoryCount, @CRMPP AS CRM_AccountStatusHistoryCount, (@RFOPP - @CRMPP) AS Difference 
-INTO rfoperations.sfdc.AccountStatusHistoryDifference;
+INTO CRM.sfdc.AccountStatusHistoryDifference;
 
 SELECT  AccountId AS RFO_AccountId,
  b.RFOACcountID__C as CRM_AccountId , 
  CASE WHEN b.RFOACcountID__C IS NULL THEN 'Destination'
       WHEN a.AccountId IS NULL THEN 'Source' 
  END AS MissingFROM
-INTO Rfoperations.sfdc.AccountStatusHistoryMissing
+INTO CRM.sfdc.AccountStatusHistoryMissing
 FROM 
     (SELECT ACL.AccountId FROM RFOperations.logging.AccountChangeLog ACL, RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB WHERE ACL.ACCOUNTID=AB.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
@@ -51,9 +51,9 @@ FROM
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
 
-SELECT MissingFrom ,COUNT(*) from Rfoperations.SFDC.AccountStatusHistoryMissing GROUP BY MISSINGFROM;
+SELECT MissingFrom ,COUNT(*) from CRM.sfdc.AccountStatusHistoryMissing GROUP BY MISSINGFROM;
 
-SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of AccountIDs missing from Source/Destination'
+SELECT 'Query CRM.sfdc.AccountStatusHistoryMissing to get list of AccountIDs missing from Source/Destination'
 
 -------------------------------------------------------------------------------------------
  --Account Status Framework 
@@ -64,10 +64,10 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 		CAST(ACL.AccountID AS NVARCHAR(MAX)) AS AccountId,
 		AAS.NAME as AccountStatus__C,
 		RT.NAME AS Reason__C,
-		CAST(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE ACl.ServerModifiedDate >= M.DST_START AND ACl.ServerModifiedDate < M.DST_END),ACL.ServerModifiedDate) AS DATE) ServerModifiedDate, 
+		CAST(DATEADD(HH,8,ACL.ServerModifiedDate) AS DATE) ServerModifiedDate, 
 		ACL.ChangedByApplication as ChangedByApplication__C,
 		ACL.ChangedByUser as ChangedByUser__C
-		INTO RFOPERATIONS.SFDC.RFO_AccountStatusHistory
+		INTO CRM.sfdc.RFO_AccountStatusHistory
 		-- join address table here.
 		FROM  Rfoperations.logging.AccountChangeLog ACL
 		JOIN RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTBASE AB ON AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
@@ -84,18 +84,18 @@ SELECT 'Query Rfoperations.sfdc.AccountStatusHistoryMissing to get list of Accou
 		CAST(PP.LastModifiedDate AS DATE) LastModifiedDate,	
 		PP.ChangedByApplication__c,
 		PP.ChangedByUser__c
-		INTO RFOPERATIONS.SFDC.CRM_AccountStatusHistory
+		INTO CRM.sfdc.CRM_AccountStatusHistory
 		FROM sfdcbackup.SFDCBKP.AccountStatus PP,SFDCBACKUP.SFDCBKP.Accounts A  , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
 		
 --Load Comparison Candidates.
-SELECT * INTO  #AccountStatusHistory FROM rfoperations.sfdc.RFO_AccountStatusHistory
+SELECT * INTO  #AccountStatusHistory FROM CRM.sfdc.RFO_AccountStatusHistory
 EXCEPT 
-SELECT * FROM rfoperations.sfdc.CRM_AccountStatusHistory
+SELECT * FROM CRM.sfdc.CRM_AccountStatusHistory
 
 --SELECT * from #AccountStatusHistory
 
-CREATE TABLE rfoperations.sfdc.ErrorLog_AccountStatusHistory
+CREATE TABLE CRM.sfdc.ErrorLog_AccountStatusHistory
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -106,15 +106,15 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'AccountStatusHistory') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'AccountStatusHistory') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'AccountStatusHistory') , 
+@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'AccountStatusHistory') 
 
 
 DECLARE @DesKey NVARCHAR (50) = 'RFOAccountID__C'; 
 
 DECLARE @SrcKey NVARCHAR (50) ='AccountId'
 
-DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_AccountStatusHistory' 
+DECLARE @DesTemp NVARCHAR (50) ='CRM.sfdc.CRM_AccountStatusHistory' 
 
 DECLARE @Skip  BIT 
 
@@ -123,7 +123,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_METADATA
+                               FROM     CRM.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -137,19 +137,19 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.crm_Value = b. ' + @DesCol +
-' FROM rfoperations.sfdc.ErrorLog_AccountStatusHistory a  JOIN ' +@DesTemp+
+' FROM CRM.sfdc.ErrorLog_AccountStatusHistory a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO rfoperations.sfdc.ErrorLog_AccountStatusHistory (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO CRM.sfdc.ErrorLog_AccountStatusHistory (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
 --  SELECT @SQL3
@@ -171,7 +171,7 @@ END
 END 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_AccountStatusHistory A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM CRM.sfdc.ErrorLog_AccountStatusHistory A JOIN CRM.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 END

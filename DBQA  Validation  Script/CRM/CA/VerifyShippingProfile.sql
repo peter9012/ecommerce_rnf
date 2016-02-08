@@ -12,14 +12,14 @@
 
 	CREATE PROCEDURE [dbo].VerifyShippingProfileMigration @LastRunDate DATETIME ='2000-01-01'
 
-		DECLARE @LASTRUNDATE DATETIME ='2000-01-01';
+	DECLARE @LASTRUNDATE DATETIME ='2000-01-01';
 
-	IF OBJECT_ID('Rfoperations.sfdc.ShippingProfilesMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.ShippingProfilesMissing
-	IF OBJECT_ID('Rfoperations.sfdc.CRM_ShippingProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_ShippingProfiles
-	IF OBJECT_ID('Rfoperations.sfdc.RFO_ShippingProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_ShippingProfiles
-	IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_ShippingProfiles') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_ShippingProfiles
-	IF OBJECT_ID('rfoperations.sfdc.ShippingProfilesDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.ShippingProfilesDifference
-	IF OBJECT_ID('rfoperations.sfdc.ShippingProfile_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.ShippingProfile_Dups
+	IF OBJECT_ID('CRM.sfdc.ShippingProfilesMissing') IS NOT NULL  DROP TABLE CRM.sfdc.ShippingProfilesMissing
+	IF OBJECT_ID('CRM.sfdc.CRM_ShippingProfiles') IS NOT NULL DROP TABLE CRM.sfdc.CRM_ShippingProfiles
+	IF OBJECT_ID('CRM.sfdc.RFO_ShippingProfiles') IS NOT NULL DROP TABLE CRM.sfdc.RFO_ShippingProfiles
+	IF OBJECT_ID('CRM.sfdc.ErrorLog_ShippingProfiles') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_ShippingProfiles
+	IF OBJECT_ID('CRM.sfdc.ShippingProfilesDifference') IS NOT NULL DROP TABLE CRM.sfdc.ShippingProfilesDifference
+	IF OBJECT_ID('CRM.sfdc.ShippingProfile_Dups') IS NOT NULL DROP TABLE CRM.sfdc.ShippingProfile_Dups
 	IF OBJECT_ID('tempdb.dbo.#ShippingProfiles') IS NOT NULL DROP TABLE #ShippingProfiles
 
 	SET ANSI_WARNINGS OFF 
@@ -37,7 +37,7 @@
 			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=40
 			JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 			JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
-			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=2 AND AA.ENDDATE IS NULL
+			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND ADDRESSTYPEID=2 AND AA.ENDDATE IS NULL  AND AA.ISDEFAULT=1
 			WHERE AA.ServerModifiedDate>=@LastRunDate
 
 	SELECT @CRMSP=COUNT(SP.RFOAddressProfileId__c) FROM SFDCBACKUP.SFDCBKP.ShippingProfile SP,
@@ -48,9 +48,9 @@
 
 
 	SELECT  @RFOSP AS RFO_ShippingProfile, @CRMSP AS CRM_ShippingProfile, (@RFOSP - @CRMSP) AS Difference 
-	INTO rfoperations.sfdc.ShippingProfilesDifference;
+	INTO CRM.sfdc.ShippingProfilesDifference;
 
-	--SELECT * FROM rfoperations.sfdc.ShippingProfilesDifference;
+	--SELECT * FROM CRM.sfdc.ShippingProfilesDifference;
 
 
 	SELECT  AddressID AS RFO_AddressId,
@@ -58,25 +58,25 @@
 	 CASE WHEN b.RFOAddressProfileId__C IS NULL THEN 'Destination'
 		  WHEN a.AddressID IS NULL THEN 'Source' 
 	 END AS MissingFROM
-	INTO Rfoperations.sfdc.ShippingProfilesMissing
+	INTO CRM.sfdc.ShippingProfilesMissing
 	FROM 
-		(SELECT A.AddressID FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.AccountContacts AC , RFOPERATIONS.RFO_ACCOUNTS.AccountContactAddresses ACA , RFOPERATIONS.RFO_ACCOUNTS.Addresses A WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AC.ACCOUNTCONTACTID=ACA.ACCOUNTCONTACTID AND ACA.ADDRESSID=A.ADDRESSID AND A.AddressTypeiD=2 and ab.countryid=40 AND A.ENDDATE IS NULL) a
+		(SELECT A.AddressID FROM Rfoperations.rfo_accounts.AccountBase AB, RFOPERATIONS.RFO_ACCOUNTS.AccountContacts AC , RFOPERATIONS.RFO_ACCOUNTS.AccountContactAddresses ACA , RFOPERATIONS.RFO_ACCOUNTS.Addresses A WHERE AB.ACCOUNTID=AC.ACCOUNTID AND AC.ACCOUNTCONTACTID=ACA.ACCOUNTCONTACTID AND ACA.ADDRESSID=A.ADDRESSID AND A.AddressTypeiD=2 and ab.countryid=40 AND A.ENDDATE IS NULL  AND A.ISDEFAULT=1) a
 		FULL OUTER JOIN 
 		(SELECT SP.RFOAddressProfileId__C FROM sfdcbackup.SFDCBKP.ShippingProfile SP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.country c WHERE SP.ACCOUNT__C=A.ID AND CAST(SP.LASTMODIFIEDDATE AS DATE) >= @LastRunDate and a.country__c=c.id and c.name='Canada') b 
 		ON a.AddressID =b.RFOAddressProfileId__C
 	 WHERE (a.AddressID IS NULL OR b.RFOAddressProfileId__C IS NULL) 
 
 
-	SELECT MissingFrom ,COUNT(*) from Rfoperations.SFDC.ShippingProfilesMissing GROUP BY MISSINGFROM;
+	SELECT MissingFrom ,COUNT(*) from CRM.sfdc.ShippingProfilesMissing GROUP BY MISSINGFROM;
 
-	SELECT 'Query Rfoperations.sfdc.ShippingProfilesMissing to get list of AccountIDs missing from Source/Destination'
+	SELECT 'Query CRM.sfdc.ShippingProfilesMissing to get list of AccountIDs missing from Source/Destination'
 
 	--------------------------------------------------------------------------------------
 	-- Duplicate Shipping Addresses
 	--------------------------------------------------------------------------------------
 
 	SELECT A.AddressId, COUNT (SP.RFOAddressProfileId__C) AS CountofDups
-	INTO rfoperations.sfdc.ShippingProfile_Dups
+	INTO CRM.sfdc.ShippingProfile_Dups
 	FROM Rfoperations.rfo_accounts.AccountBase AB, 
 		 RFOPERATIONS.RFO_ACCOUNTS.AccountContacts AC , 
 		 RFOPERATIONS.RFO_ACCOUNTS.AccountContactAddresses ACA , 
@@ -94,12 +94,12 @@
 	HAVING COUNT (SP.RFOAddressProfileId__C)> 1 
 
 
-	SELECT @RowCount = COUNT(*) FROM rfoperations.sfdc.ShippingProfile_Dups
+	SELECT @RowCount = COUNT(*) FROM CRM.sfdc.ShippingProfile_Dups
 
 	IF @RowCount > 0
 		BEGIN 
 
-				SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate ShippingAddressProfiles in CRM. Query rfoperations.sfdc.ShippingProfile_Dups to get list of duplicate PaymentProfileIds' 
+				SELECT  cast(@ROWCOUNT as nvarchar) + ' Duplicate ShippingAddressProfiles in CRM. Query CRM.sfdc.ShippingProfile_Dups to get list of duplicate PaymentProfileIds' 
 		END 
 
 	ELSE 
@@ -129,15 +129,15 @@
 			CAST(CASE WHEN LEN(AA.PostalCode)<1 THEN NULL ELSE AA.PostalCode END AS NVARCHAR(MAX)) PostalCode__c,
 			CAST(CASE WHEN LEN(AA.SubRegion)< 1 THEN NULL ELSE AA.SubRegion END AS NVARCHAR(MAX)) SubRegion__c,
 			CAST(AA.AddressProfileName AS NVARCHAR(MAX)) ProfileName__c
-			INTO RFOPERATIONS.SFDC.RFO_ShippingProfiles
+			INTO CRM.sfdc.RFO_ShippingProfiles
 			-- join address table here.
 			FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
 			JOIN RFOperations.RFO_Reference.Countries (NOLOCK) C ON c.CountryID =ab.CountryID AND AB.COUNTRYID=40
 			JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) AC ON AC.AccountId = AB.AccountID
 			JOIN RFOperations.RFO_Accounts.AccountContactAddresses ACA ON ACA.ACCOUNTCONTACTID=AC.ACCOUNTCONTACTID
-			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND AA.ADDRESSTYPEID=2 AND AA.ENDDATE IS NULL
+			JOIN RFOPERATIONS.RFO_ACCOUNTS.ADDRESSES AA ON ACA.ADDRESSID=AA.ADDRESSID AND AA.ADDRESSTYPEID=2 AND AA.ENDDATE IS NULL AND AA.ISDEFAULT=1
 			WHERE AA.ServerModifiedDate>= @LastRunDate AND
-			NOT EXISTS (SELECT 1 FROM rfoperations.sfdc.ShippingProfilesMissing PPM WHERE PPM.RFO_AddressId=AA.ADDRESSID AND missingFrom='Destination')
+			NOT EXISTS (SELECT 1 FROM CRM.sfdc.ShippingProfilesMissing PPM WHERE PPM.RFO_AddressId=AA.ADDRESSID AND missingFrom='Destination')
         
 			--SELECT CAST(0 AS DECIMAL(10,1))
 		--Loading CRM data
@@ -159,20 +159,20 @@
 		PP.PostalCode__c,
 		PP.SubRegion__c,
 		pp.ProfileName__c
-		INTO RFOPERATIONS.SFDC.CRM_ShippingProfiles
+		INTO CRM.sfdc.CRM_ShippingProfiles
 		FROM sfdcbackup.SFDCBKP.ShippingProfile PP, SFDCBACKUP.SFDCBKP.COUNTRY C ,
 		 SFDCBACKUP.SFDCBKP.Accounts A WHERE PP.ACCOUNT__C=A.ID AND C.ID=PP.Country__c AND C.NAME='Canada' and
 		 PP.LastModifiedDate>= @LastRunDate
 
 			--SELECT * FROM sfdcbackup.SFDCBKP.ShippingProfile
 	--Load Comparison Candidates.
-	SELECT * INTO  #ShippingProfiles FROM rfoperations.sfdc.RFO_ShippingProfiles
+	SELECT * INTO  #ShippingProfiles FROM CRM.sfdc.RFO_ShippingProfiles
 	EXCEPT 
-	SELECT * FROM rfoperations.sfdc.CRM_ShippingProfiles
+	SELECT * FROM CRM.sfdc.CRM_ShippingProfiles
 
-	--SELECT * FROM RFOPERATIONS.SFDC.RFO_ShippingProfiles
+	--SELECT * FROM CRM.sfdc.RFO_ShippingProfiles
 
-	CREATE TABLE rfoperations.sfdc.ErrorLog_ShippingProfiles
+	CREATE TABLE CRM.sfdc.ErrorLog_ShippingProfiles
 	(
 	ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 	, ColID INT 
@@ -183,15 +183,15 @@
 	)
 
 
-	DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_Metadata WHERE CRMObject = 'ShippingProfile') , 
-	@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_Metadata WHERE CRMObject = 'ShippingProfile') 
+	DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_Metadata WHERE CRMObject = 'ShippingProfile') , 
+	@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_Metadata WHERE CRMObject = 'ShippingProfile') 
 
 
 	DECLARE @DesKey NVARCHAR (50) = 'RFOAddressProfileID__C'; 
 
 	DECLARE @SrcKey NVARCHAR (50) ='AddressId'
 
-	DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_ShippingPROFILES' 
+	DECLARE @DesTemp NVARCHAR (50) ='CRM.sfdc.CRM_ShippingPROFILES' 
 
 	DECLARE @Skip  BIT 
 
@@ -200,7 +200,7 @@
 	BEGIN 
 
 			SELECT  @Skip = ( SELECT   Skip
-								   FROM     Rfoperations.sfdc.CRM_Metadata
+								   FROM     CRM.sfdc.CRM_Metadata
 								   WHERE    ColID = @I
 								 );
 
@@ -214,19 +214,19 @@
 
 
 
-	DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_Metadata WHERE ColID = @I)
-	DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_Metadata WHERE ColID = @I)
-	DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_Metadata WHERE ColID = @I)
+	DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_Metadata WHERE ColID = @I)
+	DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_Metadata WHERE ColID = @I)
+	DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_Metadata WHERE ColID = @I)
 
 	DECLARE @SQL2 NVARCHAR (MAX) = ' 
 	 UPDATE A 
 	SET a.crm_Value = b. ' + @DesCol +
-	' FROM rfoperations.sfdc.ErrorLog_ShippingProfiles a  JOIN ' +@DesTemp+
+	' FROM CRM.sfdc.ErrorLog_ShippingProfiles a  JOIN ' +@DesTemp+
 	  ' b  ON a.RecordID= b.' + @DesKey+  
 	  ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 	DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-	' INSERT INTO rfoperations.sfdc.ErrorLog_ShippingProfiles (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+	' INSERT INTO CRM.sfdc.ErrorLog_ShippingProfiles (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
 	  BEGIN TRY
 	--  SELECT @SQL3
@@ -248,5 +248,5 @@
 	END 
 
 
-END
-GO
+--END
+--GO

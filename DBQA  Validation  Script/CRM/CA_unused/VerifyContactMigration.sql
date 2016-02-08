@@ -17,16 +17,16 @@ BEGIN
 
 IF OBJECT_ID('Rfoperations.dbo.ContactMissing') IS NOT NULL  DROP TABLE Rfoperations.dbo.ContactMissing
 IF OBJECT_ID('TEMPDB.dbo.#Contacts') IS NOT NULL DROP TABLE #Contacts 
-IF OBJECT_ID('CRM.sfdc.RFO_Contacts') IS NOT NULL DROP TABLE CRM.sfdc.RFO_Contacts
-IF OBJECT_ID('CRM.sfdc.crm_Contacts') IS NOT NULL DROP TABLE CRM.sfdc.crm_Contacts
-IF OBJECT_ID('CRM.sfdc.ErrorLog_Contacts') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_Contacts
-IF OBJECT_ID('CRM.sfdc.ContactDifference') IS NOT NULL DROP TABLE CRM.sfdc.ContactDifference
-IF OBJECT_ID('CRM.sfdc.MissingCoApplicants') IS NOT NULL DROP TABLE CRM.sfdc.MissingCoApplicants
+IF OBJECT_ID('Rfoperations.sfdc.RFO_Contacts') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_Contacts
+IF OBJECT_ID('Rfoperations.sfdc.crm_Contacts') IS NOT NULL DROP TABLE Rfoperations.sfdc.crm_Contacts
+IF OBJECT_ID('rfoperations.sfdc.ErrorLog_Contacts') IS NOT NULL DROP TABLE rfoperations.sfdc.ErrorLog_Contacts
+IF OBJECT_ID('rfoperations.sfdc.ContactDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.ContactDifference
+IF OBJECT_ID('rfoperations.sfdc.MissingCoApplicants') IS NOT NULL DROP TABLE rfoperations.sfdc.MissingCoApplicants
 IF OBJECT_ID ('Rfoperations.dbo.AccountIDs') IS NOT NULL  DROP TABLE Rfoperations.dbo.AccountIDs
 
---IF OBJECT_ID('CRM.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_Accounts
---IF OBJECT_ID('CRM.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE CRM.sfdc.BusinessRuleFailure
---IF OBJECT_ID('CRM.sfdc.AccountDifference') IS NOT NULL DROP TABLE CRM.sfdc.AccountDifference
+--IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_Accounts') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_Accounts
+--IF OBJECT_ID('rfoperations.sfdc.BusinessRuleFailure') IS NOT NULL DROP TABLE rfoperations.sfdc.BusinessRuleFailure
+--IF OBJECT_ID('rfoperations.sfdc.AccountDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountDifference
 
 
 SELECT ' Refer Following tables to view test results.
@@ -34,8 +34,8 @@ SELECT ' Refer Following tables to view test results.
 		2. Rfoperations.dbo.ContactMissing --> List of Missing AccountIDs from Source and Destination.
 		3. Rfoperations.dbo.Accounts_Dups --> List of Duplicate Account IDs in CRM.
 		4. Rfoperations.dbo.MissingCoApplicants --> List of CoApplicants that did not get created in CRM.
-		5. CRM.sfdc.ErrorLog_Contacts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
-		6. CRM.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
+		5. Rfoperations.sfdc.ErrorLog_Contacts --> List of All failures due to field mismatch. This table also provided RFO and CRM side values
+		6. Rfoperations.sfdc.CRM_METADATA --> Mapping of RFO and CRM fields to be compared. Use this table in conjunction with above table to generate final test result'
 		
 
 SET ANSI_WARNINGS OFF 
@@ -65,12 +65,12 @@ JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK)  b ON a.AccountID =b.Account
 SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND ServerModifiedDate> @LastRunDate AND countryid=40
 SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C , sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c='Primary' AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada'
 
-SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference , 'Primary Contact' as ContactType INTO CRM.sfdc.ContactDifference;
+SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference , 'Primary Contact' as ContactType INTO rfoperations.sfdc.ContactDifference;
 
 --Compare Secondary Applicant Count
 SELECT @RFOAccount =COUNT(CoApplicant) FROM RFOPerations.RFO_Accounts.AccountRF (NOLOCK) WHERE AccountID IN (SELECT AccountID FROM Rfoperations.dbo.AccountIDs) AND LEN(COAPPLICANT)>1 AND ServerModifiedDate> @LastRunDate
 SELECT @CRMAccount=COUNT(RFOAccountID__C) FROM sfdcbackup.SFDCbkp.Contact C, sfdcbackup.SFDCbkp.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY CO where A.ID=c.Accountid AND c.ContactType__c = 'Spouse'  AND A.COUNTRY__C=CO.ID AND CO.NAME='Canada'
-INSERT INTO CRM.sfdc.ContactDifference
+INSERT INTO rfoperations.sfdc.ContactDifference
 SELECT  @RFOAccount AS RFO_Accounts, @CRMAccount AS Hybris_Accounts, (@RFOAccount - @CRMAccount) AS Difference, 'Secondary' as ContactType ;
 
 
@@ -98,7 +98,7 @@ SELECT 'Query Rfoperations.dbo.ContactMissing to get list of AccountContactIds m
 --------------------------------------------------------------------------------------
 
 SELECT ACCOUNTID,REPLACE(COAPPLICANT ,'  ',' ') AS CoApplicant
-INTO CRM.sfdc.MissingCoApplicants
+INTO rfoperations.sfdc.MissingCoApplicants
 	FROM RFOPERATIONS.RFO_ACCOUNTS.ACCOUNTRF 
 	WHERE LEN(COAPPLICANT)>1 AND ACCOUNTID IN (SELECT ACCOUNTID FROM RFOPERATIONS.DBO.ACCOUNTIDS)
 	EXCEPT
@@ -153,12 +153,12 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 		CASE WHEN LEN(AC.MiddleNAME) <1 THEN NULL ELSE AC.MiddleNAME END AS MiddleName ,
 		CASE WHEN LEN(AC.NickNAME) <1 THEN NULL ELSE REPLACE(AC.NickNAME,'  ',' ') END AS NickName__c ,
 		CASE WHEN LEN(AC.SecuredTaxNumber) <1 THEN NULL ELSE AC.SecuredTaxNumber END TaxNumber__c,
-		CAST(ISNULL(DATEADD(HH,8,AC.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
+		CAST(ISNULL(DATEADD(HH, (SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE AC.ServerModifiedDate >= M.DST_START AND AC.ServerModifiedDate < M.DST_END),AC.ServerModifiedDate),'1900-01-01') AS DATE) as LastModifiedDate,
 		CASE WHEN LEN(MPH.PhoneNumberRaw) <1 THEN NULL ELSE MPH.PhoneNumberRaw END as MainPhone__c,
 		CASE WHEN LEN(MOB.PhoneNumberRaw) <1 THEN NULL ELSE MOB.PhoneNumberRaw END as MobilePhone,
 		CASE WHEN LEN(PEA.EmailAddress) <1 THEN NULL ELSE PEA.EmailAddress END as MainEmail__c,
 		'NULL' as SecondaryEmail__c 
-		INTO CRM.sfdc.RFO_Contacts 
+		INTO rfoperations.sfdc.RFO_Contacts 
 		  -- join address table here.
 		FROM  RFOperations.RFO_Accounts.AccountBase (NOLOCK) AB
 		JOIN RFOperations.RFO_Reference.AccountType (NOLOCK) ACT ON ACT.AccountTypeID = AB.AccountTypeID AND AB.COUNTRYID=40
@@ -201,7 +201,7 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 	CASE WHEN LEN(c.MobilePhone) <1 THEN NULL ELSE c.MobilePhone END AS MobilePhone,
 	CASE WHEN LEN(c.MainEmail__c) <1 THEN NULL ELSE c.MainEmail__c END AS MainEmail__c,
 	CASE WHEN LEN(c.SecondaryEmail__c) <1 THEN NULL ELSE c.SecondaryEmail__c END AS SecondaryEmail__c
-	INTO CRM.sfdc.CRM_Contacts
+	INTO rfoperations.sfdc.CRM_Contacts
 	FROM 
 	SFDCBACKUP.SFDCBKP.Accounts A,
 	SFDCBACKUP.SFDCBKP.CONTACT C,
@@ -211,8 +211,8 @@ SELECT 'Query Rfoperations.dbo.MissingCoApplicants to get list of Parent Account
 	A.COUNTRY__C=CO.ID AND
 	CO.NAME='Canada'
 		
-CREATE CLUSTERED INDEX RF_ContactID ON CRM.sfdc.RFO_Contacts (RFAccountContactId__c)
-CREATE CLUSTERED INDEX Hyb_ContactID ON CRM.sfdc.CRM_Contacts (RFAccountContactId__c)
+CREATE CLUSTERED INDEX RF_ContactID ON rfoperations.sfdc.RFO_Contacts (RFAccountContactId__c)
+CREATE CLUSTERED INDEX Hyb_ContactID ON rfoperations.sfdc.CRM_Contacts (RFAccountContactId__c)
 
 
 --Load Comparison Candidates.
@@ -237,7 +237,7 @@ CREATE CLUSTERED INDEX Hyb_ContactID ON CRM.sfdc.CRM_Contacts (RFAccountContactI
 		MainEmail__c,
 		SecondaryEmail__c 
 		INTO  #Contacts 
-		FROM CRM.sfdc.RFO_Contacts
+		FROM rfoperations.sfdc.RFO_Contacts
 EXCEPT 
 SELECT RFAccountContactId__c,			--p_rfaccountid
        	ContactType__c,
@@ -257,13 +257,13 @@ SELECT RFAccountContactId__c,			--p_rfaccountid
 		MainPhone__c,
 		MobilePhone,
 		MainEmail__c,
-		SecondaryEmail__c  FROM CRM.sfdc.crm_Contacts
+		SecondaryEmail__c  FROM rfoperations.sfdc.crm_Contacts
 
 CREATE CLUSTERED INDEX MIX_ContactID ON #Contacts (RFAccountContactId__c)
 
---SELECT * FROM CRM.sfdc.RFO_CONTACTS WHERE RFACCOUNTCONTACTID__C='100075356665746356'
+--SELECT * FROM RFOPERATIONS.SFDC.RFO_CONTACTS WHERE RFACCOUNTCONTACTID__C='100075356665746356'
 
---SELECT * FROM CRM.sfdc.CRM_CONTACTS WHERE RFACCOUNTCONTACTID__C='100075356665746356'
+--SELECT * FROM RFOPERATIONS.SFDC.CRM_CONTACTS WHERE RFACCOUNTCONTACTID__C='100075356665746356'
 
 --SELECT * FROM #Contacts
 ---------------------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ CREATE CLUSTERED INDEX MIX_ContactID ON #Contacts (RFAccountContactId__c)
 ---------------------------------------------------------------------------------------------
 
 
-CREATE TABLE CRM.sfdc.ErrorLog_Contacts
+CREATE TABLE rfoperations.sfdc.ErrorLog_Contacts
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -281,8 +281,8 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , CRM_Value NVARCHAR (MAX)
 )
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') , 
-@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') , 
+@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Contacts') 
 
 
 DECLARE @DesKey NVARCHAR (50) 
@@ -296,7 +296,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     CRM.sfdc.CRM_METADATA
+                               FROM     Rfoperations.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -310,42 +310,42 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
-DECLARE @DesTemp NVARCHAR (50) =(SELECT CASE WHEN CRMObject = 'Accounts' THEN 'CRM.sfdc.CRM_Accounts' 
-											 WHEN CRMObject = 'Contacts' THEN 'CRM.sfdc.CRM_Contacts'
+DECLARE @DesTemp NVARCHAR (50) =(SELECT CASE WHEN CRMObject = 'Accounts' THEN 'rfoperations.sfdc.CRM_Accounts' 
+											 WHEN CRMObject = 'Contacts' THEN 'rfoperations.sfdc.CRM_Contacts'
 										END
-			FROM  CRM.sfdc.CRM_METADATA 
+			FROM  Rfoperations.sfdc.CRM_METADATA 
 			  WHERE ColID =@I
 								) 
 
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 
 SET @SrcKey= (SELECT RFO_Key
-			  FROM CRM.sfdc.CRM_METADATA 
+			  FROM Rfoperations.sfdc.CRM_METADATA 
 			  WHERE ColID =@I
 								)
 
                 SET @DesKey = ( SELECT  CASE WHEN CRMObject= 'Accounts' THEN 'RFOAccountId__c'
 											 WHEN CRMObject= 'Contacts' THEN 'RFAccountContactId__c'
                                         END
-                                FROM    CRM.sfdc.CRM_METADATA
+                                FROM    Rfoperations.sfdc.CRM_METADATA
                                 WHERE   ColID = @I
                               ); 
 
 
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.CRM_Value = b. ' + @DesCol +
-' FROM CRM.sfdc.ErrorLog_Contacts a  JOIN ' +@DesTemp+
+' FROM rfoperations.sfdc.ErrorLog_Contacts a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO CRM.sfdc.ErrorLog_Contacts (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO rfoperations.sfdc.ErrorLog_Contacts (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
   --SELECT @SQL3
@@ -368,11 +368,11 @@ END
 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM CRM.sfdc.ErrorLog_Contacts A JOIN CRM.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM rfoperations.sfdc.ErrorLog_Contacts A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
-drop index RF_ContactID ON CRM.sfdc.RFO_Contacts
-drop index Hyb_ContactID ON CRM.sfdc.crm_Contacts
+drop index RF_ContactID ON rfoperations.sfdc.RFO_Contacts
+drop index Hyb_ContactID ON rfoperations.sfdc.crm_Contacts
 drop index MIX_ContactID ON #Contacts
 
 

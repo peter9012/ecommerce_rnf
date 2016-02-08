@@ -6,12 +6,12 @@ CREATE PROCEDURE VerifyAccountPolicyMigration @LastRunDate DATETIME  ='2000-01-0
 AS
 BEGIN
 
-IF OBJECT_ID('Rfoperations.sfdc.AccountPolicyMissing') IS NOT NULL  DROP TABLE Rfoperations.sfdc.AccountPolicyMissing
-IF OBJECT_ID('Rfoperations.sfdc.CRM_Policy') IS NOT NULL DROP TABLE Rfoperations.sfdc.CRM_Policy
-IF OBJECT_ID('Rfoperations.sfdc.RFO_Policy') IS NOT NULL DROP TABLE Rfoperations.sfdc.RFO_Policy
-IF OBJECT_ID('Rfoperations.sfdc.ErrorLog_AccountPolicy') IS NOT NULL DROP TABLE Rfoperations.sfdc.ErrorLog_AccountPolicy
-IF OBJECT_ID('rfoperations.sfdc.AccountPolicyDifference') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountPolicyDifference
-IF OBJECT_ID('rfoperations.sfdc.AccountPolicy_Dups') IS NOT NULL DROP TABLE rfoperations.sfdc.AccountPolicy_Dups
+IF OBJECT_ID('CRM.sfdc.AccountPolicyMissing') IS NOT NULL  DROP TABLE CRM.sfdc.AccountPolicyMissing
+IF OBJECT_ID('CRM.sfdc.CRM_Policy') IS NOT NULL DROP TABLE CRM.sfdc.CRM_Policy
+IF OBJECT_ID('CRM.sfdc.RFO_Policy') IS NOT NULL DROP TABLE CRM.sfdc.RFO_Policy
+IF OBJECT_ID('CRM.sfdc.ErrorLog_AccountPolicy') IS NOT NULL DROP TABLE CRM.sfdc.ErrorLog_AccountPolicy
+IF OBJECT_ID('CRM.sfdc.AccountPolicyDifference') IS NOT NULL DROP TABLE CRM.sfdc.AccountPolicyDifference
+IF OBJECT_ID('CRM.sfdc.AccountPolicy_Dups') IS NOT NULL DROP TABLE CRM.sfdc.AccountPolicy_Dups
 IF OBJECT_ID('tempdb.dbo.#Policy') IS NOT NULL DROP TABLE #Policy
 
 SET ANSI_WARNINGS OFF 
@@ -31,14 +31,14 @@ SELECT @CRMPP=COUNT(DISTINCT Account__C) FROM sfdcbackup.SFDCBKP.AccountPolicy A
 
 										   
 SELECT  @RFOPP AS RFO_AccountPolicyCount, @CRMPP AS CRM_AccountPolicyCount, (@RFOPP - @CRMPP) AS Difference 
-INTO rfoperations.sfdc.AccountPolicyDifference;
+INTO CRM.sfdc.AccountPolicyDifference;
 
 SELECT  AccountId AS RFO_AccountId,
  b.RFOACcountID__C as CRM_AccountId , 
  CASE WHEN b.RFOACcountID__C IS NULL THEN 'Destination'
       WHEN a.AccountId IS NULL THEN 'Source' 
  END AS MissingFROM
-INTO Rfoperations.sfdc.AccountPolicyMissing
+INTO CRM.sfdc.AccountPolicyMissing
 FROM 
     (SELECT ACL.AccountId FROM RFOperations.RFO_Accounts.AccountPolicy acl , RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40) a
     FULL OUTER JOIN 
@@ -47,9 +47,9 @@ FROM
  WHERE (cast(a.AccountId as nvarchar(max)) IS NULL OR b.RFOACcountID__C IS NULL) 
 
 
-SELECT MissingFrom ,COUNT(*) from Rfoperations.SFDC.AccountPolicyMissing GROUP BY MISSINGFROM;
+SELECT MissingFrom ,COUNT(*) from CRM.sfdc.AccountPolicyMissing GROUP BY MISSINGFROM;
 
-SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs missing from Source/Destination'
+SELECT 'Query CRM.sfdc.AccountPolicyMissing to get list of AccountIDs missing from Source/Destination'
 
 -------------------------------------------------------------------------------------------
  --Account Policy Framework 
@@ -59,12 +59,12 @@ SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs m
 		SELECT
 		CAST(aB.AccountID AS NVARCHAR(MAX)) AS Account__c,
 		CAST(ACL.PolicyId AS NVARCHAR(MAX)) as Policy__c,
-		CAST(DATEADD(HH,(SELECT OFFSET FROM  RFOPERATIONS.SFDC.GMT_DST M WHERE ACL.DateAccepted >= M.DST_START AND ACL.DateAccepted < M.DST_END),ACL.DateAccepted) AS DATE) as DateAccepted__C,
+		CAST(DATEADD(HH,8,ACL.DateAccepted) AS DATE) as DateAccepted__C,
 		ACL.ChangedByApplication as ChangedByApplication__C,
 		ACL.ChangedByUser as ChangedByUser__C
-		INTO RFOPERATIONS.SFDC.RFO_Policy
+		INTO CRM.sfdc.RFO_Policy
 		FROM  Rfoperations.RFO_accounts.AccountPolicy ACL, RFOPERATIONS.rfo_accounts.accountbase ab WHERE AB.ACCOUNTID=ACL.ACCOUNTID AND AB.COUNTRYID=40
-        AND NOT EXISTS (SELECT 1 FROM RFOPERATIONS.SFDC.AccountPolicyMissing APL WHERE APL.RFO_ACCOUNTID=ACL.ACCOUNTID AND MISSINGFROM='Destination')        
+        AND NOT EXISTS (SELECT 1 FROM CRM.sfdc.AccountPolicyMissing APL WHERE APL.RFO_ACCOUNTID=ACL.ACCOUNTID AND MISSINGFROM='Destination')        
 		
 		--Loading CRM data
 		SELECT
@@ -73,19 +73,19 @@ SELECT 'Query Rfoperations.sfdc.AccountPolicyMissing to get list of AccountIDs m
 		CAST(DateAccepted__c AS DATE) as DateAccepted__C,
 		PP.ChangedByApplication__c as ChangedByApplication__c,
 		PP.ChangedByUser__c as ChangedByUser__c
-		INTO RFOPERATIONS.SFDC.CRM_Policy
+		INTO CRM.sfdc.CRM_Policy
 		FROM sfdcbackup.SFDCBKP.AccountPolicy PP,SFDCBACKUP.SFDCBKP.Accounts A , SFDCBACKUP.SFDCBKP.COUNTRY C WHERE PP.ACCOUNT__C=A.ID AND A.COUNTRY__C=C.ID AND C.NAME='Canada'
 
 
 --Load Comparison Candidates.
-SELECT * INTO  #Policy FROM rfoperations.sfdc.RFO_Policy
+SELECT * INTO  #Policy FROM CRM.sfdc.RFO_Policy
 EXCEPT 
-SELECT * FROM rfoperations.sfdc.CRM_Policy
+SELECT * FROM CRM.sfdc.CRM_Policy
 
 --DROP TABLE #poLICY
---SELECT * from rfoperations.sfdc.CRM_Policy
+--SELECT * from CRM.sfdc.CRM_Policy
 
-CREATE TABLE rfoperations.sfdc.ErrorLog_AccountPolicy
+CREATE TABLE CRM.sfdc.ErrorLog_AccountPolicy
 (
 ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 , ColID INT 
@@ -96,15 +96,15 @@ ErrorID INT  IDENTITY(1,1) PRIMARY KEY
 )
 
 
-DECLARE @I INT = (SELECT MIN(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Policy') , 
-@C INT =  (SELECT MAX(ColID) FROM  Rfoperations.sfdc.CRM_METADATA WHERE CRMObject = 'Policy') 
+DECLARE @I INT = (SELECT MIN(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'Policy') , 
+@C INT =  (SELECT MAX(ColID) FROM  CRM.sfdc.CRM_METADATA WHERE CRMObject = 'Policy') 
 
 
 DECLARE @DesKey NVARCHAR (50) = 'Account__C'; 
 
 DECLARE @SrcKey NVARCHAR (50) ='Account__C'
 
-DECLARE @DesTemp NVARCHAR (50) ='RFOPERATIONS.SFDC.CRM_Policy' 
+DECLARE @DesTemp NVARCHAR (50) ='CRM.sfdc.CRM_Policy' 
 
 DECLARE @Skip  BIT 
 
@@ -113,7 +113,7 @@ WHILE (@I <=@c)
 BEGIN 
 
         SELECT  @Skip = ( SELECT   Skip
-                               FROM     Rfoperations.sfdc.CRM_METADATA
+                               FROM     CRM.sfdc.CRM_METADATA
                                WHERE    ColID = @I
                              );
 
@@ -127,19 +127,19 @@ BEGIN
 
 
 
-DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
-DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  Rfoperations.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SrcCol NVARCHAR (50) =(SELECT RFO_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @DesCol NVARCHAR (50) =(SELECT CRM_Column FROM CRM.sfdc.CRM_METADATA WHERE ColID = @I)
+DECLARE @SQL1 NVARCHAR (MAX) = (SELECT SqlStmt FROM  CRM.sfdc.CRM_METADATA WHERE ColID = @I)
 
 DECLARE @SQL2 NVARCHAR (MAX) = ' 
  UPDATE A 
 SET a.crm_Value = b. ' + @DesCol +
-' FROM rfoperations.sfdc.ErrorLog_AccountPolicy a  JOIN ' +@DesTemp+
+' FROM CRM.sfdc.ErrorLog_AccountPolicy a  JOIN ' +@DesTemp+
   ' b  ON a.RecordID= b.' + @DesKey+  
   ' WHERE a.ColID = ' + CAST(@I AS NVARCHAR)
 
 DECLARE @SQL3 NVARCHAR(MAX) = --'DECLARE @ServerMod DATETIME= ' + ''''+ CAST (@ServMod AS NVARCHAR) + ''''+
-' INSERT INTO rfoperations.sfdc.ErrorLog_AccountPolicy (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
+' INSERT INTO CRM.sfdc.ErrorLog_AccountPolicy (Identifier,ColID,RecordID,RFO_Value) ' + @SQL1  + @SQL2
 
   BEGIN TRY
 --  SELECT @SQL3
@@ -161,7 +161,7 @@ END
 END 
 
 SELECT  B.COLID,b.RFO_column, COUNT(*) AS Counts
-FROM rfoperations.sfdc.ErrorLog_AccountPolicy A JOIN Rfoperations.sfdc.CRM_METADATA B ON a.ColID =b.ColID
+FROM CRM.sfdc.ErrorLog_AccountPolicy A JOIN CRM.sfdc.CRM_METADATA B ON a.ColID =b.ColID
 GROUP BY b.ColID, RFO_Column
 
 END

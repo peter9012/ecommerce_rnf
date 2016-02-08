@@ -151,7 +151,7 @@ FROM    Hybris..users (NOLOCK)u
         JOIN Hybris..countries c ON u.p_country = c.PK
                                     AND c.isocode = 'US'
                                     AND u.p_sourcename = 'Hybris-DM'
-WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
+WHERE   CAST(ISNULL(u.p_consultantsince, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
                                                               -15, GETDATE()) AS DATE)
         AND ISNULL(u.p_enrolledaspulse, 0) <> 1;
 
@@ -166,7 +166,7 @@ FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..countries c ON u.p_country = c.PK
                                     AND c.isocode = 'US'
                                     AND u.p_sourcename = 'Hybris-DM'
-WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
+WHERE   CAST(ISNULL(u.p_consultantsince, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
                                                               -15, GETDATE()) AS DATE)
         AND u.PK NOT IN ( SELECT    userpk
                           FROM      Hybris.dbo.orders
@@ -194,7 +194,7 @@ FROM    Hybris..users (NOLOCK)u
         JOIN Hybris..countries c ON u.p_country = c.PK
                                     AND c.isocode = 'US'
                                     AND u.p_sourcename = 'Hybris-DM'
-WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
+WHERE   CAST(ISNULL(u.p_consultantsince, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
                                                               -29, GETDATE()) AS DATE)
         AND ISNULL(u.p_enrolledaspulse, 0) <> 1;
 
@@ -209,7 +209,7 @@ FROM    Hybris..users(NOLOCK) u
         JOIN Hybris..countries c ON u.p_country = c.PK
                                     AND c.isocode = 'US'
                                     AND u.p_sourcename = 'Hybris-DM'
-WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
+WHERE   CAST(ISNULL(u.p_consultantsince, '1900-01-01') AS DATE) = CAST(DATEADD(DAY,
                                                               -29, GETDATE()) AS DATE)
         AND u.PK NOT IN ( SELECT    userpk
                           FROM      Hybris.dbo.orders(NOLOCK)
@@ -239,7 +239,7 @@ WHERE   CAST(ISNULL(u.p_expirationdate, '1900-01-01') AS DATE) = CAST(DATEADD(DA
 --2. Scheduling date  < Today. and
 --3. Scheduling Date > Today-30 and
 --4. (Last Processing Date < Today -5 or null) and
---5. cc failure count <=3
+--5. cc failure count <3
 
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
@@ -256,7 +256,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 3
+        AND ho.p_ccfailurecount < 3
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE);
 
@@ -275,7 +275,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 3
+        AND ho.p_ccfailurecount < 3
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE)
 GROUP BY CAST(ho.p_schedulingdate AS DATE);
@@ -302,7 +302,7 @@ WHERE   a.p_template = 1
 --2. Scheduling date  < Today. and
 --3. Scheduling Date > Today-30 and
 --4. (Last Processing Date < Today -5 or null) and
---5. cc failure count <=4
+--5. cc failure count <4
 
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
@@ -319,7 +319,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 4
+        AND ho.p_ccfailurecount < 4
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE);
 
@@ -339,7 +339,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 4
+        AND ho.p_ccfailurecount < 4
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE)
 GROUP BY CAST(ho.p_schedulingdate AS DATE);
@@ -370,7 +370,7 @@ WHERE   a.p_template = 1
 --2. Scheduling date  < Today. and
 --3. Scheduling Date > Today-30 and
 --4. (Last Processing Date < Today -5 or null) and
---5. cc failure count <=3
+--5. cc failure count <3
 
 SELECT  COUNT(*)--Should be Null After Updating Devs Scripts.
 FROM    Hybris..orders(NOLOCK) ho
@@ -386,7 +386,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 3
+        AND ho.p_ccfailurecount < 3
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE);
 
@@ -406,7 +406,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, -30,
                                                               GETDATE()) AS DATE)
                                               AND     CAST(GETDATE() AS DATE)
-        AND ho.p_ccfailurecount <= 3
+        AND ho.p_ccfailurecount < 3
         AND CAST(ISNULL(ho.p_lastprocessingdate, '1900-01-01') AS DATE) < CAST(DATEADD(DAY,
                                                               -5, GETDATE()) AS DATE)
 GROUP BY CAST(ho.p_schedulingdate AS DATE);
@@ -426,6 +426,7 @@ WHERE   a.p_template = 1
 
 
 /* 4.autoshipCCExpiryCheckEmailJob */
+---Verify in PROD for Data Conversion or Other tables to get Expiration Month and Year.
 
 --Send Notice of Credit Card Expiration to customers whose autoship scheduled 10 days 
 --after current date.This cron job will validate whether autoship(CRP/Pulse/PC) template's 
@@ -446,7 +447,7 @@ WHERE   ho.p_template = 1
         AND CAST(ho.p_schedulingdate AS DATE) = CAST(DATEADD(DAY, 10,
                                                              GETDATE()) AS DATE)
         AND CAST(DATEPART(YEAR, GETDATE()) AS NVARCHAR) = pp.p_validtoyear
-        AND DATEPART(MONTH, GETDATE()) >= pp.p_validtomonth;
+       AND CAST(DATEPART(MONTH, GETDATE()) AS NVARCHAR) >= pp.p_validtomonth;
 
 
 		---Verify in PROD for Data Conversion or Other tables to get Expiration Month and Year.
@@ -473,9 +474,9 @@ FROM    Hybris..orders(NOLOCK) ho
 WHERE   ho.p_template = 1
         AND ho.p_active = 1
         AND ho.currencypk = 8796125855777
-        AND CAST(ho.p_schedulingdate AS DATE) BETWEEN CAST(DATEADD(DAY, 5,
+        AND CAST(ho.p_schedulingdate AS DATE)= CAST(DATEADD(DAY, 5,
                                                               GETDATE()) AS DATE)
-                                              AND     CAST(GETDATE() AS DATE);
+                                          ;
 		
 
 
@@ -519,7 +520,7 @@ WHERE   ho.p_template = 1
         AND ho.p_active = 0
         AND ho.currencypk = 8796125855777
         AND ho.TypePkString IN ( 8796124676178, 8796124741714 )
-        AND ho.p_ccfailurecount >= 0
+        AND ho.p_ccfailurecount >= 1
         AND CAST(ho.p_schedulingdate AS DATE) < CAST(GETDATE() AS DATE);
 
 

@@ -48,6 +48,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	private final By YEAR_OF_BIRTH_4178_LOC = By.xpath("//select[@id='yearOfBirth']//option[@selected='selected'][2]");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	private final By ACCOUNT_SHIPPING_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='Shipping Info']");
+	private final By NEXT_BILL_DATE_OF_PULSE_TEMPLATE = By.xpath("//div[@id='left-menu']//a[text()='Shipping Info']");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -855,6 +856,13 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.id("email-account"),email+"\t");
 		logger.info("entered Email Adrress is "+email);
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String getNextBillDateOfPulseTemplate(){
+		driver.waitForElementPresent(NEXT_BILL_DATE_OF_PULSE_TEMPLATE);
+		String billDate=driver.findElement(NEXT_BILL_DATE_OF_PULSE_TEMPLATE).getText();
+		logger.info("Billdate from UI is "+billDate);
+		return billDate;
 	}
 
 }

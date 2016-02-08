@@ -39,6 +39,10 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CUSTOMER_BILLING_INFO = By.xpath("//span[text()='Billing Information']");
 	private static final By CUSTOMER_ADDRESS = By.xpath("//span[text()='Customer Addresses']");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
+	private static final By CREATE_PULSE_TEMPLATE_BTN = By.xpath("//td[contains(text(),'Create Pulse Template')]");
+	private static final By CREATE_PULSE_TEMPLATE_BTN_ON_POPUP = By.xpath("//div[contains(text(),'Add PWS Prefix')]/following::td[contains(text(),'Create Pulse Template')]");
+	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC = By.xpath("//span[contains(text(),'Autoship Templates')]/following::div[@class='csWidgetContent'][1]//div[@class='z-listbox-body']//tbody[2]//tr[2]/td[5]//span");
+	private static final By PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate'][1]/../../preceding-sibling::td//a");
 
 	protected RFWebsiteDriver driver;
 
@@ -223,5 +227,78 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		return autoshipID;
 	}
 
+	public void clickCreatePulseTemplateBtn(){
+		driver.waitForElementPresent(CREATE_PULSE_TEMPLATE_BTN);
+		driver.click(CREATE_PULSE_TEMPLATE_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCreatePulseTemplateBtnOnPopup(){
+		driver.waitForElementPresent(CREATE_PULSE_TEMPLATE_BTN_ON_POPUP);
+		driver.click(CREATE_PULSE_TEMPLATE_BTN_ON_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getNextDueDateOfAutoshipTemplate(){
+		driver.waitForElementPresent(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC);
+		return driver.findElement(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC).getText();
+	}
+
+	public String convertPulseTemplateDate(String UIDate){
+		String UIMonth=null;
+		String[] splittedDate = UIDate.split("\\/");
+		String date = splittedDate[1];
+		String month = splittedDate[0];
+		String year = splittedDate[2];  
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		System.out.println("Date is "+UIMonth+" "+date+", "+"20"+year);
+		return date+" "+UIMonth+", "+year;
+	}
+
+	public String getAndClickPulseAutoshipIDHavingTypeAsPulseAutoshipTemplate(){
+		driver.waitForElementPresent(PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP);
+		String autoshipID = driver.findElement(PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP).getText();
+		logger.info("Pulse Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
 
 }

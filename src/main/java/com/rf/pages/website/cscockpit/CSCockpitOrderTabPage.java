@@ -18,6 +18,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String cartSectionLoc ="//div[@class='csCartDetailRow']//span[contains(text(),'%s')]";
 	private static String orderSectionLoc ="//div[@class='csOrderDetailRow']//span[contains(text(),'%s')]";
 	private static String returnQuantityLoc = "//td[text()='%s']";
+	private static String orderEntryTaxLoc = "//span[contains(text(),'Tax commited to avatax, doc code :%s')]";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -294,7 +295,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(SHIPPING_ADDRESS_AT_TOP_SECTION_LOC);
 		return driver.isElementPresent(SHIPPING_ADDRESS_AT_TOP_SECTION_LOC);
 	}
-	
+
 	public boolean verifyPaymentInfoDetailsArePresentInOrderTab(){
 		driver.waitForElementPresent(PAYMENT_INFO_AT_TOP_SECTION_LOC);
 		return driver.isElementPresent(PAYMENT_INFO_AT_TOP_SECTION_LOC);
@@ -444,7 +445,11 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickCloseRefundConfirmationPopUP() {
 		driver.click(CLOSE_CONFIRMATION_POPUP_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
 
+	public boolean verifyTaxCommittedEntryInOrderTab(String orderNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderEntryTaxLoc, orderNumber)));
+		return driver.isElementPresent(By.xpath(String.format(orderEntryTaxLoc, orderNumber)));  
 	}
 
 }

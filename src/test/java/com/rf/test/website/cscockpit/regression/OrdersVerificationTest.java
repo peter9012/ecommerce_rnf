@@ -12,8 +12,6 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
@@ -1412,8 +1410,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String origination = "Origination";
 		String store = "Store";
 		String salesApplication = "Sales Application";
-		String shippingAddress = "Shipping Address";
-		String paymentInfo = "Payment Info";
 		String product = "Product";
 		String basePrice = "Base Price";
 		String totalPrice = "Total Price";

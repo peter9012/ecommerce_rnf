@@ -2824,139 +2824,129 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-4781:Update PC Template -ADD Cart , Shipping info, billing info and Save
 	@Test
 	public void testUpdatePCTemplateAddCart_ShippingInfo_billingInfo_Save_4781() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountID = null;
-			String lastName = "lN";
-			String newShipingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-			String secondNewBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
-			String newBillingAddressName = TestConstants.BILLING_ADDRESS_NAME+randomNumber;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountID);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}  
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountID = null;
+		String lastName = "lN";
+		String newShipingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String secondNewBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
+		String newBillingAddressName = TestConstants.BILLING_ADDRESS_NAME+randomNumber;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}  
 
-			logger.info("login is successful");
-			storeFrontPCUserPage.clickOnAutoshipCart();
-			storeFrontPCUserPage.clickOnContinueShoppingLink();
-			storeFrontPCUserPage.clickOnAddtoPCPerksButton();
-			String updatedMsg = storeFrontPCUserPage.getAutoshipTemplateUpdatedMsg();
-			s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
-			storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
-			storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-			String defaultBillingProfile=storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName();
-			logger.info("default billing profile is "+defaultBillingProfile);
-			//storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-			//Add new billing profile
-			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontUpdateCartPage.selectNewBillingCardAddress();
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
-			//Add new billing address.
-			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-			storeFrontUpdateCartPage.enterNewBillingNameOnCard(secondNewBillingProfileName+" "+lastName);
-			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontUpdateCartPage.selectNewBillingCardAddress();
-			storeFrontUpdateCartPage.clickAddANewAddressLink();
-			storeFrontUpdateCartPage.enterNewBillingAddressName(newBillingAddressName+" "+lastName);
-			storeFrontUpdateCartPage.enterNewBillingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
-			storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.CITY_CA);
-			storeFrontUpdateCartPage.selectNewBillingAddressState();
-			storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
-			storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
-			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-			s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(secondNewBillingProfileName),"Newly created billing address is not present on page");
-			s_assert.assertTrue(storeFrontUpdateCartPage.isBillingProfileIsSelectedByDefault(defaultBillingProfile),"Default billing profile is not as expected");
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnAutoshipCart();
+		storeFrontPCUserPage.clickOnContinueShoppingLink();
+		storeFrontPCUserPage.clickOnAddtoPCPerksButton();
+		String updatedMsg = storeFrontPCUserPage.getAutoshipTemplateUpdatedMsg();
+		s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
+		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
+		storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		String defaultBillingProfile=storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName();
+		logger.info("default billing profile is "+defaultBillingProfile);
+		//storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		//Add new billing profile
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
+		//Add new billing address.
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(secondNewBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		storeFrontUpdateCartPage.enterNewBillingAddressName(newBillingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+		storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.CITY_CA);
+		storeFrontUpdateCartPage.selectNewBillingAddressState();
+		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
+		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(secondNewBillingProfileName),"Newly created billing address is not present on page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isBillingProfileIsSelectedByDefault(defaultBillingProfile),"Default billing profile is not as expected");
 
-			//Add new shipping profile
-			storeFrontUpdateCartPage.clickOnEditShipping();
-			storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
-			storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
-			storeFrontShippingInfoPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
-			storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
-			storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
-			storeFrontShippingInfoPage.selectNewShippingAddressState();
-			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
-			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
-			storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyCreatedShippingAddressIsSelectedByDefault(newShipingAddressName));
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");
-			String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
-			storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
-			storeFrontUpdateCartPage.clickOnNextStepBtn();
-			storeFrontUpdateCartPage.clickUpdateCartBtn();
-			s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newShipingAddressName+" "+lastName),"updated address not present on Updated cart page");
-			s_assert.assertAll();
-		}
-		else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
+		//Add new shipping profile
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
+		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
+		storeFrontShippingInfoPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyCreatedShippingAddressIsSelectedByDefault(newShipingAddressName));
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");
+		String selectedMethodName = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
+		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newShipingAddressName+" "+lastName),"updated address not present on Updated cart page");
+		s_assert.assertAll();
 	}
 
 	//  Hybris Project-141:PC Perks Total Savings Calculation & disclaimer
 	@Test
 	public void testPCPerksTotalSavingsCalculation_141() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
-				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}	
-			//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
-			logger.info("login is successful");
-			storeFrontPCUserPage.clickOnWelcomeDropDown();
-			storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
 
-			//assert total saving on Autoship cart page
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyTotalSavingsIsAvailableOnAutoshipCart(),"Total Savings is not available on Autoship cart");
+		//assert total saving on Autoship cart page
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyTotalSavingsIsAvailableOnAutoshipCart(),"Total Savings is not available on Autoship cart");
 
-			s_assert.assertAll();
-
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
+		s_assert.assertAll();
 
 	}
 
@@ -4060,90 +4050,86 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-3762:Update the PC Perks Template from US sponsor's BIZ PWS who has Pulse/ PWS
 	@Test
 	public void testUpdatePCPerksTemplateFromDifferentUSSponsorBizPWS_3762() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountId = null;
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-			String firstName=TestConstants.FIRST_NAME+randomNum;
-			String lastName = "lN";
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
-				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
 
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}	
-			//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
-			logger.info("login is successful");
-			String PWSAfterLogin = driver.getCurrentUrl();
-			logger.info("after login "+PWSAfterLogin);
-			storeFrontPCUserPage.clickOnAutoshipCart();
-			storeFrontPCUserPage.clickOnContinueShoppingLink();
-			storeFrontPCUserPage.clickOnAddToPcPerksButton();
-			String updatedMsg = TestConstants.PC_PERKS_TEMPLATE_PRODUCT_ADDED;
-			s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
-			storeFrontUpdateCartPage.clickUpdateCartBtn();
-			s_assert.assertTrue(storeFrontUpdateCartPage.verifyCartUpdateMessage(),"Autoship Cart has not been Updated after click on update cart");
-			storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
-			logout();
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		String PWSAfterLogin = driver.getCurrentUrl();
+		logger.info("after login "+PWSAfterLogin);
+		storeFrontPCUserPage.clickOnAutoshipCart();
+		storeFrontPCUserPage.clickOnContinueShoppingLink();
+		storeFrontPCUserPage.clickOnAddToPcPerksButton();
+		String updatedMsg = TestConstants.PC_PERKS_TEMPLATE_PRODUCT_ADDED;
+		s_assert.assertTrue(storeFrontPCUserPage.verifyUpdateCartMessage(updatedMsg),"Autoship Cart has not been Updated");
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCartUpdateMessage(),"Autoship Cart has not been Updated after click on update cart");
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
+		logout();
 
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-			storeFrontHomePage.clickAddToBagButton(driver.getCountry());
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButton(driver.getCountry());
 
-			//assert sign up link
-			s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
-			storeFrontHomePage.clickOnCheckoutButton();
+		//assert sign up link
+		// s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
+		storeFrontHomePage.clickOnCheckoutButton();
 
-			//Log in or create an account page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
 
-			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-			storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-			storeFrontHomePage.enterMainAccountInfo();
-			logger.info("Main account details entered");
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
 
-			storeFrontHomePage.clickOnNotYourSponsorLink();
-			//assert continue without sponser link is not present and request your sponser button
-			s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue without sponser link present");
-			s_assert.assertFalse(storeFrontHomePage.verifyRequestASponsorBtn(),"Request a sponser button is present");
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		//assert continue without sponser link is not present and request your sponser button
+		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue without sponser link present");
+		s_assert.assertFalse(storeFrontHomePage.verifyRequestASponsorBtn(),"Request a sponser button is present");
 
-			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
-			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-			//Enter Billing Profile
-			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.selectNewBillingCardAddress();
-			storeFrontHomePage.clickOnSaveBillingProfile();
-			storeFrontHomePage.clickOnBillingNextStepBtn();
-			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-			storeFrontHomePage.clickPlaceOrderBtn();
-			//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-			//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-			String currentPWSUrl=driver.getCurrentUrl();
-			logger.info("current url After "+currentPWSUrl);
-			s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,PWSAfterLogin.split("\\:")[1]),"PWS of the RC after enrollment is not same as the one it started enrollment");		
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for US env");
-		}
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		//s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		String currentPWSUrl=driver.getCurrentUrl();
+		logger.info("current url After "+currentPWSUrl);
+		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,PWSAfterLogin.split("\\:")[1]),"PWS of the RC after enrollment is not same as the one it started enrollment");  
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-2167:Login as Existing PC and Place an Adhoc Order, Check for Alert message
@@ -5619,137 +5605,151 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2143:Check Shipping and Handling Fee for UPS Ground for Order total 0-999999-PC Perk Autoship
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPSGround_2143() throws InterruptedException	{
-		if(driver.getCountry().equalsIgnoreCase("ca")){ 
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("Login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-			logger.info("login is successful"); 
-			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
-			storeFrontUpdateCartPage.clickOnCheckoutButton();
-			storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
-			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
-			logger.info("deliveryCharges ="+deliveryCharges);
-			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-			logger.info("handlingCharges ="+handlingCharges);
+	public void testCheckShippingAndHandlingFeeForUPSGround_2143() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful"); 
+		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
+		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		if(driver.getCountry().equalsIgnoreCase("ca")){
 			//Assert  shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains("15.00"),"Shipping charges on UI is not As per shipping method selected");
 			//Handling charges
 			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}else if(driver.getCountry().equalsIgnoreCase("us")){
+			//Assert  shipping cost from UI
+			s_assert.assertTrue(deliveryCharges.contains("17.00"),"Shipping charges on UI is not As per shipping method selected");
+			//Handling charges
+			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
 		}
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-2146:Check Shipping and Handling Fee for UPS 2Day for Order total 0-999999-PCPerk Autoship
 	@Test
 	public void testCheckShippingAndHandlingFeeForUPS2Day_2146() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){ 
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-			logger.info("login is successful"); 
-			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
-			storeFrontUpdateCartPage.clickOnCheckoutButton();
-			storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
-			double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
-			logger.info("subtotal ="+subtotal);
-			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
-			logger.info("deliveryCharges ="+deliveryCharges);
-			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-			logger.info("handlingCharges ="+handlingCharges);
-			if(subtotal<=999999){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful"); 
+		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
+		double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+		logger.info("subtotal ="+subtotal);
+		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		if(subtotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("ca")){ 
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
 				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-			}else{
-				logger.info(" Order total is not in required range");
+			}else if(driver.getCountry().equalsIgnoreCase("us")){
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
 			}
-			s_assert.assertAll();
 		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			logger.info(" Order total is not in required range");
 		}
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-2150:Check Shipping and Handling Fee for UPS 1Day for Order total 0-999999-PCPerk
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPS1Day_2150() throws InterruptedException		{
-		if(driver.getCountry().equalsIgnoreCase("ca")){ 
-			RFO_DB = driver.getDBNameRFO();
-			List<Map<String, Object>> randomPCUserList =  null;
-			String pcUserEmailID = null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("Login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-			logger.info("login is successful"); 
-			storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
-			storeFrontUpdateCartPage.clickOnCheckoutButton();
-			storeFrontUpdateCartPage.selectShippingMethodUPStandardOvernightInOrderSummary();
-			String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
-			logger.info("deliveryCharges ="+deliveryCharges);
-			String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-			logger.info("handlingCharges ="+handlingCharges);
-			//Assert  shipping cost from UI
-			s_assert.assertTrue(deliveryCharges.contains("30.00"),"Shipping charges on UI is not As per shipping method selected");
-			//Handling charges
-			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-			s_assert.assertAll();
+	public void testCheckShippingAndHandlingFeeForUPS1Day_2150() throws InterruptedException  {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("Login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful"); 
+		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethodUPStandardOvernightInOrderSummary();
+		double subtotal = storeFrontUpdateCartPage.getSubtotalValue();
+		logger.info("subtotal ="+subtotal);
+		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);
+		if(subtotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("ca")){ 
+				//Assert  shipping cost from UI
+				s_assert.assertTrue(deliveryCharges.contains("30.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+			}else if(driver.getCountry().equalsIgnoreCase("us")){
+				s_assert.assertTrue(deliveryCharges.contains("17.00"),"Shipping charges on UI is not As per shipping method selected");
+				//Handling charges
+				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+			}
 		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			logger.info(" Order total is not in required range");
 		}
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-1880:Create Adhoc Order with Multiple line items
@@ -5837,126 +5837,118 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	// Hybris Project-2108:Do not update billing profile for autoship on changing default selection
 	@Test
 	public void testDoNotUpdateBillingProfileForAutoShipOnChangingDefaultSelection_2108() throws InterruptedException	 {
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO();
-			String country = driver.getCountry();
-			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;
-			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-			String accountID = null;
-			String lastName = "lN";
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
-			while(true){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("Account Id of the user is "+accountID);
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-				boolean isLoginError = driver.getCurrentUrl().contains("error");
-				if(isLoginError){
-					logger.info("Login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		String country = driver.getCountry();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String accountID = null;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
 			}
-			logger.info("login is successful");
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontBillingInfoPage=storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-			//Add a new Billing Profile
-			storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
-			storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
-			storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontBillingInfoPage.selectNewBillingCardAddress();
-			//storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-			storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-			//Make the newly created billing profile as default Profile
-			storeFrontBillingInfoPage.makeBillingProfileDefault(newBillingProfileName);
-			//validate billing profile updated
-			s_assert.assertTrue(storeFrontBillingInfoPage.validateBillingProfileUpdated(),"Billing Profile is not updated!!");
-			//Go to Autoship cart
-			storeFrontHomePage.clickOnAutoshipCart();
-			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
-			//validate newly selected billing profile is NOT reflected under billing profile Autoship Order
-			s_assert.assertFalse(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(newBillingProfileName),"Newly selected default biiling profile is updated under Autoship Billing Section");
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			else
+				break;
 		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage=storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		//Add a new Billing Profile
+		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		//storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+		//Make the newly created billing profile as default Profile
+		storeFrontBillingInfoPage.makeBillingProfileDefault(newBillingProfileName);
+		//validate billing profile updated
+		s_assert.assertTrue(storeFrontBillingInfoPage.validateBillingProfileUpdated(),"Billing Profile is not updated!!");
+		//Go to Autoship cart
+		storeFrontHomePage.clickOnAutoshipCart();
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		//validate newly selected billing profile is NOT reflected under billing profile Autoship Order
+		s_assert.assertFalse(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(newBillingProfileName),"Newly selected default biiling profile is updated under Autoship Billing Section");
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-2390:Shipping address selected in autoship cart.
 	@Test
 	public void testShippingAddressSelectedInAutoShipCart_2390() throws InterruptedException {
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			RFO_DB = driver.getDBNameRFO();
-			String country = driver.getCountry();
-			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;
-			String accountID = null;
-			String lastName = "lN";
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
-			if(country.equalsIgnoreCase("us")){
-				addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-				city = TestConstants.CITY_US;
-				postalCode = TestConstants.POSTAL_CODE_US;
-			}
-			else if(country.equalsIgnoreCase("ca")){
-				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-				city = TestConstants.CITY_CA;
-				postalCode = TestConstants.POSTAL_CODE_CA;
-			} 
-			while(true){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("Account Id of the user is "+accountID);
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-				boolean isLoginError = driver.getCurrentUrl().contains("error");
-				if(isLoginError){
-					logger.info("Login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}
-			logger.info("login is successful");
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontShippingInfoPage=storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
-
-			storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-			String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-			storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-			storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
-			storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-			storeFrontShippingInfoPage.selectNewShippingAddressState();
-			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
-			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-			storeFrontShippingInfoPage.clickOnSaveShippingProfile();
-			//change default shipping profile selection and validate Update AutoShip PopUp
-			storeFrontShippingInfoPage.makeShippingProfileAsDefault(newShippingAddressName);
-			s_assert.assertTrue(storeFrontShippingInfoPage.validateUpdateAutoShipPopUpPresent(), "Update AutoShip PopUp is not present!!");
-			//Go to Autoship cart
-			storeFrontHomePage.clickOnAutoshipCart();
-			storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
-			//validate newly selected Shipping profile is reflected under shipment section under Autoship Order
-			s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(newShippingAddressName+" "+lastName),"Newly selected default Shipping profile is NOT updated under Autoship Shipping Section");
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		String country = driver.getCountry();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+		if(country.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
 		}
+		else if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		} 
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage=storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
+
+		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
+		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
+		//change default shipping profile selection and validate Update AutoShip PopUp
+		storeFrontShippingInfoPage.makeShippingProfileAsDefault(newShippingAddressName);
+		s_assert.assertTrue(storeFrontShippingInfoPage.validateUpdateAutoShipPopUpPresent(), "Update AutoShip PopUp is not present!!");
+		//Go to Autoship cart
+		storeFrontHomePage.clickOnAutoshipCart();
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		//validate newly selected Shipping profile is reflected under shipment section under Autoship Order
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(newShippingAddressName+" "+lastName),"Newly selected default Shipping profile is NOT updated under Autoship Shipping Section");
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-2149:Check Shipping and Handling Fee for UPS 1Day for Order total 0-999999-CRPAutoship
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPS1DayCRPAutoship_2149() throws InterruptedException
-	{
+	public void testCheckShippingAndHandlingFeeForUPS1DayCRPAutoship_2149() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO();
 		String country = driver.getCountry();
 		List<Map<String, Object>> randomConsultantList =  null;

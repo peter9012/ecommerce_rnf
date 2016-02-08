@@ -53,6 +53,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By VIEW_PRODUCT_PAGE_LINK = By.xpath("//a[text()='View Product Page']");
 	private static final By MINUS_LINK_NEXT_TO_FIRST_PRODUCT = By.xpath("//span[text()='Order Detail Items']/following::div/div//a[text()='-'][1]");
 	private static final By VIEW_PRODUCT_DETAIL = By.xpath("//input[@value='ADD TO BAG']");
+	private static final By AUTOSHIP_TEMPLATE_STATUS = By.xpath("//span[text()='Template Status:']/following-sibling::span");
+	private static final By AUTOSHIP_TEMPLATE_UPDATE_BTN = By.xpath("//span[@class='csUpdateConsOrders']//span[@z.disd='true']");
+	private static final By AUTOSHIP_TEMPLATE_RUN_NOW_BTN = By.xpath("//td[contains(text(),'Run Now')]/../preceding::tr[1]//button[@disabled='disabled']");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -303,5 +306,20 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		}
 		return false;
 
+	}
+
+	public String getAutoShipTemplateStatus(){
+		driver.waitForElementPresent(AUTOSHIP_TEMPLATE_STATUS);
+		return driver.findElement(AUTOSHIP_TEMPLATE_STATUS).getText().trim();
+	}
+
+	public boolean verifyUpdateButtonIsDisabledAfterCancelPulseSubscription(){
+		driver.waitForElementPresent(AUTOSHIP_TEMPLATE_UPDATE_BTN);
+		return driver.isElementPresent(AUTOSHIP_TEMPLATE_UPDATE_BTN);
+	}
+
+	public boolean verifyRunNowButtonIsDisabledAfterCancelPulseSubscription(){
+		driver.waitForElementPresent(AUTOSHIP_TEMPLATE_RUN_NOW_BTN);
+		return driver.isElementPresent(AUTOSHIP_TEMPLATE_RUN_NOW_BTN);
 	}
 }

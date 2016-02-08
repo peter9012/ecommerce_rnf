@@ -1837,4 +1837,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 
+	public void clickAddToBagButtonWithoutFilterAfterLogin() throws InterruptedException{  
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
+			logger.info("Add To Bag button clicked");
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
+			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
+			logger.info("Add To Bag button clicked");
+		}
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
 }

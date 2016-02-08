@@ -1,6 +1,8 @@
 package com.rf.pages.website.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 import org.apache.logging.log4j.LogManager;
@@ -335,8 +337,14 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnAddtoPCPerksButton(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+		}
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyUpdateCartMessage(String message){

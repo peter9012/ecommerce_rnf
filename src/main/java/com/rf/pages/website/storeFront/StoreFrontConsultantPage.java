@@ -237,4 +237,14 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	}
 
+	public void eraseHomeTownCityName(){
+		driver.waitForPageLoad();
+		driver.findElement(By.xpath("//input[@id='homeTown']")).clear();
+	}
+
+	public boolean validateHomeTownCityFieldValueIsNull(){
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='homeTown']"));
+		return driver.isElementPresent(By.xpath("//input[@id='homeTown' and @value='']"));
+	}
+
 }

@@ -28,7 +28,8 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CUSOMER_NAME_CID_FIELD_LOC = By.xpath("//span[text()='Customer Name or CID']");
 	private static final By POST_CODE_FIELD_LOC = By.xpath("//span[text()='Postcode']");
 	private static final By EMAIL_ADD_FIELD_LOC = By.xpath("//span[text()='Email Address']//following::input[1]");
-
+	private static final By COMMIT_TAX_TAB_LOC = By.xpath("//span[text()='Commit Tax']");
+	
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerSearchTabPage(RFWebsiteDriver driver) {
@@ -153,4 +154,9 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(EMAIL_ADD_FIELD_LOC);
 	}	
 
+	public void clickCommitTaxTab() {
+		driver.waitForElementPresent(COMMIT_TAX_TAB_LOC);
+		driver.click(COMMIT_TAX_TAB_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
 }

@@ -3733,4 +3733,19 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 	}
 
+	public void clickFindAConsultantLinkOnHomePage(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='header-middle-top']/a"));
+		driver.click(By.xpath("//div[@id='header-middle-top']/a"));
+	}
+
+	public boolean validateConsultantSearchFieldPresent(){
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='sponserparam']"));
+		return driver.isElementPresent(By.xpath("//input[@id='sponserparam']"));
+	}
+
+	public void clickConnectUnderConnectWithAConsultantSection(){
+		driver.waitForElementPresent(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+		driver.click(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+	}
+
 }

@@ -11,6 +11,7 @@ import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
@@ -26,6 +27,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;
+	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
 	private String phoneNumber = null;
 	private String country = null;
 	private String RFO_DB = null;
@@ -1069,4 +1071,5 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	
 }

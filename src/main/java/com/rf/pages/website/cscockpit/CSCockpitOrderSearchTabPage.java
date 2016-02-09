@@ -21,7 +21,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String orderStatusLoc = "//a[text()='%s']//following::td[7]//span";	
 	private static String orderTypeDDloc = "//span[contains(text(),'Order Type')]//option[text()='%s']";
 	private static String orderSectionLoc ="//div[text()='%s']";
-	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[1]/td[4]//span";
+	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
 

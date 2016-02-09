@@ -31,7 +31,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CLOSE_POPUP_OF_EDIT_ADDRESS = By.xpath("//div[contains(text(),'Edit Address')]/div[contains(@id,'close')]");
 	private static final By ADD_NEW_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Customer Address')]/following::td[text()='Add']");
 	private static final By CREATE_NEW_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]");
-	private static final By AUTOSHIP_ID_FIRST = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div[contains(@class,'listbox-body')]//tr[2]//a");
+	private static final By AUTOSHIP_ID_FIRST = By.xpath("//span[text()='Autoship Templates']/following::div[contains(@class,'listbox-body')][1]//tr[2]//a");
 	private static final By AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'crpAutoship')]//preceding::td[1]//a");
 	private static final By AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'pcAutoship')]//preceding::td[1]//a");
 	private static final By AUTOSHIP_TEMPLATE = By.xpath("//span[text()='Autoship Templates']");

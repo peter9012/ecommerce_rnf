@@ -3748,4 +3748,31 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
 	}
 
+	public boolean verifySponsorDetailsPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@class='sponsorDataDiv']"));
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']"));
+	}
+
+	public boolean verifySponsorFullNamePresent() {
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[1]"));
+	}
+
+	public boolean verifySponsorZipCodePresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[2]"));
+	}
+	
+	public boolean verifySponsorCityPresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[3]"));
+
+	}
+	
+	public boolean verifySponsorPWSComSitePresent(){
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[5]"));
+	}
+
+	public boolean verifyNotFoundMsgPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found')]"));
+	}
+
 }

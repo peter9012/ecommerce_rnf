@@ -22,7 +22,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 
 	private static String sortByDropDownLoc= "//div[@class='csResultsSortList']/select/option[text()='%s']";
 	private static String skuValueOfProductFromSearchResultLoc = "//div[@class='csListboxContainer']/div[2]/div[@class='z-listbox-body']//tbody[2]/tr[%s]/td[2]/div";
-	
+
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
 	private static final By MENU_BTN_LOCATOR = By.xpath("//span[text()='Menu']");
@@ -57,7 +57,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//td[@class='z-button-cm'][text()='SAVE']");
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
-	
+
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -214,7 +214,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.switchTo().window(tabs.get(0));
 		driver.pauseExecutionFor(1000);
 	}
-	
+
 	public void selectValueFromSortByDDInCartTab(String valueFromDropDown){
 		driver.waitForElementPresent(By.xpath(String.format(sortByDropDownLoc, valueFromDropDown)));
 		driver.click(By.xpath(String.format(sortByDropDownLoc, valueFromDropDown)));
@@ -228,12 +228,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(CATALOG_DD_OPTION);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public String getCustomerSKUValueInCartTab(String productSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(skuValueOfProductFromSearchResultLoc, productSequenceNumber)));
 		return driver.findElement(By.xpath(String.format(skuValueOfProductFromSearchResultLoc, productSequenceNumber))).getText();
 	}
-	
+
 	public int getRandomProductWithSKUFromSearchResult(){
 		int totalProductsWithSKUFromSearchResult = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
 		int randomProductFromSearchResult = CommonUtils.getRandomNum(1, totalProductsWithSKUFromSearchResult);
@@ -247,7 +247,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(SEARCH_BTN_SKU);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public void clickAddToCartBtnInCartTab(){
 		for(int i=1;i<=10;i++){
 			driver.waitForElementPresent(ADD_TO_CART_BTN);
@@ -272,13 +272,13 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(CHECKOUT_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public void clearCatalogSearchFieldAndClickSearchBtn(){
 		driver.clear(SEARCH_SKU_VALUE_TXT_FIELD);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.click(SEARCH_BTN_SKU);;
 	}	
-	
+
 	public void enterCVVValueInCheckoutTab(String CVV){
 		driver.waitForElementPresent(CVV2_SEARCH_TXT_FIELD);
 		driver.type(CVV2_SEARCH_TXT_FIELD, CVV);
@@ -312,10 +312,17 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		}
 
 	}
-	
+
 	public void clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab(){
 		driver.waitForElementPresent(PAYMENT_DETAILS_POPUP_OK_BTN);
 		driver.click(PAYMENT_DETAILS_POPUP_OK_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickAutoshipSearchTab(){
+		driver.waitForElementPresent(AUTOSHIP_SEARCH_TAB);
+		driver.click(AUTOSHIP_SEARCH_TAB);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(30000);
 	}
 }

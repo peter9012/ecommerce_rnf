@@ -57,7 +57,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//td[@class='z-button-cm'][text()='SAVE']");
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
-
+	private static final By AUTOSHIP_SEARCH_TAB = By.xpath("//span[text()='Autoship Search']");
+	
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
 		super(driver);

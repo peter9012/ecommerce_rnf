@@ -42,7 +42,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.contains(consultantEmailID), "the email on first row which is = "+emailOnfirstRow+" is expected to contain email = "+consultantEmailID);
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(), "Accounts Activities link is not present on left navigation panel");
@@ -69,7 +69,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(firstName);
 		String nameOnFirstRow = crmHomePage.getNameOnFirstRowInSearchResults();
-		s_assert.assertTrue(nameOnFirstRow.contains(firstName), "the name on first row which is = "+nameOnFirstRow+" is expected to contain firstname = "+firstName);
+		s_assert.assertTrue(nameOnFirstRow.toLowerCase().trim().contains(firstName.toLowerCase().trim()), "the name on first row which is = "+nameOnFirstRow.toLowerCase().trim()+" is expected to contain firstname = "+firstName.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(), "Accounts Activities link is not present on left navigation panel");
@@ -96,7 +96,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.contains(consultantEmailID), "the email on first row which is = "+emailOnfirstRow+" is expected to contain email = "+consultantEmailID);
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(), "Accounts Activities link is not present on left navigation panel");
@@ -164,7 +164,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.contains(pcUserName), "the email on first row which is = "+emailOnfirstRow+" is expected to contain email = "+pcUserName);
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(), "Accounts Activities link is not present on left navigation panel");
@@ -219,7 +219,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.contains(rcUserName), "the email on first row which is = "+emailOnfirstRow+" is expected to contain email = "+rcUserName);
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcUserName.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(), "Accounts Activities link is not present on left navigation panel");

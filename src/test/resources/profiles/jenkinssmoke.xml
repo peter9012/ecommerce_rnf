@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="jenkinssmoke">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="SmokeTest">
+		<classes>
+			<!-- <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class> -->
+			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
+				<methods>
+					<include name="testStandardEnrollmentTermsAndConditions_1288" />
+					<include name="testRCEnrollment_1307" />
+					<include name="testPCEnrollment_1308" />
+					<!-- <include name="testCreateAdhocOrderPC_1877" /> -->
+					<include name="testUserEnrollCRPThroughMyAccount_2230" />
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
+					<include name="testSubscribingPulseMyAccount_3921" />
+
+				</methods>
+			</class>
+<!-- 			<class name="com.rf.test.website.crm.AccountDetailsTest">
+				<methods>
+					<include name="SearchForAccountByName_4530" />
+					<include name="PCDetailViewPage_4548" />
+					<include name="RCDetailViewPage_4550" />
+					<include name="SearchForAccountByEmail_4527" />
+					<include name="ConsultantDetailViewPage_4546" />
+				</methods>
+			</class> -->
+		</classes>
+	</test>
+</suite>

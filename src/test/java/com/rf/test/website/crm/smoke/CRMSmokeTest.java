@@ -105,8 +105,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsSectionPresent(),"Account Details Section is not present");
 		s_assert.assertTrue(crmAccountDetailsPage.isMainAddressSectionPresent(),"Main Address Section is not present");
-		s_assert.assertTrue(crmAccountDetailsPage.isTaxInformationSectionPresent(),"Tax Information Section is not present");
-
+		
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Edit Account"),"Edit Account button is not Enabled in account detail section");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Edit PWS Domain"),"Edit PWS Domain button is not Enabled in account detail section");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Change Account Status"),"Change Account Status button is not Enabled in account detail section");

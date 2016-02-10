@@ -58,7 +58,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By AUTOSHIP_SEARCH_TAB = By.xpath("//span[text()='Autoship Search']");
-	
+
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -250,22 +250,32 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickAddToCartBtnInCartTab(){
-		for(int i=1;i<=10;i++){
-			driver.waitForElementPresent(ADD_TO_CART_BTN);
-			driver.click(ADD_TO_CART_BTN);
-			logger.info("Add to cart button clicked");
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			clearCatalogSearchFieldAndClickSearchBtn();
 			driver.waitForCSCockpitLoadingImageToDisappear();
-			try{
-				driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
-				driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
-				clearCatalogSearchFieldAndClickSearchBtn();
-				searchSKUValueInCartTab(getCustomerSKUValueInCartTab(String.valueOf(getRandomProductWithSKUFromSearchResult())));
-			}catch(Exception e){
-				logger.info("Product is available");
-				break;
-			}	
+			int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+			for(int i=1; i<=noOfProducts; i++){
+				String randomCustomerFromSearchResult = String.valueOf(CommonUtils.getRandomNum(1, noOfProducts));
+				String SKU = getCustomerSKUValueInCartTab(randomCustomerFromSearchResult);
+				searchSKUValueInCartTab(SKU);
+				driver.click(ADD_TO_CART_BTN);
+				logger.info("Add to cart button clicked for "+i+" another product");
+				if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+					driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+					clearCatalogSearchFieldAndClickSearchBtn();
+					driver.waitForCSCockpitLoadingImageToDisappear();
+					continue;
+				}else{
+					break;
+				}
+			}
 		}
-
 	}
 
 	public void clickCheckoutBtnInCartTab(){
@@ -275,10 +285,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clearCatalogSearchFieldAndClickSearchBtn(){
+		driver.waitForElementPresent(SEARCH_SKU_VALUE_TXT_FIELD);
 		driver.clear(SEARCH_SKU_VALUE_TXT_FIELD);
 		driver.waitForCSCockpitLoadingImageToDisappear();
-		driver.click(SEARCH_BTN_SKU);;
-	}	
+		driver.click(SEARCH_BTN_SKU);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
 
 	public void enterCVVValueInCheckoutTab(String CVV){
 		driver.waitForElementPresent(CVV2_SEARCH_TXT_FIELD);

@@ -3760,12 +3760,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean verifySponsorZipCodePresent(){
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[2]"));
 	}
-	
+
 	public boolean verifySponsorCityPresent(){
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[3]"));
 
 	}
-	
+
 	public boolean verifySponsorPWSComSitePresent(){
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[5]"));
 	}
@@ -3773,6 +3773,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean verifyNotFoundMsgPresent() {
 		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='sponsorPage']//span[contains(text(),'No result found')]"));
+	}
+
+	public boolean verifyUserRedirectingToComSite() {
+		String url = driver.getCurrentUrl();
+		if(!url.contains("corp"))
+			return true;
+		else
+			return false;
 	}
 
 }

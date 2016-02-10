@@ -1648,7 +1648,7 @@ public class DBQueries_RFO {
 
 	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";
 
-	public static String GET_ACCOUNT_FirstName_RFO = "select top 1 FirstName from RFO_Accounts.AccountContacts where FirstName IS not NULL order by servermodifieddate desc";
+	public static String GET_ACCOUNT_FirstName_RFO = "select top 1 FirstName from RFO_Accounts.AccountContacts where FirstName IS not NULL order by NEWID()";
 
 	public static String GET_EMAIL_ADDRESS_ID_RFO = "select top 1 * from RFO_Accounts.AccountEmails where AccountContactId = '%s'";
 

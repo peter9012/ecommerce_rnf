@@ -81,7 +81,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-1735:To verify Add New payment profile functionality in the Checkout Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyAddNewPaymentProfileFunctionalityInTheCheckoutPage_1735(){
 		String randomOrderSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -224,7 +224,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1722:Verify the Find Autoship Page UI
-	@Test(enabled=false) //WIP
+	@Test
 	public void testVerifyTheFindAutoshipPageUI_1722(){
 		String searchByDDValue_All = "All";
 		String searchByDDValue_All_Due_Today = "All Due Today"; 

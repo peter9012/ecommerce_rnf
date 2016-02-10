@@ -422,7 +422,7 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1944:To verify Checkout Page UI while placing the order
-	@Test(enabled=false) //WIP 
+	@Test 
 	public void testVerifyCheckoutPageUIWhilePlacingOrder_1944(){
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;

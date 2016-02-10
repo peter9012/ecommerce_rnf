@@ -1071,4 +1071,194 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-1900:To verify the More About Me section for PWS Biz
+	@Test
+	public void testToVerifyTheMoreAboutMeSectionForPWSBiz_1900() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+
+		String consultantEmailId =null;
+		String accountId = null;
+
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailId);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnEditMyPWS();
+		storeFrontConsultantPage.addNewContentOfYourOwnCopy();
+		storeFrontConsultantPage.clickResetToDefaultCopyLink();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyDefaultContentReseted(),"Default content is not reseted");
+		storeFrontConsultantPage.addNewContentOfYourOwnCopy();
+		storeFrontConsultantPage.clickSaveButton();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1899:To verify the More About Me section for PWS Com
+	@Test
+	public void testToVerifyTheMoreAboutMeSectionForPWSCom_1899(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+
+		String consultantEmailId =null;
+		String accountId = null;
+
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openComPWSSite(country, env);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailId);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		storeFrontConsultantPage.addNewContentOfYourOwnCopyInComPWS();
+		storeFrontConsultantPage.clickResetToDefaultCopyLinkInComPWS();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyDefaultContentResetedForComPWS(),"Default content is not reseted");
+		storeFrontConsultantPage.addNewContentOfYourOwnCopyInComPWS();
+		storeFrontConsultantPage.clickSaveButton();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4055:View Meet your consultant Page on .BIZ & .COM as Logged in US Consultant (PWS Owner)
+	@Test
+	public void testViewYourConsultantPageOnBizAndCOMLoggedInUSConsultant_4055(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+
+		String consultantEmailId =null;
+		String accountId = null;
+
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailId);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyPersonalizeMyProfileLinkPresent(),"Personalize my profile link is not present at meet your consultant page");
+		storeFrontHomePage.openComPWSSite(country, env);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		s_assert.assertTrue(storeFrontConsultantPage.verifyPersonalizeMyProfileLinkPresent(),"Personalize my profile link is not present at meet your consultant page");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4056:Edit the Meet Your Consultant Page and Personalise and Save the changes
+	@Test
+	public void testEditTheMeetYourConsultantPageAndPersonaliseAndSaveTheChanges_4056(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+
+		String consultantEmailId =null;
+		String accountId = null;
+
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailId);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		storeFrontConsultantPage.enterPhoneNumberOnEditPWS(phoneNumber);
+		storeFrontConsultantPage.clickSaveButton();
+		s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"contactBox is not present");
+		s_assert.assertTrue(storeFrontConsultantPage.validateEditedPhoneNumberSaved(phoneNumber),"Information is not edited in personalize my profile");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4054:Login to Canadian PWS site with US Consultant's Credentials(Owner of the PWS site)
+	@Test
+	public void testLoginToCanadianPWSsiteWithUSConsultantCredential_4054(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+
+		String consultantEmailId =null;
+		String accountId = null;
+
+		country = "ca";
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailId);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		s_assert.assertTrue(storeFrontConsultantPage.verifyShopSkinCareLinkPresent(),"shop skincare Link is not present in header");
+		s_assert.assertTrue(storeFrontConsultantPage.verifyAboutRFLinkPresent(),"ABOUT R+F link is not present in the header");
+		s_assert.assertAll();
+	}
+
 }

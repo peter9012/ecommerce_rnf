@@ -1083,6 +1083,7 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void switchToChildWindow(){
+		driver.pauseExecutionFor(10000);
 		driver.switchToSecondWindow();
 		driver.waitForPageLoad();
 	}

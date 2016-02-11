@@ -459,6 +459,10 @@ public class TestConstants {
 	public static final String ORDER_STATUS_DD_THIRD_VALUE = "Partially_Shipped";
 	public static final String ORDER_STATUS_DD_FOURTH_VALUE = "Shipped";
 
+	//CRM data
+	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";
+	public static final String CRM_MAIN_ADDRESS_LINE_3 ="BEAVER CREEK YT";
+
 }
 
 

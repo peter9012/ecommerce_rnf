@@ -37,7 +37,7 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-		logger.info("The first name is "+consultantEmailID);	
+		logger.info("The email address is "+consultantEmailID);	
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);

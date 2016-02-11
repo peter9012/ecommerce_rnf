@@ -29,7 +29,8 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By POST_CODE_FIELD_LOC = By.xpath("//span[text()='Postcode']");
 	private static final By EMAIL_ADD_FIELD_LOC = By.xpath("//span[text()='Email Address']//following::input[1]");
 	private static final By COMMIT_TAX_TAB_LOC = By.xpath("//span[text()='Commit Tax']");
-	
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerSearchTabPage(RFWebsiteDriver driver) {
@@ -158,5 +159,14 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(COMMIT_TAX_TAB_LOC);
 		driver.click(COMMIT_TAX_TAB_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
 	}
 }

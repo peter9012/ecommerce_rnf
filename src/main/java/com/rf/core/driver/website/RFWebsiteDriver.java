@@ -717,6 +717,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		//		}
 
 		Set<String> allWindows = driver.getWindowHandles();
+		logger.info("total windows opened = "+allWindows.size());
 		String parentWindow = driver.getWindowHandle();
 		for(String allWin : allWindows){
 			if(!allWin.equalsIgnoreCase(parentWindow)){
@@ -725,7 +726,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 
 		}
-		logger.info("Switched to second window");
+		logger.info("Switched to second window whose title is "+driver.getTitle());		
 	}
 
 	public String getCrmURL(){

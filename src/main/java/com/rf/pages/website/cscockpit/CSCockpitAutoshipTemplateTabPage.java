@@ -56,6 +56,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By AUTOSHIP_TEMPLATE_STATUS = By.xpath("//span[text()='Template Status:']/following-sibling::span");
 	private static final By AUTOSHIP_TEMPLATE_UPDATE_BTN = By.xpath("//span[@class='csUpdateConsOrders']//span[@z.disd='true']");
 	private static final By AUTOSHIP_TEMPLATE_RUN_NOW_BTN = By.xpath("//td[contains(text(),'Run Now')]/../preceding::tr[1]//button[@disabled='disabled']");
+	private static final By CANCEL_AUTOSHIP_TEMPLATE_LOC = By.xpath("//a[text()='Cancel Autoship']");
+	private static final By CANCEL_AUTOSHIP_TEMPLATE_POPUP_CONFIRM_BTN_LOC = By.xpath("//td[text()='Confirm']");
+	private static final By SHIPPING_ADDRESS_PROFILE_NAME = By.xpath("//div[@class='csOrderDetailsAddress']//div[2]//span");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -321,5 +324,24 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public boolean verifyRunNowButtonIsDisabledAfterCancelPulseSubscription(){
 		driver.waitForElementPresent(AUTOSHIP_TEMPLATE_RUN_NOW_BTN);
 		return driver.isElementPresent(AUTOSHIP_TEMPLATE_RUN_NOW_BTN);
+	}
+
+	public void clickCancelAutoship(){
+		driver.waitForElementPresent(CANCEL_AUTOSHIP_TEMPLATE_LOC);
+		driver.click(CANCEL_AUTOSHIP_TEMPLATE_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickConfirmCancelAutoshipTemplatePopup(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(CANCEL_AUTOSHIP_TEMPLATE_POPUP_CONFIRM_BTN_LOC);
+		driver.click(CANCEL_AUTOSHIP_TEMPLATE_POPUP_CONFIRM_BTN_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getAutoshipTemplateShippingAddressName(){
+		driver.waitForElementPresent(SHIPPING_ADDRESS_PROFILE_NAME);
+		String shippingProfileName = driver.findElement(SHIPPING_ADDRESS_PROFILE_NAME).getText();
+		return shippingProfileName;
 	}
 }

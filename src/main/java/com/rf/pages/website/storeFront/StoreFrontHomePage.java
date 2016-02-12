@@ -33,7 +33,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
 	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now »')]");
-	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//a[contains(text(),'Policy and Procedures')]");
+	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//div[@id='disclaimer']//a[contains(text(),'Policies and Procedures')]");
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;

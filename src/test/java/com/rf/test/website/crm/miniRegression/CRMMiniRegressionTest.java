@@ -15,12 +15,11 @@ import com.rf.pages.website.crm.CRMAccountDetailsPage;
 import com.rf.pages.website.crm.CRMHomePage;
 import com.rf.pages.website.crm.CRMLoginPage;
 import com.rf.test.website.RFWebsiteBaseTest;
-import com.rf.test.website.crm.regression.CRMRegressionTest;
 
 public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 
 	private static final Logger logger = LogManager
-			.getLogger(CRMRegressionTest.class.getName());
+			.getLogger(CRMMiniRegressionTest.class.getName());
 
 	private CRMLoginPage crmLoginpage;
 	private CRMHomePage crmHomePage;

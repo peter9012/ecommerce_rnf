@@ -1261,4 +1261,235 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4280:Login with USer Name and verify Edit Meet your Consultant Page
+	@Test
+	public void testLoginWithUserNameAndVerifyEditMeetYourConsultantPage_4280() {
+		RFO_DB = driver.getDBNameRFO();  
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantWithPWSEmailID = null; //TestConstants.CONSULTANT_USERNAME;
+		String consultantPWSURL = null; //TestConstants.CONSULTANT_COM_URL;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+
+		// For .com site
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Clear Home Town City Name Field
+		storeFrontConsultantPage.eraseHomeTownCityName();
+		storeFrontHomePage.clickOnSaveAfterEditPWS();
+		//click on Personalize My Profile link again and validate the change made
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//validate HomeTown City field is blank
+		s_assert.assertTrue(storeFrontConsultantPage.validateHomeTownCityFieldValueIsNull(),"Home Town City Field Value is not null");
+
+		// For .biz site
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Clear Home Town City Name Field
+		storeFrontConsultantPage.eraseHomeTownCityName();
+		storeFrontHomePage.clickOnSaveAfterEditPWS();
+		//click on Personalize My Profile link again and validate the change made
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//validate HomeTown City field is blank
+		s_assert.assertTrue(storeFrontConsultantPage.validateHomeTownCityFieldValueIsNull(),"Home Town City Field Value is not null");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3997:Login in as RC user and go to find a consultant page
+	@Test
+	public void testLoginAsRCUserAndValidateSearchFieldOnFindAConsPage_3997(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		//Navigate to find A Consultant page..
+		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
+		//verify search field should be present on find a consultant page
+		s_assert.assertTrue(storeFrontHomePage.validateConsultantSearchFieldPresent(),"Sponsor/Consultant Search field is not present on 'Find A Consultant' Page");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-3995:Login in as PC user and go to find a consultant page
+	@Test
+	public void testLoginAsPCUserAndValidateSearchFieldOnFindAConsPage_3995() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		country = driver.getCountry();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product with the price less than $80 and proceed to buy it
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//1 product is in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		logger.info("1 product is successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+
+		//Pop for PC threshold validation
+		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
+
+		//In the Cart page add one more product
+		storeFrontHomePage.addAnotherProduct();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		//Navigate to find A Consultant page..
+		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
+		//verify search field should be present on find a consultant page
+		s_assert.assertTrue(storeFrontHomePage.validateConsultantSearchFieldPresent(),"Sponsor/Consultant Search field is not present on 'Find A Consultant' Page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3993:Search with US terminated consultnat's Full name
+	@Test
+	public void testSearchWithUSTerminatedConsultantFullName_3993() throws InterruptedException
+	{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//connect with a consultant
+		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+		//search with terminated consultant
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
+		//verify invalid sponsor
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated Sponsor is Present!!");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-3989:Search with CA terminated consultnat's Full name
+	@Test
+	public void testSearchWithCATerminatedConsultantFullName_3989() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//connect with a consultant
+		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+		//search with terminated consultant
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
+		//verify invalid sponsor
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated Sponsor is Present!!");
+		s_assert.assertAll(); 
+	}
+
 }

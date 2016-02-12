@@ -216,7 +216,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1929:Verify Consultant Customer detail page UI
-	@Test(enabled=false) //WIP 
+	@Test 
 	public void testVerifyConsultantCustomerDetailPageUI_1929(){
 		String randomCustomerSequenceNumber = null;
 		String accountStatus = "Account Status";

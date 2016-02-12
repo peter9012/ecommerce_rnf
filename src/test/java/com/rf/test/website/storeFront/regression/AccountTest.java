@@ -2123,225 +2123,225 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
 		s_assert.assertAll();
 	}
-	
+
 	//Hybris Project-4278:Update USer name and Upgrade USer
-		@Test
-		public void testUpdateUserNameAndUpgradeUser_4278() throws InterruptedException{
-			if(driver.getCountry().equalsIgnoreCase("ca")){
-				int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-				int randomNumForRCToConsultant = CommonUtils.getRandomNum(10000, 1000000);
-				int randomNumForPCToConsultant = CommonUtils.getRandomNum(10000, 1000000);
-				String userName = TestConstants.FIRST_NAME+randomNum;
-				RFO_DB = driver.getDBNameRFO();
-				List<Map<String, Object>> randomRCList =  null;
-				String rcUserEmailID =null;
-				String accountId = null;
-				String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-				String firstName=TestConstants.FIRST_NAME+randomNum;
-				String lastName = "lN";
-				enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-				regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
-				kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
-				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-				city = TestConstants.CITY_CA;
-				postalCode = TestConstants.POSTAL_CODE_CA;
-				phoneNumber = TestConstants.PHONE_NUMBER_CA;
-				storeFrontHomePage = new StoreFrontHomePage(driver);
-				while(true){
-					randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
-					rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-					accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-					logger.info("Account Id of the user is "+accountId);
-					storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-					boolean isError = driver.getCurrentUrl().contains("error");
-					if(isError){
-						logger.info("login error for the user "+rcUserEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				} 
-				storeFrontRCUserPage.clickOnWelcomeDropDown();
-				storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-				storeFrontAccountInfoPage.enterUserName(userName);
-				storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
-				logout();
-				storeFrontHomePage.loginAsRCUser(userName, password);
-				s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-				//Upgrade RC To PC
-				storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-				storeFrontHomePage.clickAddToBagButton(driver.getCountry());
-				storeFrontHomePage.clickOnCheckoutButton();
-				storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-				storeFrontHomePage.checkPCPerksCheckBox();
-				storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-				//Enter Billing Profile
-				storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-				storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-				storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-				storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-				storeFrontHomePage.selectNewBillingCardExpirationDate();
-				storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-				storeFrontHomePage.selectNewBillingCardAddress();
-				storeFrontHomePage.clickOnSaveBillingProfile();
-				storeFrontHomePage.clickOnBillingNextStepBtn();
-				storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-				storeFrontHomePage.clickPlaceOrderBtn();
-				storeFrontHomePage.clickOnRodanAndFieldsLogo();
-				s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-				logout();
-				// RC TO Consultant
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				while(true){
-					randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
-					rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-					accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-					logger.info("Account Id of the user is "+accountId);
-					storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-					boolean isError = driver.getCurrentUrl().contains("error");
-					if(isError){
-						logger.info("login error for the user "+rcUserEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				} 
-				String userNameForConsultant = TestConstants.FIRST_NAME+randomNumForRCToConsultant;
-				storeFrontRCUserPage.clickOnWelcomeDropDown();
-				storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-				storeFrontAccountInfoPage.enterUserName(userNameForConsultant);
-				storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
-				logout();
-				storeFrontHomePage.loginAsRCUser(userNameForConsultant, password);
-				s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-				logout();
-				String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-				String socialInsuranceNumber2 = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-				//Enroll consultant with inactive rc user
-				storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-				storeFrontHomePage.searchCID();
-				storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-				storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
-				storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
-				storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-				s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
-				storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
-				storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
-				s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
-				storeFrontHomePage.enterFirstName(firstName);
-				storeFrontHomePage.enterLastName(lastName);
-				storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-				storeFrontHomePage.enterPassword(password);
-				storeFrontHomePage.enterConfirmPassword(password);
-				storeFrontHomePage.enterAddressLine1(addressLine1);
-				storeFrontHomePage.enterCity(city);
-				storeFrontHomePage.selectProvince();
-				storeFrontHomePage.enterPostalCode(postalCode);
-				storeFrontHomePage.enterPhoneNumber(phoneNumber);
-				storeFrontHomePage.clickEnrollmentNextBtn();
-				storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-				storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-				storeFrontHomePage.selectNewBillingCardExpirationDate();
-				storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-				storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-				storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-				storeFrontHomePage.clickEnrollmentNextBtn();
-				s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-				storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-				storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-				storeFrontHomePage.checkTheIAgreeCheckBox();
-				storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-				storeFrontHomePage.clickOnEnrollMeBtn();
-				storeFrontHomePage.clickOnConfirmAutomaticPayment();
-				s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				//PC to consultant
-				List<Map<String, Object>> randomPCUserList;
-				String pcUserEmailID = null;
-				while(true){
-					randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-					pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
-					logger.info("Account Id of the user is "+accountId);
-					storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-					boolean isLoginError = driver.getCurrentUrl().contains("error");
-					if(isLoginError){
-						logger.info("Login error for the user "+pcUserEmailID);
-						driver.get(driver.getURL());
-					}
-					else
-						break;
-				}	
-				String userNameForPCToConsultant = TestConstants.FIRST_NAME+randomNumForPCToConsultant;
-				logger.info("login is successful");
-				storeFrontPCUserPage.clickOnWelcomeDropDown();
-				storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-				storeFrontAccountInfoPage.enterUserName(userNameForPCToConsultant);
-				storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
-				logout();
-				storeFrontHomePage.loginAsRCUser(userNameForPCToConsultant, password);
-				s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-				logout();
-				//get sponsor ID
-				List<Map<String, Object>> sponserList  = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
-				String sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
-				// sponser search by Account Number
-				List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
-				String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-				storeFrontHomePage.searchCID(sponsorId);
-				storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-				storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
-				storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
-				storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-				s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
-				storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
-				storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
-				s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Pc user is not terminated successfully");
-				storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-				storeFrontHomePage.clickOnEnrollUnderLastUpline();
-				logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
-				storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-				storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
-				storeFrontHomePage.enterFirstName(firstName);
-				storeFrontHomePage.enterLastName(lastName);
-				storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-				storeFrontHomePage.enterPassword(password);
-				storeFrontHomePage.enterConfirmPassword(password);
-				storeFrontHomePage.enterAddressLine1(addressLine1);
-				storeFrontHomePage.enterCity(city);
-				storeFrontHomePage.selectProvince();
-				storeFrontHomePage.enterPostalCode(postalCode);
-				storeFrontHomePage.enterPhoneNumber(phoneNumber);
-				storeFrontHomePage.clickEnrollmentNextBtn();
-				storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-				storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-				storeFrontHomePage.selectNewBillingCardExpirationDate();
-				storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-				storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber2);
-				storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-				storeFrontHomePage.clickEnrollmentNextBtn();
-				s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-				storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-				storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-				storeFrontHomePage.checkTheIAgreeCheckBox();
-				storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-				storeFrontHomePage.clickOnEnrollMeBtn();
-				storeFrontHomePage.clickOnConfirmAutomaticPayment();
-				s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-				storeFrontHomePage.clickOnRodanAndFieldsLogo();
-				storeFrontHomePage.clickOnWelcomeDropDown();
-				storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-				// Verify Order is present
-				s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
-				s_assert.assertAll();
-			}else{
-				logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-			}
+	@Test
+	public void testUpdateUserNameAndUpgradeUser_4278() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+			int randomNumForRCToConsultant = CommonUtils.getRandomNum(10000, 1000000);
+			int randomNumForPCToConsultant = CommonUtils.getRandomNum(10000, 1000000);
+			String userName = TestConstants.FIRST_NAME+randomNum;
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomRCList =  null;
+			String rcUserEmailID =null;
+			String accountId = null;
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String firstName=TestConstants.FIRST_NAME+randomNum;
+			String lastName = "lN";
+			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+			regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			storeFrontRCUserPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterUserName(userName);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			storeFrontHomePage.loginAsRCUser(userName, password);
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			//Upgrade RC To PC
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+			storeFrontHomePage.clickAddToBagButton(driver.getCountry());
+			storeFrontHomePage.clickOnCheckoutButton();
+			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+			storeFrontHomePage.checkPCPerksCheckBox();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter Billing Profile
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			logout();
+			// RC TO Consultant
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			String userNameForConsultant = TestConstants.FIRST_NAME+randomNumForRCToConsultant;
+			storeFrontRCUserPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterUserName(userNameForConsultant);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			storeFrontHomePage.loginAsRCUser(userNameForConsultant, password);
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			logout();
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String socialInsuranceNumber2 = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			//Enroll consultant with inactive rc user
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID();
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+			s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
+			storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
+			storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
+			s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
+			storeFrontHomePage.enterFirstName(firstName);
+			storeFrontHomePage.enterLastName(lastName);
+			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+			storeFrontHomePage.enterPassword(password);
+			storeFrontHomePage.enterConfirmPassword(password);
+			storeFrontHomePage.enterAddressLine1(addressLine1);
+			storeFrontHomePage.enterCity(city);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(postalCode);
+			storeFrontHomePage.enterPhoneNumber(phoneNumber);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+			storeFrontHomePage.checkTheIAgreeCheckBox();
+			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+			storeFrontHomePage.clickOnEnrollMeBtn();
+			storeFrontHomePage.clickOnConfirmAutomaticPayment();
+			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			//PC to consultant
+			List<Map<String, Object>> randomPCUserList;
+			String pcUserEmailID = null;
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}	
+			String userNameForPCToConsultant = TestConstants.FIRST_NAME+randomNumForPCToConsultant;
+			logger.info("login is successful");
+			storeFrontPCUserPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterUserName(userNameForPCToConsultant);
+			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
+			logout();
+			storeFrontHomePage.loginAsRCUser(userNameForPCToConsultant, password);
+			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+			logout();
+			//get sponsor ID
+			List<Map<String, Object>> sponserList  = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			String sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+			// sponser search by Account Number
+			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
+			String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID(sponsorId);
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+			storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+			s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
+			storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
+			storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
+			s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Pc user is not terminated successfully");
+			storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+			storeFrontHomePage.clickOnEnrollUnderLastUpline();
+			logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
+			storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+			storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+			storeFrontHomePage.enterFirstName(firstName);
+			storeFrontHomePage.enterLastName(lastName);
+			storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+			storeFrontHomePage.enterPassword(password);
+			storeFrontHomePage.enterConfirmPassword(password);
+			storeFrontHomePage.enterAddressLine1(addressLine1);
+			storeFrontHomePage.enterCity(city);
+			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.enterPostalCode(postalCode);
+			storeFrontHomePage.enterPhoneNumber(phoneNumber);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber2);
+			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+			storeFrontHomePage.checkTheIAgreeCheckBox();
+			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+			storeFrontHomePage.clickOnEnrollMeBtn();
+			storeFrontHomePage.clickOnConfirmAutomaticPayment();
+			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+			// Verify Order is present
+			s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
+	}
 
 
 }

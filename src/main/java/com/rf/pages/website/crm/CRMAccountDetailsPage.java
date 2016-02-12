@@ -424,4 +424,31 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}
 	}
 
+	public void clickAddNewShippingProfileBtn(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//input[@value='New Shipping Profile']"));
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void enterShippingAddress(String addressLine1, String city, String state, String postalCode, String phoneNumber){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//label[contains(text(),'Address Line 1')]/following::input[1]"));
+		driver.type(By.xpath("//label[contains(text(),'Address Line 1')]/following::input[1]"), addressLine1);
+		driver.type(By.xpath("//label[contains(text(),'Locale')]/following::input[1]"), city);
+		driver.type(By.xpath("//label[text()='Region']/following::input[1]"), state);
+		driver.type(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"), postalCode);
+		driver.type(By.xpath("//label[contains(text(),'Phone')]/following::input[1]"), phoneNumber);
+	}
+
+	public String getDefaultSelectedShippingAddressName(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElement(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//img[@title='Checked']/../preceding::td[1]")).getText();
+	}
+
 }

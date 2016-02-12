@@ -79,7 +79,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-		
+
 		//-------------------FOR US----------------------------------
 
 		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
@@ -191,7 +191,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String SKUValue = null;
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -286,9 +286,9 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(getOrderNumberFromCsCockpitUIOnOrderTab.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
 		s_assert.assertAll();
 	}
-	
+
 	//Hybris Project-1777:To verify User permission for customer search
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyUserPermissionForCustomerSearch_1777(){
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -325,7 +325,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1778:To verify User permission for order search
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyUserPermissionForOrderSearch_1778(){
 		cscockpitLoginPage.enterUsername(TestConstants.ADMIN_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -359,5 +359,5 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 	}
 
 
-	
+
 }

@@ -408,6 +408,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Run now  link in order from Autoship template section is active on Autoship template page for inactive user.");
 		s_assert.assertAll();
 	}
+	
 	// Hybris Project-1702:To verify edit CRP Autoship template
 	@Test(enabled=false)//WIP
 	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
@@ -562,7 +563,127 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
 		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
 		s_assert.assertAll();
+	}
 
+	//Hybris Project-1723:Verify the Find Autoship Search Criteria
+	@Test
+	public void testFindAutoshipSearchCriteria_1723(){
+		String searchByDDValue_All = "All";
+		String searchByDDValue_All_Due_Today = "All Due Today"; 
+		String searchByDDValue_NextDueDate = "Next Due Date";	
+		String templateTypeDDValue_All = "All";
+		String templateTypeDDValue_Pulse = "Pulse";
+		String templateTypeDDValue_Consultant = "Consultant";
+		String templateTypeDDValue_PC_Customer = "PC Customer";
+		String lastOrderStatusDDValue_All = "All";
+		String lastOrderStatusDDValue_SUCCESSFUL = "SUCCESSFUL";
+		String lastOrderStatusDDValue_FAILED = "FAILED";
+		String lastOrderStatusDDValue_CANCELLED = "CANCELLED";
+		String templateStatusDDValue_All = "All";
+		String templateStatusDDValue_PENDING = "PENDING";
+		String templateStatusDDValue_CANCELLED = "CANCELLED";
+		String templateStatusDDValue_FAILED = "FAILED";
+		String searchResultColumn_Template = "Template#";
+		String searchResultColumn_Type = "Type";
+		String searchResultColumn_TemplateStatus = "Template status";
+		String searchResultColumn_Customer = "Customer";
+		String searchResultColumn_AccountStatus = "Account Status";
+		String searchResultColumn_Sponsor = "Sponsor";
+		String searchResultColumn_NextDueDate = "Next Due Date";
+		String searchResultColumn_Details = "Details";
+		String searchResultColumn_ConsecutiveOrders = "Consecutive orders";
+		String searchResultColumn_LastOrder = "Last Order #";
+		String searchResultColumn_LastOrderStatus = "Last Order Status";
+		String searchResultColumn_FailedReason = "Failed Reason";
+
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindAutoshipInLeftNavigation();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifySearchByFieldPresentOnAutoshipSearch(),"Search By field is not present On autoship Search page");
+		cscockpitAutoshipSearchTabPage.clickSearchByDropDown();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchByDropDownValuePresent(searchByDDValue_All),"search By field DD option "+searchByDDValue_All+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchByDropDownValuePresent(searchByDDValue_All_Due_Today),"search By field DD option "+searchByDDValue_All_Due_Today+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchByDropDownValuePresent(searchByDDValue_NextDueDate),"search By field DD option "+searchByDDValue_NextDueDate+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isCalenderIconPresent(),"Calender icon is not present On autoship Search page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyTemplateTypeFieldPresentOnAutoshipSearch(),"Template type field is not present on autoship search page");
+		cscockpitAutoshipSearchTabPage.clickTemplateTypeDropDown();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateTypeDropDownValuePresent(templateTypeDDValue_All),"template field DD option "+templateTypeDDValue_All+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateTypeDropDownValuePresent(templateTypeDDValue_Pulse),"template field DD option "+templateTypeDDValue_Pulse+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateTypeDropDownValuePresent(templateTypeDDValue_Consultant),"template field DD option "+templateTypeDDValue_Consultant+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateTypeDropDownValuePresent(templateTypeDDValue_PC_Customer),"template field DD option "+templateTypeDDValue_PC_Customer+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyLastOrderStatusFieldPresentOnAutoshipSearch(),"Order status field is not present on autoship search page");
+		cscockpitAutoshipSearchTabPage.clickLastOrderStatusDropDown();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.islastOrderStatusDropDownValuePresent(lastOrderStatusDDValue_All),"last order status DD option "+lastOrderStatusDDValue_All+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.islastOrderStatusDropDownValuePresent(lastOrderStatusDDValue_SUCCESSFUL),"last order status DD option "+lastOrderStatusDDValue_SUCCESSFUL+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.islastOrderStatusDropDownValuePresent(lastOrderStatusDDValue_FAILED),"last order status DD option "+lastOrderStatusDDValue_FAILED+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.islastOrderStatusDropDownValuePresent(lastOrderStatusDDValue_CANCELLED),"last order status DD option "+lastOrderStatusDDValue_CANCELLED+" is not present on UI");
+		cscockpitAutoshipSearchTabPage.clickTemplateStatusDropDown();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_All),"template status DD option "+templateStatusDDValue_All+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_PENDING),"template status DD option "+templateStatusDDValue_PENDING+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_CANCELLED),"template status DD option "+templateStatusDDValue_CANCELLED+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_FAILED),"template status DD option "+templateStatusDDValue_FAILED+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyCustomerNameCidFieldPresentOnAutoshipPage(),"cusotmer name and cid field not present on the page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifySponsorNameCidFieldPresentOnAutoshipPage(),"SponsorName field not present on the page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyTemplateNumberCidFieldPresentOnAutoshipPage(),"TemplateNumber field not present on the page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyRunSelectedButtonPresent(),"Run selected button is not present on the page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifySearchAutoshipButtonPresent(),"search autoship button is not present on the page");
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		//assert search results column name
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_Template),"Search reults column name "+searchResultColumn_Template+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_Type),"Search reults column name "+searchResultColumn_Type+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_TemplateStatus),"Search reults column name "+searchResultColumn_TemplateStatus+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_Customer),"Search reults column name "+searchResultColumn_Customer+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_AccountStatus),"Search reults column name "+searchResultColumn_AccountStatus+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_Sponsor),"Search reults column name "+searchResultColumn_Sponsor+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_NextDueDate),"Search reults column name "+searchResultColumn_NextDueDate+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_Details),"Search reults column name "+searchResultColumn_Details+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_ConsecutiveOrders),"Search reults column name "+searchResultColumn_ConsecutiveOrders+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_LastOrder),"Search reults column name "+searchResultColumn_LastOrder+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_LastOrderStatus),"Search reults column name "+searchResultColumn_LastOrderStatus+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSearchResultsColumnNamePresent(searchResultColumn_FailedReason),"Search reults column name "+searchResultColumn_FailedReason+" is not present on UI");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isSelectAllColumnPresent(), "Select all link is not present in search reults");
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isAutoshipTemplateDisplayedInAutoshipTemplateTab(), "After click autoship template id user is not redirecting to autoship template page");
+		cscockpitAutoshipSearchTabPage.clickAutoshipSearchTab();
+		cscockpitAutoshipSearchTabPage.clickLastOrderNumber(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.isOrderTemplateDisplayedInOrderTab(), "After click order number user is not redirecting to order template page");
+		cscockpitAutoshipSearchTabPage.clickAutoshipSearchTab();
+		cscockpitAutoshipSearchTabPage.clickLastOrderStatusDropDown();
+		cscockpitAutoshipSearchTabPage.selectlastOrderStatusDropDownValue(lastOrderStatusDDValue_SUCCESSFUL);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String lastOrder = cscockpitAutoshipSearchTabPage.getLastOrderStatus(randomCustomerSequenceNumber);
+		s_assert.assertTrue(lastOrder.contains("SUCCESSFUL"), "select last order status as successful expected result is successful actual on UI is" +lastOrder+" in autoship template page");
+		cscockpitAutoshipSearchTabPage.clickLastOrderStatusDropDown();
+		cscockpitAutoshipSearchTabPage.selectlastOrderStatusDropDownValue(lastOrderStatusDDValue_All);
+		cscockpitAutoshipSearchTabPage.enterCustomerNameOrCID(TestConstants.SPONSOR_ID_FOR_PC);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isAutoshipSearchResultsPresent(),"After click on search autoship button results are not present on the page");
+		cscockpitAutoshipSearchTabPage.enterCustomerNameOrCID(TestConstants.INVALID_SPONSOR_NAME);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		s_assert.assertFalse(cscockpitAutoshipSearchTabPage.isAutoshipSearchResultsPresent(),"After click on search autoship button results are present on the page when entered Invalid customer name");
+		cscockpitAutoshipSearchTabPage.clearCustomerNameOrCID();
+		//assert with search by all due date
+		cscockpitAutoshipSearchTabPage.clickSearchByDropDown();
+		cscockpitAutoshipSearchTabPage.selectSearchByDropDownValue(searchByDDValue_All_Due_Today);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		s_assert.assertFalse(cscockpitAutoshipSearchTabPage.isCalenderIconPresentForAllDueDate(),"Calender icon is present On autoship Search page after select All due date dd value");
+		//assert with search by next due date
+		cscockpitAutoshipSearchTabPage.clickSearchByDropDown();
+		cscockpitAutoshipSearchTabPage.selectSearchByDropDownValue(searchByDDValue_NextDueDate);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		//assert with failed order
+		cscockpitAutoshipSearchTabPage.clickSearchByDropDown();
+		cscockpitAutoshipSearchTabPage.selectSearchByDropDownValue(searchByDDValue_All);
+		cscockpitAutoshipSearchTabPage.clickLastOrderStatusDropDown();
+		cscockpitAutoshipSearchTabPage.selectlastOrderStatusDropDownValue(lastOrderStatusDDValue_FAILED);
+		cscockpitAutoshipSearchTabPage.clickSearchAutoshipButton();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		lastOrder = cscockpitAutoshipSearchTabPage.getLastOrderStatus(randomCustomerSequenceNumber);
+		s_assert.assertTrue(lastOrder.contains("FAILED"), "select last order status as failed expected result is FAILED actual on UI is" +lastOrder+" in autoship template page");
+		s_assert.assertAll();
 	}
 }
 

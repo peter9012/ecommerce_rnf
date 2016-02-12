@@ -733,4 +733,13 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
 
+	public String converPSTDateToUIFormat(String date){
+		String[] pstDate = date.split("\\ ");
+		String day = pstDate[1].split("\\,")[0];
+		String month = pstDate[0];
+		String year = pstDate[2];
+		String orderDate = day+" "+month+", "+year;
+		return orderDate;
+	}
+
 }

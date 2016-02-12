@@ -3162,7 +3162,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
@@ -3211,9 +3211,8 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCrpStatusAfterReactivation(),"CRP Status is present");
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPulseStatusAfterReactivation(currentPulseStatus),"pulse status is not same as old status");
-		//  storeFrontHomePage.clickNextButton();
+		s_assert.assertFalse(storeFrontAccountInfoPage.getCRPStatusFromUI().equalsIgnoreCase(currentCRPStatus),"CRP Status is expected to be not enrolled");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPulseStatusAfterReactivation(currentPulseStatus),"pulse status is not same as old status");	
 		s_assert.assertAll();
 	}
 

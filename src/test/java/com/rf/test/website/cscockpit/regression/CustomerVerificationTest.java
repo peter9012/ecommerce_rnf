@@ -74,7 +74,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-1953:To verify Sales Override from Customer detail Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifySalesOverrideFromCustomerDetailPage_1953() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

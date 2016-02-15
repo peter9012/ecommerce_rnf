@@ -3211,7 +3211,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		s_assert.assertFalse(storeFrontAccountInfoPage.getCRPStatusFromUI().equalsIgnoreCase(currentCRPStatus),"CRP Status is expected to be not enrolled");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getCRPStatusFromUI().equalsIgnoreCase(currentCRPStatus),"CRP Status is expected to be enrolled");
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPulseStatusAfterReactivation(currentPulseStatus),"pulse status is not same as old status");	
 		s_assert.assertAll();
 	}

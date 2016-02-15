@@ -5,9 +5,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.utils.CommonUtils;
 
 public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	private static final Logger logger = LogManager
@@ -114,8 +116,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			driver.waitForElementPresent(By.xpath("//span[@class='Number']"));
 			return driver.isElementPresent(By.xpath("//span[@class='Number']"));
 		}
-		finally{
-			System.out.println("finally block");
+		finally{			
 			switchToPreviousTab();
 		}
 	}
@@ -141,11 +142,73 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//th[text()='"+label+"']"));
 	}
 
+	public boolean isLabelOnBillingAddressSectionPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Billing')]/following::table[@class='list'][1]//th[text()='"+label+"']"));
+	}
+
+	public void clickRandomBillingProfile(){
+		int totalBillingProfile = Integer.parseInt(getBillingProfilesCount());
+		int randomBillingProfileNumber = CommonUtils.getRandomNum(1, totalBillingProfile);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//h3[contains(text(),'Billing')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]["+randomBillingProfileNumber+"]//a"));
+		driver.switchTo().defaultContent();
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isLabelOnBillingProfileDetailSectionOnNewTabPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Billing Profile Detail')]/following::table[@class='detailList'][1]//td[text()='"+label+"']"));
+	}
+
+	public boolean isLabelOnBillingAddressSectionOnNewTabPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Billing Address')]/following::table[@class='detailList'][1]//td[text()='"+label+"']"));
+	}
+
+	public boolean isCreditCardOnBillingProfileDetailSectionOnNewTabIsSixteenEncryptedDigit(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String creditCardNumber = driver.findElement(By.xpath("//h3[contains(text(),'Billing Profile Detail')]/following::table[@class='detailList'][1]//td[text()='CC#(Last 4 Digits)']/following::td[1]")).getText();
+		if(creditCardNumber.contains("************")&&creditCardNumber.length()==16){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isExpiryYearOnBillingProfileDetailSectionOnNewTabIsInYYYYFormat(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String expiryYear = driver.findElement(By.xpath("//h3[contains(text(),'Billing Profile Detail')]/following::table[@class='detailList'][1]//td[text()='Valid Thru']/following::td[1]")).getText();
+		System.out.println("exp year is "+expiryYear);
+		if(expiryYear.split("/")[1].length()==4){
+			return true;
+		}
+		return false;
+	}
+
 	public String getShippingProfilesCount(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return String.valueOf(driver.findElements(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]")).size());		
+	}
+
+	public String getBillingProfilesCount(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return String.valueOf(driver.findElements(By.xpath("//h3[contains(text(),'Billing')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]")).size());		
 	}
 
 	public String getCountDisplayedWithLink(String link){
@@ -159,6 +222,14 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean isOnlyOneShippingProfileIsDefault(){
 		int defaultShippingProfilesCount = driver.findElements(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]//img[@title='Checked']")).size();
 		if(defaultShippingProfilesCount==1){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isOnlyOneBillingProfileIsDefault(){
+		int defaultBillingProfilesCount = driver.findElements(By.xpath("//h3[contains(text(),'Billing')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]//img[@title='Checked']")).size();
+		if(defaultBillingProfilesCount==1){
 			return true;
 		}
 		return false;
@@ -451,4 +522,82 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return driver.findElement(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//img[@title='Checked']/../preceding::td[1]")).getText();
 	}
 
+	public void updateAccountNameField(String AccountName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.findElement(By.xpath("//label[contains(text(),'Account Name')]/following::input[1]")).clear();
+		driver.type(By.xpath("//label[contains(text(),'Account Name')]/following::input[1]"), AccountName);
+	}
+
+	public String getAccountName(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElement(By.xpath("//td[contains(text(),'Account Name')]/following-sibling::td[1]")).getText();
+	}
+
+
+	public boolean isMouseHoverAutoshipSectionPresentOfFields(String field){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		actions.moveToElement(driver.findElement(By.xpath("//span[contains(text(),'Autoships')]"))).build().perform();
+		return driver.isElementPresent(By.xpath("//h3[text()='Autoships']/following::th[text()='"+field+"']"));
+	}
+
+	public String getCountAutoships(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Autoships')]"));
+		String countAutoshipText = driver.findElement(By.xpath("//span[contains(text(),'Autoships')]/span")).getText();
+		String countAutoship = countAutoshipText.substring(1, countAutoshipText.length()-1);
+		driver.switchTo().defaultContent();
+		logger.info("AutoShips count from UI "+countAutoship);
+		return countAutoship;
+	}
+
+	public void clickAutoships(){
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Autoships')]"));
+		driver.findElement(By.xpath("//span[contains(text(),'Autoships')]")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public String getCountAutoshipNumber(){
+		driver.pauseExecutionFor(4000);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Autoships')]/following::div[@class='pbBody'][1]//tr[contains(@class,'dataRow')]"));
+		List<WebElement> autoshipElements = driver.findElements(By.xpath("//h3[contains(text(),'Autoships')]/following::div[@class='pbBody'][1]//tr[contains(@class,'dataRow')]"));
+		int countAutoship = autoshipElements.size();
+		String countAutoshipNumber = Integer.toString(countAutoship);
+		logger.info("AutoShips count from Account Details Page "+countAutoship);
+		return countAutoshipNumber;
+	}
+
+	public void clickFirstAutoshipID(){
+		driver.pauseExecutionFor(4000);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
+		driver.click(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
+		System.out.println("Clicked");
+	}
+
+	public boolean isLabelUnderAutoshipNumberPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[text()='Autoship Template Details']/following::td[text()='"+label+"'][1]"));
+	}
+
+	public boolean isLabelUnderPendingAutoshipBreakdownPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[text()='Pending Autoship Breakdown']/following::td[text()='"+label+"'][1]"));
+	}
 }

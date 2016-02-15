@@ -246,6 +246,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
+	
 	public void waitForCRMLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[contains(text(),'Loading')]");

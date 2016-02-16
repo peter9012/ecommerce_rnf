@@ -355,7 +355,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4493:Add Shipping Profile for RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddShippingProfileForRC_4493() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomRCList =  null;
@@ -404,7 +404,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4480:Add the Account Notes for PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddAccountNoteForPCUser_4480() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -465,7 +465,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4481:Add the Account Notes for RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddAccountNoteForRC_4481() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -1221,5 +1221,33 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 	}
 
-
+	// Hybris Project-4526:Search for account by Account number
+	@Test(enabled=false)//WIP
+	public void testSearchForAccountByAccountNumber_4526() throws InterruptedException {
+		String accountID = null;
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmContactDetailsPage= new CRMContactDetailsPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(accountID);
+		//verify on the left side of the search page Accounts,Contacts,Activities matching the search criteria are present?
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(),"Accounts link is not present in the left navigation section");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(),"Contacts link is not present in the left navigation section");
+		s_assert.assertTrue(crmHomePage.isAccountActivitiesLinkPresentInLeftNaviagation(),"Accounts activities link is not present in the left navigation section");
+		//verify order of details is displayed in list view?
+		s_assert.assertTrue(crmHomePage.isOrderOfDetailsPresentInListView(),"Order of details is not present in list view");
+		//click on the Account name of the required account under accounts section
+		crmHomePage.clickOnAccountNameForAccountDetailPageInAccountSection();
+		//verify account details page should be displayed?
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account details page is not present");
+		s_assert.assertAll();
+	}	
 }

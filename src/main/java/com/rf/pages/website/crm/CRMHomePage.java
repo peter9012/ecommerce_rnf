@@ -91,14 +91,14 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	//		driver.switchTo().defaultContent();
 	//	}
 
-	//	public void clickOnAccountNameForAccountDetailPageInAccountSection(){
-	//		driver.switchTo().defaultContent();
-	//		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
-	//		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
-	//		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
-	//		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
-	//		driver.switchTo().defaultContent();	
-	//	}
+	public void clickOnAccountNameForAccountDetailPageInAccountSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.switchTo().defaultContent();	
+	}
 	//
 	//	public boolean verifyAccountTypeForRCUser(){
 	//		driver.waitForElementPresent(ACCOUNT_TYPE);
@@ -321,6 +321,13 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public boolean isOrderOfDetailsPresentInListView(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
+		return driver.isElementPresent(By.xpath(".//*[@id='Account']/div[2]/div"));
 	}
 
 }

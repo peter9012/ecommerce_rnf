@@ -21,6 +21,7 @@ import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
@@ -50,6 +51,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;	
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -69,13 +71,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 	}
 
 	private String RFO_DB = null;
 
 	//Hybris Project-1749:To verify Add address functionality in the Customer detail Page for consultant
-	@Test(enabled=false)//WIP
-	public void testVerifyAddAddressFunctionalityInCustomerDetailPageForConsultant_1749(){
+	@Test
+	public void testVerifyAddAddressFunctionalityInCustomerDetailPageForConsultant_1749() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -90,6 +93,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		String phoneNumber = null;
 		String contry = null;
 		List<Map<String, Object>> randomConsultantList =  null;
+
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			addressLine = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
@@ -110,29 +114,46 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getStoreFrontURL()+"/us");
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+				storeFrontAccountInfoPage.clickOnAutoShipStatus();
+				if(storeFrontAccountInfoPage.verifyCrpStatusAfterReactivation()==true){
+					logout();
+					logger.info("CRP is not active for the user "+consultantEmailID);
+					driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+					continue;
+				}else{
+					break;	
+				}
+
+			}
 		}
 		logout();
 		logger.info("login is successful");		
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerSearchTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab();
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
 		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
 		cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
 		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
@@ -145,7 +166,11 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -158,22 +183,38 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		//find a user from store front
 		driver.get(driver.getStoreFrontURL()+"/us");
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+				storeFrontAccountInfoPage.clickOnAutoShipStatus();
+				if(storeFrontAccountInfoPage.verifyCrpStatusAfterReactivation()==true){
+					logout();
+					logger.info("CRP is not active for the user "+consultantEmailID);
+					driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+					continue;
+				}else{
+					break;	
+				}
+			}
 		}
 		logout();
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -201,9 +242,9 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-1750:To verify Add address functionality in the Customer detail Page for PC
-	@Test(enabled=false)//WIP
-	public void testVerifyAddAddressFunctionalityInCustomerDetailPageForPC(){
+	//Hybris Project-1750:To verify Add address functionality in the Customer detail Page for PC
+	@Test
+	public void testVerifyAddAddressFunctionalityInCustomerDetailPageForPC_1750(){
 		String randomCustomerSequenceNumber = null;
 		String pcEmailID = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -239,7 +280,11 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -250,7 +295,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		//get user
 		driver.get(driver.getStoreFrontURL()+"/us");
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -266,7 +311,11 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -297,7 +346,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1751:To verify Add address functionality in the Customer detail Page for RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddAddressFunctionalityInCustomerDetailPageForRC_1751(){
 		String randomCustomerSequenceNumber = null;
 		String rcEmailID = null;
@@ -311,26 +360,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		String province = null;
 		String phoneNumber = null;
 		String contry = null;
-		List<Map<String, Object>> randomRCList =  null;
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			addressLine = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postal = TestConstants.POSTAL_CODE_CA;
-			province = TestConstants.PROVINCE_ALBERTA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			contry = "Canada";
-
-		}else{
-			addressLine = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postal = TestConstants.POSTAL_CODE_US;
-			province = TestConstants.PROVINCE_ALABAMA_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			contry = "United States";
-		}
-		//-------------------FOR US----------------------------------
+		addressLine = TestConstants.ADDRESS_LINE_1_US;
+		city = TestConstants.CITY_US;
+		postal = TestConstants.POSTAL_CODE_US;
+		province = TestConstants.PROVINCE_ALABAMA_US;
+		phoneNumber = TestConstants.PHONE_NUMBER_US;
+		contry = "United States";
 		//For Inactive users
-		driver.get(driver.getCSCockpitURL());		
+		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
@@ -341,24 +378,35 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(),"Address can not be added for inactive user popup is not present");
 		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
-
-		//get user
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String noOfPages = cscockpitCustomerSearchTabPage.getTotalNumberOfPages();
+		int randomPageNum = CommonUtils.getRandomNum(1, Integer.parseInt(noOfPages));
+		cscockpitCustomerSearchTabPage.enterRandomPageNumber(""+randomPageNum);
+		String[] emailIDList = cscockpitCustomerSearchTabPage.getEmailIDInCustomerSearchTab();
 		driver.get(driver.getStoreFrontURL()+"/us");
 		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,"236"),RFO_DB);
-			rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+rcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+			for(int i=1; i<=emailIDList.length;i++){
+				rcEmailID = emailIDList[i];  
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+rcEmailID);
+					driver.get(driver.getStoreFrontURL()+"/us");
+					continue;
+				}
+				else{
+					break;
+				}
 			}
-			else
-				break;
+			break;
 		}
 		logout();
-		logger.info("login is successful");		
-		driver.get(driver.getCSCockpitURL());		
+		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");

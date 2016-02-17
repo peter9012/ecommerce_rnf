@@ -7,9 +7,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class PulseLSDLoginPage {
+	private static final Logger logger = LogManager
+			.getLogger(PulseLSDLoginPage.class.getName());
 
 	public static void main(String[] args) {
 		// Setting constant variables used throughout
@@ -29,27 +34,29 @@ public class PulseLSDLoginPage {
 		// Navigate to /#/login page
 		driver.get(baseUrl + "/#/login");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-			    
+		
+		// Verify elements are present
+		
 		// Test negative login scenario - wrong password
 		driver.findElement(By.xpath(".//*[@id='username']")).clear();
-		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='username']")).sendKeys("erica.burgess@yahoo.com");
+		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='password']")).sendKeys("wrongpassword");
-		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).click();
+		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).submit();
 				
 		// Test negative login scenario - login w/non-whitelisted user
 		driver.findElement(By.xpath(".//*[@id='username']")).clear();
-		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='username']")).sendKeys("renee.corker@gmail.com");
+		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='password']")).sendKeys("111maiden");
-		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).click();
+		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).submit();
 				  
 		// Test positive login scenario
 		driver.findElement(By.xpath(".//*[@id='username']")).clear();
-		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='username']")).sendKeys(username);
+		driver.findElement(By.xpath(".//*[@id='password']")).clear();
 		driver.findElement(By.xpath(".//*[@id='password']")).sendKeys(password);
-		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).click();
+		driver.findElement(By.xpath(".//*[@id='login_submit_button']")).submit();
 		
 		//Close browser
 		driver.close();

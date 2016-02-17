@@ -43,6 +43,26 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CREATE_PULSE_TEMPLATE_BTN_ON_POPUP = By.xpath("//div[contains(text(),'Add PWS Prefix')]/following::td[contains(text(),'Create Pulse Template')]");
 	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC = By.xpath("//span[contains(text(),'Autoship Templates')]/following::div[@class='csWidgetContent'][1]//div[@class='z-listbox-body']//tbody[2]//tr[2]/td[5]//span");
 	private static final By PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate'][1]/../../preceding-sibling::td//a");
+	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/ancestor::td[contains(@style,'display:none;')]");
+	private static final By SHIPPING_PROFILE_ERROR_POPUP_OK_BTN = By.xpath("//div[@class='z-window-modal']//td[text()='OK']");
+	private static final By USE_THIS_ADDRESS = By.xpath("//td[contains(text(),'Use this Address')]");
+	private static final By SHIPPING_ADDRESS_PROFILE_FIRST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[@class='z-listbox-body']//tbody[2]//tr[1]//td[1]/div");
+	private static final By SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX= By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/preceding::span[@class='z-checkbox'][1]/input");
+	private static final By YES_BTN_OF_UPDATE_AUTOSHIP_ADDRESS_POPUP = By.xpath("//td[text()='Yes']");
+	private static final By CREATE_NEW_ADDRESS_IN_SHIPPING_ADDRESS_POPUP = By.xpath("//td[contains(text(),'Create new address')]");
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/following::span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
+	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]");
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='pcAutoship']/following::span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
+	private static final By CLOSE_POPUP_OF_CREATE_NEW_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]/div[contains(@id,'close')]");
+	private static final By ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//span[contains(text(),'Address Cannot be added for Inactive user')]");
+	private static final By OK_BTN_OF_ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//td[text()='OK']");
+	private static final By ATTENDENT_NAME_TEXT_BOX = By.xpath("//span[text()='Attention']/following::input[1]");
+	private static final By CITY_TOWN_TEXT_BOX = By.xpath("//span[text()='City/Town']/following::input[1]");
+	private static final By POSTAL_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
+	private static final By COUNTRY_TEXT_BOX = By.xpath("//span[text()='Country']/following::input[1]");
+	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
+	private static final By PHONE_TEXT_BOX = By.xpath("//span[text()='Phone1']/following::input[1]");
+	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -301,4 +321,113 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		return autoshipID;
 	}
 
+	public boolean isSetAsAutoshipShippingProfileTxtPresentInAddNewShippingProfilePopup(){
+		driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT);
+		return driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT);  
+	}
+
+	public void clickCreateNewAddressBtn(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(CREATE_NEW_ADDRESS_IN_SHIPPING_ADDRESS_POPUP);
+		driver.click(CREATE_NEW_ADDRESS_IN_SHIPPING_ADDRESS_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+	}
+
+	public boolean verifyAndClickShiipngAddressErrorPopupAndClickOkBtn(){
+		driver.waitForElementPresent(SHIPPING_PROFILE_ERROR_POPUP_OK_BTN);
+		boolean isPopupPresent = driver.isElementPresent(SHIPPING_PROFILE_ERROR_POPUP_OK_BTN);
+		driver.click(SHIPPING_PROFILE_ERROR_POPUP_OK_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return isPopupPresent;
+	}
+
+	public void clickUseThisAddressBtn(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(USE_THIS_ADDRESS);
+		driver.click(USE_THIS_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getFirstShippingAddressProfileName(){
+		driver.waitForElementPresent(SHIPPING_ADDRESS_PROFILE_FIRST_NAME);
+		return driver.findElement(SHIPPING_ADDRESS_PROFILE_FIRST_NAME).getText();
+	}
+
+	public void clickSetAsAutoshipChkBoxInCreateNewAddressPopup(){
+		driver.waitForElementPresent(SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX);
+		driver.click(SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX);
+	}
+
+	public void clickOnYesOnUpdateAutoshipAddressPopup(){
+		driver.waitForElementPresent(YES_BTN_OF_UPDATE_AUTOSHIP_ADDRESS_POPUP);
+		driver.click(YES_BTN_OF_UPDATE_AUTOSHIP_ADDRESS_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
+
+	public boolean isSetAsAutoshipShippingProfileTxtPresentInAddNewShippingProfilePopupForPendingAutoship(){
+		driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP);
+		return driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP);  
+	}
+
+	public String getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
+
+	public void clickCloseOfCreateNewAddressPopUpInCustomerTab(){
+		driver.waitForElementPresent(CLOSE_POPUP_OF_CREATE_NEW_ADDRESS);
+		driver.click(CLOSE_POPUP_OF_CREATE_NEW_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean addressCanNotBeAddedForInactiveUserInCustomerTab(){
+		driver.isElementPresent(ADDRESS_CAN_NOT_BE_ADDED_POPUP);
+		return driver.isElementPresent(ADDRESS_CAN_NOT_BE_ADDED_POPUP);  
+	}
+
+	public void clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab(){
+		driver.waitForElementPresent(OK_BTN_OF_ADDRESS_CAN_NOT_BE_ADDED_POPUP);
+		driver.click(OK_BTN_OF_ADDRESS_CAN_NOT_BE_ADDED_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+		driver.clear(ATTENDENT_NAME_TEXT_BOX);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
+		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+		logger.info("Address line 1 entered is "+addressLine);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+		driver.type(CITY_TOWN_TEXT_BOX, city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(POSTAL_TEXT_BOX);
+		driver.type(POSTAL_TEXT_BOX, postalCode);
+		logger.info("Postal code entered is "+postalCode);
+		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+		driver.type(COUNTRY_TEXT_BOX, Country);
+		logger.info("Country entered is "+Country);
+		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+		driver.type(PROVINCE_TEXT_BOX, province);
+		logger.info("Province entered is "+province);
+		driver.waitForElementPresent(PHONE_TEXT_BOX);
+		driver.type(PHONE_TEXT_BOX, phoneNumber);
+		logger.info("Phone number entered is "+phoneNumber);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
 }

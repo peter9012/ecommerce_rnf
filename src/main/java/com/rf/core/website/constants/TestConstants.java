@@ -459,6 +459,19 @@ public class TestConstants {
 	public static final String ORDER_STATUS_DD_THIRD_VALUE = "Partially_Shipped";
 	public static final String ORDER_STATUS_DD_FOURTH_VALUE = "Shipped";
 
+	//CRM data
+	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";
+	public static final String CRM_MAIN_ADDRESS_LINE_3 ="BEAVER CREEK YT";
+	public static final String CRM_VALID_ACCOUNT_NAME ="first last";
+	public static final String CRM_INVALID_ACCOUNT_NAME ="first";
+	public static final String CRM_CONTACTDETAILS_FIRSTNAME ="Mary";
+	public static final String CRM_CONTACTDETAILS_FIRSTNAMEWITHSPCLCHARS ="Mary$%^";
+	public static final String CRM_CONTACTDETAILS_LASTNAME ="Stone";
+	public static final String CRM_CONTACTDETAILS_INVALIDPHONENUM ="(204) 801-831";
+	public static final String CRM_CONTACTDETAILS_VALIDPHONENUM ="(204) 801-8310";
+	public static final String CRM_CONTACTDETAILS_EMAIL ="newcrmuser@xyz.com";
+	public static final String CRM_CONTACTDETAILS_INVALIDEMAIL="newcrmuser$%^@xyz.com";
+
 }
 
 

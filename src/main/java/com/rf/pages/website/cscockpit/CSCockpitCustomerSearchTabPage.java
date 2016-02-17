@@ -15,6 +15,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String accountStatusDDLoc = "//span[contains(text(),'Account Status')]/select/option[text()='%s']";
 	private static String customerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
+	private static String emailIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 
 	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[3]//span";
 	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']");
@@ -29,6 +30,9 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By POST_CODE_FIELD_LOC = By.xpath("//span[text()='Postcode']");
 	private static final By EMAIL_ADD_FIELD_LOC = By.xpath("//span[text()='Email Address']//following::input[1]");
 	private static final By COMMIT_TAX_TAB_LOC = By.xpath("//span[text()='Commit Tax']");
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
+	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
+	 private static final By TOTAL_NUMBER_OF_PAGES = By.xpath("//div[@class='csToolbar']/div/table/tbody//td[6]//span");
 	
 	protected RFWebsiteDriver driver;
 
@@ -159,4 +163,34 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(COMMIT_TAX_TAB_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+
+	public String getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
+	
+	public void enterRandomPageNumber(String pageNo){
+		  driver.waitForElementPresent(PAGE_INPUT_TXT_LOC);
+		  driver.type(PAGE_INPUT_TXT_LOC, pageNo+"\t");
+		  driver.waitForCSCockpitLoadingImageToDisappear();
+		 }
+		 
+		 public String getTotalNumberOfPages(){
+		  driver.waitForElementPresent(TOTAL_NUMBER_OF_PAGES);
+		  return driver.findElement(TOTAL_NUMBER_OF_PAGES).getText().split("\\ ")[1].trim();
+		 }
+		 
+		 public String[] getEmailIDInCustomerSearchTab(){
+		  String[] emailId = new String[20];
+		  for(int i=1;i<=15;i++){
+		   emailId[i]= driver.findElement(By.xpath(String.format(emailIDInSearchResultsLoc,i))).getText();
+		  }
+		  logger.info("1st emailId is "+emailId[1]);
+		  logger.info("2nd emailId is "+emailId[2]);
+		  return emailId;
+		 }
 }

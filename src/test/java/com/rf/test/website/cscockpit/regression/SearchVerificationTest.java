@@ -76,7 +76,6 @@ public class SearchVerificationTest extends RFWebsiteBaseTest{
 	//Hybris Project-1927:Verify the Find Customer Page UI
 	@Test
 	public void testToVerifyTheFindCustomerPageUI_1927(){
-		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerTypePresenceOnPage(),"customer type select DD not present on customerSearchPage");
 		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerCountryPresenceOnPage(),"customer country select DD not present on customerSearchPage");

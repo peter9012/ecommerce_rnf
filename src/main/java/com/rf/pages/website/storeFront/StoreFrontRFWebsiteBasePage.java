@@ -455,9 +455,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.type(By.id("address.townCity"),city);
 		logger.info("City entered is "+city);
 		driver.waitForElementPresent(By.id("state"));
-		driver.click(By.id("state"));
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
-		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		driver.click(By.xpath("//div[@id='checkout_delivery_address']//select[@id='state']/.."));
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_delivery_address']//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		driver.click(By.xpath("//div[@id='checkout_delivery_address']//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		logger.info("state selected");
 		driver.type(By.id("address.postcode"),postalCode);
 		logger.info("postal code entered is "+postalCode);
@@ -1660,24 +1660,32 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateAccessSolutionTool(){
-		//click learn more..
+		boolean status = false;
+		//click learn more..		
 		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
-		String parentWindowID=driver.getWindowHandle();
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
-		boolean status=false;
-		while(it.hasNext()){
-			String childWindowID=it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
-					status=true;					
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			String parentWindowID=driver.getWindowHandle();
+			Set<String> set=driver.getWindowHandles();
+			Iterator<String> it=set.iterator();
+			while(it.hasNext()){
+				String childWindowID=it.next();
+				if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+					driver.switchTo().window(childWindowID);
+					if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
+						status=true;					
+					}
 				}
 			}
+
+		}else{			
+			if(driver.getCurrentUrl().contains("solutiontool")&& driver.isElementPresent(By.id("mirror"))){
+				status=true;					
+			}
 		}
+
 		return status;
 	}
 

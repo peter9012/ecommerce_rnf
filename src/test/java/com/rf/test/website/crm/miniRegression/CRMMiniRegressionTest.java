@@ -358,7 +358,7 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4537:View Billing profile for a consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testViewBillingProfileForConsultant_4537() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -428,7 +428,7 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-4503:Edit Consultant Account details
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditConsultantAccountDetails_4503() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;

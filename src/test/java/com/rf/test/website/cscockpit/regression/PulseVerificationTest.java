@@ -324,6 +324,109 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 		nextBillDate = storeFrontAccountInfoPage.getNextBillDateOfPulseTemplate();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getPulseStatusFromUI().contains("Enrolled"), "Expected pulse status is Enrolled But on UI on CA"+storeFrontAccountInfoPage.getPulseStatusFromUI());
 		s_assert.assertTrue(nextDueDate.contains(nextBillDate.trim()), "Expected next bill date of pulse template is on CA"+nextDueDate+"actual on UI is "+nextBillDate);
+		logout();
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1718:To verify edit Pulse template
+	@Test//(enabled=false)//WIP
+	public void testVerifyEditPulseTemplate_1718() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID=null;
+		//-------------------FOR US----------------------------------
+		List<Map<String, Object>> randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickPulseTemplateAutoshipIDHavingStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsUpdateBtnDisabledForPulseSubscription(), "Update button is enabled for pulse subscription");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsRemoveBtnDisabledForPulseSubscription(), "Remove button is enabled for pulse subscription");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsInputTxtDisabledForPulseSuscription(), "Qty input txt box is enabled for pulse subscription");
+		String nextDueDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		String modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(nextDueDate);
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		String day = modifiedDate.split("\\ ")[1];
+		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending().split("\\/"));
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfPulseSubscriptionTemplate();
+		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
+		logout();
+
+		//-------------------FOR CA----------------------------------
+		randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickPulseTemplateAutoshipIDHavingStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsUpdateBtnDisabledForPulseSubscription(), "Update button is enabled for pulse subscription");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsRemoveBtnDisabledForPulseSubscription(), "Remove button is enabled for pulse subscription");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsInputTxtDisabledForPulseSuscription(), "Qty input txt box is enabled for pulse subscription");
+		nextDueDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(nextDueDate);
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		day = modifiedDate.split("\\ ")[1];
+		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending().split("\\/"));
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		crpDate = storeFrontAccountInfoPage.getNextDueDateOfPulseSubscriptionTemplate();
+		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
+		logout();
 		s_assert.assertAll();
 	}
 

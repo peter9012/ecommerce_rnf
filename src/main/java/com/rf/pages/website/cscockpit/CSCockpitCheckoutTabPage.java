@@ -10,8 +10,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitCheckoutTabPage.class.getName());
 
-	private static String addedOrderNoteLoc = "//span[contains(text(),'%s')]";
-	private static String addedOrderNoteEditBtnLoc = "//span[contains(text(),'%s')]/following::td[(contains(text(),'Edit'))]";
 	private static String selectMonthDDLoc = "//td[text()='%s']";
 	private static String selectYearDDLoc = "//td[text()='%s']";
 	private static String selectCardTypeDDLoc = "//td[text()='%s']";
@@ -25,8 +23,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PAYMENT_DETAILS_POPUP_OK_BTN = By.xpath("//td[text()='OK']");
 	private static final By CVV2_SEARCH_TXT_FIELD = By.xpath("//div[contains(text(),'Action')]/following::td[contains(text(),'Use this card')][1]/preceding::input[1]");
 	private static final By USE_THIS_CARD_BTN = By.xpath("//span[contains(text(),'Stored Credit Cards')]/following::div[@class='z-listbox-body']//tbody[2]/tr[1]//td[contains(text(),'Use this card')]");
-	private static final By ORDER_NOTES_TXT_FIELD = By.xpath("//span[contains(text(),'Order Notes')]/following::textarea[1]");
-	private static final By ADD_BTN = By.xpath("//td[text()='ADD']");
 	private static final By TEST_ORDER_CHKBOX = By.xpath("//label[contains(text(),'Test Order')]/preceding::input[1]");
 	private static final By DO_NOT_SHIP_CHKBOX = By.xpath("//label[contains(text(),'Do-not-ship')]/preceding::input[1]");
 	private static final By UPDATE_BUTTON_LOC = By.xpath("//td[contains(text(),'UPDATE')]");
@@ -174,33 +170,18 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(SELECT_PAYMENT_DETAILS_POPUP);
 	}
 
-	public void enterOrderNotesInCheckoutTab(String orderNote){
-		driver.waitForElementPresent(ORDER_NOTES_TXT_FIELD);
-		driver.type(ORDER_NOTES_TXT_FIELD, orderNote);
-		driver.click(ADD_BTN);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-	public String getAddedNoteValueInCheckoutTab(String orderNote){
-		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteLoc, orderNote)));
-		return driver.findElement(By.xpath(String.format(addedOrderNoteLoc, orderNote))).getText();
-	}
-
-	public boolean verifyEditButtonIsPresentForOrderNoteInCheckoutTab(String orderNote){
-		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteLoc, orderNote)));
-		return driver.isElementPresent(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
-	}
-
 	public void clickTestOrderCheckBoxInCheckoutTab(){
 		driver.waitForElementPresent(TEST_ORDER_CHKBOX);
 		driver.click(TEST_ORDER_CHKBOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+	
 	public void clickDoNotShipCheckBoxInCheckoutTab(){
 		driver.waitForElementPresent(DO_NOT_SHIP_CHKBOX);
 		driver.click(DO_NOT_SHIP_CHKBOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+	
 	public void clickAddNewPaymentAddressInCheckoutTab(){
 		driver.waitForElementPresent(ADD_NEW);
 		driver.click(ADD_NEW);
@@ -731,15 +712,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-	}
-
-	public String converPSTDateToUIFormat(String date){
-		String[] pstDate = date.split("\\ ");
-		String day = pstDate[1].split("\\,")[0];
-		String month = pstDate[0];
-		String year = pstDate[2];
-		String orderDate = day+" "+month+", "+year;
-		return orderDate;
 	}
 
 }

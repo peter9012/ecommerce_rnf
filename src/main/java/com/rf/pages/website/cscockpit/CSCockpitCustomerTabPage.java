@@ -63,6 +63,9 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
 	private static final By PHONE_TEXT_BOX = By.xpath("//span[text()='Phone1']/following::input[1]");
 	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
+	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/following::span[contains(text(),'PENDING')]/../../following::td[4]//span");
+	private static final By PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
+	private static final By PULSE_TEMPLATE_NEXT_DUE_DATE_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../following::td[4]//span");
 
 	protected RFWebsiteDriver driver;
 
@@ -429,5 +432,24 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.type(PHONE_TEXT_BOX, phoneNumber);
 		logger.info("Phone number entered is "+phoneNumber);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getNextDueDateOfCRPAutoshipAndStatusIsPending(){
+		driver.waitForElementPresent(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE);
+		return driver.findElement(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE).getText();
+	}
+
+	public String getAndClickPulseTemplateAutoshipIDHavingStatusIsPending(){
+		driver.waitForElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
+		String autoshipID = driver.findElement(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
+	}
+
+	public String getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending(){
+		driver.waitForElementPresent(PULSE_TEMPLATE_NEXT_DUE_DATE_STATUS_AS_PENDING);
+		return driver.findElement(PULSE_TEMPLATE_NEXT_DUE_DATE_STATUS_AS_PENDING).getText();
 	}
 }

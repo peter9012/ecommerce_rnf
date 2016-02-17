@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -1881,5 +1882,106 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//div[@class='errorMsg']/strong"));
 		return driver.findElement(By.xpath("//div[@class='errorMsg']/strong")).getText().contains("Error");
+	}
+
+	public void clickDeleteForTheDefaultShippingProfileSelected(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/../preceding-sibling::td[2]/a[2]"));
+		driver.click(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/../preceding-sibling::td[2]/a[2]"));
+	}
+
+	public void clickOKOnDeleteDefaultShippingProfilePopUp(){
+		/* driver.switchTo().defaultContent();
+		  driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));*/
+		// driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.pauseExecutionFor(3000);
+		Alert alt=driver.switchTo().alert();
+		alt.accept();
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateDefaultShippingAddressCanNotBeDeleted(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//table//td[contains(text(),'You cannot delete the default address')]"));
+		boolean state= driver.isElementPresent(By.xpath("//table//td[contains(text(),'You cannot delete the default address')]"));
+		driver.switchTo().defaultContent();
+		return state;
+	}
+
+	public void refreshPage(){
+		driver.pauseExecutionFor(1500);
+		driver.navigate().refresh();
+	}
+
+
+	public void addANewShippingProfileAndMakeItDefault(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//input"));
+		driver.click(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//input"));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		if(driver.getCountry().trim().equalsIgnoreCase("ca")){
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[1]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_ADDRESS_LINE_1_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[4]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_LOCALE_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[6]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_REGION_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[7]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_POSTALCODE_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[8]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_PHONENUM_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[2]/td[2]//input")).sendKeys(TestConstants.CRM_NEW_PROFILENAME_CA);
+			//check default check box
+			driver.findElement(By.xpath("//table[@class='detailList']//tr[3]/td[2]//input")).click();
+			//click save
+			driver.click(By.xpath("//td[@id='topButtonRow']/input[@title='Save']"));
+			driver.waitForPageLoad();
+		}else{
+
+		}
+	}
+
+	public String getProfileNameOfTheDefaultShippingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/../preceding-sibling::td[1]"));
+		return driver.findElement(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/../preceding-sibling::td[1]")).getText();
+	}
+
+	public void clickDeleteForNonDefaultShippingProflle(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/ancestor::tr[1]/preceding-sibling::tr[1]//a[2]"));
+		driver.click(By.xpath("//span[contains(text(),'Shipping Profiles Help')]/ancestor::div[@class='listRelatedObject customnotabBlock']//img[@title='Checked']/ancestor::tr[1]/preceding-sibling::tr[1]//a[2]"));
+	}
+
+	public boolean validateNonDefaultShippingProfileDeleted(){
+		//refreshPage();
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles')]/span[contains(text(),'[1]')]"));
+		boolean state= driver.isElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles')]/span[contains(text(),'[1]')]"));
+		driver.switchTo().defaultContent();
+		return state;
+	}
+
+	public void closeAllOpenedTabs(){
+		int totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+		logger.info("total opened tabs = "+totalOpenedTabs);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		for(int i=totalOpenedTabs;i>=1;i--){
+			//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+			actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+			//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+			driver.pauseExecutionFor(1000);
+		}
 	}
 }

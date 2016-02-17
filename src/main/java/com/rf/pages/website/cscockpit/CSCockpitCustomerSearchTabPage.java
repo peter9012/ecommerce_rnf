@@ -32,8 +32,9 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By COMMIT_TAX_TAB_LOC = By.xpath("//span[text()='Commit Tax']");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
 	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
-	 private static final By TOTAL_NUMBER_OF_PAGES = By.xpath("//div[@class='csToolbar']/div/table/tbody//td[6]//span");
-	
+	private static final By TOTAL_NUMBER_OF_PAGES = By.xpath("//div[@class='csToolbar']/div/table/tbody//td[6]//span");
+	private static final By CID_LINK_SECTION_LOCATOR = By.xpath("//div[contains(@class,'listbox-body')]/table/tbody[2]/tr[1]/td[1]//a");
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerSearchTabPage(RFWebsiteDriver driver) {
@@ -172,25 +173,41 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		return autoshipID;
 	}
-	
+
 	public void enterRandomPageNumber(String pageNo){
-		  driver.waitForElementPresent(PAGE_INPUT_TXT_LOC);
-		  driver.type(PAGE_INPUT_TXT_LOC, pageNo+"\t");
-		  driver.waitForCSCockpitLoadingImageToDisappear();
-		 }
-		 
-		 public String getTotalNumberOfPages(){
-		  driver.waitForElementPresent(TOTAL_NUMBER_OF_PAGES);
-		  return driver.findElement(TOTAL_NUMBER_OF_PAGES).getText().split("\\ ")[1].trim();
-		 }
-		 
-		 public String[] getEmailIDInCustomerSearchTab(){
-		  String[] emailId = new String[20];
-		  for(int i=1;i<=15;i++){
-		   emailId[i]= driver.findElement(By.xpath(String.format(emailIDInSearchResultsLoc,i))).getText();
-		  }
-		  logger.info("1st emailId is "+emailId[1]);
-		  logger.info("2nd emailId is "+emailId[2]);
-		  return emailId;
-		 }
+		driver.waitForElementPresent(PAGE_INPUT_TXT_LOC);
+		driver.type(PAGE_INPUT_TXT_LOC, pageNo+"\t");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getTotalNumberOfPages(){
+		driver.waitForElementPresent(TOTAL_NUMBER_OF_PAGES);
+		return driver.findElement(TOTAL_NUMBER_OF_PAGES).getText().split("\\ ")[1].trim();
+	}
+
+	public String[] getEmailIDInCustomerSearchTab(){
+		String[] emailId = new String[20];
+		for(int i=1;i<=15;i++){
+			emailId[i]= driver.findElement(By.xpath(String.format(emailIDInSearchResultsLoc,i))).getText();
+		}
+		logger.info("1st emailId is "+emailId[1]);
+		logger.info("2nd emailId is "+emailId[2]);
+		return emailId;
+	}
+
+	public void selectCustomerTypeFromDropDownAsSelectInCustomerSearchTab(String customerType){
+		driver.waitForElementPresent(By.xpath(String.format(customerTypeDDLoc, customerType)));
+		driver.click(By.xpath(String.format(customerTypeDDLoc, customerType)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clearEmailAddressFieldInOrderSearchTab(){
+		driver.waitForElementPresent(ENTER_EMAIL_ID);
+		driver.clear(ENTER_EMAIL_ID);    
+	}
+
+	public boolean verifyCIDSectionIsPresentWithClickableLinks(){
+		driver.waitForElementPresent(CID_LINK_SECTION_LOCATOR);
+		return driver.isElementPresent(CID_LINK_SECTION_LOCATOR);
+	}
 }

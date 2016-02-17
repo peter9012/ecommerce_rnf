@@ -22,6 +22,9 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 
 	private static String sortByDropDownLoc= "//div[@class='csResultsSortList']/select/option[text()='%s']";
 	private static String skuValueOfProductFromSearchResultLoc = "//div[@class='csListboxContainer']/div[2]/div[@class='z-listbox-body']//tbody[2]/tr[%s]/td[2]/div";
+	public static String addedOrderNoteEditBtnLoc = "//span[contains(text(),'%s')]/following::td[(contains(text(),'Edit'))]";
+	private static String orderSectionLoc ="//div[text()='%s']";
+	public static String addedOrderNoteLoc = "//span[contains(text(),'%s')]";
 
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
@@ -58,6 +61,13 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By AUTOSHIP_SEARCH_TAB = By.xpath("//span[text()='Autoship Search']");
+	private static final By AUTOSHIP_DETAIL_NEXT_PAGE_DISABLE = By.xpath("//div[contains(@class,'csResultsPager')]//td[8]/table[@class='z-paging-btn z-paging-btn-disd']//button[contains(@class,'z-paging-next')]");
+	private static final By AUTOSHIP_DETAIL_NEXT_PAGE = By.xpath("//div[contains(@class,'csResultsPager')]//td[8]/table[normalize-space(@class='z-paging-btn z-paging-btn-over')]//button[contains(@class,'z-paging-next')]");
+	private static final By UPDATE_AUTOSHIP_TEMPLATE = By.xpath("//td[contains(text(),'Update Autoship Template')]");
+	public static final By ORDER_NOTES_TXT_FIELD = By.xpath("//span[contains(text(),'Order Notes')]/following::textarea[1]");
+	public static final By CUSTOMER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Customer Name or CID']/following::input[1]");
+	private static final By ADD_BTN = By.xpath("//td[text()='ADD']");
+	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -338,4 +348,104 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(30000);
 	}
+
+	public void clickAddToCartBtnTillProductAddedInCartTab(){
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			clearCatalogSearchFieldAndClickSearchBtn();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			boolean isNextArrowPresent = false;
+			int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+			do{
+				isNextArrowPresent = false;
+				for(int i=noOfProducts;i>=1; i--){
+					String SKU = getCustomerSKUValueInCartTab(Integer.toString(i));
+					searchSKUValueInCartTab(SKU);
+					driver.click(ADD_TO_CART_BTN);
+					logger.info("Add to cart button clicked for "+i+" another product");
+					driver.waitForCSCockpitLoadingImageToDisappear();
+					if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+						driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+						clearCatalogSearchFieldAndClickSearchBtn();
+						driver.waitForCSCockpitLoadingImageToDisappear();
+						continue;
+					}else{
+						break;
+					}
+				}
+				if(driver.isElementPresent(AUTOSHIP_DETAIL_NEXT_PAGE_DISABLE)==false){
+					isNextArrowPresent = true;
+					driver.waitForElementNotPresent(AUTOSHIP_DETAIL_NEXT_PAGE);
+					driver.click(AUTOSHIP_DETAIL_NEXT_PAGE);
+				}
+			}
+			while(isNextArrowPresent==true);
+		}
+	}
+
+	public void clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab(){
+		driver.waitForElementPresent(UPDATE_AUTOSHIP_TEMPLATE);
+		driver.click(UPDATE_AUTOSHIP_TEMPLATE);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterOrderNotesInCheckoutTab(String orderNote){
+		driver.waitForElementPresent(ORDER_NOTES_TXT_FIELD);
+		driver.type(ORDER_NOTES_TXT_FIELD, orderNote);
+		driver.click(ADD_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getAddedNoteValueInCheckoutTab(String orderNote){
+		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteLoc, orderNote)));
+		return driver.findElement(By.xpath(String.format(addedOrderNoteLoc, orderNote))).getText();
+	}
+
+	public String converPSTDateToUIFormat(String date){
+		String[] pstDate = date.split("\\ ");
+		String day = pstDate[1].split("\\,")[0];
+		String month = pstDate[0];
+		String year = pstDate[2];
+		String orderDate = day+" "+month+", "+year;
+		return orderDate;
+	}
+
+	public boolean verifyEditButtonIsPresentForOrderNoteInCheckoutTab(String orderNote){
+		driver.waitForElementPresent(By.xpath(String.format(addedOrderNoteLoc, orderNote)));
+		return driver.isElementPresent(By.xpath(String.format(addedOrderNoteEditBtnLoc, orderNote)));
+	}
+
+	public void enterCIDInOrderSearchTab(String cid){
+		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
+		driver.type(CUSTOMER_SEARCH_TEXT_BOX, cid);
+		logger.info("Entered Cid is "+cid);
+	}
+
+	public boolean verifySectionsIsPresentInOrderSearchTab(String sectionName){
+		driver.waitForElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
+		return driver.isElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
+	}
+
+	public void clearCidFieldInOrderSearchTab(){
+		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
+		driver.clear(CUSTOMER_SEARCH_TEXT_BOX);		  
+	}
+
+	public boolean verifyCountForCustomerFromSearchResult(){
+		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
+		int totalCustomersFromResultsSearchFirstPage =  driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
+		logger.info("total customers in the customer search result is "+totalCustomersFromResultsSearchFirstPage);
+		if(totalCustomersFromResultsSearchFirstPage<=20){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
 }

@@ -58,18 +58,6 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		return driver.isElementPresent(USER_NAVIGATION_LABEL_LOC);	
 	}
 
-	public void closeAllOpenedTabs(){
-		int totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
-		logger.info("total opened tabs = "+totalOpenedTabs);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		for(int i=totalOpenedTabs;i>=1;i--){
-			//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
-			actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
-			//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
-			driver.pauseExecutionFor(1000);
-		}
-	}
-
 	//	public void searchUserById(String emailId){
 	//		//driver.waitForElementPresent(SEARCH_TEXT_BOX_LOC);
 	//		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(emailId);
@@ -328,6 +316,24 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
 		return driver.isElementPresent(By.xpath(".//*[@id='Account']/div[2]/div"));
+	}
+
+	public void clickConsultantCustomerNameInSearchResult(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr//td[Text()='Consultant']/preceding-sibling::th"));
+		driver.switchTo().defaultContent();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void clickPreferredCustomerNameInSearchResult(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr//td[Text()='Preferred Customer']/preceding-sibling::th"));
+		driver.switchTo().defaultContent();
+		driver.waitForCRMLoadingImageToDisappear();
 	}
 
 }

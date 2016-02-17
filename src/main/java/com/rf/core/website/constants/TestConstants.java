@@ -458,6 +458,8 @@ public class TestConstants {
 	public static final String ORDER_STATUS_DD_SECOND_VALUE = "Failed";
 	public static final String ORDER_STATUS_DD_THIRD_VALUE = "Partially_Shipped";
 	public static final String ORDER_STATUS_DD_FOURTH_VALUE = "Shipped";
+	public static final String INVALID_CUSTOMER_NAME = "abcdef5544";
+	public static final String INVALID_EMAIL_ADDRESS = "ccvvff@mnv.com";
 
 	//CRM data
 	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";
@@ -471,6 +473,12 @@ public class TestConstants {
 	public static final String CRM_CONTACTDETAILS_VALIDPHONENUM ="(204) 801-8310";
 	public static final String CRM_CONTACTDETAILS_EMAIL ="newcrmuser@xyz.com";
 	public static final String CRM_CONTACTDETAILS_INVALIDEMAIL="newcrmuser$%^@xyz.com";
+	public static final String CRM_NEW_ADDRESS_LINE_1_CA = "5503 - 57th Street";
+	public static final String CRM_NEW_LOCALE_CA = "MONTREAL";
+	public static final String CRM_NEW_REGION_CA = "QC";
+	public static final String CRM_NEW_POSTALCODE_CA = "H3Z 2Y7";
+	public static final String CRM_NEW_PHONENUM_CA = "(204) 339-8710";
+	public static final String CRM_NEW_PROFILENAME_CA = "NewProfileCA";
 
 }
 

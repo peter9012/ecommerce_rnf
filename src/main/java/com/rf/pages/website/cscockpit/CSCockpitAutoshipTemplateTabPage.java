@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -27,7 +28,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB_ANOTHER= By.xpath("//td[text()='Run Now']/ancestor::table[@class='z-button']");
 	private static final By CANCEL_EDIT_LINK = By.xpath("//td[contains(text(),'Cancel Edit')]");
 	private static final By FIRST_REMOVE_LINK_OF_ORDER_DETAIL = By.xpath("//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[1]/td[10]//a[text()='Remove']");
-	private static final By THRESHOLD_POPUP = By.xpath("//span[text()='Your Total SV value should be greater than the threshold 80.0']");
+	private static final By THRESHOLD_POPUP = By.xpath("//span[contains(text(),'Your Total SV value should be greater than the threshold')]");
 	private static final By THRESHOLD_POPUP_OK = By.xpath("//td[text()='OK']");
 	private static final By ADD_MORE_LINES_LINK = By.xpath("//td[text()='Add More Lines']");
 	private static final By SUBTOTAL_VALUE = By.xpath("//span[text()='Subtotal:']/following-sibling::span");
@@ -59,6 +60,11 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By CANCEL_AUTOSHIP_TEMPLATE_LOC = By.xpath("//a[text()='Cancel Autoship']");
 	private static final By CANCEL_AUTOSHIP_TEMPLATE_POPUP_CONFIRM_BTN_LOC = By.xpath("//td[text()='Confirm']");
 	private static final By SHIPPING_ADDRESS_PROFILE_NAME = By.xpath("//div[@class='csOrderDetailsAddress']//div[2]//span");
+	private static final By CURRENT_CRP_AUTOSHIP_DATE = By.xpath("//span[@class='z-datebox']//input");
+	private static final By DISABLED_UPDATE_AUTOSHIP_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//a[text()='Update'][@style='display:none;']");
+	private static final By DISABLED_REMOVE_AUTOSHIP_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//a[text()='Remove'][@style='display:none;']");
+	private static final By DISABLED_QTY_INPUT_TXT = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//tr[contains(@class,'csListItem ')]/td[8]//input[@disabled='disabled']");
+
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -223,11 +229,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		return driver.isElementPresent(CANCEL_EDIT_LINK);		    
 	}
 
-	public void clickRemoveLinkOfOrderDetailInAutoShipTemplateTab(){
-		driver.waitForElementPresent(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
-		driver.click(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
 	public boolean verifyThresholdPopupInAutoshipTemplateTab(){
 		return driver.isElementPresent(THRESHOLD_POPUP);
 	}
@@ -343,5 +344,126 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForElementPresent(SHIPPING_ADDRESS_PROFILE_NAME);
 		String shippingProfileName = driver.findElement(SHIPPING_ADDRESS_PROFILE_NAME).getText();
 		return shippingProfileName;
+	}
+
+	public void clickEditAutoshiptemplate(){
+		driver.waitForElementPresent(EDIT_AUTOSHIP_LINK);
+		driver.click(EDIT_AUTOSHIP_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getCRPAutoshipDateFromCalendar(){
+		driver.waitForElementPresent(CURRENT_CRP_AUTOSHIP_DATE);
+		return driver.findElement(CURRENT_CRP_AUTOSHIP_DATE).getAttribute("value");
+	}
+
+	public String addOneMoreDayInCRPAutoshipDate(String date){
+		String month = date.split("\\ ")[0];
+		String day = date.split("\\ ")[1].split("\\,")[0];
+		String year = date.split("\\ ")[2];
+		if(Integer.parseInt(day)<17){
+			int day1 = Integer.parseInt(day)+1;
+			day = ""+day1;
+		}
+		logger.info("date after add one day "+month+" "+day+","+" "+year);
+		return month+" "+day+","+" "+year;
+	}
+
+	public void enterCRPAutoshipDate(String date){
+		driver.waitForElementPresent(CURRENT_CRP_AUTOSHIP_DATE);
+		WebElement inputField = driver.findElement(CURRENT_CRP_AUTOSHIP_DATE);
+		inputField.clear();
+		inputField.sendKeys(date);
+	}
+
+	public boolean IsUpdateBtnDisabledForPulseSubscription(){
+		driver.waitForElementPresent(DISABLED_UPDATE_AUTOSHIP_BTN);
+		return driver.isElementPresent(DISABLED_UPDATE_AUTOSHIP_BTN);
+	}
+
+
+	public boolean IsRemoveBtnDisabledForPulseSubscription(){
+		driver.waitForElementPresent(DISABLED_REMOVE_AUTOSHIP_BTN);
+		return driver.isElementPresent(DISABLED_REMOVE_AUTOSHIP_BTN);
+	}
+
+	public boolean IsInputTxtDisabledForPulseSuscription(){
+		driver.waitForElementPresent(DISABLED_QTY_INPUT_TXT);
+		return driver.isElementPresent(DISABLED_QTY_INPUT_TXT);
+	}
+
+	public void clickRemoveLinkOfOrderDetailInAutoShipTemplateTab(){
+		while(true){
+			driver.waitForElementPresent(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+			driver.click(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			if(driver.isElementPresent(THRESHOLD_POPUP)==true){
+				break;
+			}else{
+				continue;
+			}
+		}
+	}
+	
+	public void addProductInAutoShipCartTillHaveTwoProduct(){
+		boolean autoshipProductList=true;
+		do{
+			if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=2){
+				break;
+			}else{
+				clickAddMoreLinesLinkInAutoShipTemplateTab();
+				clearCatalogSearchFieldAndClickSearchBtn();
+				selectValueFromSortByDDInCartTab("Price: High to Low");
+				selectCatalogFromDropDownInCartTab(); 
+				String newRandomProductSequenceNumber = String.valueOf(getRandomProductWithSKUFromSearchResult()); 
+				String SKUValues = getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+				searchSKUValueInCartTab(SKUValues);
+				clickAddToCartBtnTillProductAddedInCartTab();
+				clickCheckoutBtnInCartTab();
+				clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+				if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=2){
+					autoshipProductList=false; 
+					break;
+				}
+			}
+		}while(autoshipProductList);
+	}
+
+	public void removeProductInOrderDetailInAutoshipTemplateTab(){
+		clickAddMoreLinesLinkInAutoShipTemplateTab();
+		selectValueFromSortByDDInCartTab("Consultant Price: Low to High");
+		selectCatalogFromDropDownInCartTab(); 
+		String newRandomProductSequenceNumber = String.valueOf(getRandomProductWithSKUFromSearchResult()); 
+		String SKUValues = getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+		searchSKUValueInCartTab(SKUValues);
+		clickAddToCartBtnTillProductAddedInCartTab();
+		clickCheckoutBtnInCartTab();
+		clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
+		clickOKOfThresholdPopupInAutoshipTemplateTab();
+		int size=driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size();
+		while(true){
+			if(size>=2 ){
+				updateQuantityOfSecondProduct("20");
+				clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
+				clickOKOfThresholdPopupInAutoshipTemplateTab();
+				break;
+			}else{
+				clickAddMoreLinesLinkInAutoShipTemplateTab();
+				clearCatalogSearchFieldAndClickSearchBtn();
+				selectValueFromSortByDDInCartTab("Consultant Price: Low to High");
+				selectCatalogFromDropDownInCartTab(); 
+				newRandomProductSequenceNumber = String.valueOf(getRandomProductWithSKUFromSearchResult()); 
+				SKUValues = getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+				searchSKUValueInCartTab(SKUValues);
+				clickAddToCartBtnTillProductAddedInCartTab();
+				clickCheckoutBtnInCartTab();
+				clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+				clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
+				clickOKOfThresholdPopupInAutoshipTemplateTab();
+				size=driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size();
+				continue;
+			}
+		}
 	}
 }

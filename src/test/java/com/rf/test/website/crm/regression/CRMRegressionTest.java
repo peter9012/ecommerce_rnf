@@ -859,7 +859,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4537:View Billing profile for a consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testViewBillingProfileForConsultant_4537() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -928,7 +928,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4503:Edit Consultant Account details
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditConsultantAccountDetails_4503() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -975,7 +975,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4504:Edit Consultant contact details
-	@Test(enabled=false)//needs test link to be updated foe the commented assertions
+	@Test//needs test link to be updated for the commented assertions
 	public void testEditConsultantContactDetails_4504() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -1068,7 +1068,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4508:Edit PC contact details
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditPreferredCustomerContactDetails_4508() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -1250,4 +1250,199 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account details page is not present");
 		s_assert.assertAll();
 	}	
+
+	//Hybris Project-5008:Change default PC Shipping address
+	@Test(enabled=false)//WIP 
+	public void testChangeDefaultConsultantShippingAddress_5008() throws InterruptedException{
+		String addressLine = null;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		RFO_DB = driver.getDBNameRFO(); 
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;			
+		}
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = TestConstants.LAST_NAME;
+		String profileName = shippingProfileFirstName+" "+lastName;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickPreferredCustomerNameInSearchResult();
+		crmAccountDetailsPage.clickShippingProfiles();
+		int noOfShippingProfileInteger = Integer.parseInt(crmAccountDetailsPage.getShippingProfilesCount());
+		if(noOfShippingProfileInteger==1){
+			crmAccountDetailsPage.clickAddNewShippingProfileBtn();
+			crmAccountDetailsPage.updateShippingProfileName(profileName);
+			crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+			crmAccountDetailsPage.clickShippingProfiles();
+		}
+		String profileNameBeforeEdit = crmAccountDetailsPage.clickEditOfNonDefaultShippingProfile();
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String profileNameAfterEdit = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+
+		s_assert.assertTrue(profileNameBeforeEdit.equalsIgnoreCase(profileNameAfterEdit), "Expected profile name "+profileNameBeforeEdit+"Actual on UI "+profileNameAfterEdit);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5007:Change default consultant Shipping address
+	@Test(enabled=false)//WIP
+	public void testChangeDefaultConsultantShippingAddress_5007() throws InterruptedException{
+		String addressLine = null;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		RFO_DB = driver.getDBNameRFO(); 
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = TestConstants.LAST_NAME;
+		String profileName = shippingProfileFirstName+" "+lastName;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickConsultantCustomerNameInSearchResult();
+		crmAccountDetailsPage.clickShippingProfiles();
+		int noOfShippingProfileInteger = Integer.parseInt(crmAccountDetailsPage.getShippingProfilesCount());
+		if(noOfShippingProfileInteger==1){
+			crmAccountDetailsPage.clickAddNewShippingProfileBtn();
+			crmAccountDetailsPage.updateShippingProfileName(profileName);
+			crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+			crmAccountDetailsPage.clickShippingProfiles();
+		}
+		String profileNameBeforeEdit =  crmAccountDetailsPage.clickEditOfNonDefaultShippingProfile();
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String profileNameAfterEdit = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+
+		s_assert.assertTrue(profileNameBeforeEdit.equalsIgnoreCase(profileNameAfterEdit), "Expected profile name "+profileNameBeforeEdit+"Actual on UI "+profileNameAfterEdit);
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4500:Delete shipping Profile for consultant
+	@Test(enabled=false) //WIP
+	public void testDeleteShippingProfileForConsultant_4500() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmContactDetailsPage= new CRMContactDetailsPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//click 'Del' for the default shipping profile under shipping profile section
+		crmAccountDetailsPage.clickDeleteForTheDefaultShippingProfileSelected();
+		crmAccountDetailsPage.clickOKOnDeleteDefaultShippingProfilePopUp();
+		//verify 'default' shipping profile can not be deleted
+		s_assert.assertTrue(crmAccountDetailsPage.validateDefaultShippingAddressCanNotBeDeleted(),"Default shipping address is deleted");
+		crmAccountDetailsPage.closeAllOpenedTabs();
+		crmAccountDetailsPage.refreshPage();
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//Add 1 more shipping address and mark this address as default
+		crmAccountDetailsPage.addANewShippingProfileAndMakeItDefault();
+		crmAccountDetailsPage.refreshPage();
+		crmAccountDetailsPage.closeAllOpenedTabs();
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//Verify the other existing shipping profile is not default anymore
+		s_assert.assertTrue(crmHomePage.getProfileNameOfTheDefaultShippingProfile().trim().equalsIgnoreCase(TestConstants.CRM_NEW_PROFILENAME_CA),"Existing shipping profile is still marked as default");
+		//click 'Del' for the shipping profile that is not default(earlier shipping profile)
+		crmAccountDetailsPage.clickDeleteForNonDefaultShippingProflle();
+		crmAccountDetailsPage.clickOKOnDeleteDefaultShippingProfilePopUp();
+		//verify 'Non Default' profile is deleted?
+		s_assert.assertTrue(crmAccountDetailsPage.validateNonDefaultShippingProfileDeleted(),"Non Default shipping profile is not deleted");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4501:Delete shipping Profile for PC
+	@Test(enabled=false) //WIP
+	public void testDeleteShippingProfileForPCUser_4501() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomPCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcUserName = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//click 'Del' for the default shipping profile under shipping profile section
+		crmHomePage.clickDeleteForTheDefaultShippingProfileSelected();
+		crmHomePage.clickOKOnDeleteDefaultShippingProfilePopUp();
+		//verify 'default' shipping profile can not be deleted
+		s_assert.assertTrue(crmHomePage.validateDefaultShippingAddressCanNotBeDeleted(),"Default shipping address is deleted");
+		crmHomePage.closeAllOpenedTabs();
+		crmHomePage.refreshPage();
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//Add 1 more shipping address and mark this address as default
+		crmHomePage.addANewShippingProfileAndMakeItDefault();
+		crmHomePage.refreshPage();
+		crmHomePage.closeAllOpenedTabs();
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//Verify the other existing shipping profile is not default anymore
+		s_assert.assertTrue(crmHomePage.getProfileNameOfTheDefaultShippingProfile().trim().equalsIgnoreCase(TestConstants.CRM_NEW_PROFILENAME_CA),"Existing shipping profile is still marked as default");
+		//click 'Del' for the shipping profile that is not default(earlier shipping profile)
+		crmHomePage.clickDeleteForNonDefaultShippingProflle();
+		crmHomePage.clickOKOnDeleteDefaultShippingProfilePopUp();
+		//verify 'Non Default' profile is deleted?
+		s_assert.assertTrue(crmHomePage.validateNonDefaultShippingProfileDeleted(),"Non Default shipping profile is not deleted");
+		s_assert.assertAll();
+	}
 }

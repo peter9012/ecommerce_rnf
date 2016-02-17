@@ -152,6 +152,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
 		s_assert.assertTrue(orderNumber.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
+		logout();
 		//----------------------FOR CA------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		while(true){
@@ -212,6 +213,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(orderNumberForCA.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of CA");
+		logout();
 		s_assert.assertAll();
 	}
 
@@ -322,7 +324,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1930:Verify Preferred Customer detail page UI
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyPreferredCustomerDetailPageUI_1930(){
 		String randomCustomerSequenceNumber = null;
 		String accountStatus = "Account Status";
@@ -428,7 +430,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1931:Verify Retail Customer detail page UI
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyRetailCustomerDetailPageUI_1931(){
 		String randomCustomerSequenceNumber = null;
 		String accountStatus = "Account Status";

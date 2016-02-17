@@ -164,7 +164,7 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		logger.info("order number 3 from order history is "+orderHistoryNumber);
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-
+		logout();
 		//-------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 
@@ -238,6 +238,7 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
 		s_assert.assertAll();
 	}
 
@@ -334,7 +335,7 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddress().contains(attendeeNewFirstName),"CSCockpit Delivery Address expected = attendeeNewFirstName and on UI = " +storeFrontOrdersPage.getShippingAddress());
-
+		logout();
 		//-------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 
@@ -418,6 +419,7 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumberOfOrderTab.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumberOfOrderTab.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddress().contains(attendeeNewFirstName),"CSCockpit Delivery Address expected = attendeeNewFirstName and on UI = " +storeFrontOrdersPage.getShippingAddress());
+		logout();
 		s_assert.assertAll();
 	}
 

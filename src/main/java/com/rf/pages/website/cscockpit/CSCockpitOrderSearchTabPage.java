@@ -20,7 +20,6 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String orderStatusOptionLoc = "//span[contains(text(),'Order Status')]//option[text()='%s']";
 	private static String orderStatusLoc = "//a[text()='%s']//following::td[7]//span";	
 	private static String orderTypeDDloc = "//span[contains(text(),'Order Type')]//option[text()='%s']";
-	private static String orderSectionLoc ="//div[text()='%s']";
 	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
@@ -33,7 +32,6 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CID_CUSTOMER_NAME_TXT_FIELD = By.xpath("//span[contains(text(),'Customer Name or CID')]/following::input[1]");
 	private static final By CUSTOMER_NAME_OR_CID_TXT_FIELD = By.xpath("//span[contains(text(),'Customer Name or CID')]/following::input[1]");
 	private static final By ORDER_LINK_SECTION_LOCATOR = By.xpath("//div[contains(@class,'listbox-body')]/table/tbody[2]/tr[1]/td[1]//a");
-	private static final By CUSTOMER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Customer Name or CID']/following::input[1]");
 	private static final By INVALID_CID_SEARCH_RESULT = By.xpath("//span[text()='No Results']");
 	private static final By ORDER_SEARCH_LBL = By.xpath("//div[contains(@class,'csContentArea')]//span[text()='Order Search']");
 	private static final By ORDER_TYPE_DD = By.xpath("//span[contains(@class,'orderSearchType')]/select");
@@ -193,11 +191,6 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(ORDER_LINK_SECTION_LOCATOR);
 	}
 
-	public boolean verifySectionsIsPresentInOrderSearchTab(String sectionName){
-		driver.waitForElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
-		return driver.isElementPresent(By.xpath(String.format(orderSectionLoc, sectionName)));
-	}
-
 	public String getLastNameOfTheCustomerInOrderSearchTab(String customerSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(customerLastNameInSearchResultsLoc, customerSequenceNumber)));
 		String firstname = driver.findElement(By.xpath(String.format(customerLastNameInSearchResultsLoc, customerSequenceNumber))).getText();
@@ -212,21 +205,10 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return customerEmailId;
 	}
 
-	public void enterCIDInOrderSearchTab(String cid){
-		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
-		driver.type(CUSTOMER_SEARCH_TEXT_BOX, cid);
-		logger.info("Entered Cid is "+cid);
-	}
-
 	public void clearOrderNumberFieldInOrderSearchTab(){
 		driver.waitForElementPresent(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);
 		driver.clear(ORDER_NUMBER_TXT_FIELD_ORDER_SEARCH_TAB);		  
 	}
-
-	public void clearCidFieldInOrderSearchTab(){
-		driver.waitForElementPresent(CUSTOMER_SEARCH_TEXT_BOX);
-		driver.clear(CUSTOMER_SEARCH_TEXT_BOX);		  
-	}	
 
 	public boolean verifyNoResultFoundForInvalidCID(){
 		driver.isElementPresent(INVALID_CID_SEARCH_RESULT);

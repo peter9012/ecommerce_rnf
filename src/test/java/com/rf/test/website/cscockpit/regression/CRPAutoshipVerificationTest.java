@@ -23,6 +23,7 @@ import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
+import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
@@ -54,7 +55,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;	
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
-
+	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -76,6 +77,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 	}
 
 	private String RFO_DB = null;
@@ -284,7 +286,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1701:To verify CRP Autoship template Page UI
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCRPAutoshipTemplate_1701() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -408,9 +410,9 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Run now  link in order from Autoship template section is active on Autoship template page for inactive user.");
 		s_assert.assertAll();
 	}
-	
+
 	// Hybris Project-1702:To verify edit CRP Autoship template
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -450,11 +452,10 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		//randomCustomerSequenceNumber="15";
 		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		//Verify Autoship template Section on Customer tab page.
 		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab();
+		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
 		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
 		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
@@ -471,17 +472,23 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveTwoProduct();
 		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
 		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("3");
 		String subtotalAfterUpdateIncrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been updated");
-		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("1");
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been increased updated in us");
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("2");
 		String subtotalAfterUpdateDecrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertTrue(subtotal.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been updated");
-		cscockpitAutoshipTemplateTabPage.enterOrderNote(orderNote);
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderNoteAdded(orderNote), "order note has not been added");
+		s_assert.assertFalse(subtotalAfterUpdateIncrement.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been decreased updated in us");
+		cscockpitAutoshipTemplateTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		String orderNotevalueFromUI = cscockpitAutoshipTemplateTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		String pstDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		String orderDate = cscockpitAutoshipTemplateTabPage.converPSTDateToUIFormat(pstDate);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
 		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab(subtotal);
+		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab();
 		String subtotalAfterProductRemoval=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
 		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterProductRemoval),"product has not been removed successfully");
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
@@ -503,7 +510,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/ca");
 			}
 			else
 				break;
@@ -515,7 +522,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -524,12 +531,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(newRandomCustomerSequenceNumber);
 		//Verify Autoship template Section on Customer tab page.
 		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipInCustomerTab();
+		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
 		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
 		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab(),"Threshold popup does not appear");
-		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();	
 		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
 		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
 		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
@@ -541,27 +548,35 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveTwoProduct();
+
 		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
 		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("3");
 		subtotalAfterUpdateIncrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been updated");
-		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("1");
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been increased updated in ca");
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("2");
 		subtotalAfterUpdateDecrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertTrue(subtotal.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been updated");
-		cscockpitAutoshipTemplateTabPage.enterOrderNote(orderNote);
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderNoteAdded(orderNote), "order note has not been added");
+		s_assert.assertFalse(subtotalAfterUpdateIncrement.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been decreased updated in ca");
+		cscockpitAutoshipTemplateTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		orderNotevalueFromUI = cscockpitAutoshipTemplateTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		pstDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		orderDate = cscockpitAutoshipTemplateTabPage.converPSTDateToUIFormat(pstDate);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
 		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab(subtotal);
+		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab();
 		subtotalAfterProductRemoval=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
 		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterProductRemoval),"product has not been removed successfully");
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		//Login to storefront and check the added item in mini cart page.
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/ca");
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontHomePage.clickOnAutoshipCart();
 		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
 		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
+		logout();
 		s_assert.assertAll();
 	}
 
@@ -685,5 +700,103 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(lastOrder.contains("FAILED"), "select last order status as failed expected result is FAILED actual on UI is" +lastOrder+" in autoship template page");
 		s_assert.assertAll();
 	}
+
+	// Hybris Project-1705:To verify change CRP date
+	@Test//(enabled=false)//WIP
+	public void testVerifyChangeCRPDate_1705() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID=null;
+
+		//-------------------FOR US----------------------------------
+		List<Map<String, Object>> randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		String nextDueDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		String modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(nextDueDate);
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		String day = modifiedDate.split("\\ ")[1];
+		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
+		logout();
+
+		//-------------------FOR CA----------------------------------
+		randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		nextDueDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(nextDueDate);
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		day = modifiedDate.split("\\ ")[1];
+		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
+		logout();
+		s_assert.assertAll();
+	}
+
 }
 

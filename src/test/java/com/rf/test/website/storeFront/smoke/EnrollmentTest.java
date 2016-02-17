@@ -340,74 +340,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}	
 
 
-	//	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC EnrollmentTest 
-	//	@Test //smoke test
-	//	public void testRCEnrollment_1307() throws InterruptedException{
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-	//		String firstName=TestConstants.FIRST_NAME+randomNum;
-	//		String lastName = "lN";
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		// Click on our product link that is located at the top of the page and then click in on quick shop
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//
-	//		//In the Cart page add one more product
-	//		storeFrontHomePage.addAnotherProduct();
-	//
-	//		//Two products are in the Shopping Cart?
-	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("2"), "number of products in the cart is NOT 2");
-	//		logger.info("2 products are successfully added to the cart");
-	//
-	//		//Click on Check out
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Log in or create an account page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-	//		logger.info("Login or Create Account page is displayed");
-	//
-	//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-	//		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-	//
-	//		/*//CheckoutPage is displayed?
-	//			s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
-	//			logger.info("Checkout page has displayed");*/
-	//
-	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-	//		storeFrontHomePage.enterMainAccountInfo();
-	//		logger.info("Main account details entered");
-	//
-	//		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-	//
-	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-	//		//Enter Billing Profile
-	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	//		storeFrontHomePage.selectNewBillingCardAddress();
-	//		storeFrontHomePage.clickOnSaveBillingProfile();
-	//		storeFrontHomePage.clickOnBillingNextStepBtn();
-	//		storeFrontHomePage.clickPlaceOrderBtn();
-	//		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	//		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-	//		s_assert.assertAll();	
-	//
-	//	}
-
+	
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
 	@Test //smoke test
 	public void testPCEnrollment_1308() throws InterruptedException{
@@ -483,68 +416,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	}
 
-	//	//Hybris Project-1288 :: Version : 1 :: 2. Terms and Conditions - Standard EnrollmentTest with both CRP and Pulse
-	//	@Test //smoke test
-	//	public void testStandardEnrollmentTermsAndConditions_1288() throws InterruptedException{
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	//		country = driver.getCountry();
-	//		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
-	//		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-	//		String firstName=TestConstants.FIRST_NAME+randomNum;
-	//
-	//		if(country.equalsIgnoreCase("CA")){
-	//			kitName = TestConstants.KIT_NAME_EXPRESS;			 
-	//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	//			city = TestConstants.CITY_CA;
-	//			postalCode = TestConstants.POSTAL_CODE_CA;
-	//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-	//		}else{
-	//			kitName = TestConstants.KIT_NAME_EXPRESS;
-	//			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	//			city = TestConstants.CITY_US;
-	//			postalCode = TestConstants.POSTAL_CODE_US;
-	//			phoneNumber = TestConstants.PHONE_NUMBER_US;
-	//		}
-	//
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		/*storeFrontHomePage.clickOnOurBusinessLink();
-	//			storeFrontHomePage.clickOnOurEnrollNowLink();*/
-	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-	//		storeFrontHomePage.searchCID();
-	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-	//		storeFrontHomePage.clickNextButton();
-	//		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-	//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-	//		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-	//		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-	//		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-	//		storeFrontHomePage.clickEnrollmentNextBtn();
-	//		//		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-	//		//		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-	//		storeFrontHomePage.clickEnrollmentNextBtn();
-	//		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-	//		storeFrontHomePage.addQuantityOfProduct("5");
-	//		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-	//		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-	//		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-	//		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-	//		storeFrontHomePage.checkTheIAgreeCheckBox();
-	//		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
-	//		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-	//		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-	//		storeFrontHomePage.clickOnConfirmAutomaticPayment();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	//		s_assert.assertAll();
-	//
-	//	}
-
-
+	
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
 	@Test
 	public void testTermsAndConditionsRCEnrollment_2188() throws InterruptedException	 {
@@ -756,74 +628,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//	// Hybris Project-2230 :: Version : 1 :: Verify that user can enroll in CRP through my account.
-	//	@Test //smoke test
-	//	public void testUserEnrollCRPThroughMyAccount_2230() throws InterruptedException{  
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	//		country = driver.getCountry();
-	//		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
-	//		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
-	//
-	//		if(country.equalsIgnoreCase("CA")){
-	//			kitName = TestConstants.KIT_NAME_EXPRESS;			 
-	//			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	//			city = TestConstants.CITY_CA;
-	//			postalCode = TestConstants.POSTAL_CODE_CA;
-	//			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-	//		}else{
-	//			kitName = TestConstants.KIT_NAME_EXPRESS;
-	//			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	//			city = TestConstants.CITY_US;
-	//			postalCode = TestConstants.POSTAL_CODE_US;
-	//			phoneNumber = TestConstants.PHONE_NUMBER_US;
-	//		}
-	//
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-	//		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
-	//		storeFrontHomePage.searchCID();
-	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-	//		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
-	//		storeFrontHomePage.clickNextButton();
-	//		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-	//		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-	//		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-	//		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-	//		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-	//		storeFrontHomePage.clickEnrollmentNextBtn();
-	//		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
-	//		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
-	//		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
-	//		storeFrontHomePage.clickEnrollmentNextBtn();
-	//		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-	//		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-	//		storeFrontHomePage.checkTheIAgreeCheckBox();
-	//		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-	//		storeFrontHomePage.clickOnEnrollMeBtn();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	//
-	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-	//		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
-	//		storeFrontAccountInfoPage.clickOnYourAccountDropdown();//added
-	//		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-	//		storeFrontAccountInfoPage.clickOnEnrollInCRP();
-	//		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
-	//		storeFrontHomePage.clickOnCRPCheckout();
-	//		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
-	//		storeFrontHomePage.clickOnBillingNextStepBtn();
-	//		storeFrontHomePage.clickOnSetupCRPAccountBtn();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
-	//		storeFrontHomePage.clickOnGoToMyAccountToCheckStatusOfCRP();
-	//		storeFrontHomePage.clickOnYourAccountDropdown();
-	//		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-	//		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
-	//		s_assert.assertAll();
-	//	}
+	
 
 	//	//Hybris Project-3921 :: Version : 1 :: Verify subscribing to Pulse from My Account under .biz site 
 	//	@Test //smoke test

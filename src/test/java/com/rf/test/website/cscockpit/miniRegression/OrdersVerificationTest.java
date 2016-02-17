@@ -11,8 +11,10 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateUpdateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCommitTaxTabPage;
@@ -54,6 +56,8 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	private CSCockpitAutoshipSearchTabPage cscockpitAutoshipSearchTabPage;
 	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private CSCockpitCommitTaxTabPage cscockpitCommitTaxTabPage;
+	private CSCockpitAutoshipTemplateUpdateTabPage cscockpitAutoshipTemplateUpdateTabPage;
+	private CSCockpitAutoshipCartTabPage cscockpitAutoshipCartTabPage;
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -75,6 +79,8 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
 		cscockpitCommitTaxTabPage = new CSCockpitCommitTaxTabPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		cscockpitAutoshipTemplateUpdateTabPage = new CSCockpitAutoshipTemplateUpdateTabPage(driver);
+		cscockpitAutoshipCartTabPage = new CSCockpitAutoshipCartTabPage(driver);
 	}
 
 	private String RFO_DB = null;
@@ -1589,6 +1595,175 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyCustomerNameFieldPresenceOnPage(),"customer name field not presenct on customerSearchPage");
 		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyPostcodeFieldPresenceOnPage(),"postcode field not present on customerSearchPage");
 		s_assert.assertTrue(cscockpitCustomerSearchTabPage.verifyEmailAddressFieldPresenceOnPage(),"EmailAddress field not present on customerSearchPage");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-1702:To verify edit CRP Autoship template
+	@Test
+	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String cid=null;
+		String SKUValue = null;
+		String autoshipNumber=null;
+		String subtotal=null;
+		String consultantEmailID=null;
+		String orderNote="test"+randomNum;
+		String beforeProductCountInAutoshipCart=null;
+		String afterProductCountInAutoshipCart=null;
+		//-------------------FOR US----------------------------------
+		List<Map<String, Object>> randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		storeFrontHomePage.clickOnAutoshipCart();
+		beforeProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab(),"Threshold popup does not appear");
+		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveTwoProduct();
+		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("3");
+		String subtotalAfterUpdateIncrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been increased updated in us");
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("2");
+		String subtotalAfterUpdateDecrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotalAfterUpdateIncrement.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been decreased updated in us");
+		cscockpitAutoshipTemplateTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		String orderNotevalueFromUI = cscockpitAutoshipTemplateTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		String pstDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		String orderDate = cscockpitAutoshipTemplateTabPage.converPSTDateToUIFormat(pstDate);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
+		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab();
+		String subtotalAfterProductRemoval=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterProductRemoval),"product has not been removed successfully");
+		cscockpitAutoshipTemplateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
+		//Login to storefront and check the added item in mini cart page.
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontHomePage.clickOnAutoshipCart();
+		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
+		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
+		logout(); 
+		//-------------------FOR CA----------------------------------
+		randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		storeFrontHomePage.clickOnAutoshipCart();
+		beforeProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String newRandomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		//randomCustomerSequenceNumber="15";
+		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(newRandomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab(),"Threshold popup does not appear");
+		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();	
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		String newRandomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveTwoProduct();
+
+		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("3");
+		subtotalAfterUpdateIncrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been increased updated in ca");
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("2");
+		subtotalAfterUpdateDecrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotalAfterUpdateIncrement.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been decreased updated in ca");
+		cscockpitAutoshipTemplateTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		orderNotevalueFromUI = cscockpitAutoshipTemplateTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
+		pstDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		orderDate = cscockpitAutoshipTemplateTabPage.converPSTDateToUIFormat(pstDate);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
+		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
+		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab();
+		subtotalAfterProductRemoval=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
+		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterProductRemoval),"product has not been removed successfully");
+		cscockpitAutoshipTemplateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
+		//Login to storefront and check the added item in mini cart page.
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontHomePage.clickOnAutoshipCart();
+		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
+		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
+		logout();
 		s_assert.assertAll();
 	}
 

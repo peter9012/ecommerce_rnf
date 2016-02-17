@@ -49,6 +49,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	private final By ACCOUNT_SHIPPING_INFO_LOC = By.xpath("//div[@id='left-menu']//a[text()='Shipping Info']");
 	private final By NEXT_BILL_DATE_OF_PULSE_TEMPLATE = By.xpath("//div[@id='left-menu']//a[text()='Shipping Info']");
+	private final By NEXT_DUE_DATE_OF_CRP_TEMPLATE = By.xpath("//span[contains(text(),'Next Bill & Ship Date')]/following::span[1]");
+	private final By NEXT_DUE_DATE_PULSE_SUBSCRIPTION_STATUS = By.xpath("//span[contains(text(),'Next Bill Date')]/following::span[1]");
 
 	public StoreFrontAccountInfoPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -863,6 +865,20 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		String billDate=driver.findElement(NEXT_BILL_DATE_OF_PULSE_TEMPLATE).getText();
 		logger.info("Billdate from UI is "+billDate);
 		return billDate;
+	}
+
+	public String getNextDueDateOfCRPTemplate(){
+		driver.waitForElementPresent(NEXT_DUE_DATE_OF_CRP_TEMPLATE);
+		String dueDate=driver.findElement(NEXT_DUE_DATE_OF_CRP_TEMPLATE).getText();
+		logger.info("Due date of CRP from UI is "+dueDate);
+		return dueDate;
+	}
+
+	public String getNextDueDateOfPulseSubscriptionTemplate(){
+		driver.waitForElementPresent(NEXT_DUE_DATE_PULSE_SUBSCRIPTION_STATUS);
+		String dueDate=driver.findElement(NEXT_DUE_DATE_PULSE_SUBSCRIPTION_STATUS).getText();
+		logger.info("Due date of CRP from UI is "+dueDate);
+		return dueDate;
 	}
 
 }

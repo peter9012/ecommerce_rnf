@@ -52,12 +52,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.get(driver.getURL());}
 		else{
 			driver.get(driver.getURL()+"/"+country);
-			try{
-				logout();
-			}catch(NoSuchElementException e){
-
-			}	
 		}
+		try{
+			logout();
+		}catch(NoSuchElementException e){
+
+		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))

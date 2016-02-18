@@ -425,6 +425,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
 		driver.type(COUNTRY_TEXT_BOX, Country);
 		logger.info("Country entered is "+Country);
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
 		driver.type(PROVINCE_TEXT_BOX, province);
 		logger.info("Province entered is "+province);

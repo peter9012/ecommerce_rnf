@@ -136,79 +136,39 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void selectProductAndProceedToBuy() throws InterruptedException{
 		applyPriceFilterHighToLow();
 		driver.waitForPageLoad();
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			else
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-			driver.waitForPageLoad();
-
-		}
-		else if(driver.getCountry().equalsIgnoreCase("US")){
-			try{
-				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			}catch(Exception e){
-				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-				driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-			}
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-			driver.waitForPageLoad();
-		}
-
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
 		driver.waitForPageLoad();
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			else
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-			driver.waitForPageLoad();
-
-		}
-		else if(driver.getCountry().equalsIgnoreCase("US")){
-			try{
-				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			}catch(Exception e){
-				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-				driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-			}
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-			driver.waitForPageLoad();
-		}
-
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']"));
-		else
-			driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
 		logger.info("Add to CRP button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnAddToPcPerksButton(){
 		driver.waitForPageLoad();
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
-		}
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
 
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
@@ -268,20 +228,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();
 		}
-		//  driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
+
 		applyPriceFilterHighToLow();
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]/div[2]/div[1]//form[@id='productDetailForm']/button"));
-			logger.info("Buy Now button clicked and another product selected");
-			driver.waitForPageLoad();
-		}
-		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//*[@id='main-content']/div[5]/div[2]//button"));
-			driver.click(By.xpath("//*[@id='main-content']/div[5]/div[2]//button"));
-			logger.info("Buy Now button clicked and another product selected");
-			driver.waitForPageLoad();
-		}
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));		
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyNumberOfProductsInCart(String numberOfProductsInCart){
@@ -1017,8 +971,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		while(true){
 			driver.get(getBizPWS(country, env));
 			driver.waitForPageLoad();
-			if(driver.getCurrentUrl().contains("sitenotfound"))
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				logger.info("SITE NOT FOUND error,try new PWS");
 				continue;
+			}
 			else
 				break;
 		}	
@@ -1171,27 +1127,19 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddToBagButton() throws InterruptedException{
 		applyPriceFilterHighToLow();
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		}else{
-			//			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
-			//   driver.waitForElementPresent(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
-			//   driver.click(By.xpath("//div[@id='main-content']//a[text()='REDEFINE Regimen']/following::form[1]"));
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
 	public void clickAddToBagButtonWithoutFilter() throws InterruptedException{		
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-		}else{
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@action='/ca/cart/add']/button"));
-		}
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -1199,25 +1147,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddToBagButton(String country) throws InterruptedException{
 		applyPriceFilterHighToLow();
-		if(country.equalsIgnoreCase("CA")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			else
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[2]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}else if(country.equalsIgnoreCase("US")){
-			try{
-				driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			}catch(Exception e){
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[1]//button"));
-				logger.info("Add To Bag button clicked");
-				driver.waitForLoadingImageToDisappear();
-			}
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
+
 
 	public void clickOnEditAtAutoshipTemplate(){
 		try{
@@ -1339,19 +1278,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
-		applyPriceFilterHighToLow();
-		if(driver.getCountry().equalsIgnoreCase("CA")){  
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']]"));
-			driver.click(By.xpath("//div[@id='main-content']/div[3]/div[1]//button[@class='btn btn-primary']"));
-			logger.info("Add to CRP button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}
-		else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//*[@class='quickshop-section yellow productCatPage']/div[2]/div[1]//button[@class='btn btn-primary']"));
-			driver.click(By.xpath("//*[@class='quickshop-section yellow productCatPage']/div[2]/div[1]//button[@class='btn btn-primary']"));
-			logger.info("Add to CRP button clicked");
-			driver.waitForLoadingImageToDisappear();   
-		}
+		applyPriceFilterHighToLow();		
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		logger.info("Add to CRP button clicked");
+		driver.waitForLoadingImageToDisappear();
+
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
@@ -1417,10 +1349,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String getProductPriceBeforeApplyFilter(){
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			return driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-		}
-		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
+		return driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
 	}
 
 	public void clickOnContinueShoppingLink(){
@@ -1435,16 +1364,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectAProductAndAddItToPCPerks(){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='main-content']/div[5]/div[3]//input[@value='ADD to PC Perks']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[3]//input[@value='ADD to PC Perks']"));;
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
-			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
 		}
+		logger.info("Add To PC perks button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(1000);
 	}
 
 	public boolean isBillingProfileIsSelectedByDefault(String profileName){
@@ -1532,7 +1461,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectDifferenetProductAndAddItToCRP(){
-
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
@@ -1552,20 +1480,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuyForPC() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
-		}
-		else {
-			driver.quickWaitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[5]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[5]//input[@value='ADD to PC Perks']"));
-		}
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
 		}catch(Exception e){
 		}
-		logger.info("Add To Bag button clicked");
+		logger.info("Add To PC perks button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 
@@ -1610,20 +1532,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean verifyRetailPriceIsAvailableOnProductsPage(){
-		driver.waitForPageLoad();
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//span[@class='old-price']"));
-		}else{
-			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='old-price']"));
-		}
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/descendant::span[@class='old-price'][1]"));
 	}
 
-	public boolean verifyYourPriceIsAvailableOnProductsPage(){
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section blue')]/div[contains(@class,'quick-product-wrapper')]/div[1]//span[@class='your-price']"));
-		}else{
-			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
-		}
+	public boolean verifyYourPriceIsAvailableOnProductsPage(){		
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]"));		
 	}
 
 	public boolean verifyRetailPriceIsAvailableOnAdhocCart(){
@@ -1721,14 +1634,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@class='editphotosmode']//input"));
 		driver.click(By.xpath("//div[@class='editphotosmode']//input"));
 	}
+
 	public void clickOnAddToCRPButtonAfterCancelMyCRP(){
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@id='crp_noButton']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//button[@id='crp_noButton']"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//button[@id='crp_noButton']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//button[@id='crp_noButton']"));
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
 	}
 
 	public boolean verifyEnrollInCRPPopupAfterClickOnAddToCRP(){
@@ -1831,32 +1740,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String clickAddToBagAndGetProductName(String productNumber){
-		String productName = null;
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/div[2]/div[1]//button"));
-			productName = driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/h3/a")).getText();
-			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div["+productNumber+"]/div[2]/div[1]//button"));
-			return productName.trim();
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/div[2]/div[1]//button"));
-			productName = driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/h3/a")).getText();
-			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div["+productNumber+"]/div[2]/div[1]//button"));
-			return productName.trim();
-		}
+		String productName = null;		
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
+		productName = driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]/preceding::a[1]")).getText();
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
+		return productName.trim();
 	}
-
-	public void clickAddToBagButtonWithoutFilterAfterLogin() throws InterruptedException{  
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-		}catch(NoSuchElementException e){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-		}
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-	}
-
 }

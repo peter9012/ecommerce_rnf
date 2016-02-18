@@ -104,7 +104,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		//Place an Adhoc Order
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-		storeFrontUpdateCartPage.clickAddToBagButtonWithoutFilterAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButtonWithoutFilter();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
@@ -150,7 +150,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		//Place an Adhoc Order
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-		storeFrontUpdateCartPage.clickAddToBagButtonWithoutFilterAfterLogin();
+		storeFrontUpdateCartPage.clickAddToBagButtonWithoutFilter();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();

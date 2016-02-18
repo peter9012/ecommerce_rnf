@@ -489,7 +489,6 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String attendeeLastName = TestConstants.LAST_NAME;
 		String city = null;
 		String postal = null;
-		String Country = null;
 		String province = null;
 		String phoneNumber = null;
 		String contry = null;
@@ -510,7 +509,9 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 			contry = "United States";
 		}
 		cscockpitCheckoutTabPage.addDeliveryAddressIfNonSelected(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
-		cscockpitCheckoutTabPage.addANewBillingProfileIfThereIsNoStoredCreditCard();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
@@ -565,7 +566,5 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isCreateNewAddressPopupPresentInCustomerTab(), "Create new Address popup is not present in billing section of customer tab");
 		s_assert.assertAll();
 	}
-
-
 
 }

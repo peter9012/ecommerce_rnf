@@ -535,7 +535,7 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4536:Verify Display of Autoship details for a PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyDisplayAutoshipDetailsForPC_4536() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;

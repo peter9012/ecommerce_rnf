@@ -32,6 +32,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	private String country = null;
 	private String RFO_DB = null;
 	private String env = null;
+	private String kitName = null;
+	private String regimenName = null;
+	private String enrollmentType = null;
+	private String addressLine1 = null;
+	private String city = null;
+	private String postalCode = null;
+
 
 	//Hybris Project-4350:Verify "Join my team" button on the .com and .biz site
 	@Test 
@@ -931,7 +938,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateAccessSolutionTool(),"Solution tool is not giving the expected results");
 		s_assert.assertAll();
 	}
-	
+
 	// Hybris Project-1892:To verify the Meet the consultant page UI for com and biz site
 	@Test
 	public void testVerifyMeetConsultantPage_1892() throws InterruptedException{
@@ -1482,6 +1489,32 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(),"Sponsor details is not present!!");
 		s_assert.assertAll(); 
 	}
-	
-	
+
+	//Hybris Project-4060:Post Contact Me Request on Meet Your Consultant Page on US Con's PWS as another
+	@Test
+	public void testPostContactMeRequestOnMeetYourConsultantPageOnUSConsPWSAsAnother_4060() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();  
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantWithPWSEmailID = null; //TestConstants.CONSULTANT_USERNAME;
+		String consultantPWSURL = null; //TestConstants.CONSULTANT_COM_URL;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+
+		// For .com site
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		//Post contact me request on meet your consultant page 
+		storeFrontHomePage.postContactMeRequestOnMeetYourConsultantPage(consultantWithPWSEmailID);
+		// For .biz site
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		storeFrontHomePage.postContactMeRequestOnMeetYourConsultantPage(consultantWithPWSEmailID);
+		s_assert.assertAll();
+	}
 }

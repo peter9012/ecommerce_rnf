@@ -48,23 +48,14 @@ public class StoreFrontOrdersAutoshipStatusPage extends StoreFrontRFWebsiteBaseP
 
 	public void clickAddToCRPButton(String country) throws InterruptedException{
 		applyPriceFilterHighToLow();
-		if(country.equalsIgnoreCase("CA")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[1]/div[2]/div[1]//button"));
-			else
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quick-product-wrapper')]/div[2]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}else if(country.equalsIgnoreCase("US")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button")).isEnabled()==true)
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[1]/div[2]/div[1]//button"));
-			else
-				driver.click(By.xpath("//div[@id='main-content']/div[contains(@class,'quickshop-section')]/div[2]/div[2]/div[2]/div[1]//button"));
-			logger.info("Add To Bag button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]")).isEnabled()==true)
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		else
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][2]"));
+		logger.info("Add To Bag button clicked");
+		driver.waitForLoadingImageToDisappear();
+
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));

@@ -2092,8 +2092,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
 		try{
-			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
-			driver.type(By.id("sponsor-name-id"),sponsor);
+			driver.quickWaitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
+			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponserparam"),sponsor);
 		}
@@ -2366,53 +2366,29 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public String getProductName(int num){
-		if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]/h3/a"));
-			String productName=driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]/h3/a")).getText();
-			logger.info("fetched product name is "+productName);
-			return productName;
-		}else if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/h3/a"));
-			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/h3/a")).getText();
-			logger.info("fetched product name is "+productName);
-			return productName;
-		}
-		return null;
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::a[1]"));
+		String productName=driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::a[1]")).getText();
+		logger.info("fetched product name is "+productName);
+		return productName;	
 	}
 
 	public String getProductPrice(int num){
-		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/p/span[1]"));
-			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/p/span[1]")).getText();
-			logger.info("fetched product name is "+productName);
-			return productName;
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div["+num+"]/p/span[1]"));
-			String productName=driver.findElement(By.xpath("//div[@id='main-content']/div[4]/div[2]/div["+num+"]/p/span[1]")).getText();
-			logger.info("fetched product name is "+productName);
-			return productName;
-		}
-		return null;
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]"));
+		String productName=driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]")).getText();
+		logger.info("fetched product price is "+productName);
+		return productName;
+
 	}
 
-	public void mouseHoverProductAndClickQuickInfo(int num){
-		if(driver.getCountry().equalsIgnoreCase("US")){
-			Actions actions = new Actions(RFWebsiteDriver.driver);
-			driver.waitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[1]/img")); 
-			WebElement allProducts = driver.findElement(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[1]/img"));
-			actions.moveToElement(allProducts).build().perform();
-			driver.quickWaitForElementPresent(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[2]/input"));
-			driver.click(By.xpath(".//div[@id='main-content']/div[4]/div[2]/div["+num+"]//a[2]/input"));
-			driver.pauseExecutionFor(5000);
-		}else if(driver.getCountry().equalsIgnoreCase("CA")){
-			Actions actions = new Actions(RFWebsiteDriver.driver);
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]/a[1]/img")); 
-			WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]/a[1]/img"));
-			actions.moveToElement(allProducts).build().perform();
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]//a[2]/input"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div["+num+"]/div[1]//a[2]/input"));
-			driver.pauseExecutionFor(5000);
-		}
+	public void mouseHoverProductAndClickQuickInfo(int num){		
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]")); 
+		WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]"));
+		actions.moveToElement(allProducts).build().perform();
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
+		driver.pauseExecutionFor(5000);
+
 	}
 
 	public boolean verifyAddToPCPerksButtonOnQuickInfoPopup(){
@@ -2444,21 +2420,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String firstProductPrice = null;
 		String secondProductPrice = null;
 		String thirdProductPrice = null;
-
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));
-			firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
-			firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-		}
-		System.out.println("1st "+firstProductPrice);
-		System.out.println("2nd "+secondProductPrice);
-		System.out.println("3rd "+thirdProductPrice);
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]"));
+		firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
+		secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][2]")).getText().split("\\$")[1].trim();
+		thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][3]")).getText().split("\\$")[1].trim();
+		logger.info("price of first product "+firstProductPrice);
+		logger.info("price of second product "+secondProductPrice);
+		logger.info("price of third product "+thirdProductPrice);
 
 		if(Double.parseDouble(thirdProductPrice)>Double.parseDouble(secondProductPrice)){
 			if(Double.parseDouble(secondProductPrice)>Double.parseDouble(firstProductPrice)){
@@ -2472,18 +2440,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String firstProductPrice = null;
 		String secondProductPrice = null;
 		String thirdProductPrice = null;
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]"));
+		firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
+		secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][2]")).getText().split("\\$")[1].trim();
+		thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][3]")).getText().split("\\$")[1].trim();
+		logger.info("price of first product "+firstProductPrice);
+		logger.info("price of second product "+secondProductPrice);
+		logger.info("price of third product "+thirdProductPrice);
 
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			driver.waitForElementPresent(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']"));
-			firstProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			secondProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			thirdProductPrice = driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']"));
-			firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[2]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-			thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[3]//span[@class='your-price']")).getText().split("\\$")[1].trim();
-		}
 		if(Double.parseDouble(firstProductPrice)>Double.parseDouble(secondProductPrice)){
 			if(Double.parseDouble(secondProductPrice)>Double.parseDouble(thirdProductPrice)){
 				return true;
@@ -2494,10 +2458,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyPriceAfterDeselectThefilter(String priceBeforeApplyFilter){
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			return driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
-		}
-		return driver.findElement(By.xpath("//div[@class='quickshop-section blue']/div[2]/div[1]//span[@class='your-price']")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
+		return driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim().contains(priceBeforeApplyFilter);
 	}
 
 	public String getProductNameBeforeApplyProductFilter(){
@@ -3781,6 +3742,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			return true;
 		else
 			return false;
+	}
+
+	public String getDefaultSponsorLastNameWhileEnrollingPCUser(){
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorInfo']/span"));
+		String sponserName =driver.findElement(By.xpath("//div[@id='sponsorInfo']/span")).getText();
+		logger.info("Default Sponser Name from UI is "+sponserName);
+		String sponsorTitle=sponserName.split("\\s")[1];
+		return sponsorTitle;
+	}
+
+	public void postContactMeRequestOnMeetYourConsultantPage(String consMailID){
+		driver.waitForElementPresent(By.xpath("//input[@id='name']"));
+		driver.findElement(By.xpath("//input[@id='name']")).sendKeys("NewConsultant User");
+		driver.findElement(By.xpath("//input[@id='senderEmailId']")).sendKeys(consMailID);
+		driver.findElement(By.xpath("//textarea[@id='message']")).sendKeys("Automation Test Comments");
+		//click send
+		driver.findElement(By.xpath("//input[@value='SEND']")).click();
+		driver.waitForPageLoad();
 	}
 
 }

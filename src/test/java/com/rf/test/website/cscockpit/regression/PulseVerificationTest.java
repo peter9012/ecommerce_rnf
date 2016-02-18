@@ -329,7 +329,7 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1718:To verify edit Pulse template
-	@Test//(enabled=false)//WIP
+	@Test
 	public void testVerifyEditPulseTemplate_1718() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

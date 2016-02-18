@@ -1767,7 +1767,7 @@ public class DBQueries_RFO {
 
 	public static String GET_USER_DETAILS_FROM_ACCOUNTID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId='%s'";
 	public static String GET_ACCOUNT_ID_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountNumber='%s'";
-
+	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressID IN (select top 1 EmailAddressID from RFO_Accounts.AccountEmails where AccountContactId IN (select top 1 AccountContactId from RFO_Accounts.AccountContacts where AccountId = '%s'))";
 
 	/**
 	 * 

@@ -1369,17 +1369,16 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectDifferentProductAndAddItToPCPerks(){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//input[@value='ADD to PC Perks']"));;
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][2]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][2]"));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
-			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
-
 		}
+		logger.info("Add To PC perks button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(1000);
 	}
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){

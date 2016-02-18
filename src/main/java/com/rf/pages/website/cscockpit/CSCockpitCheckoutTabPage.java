@@ -74,7 +74,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By COMMISSION_DATE_TXT = By.xpath("//span[contains(text(),'Commission Date')]");
 	private static final By ORDER_NOTES_TXT_LOCATOR = By.xpath("//span[contains(text(),'Order Notes')]");
 	private static final By ORDER_NOTE_ADD_BTN = By.xpath("//span[contains(text(),'Order Notes')]/following::td[text()='ADD'][1]");
-	private static final By NO_PROMOTION_TXT_LOCATOR = By.xpath("//span[contains(text(),'Applied Promotions')]/following::div[contains(text(),'No Promotions')]");
+	private static final By NO_PROMOTION_TXT_LOCATOR = By.xpath("//span[contains(text(),'Applied Promotions')]");
 	private static final By CREDIT_CARD_NUMBER_TXT_LOCATOR = By.xpath("//div[contains(text(),'Credit Card number')]");
 	private static final By CREDIT_CARD_OWNER_TXT_LOCATOR = By.xpath("//div[contains(text(),'Credit Card Owner')]");
 	private static final By CREDIT_CARD_TYPE_TXT_LOCATOR = By.xpath("//div[contains(text(),'Type')]");
@@ -175,13 +175,13 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(TEST_ORDER_CHKBOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public void clickDoNotShipCheckBoxInCheckoutTab(){
 		driver.waitForElementPresent(DO_NOT_SHIP_CHKBOX);
 		driver.click(DO_NOT_SHIP_CHKBOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public void clickAddNewPaymentAddressInCheckoutTab(){
 		driver.waitForElementPresent(ADD_NEW);
 		driver.click(ADD_NEW);

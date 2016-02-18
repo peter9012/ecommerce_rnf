@@ -702,7 +702,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1705:To verify change CRP date
-	@Test//(enabled=false)//WIP
+	@Test
 	public void testVerifyChangeCRPDate_1705() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

@@ -16,6 +16,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String customerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
 	private static String emailIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
+	private static String customeraccountStatusInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 
 	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[3]//span";
 	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']");
@@ -209,5 +210,31 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean verifyCIDSectionIsPresentWithClickableLinks(){
 		driver.waitForElementPresent(CID_LINK_SECTION_LOCATOR);
 		return driver.isElementPresent(CID_LINK_SECTION_LOCATOR);
+	}
+
+	public String getAccountStatusOfTheCustomerInCustomerSearchTab(int size){
+		String status=null;
+		for(int i=1;i<=size;i++){
+			driver.waitForElementPresent(By.xpath(String.format(customeraccountStatusInSearchResultsLoc, i)));
+			status = driver.findElement(By.xpath(String.format(customeraccountStatusInSearchResultsLoc,i))).getText();
+			if(status=="ACTIVE"){
+				break;
+			}}
+		logger.info("Selected Customer status is = "+status);
+		return status.trim();
+	}
+	public String getCIDNumberInCustomerSearchTab(int size){
+		String cid=null;
+		String status=null;
+		for(int i=1;i<=size;i++){
+			driver.waitForElementPresent(By.xpath(String.format(customeraccountStatusInSearchResultsLoc, i)));
+			status = driver.findElement(By.xpath(String.format(customeraccountStatusInSearchResultsLoc,i))).getText();
+			if(status.trim().equals("ACTIVE")){
+				driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc,i)));
+				cid= driver.findElement(By.xpath(String.format(customerCIDInSearchResultsLoc, i))).getText();
+				break;
+			}}
+		logger.info("Fetched cid is = "+cid);
+		return cid.trim();
 	}
 }

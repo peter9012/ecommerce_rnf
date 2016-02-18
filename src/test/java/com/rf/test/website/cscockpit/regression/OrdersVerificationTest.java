@@ -76,6 +76,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String orderNumber = null;
 		String orderHistoryNumber = null;
+		String accountID = null;
 		RFO_DB = driver.getDBNameRFO();
 
 		//-------------------FOR US----------------------------------
@@ -84,6 +85,8 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));	
+			logger.info("Account Id of user "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -93,8 +96,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
+		logger.info("login is successful");	
 		logout();
-		logger.info("login is successful");		
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);	
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -137,6 +145,8 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of user "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -147,6 +157,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
+		//get emailId of username
+		randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress");  
+		logger.info("emaild of consultant username "+consultantEmailID);	
+
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -186,7 +202,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		logout();
 		s_assert.assertAll();
 	}
-
 	//Hybris Project-1941:To verify Adhoc PC order
 	@Test
 	public void testToVerifyAdhocPCOrder_1941() throws InterruptedException{
@@ -904,14 +919,18 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomProductSequenceNumber = null;
 		String consultantEmailID = null;
 		String SKUValue = null;
+		String accountID=null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
 
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");		
+		driver.get(driver.getStoreFrontURL()+"/us");  
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -946,11 +965,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.clickOrderNoteEditButton(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.updateOrderNoteOnCheckOutPage(TestConstants.UPDATED_ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.enterInvalidCV2OnPaymentInfoSection(TestConstants.INVALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.INVALID_CV2_NUMBER);
 		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
 		cscockpitCheckoutTabPage.clickOkForCreditCardValidationFailedPopUp();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.VALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTab = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
@@ -965,7 +987,9 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");   
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -1000,11 +1024,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.clickOrderNoteEditButton(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.updateOrderNoteOnCheckOutPage(TestConstants.UPDATED_ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.enterInvalidCV2OnPaymentInfoSection(TestConstants.INVALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.INVALID_CV2_NUMBER);
 		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
 		cscockpitCheckoutTabPage.clickOkForCreditCardValidationFailedPopUp();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.VALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTabOnCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
@@ -1404,6 +1431,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	//Hybris Project-1950:Verify the Order Detail Page UI
 	@Test
 	public void testVerifyOrderDetailPageUI_1950(){
+		RFO_DB = driver.getDBNameRFO();
 		String orderDate = "Order Date";
 		String firstName = "First Name";
 		String lastName = "Last Name";
@@ -1437,13 +1465,33 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String requestId = "Request id";
 		String amount = "Amount";
 		String transactionStatus = "Transaction status";
+		String consultantEmailID =null;
+		String accountID=null;
+		String cid=null;
+		String orderStatusForUser=null;
+		int size=0;
+		String accountStatus=null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
 
-		//-------------------FOR US----------------------------------
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitOrderTabPage.selectOrderStatusFromDropDownInOrderTab(TestConstants.ORDER_TYPE_DD_VALUE_SHIPPED);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");
+			cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+			cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+			cscockpitCustomerSearchTabPage.clickSearchBtn();
+			size=cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab();
+			accountStatus=cscockpitCustomerSearchTabPage.getAccountStatusOfTheCustomerInCustomerSearchTab(size);
+			if(accountStatus.equals("ACTIVE")){
+				cid=cscockpitCustomerSearchTabPage.getCIDNumberInCustomerSearchTab(size);
+				break;
+			}
+		}
+
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(cid);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		String randomCustomerOrderNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		String firstNameFromUI = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerOrderNumber);
@@ -1457,6 +1505,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderStatus), "Order status section is not present in order search tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderTotal), "Order total section is not present in order search tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(shipToCountry), "Ship to country section is not present in order search tab");
+		orderStatusForUser=cscockpitOrderSearchTabPage.getOrderStatusOfClickedOrderInOrderSearchTab(randomCustomerOrderNumber);
 		String orderNumber = cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerOrderNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab().contains(firstNameFromUI),"full name on UI in order section of order tab "+cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab()+"while expected "+firstNameFromUI);
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab().contains(orderNumber),"order number on UI in order section of order tab "+cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab()+"while expected "+orderNumber);
@@ -1471,12 +1520,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyShippingAddressDetailsArePresentInOrderTab(), "Shipping address section is not present in order tab");
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyPaymentInfoDetailsArePresentInOrderTab(), "Payment info section is not present in order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTestOrderChkBoxIsPresentInCheckoutTab(), "Test order checkbox is not present in order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDoNotShipChkBoxIsPresentInCheckoutTab(), "Do Not Ship checkbox is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyReturnOrderBtnIsPresentInOrderTab(), "Return order btn is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(), "Place an order btn is not present in order tab");
-
-		//In order details section
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(product), "Product section is not present in order tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(basePrice), "Base price section is not present in order tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(totalPrice), "total price section is not present in order tab");
@@ -1498,14 +1541,15 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTaxesTxtIsPresentInTotalsSectionInCheckoutTab(), "taxes is not present in totals section of order tab");
 
 		//consigments section
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(code), "code section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingNumber), "Tracking number section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingURL), "Tracking URL section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(shippingDate), "shipping date section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(description), "Description section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(status), "status section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(carrier), "carrier section is not present in order tab");
-
+		if(orderStatusForUser.equalsIgnoreCase("Shipped")){
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(code), "code section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingNumber), "Tracking number section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingURL), "Tracking URL section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(shippingDate), "shipping date section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(description), "Description section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(status), "status section is not present in order tab");
+			s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(carrier), "carrier section is not present in order tab");
+		}
 		//In Payment Section
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(time), "time section is not present in order tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(type), "type section is not present in order tab");
@@ -1518,91 +1562,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		//In Modification history section
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyModificationHistoryInOrderTab(), "Modification history section is not present in order tab");
-
-		//		//-------------------FOR CA----------------------------------
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderTabPage.selectOrderStatusFromDropDownInOrderTab(TestConstants.ORDER_TYPE_DD_VALUE_SHIPPED);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomCustomerOrderNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		firstNameFromUI = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerOrderNumber);
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifyOrderNumberSectionIsPresentWithClickableLinksInOrderSearchTab(), "Order # section is not present with clickable links");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderDate), "Order date section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(firstName), "First name section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(lastName), "Last name section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(RFCID), "RFCID section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(emailAddress), "Email address section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderType), "Order type section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderStatus), "Order status section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(orderTotal), "Order total section is not present in order search tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(shipToCountry), "Ship to country section is not present in order search tab");
-		orderNumber = cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerOrderNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab().contains(firstNameFromUI),"full name on UI in order section of order tab "+cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab()+"while expected "+firstNameFromUI);
-		s_assert.assertTrue(cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab().contains(orderNumber),"order number on UI in order section of order tab "+cscockpitOrderTabPage.getOrderTitleFromCsCockpitUIOnOrderTab()+"while expected "+orderNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyCartDetailsIsPresentInOrderTab(orderStatus), "Order status section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyCartDetailsIsPresentInOrderTab(orderType), "Order type section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(orderCreated), "Order created is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(commissionDate), "commission date is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyCartDetailsIsPresentInOrderTab(consultantReceivingCommissions), "conslutant receving commissions is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(origination), "Origination is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(store), "store is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(salesApplication), "sales application is not present in order tab");
-
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyShippingAddressDetailsArePresentInOrderTab(), "Shipping address section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyPaymentInfoDetailsArePresentInOrderTab(), "Payment info section is not present in order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTestOrderChkBoxIsPresentInCheckoutTab(), "Test order checkbox is not present in order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDoNotShipChkBoxIsPresentInCheckoutTab(), "Do Not Ship checkbox is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyReturnOrderBtnIsPresentInOrderTab(), "Return order btn is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(), "Place an order btn is not present in order tab");
-
-		//In order details section
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(product), "Product section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(basePrice), "Base price section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(totalPrice), "total price section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(qty), "Qty section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(totalCV), "Total CV section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(totalQV), "Total QV section is not present in order tab");
-
-		//In promotion sections
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNoPromotionsAppliedInAppliedPromotionsSectionInCheckoutTab(), "No promotion txt is not present in order note info section of order tab");
-
-		//In totals section
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(), "Subtotal is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyHandlingCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Handling Costs is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceTxtIsPresentInTotalsSectionInCheckoutTab(), "Total price is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalCVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total CV is not present in totals section of order tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalQVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total QV is not present in totals section of order tab");
-		s_assert.assertFalse(cscockpitCheckoutTabPage.verifyTaxesTxtIsPresentInTotalsSectionInCheckoutTab(), "taxes is present in totals section of order tab for CA");
-
-		//consigments section
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(code), "code section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingNumber), "Tracking number section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(trackingURL), "Tracking URL section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(shippingDate), "shipping date section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(description), "Description section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(status), "status section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(carrier), "carrier section is not present in order tab");
-
-		//In Payment Section
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(time), "time section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(type), "type section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(requestId), "Request ID section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(amount), "Amount section is not present in order tab");
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(transactionStatus), "Transaction status section is not present in order tab");
-
-		//In order history section
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderHistoryInOrderTab(), "order history section is not present in order tab");
-
-		//In Modification history section
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyModificationHistoryInOrderTab(), "Modification history section is not present in order tab");
-
 		s_assert.assertAll();
-
 	}
 
 	//Hybris Project-1964:To verify the CV and QV update functionality in the order detail Page
@@ -2031,7 +1991,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-1949:To verify the order Type in the Order Detail page
 	@Test
-	public void testToVerifyTheOrderTypeInTheOrderDetailPage_1949(){
+	public void testToVerifyTheOrderTypeInTheOrderDetailPage_194(){
 		String randomOrderSequenceNumber = null;
 		String orderTypeConsultant = "Consultant Order";
 		String orderTypePulseAutoship = "Pulse Autoship";
@@ -2046,42 +2006,36 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeCRPAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeCRPAutoship),"Order Type is not CRP Autoship");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeConsultant);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeConsultant),"Order Type is not consultant order");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePulseAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePulseAutoship),"Order Type is not Pulse Autoship");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCPerksAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCPerksAutoship),"Order Type is not PCPerks Autoship");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCOrder);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCOrder),"Order Type is not PC Order");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeRetailOrder);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
@@ -2100,67 +2054,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeOverrideOrder),"Order Type is not Override Order");
-		//-------------------------FOR CA------------------------------
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeCRPAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeCRPAutoship),"Order Type is not CRP Autoship");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeConsultant);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeConsultant),"Order Type is not consultant order");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePulseAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePulseAutoship),"Order Type is not Pulse Autoship");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCPerksAutoship);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCPerksAutoship),"Order Type is not PCPerks Autoship");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypePCOrder);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCOrder),"Order Type is not PC Order");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeRetailOrder);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeRetailOrder),"Order Type is not Retail Order");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeReturn);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeReturn),"Order Type is not Return Order");
-		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeOverrideOrder);
-		cscockpitOrderSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("All");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypeOverrideOrder),"Order Type is not Override Order");
-		s_assert.assertAll();	   	   
+		s_assert.assertAll();
 	}
 
 }

@@ -2835,6 +2835,21 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String secondNewBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
 		String newBillingAddressName = TestConstants.BILLING_ADDRESS_NAME+randomNumber;
+		country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -2882,11 +2897,11 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
 		storeFrontUpdateCartPage.enterNewBillingAddressName(newBillingAddressName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewBillingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
-		storeFrontUpdateCartPage.enterNewBillingAddressCity(TestConstants.CITY_CA);
+		storeFrontUpdateCartPage.enterNewBillingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewBillingAddressCity(city);
 		storeFrontUpdateCartPage.selectNewBillingAddressState();
-		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
-		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		storeFrontUpdateCartPage.enterNewBillingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(secondNewBillingProfileName),"Newly created billing address is not present on page");
 		s_assert.assertTrue(storeFrontUpdateCartPage.isBillingProfileIsSelectedByDefault(defaultBillingProfile),"Default billing profile is not as expected");
@@ -2896,11 +2911,11 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
 		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
-		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
-		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
-		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
-		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyCreatedShippingAddressIsSelectedByDefault(newShipingAddressName));
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingAddressIsDefault(newShipingAddressName),"selected shipping address is not default");

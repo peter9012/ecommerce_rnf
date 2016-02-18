@@ -23,6 +23,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String customerLastNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
+	private static String orderStatusCorrespondingOrderLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[8]//span";
 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']"); 
 	private static final By TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS = By.xpath("//div[@class='orderDetailOrderItemsWidget']//div[@class='z-listbox-body']/table/tbody[2]/tr");
@@ -121,7 +122,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		logger.info("Random Order sequence number is "+randomOrderFromSearchResult);
 		return randomOrderFromSearchResult;
 	}
-	
+
 	public int getTotalOrderSearchResultsInOrderSearchTab(){
 		driver.waitForElementPresent(TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT);
 		return driver.findElements(TOTAL_ORDERS_FROM_ORDER_SEARCH_RESULT).size();
@@ -216,12 +217,18 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public void selectCountryFromDropDownInCustomerSearchTab(String country){
-		  driver.waitForElementPresent(By.xpath(String.format(countryDDLoc, country)));
-		  driver.click(By.xpath(String.format(countryDDLoc, country)));
-		  driver.waitForCSCockpitLoadingImageToDisappear();
-		  logger.info("************************************************************************************************************");
-		  logger.info("COUNTRY SELECTED = "+country);
+		driver.waitForElementPresent(By.xpath(String.format(countryDDLoc, country)));
+		driver.click(By.xpath(String.format(countryDDLoc, country)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		logger.info("************************************************************************************************************");
+		logger.info("COUNTRY SELECTED = "+country);
 	}
-	
+
+	public String getOrderStatusOfClickedOrderInOrderSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderStatusCorrespondingOrderLoc, customerSequenceNumber)));
+		String orderStatus = driver.findElement(By.xpath(String.format(orderStatusCorrespondingOrderLoc, customerSequenceNumber))).getText();
+		logger.info("Selected Customer order status is = "+orderStatus);
+		return orderStatus;
+	}
 
 }

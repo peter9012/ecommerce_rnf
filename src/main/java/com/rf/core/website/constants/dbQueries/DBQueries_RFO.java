@@ -1422,6 +1422,34 @@ public class DBQueries_RFO {
 					"WHERE CPI.AccountId = ab.AccountID) "+
 					"ORDER BY NEWID() ";
 
+	public static String GET_RANDOM_CONSULTANT_NO_PWS_WITH_COUNTRY_RFO =
+			"USE RFOperations "+
+					"SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+					"AND   ab.CountryID = %s "+
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+
+					/*Pulse*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+
+					"AND a.AutoshipTypeID = 3 "+
+					"AND a.Active = 1 ) "+
+					"AND NOT EXISTS (SELECT 1 "+
+					"FROM  RFO_Accounts.ConsultantPWSInfo AS CPI "+ 
+					"WHERE CPI.AccountId = ab.AccountID) "+
+					"ORDER BY NEWID() ";
+
 
 	public static String GET_SHIPPING_ADDRESS_QUERY_FOR_ALL_RFO = "select * from Hybris.OrderShippingAddress where OrderID='%s'";
 

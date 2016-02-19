@@ -3491,20 +3491,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//div[@id='add-new-billing']//label"));
 	}
 
-	public void enterSponserNameAndClickSearchAndContinue(String url) throws InterruptedException{
+	public void enterSponserNameAndClickSearchAndContinue(String sponsor) throws InterruptedException{
 		for(int i=1;i<=2;i++){
 			if(i>1){
 				clickOnNotYourSponsorLink();
 			}
-			enterSponsorNameAndClickOnSearchForPCAndRC();
+			enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
 			mouseHoverSponsorDataAndClickContinuePCAndRC(i);
-			driver.waitForLoadingImageToDisappear();
-			if(driver.getCurrentUrl().equalsIgnoreCase(url)){
-				logger.info("sponser selected successfully");
-				break;
-			}else
-				logger.info("Sponser is not selected properly in"+i+" attempt");
-			continue;
+			driver.waitForLoadingImageToDisappear();			
 		}
 	}
 

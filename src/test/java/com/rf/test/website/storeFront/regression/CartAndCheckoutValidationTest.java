@@ -2748,7 +2748,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
 		storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
+
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
@@ -2758,7 +2758,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
 
-//		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		//		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -3225,11 +3225,24 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountID= null;
+		String accountNumber = null;
 		//Get .Biz PWS from database to start enrolling rc user and upgrading it to pc user
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
 		//String emailAddressOfSponser= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 		String bizPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
-
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			List<Map<String, Object>> randomCrossCountryConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_WITH_COUNTRY_RFO,"236"),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomCrossCountryConsultantList, "AccountID"));
+			List<Map<String, Object>> randomCrossCountryConsultantAccountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+			accountNumber = String.valueOf(getValueFromQueryResult(randomCrossCountryConsultantAccountNumberList, "AccountNumber"));
+		}
+		else{
+			List<Map<String, Object>> randomCrossCountryConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_WITH_COUNTRY_RFO,"40"),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomCrossCountryConsultantList, "AccountID"));
+			List<Map<String, Object>> randomCrossCountryConsultantAccountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+			accountNumber = String.valueOf(getValueFromQueryResult(randomCrossCountryConsultantAccountNumberList, "AccountNumber"));
+		}
 		//Open biz pws of Sponser
 		storeFrontHomePage.openConsultantPWS(bizPWSOfSponser);
 		while(true){
@@ -3277,12 +3290,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(), "Continue without Sponser link is present on pws enrollment");
 		s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(),"Not your Sponser link is not present.");
 
-		//Click not your sponser link and verify continue without sponser link is present.
-		storeFrontHomePage.clickOnNotYourSponsorLink();
-		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"Sponser search field is not present");
-		String url=driver.getCurrentUrl();
-		//Search for sponser and ids.
-		storeFrontHomePage.enterSponserNameAndClickSearchAndContinue(url);
+//		//Click not your sponser link and verify continue without sponser link is present.
+//		storeFrontHomePage.clickOnNotYourSponsorLink();
+//		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"Sponser search field is not present");
+//		String url=driver.getCurrentUrl();
+//		//Search for sponser and ids.
+//		storeFrontHomePage.enterSponserNameAndClickSearchAndContinue(accountNumber);
 
 		//check pc perks checkbox at checkout page in order summary Section.
 		storeFrontHomePage.checkPCPerksCheckBox();
@@ -3294,9 +3307,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		String currentURL=driver.getCurrentUrl();
-		logger.info("Url After successful enroll is "+currentURL);
-		s_assert.assertTrue(storeFrontHomePage.validateCorpCurrentUrlPresent(),"current url is not a corp url");
+//		String currentURL=driver.getCurrentUrl();
+//		logger.info("Url After successful enroll is "+currentURL);
+//		s_assert.assertTrue(storeFrontHomePage.validateCorpCurrentUrlPresent(),"current url is not a corp url");
 		s_assert.assertAll();
 	}
 

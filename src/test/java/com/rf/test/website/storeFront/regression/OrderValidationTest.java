@@ -1508,7 +1508,9 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-		//Hybris Project-1978:Orders page UI for Consultant - Cart - history and autoships
+	
+
+	//Hybris Project-1978:Orders page UI for Consultant - Cart - history and autoships
 	//	@Test(enabled=false) //Tax value doesn't get updated while automation executes
 	//	public void testOrderPageUIAndEditCartForConsultant_1978() throws InterruptedException{
 	//		RFO_DB = driver.getDBNameRFO();

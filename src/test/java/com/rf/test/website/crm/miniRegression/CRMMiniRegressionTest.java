@@ -64,42 +64,6 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4498:Verify the Proxy to my account for a Consultant
-	@Test(enabled=false)//issue  
-	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();	
-		List<Map<String, Object>> randomConsultantList =  null;
-		crmLoginpage = new CRMLoginPage(driver);
-		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
-		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-		logger.info("The email address is "+consultantEmailID);	
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser()==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-				logger.info("The email address is "+consultantEmailID);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-				emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-			}else{
-				break;
-			}
-		}
-		crmHomePage.clickNameWithActiveStatusInSearchResults();
-		crmAccountDetailsPage.clickAccountDetailsButton("My Account");
-		crmAccountDetailsPage.switchToChildWindow();
-		s_assert.assertTrue(crmAccountDetailsPage.isSVSectionPresentOnPulsePage(), "SV Section is not present on Pulse Page");		
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-4542:View Shipping Profile for Consultant
 	@Test
 	public void testViewShippingProfileForConsultant_4542() throws InterruptedException{
@@ -598,7 +562,7 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4505:View and Edit PWS Domain for a Consultant
-	@Test(enabled=false)//WIP 
+	@Test 
 	public void testViewAndEditPWSDomainForConsultant_4505() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -644,6 +608,42 @@ public class CRMMiniRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
 		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
 		s_assert.assertTrue(driver.getCurrentUrl().contains("corp"), "Old PWS Site Url is active");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4498:Verify the Proxy to my account for a Consultant
+	@Test 
+	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickConsultantCustomerNameInSearchResult();
+		String accountName = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Account Name");
+		String emailId = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Email Address");
+		String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone");
+		String addressLine1 = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Address Line 1");
+		String locale = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Locale");
+		logger.info("Url Print before switching = "+ driver.getCurrentUrl());
+		crmAccountDetailsPage.clickAccountDetailsButton("My Account");
+		storeFrontHomePage.switchToChildWindow();
+		String consultantMyAccountPage = driver.getCurrentUrl();
+
+		s_assert.assertTrue(consultantMyAccountPage.contains("corp"), "Not Logged in consultant's account page");
+		s_assert.assertTrue(storeFrontHomePage.isUserNamePresentOnDropDown(), "Consultant Account Page Not Verified");
+		s_assert.assertTrue(accountName.contains(storeFrontHomePage.getConsultantStoreFrontInfo("first-name")), "First Name Not Matched, Expected is "+ accountName +"But Actual Contain is " +storeFrontHomePage.getConsultantStoreFrontInfo("first-name"));
+		s_assert.assertTrue(addressLine1.equals(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
+		s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
+		s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
+		s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
 		s_assert.assertAll();
 	}
 

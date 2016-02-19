@@ -90,6 +90,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String consultantEmailID = null;
 		String SKUValue = null;
+		String accountID = null;
 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String attendeeLastName="IN";
@@ -115,7 +116,8 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -126,6 +128,11 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);
 		logger.info("login is successful");
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -178,7 +185,8 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -189,6 +197,10 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logout();
+		//get emailId of username
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);
 		logger.info("login is successful");
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();

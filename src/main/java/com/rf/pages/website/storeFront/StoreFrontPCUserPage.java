@@ -337,13 +337,15 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnAddtoPCPerksButton(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
 		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']"));
-		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[1]//input[@value='ADD to PC Perks']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
 		}
+		logger.info("Add To PC perks button clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 

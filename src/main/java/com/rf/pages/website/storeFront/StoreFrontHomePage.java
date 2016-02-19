@@ -166,7 +166,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("Sponsor entered as "+cid+" and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public boolean isNoSearchResultMsg(){
 		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']/descendant::span[1]"));
 		return driver.findElement(By.xpath("//div[@id='sponsorPage']/descendant::span[1]")).getText().contains("No result found for");
@@ -3766,6 +3766,32 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//click send
 		driver.findElement(By.xpath("//input[@value='SEND']")).click();
 		driver.waitForPageLoad();
+	}
+
+	public void addSocialNetworkingURLUnderFollowMeSection(){
+		driver.waitForElementPresent(By.xpath("//input[@id='consultant-facebook']"));
+		driver.findElement(By.xpath("//input[@id='consultant-facebook']")).sendKeys("https://www.facebook.com/");
+		driver.findElement(By.xpath("//input[@id='consultant-twitter']")).sendKeys("https://twitter.com/?lang=en");
+		driver.findElement(By.xpath("//input[@id='consultant-pinterest']")).sendKeys("https://www.pinterest.com/");
+		driver.findElement(By.xpath("//input[@id='consultant-instagram']")).sendKeys("https://www.instagram.com/?hl=en");
+	}
+
+	public void clearSocialNetworkingURLUnderFollowMeSection(){
+		driver.waitForElementPresent(By.xpath("//input[@id='consultant-facebook']"));
+		driver.findElement(By.xpath("//input[@id='consultant-facebook']")).clear();
+		driver.findElement(By.xpath("//input[@id='consultant-twitter']")).clear();
+		driver.findElement(By.xpath("//input[@id='consultant-pinterest']")).clear();
+		driver.findElement(By.xpath("//input[@id='consultant-instagram']")).clear();
+	}
+
+	public boolean isUserNamePresentOnDropDown(){
+		driver.waitForElementPresent(By.id("account-info-button"));
+		return driver.isElementPresent(By.id("account-info-button"));
+	}
+
+	public String getConsultantStoreFrontInfo(String label){
+		driver.waitForElementPresent(By.id(label));
+		return driver.findElement(By.id(label)).getAttribute("value");
 	}
 
 }

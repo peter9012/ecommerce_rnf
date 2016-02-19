@@ -1980,7 +1980,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2024:To verify Return shipping functionality
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyReturnShippingFunctionality_2024() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
@@ -2235,7 +2235,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2025:To verify Return Handling functionality
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyReturnHandlingFunctionality_2025() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
@@ -2478,7 +2478,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickMenuButton();
 		cscockpitOrderTabPage.clickLogoutButton();
 
-
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -2489,5 +2488,166 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
 		s_assert.assertAll();		
 	}
+
+	// Hybris Project-2409:Check Return order information on the Order history page. (Returning Consultant Autoship Order)
+	@Test
+	public void testCheckReturnOrderInformationOnTheOrderHistoryPage_2409() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String accountID = null;
+		RFO_DB = driver.getDBNameRFO();
+
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));	
+			logger.info("Account Id of user "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+				storeFrontAccountInfoPage.clickOnAutoShipStatus();
+				if(storeFrontAccountInfoPage.verifyCRPCancelled()==true){
+					logout();
+					driver.get(driver.getStoreFrontURL()+"/us");
+					continue;
+				}else{
+					break;
+				}
+			}
+
+			break;
+		}
+		logger.info("login is successful");	
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);	
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		String confirmationMsgOfRunNow = cscockpitAutoshipTemplateTabPage.getConfirmMessageAfterClickOnRunNowBtn();
+		String orderNumberFromMsg = cscockpitAutoshipTemplateTabPage.getOrderNumberFromConfirmationMsg(confirmationMsgOfRunNow);
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		cscockpitCustomerTabPage.clickOrderNumberInCustomerOrders(orderNumberFromMsg);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		boolean isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		String RMANumber = cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		//verification on storefornt
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyRMANumberIsPresentInReturnOrderHistory(RMANumber),"RMA number "+RMANumber+" Is not present in order history page");
+		s_assert.assertTrue(storeFrontOrdersPage.getGranTotalOfRMANumberInReturnOrderHistory(RMANumber).trim().contains(refundTotal.trim()),"refund total expected "+refundTotal+" actual on UI "+storeFrontOrdersPage.getGranTotalOfRMANumberInReturnOrderHistory(RMANumber).trim());
+		logout();
+
+		//-------------------FOR CA----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));	
+			logger.info("Account Id of user "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+				storeFrontAccountInfoPage.clickOnAutoShipStatus();
+				if(storeFrontAccountInfoPage.verifyCRPCancelled()==true){
+					logout();
+					driver.get(driver.getStoreFrontURL()+"/us");
+					continue;
+				}else{
+					break;
+				}
+			}
+
+			break;
+		}
+		logger.info("login is successful");	
+		logout();
+		//get emailId of username
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);	
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		confirmationMsgOfRunNow = cscockpitAutoshipTemplateTabPage.getConfirmMessageAfterClickOnRunNowBtn();
+		orderNumberFromMsg = cscockpitAutoshipTemplateTabPage.getOrderNumberFromConfirmationMsg(confirmationMsgOfRunNow);
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		cscockpitCustomerTabPage.clickOrderNumberInCustomerOrders(orderNumberFromMsg);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		RMANumber = cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		//verification on storefornt
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyRMANumberIsPresentInReturnOrderHistory(RMANumber),"RMA number "+RMANumber+" Is not present in order history page on CA");
+		s_assert.assertTrue(storeFrontOrdersPage.getGranTotalOfRMANumberInReturnOrderHistory(RMANumber).trim().contains(refundTotal.trim()),"refund total expected on CA "+refundTotal+" actual on UI "+storeFrontOrdersPage.getGranTotalOfRMANumberInReturnOrderHistory(RMANumber).trim());
+		logout();
+		s_assert.assertAll();
+	}
+
 
 }

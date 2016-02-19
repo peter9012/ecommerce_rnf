@@ -64,7 +64,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By DISABLED_UPDATE_AUTOSHIP_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//a[text()='Update'][@style='display:none;']");
 	private static final By DISABLED_REMOVE_AUTOSHIP_BTN = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//a[text()='Remove'][@style='display:none;']");
 	private static final By DISABLED_QTY_INPUT_TXT = By.xpath("//span[text()='Order Detail Items']/following::div[@class='csWidgetContent'][1]//tr[contains(@class,'csListItem ')]/td[8]//input[@disabled='disabled']");
-
+	private static final By CONFIRM_MSG_OF_RUN_NOW = By.xpath("//div[text()='Confirm']/following::div[@class='z-messagebox']//span");
+	private static final By RUN_NOW_AGAIN = By.xpath("//div[contains(text(),'Run Now?')]");
+	private static final By RUN_NOW_AGAIN_YES_BTN = By.xpath("//div[contains(text(),'Run Now?')]/following::td[text()='Yes']");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -188,7 +190,11 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public void clickRunNowButtonOnAutoshipTemplateTab() {
 		driver.waitForElementPresent(RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB);
 		driver.click(RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB);
-		driver.waitForCSCockpitLoadingImageToDisappear();	  
+		driver.waitForCSCockpitLoadingImageToDisappear(); 
+		if(driver.isElementPresent(RUN_NOW_AGAIN)==true){
+			driver.click(RUN_NOW_AGAIN_YES_BTN);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
 	}
 
 	public void clickOkForRegeneratedIdpopUp() {
@@ -404,7 +410,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 			}
 		}
 	}
-	
+
 	public void addProductInAutoShipCartTillHaveTwoProduct(){
 		boolean autoshipProductList=true;
 		do{
@@ -465,5 +471,16 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 				continue;
 			}
 		}
+	}
+
+	public String getConfirmMessageAfterClickOnRunNowBtn(){
+		driver.waitForElementPresent(CONFIRM_MSG_OF_RUN_NOW);
+		return driver.findElement(CONFIRM_MSG_OF_RUN_NOW).getText();
+	}
+
+	public String getOrderNumberFromConfirmationMsg(String message){
+		String msg = message.split("number")[1];
+		logger.info("Created order number is "+msg.split("\\.")[0]);
+		return msg.split("\\.")[0].trim();
 	}
 }

@@ -86,6 +86,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By RMA_TEXT_ID = By.xpath("//a[contains(text(),'RMA')]");
 	private static final By ORDER_NUMBER_IN_POPUP = By.xpath("//a[contains(text(),'Order #')]");
 	private static final By RESTOCKING_FEE_CHECKBOX_IN_POPUP = By.xpath("//div[@class='editorWidgetEditor']//input[@type='checkbox']/ancestor::td/following-sibling::td[7]//input[@type='checkbox']");
+	private static final By RMA_NUMBER_ON_POPUP  = By.xpath("//span[contains(text(),'RMA number')]");
 
 	protected RFWebsiteDriver driver;
 
@@ -490,5 +491,12 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		String value=newValue[1];
 		logger.info("Fetched value of taxes in popup are "+value);
 		return value;
+	}
+
+	public String getRMANumberFromPopup(){
+		driver.waitForElementPresent(RMA_NUMBER_ON_POPUP);
+		String RMANumber = driver.findElement(RMA_NUMBER_ON_POPUP).getText();
+		logger.info("RMA number is "+RMANumber);
+		return RMANumber;
 	}
 }

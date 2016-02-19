@@ -2714,7 +2714,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-145:Update PC Template -EDIT Cart , Shipping info, billing info and Save
-	@Test(enabled=false) //Element Not visible issue
+	@Test
 	public void testUpdatePCTemplate_145() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
@@ -2748,26 +2748,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
 		storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
-		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
-		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingAddressName);
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
-		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		//storeFrontUpdateCartPage.selectNewBillingCardAddress();
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
-		//verify selected billing profile is default
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
-
+		
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
@@ -2777,6 +2758,17 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedShippingMethodNameOnUI(selectedMethodName),"Selected Shipping method name is not present on UI");
 
+//		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH_OPTION,TestConstants.CARD_EXP_YEAR_OPTION);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyErrorMessageForCreditCardSecurityCode(),"Error message for credit card security code is not present");
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingAddressName);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyBillingProfileIsUpdatedSuccessfully(),"Billing profile is not been updated successfully");
+		//verify selected billing profile is default
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifySelectedbillingProfileIsDefault(newBillingAddressName),"selected billing profile is not default");
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");

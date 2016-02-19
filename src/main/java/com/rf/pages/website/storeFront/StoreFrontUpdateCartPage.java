@@ -118,8 +118,9 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnSaveBillingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.id("submitButton"));
-		driver.click(By.id("submitButton"));
+		driver.waitForElementPresent(By.xpath("//input[@id='submitButton']"));
+		driver.click(By.xpath("//input[@id='submitButton']"));
+		driver.pauseExecutionFor(5000);		
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save billing profile button clicked");
 	}
@@ -627,6 +628,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
+		clickOnEditShipping();
 		driver.waitForElementPresent(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
 		driver.click(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
 		driver.waitForLoadingImageToDisappear();

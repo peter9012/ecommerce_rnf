@@ -708,4 +708,13 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		checkAvailabilityMessage = driver.findElement(By.xpath("//div[@class='page pws']/table[2]//span")).getText();
 		return checkAvailabilityMessage;
 	}
+
+	public String getInfoUnderAccountDetailSection(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//table[@class='detailList']//td[text()='"+label+"']/following-sibling::td[1]"));
+		return driver.findElement(By.xpath("//table[@class='detailList']//td[text()='"+label+"']/following-sibling::td[1]")).getText();
+	}
 }
+

@@ -1020,4 +1020,22 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[contains(@class,'order-products orders-table')]/div["+productNumber+"]//p[2]"));
 		return driver.findElement(By.xpath("//div[contains(@class,'order-products orders-table')]/div["+productNumber+"]//p[2]")).getText().trim();
 	}
+
+	public boolean isShippingCostPresent(){
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']//div[contains(text(),'Shipping')]/following::div[1]"));
+	}
+
+	public boolean isHandlingCostPresent(){
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']//div[contains(text(),'Handling')]/following::div[1]"));
+	}
+
+	public boolean verifyRMANumberIsPresentInReturnOrderHistory(String rmaNumber){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']"));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']"));
+	}
+
+	public String getGranTotalOfRMANumberInReturnOrderHistory(String rmaNumber){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']/following::div[2]"));
+		return driver.findElement(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']/following::div[2]")).getText();
+	}
 }

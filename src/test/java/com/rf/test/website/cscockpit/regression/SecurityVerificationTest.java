@@ -238,8 +238,11 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTabOnCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
@@ -286,8 +289,11 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTab = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();

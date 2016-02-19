@@ -8132,6 +8132,97 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-2205:Consultant trying to enroll under invalid sponsor then follow 'select upline' flow and complete enro
+	@Test
+	public void testConsultantReenrollmentUnderInvalidSponsorThenSelectUplineFlowAndCompleteEnrollment_2205() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName =  TestConstants.REGIMEN_NAME_REDEFINE;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();   
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//Again enroll the consultant with same eamil id
+		kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_CA;    
+		addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		city = TestConstants.CITY_CA;
+		postalCode = TestConstants.POSTAL_CODE_CA;
+		phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		// Get sponser with PWS from database
+		List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		String sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
+		String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(sponsorId);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		s_assert.assertTrue(storeFrontHomePage.verifyInvalidSponsorPopupIsPresent(), "Invalid Sponsor popup is not present");
+		storeFrontHomePage.clickOnEnrollUnderLastUpline();
+		// For enroll the same consultant
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName); 
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		storeFrontHomePage.enterPasswordForReactivationForConsultant();
+		storeFrontHomePage.clickOnLoginToReactiveMyAccountForConsultant();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2252:Verify if inactive sponsor can be searched on Search Sponsor screen.
+	@Test
+	public void testInactiveSponsorSearch_2252() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomInactiveConsultantList =  null;
+		List<Map<String, Object>> randomInactiveConsultantAccountNumberList =  null;
+		String accountID = null;
+		String accountNumber = null;
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName =  TestConstants.REGIMEN_NAME_REDEFINE;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		randomInactiveConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANT_INACTIVE_RFO_4179,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomInactiveConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		randomInactiveConsultantAccountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		accountNumber = String.valueOf(getValueFromQueryResult(randomInactiveConsultantAccountNumberList, "AccountNumber"));
+		logger.info("Account Number of the user is "+accountNumber);
+
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(accountNumber);
+		s_assert.assertTrue(storeFrontHomePage.isNoSearchResultMsg(), "No such result message is not found for inactive account Number "+accountNumber);
+		s_assert.assertAll();
+	}
 
 }
 

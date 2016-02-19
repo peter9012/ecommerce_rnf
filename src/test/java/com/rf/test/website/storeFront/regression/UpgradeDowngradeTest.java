@@ -1555,54 +1555,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-3898:Downgrade to RC on the Payment / Order summary page
-	@Test
-	public void testDowngradePCToRCAtPaymentOrderSummaryPage_3898() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		country = driver.getCountry();
-		int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
-		env = driver.getEnvironment();
-		String firstName = TestConstants.FIRST_NAME+randomNum;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String lastName = TestConstants.LAST_NAME+randomNum;
-		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String PWS = storeFrontHomePage.getBizPWS(country, env);
-		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
-		storeFrontHomePage.openPWS(PWS);
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.selectProductAndProceedToBuy();
-		storeFrontHomePage.clickOnCheckoutButton();
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-		storeFrontHomePage.enterNewPCDetails(firstName, lastName, password, emailAddress);
-		//Enter main account info
-		storeFrontHomePage.enterMainAccountInfo();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		//Enter billing info
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		//Uncheck PC Perks Checkbox on Payment/order summary page
-		s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(),"PC Perks checkbox is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is not selected");
-		storeFrontHomePage.checkPCPerksCheckBox();
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected");
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		storeFrontHomePage.clickOnWelcomeDropDown();
-		s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-3900:Downgrade to RC on the Review / Order summary page
 	@Test
 	public void testDowngradePCToRCAtReviewOrderSummaryPage_3900() throws InterruptedException{
@@ -1653,7 +1605,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-3896:Downgrade to RC on the Main Account page
 	@Test
-	public void testDowngradePCToRCAtMainAccountInfoPage_3900() throws InterruptedException{
+	public void testDowngradePCToRCAtMainAccountInfoPage_3896() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		country = driver.getCountry();
 		int randomNum =  CommonUtils.getRandomNum(10000, 1000000);
@@ -1695,69 +1647,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		s_assert.assertFalse(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(),"Edit Pc Perks Link is present for RC User");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-2267:check Modal window with PCPerks info as RC
-	@Test
-	public void testCheckModalWindowWithPCPerksInfoAsRC_2267() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String firstName=TestConstants.FIRST_NAME+randomNum;
-		String lastName = "lN";
-		String emailAddress = firstName+"@xyz.com";
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		// Click on our product link that is located at the top of the page and then click in on quick shop
-
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
-		//Select a product and proceed to buy it
-		storeFrontHomePage.selectProductAndProceedToBuy();
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		storeFrontHomePage.clickOnPCPerksLearnMoreLink();
-		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present on cart page after ADD TO BAG");
-		storeFrontHomePage.clickOnModalWindowCloseIcon();
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
-		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewRCDetails(firstName, lastName, emailAddress, password);
-
-		/*//CheckoutPage is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
-			logger.info("Checkout page has displayed");*/
-
-		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-		storeFrontHomePage.enterMainAccountInfo();
-		logger.info("Main account details entered");
-
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		//Enter Billing Profile
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickOnPCPerksLearnMoreLink();		
-		s_assert.assertTrue(storeFrontHomePage.verifyModalWindowIsPresent(),"Modal Window is not present on order summary page");
 		s_assert.assertAll();
 	}
 
@@ -2251,7 +2140,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-3898:Downgrade to RC on the Payment / Order summary page
 	@Test
-	public void testDowngradePCToRCAtPaymentOrderSummaryPage_3900() throws InterruptedException{
+	public void testDowngradePCToRCAtPaymentOrderSummaryPage_3898() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
 			country = driver.getCountry();
@@ -2559,5 +2448,51 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "User NOT upgrade successfully to PC");
 		s_assert.assertAll();	
 	}	
-}
 
+	//Hybris Project-2311:Upgrade RC user to PC User during Checkout and check Prices
+	@Test
+	public void testUpgradeRCUserToPCDuringCheckOutChkPrices_2311() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+		//validate user is able to see various product prices attached to the product. on quick shop page
+		s_assert.assertTrue(storeFrontHomePage.validateRetailProductProcesAttachedToProduct(), "retail product prices attached to product is not displayed");
+		//Add product to cart & checkout..
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		//fetch the pricing of the product selected before chkout..
+		double productPricingBefore=storeFrontHomePage.getProductPricingOnCartPage();
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.checkYesIWantToJoinPCPerksCBOnSummaryPage();
+		//Again fetch the pricing of the product on summary page after checking the PC Perks CB..
+		double productProicingAfter=storeFrontHomePage.getProductPricingOnSummaryPage();
+		if(productProicingAfter<productPricingBefore){
+			s_assert.assertTrue(true, "price change(decrement) doesn't occurs");
+		}else{
+			s_assert.assertTrue(false);
+		}
+		s_assert.assertAll();
+	}
+}

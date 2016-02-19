@@ -815,42 +815,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
-	//Hybris Project-2170:Login as Existing Consultant and Place an Adhoc Order - check Alert Message
-	@Test
-	public void testCreateAdhocOrderConsultant_2170() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountId = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountId);
-
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
-		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
-		storeFrontUpdateCartPage.clickOnPlaceOrderButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"checkout confirmation popup not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
-		storeFrontUpdateCartPage.verifyConsultantIsAbleToContinueCheckoutProcess();
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-2113:Reduce the Quantity
 	@Test
 	public void testReduceTheQuantity_2113() throws InterruptedException{
@@ -2849,7 +2813,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		}
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -6004,8 +5968,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2147:Check Shipping and Handling Fee for UPS 2Day for Order total 0-999999-EnrollmentKit
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPS2DayConsultantEnrollmentKit_2147() throws InterruptedException
-	{
+	public void testCheckShippingAndHandlingFeeForUPS2DayConsultantEnrollmentKit_2147() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
@@ -6054,5 +6017,74 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 0.00"),"Handling charges on UI is not As per shipping method selected");
 		s_assert.assertAll();
 	}
-}
 
+	//Hybris Project-1889:Create Adhoc Order with Master Card
+	@Test
+	public void testCreateAdhocOrderWithMasterCard_1889() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontRCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnContinueWithoutSponsorLink();
+		storeFrontUpdateCartPage.clickOnNextButtonAfterSelectingSponsor();
+		String subtotal = storeFrontUpdateCartPage.getSubtotal();
+		logger.info("Subtotal while creating order is "+subtotal);
+		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
+		logger.info("Delivery charges while creating order is "+deliveryCharges);
+		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("Handling charges while creating order is "+handlingCharges);
+		String tax = storeFrontUpdateCartPage.getTax();
+		logger.info("Tax while creating order is "+tax);
+		String total = storeFrontUpdateCartPage.getTotal();
+		logger.info("Total while creating order is "+total);
+		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+		logger.info("shippingMethod ="+shippingMethod);
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.MASTER_CARD_NUMBER);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		// Get Order Number
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getCreditCardNumber().contains(TestConstants.MASTER_CARD_NUMBER.substring(12)),"Adhoc Order template credit card number "+TestConstants.MASTER_CARD_NUMBER.substring(11)+" and on UI is "+storeFrontOrdersPage.getCreditCardNumber());
+		s_assert.assertAll();
+	}
+}

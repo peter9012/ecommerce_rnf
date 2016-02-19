@@ -121,7 +121,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void openConsultantPWS(String pwsURL){
 		logger.info("User PWS is "+pwsURL);
-		driver.get(pwsURL);		
+		driver.get(pwsURL);
+		driver.waitForPageLoad();
 	}
 
 	public boolean isCurrentURLShowsError() throws InterruptedException{
@@ -164,6 +165,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 		logger.info("Sponsor entered as "+cid+" and search button clicked");
 		driver.waitForLoadingImageToDisappear();
+	}
+	
+	public boolean isNoSearchResultMsg(){
+		driver.waitForElementPresent(By.xpath("//div[@id='sponsorPage']/descendant::span[1]"));
+		return driver.findElement(By.xpath("//div[@id='sponsorPage']/descendant::span[1]")).getText().contains("No result found for");
 	}
 
 	public void searchCIDOnSelectASponsorPopUp(String cid){
@@ -1877,8 +1883,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyShippingAddressIsPresentOnReviewPage(String name){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+name+"')]"));
-		return driver.isElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+name+"')]"));
+		driver.waitForElementNotPresent(By.xpath("//div[@id='summarySection']/descendant::span[@class='font-bold' and contains(text(),'"+name+"')][1]"));
+		return driver.isElementPresent(By.xpath("//div[@id='summarySection']/descendant::span[@class='font-bold' and contains(text(),'"+name+"')][1]"));
 	}
 
 	public StoreFrontAccountInfoPage clickOnEditShippingOnReviewAndConfirmPage(){

@@ -19,6 +19,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String orderSectionLoc ="//div[@class='csOrderDetailRow']//span[contains(text(),'%s')]";
 	private static String returnQuantityLoc = "//td[text()='%s']";
 	private static String orderEntryTaxLoc = "//span[contains(text(),'Tax commited to avatax, doc code :%s')]";
+	private static String shippingAndHandlingPopupLoc ="//span[text()='%s']/following::span[1]";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -80,6 +81,11 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By REFUND_TYPE_DD_ON_POPUP_LOC = By.xpath("//input[@value='Refund Type']//ancestor::span[1]");
 	private static final By SHIPPING_ADDRESS_AT_TOP_SECTION_LOC = By.xpath("//div[@class='csOrderDetailsAddress']//span[contains(text(),'Shipping Address')]");
 	private static final By PAYMENT_INFO_AT_TOP_SECTION_LOC = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//span[contains(text(),'Payment Info')]");
+	private static final By RETURN_SHIPPING_CHECKBOX = By.xpath("//label[contains(text(),'Return Shipping')]//preceding::input[1]");
+	private static final By RETURN_HANDLING_CHECKBOX = By.xpath("//label[contains(text(),'Return Handling')]//preceding::input[1]");
+	private static final By RMA_TEXT_ID = By.xpath("//a[contains(text(),'RMA')]");
+	private static final By ORDER_NUMBER_IN_POPUP = By.xpath("//a[contains(text(),'Order #')]");
+	private static final By RESTOCKING_FEE_CHECKBOX_IN_POPUP = By.xpath("//div[@class='editorWidgetEditor']//input[@type='checkbox']/ancestor::td/following-sibling::td[7]//input[@type='checkbox']");
 
 	protected RFWebsiteDriver driver;
 
@@ -452,4 +458,37 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath(String.format(orderEntryTaxLoc, orderNumber)));  
 	}
 
+	public void checkReturnShippingCheckboxInPopUp() {
+		driver.click(RETURN_SHIPPING_CHECKBOX);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void checkReturnHandlingCheckboxInPopUp() {
+		driver.click(RETURN_HANDLING_CHECKBOX);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isRMAIdTxtPresent(){
+		driver.waitForElementPresent(RMA_TEXT_ID);
+		return driver.isElementPresent(RMA_TEXT_ID);
+	}
+
+	public String getOrderNumbertxtFromRefundRequestPopup(){
+		driver.waitForElementPresent(ORDER_NUMBER_IN_POPUP);
+		return driver.findElement(ORDER_NUMBER_IN_POPUP).getText();
+	}
+
+	public void checkRestockingFeeCheckboxInPopUp() {
+		driver.click(RESTOCKING_FEE_CHECKBOX_IN_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getShippingAndHandlingVariousSectionTaxInPopup(String sectionName){
+		driver.waitForElementPresent(By.xpath(String.format(shippingAndHandlingPopupLoc, sectionName)));
+		String taxValue= driver.findElement(By.xpath(String.format(shippingAndHandlingPopupLoc, sectionName))).getText();
+		String[] newValue=taxValue.split("\\$");
+		String value=newValue[1];
+		logger.info("Fetched value of taxes in popup are "+value);
+		return value;
+	}
 }

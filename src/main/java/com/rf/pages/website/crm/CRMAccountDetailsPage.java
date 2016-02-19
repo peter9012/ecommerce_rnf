@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -624,5 +625,87 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}
 		driver.waitForCRMLoadingImageToDisappear();
 		return profileName;
+	}
+
+	public boolean verifyErrorMessageForPWSNotFound(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//td[@class='messageCell']//span/h4"));
+		return driver.isElementPresent(By.xpath("//td[@class='messageCell']//span/h4"));
+	}
+
+	public String getOldSitePrefixWithCompleteSiteBeforeEdit(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String oldSitePrefix = driver.findElement(By.xpath("//div[@class='item1']/../../td[2]//input")).getAttribute("value");
+		String siteSuffix = driver.findElement(By.xpath("//div[@class='item1']/div[1]")).getText();
+		String siteUrlBeforeEdit = oldSitePrefix+siteSuffix;
+		return "http://"+siteUrlBeforeEdit;
+	}
+
+	public String getOldSitePrefixBeforeEdit(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String oldSitePrefix = driver.findElement(By.xpath("//div[@class='item1']/../../td[2]//input")).getAttribute("value");
+		return "http://"+oldSitePrefix;
+	}
+
+	public String getNewSitePrefixWithCompleteSiteAfterEdit(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String sitePrefix = driver.findElement(By.xpath("//div[@class='item1']/../../td[2]//input")).getAttribute("value");
+		String siteSuffix = driver.findElement(By.xpath("//div[@class='item1']/div[1]")).getText();
+		String siteUrlAfterEdit = sitePrefix+"-"+siteSuffix;
+		return "http://"+siteUrlAfterEdit;
+	}
+
+	public String getNewSitePrefixAfterEdit(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String sitePrefix = driver.findElement(By.xpath("//div[@class='item1']/../../td[2]//input")).getAttribute("value");
+		return "http://"+sitePrefix;
+	}
+
+	public void enterRandomSitePrefixName(String randomSitePrefixName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.type(By.xpath("//input[@type='text']"), randomSitePrefixName);
+	}
+
+	public void clickCheckAvailabilityButton(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//a[Text()='Check Availability']"));
+		driver.pauseExecutionFor(3000);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//a[text()='Check Availability']")));
+		driver.switchTo().defaultContent();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void clickPWSSaveButton(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//a[text()='Save']"));
+		driver.click(By.xpath("//a[text()='Save']"));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
+	}
+
+	public String getCheckAvailabilityMessage(){
+		String checkAvailabilityMessage=null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		checkAvailabilityMessage = driver.findElement(By.xpath("//div[@class='page pws']/table[2]//span")).getText();
+		return checkAvailabilityMessage;
 	}
 }

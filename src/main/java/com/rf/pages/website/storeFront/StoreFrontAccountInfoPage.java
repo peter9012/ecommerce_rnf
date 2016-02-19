@@ -2,6 +2,7 @@ package com.rf.pages.website.storeFront;
 
 import java.util.List;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
@@ -109,16 +111,62 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH)));
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_GENDER_LOC,TestConstants.CONSULTANT_GENDER)));
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
-		try{
-			driver.waitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
-			driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
-		}
-		catch(NoSuchElementException e){
-
-		}
+		driver.waitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	public void updateFirstName(String firstName){
+		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
+	}
+
+	public void updateLastName(String lastName){
+		driver.waitForElementPresent(ACCOUNT_INFO_LAST_NAME_LOC);
+		driver.type(ACCOUNT_INFO_LAST_NAME_LOC, lastName);
+	}
+
+	public void updateAddressWithCityAndPostalCode(String addressLine1,String city,String postalCode){
+		driver.type(ACCOUNT_INFO_ADDRESS_LINE_1_LOC, addressLine1);		
+		driver.type(ACCOUNT_INFO_CITY_LOC, city);
+		driver.type(ACCOUNT_INFO_POSTAL_CODE_LOC, postalCode);
+	}
+
+	public String updateRandomStateAndReturnName(){
+		Select stateDD = new Select(driver.findElement(By.xpath("//select[@id='state']")));
+		List<WebElement> allStates = driver.findElements(By.xpath("//select[@id='state']/option"));
+		String selectedState = null;
+		int randomState =0;
+		do{
+			randomState = RandomUtils.nextInt(1, allStates.size()-1);
+			logger.info("random number for state is "+randomState);
+			selectedState =  driver.findElement(By.xpath("//select[@id='state']/option["+randomState+"]")).getText();			
+		}while(selectedState.contains("Quebec"));
+
+		driver.click(By.xpath("//select[@id='state']/option["+randomState+"]"));
+		return driver.findElement(By.xpath("//select[@id='state']/option["+randomState+"]")).getText();
+	}
+
+	public void updateMainPhnNumber(String phnNumber){
+		driver.waitForElementPresent(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
+		driver.type(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC, phnNumber);
+	}
+
+	public void updateDateOfBirthAndGender(){
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_DAY_OF_BIRTH_LOC, TestConstants.CONSULTANT_DAY_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_YEAR_OF_BIRTH_LOC, TestConstants.CONSULTANT_YEAR_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_MONTH_OF_BIRTH_LOC,TestConstants.CONSULTANT_MONTH_OF_BIRTH)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_GENDER_LOC,TestConstants.CONSULTANT_GENDER)));
+	}
+
+	public void clickSaveAccountBtn(){
+		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
+		driver.waitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyFirstNameFromUIForAccountInfo(String firstName){
@@ -159,7 +207,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean verifyProvinceFromUIForAccountInfo(String province){
 		driver.waitForElementPresent(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC);
-		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getAttribute("value");
+		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getText();
+		logger.info("State assertion... updated state is "+province+" on UI it is "+provinceFromUI);
 		if(provinceFromUI.equalsIgnoreCase(province)){
 			return true;
 		}

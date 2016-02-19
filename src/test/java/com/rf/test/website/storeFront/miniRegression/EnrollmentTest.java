@@ -414,7 +414,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135 :: Version : 1 :: Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test(enabled=false) //mini-regression test
+	@Test(enabled=false)//WIP
 	public void testEnrollPulsefromMyAccount_135() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();  
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2749,36 +2749,33 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
-	@Test(enabled=false)
+	@Test
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
+		int randomNumPhone = CommonUtils.getRandomNum(10000, 99999);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
-		List<Map<String, Object>> accountNameDetailsList = null;
-		List<Map<String, Object>> accountAddressDetailsList = null;
+
 		List<Map<String, Object>> randomConsultantList =  null;
-		String firstNameDB = null;
-		String lastNameDB = null;
-		String genderDB = null;
-		String cityDB = null;
-		String provinceDB = null;
-		String postalCodeDB = null;
-		String dobDB = null;
 		String country = null;
 		String consultantEmailID = null;
 		String accountID = null;
 		String city = null;
 		String postalCode = null;
 		String phoneNumber = null;
+		String addressLine1 = null;
 		country = driver.getCountry();
 		if(country.equalsIgnoreCase("CA")){
 			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
 			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
-			phoneNumber = TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA;
+			phoneNumber = "99999"+randomNumPhone;
+			addressLine1 =  TestConstants.ADDRESS_LINE_1_CA;
 		}else{
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			phoneNumber = "99999"+randomNumPhone;
+			addressLine1 =  TestConstants.ADDRESS_LINE_1_US;
 		}
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -2799,59 +2796,32 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
 		String firstName = TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION+randomNum;
-		String lastName = TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION;
-		String addressProfileName = firstName+" "+lastName;
-		storeFrontAccountInfoPage.updateAccountInformation(firstName, lastName, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION,city,postalCode,phoneNumber);
+		String lastName = TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION+randomNum;
+		storeFrontAccountInfoPage.updateFirstName(firstName);
+		storeFrontAccountInfoPage.updateLastName(lastName);
+		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+		String state = storeFrontAccountInfoPage.updateRandomStateAndReturnName();
+		logger.info("State/province selected is "+state);
+		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
+		storeFrontAccountInfoPage.updateDateOfBirthAndGender();
+		storeFrontAccountInfoPage.clickSaveAccountBtn();
 		//assert First Name with RFO
-		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, addressProfileName), RFO_DB);
-		firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
-		logger.info("First Name from DB is "+firstNameDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB), "First Name on UI is different from DB");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstName), "First Name on UI is not updated");
 
 		// assert Last Name with RFO
-		lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
-		logger.info("Last Name from DB is "+lastNameDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB), "Last Name on UI is different from DB");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastName), "Last Name on UI is not updated");
 
 		// assert City with RFO
-		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_RFO, addressProfileName), RFO_DB);
-		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Locale");
-		logger.info("city from DB is "+cityDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB), "City on UI is different from DB");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(city), "City on UI is not updated");
 
 		// assert State with RFO
-		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
-		logger.info("State from DB is "+provinceDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB), "Province on UI is different from DB");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(state), "State/Province on UI is not updated");
 
 		//assert Postal Code with RFO
-		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
-		logger.info("postal code from DB is "+postalCodeDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB), "Postal Code on UI is different from DB");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCode), "Postal Code on UI is not updated");
 
 		// assert Main Phone Number with RFO
-		//  mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		//  mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-		//  assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
-
-		genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
-		logger.info("gender from DB is "+genderDB);
-		if(genderDB.equals("2")){
-			genderDB = "male";
-		}
-		if(genderDB.equals("1")){
-			genderDB = "female";
-		}
-		if(genderDB.equals("3"))
-			genderDB = "others";
-
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB), "Gender on UI is different from DB");
-
-		// assert BirthDay with RFO
-		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
-		logger.info("Date of birth from DB is "+dobDB);
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB), "DOB on UI is different from DB");  
-
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(phoneNumber), "Phone Number on UI is not updated");
 		s_assert.assertAll();
 	}
 

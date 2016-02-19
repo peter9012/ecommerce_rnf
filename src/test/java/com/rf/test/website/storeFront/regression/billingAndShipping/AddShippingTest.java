@@ -411,7 +411,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
-	@Test(enabled=false) //ISSUE No Add New Shiiping Address link
+	@Test
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -433,24 +433,13 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		}
 		String firstName = TestConstants.FIRST_NAME+randomNum;
+		//String shippingAddressName = firstName+" "+TestConstants.LAST_NAME;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();	
-
-		// click on add a newshipping address on billing profile page
-		storeFrontHomePage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-		String lastName = "lN";
-		storeFrontHomePage.enterNewShippingAddressNameDuringEnrollment(newShippingAddressName+" "+lastName);
-		storeFrontHomePage.enterNewShippingAddressLine1DuringEnrollment(addressLine1);
-		storeFrontHomePage.enterNewShippingAddressCityDuringEnrollment(city);
-		storeFrontHomePage.selectNewShippingAddressStateDuringEnrollment();
-		storeFrontHomePage.enterNewShippingAddressPostalCode(postalCode);
-		storeFrontHomePage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -460,10 +449,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 
-		s_assert.assertTrue(storeFrontHomePage.verifyShippingAddressIsPresentOnReviewPage(newShippingAddressName), "Terms and Conditions checkbox is not visible");storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
-		//storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
@@ -478,14 +466,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		// Get Order Number
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(newShippingAddressName.toLowerCase()), "Adhoc Order template shipping address on RFO is"+newShippingAddressName+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(firstName.toLowerCase()), "Adhoc Order template shipping address on RFO is"+firstName+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
 
 		// verify on shipping info page
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
-		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
-		s_assert.assertTrue(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is not selected by default");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(firstName), "New Shipping address is not listed on Shipping profile page");
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(firstName), "Newly created shipping address is not selected by default");
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonIsSelectedByDefault(firstName), "Shipping address was given in main account info is selected by default");
 		s_assert.assertAll();
 	}

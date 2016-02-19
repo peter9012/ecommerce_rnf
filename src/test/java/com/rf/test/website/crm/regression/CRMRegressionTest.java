@@ -15,6 +15,7 @@ import com.rf.pages.website.crm.CRMAccountDetailsPage;
 import com.rf.pages.website.crm.CRMContactDetailsPage;
 import com.rf.pages.website.crm.CRMHomePage;
 import com.rf.pages.website.crm.CRMLoginPage;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class CRMRegressionTest extends RFWebsiteBaseTest{
@@ -26,6 +27,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	private CRMHomePage crmHomePage;
 	private CRMAccountDetailsPage crmAccountDetailsPage; 
 	private CRMContactDetailsPage crmContactDetailsPage;
+	private StoreFrontHomePage storeFrontHomePage;
 	private String RFO_DB = null;
 
 	//Hybris Project-4527:Search for account by email address
@@ -1504,7 +1506,56 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Product Tax"),"In Pending Autoship Breakdown Product Tax is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Total Tax"),"In Pending Autoship Breakdown Total Tax is not Present");  
 		s_assert.assertAll();
+	}
 
+	// Hybris Project-4505:View and Edit PWS Domain for a Consultant
+	@Test(enabled=false)//WIP 
+	public void testViewAndEditPWSDomainForConsultant_4505() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantSitePrefix =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		String consultantConsumedSitePrefix = null;
+		String specialCharacter = "%%$#";
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomString = CommonUtils.getRandomWord(4);
+		String randomSitePrefixName = randomString+randomNum;
+		String randomSitePrefixNameWithSpecialCharacter = randomString+randomNum+specialCharacter;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		randomConsultantSitePrefix = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
+		consultantConsumedSitePrefix = (String) getValueFromQueryResult(randomConsultantSitePrefix, "SitePrefix");
+		logger.info("The email address is "+consultantEmailID);
+		logger.info("Already used consultant site prefix is "+consultantConsumedSitePrefix);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickConsultantCustomerNameInSearchResult();
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
+		String siteUrlBeforeEdit = crmAccountDetailsPage.getOldSitePrefixWithCompleteSiteBeforeEdit();
+		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixName);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),randomSitePrefixName+" is available.");
+		crmAccountDetailsPage.clickPWSSaveButton();
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
+		String siteUrlAfterEdit = crmAccountDetailsPage.getNewSitePrefixWithCompleteSiteAfterEdit();
+		String[] afterEditPWSUrl = siteUrlAfterEdit.split("-");
+		String afterEditPWSPrefix = afterEditPWSUrl[0];
+		String afterEditPWSSuffix = afterEditPWSUrl[1];
+		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixNameWithSpecialCharacter);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Invalid characters entered. PWS Prefix can only contain letters and numbers. Please try again.");
+		crmAccountDetailsPage.enterRandomSitePrefixName(consultantConsumedSitePrefix);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Sorry "+consultantConsumedSitePrefix+" is not available, please try another one.");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openConsultantPWS(afterEditPWSPrefix+afterEditPWSSuffix);
+		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
+		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corp"), "Old PWS Site Url is active");
+		s_assert.assertAll();
 	}
 
 }

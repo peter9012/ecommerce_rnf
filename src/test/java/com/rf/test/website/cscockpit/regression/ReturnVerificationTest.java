@@ -281,7 +281,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
 		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyPlaceAnOrderOrderBtnIsPresentInOrderTab(),"Place An order btn is not present");
-		
+
 		s_assert.assertAll();
 	}
 
@@ -452,6 +452,518 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
 		logout();
+		s_assert.assertAll();		
+	}
+
+	//Hybris Project-2024:To verify Return shipping functionality
+	@Test(enabled=false)//WIP
+	public void testVerifyReturnShippingFunctionality_2024() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String orderNumber = null;
+		String returnQuantity = "1";
+		String orderHistoryNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String accountID = null;
+		String refundSubtotal="Refunded SubTotals";
+		String refundDiscount="Refunded Discount";
+		String refundTax="Refunded Tax";
+		String refundShipping="Refunded Shipping";
+		String refundHandling="Refunded Handling";
+		String restockingFee="Restocking Fee";
+		String restockingFeeTax="Restocking Fee Tax";
+		RFO_DB = driver.getDBNameRFO();
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
+		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		orderNumber = cscockpitOrderTabPage.getOrderNumberInOrderTab();
+		logger.info("RETURN ORDER NUMBER IS "+orderNumber);		
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		cscockpitOrderTabPage.checkReturnShippingCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		//Verify Shipping and tax on shipping details.
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for US "+1.28+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for US "+15.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax).contains("0.00"),"Restocking fee tax expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax));
+
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.isRMAIdTxtPresent(), "RMA id text is not present in refund request popup.");
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderNumbertxtFromRefundRequestPopup().contains(orderNumber.split("\\-")[0].trim()), "Order Number = "+orderNumber+" is not present in refund request popup");
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+
+		//-------------------FOR CA----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		randomConsultantList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");   
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
+		//s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = UPS Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
+		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		orderNumber = cscockpitOrderTabPage.getOrderNumberInOrderTab();
+		logger.info("RETURN ORDER NUMBER IS "+orderNumber);		
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		cscockpitOrderTabPage.checkReturnShippingCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		//Verify Shipping and tax on shipping details.
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund Total expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund Tax expected on UI for ca "+1.28+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund Shipping expected on UI for ca "+15.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax).contains("0.00"),"Restocking fee tax expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax));
+
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.isRMAIdTxtPresent(), "RMA id text is not present in refund request popup.");
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderNumbertxtFromRefundRequestPopup().contains(orderNumber.split("\\-")[0].trim()), "Order Number = "+orderNumber+" is not present in refund request popup");
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		s_assert.assertAll();		
+	}
+
+	//Hybris Project-2025:To verify Return Handling functionality
+	@Test(enabled=false)//WIP
+	public void testVerifyReturnHandlingFunctionality_2025() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String orderNumber = null;
+		String returnQuantity = "1";
+		String orderHistoryNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String accountID = null;
+		String refundSubtotal="Refunded SubTotals";
+		String refundDiscount="Refunded Discount";
+		String refundTax="Refunded Tax";
+		String refundShipping="Refunded Shipping";
+		String refundHandling="Refunded Handling";
+		String restockingFee="Restocking Fee";
+		String restockingFeeTax="Restocking Fee Tax";
+		RFO_DB = driver.getDBNameRFO();
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");   
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
+		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		orderNumber = cscockpitOrderTabPage.getOrderNumberInOrderTab();
+		logger.info("RETURN ORDER NUMBER IS "+orderNumber);		
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		cscockpitOrderTabPage.checkReturnHandlingCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		//Verify Handling and tax on Handling details.
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for us "+0.24+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund handling expected on UI for us "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax).contains("0.00"),"Restocking fee tax expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax));
+
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.isRMAIdTxtPresent(), "RMA id text is not present in refund request popup.");
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderNumbertxtFromRefundRequestPopup().contains(orderNumber.split("\\-")[0].trim()), "Order Number = "+orderNumber+" is not present in refund request popup");
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+
+		//-------------------FOR CA----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		randomConsultantList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");   
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = UPS Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
+		cscockpitCheckoutTabPage.clickOkButtonOfSelectPaymentDetailsPopupInCheckoutTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		orderNumber = cscockpitOrderTabPage.getOrderNumberInOrderTab();
+		logger.info("RETURN ORDER NUMBER IS "+orderNumber);		
+		s_assert.assertTrue(cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber)>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		cscockpitOrderTabPage.checkReturnHandlingCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		//Verify Handling and tax on Handling details.
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for ca "+0.24+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
+		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund handling expected on UI for ca "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
+		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax).contains("0.00"),"Restocking fee tax expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFeeTax));
+
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
+		driver.get(driver.getCSCockpitURL());		
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		s_assert.assertTrue(cscockpitOrderTabPage.isRMAIdTxtPresent(), "RMA id text is not present in refund request popup.");
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderNumbertxtFromRefundRequestPopup().contains(orderNumber.split("\\-")[0].trim()), "Order Number = "+orderNumber+" is not present in refund request popup");
+		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp();
+		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(returnQuantity);
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
+		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
 		s_assert.assertAll();		
 	}
 

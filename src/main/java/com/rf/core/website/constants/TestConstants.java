@@ -384,7 +384,7 @@ public class TestConstants {
 	public static final String HANDLING_CHARGES_FOR_UPS2DAY_US = "2.50";
 	public static final String SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99 = "24.00";
 	public static final String AMERICAN_EXPRESS_CARD_NUMBER = "378282246310005";
-	public static final String DISCOVER_CARD_NUMBER = "6011000990139424";
+	public static final String DISCOVER_CARD_NUMBER = "6011111111111117";
 	public static final String SECURITY_CODE_FOR_SPECIAL_CARDS = "1234";
 	public static final String MASTER_CARD_NUMBER = "5555555555554444";
 	public static final String NEW_EMAIL_ADDRESS_SUFFIX = "@xyp.com";

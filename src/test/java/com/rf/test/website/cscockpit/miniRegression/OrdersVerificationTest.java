@@ -2649,5 +2649,183 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-1700:To verify create a CRP Autoship
+	@Test
+	public void testVerifyCreateCRPAutoship_1700() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		String SKUValue = null;
+		String consultantEmailID=null;
+		//-------------------FOR US----------------------------------
+		List<Map<String, Object>> randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		//cancel CRP
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		//validate CRP has been cancelled..
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickCreateAutoshipTemplateBtn();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Consultant Price: Low to High");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab("1");
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		boolean isProductPresent = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTabForThreeProducts();
+		if(isProductPresent==true){
+			cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+			//assert SV value less than 100 popup
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupForUS(),"Threshold popup does not appear");
+			cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		}
+		//add to cart product SV value >100
+		cscockpitAutoshipCartTabPage.clearCatalogSearchFieldAndClickSearchBtn();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		//add new billing profile
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickCreateAutoshipTemplateBtn();
+		String dueDate = cscockpitAutoshipTemplateTabPage.getNextDueDateOfCRPAutoship();
+		String nextDueDate = cscockpitAutoshipTemplateTabPage.convertCRPDateToFormat(dueDate);
+		String currentPSTDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		String PSTDate = cscockpitAutoshipTemplateTabPage.convertPSTDateToNextDueDateFormat(currentPSTDate);
+		int day = Integer.parseInt(currentPSTDate.split("\\ ")[0]);
+		String oneMonthExtendedDate = null;
+		if(day<=17){
+			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDate(PSTDate);
+		}else{
+			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDateAfter17(PSTDate);
+		}
+		s_assert.assertTrue(oneMonthExtendedDate.trim().contains(nextDueDate), "Expected next due date of CRP is "+nextDueDate+"Actual on UI in Cscockpit "+oneMonthExtendedDate.trim());
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(crpDate.trim().contains(oneMonthExtendedDate.trim()), "Expected next due date of CRP is "+oneMonthExtendedDate+"Actual on UI in storeFront "+crpDate);
+		logout();
+
+		//-------------------FOR CA----------------------------------
+		randomConsultantList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		//cancel CRP
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		//validate CRP has been cancelled..
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		logout();
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickCreateAutoshipTemplateBtn();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: Low to High");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab("1");
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		isProductPresent = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTabForThreeProducts();
+		if(isProductPresent==true){
+			System.out.println("Found true");
+			cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+			//assert SV value less than 100 popup
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupForCA(),"Threshold popup does not appear");
+			cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		}
+		//add to cart product SV value >100
+		cscockpitAutoshipCartTabPage.clearCatalogSearchFieldAndClickSearchBtn();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		//add new billing profile
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickCreateAutoshipTemplateBtn();
+		dueDate = cscockpitAutoshipTemplateTabPage.getNextDueDateOfCRPAutoship();
+		currentPSTDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
+		PSTDate = cscockpitAutoshipTemplateTabPage.convertPSTDateToNextDueDateFormat(currentPSTDate);
+		nextDueDate = cscockpitAutoshipTemplateTabPage.convertCRPDateToFormat(dueDate);
+		day = Integer.parseInt(currentPSTDate.split("\\ ")[0]);
+		oneMonthExtendedDate = null;
+		if(day<=17){
+			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDate(PSTDate);
+		}else{
+			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDateAfter17(PSTDate);
+		}
+		s_assert.assertTrue(oneMonthExtendedDate.trim().contains(nextDueDate), "Expected next due date of CRP is "+nextDueDate+"Actual on UI in Cscockpit "+oneMonthExtendedDate.trim());
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(crpDate.trim().contains(oneMonthExtendedDate.trim()), "Expected next due date of CRP is "+oneMonthExtendedDate+"Actual on UI in storeFront "+crpDate);
+		logout();
+		s_assert.assertAll();
+	}
+
 
 }

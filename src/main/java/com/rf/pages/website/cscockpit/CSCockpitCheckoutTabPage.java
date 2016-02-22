@@ -29,7 +29,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CV2_TEXT_FIELD_LOC = By.xpath("//input[@class='z-textbox']");
 	private static final By USE_THIS_CARD_BUTTON_LOC = By.xpath("//td[contains(text(),'Use this card')]");
 	private static final By CREDIT_CARD_VALIDATION_FAILED_OK_LOC = By.xpath("//td[contains(text(),'OK')]");
-	private static final By ADD_NEW = By.xpath("//span[text()='Payment']/following::td[contains(text(),'Add New')]");
 	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
 	private static final By POSTAL_CODE_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
@@ -112,7 +111,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP = By.xpath("//div[contains(@class,'csAddCardPaymentWidgetFrame')]//td[@class='z-button-cm'][text()='SAVE']");
 	private static final By ADD_NEW_BILLING_PROFILE_BTN = By.xpath("//td[@class='z-button-cm'][text()='Add New']");
 	private static final By CLOSE_POPUP_ADD_NEW_PAYMENT_LOC = By.xpath("//div[@class='z-window-highlighted-header']/div");
-	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By NO_STORED_CREDIT_CARD_DETAILS = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By NO_SELECTED_DELIVERY_ADDRESS_DETAILS = By.xpath("//select[contains(@class,'csDeliveryAddressList')]//option[@selected='selected'][contains(text(),'Non')]");
@@ -181,13 +179,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(DO_NOT_SHIP_CHKBOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-
-	public void clickAddNewPaymentAddressInCheckoutTab(){
-		driver.waitForElementPresent(ADD_NEW);
-		driver.click(ADD_NEW);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
 
 	public void clickAddNewAddressLinkInPopUpInCheckoutTab(){
 		driver.pauseExecutionFor(3000);
@@ -634,12 +625,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		logger.info("Pop Up closed");
 	}
 
-	public void clickSaveAddNewPaymentProfilePopUP() {
-		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
-		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
 	public void enterSecurityCodeInPaymentPopUpInCheckOutTab(String securityCode){
 		driver.waitForElementPresent(POPUP_SECURITY_CODE_TEXT_BOX);
 		driver.type(POPUP_SECURITY_CODE_TEXT_BOX, securityCode);
@@ -698,20 +683,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.click(DELIVERY_ADDRESS_POPUP_SAVE_BUTTON);
 			driver.waitForCSCockpitLoadingImageToDisappear();
 		}
-	}
-
-	public void enterBillingInfo(){
-		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
-		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
-		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
-		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
 
 }

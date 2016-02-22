@@ -67,6 +67,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By CONFIRM_MSG_OF_RUN_NOW = By.xpath("//div[text()='Confirm']/following::div[@class='z-messagebox']//span");
 	private static final By RUN_NOW_AGAIN = By.xpath("//div[contains(text(),'Run Now?')]");
 	private static final By RUN_NOW_AGAIN_YES_BTN = By.xpath("//div[contains(text(),'Run Now?')]/following::td[text()='Yes']");
+	private static final By THRESHOLD_POPUP_FOR_US = By.xpath("//span[text()='Your total SV value should be equal to or greater than 80']");
+	private static final By THRESHOLD_POPUP_FOR_CA = By.xpath("//span[text()='Your total SV value should be equal to or greater than 100']");
+	private static final By NEXT_DUE_DATE_OF_CRP_AUTOSHIP = By.xpath("//span[contains(text(),'Next Due Date')]/following::span[1]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -482,5 +485,271 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		String msg = message.split("number")[1];
 		logger.info("Created order number is "+msg.split("\\.")[0]);
 		return msg.split("\\.")[0].trim();
+	}
+
+	public void clickAddNewPaymentAddressInCheckoutTab(){
+		driver.waitForElementPresent(ADD_NEW);
+		driver.click(ADD_NEW);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+	private static final By ADD_NEW = By.xpath("//span[text()='Payment']/following::td[contains(text(),'Add New')]");
+
+	public boolean verifyThresholdPopupForUS(){
+		try{
+			return driver.isElementPresent(THRESHOLD_POPUP_FOR_US);
+		}catch(Exception e){
+			logger.info("There is no product having SV value less than 100/80");
+			return true;
+		}
+	}
+
+	public boolean verifyThresholdPopupForCA(){
+		try{
+			return driver.isElementPresent(THRESHOLD_POPUP_FOR_CA);
+		}catch(Exception e){
+			logger.info("There is no product having SV value less than 100/80");
+			return true;
+		}
+	}
+
+	public String getNextDueDateOfCRPAutoship(){
+		driver.waitForElementPresent(NEXT_DUE_DATE_OF_CRP_AUTOSHIP);
+		return driver.findElement(NEXT_DUE_DATE_OF_CRP_AUTOSHIP).getText().trim();
+	}
+
+	public String convertCRPDateToFormat(String UIDate){
+		String UIMonth=null;
+		String[] splittedDate = UIDate.split("\\/");
+		String date = splittedDate[1];
+		String month = splittedDate[0];
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		logger.info("Next due date in format "+UIMonth+" "+date+", "+"2016");
+		return UIMonth+" "+date+", "+"2016";
+	}
+
+	public String getOneMonthOutDate(String date){
+		String completeDate[] = date.split(" ");
+		String year =completeDate[2];
+		String month=completeDate[1].split("\\,")[0];
+		String day = completeDate[0];
+		int monthCount = 0;
+		int yearCount = 0;
+		String UIMonth = null;
+		if(month.equalsIgnoreCase("January")){
+			monthCount=1;
+		}else if(month.equalsIgnoreCase("February")){
+			monthCount=2;
+		}else if(month.equalsIgnoreCase("March")){
+			monthCount=3;
+		}
+		else if(month.equalsIgnoreCase("April")){
+			monthCount=4;
+		}
+		else if(month.equalsIgnoreCase("May")){
+			monthCount=5;
+		}
+		else if(month.equalsIgnoreCase("June")){
+			monthCount=6;
+		}
+		else if(month.equalsIgnoreCase("July")){
+			monthCount=7;
+		}
+		else if(month.equalsIgnoreCase("August")){
+			monthCount=8;
+		}
+		else if(month.equalsIgnoreCase("September")){
+			monthCount=9;
+		}
+		else if(month.equalsIgnoreCase("October")){
+			monthCount=10;
+		}
+		else if(month.equalsIgnoreCase("November")){
+			monthCount=11;
+		}else if(month.equalsIgnoreCase("December")){
+			monthCount=12;
+		}else{
+			monthCount=0;
+		}
+		monthCount=monthCount+1;
+		if(monthCount==13){
+			monthCount=1;
+			yearCount=1;
+		}
+		switch (monthCount) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		if(yearCount==1){
+			int yearly=Integer.parseInt(year)+1;
+			year=Integer.toString(yearly);
+		}
+		String dateAfterOneMonth=UIMonth+" "+day+","+" "+year;
+		logger.info("Date will be "+dateAfterOneMonth);
+		return dateAfterOneMonth;
+	}
+
+	public String getOneMonthOutDateAfter17(String date){
+		String completeDate[] = date.split(" ");
+		String year =completeDate[2];
+		String month=completeDate[1].split("\\,")[0];
+		int monthCount = 0;
+		int yearCount = 0;
+		String UIMonth = null;
+		if(month.equalsIgnoreCase("January")){
+			monthCount=1;
+		}else if(month.equalsIgnoreCase("February")){
+			monthCount=2;
+		}else if(month.equalsIgnoreCase("March")){
+			monthCount=3;
+		}
+		else if(month.equalsIgnoreCase("April")){
+			monthCount=4;
+		}
+		else if(month.equalsIgnoreCase("May")){
+			monthCount=5;
+		}
+		else if(month.equalsIgnoreCase("June")){
+			monthCount=6;
+		}
+		else if(month.equalsIgnoreCase("July")){
+			monthCount=7;
+		}
+		else if(month.equalsIgnoreCase("August")){
+			monthCount=8;
+		}
+		else if(month.equalsIgnoreCase("September")){
+			monthCount=9;
+		}
+		else if(month.equalsIgnoreCase("October")){
+			monthCount=10;
+		}
+		else if(month.equalsIgnoreCase("November")){
+			monthCount=11;
+		}else if(month.equalsIgnoreCase("December")){
+			monthCount=12;
+		}else{
+			monthCount=0;
+		}
+		monthCount=monthCount+1;
+		if(monthCount==13){
+			monthCount=1;
+			yearCount=1;
+		}
+		switch (monthCount) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		if(yearCount==1){
+			int yearly=Integer.parseInt(year)+1;
+			year=Integer.toString(yearly);
+		}
+		String dateAfterOneMonth=UIMonth+" "+"17"+","+" "+year;
+		logger.info("Date will be After 17 "+dateAfterOneMonth);
+		return dateAfterOneMonth;
 	}
 }

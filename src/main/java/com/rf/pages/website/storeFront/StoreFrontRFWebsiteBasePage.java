@@ -1746,4 +1746,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
 		return productName.trim();
 	}
+
+	public void clickAddNewBillingProfileLink() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+		logger.info("Add New Billing Profile link clicked");
+	}
+
+	public boolean verifyAddNewBillingProfileLinkIsPresent(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+		driver.pauseExecutionFor(2000);
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+	}
+
 }

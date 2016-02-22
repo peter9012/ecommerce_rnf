@@ -87,6 +87,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ORDER_NUMBER_IN_POPUP = By.xpath("//a[contains(text(),'Order #')]");
 	private static final By RESTOCKING_FEE_CHECKBOX_IN_POPUP = By.xpath("//div[@class='editorWidgetEditor']//input[@type='checkbox']/ancestor::td/following-sibling::td[7]//input[@type='checkbox']");
 	private static final By RMA_NUMBER_ON_POPUP  = By.xpath("//span[contains(text(),'RMA number')]");
+	private static final By CONSULTANT_RECEIVING_COMMISSION_NAME  = By.xpath("//span[contains(text(),'Consultant Receiving Commissions')]/following::span[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -498,5 +499,11 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		String RMANumber = driver.findElement(RMA_NUMBER_ON_POPUP).getText();
 		logger.info("RMA number is "+RMANumber);
 		return RMANumber;
+	}
+
+	public String getConsultantReceivingCommissionsName(){
+		driver.waitForElementPresent(CONSULTANT_RECEIVING_COMMISSION_NAME);
+		logger.info("Consultant receiving commission name is "+driver.findElement(CONSULTANT_RECEIVING_COMMISSION_NAME).getText());
+		return driver.findElement(CONSULTANT_RECEIVING_COMMISSION_NAME).getText();
 	}
 }

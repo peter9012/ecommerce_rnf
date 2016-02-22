@@ -56,13 +56,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return new StoreFrontConsultantPage(driver);
 	}
 
-	public void clickAddNewBillingProfileLink() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
-		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
-		logger.info("Add New Billing Profile link clicked");
-	}
-
 	public void enterNewBillingCardNumber(String cardNumber){
 		//		driver.waitForPageLoad();
 		driver.quickWaitForElementPresent(By.id("card-nr"));		

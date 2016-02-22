@@ -483,7 +483,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		if(driver.findElement(By.xpath("//input[@id='card-nr']/following::label[1][contains(text(),'Please enter a valid')]")).isDisplayed()){
+		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error'][contains(text(),'Your credit card could not be processed')]"));
+		if(driver.findElement(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error'][contains(text(),'Your credit card could not be processed')]")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -3786,6 +3787,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public String getConsultantStoreFrontInfo(String label){
 		driver.waitForElementPresent(By.id(label));
 		return driver.findElement(By.id(label)).getAttribute("value");
+	}
+
+	public String convertUSBizPWSToCA(String PWS){
+		return PWS.replaceAll("us","ca");
 	}
 
 }

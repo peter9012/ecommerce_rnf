@@ -455,6 +455,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(CANCEL_MY_CRP_LOC);
 		driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
 		driver.click(CANCEL_MY_CRP_NOW_LOC);
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

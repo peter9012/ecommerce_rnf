@@ -68,6 +68,9 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public static final By CUSTOMER_SEARCH_TEXT_BOX = By.xpath("//span[text()='Customer Name or CID']/following::input[1]");
 	private static final By ADD_BTN = By.xpath("//td[text()='ADD']");
 	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
+	private static final By CREATE_AUTOSHIP_TEMPLATE_BTN = By.xpath("//td[contains(text(),'Create Autoship Template')]");
+	private static final By ADD_NEW = By.xpath("//span[text()='Payment']/following::td[contains(text(),'Add New')]");
+	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -447,5 +450,110 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 
+	public String convertPSTDateToNextDueDateFormat(String date){
+		String completeDate[] = date.split(" ");
+		String year =completeDate[2];
+		String month=completeDate[1].split("\\,")[0];
+		String day = completeDate[0];
+		String UIMonth = null;
+		if(month.equalsIgnoreCase("Jan")){
+			UIMonth="January";
+		}else if(month.equalsIgnoreCase("Feb")){
+			UIMonth="February";
+		}else if(month.equalsIgnoreCase("Mar")){
+			UIMonth="March";
+		}
+		else if(month.equalsIgnoreCase("Apr")){
+			UIMonth="April";
+		}
+		else if(month.equalsIgnoreCase("May")){
+			UIMonth="May";
+		}
+		else if(month.equalsIgnoreCase("Jun")){
+			UIMonth="June";
+		}
+		else if(month.equalsIgnoreCase("Jul")){
+			UIMonth="July";
+		}
+		else if(month.equalsIgnoreCase("Aug")){
+			UIMonth="August";
+		}
+		else if(month.equalsIgnoreCase("Sep")){
+			UIMonth="September";
+		}
+		else if(month.equalsIgnoreCase("Oct")){
+			UIMonth="October";
+		}
+		else if(month.equalsIgnoreCase("Nov")){
+			UIMonth="November";
+		}else if(month.equalsIgnoreCase("December")){
+			UIMonth="December";
+		}
+		return day+" "+UIMonth+","+" "+year;
+	}
+
+	public void clickCreateAutoshipTemplateBtn(){
+		driver.waitForElementPresent(CREATE_AUTOSHIP_TEMPLATE_BTN);
+		driver.click(CREATE_AUTOSHIP_TEMPLATE_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	} 
+
+	public void clickAddNewPaymentAddressInCheckoutTab(){
+		driver.waitForElementPresent(ADD_NEW);
+		driver.click(ADD_NEW);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterBillingInfo(){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+
+	public void clickSaveAddNewPaymentProfilePopUP() {
+		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
+		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean clickAddToCartBtnInCartTabForThreeProducts(){
+		Boolean isProductFound = true; 
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			clearCatalogSearchFieldAndClickSearchBtn();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			for(int i=2; i<=4; i++){
+				String SKU = getCustomerSKUValueInCartTab(""+i);
+				searchSKUValueInCartTab(SKU);
+				driver.click(ADD_TO_CART_BTN);
+				logger.info("Add to cart button clicked for "+i+" another product");
+				if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+					driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+					clearCatalogSearchFieldAndClickSearchBtn();
+					driver.waitForCSCockpitLoadingImageToDisappear();
+					isProductFound = false;
+					continue;
+				}else{
+					isProductFound = true;
+					break;
+				}
+			}
+
+		}
+		return isProductFound;
+	}
 
 }

@@ -3290,12 +3290,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(), "Continue without Sponser link is present on pws enrollment");
 		s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(),"Not your Sponser link is not present.");
 
-//		//Click not your sponser link and verify continue without sponser link is present.
-//		storeFrontHomePage.clickOnNotYourSponsorLink();
-//		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"Sponser search field is not present");
-//		String url=driver.getCurrentUrl();
-//		//Search for sponser and ids.
-//		storeFrontHomePage.enterSponserNameAndClickSearchAndContinue(accountNumber);
+		//		//Click not your sponser link and verify continue without sponser link is present.
+		//		storeFrontHomePage.clickOnNotYourSponsorLink();
+		//		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"Sponser search field is not present");
+		//		String url=driver.getCurrentUrl();
+		//		//Search for sponser and ids.
+		//		storeFrontHomePage.enterSponserNameAndClickSearchAndContinue(accountNumber);
 
 		//check pc perks checkbox at checkout page in order summary Section.
 		storeFrontHomePage.checkPCPerksCheckBox();
@@ -3307,9 +3307,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		String currentURL=driver.getCurrentUrl();
-//		logger.info("Url After successful enroll is "+currentURL);
-//		s_assert.assertTrue(storeFrontHomePage.validateCorpCurrentUrlPresent(),"current url is not a corp url");
+		//		String currentURL=driver.getCurrentUrl();
+		//		logger.info("Url After successful enroll is "+currentURL);
+		//		s_assert.assertTrue(storeFrontHomePage.validateCorpCurrentUrlPresent(),"current url is not a corp url");
 		s_assert.assertAll();
 	}
 
@@ -6090,6 +6090,50 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getCreditCardNumber().contains(TestConstants.MASTER_CARD_NUMBER.substring(12)),"Adhoc Order template credit card number "+TestConstants.MASTER_CARD_NUMBER.substring(11)+" and on UI is "+storeFrontOrdersPage.getCreditCardNumber());
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1886:Shouldn't allow Discover Card on the storefront
+	@Test
+	public void testShouldNotAllowDiscoverCardOnTHeStoreFront_1886() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomRCList = 
+					DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontRCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnContinueWithoutSponsorLink();
+		storeFrontUpdateCartPage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.DISCOVER_CARD_NUMBER);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
 		s_assert.assertAll();
 	}
 }

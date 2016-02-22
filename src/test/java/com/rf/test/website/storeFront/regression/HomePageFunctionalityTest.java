@@ -1518,5 +1518,154 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+	// Hybris Project-1919:To verify the follow me functionality in edit meet the consultant page for com PWS site
+	@Test
+	public void testFollowMeFunctionalityInEditMeetTheConsultantPageForCOMPWSIte_1919() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();  
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantWithPWSEmailID = null; //TestConstants.CONSULTANT_USERNAME;
+		String consultantPWSURL = null; //TestConstants.CONSULTANT_COM_URL;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+
+		// For .com site
+		consultantPWSURL = storeFrontHomePage.convertBizSiteToComSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Go to follow me section and add facebook,twitter,pinterest & instagram url
+		storeFrontHomePage.addSocialNetworkingURLUnderFollowMeSection();
+		storeFrontHomePage.clickSaveBtnOnEditConsultantInfoPage();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Go to follow me section and clear facebook,twitter,pinterest & instagram url
+		storeFrontHomePage.clearSocialNetworkingURLUnderFollowMeSection();
+		storeFrontHomePage.clickSaveBtnOnEditConsultantInfoPage();
+		// For .biz site
+		consultantPWSURL = storeFrontHomePage.convertComSiteToBizSite(consultantPWSURL);
+		storeFrontHomePage.openPWS(consultantPWSURL);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+		storeFrontHomePage.clickOnUserName();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Go to follow me section and add facebook,twitter,pinterest & instagram url
+		storeFrontHomePage.addSocialNetworkingURLUnderFollowMeSection();
+		storeFrontHomePage.clickSaveBtnOnEditConsultantInfoPage();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		//Go to follow me section and clear facebook,twitter,pinterest & instagram url
+		storeFrontHomePage.clearSocialNetworkingURLUnderFollowMeSection();
+		storeFrontHomePage.clickSaveBtnOnEditConsultantInfoPage();
+		s_assert.assertAll();
+	}	
+
+	//Hybris Project-4027:Access Solution tool from .COM Site
+	@Test
+	public void testAccessSolutionToolFromComSite_4027() {
+		RFO_DB = driver.getDBNameRFO();  
+		country = driver.getCountry();
+		env = driver.getEnvironment();  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String PWS = storeFrontHomePage.getBizPWS(country, env);
+		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+		storeFrontHomePage.openPWS(PWS);
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountId = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//click learn more link
+		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
+		//validate consultant info on top right corner..
+		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner On Solution tool page");
+		s_assert.assertAll();
+	}
+
+
+	// Hybris Project-4063:Access Canadian PWS site of USConsultant as US RCUser
+	@Test
+	public void testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+		//Navigate to canadian PWS
+		String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+		driver.get(bizPWSCA);
+		//Access Canadian PWS site of US Consultant as US RC user
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		//verify US RC user should login and redirect to US site of same PWS.
+		s_assert.assertTrue(driver.getCurrentUrl().trim().equalsIgnoreCase(bizPWS+"/"),"US RC user is not redirected to US Site of same PWS");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4069:Access US Con's Canadian PWS as a Canadian Consultant With Pulse
+	@Test
+	public void testAccessUSConsCanadianPWSAsCanadianConsWithPulse_4069(){
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			driver.get(bizPWSCA);
+			//Get the Consultant with PWS of CA
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantWithPWSEmailID = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,"ca","40"),RFO_DB);
+				consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantWithPWSEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+				//Verify user is redirected to its ows pws site
+				s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
+			}
+			s_assert.assertAll();
+		}else{
+			logger.info("Not Executed Test is for 'US' Environment");
+		}
+	}
 }

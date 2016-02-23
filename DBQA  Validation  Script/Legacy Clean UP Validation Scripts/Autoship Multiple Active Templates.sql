@@ -96,37 +96,7 @@ WITH    Autoship
 		
 		
 		
-			------5.Autoship Clean EndDate ------
-
-
-
-SELECT  COUNT(*)--shoul be NULL after Clean UP
-FROM    RFOperations.Hybris.Autoship
-WHERE   Active = 1
-        AND CountryID = 236
-        AND EndDate IS NOT NULL; 
-
-
-SELECT  COUNT(*)-- Should be NULL after Clean UP
-FROM    RFOperations.Hybris.Autoship a
-        JOIN RodanFieldsLive.dbo.Orders b ON a.AutoshipID = b.OrderID
-        JOIN RodanFieldsLive.dbo.Accounts ac ON ac.AccountID = a.AccountID
-WHERE   ac.Active <> 1
-        AND b.OrderStatusID = 4 --Submitted
-        AND a.Active=1
-        AND a.CountryID = 236;
-		
-	
-	
-
-SELECT  COUNT(*)-- Should be NULL after Clean UP
-FROM    RFOperations.Hybris.Autoship a
-        JOIN RodanFieldsLive.dbo.Orders b ON a.AutoshipID = b.OrderID
-        JOIN RodanFieldsLive.dbo.Accounts ac ON ac.AccountID = a.AccountID
-WHERE   ac.Active = 1
-        AND b.OrderStatusID = 4
-        AND a.EndDate IS NOT NULL
-        AND a.CountryID = 236;
+			
 
 
 

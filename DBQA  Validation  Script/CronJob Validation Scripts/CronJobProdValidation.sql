@@ -1404,6 +1404,35 @@ WHERE   a.TypePkString = 8796124708946
 		--Step 5: Consultants Renewal 
 		/* autoRenewalEmailJob:  Auto Renewal when the consultant has 100 SV order any month in last 3 months  */
 
+		
+
+--++++++++++++++++++++++++++++++++++++++++++
+--		Calculation of QV from Commission DB
+--+++++++++++++++++++++++++++++++++++++++++++
+USE RFOperations 
+GO 
+SELECT TOP 500
+        Cal.SV ,
+        Cal.PeriodID ,
+        vga.LastRenewalDate ,
+        vga.* ,
+        at.*
+SELECT DISTINCT TOP 10 vga.AccountID INTO #t1 
+FROM   RFO_Accounts.vw_GetAccount AS vga
+        INNER JOIN RFO_Reference.synVWCalculations AS Cal ON Cal.AccountID = vga.AccountID
+        INNER JOIN RFO_Reference.synAccountTitles AS at ON at.AccountID = Cal.AccountID
+                                                           AND at.PeriodID = Cal.PeriodID
+ WHERE  vga.AccountTypeCode = 1 -- @AccountTypeCode
+        AND vga.Active = 1
+        AND vga.LastRenewalDate < '2015-2-05'
+        AND Cal.PeriodID IN (201511,201512,201601,201602)
+              AND cal.SV > 100
+			  AND vga.CountryID=40
+              --AND at.TitleTypeID = 2
+              --AND at.TitleID =2
+ ORDER BY vga.LastRenewalDate DESC; 
+
+
 			/* Task 1: Getting Details for  Renewed Eligible Consultants.*/
 
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
@@ -1612,6 +1641,35 @@ WHERE   CAST(u.modifiedTS AS DATE) = @Date
 	-- Step 6: Consultants Termination 
 		/* terminationNoticeEmailJob:  (Consultant Doesn't have 100 SV order any month in last 3 months,and
 										he has NOT Renewed by paying $25 fee even after 30days grace)*/
+
+										
+
+--++++++++++++++++++++++++++++++++++++++++++
+--		Calculation of QV from Commission DB
+--+++++++++++++++++++++++++++++++++++++++++++
+USE RFOperations 
+GO 
+SELECT TOP 500
+        Cal.SV ,
+        Cal.PeriodID ,
+        vga.LastRenewalDate ,
+        vga.* ,
+        at.*
+SELECT DISTINCT TOP 10 vga.AccountID INTO #t1 
+FROM   RFO_Accounts.vw_GetAccount AS vga
+        INNER JOIN RFO_Reference.synVWCalculations AS Cal ON Cal.AccountID = vga.AccountID
+        INNER JOIN RFO_Reference.synAccountTitles AS at ON at.AccountID = Cal.AccountID
+                                                           AND at.PeriodID = Cal.PeriodID
+ WHERE  vga.AccountTypeCode = 1 -- @AccountTypeCode
+        AND vga.Active = 1
+        AND vga.LastRenewalDate < '2015-2-05'
+        AND Cal.PeriodID IN (201511,201512,201601,201602)
+              AND cal.SV > 100
+			  AND vga.CountryID=40
+              --AND at.TitleTypeID = 2
+              --AND at.TitleID =2
+ ORDER BY vga.LastRenewalDate DESC; 
+
 
 
 	/* Task 1: Getting Counts/Details for  Soft-Terminated   Consultants.*/

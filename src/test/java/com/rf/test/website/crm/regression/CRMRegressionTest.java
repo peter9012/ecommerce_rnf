@@ -1218,7 +1218,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-5008:Change default PC Shipping address
-	@Test(enabled=false)//WIP 
+	@Test 
 	public void testChangeDefaultConsultantShippingAddress_5008() throws InterruptedException{
 		String addressLine = null;
 		String city = null;
@@ -1331,8 +1331,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-4500:Delete shipping Profile for consultant
-	@Test(enabled=false) //WIP
+	//Hybris Project-4500:Delete shipping Profile for consultant
+	@Test
 	public void testDeleteShippingProfileForConsultant_4500() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1373,7 +1373,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4501:Delete shipping Profile for PC
-	@Test(enabled=false) //WIP
+	@Test
 	public void testDeleteShippingProfileForPCUser_4501() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -1523,39 +1523,104 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4498:Verify the Proxy to my account for a Consultant
-	 @Test 
-	 public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{
-	  RFO_DB = driver.getDBNameRFO();
-	  List<Map<String, Object>> randomConsultantList =  null;
-	  crmLoginpage = new CRMLoginPage(driver);
-	  crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  String consultantEmailID = null;
-	  randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	  consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-	  logger.info("The email address is "+consultantEmailID); 
-	  crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-	  s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-	  crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-	  crmHomePage.clickConsultantCustomerNameInSearchResult();
-	  String accountName = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Account Name");
-	  String emailId = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Email Address");
-	  String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone");
-	  String addressLine1 = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Address Line 1");
-	  String locale = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Locale");
-	  logger.info("Url Print before switching = "+ driver.getCurrentUrl());
-	  crmAccountDetailsPage.clickAccountDetailsButton("My Account");
-	  storeFrontHomePage.switchToChildWindow();
-	  String consultantMyAccountPage = driver.getCurrentUrl();
-	  
-	  s_assert.assertTrue(consultantMyAccountPage.contains("corp"), "Not Logged in consultant's account page");
-	  s_assert.assertTrue(storeFrontHomePage.isUserNamePresentOnDropDown(), "Consultant Account Page Not Verified");
-	  s_assert.assertTrue(accountName.contains(storeFrontHomePage.getConsultantStoreFrontInfo("first-name")), "First Name Not Matched, Expected is "+ accountName +"But Actual Contain is " +storeFrontHomePage.getConsultantStoreFrontInfo("first-name"));
-	  s_assert.assertTrue(addressLine1.equals(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
-	  s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
-	  s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
-	  s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
-	  s_assert.assertAll();
-	 }
-	
+	@Test 
+	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickConsultantCustomerNameInSearchResult();
+		String accountName = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Account Name");
+		String emailId = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Email Address");
+		String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone");
+		String addressLine1 = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Address Line 1");
+		String locale = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Locale");
+		logger.info("Url Print before switching = "+ driver.getCurrentUrl());
+		crmAccountDetailsPage.clickAccountDetailsButton("My Account");
+		storeFrontHomePage.switchToChildWindow();
+		String consultantMyAccountPage = driver.getCurrentUrl();
+
+		s_assert.assertTrue(consultantMyAccountPage.contains("corp"), "Not Logged in consultant's account page");
+		s_assert.assertTrue(storeFrontHomePage.isUserNamePresentOnDropDown(), "Consultant Account Page Not Verified");
+		s_assert.assertTrue(accountName.contains(storeFrontHomePage.getConsultantStoreFrontInfo("first-name")), "First Name Not Matched, Expected is "+ accountName +"But Actual Contain is " +storeFrontHomePage.getConsultantStoreFrontInfo("first-name"));
+		s_assert.assertTrue(addressLine1.equals(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
+		s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
+		s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
+		s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5159:Save Main address as shipping for consultant in Salesforce
+	@Test
+	public void testSaveMainAddressAsShippingForConsultant_5159() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmContactDetailsPage= new CRMContactDetailsPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//click on 'Save as Shipping' for consultant and validate Main address is saved as shipping Profile(s)
+		s_assert.assertTrue(crmAccountDetailsPage.validateMainAddressIsSavedAsShippingProfile(),"Main address is not saved as Shipping profile");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5160:Save Main address as shipping for PC in Salesforce
+	@Test(enabled=false)//WIP
+	public void testSaveMainAddressAsShippingForPC_5160() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomPCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcUserName = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//click on 'Save as Shipping' for consultant and validate Main address is saved as shipping Profile(s)
+		s_assert.assertTrue(crmAccountDetailsPage.validateMainAddressIsSavedAsShippingProfile(),"Main address is not saved as Shipping profile");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5161:Save Main address as shipping for RC in Salesforce
+	@Test(enabled=false)//WIP
+	public void testSaveMainAddressAsShippingForRC_5161() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomRCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String rcUserName = null;
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcUserName = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+		logger.info("The username is "+rcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//click on 'Save as Shipping' for consultant and validate Main address is saved as shipping Profile(s)
+		s_assert.assertTrue(crmAccountDetailsPage.validateMainAddressIsSavedAsShippingProfile(),"Main address is not saved as Shipping profile");
+		s_assert.assertAll();
+	}
+
 }

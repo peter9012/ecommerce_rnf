@@ -988,6 +988,113 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4722:Verify that ' Pulse fee' product not available to add into CRP cart.
+	@Test
+	public void testVerifyPulseFeeProductNotAvailableToAddIntoCrpCart_4722() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String accountID = null;
+		RFO_DB = driver.getDBNameRFO();
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+				continue;
+			}
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+				storeFrontAccountInfoPage.clickOnAutoShipStatus();
+				if(storeFrontAccountInfoPage.verifyCRPCancelled()==true){
+					logout();
+					driver.get(driver.getStoreFrontURL()+"/us");
+					continue;
+				}else{
+					break;
+				}
+			}
+		}
+		logger.info("login is successful"); 
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+consultantEmailID);
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitCartTabPage.searchSKUValueInCartTab("Pulse");
+		cscockpitCartTabPage.clickAddToCartForSingleProduct();
+		cscockpitCartTabPage.verifyProductNotAvailablePopUp();
+		s_assert.assertTrue(cscockpitCartTabPage.verifyProductNotAvailablePopUp(),"pulse product is available to be added to cart in crp autoship");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1719:To verify PC perks/Pulse Run autoship from autoship template
+	@Test
+	public void testVerifyPCPerksRunAutoshipFromAutoshipTemplate_1719() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String pcEmailID = null;
+		String accountID = null;
+		RFO_DB = driver.getDBNameRFO();
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomPCList =  null;
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful"); 
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+pcEmailID); 
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessageOrReRunPopupAfterClickOnRunNowBtn(), "Run now confirmation message popup is not present");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOkBtnOnConfirmMessagePopUp(), "OK btn is not present on confirm message popup");
+		s_assert.assertAll();
+	}
 
 }
-

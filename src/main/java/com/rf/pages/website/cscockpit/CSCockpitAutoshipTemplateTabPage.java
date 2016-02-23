@@ -752,4 +752,18 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		logger.info("Date will be After 17 "+dateAfterOneMonth);
 		return dateAfterOneMonth;
 	}
+
+	public boolean verifyOkBtnOnConfirmMessagePopUp(){   
+		driver.waitForElementPresent(CONFIRM_MESSAGE_OK_LOC);
+		return driver.isElementPresent(CONFIRM_MESSAGE_OK_LOC);
+	}
+
+	public boolean verifyConfirmMessageOrReRunPopupAfterClickOnRunNowBtn(){
+		driver.waitForElementPresent(CONFIRM_MSG_OF_RUN_NOW);
+		if(driver.isElementPresent(CONFIRM_MSG_OF_RUN_NOW)==true){
+			return driver.isElementPresent(CONFIRM_MSG_OF_RUN_NOW);
+		}else{
+			return driver.isElementPresent(RUN_NOW_AGAIN);
+		}
+	}
 }

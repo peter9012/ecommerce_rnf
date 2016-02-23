@@ -87,7 +87,7 @@ public class SearchVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1928:Verify the Find Customer Search Criteria
-	@Test//(enabled=false)//WIP
+	@Test
 	public void testVerifyFindCustomerSearchCriteria_1928() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;

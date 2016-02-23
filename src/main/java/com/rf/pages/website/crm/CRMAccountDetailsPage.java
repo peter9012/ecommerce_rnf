@@ -716,5 +716,37 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//table[@class='detailList']//td[text()='"+label+"']/following-sibling::td[1]"));
 		return driver.findElement(By.xpath("//table[@class='detailList']//td[text()='"+label+"']/following-sibling::td[1]")).getText();
 	}
+
+	public boolean validateMainAddressIsSavedAsShippingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		int beforeCount=getShippingProfilesRowCount();
+		System.out.println("before saving count"+beforeCount);
+		clickSaveAsShippingLinkUnderMainAddress();
+		int afterCount=getShippingProfilesRowCount();
+		System.out.println("after saving count"+afterCount);
+		if(beforeCount<afterCount){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public int getShippingProfilesRowCount(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElements(By.xpath("//body//div[9]//div/div//table[@class='list']//tr")).size();
+	}
+
+	public void clickSaveAsShippingLinkUnderMainAddress(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='dataCol last col02']//iframe")));
+		driver.click(By.xpath("//a[text()='Save As Shipping']"));
+		driver.pauseExecutionFor(6000);
+	}
 }
 

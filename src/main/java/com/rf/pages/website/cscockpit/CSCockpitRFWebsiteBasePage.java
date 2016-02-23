@@ -556,4 +556,11 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return isProductFound;
 	}
 
+	public void clickAddToCartForSingleProduct(){
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
 }

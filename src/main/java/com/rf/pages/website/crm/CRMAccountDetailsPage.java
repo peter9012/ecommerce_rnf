@@ -748,5 +748,22 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//a[text()='Save As Shipping']"));
 		driver.pauseExecutionFor(6000);
 	}
+
+	public void updateShippingProfilePostalCode(String postalCode){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"));
+		driver.clear(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"));
+		driver.type(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"), postalCode);
+	}
+
+	public boolean validateErrorMsgIsDisplayedForPostalCode(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//div[@class='errorMsg']/strong"));
+		return driver.findElement(By.xpath("//div[@class='errorMsg']/strong")).getText().contains("Error");
+	}
 }
 

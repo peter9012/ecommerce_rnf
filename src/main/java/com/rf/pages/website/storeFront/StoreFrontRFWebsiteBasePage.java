@@ -159,8 +159,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
 		logger.info("Add to CRP button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1279,8 +1279,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnAddToCRPButtonCreatingCRPUnderBizSite() throws InterruptedException{
 		applyPriceFilterHighToLow();		
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
 		logger.info("Add to CRP button clicked");
 		driver.waitForLoadingImageToDisappear();
 
@@ -1460,23 +1460,20 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	public void selectDifferenetProductAndAddItToCRP(){
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[5]//button[@class='btn btn-primary']"));
-		}else{
-			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
-			driver.click(By.xpath("//div[@id='main-content']/div[4]/div[2]/div[5]//div[@class='product-shop-buttons']/div[2]//button"));
-		}
-		driver.waitForSpinImageToDisappear();
+	public void selectDifferentProductAndAddItToCRP() throws InterruptedException{
+		applyPriceFilterHighToLow();		
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		logger.info("Add to CRP button clicked");
+		driver.waitForLoadingImageToDisappear();
+
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
 		}catch(Exception e){
 
 		}
-		driver.pauseExecutionFor(1000);
-		driver.waitForPageLoad();
 	}
 
 	public void selectProductAndProceedToBuyForPC() throws InterruptedException{
@@ -1636,8 +1633,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAddToCRPButtonAfterCancelMyCRP(){
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO CRP')][1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
 	}
 
 	public boolean verifyEnrollInCRPPopupAfterClickOnAddToCRP(){

@@ -2210,5 +2210,67 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-1839:To verify the commission date change functionality in the order detail Page
+	@Test
+	public void testVerifyCommissionDateChangeFunctionalityInOrderDetailPage_1839(){
+		String randomCustomerSequenceNumber = null;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickFirstOrderInCustomerTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.isUpdateBtnDisabledInCommissionInfoSection(), "Update btn is enabled for user csagent");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//using admin credentials
+		/*cscockpitLoginPage.enterUsername("admin");
+			cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+			cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+			cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+			cscockpitCustomerSearchTabPage.clickSearchBtn();
+			randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+			cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+			cscockpitCustomerTabPage.clickFirstOrderInCustomerTab();
+			s_assert.assertTrue(cscockpitOrderTabPage.isUpdateBtnDisabledInCommissionInfoSection(), "Update btn is enabled for user admin");
+			cscockpitOrderTabPage.clickMenuButton();
+			cscockpitOrderTabPage.clickLogoutButton();*/
+
+		//for cscommissionadmin user
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickFirstOrderInCustomerTab();
+		String commissionDate = cscockpitOrderTabPage.getCommissionDateFromCommissionInfoSection();
+		String modifiedDate = cscockpitOrderTabPage.addOneMoreDayInCommissionInfoDate(commissionDate);
+		cscockpitOrderTabPage.enterCommissionDate(modifiedDate);
+		cscockpitOrderTabPage.clickUpdateBtnInCommissionInfoSection();
+		String updatedCommissionDate  = cscockpitOrderTabPage.getCommissionDateFromCommissionInfoSection();
+		s_assert.assertTrue(updatedCommissionDate.contains(modifiedDate), "Expected commission date is" + modifiedDate+" And actual on UI "+updatedCommissionDate+" for user cscommissionadmin");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		//for cssalessupervisory user
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickFirstOrderInCustomerTab();
+		commissionDate = cscockpitOrderTabPage.getCommissionDateFromCommissionInfoSection();
+		modifiedDate = cscockpitOrderTabPage.addOneMoreDayInCommissionInfoDate(commissionDate);
+		cscockpitOrderTabPage.enterCommissionDate(modifiedDate);
+		cscockpitOrderTabPage.clickUpdateBtnInCommissionInfoSection();
+		updatedCommissionDate  = cscockpitOrderTabPage.getCommissionDateFromCommissionInfoSection();
+		s_assert.assertTrue(updatedCommissionDate.contains(modifiedDate), "Expected commission date is" + modifiedDate+" And actual on UI "+updatedCommissionDate+" for user cssalessupervisory");
+		s_assert.assertAll();
+	}
 
 }

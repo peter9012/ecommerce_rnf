@@ -14,7 +14,6 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
 	private static String accountStatusDDLoc = "//span[contains(text(),'Account Status')]/select/option[text()='%s']";
 	private static String customerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
-	private static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
 	private static String emailIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customeraccountStatusInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 
@@ -84,15 +83,6 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return customerEmailId;
 	}
 
-	public int getRandomCustomerFromSearchResult(){
-		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
-		int totalCustomersFromResultsSearchFirstPage =  driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
-		logger.info("total customers in the customer search result is "+totalCustomersFromResultsSearchFirstPage);
-		int randomCustomerFromSearchResult = CommonUtils.getRandomNum(1, totalCustomersFromResultsSearchFirstPage);
-		logger.info("Random Customer sequence number is "+randomCustomerFromSearchResult);
-		return randomCustomerFromSearchResult;		
-	}
-
 	public int getTotalResultsInCustomerSearchOnCustomerSearchTab(){
 		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
 		return driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
@@ -105,19 +95,9 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public String clickAndReturnCIDNumberInCustomerSearchTab(String customerSequenceNumber){
-		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
-		String orderNumber = driver.findElement((By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)))).getText();
-		driver.click(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
-		driver.waitForCSCockpitLoadingImageToDisappear();
-		return orderNumber;
-	}
-
-
 	public String getCIDNumberInCustomerSearchTab(String customerSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber)));
 		return driver.findElement(By.xpath(String.format(customerCIDInSearchResultsLoc, customerSequenceNumber))).getText();
-
 	}
 
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){

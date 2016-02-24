@@ -1022,10 +1022,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			return false;
 		}
 	}
+
 	public void clickOnNotYourSponsorLink(){
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
-		driver.click(By.xpath("//a[@id='not-your-sponsor']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='not-your-sponsor']")));
+		//driver.click(By.xpath("//a[@id='not-your-sponsor']"));
 	}
+
 	public void clickNotYourSponsorLinkOnKitPage(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Not your sponsor?']"));
 		driver.click(By.xpath("//a[text()='Not your sponsor?']"));
@@ -3618,14 +3622,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void selectProductAndProceedToAddToCRPfterLogin(){
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']")).isEnabled()==true){
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]")).isEnabled()==true){
+			driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForPageLoad();
 		}
 		else{
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']//button[@class='btn btn-primary']"));
+			driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][2]"));
 			logger.info("Add to CRP button clicked");
 			driver.waitForPageLoad();
 		}
@@ -3791,6 +3795,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String convertUSBizPWSToCA(String PWS){
 		return PWS.replaceAll("us","ca");
+	}
+
+	public String getOrderNumberAfterPlacingOrder(){
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h4"));
+		String orderNumber =driver.findElement(By.xpath("//div[@id='confirm-left-shopping']//h4")).getText();
+		String  orderNum=orderNumber.split("\\#")[1];
+		logger.info("Order Number from UI after Placing order is "+orderNum);
+		return orderNum;
 	}
 
 }

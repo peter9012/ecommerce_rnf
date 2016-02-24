@@ -966,22 +966,15 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
+		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.addQuantityOfProduct("5");
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-		storeFrontHomePage.clickOnReviewAndConfirmBillingEditBtn();
-		storeFrontHomePage.clickAddNewShippingProfileLink();
-		storeFrontHomePage.enterNewShippingAddressNameDuringEnrollment(newShippingAddName+" "+lastName);
-		storeFrontHomePage.enterNewShippingAddressLine1DuringEnrollment(addressLine1);
-		storeFrontHomePage.enterNewShippingAddressCityDuringEnrollment(city);
-		storeFrontHomePage.selectProvince();
-		storeFrontHomePage.enterNewShippingAddressPostalCode(postalCode);
-		storeFrontHomePage.enterNewShippingAddressPhoneNumber(phoneNumber);
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.validateNewShippingAddressPresentOnReviewPage(newShippingAddName),"new shipping address is not present on Review and confirm page");
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		
+		
+		
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
@@ -1072,7 +1065,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnAutoshipCart();
 		storeFrontUpdateCartPage= new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-		storeFrontUpdateCartPage.selectDifferenetProductAndAddItToCRP();   
+		storeFrontUpdateCartPage.selectDifferentProductAndAddItToCRP();   
 		int noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();   
 		for(int i=noOfProduct; i>=1; i--){
 			boolean flag = storeFrontUpdateCartPage.getValueOfFlag(i);

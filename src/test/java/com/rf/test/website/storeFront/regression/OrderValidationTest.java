@@ -47,6 +47,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitLoginPage cscockpitLoginPage;
 	private String RFO_DB = null;
+	String country=null;
+	String env = null;
 
 	// Hybris Phase 2-1980 :: Version : 1 :: Order >>Actions >>Report problems
 	@Test
@@ -1878,6 +1880,256 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
 		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
 		s_assert.assertAll(); 
+	}
+
+	// Hybris Project-3849:Verify Sponsor on Return Orders RFO
+	@Test
+	public void testVerifySponserOnReturnOrder_3849() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String secondNewBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String firstNameOfSecondUser=TestConstants.FIRST_NAME+randomNumber;
+		String lastName = "lN";
+		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String secondUserEmail=firstNameOfSecondUser+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String accountID=null;
+		String consultantEmailID=null;
+		String comPWSOfSponser=null;
+		String randomCustomerSequenceNumber=null;
+		List<Map<String, Object>> randomConsultantList =null;
+		List<Map<String, Object>> emailIdFromAccountIdList =null;
+		List<Map<String, Object>> accountIDList=null;
+		List<Map<String, Object>> accountNumberList=null;
+		List<Map<String, Object>> returnOrderAccountIDList=null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		cscockpitLoginPage=new CSCockpitLoginPage(driver);
+		cscockpitOrderTabPage=new CSCockpitOrderTabPage(driver);
+		cscockpitOrderSearchTabPage=new CSCockpitOrderSearchTabPage(driver);
+		//Get pws from database.
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList,"AccountID"));
+			comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");
+			driver.get(comPWSOfSponser);
+			boolean isLoginError = driver.getCurrentUrl().contains("sitenotfound");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		//	logger.info("hit pws for first order is "+comPWSOfSponser);
+		//logger.info("consultant email address for second order is "+consultantEmailID);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Two products are in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 2");
+		logger.info("2 products are successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		//String fetchedSponser=storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		String orderNumberOfFirstOrder=storeFrontHomePage.getOrderNumberAfterPlacingOrder();
+		logger.info("First adhoc order number is "+orderNumberOfFirstOrder);
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Get Account Id And account Number of enrolled RC User
+		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,emailAddress),RFO_DB);
+		String accountIDOfFirstOrder = String.valueOf(getValueFromQueryResult(accountIDList, "AccountId"));
+		accountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIDOfFirstOrder),RFO_DB);
+		String accountNumberOfFirstOrder = String.valueOf(getValueFromQueryResult(accountNumberList, "AccountNumber"));
+		logout();
+		//Place RC Adhoc order from different pws.
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList,"AccountID"));
+			comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");
+			driver.get(comPWSOfSponser);
+			boolean isLoginError = driver.getCurrentUrl().contains("sitenotfound");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		//logger.info("hit pws for second order is "+comPWSOfSponser);
+		//logger.info("consultant email address for second order is "+consultantEmailID);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+
+		//Two products are in the Shopping Cart?
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 2");
+		logger.info("2 products are successfully added to the cart");
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Log in or create an account page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstNameOfSecondUser, TestConstants.LAST_NAME+randomNumber,secondUserEmail, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		// fetchedSponser=storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(secondNewBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		String orderNumberOfSecondOrder=storeFrontHomePage.getOrderNumberAfterPlacingOrder();
+		logger.info("Second adhoc order number is "+orderNumberOfSecondOrder);
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Get Account Id And account Number of enrolled RC User
+		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,secondUserEmail),RFO_DB);
+		String accountIDOfSecondOrder = String.valueOf(getValueFromQueryResult(accountIDList, "AccountId"));
+		accountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIDOfSecondOrder),RFO_DB);
+		String accountNumberOfSecondOrder = String.valueOf(getValueFromQueryResult(accountNumberList, "AccountNumber"));
+		logout();
+		//Validate sponser of First adhoc order placed from cscockpit
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage =cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(emailAddress);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String cidForFirstOrder=cscockpitCustomerSearchTabPage.getCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cidForFirstOrder.equalsIgnoreCase(accountNumberOfFirstOrder),"Order Sponser on StoreFront and cscockpit are not same for first Order.");
+		//Validate sponser of second adhoc order placed from cscockpit
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(secondUserEmail);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String cidForSecondOrder=cscockpitCustomerSearchTabPage.getCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cidForSecondOrder.equalsIgnoreCase(accountNumberOfSecondOrder),"Order Sponser on StoreFront and cscockpit are not same for Second Order.");
+		//return first order.
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumberOfFirstOrder);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTab(orderNumberOfFirstOrder);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		boolean isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		String rmaNumberOfFirstOrder = cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
+		//logger.info("modified rma number1 "+rmaNumberOfFirstOrder);
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		//verify sponser after returning complete order.
+		//Get Account Id And account Number of First Return RC User
+		driver.pauseExecutionFor(180000);
+		returnOrderAccountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RETURN_ORDER_DETAILS_FROM_RMA_NUMBER,rmaNumberOfFirstOrder),RFO_DB);
+		String accountIDOfFirstReturnOrder = String.valueOf(getValueFromQueryResult(returnOrderAccountIDList, "AccountID"));
+		accountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIDOfFirstReturnOrder),RFO_DB);
+		String sponserIdOfFirstReturnOrder = String.valueOf(getValueFromQueryResult(accountNumberList, "AccountNumber"));
+		s_assert.assertTrue(sponserIdOfFirstReturnOrder.equalsIgnoreCase(accountNumberOfFirstOrder),"Order Sponser on StoreFront and Return order Sponser in cscockpit are not same for first Order.");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//return Second order.
+		cscockpitCustomerSearchTabPage =cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumberOfSecondOrder);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTab(orderNumberOfSecondOrder);
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
+		isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		String rmaNumberOfSecondOrder = cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
+		//logger.info("modified rma number 2"+rmaNumberOfSecondOrder);
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		//verify sponser after returning complete order.
+		//Get Account Id And account Number of First Return RC User
+		driver.pauseExecutionFor(180000);
+		returnOrderAccountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RETURN_ORDER_DETAILS_FROM_RMA_NUMBER,rmaNumberOfSecondOrder),RFO_DB);
+		String accountIDOfSecondReturnOrder = String.valueOf(getValueFromQueryResult(returnOrderAccountIDList, "AccountID"));
+		accountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountIDOfSecondReturnOrder),RFO_DB);
+		String sponserIdOfSecondReturnOrder = String.valueOf(getValueFromQueryResult(accountNumberList, "AccountNumber"));
+		s_assert.assertTrue(sponserIdOfSecondReturnOrder.equalsIgnoreCase(accountNumberOfSecondOrder),"Order Sponser on StoreFront and Return order Sponser in cscockpit are not same for Second Order.");
+		s_assert.assertAll();		
 	}
 
 }

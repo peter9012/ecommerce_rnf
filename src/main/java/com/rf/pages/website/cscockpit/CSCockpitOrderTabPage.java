@@ -20,6 +20,13 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String returnQuantityLoc = "//td[text()='%s']";
 	private static String orderEntryTaxLoc = "//span[contains(text(),'Tax commited to avatax, doc code :%s')]";
 	private static String shippingAndHandlingPopupLoc ="//span[text()='%s']/following::span[1]";
+	private static String ProductInfoCheckboxLoc="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[1]//input";
+	private static String ReturnQuantityOnPopupLoc="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[6]//div[@class='expectedQtyDropDown']//img";
+	private static String RestockingFeeCheckboxInPopupLoc="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[8]//input[@type='checkbox']";
+	private static String ReturnTaxOnlyCheckboxInPopupLoc="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[9]//input[@type='checkbox']";
+	private static String disabledProductInfoCheckbox="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[1]//input[@disabled='']";
+	private static String returnQuantityAnotherLoc = "//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/ancestor::div[contains(@class,'csReturnRequestCreateWidget')]/following-sibling::div//td[text()='%s']";
+	private static String rmaNumberOfReturnOrderInReturnRequestSsection  = "//span[contains(text(),'Return Requests')]/following::div[1]//a[contains(text(),'%s')]";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -88,6 +95,11 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By RESTOCKING_FEE_CHECKBOX_IN_POPUP = By.xpath("//div[@class='editorWidgetEditor']//input[@type='checkbox']/ancestor::td/following-sibling::td[7]//input[@type='checkbox']");
 	private static final By RMA_NUMBER_ON_POPUP  = By.xpath("//span[contains(text(),'RMA number')]");
 	private static final By CONSULTANT_RECEIVING_COMMISSION_NAME  = By.xpath("//span[contains(text(),'Consultant Receiving Commissions')]/following::span[1]");
+	private static final By DISABLED_UPDATE_BTN_IN_COMMISSION_INFO  = By.xpath("//span[contains(text(),'Commission Info')]/following::div[@class='csWidgetContent'][1]//button[@disabled='disabled']");
+	private static final By COMMISSION_DATE = By.xpath("//span[contains(text(),'Commission Date')]/following::input[@autocomplete ='off'][1]");
+	private static final By UPDATE_BTN_IN_COMMISSION_INFO  = By.xpath("//span[contains(text(),'Commission Info')]/following::div[@class='csWidgetContent'][1]//td[contains(text(),'Update')]");
+	private static final By ONLY_TAX_RETURN_VALUE_IN_RETURN_REQUEST = By.xpath("//div[text()='Only Tax Returned']/following::table[1]//tbody[2]//tr[2]/td[4]//span");
+	private static final By RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP = By.xpath("//label[contains(text(),'Return Only tax')]/preceding::input[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -505,5 +517,83 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(CONSULTANT_RECEIVING_COMMISSION_NAME);
 		logger.info("Consultant receiving commission name is "+driver.findElement(CONSULTANT_RECEIVING_COMMISSION_NAME).getText());
 		return driver.findElement(CONSULTANT_RECEIVING_COMMISSION_NAME).getText();
+	}
+
+	public void checkProductInfoCheckboxInPopUp(String rowNum) {
+		driver.click(By.xpath(String.format(ProductInfoCheckboxLoc,rowNum)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectReturnQuantityOnPopUp(String quantity,String rowNum) {
+		driver.waitForElementPresent(By.xpath(String.format(ReturnQuantityOnPopupLoc, rowNum)));
+		driver.click(By.xpath(String.format(ReturnQuantityOnPopupLoc, rowNum)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.waitForElementPresent(By.xpath(String.format(returnQuantityAnotherLoc, quantity)));
+		driver.click(By.xpath(String.format(returnQuantityAnotherLoc, quantity)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void checkRestockingFeeCheckboxInPopUp(String rowNum) {
+		driver.click(By.xpath(String.format(RestockingFeeCheckboxInPopupLoc, rowNum)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void checkReturnTaxOnlyCheckboxInPopUp(String rowNum) {
+		driver.click(By.xpath(String.format(ReturnTaxOnlyCheckboxInPopupLoc, rowNum)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isProductCheckBoxesGettingDisabledAfterCheckingReturnTaxOnlyChkBox(String rowNum){
+		driver.waitForElementPresent(By.xpath(String.format(disabledProductInfoCheckbox,rowNum)));
+		return driver.isElementPresent(By.xpath(String.format(disabledProductInfoCheckbox, rowNum)));
+	}
+
+	public boolean verifyReturnOrderRMANumberInOrderTab(String rmaNumber){
+		driver.waitForElementPresent(By.xpath(String.format(rmaNumberOfReturnOrderInReturnRequestSsection,rmaNumber)));
+		return driver.isElementPresent(By.xpath(String.format(rmaNumberOfReturnOrderInReturnRequestSsection,rmaNumber)));
+	}
+
+	public boolean isUpdateBtnDisabledInCommissionInfoSection(){
+		driver.waitForElementPresent(DISABLED_UPDATE_BTN_IN_COMMISSION_INFO);
+		return driver.isElementPresent(DISABLED_UPDATE_BTN_IN_COMMISSION_INFO);
+	}
+
+	public String getCommissionDateFromCommissionInfoSection(){
+		driver.waitForElementPresent(COMMISSION_DATE);
+		return driver.findElement(COMMISSION_DATE).getAttribute("value");
+	}
+
+	public void enterCommissionDate(String date){
+		driver.waitForElementPresent(COMMISSION_DATE);
+		WebElement inputField = driver.findElement(COMMISSION_DATE);
+		inputField.clear();
+		inputField.sendKeys(date);
+	}
+
+	public void clickUpdateBtnInCommissionInfoSection(){
+		driver.waitForElementPresent(UPDATE_BTN_IN_COMMISSION_INFO);
+		driver.click(UPDATE_BTN_IN_COMMISSION_INFO);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String addOneMoreDayInCommissionInfoDate(String date){
+		String month = date.split("\\ ")[0];
+		String day = date.split("\\ ")[1].split("\\,")[0];
+		String year = date.split("\\ ")[2];
+		int updatedDay = Integer.parseInt(day)+1;
+		day = ""+updatedDay;
+		logger.info("date after add one day "+month+" "+day+","+" "+year);
+		return month+" "+day+","+" "+year;
+	}
+
+	public String getOnlyTaxReturnValueFromReturnRequestSection(){
+		driver.waitForElementPresent(ONLY_TAX_RETURN_VALUE_IN_RETURN_REQUEST);
+		return driver.findElement(ONLY_TAX_RETURN_VALUE_IN_RETURN_REQUEST).getText();
+	}
+
+	public void checkReturnOnlyTaxChkBoxOnRefundPopUp(){
+		driver.isElementPresent(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
+		driver.click(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 }

@@ -184,7 +184,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnAutoshipCart();
 		storeFrontUpdateCartPage= new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-		storeFrontUpdateCartPage.selectDifferenetProductAndAddItToCRP();   
+		storeFrontUpdateCartPage.selectDifferentProductAndAddItToCRP();   
 		int noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();   
 		for(int i=noOfProduct; i>=1; i--){
 			boolean flag = storeFrontUpdateCartPage.getValueOfFlag(i);
@@ -662,7 +662,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
 				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
 			}else if(driver.getCountry().equalsIgnoreCase("US")){
-				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$21.00"),"Shipping charges on UI is not As per shipping method selected");
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
 				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
 			}
 
@@ -5932,7 +5932,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2149:Check Shipping and Handling Fee for UPS 1Day for Order total 0-999999-CRPAutoship
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPS1DayCRPAutoship_2149() throws InterruptedException	{
+	public void testCheckShippingAndHandlingFeeForUPS1DayCRPAutoship_2149() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO();
 		String country = driver.getCountry();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -5965,15 +5965,22 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		//validate Delivery/Shipping Charges On Order Summary
 		String handlingCharges=storeFrontUpdateCartPage.getHandlingCharges();
-		s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected for CRP Autoship");
+		logger.info("handling charges"+handlingCharges);
 		String deliveryCharges=storeFrontUpdateCartPage.getDeliveryCharges();
-		s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 30.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship");
+		logger.info("Delivery charges"+deliveryCharges);
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected for CRP Autoship");
+			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$35.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship");
+		}else if(driver.getCountry().equalsIgnoreCase("ca")){
+			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected for CRP Autoship");
+			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 30.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship"); 
+		}
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-2147:Check Shipping and Handling Fee for UPS 2Day for Order total 0-999999-EnrollmentKit
 	@Test
-	public void testCheckShippingAndHandlingFeeForUPS2DayConsultantEnrollmentKit_2147() throws InterruptedException	{
+	public void testCheckShippingAndHandlingFeeForUPS2DayConsultantEnrollmentKit_2147() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
@@ -6017,9 +6024,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String handlingCharges=storeFrontHomePage.getHandlingChargesOnReviewOrderPage();
 		String deliveryCharges=storeFrontHomePage.getShippingChargesOnReviewOrderPage();
 		//Validate shipping cost from UI
-		s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 0.00"),"Shipping charges on UI is not As per shipping method selected");
-		//Validate Handling charges cost from UI
-		s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 0.00"),"Handling charges on UI is not As per shipping method selected");
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 0.00"),"Shipping charges on UI is not As per shipping method selected");
+			//Validate Handling charges cost from UI
+			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 0.00"),"Handling charges on UI is not As per shipping method selected");
+		}else if(driver.getCountry().equalsIgnoreCase("us")){
+			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$0.00"),"Shipping charges on UI is not As per shipping method selected");
+			//Validate Handling charges cost from UI
+			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$0.00"),"Handling charges on UI is not As per shipping method selected");
+
+		}
 		s_assert.assertAll();
 	}
 

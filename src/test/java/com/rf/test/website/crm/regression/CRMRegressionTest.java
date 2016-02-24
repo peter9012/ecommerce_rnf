@@ -1623,4 +1623,272 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-4487:Verify Adding shipping profiles with different country for a Consultant
+	@Test(enabled=false)//WIP
+	public void testAddingShippingProfilesWithDifferentCountryForAConsultant_4487() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String lastName = TestConstants.LAST_NAME;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
+		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
+		crmAccountDetailsPage.clickEditFirstShippingProfile();
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
+		if(countryId.trim().equalsIgnoreCase("40")){
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change CA Postal Code to US
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_US);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}else{
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change US Postal Code to CA
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_CA);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4488:Verify Adding shipping profiles with different country for a PC
+	@Test(enabled=false)//WIP
+	public void testAddingShippingProfilesWithDifferentCountryForAPC_4488() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomPCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcUserName = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String lastName = TestConstants.LAST_NAME;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
+		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
+		crmAccountDetailsPage.clickEditFirstShippingProfile();
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
+		if(countryId.trim().equalsIgnoreCase("40")){
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change CA Postal Code to US
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_US);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}else{
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change US Postal Code to CA
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_CA);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4489:Verify Adding shipping profiles with different country for a RC
+	@Test(enabled=false)//WIP
+	public void testAddingShippingProfilesWithDifferentCountryForARC_4489() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO(); 
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String lastName = TestConstants.LAST_NAME;
+		String rcEmailID = null;
+		List<Map<String, Object>> randomRCList =  null;
+		//String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+		logger.info("The username is "+rcEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
+		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
+		crmAccountDetailsPage.clickEditFirstShippingProfile();
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
+		if(countryId.trim().equalsIgnoreCase("40")){
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change CA Postal Code to US
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_US);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}else{
+			crmAccountDetailsPage.clickEditFirstShippingProfile();
+			//change US Postal Code to CA
+			crmAccountDetailsPage.updateShippingProfilePostalCode(TestConstants.POSTAL_CODE_CA);
+			crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+			s_assert.assertTrue(crmAccountDetailsPage.validateErrorMsgIsDisplayedForPostalCode(),"Address is added,Error is not thrown");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4515:Edit Shipping Profile for RC
+	@Test(enabled=false)//WIP
+	public void testEditShippingProfileForRC_4515() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO(); 
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String addressLine = null;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String lastName = TestConstants.LAST_NAME;
+		String rcEmailID = null;
+		List<Map<String, Object>> randomRCList =  null;
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+		logger.info("The username is "+rcEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//verify shipping profile section should have at least a Shipping profile address
+		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
+		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
+		crmAccountDetailsPage.clickEditFirstShippingProfile();
+		//Verify by entering special chars in address field should throw error
+		/*Issue listed in sheet....................................................................................*/
+		//Verify by entering special chars in profile name section(it should accept)
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		//Mark this addrees as default
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		//change the shipping profile with a new address & save
+		crmAccountDetailsPage.clickAddNewShippingProfileBtn();
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstName+" "+lastName);
+		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		//verify the updated shipping address is saved as default
+		updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4514:Edit Shipping Profile for PC
+	@Test(enabled=false)//WIP
+	public void testEditShippingProfileForPC_4514() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String addressLine = null;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String lastName = TestConstants.LAST_NAME;
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserName = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//verify shipping profile section should have at least a Shipping profile address
+		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
+		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
+		crmAccountDetailsPage.clickEditFirstShippingProfile();
+		//Verify by entering special chars in address field should throw error
+		/*Issue listed in sheet....................................................................................*/
+		//Verify by entering special chars in profile name section(it should accept)
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		//Mark this addrees as default
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		//change the shipping profile with a new address & save
+		crmAccountDetailsPage.clickAddNewShippingProfileBtn();
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstName+" "+lastName);
+		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
+		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		//verify the updated shipping address is saved as default
+		updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
+		s_assert.assertAll();
+	}
+
 }

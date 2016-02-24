@@ -231,4 +231,11 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		return orderStatus;
 	}
 
+	public void clickOrderLinkOnOrderSearchTab(String orderNumber){
+		driver.waitForElementPresent(By.linkText(orderNumber));
+		driver.click(By.linkText(orderNumber));
+		logger.info(orderNumber+" link clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
 }

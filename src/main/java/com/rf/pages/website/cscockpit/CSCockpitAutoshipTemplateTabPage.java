@@ -70,6 +70,12 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By THRESHOLD_POPUP_FOR_US = By.xpath("//span[text()='Your total SV value should be equal to or greater than 80']");
 	private static final By THRESHOLD_POPUP_FOR_CA = By.xpath("//span[text()='Your total SV value should be equal to or greater than 100']");
 	private static final By NEXT_DUE_DATE_OF_CRP_AUTOSHIP = By.xpath("//span[contains(text(),'Next Due Date')]/following::span[1]");
+	private static final By DISABLED_RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB= By.xpath("//td[text()='Run Now']/../../ancestor::table[1][contains(@class,disd)]");
+	private static final By CANCELLATION_REASON_DD = By.xpath("//span[contains(text(),'Cancellation Reason:')]/following-sibling::span//img");
+	private static final By CANCELLATION_DD_OPTION = By.xpath("//span[contains(text(),'Cancellation Reason:')]/following-sibling::span//img/following::td[contains(text(),'much')]");
+	private static final By REQUEST_SOURCE_DD = By.xpath("//span[contains(text(),'Request Source')]/following-sibling::span//img");
+	private static final By REQUEST_SOURCE_DD_OPTION = By.xpath("//span[contains(text(),'Request Source')]/following-sibling::span//img/following::td[contains(text(),'EMAIL')]");
+	private static final By PC_PERKS_MESSAGE_TEXT_BOX = By.xpath("//span[text()='Message']/following::textarea[1]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -766,4 +772,30 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 			return driver.isElementPresent(RUN_NOW_AGAIN);
 		}
 	}
+
+	public boolean verifyDisabledRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(){
+		return driver.isElementPresent(DISABLED_RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB);     
+	}
+
+	public void selectPCPerksCancellationReasonFromDropDownInAutoShipTemplateTab(){
+		driver.waitForElementPresent(CANCELLATION_REASON_DD);
+		driver.click(CANCELLATION_REASON_DD);
+		driver.waitForElementPresent(CANCELLATION_DD_OPTION);
+		driver.click(CANCELLATION_DD_OPTION);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectPCPerksRequestSourceFromDropDownInAutoShipTemplateTab(){
+		driver.waitForElementPresent(REQUEST_SOURCE_DD);
+		driver.click(REQUEST_SOURCE_DD);
+		driver.waitForElementPresent(REQUEST_SOURCE_DD_OPTION);
+		driver.click(REQUEST_SOURCE_DD_OPTION);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterPCPerksCancellationMessage(String message){
+		driver.waitForElementPresent(PC_PERKS_MESSAGE_TEXT_BOX);
+		driver.type(PC_PERKS_MESSAGE_TEXT_BOX, message);
+	}
+
 }

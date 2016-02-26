@@ -1173,10 +1173,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 
-	public String getQuantityOfProductFromAutoshipTemplate(){
-		String quantity = driver.findElement(By.xpath("//div[@class='order-summary-left spacer'][2]/div[1]/div[2]/div[2]/div[3]")).getText();
-		return quantity;
-	}
+//	public String getQuantityOfProductFromAutoshipTemplate(){
+//		String quantity = driver.findElement(By.xpath("//div[@class='order-summary-left spacer'][2]/div[1]/div[2]/div[2]/div[3]")).getText();
+//		return quantity;
+//	}
 
 	public void clickOnBillingNextStepButton() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));

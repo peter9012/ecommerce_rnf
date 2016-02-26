@@ -1097,4 +1097,40 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-1715:To verify that Run now button should not be displayed for cancelled Pcperks Autoship
+	@Test
+	public void testVerifyRunNowButtonNotDisplayedForCancelledPCPerksAutoship_1715() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String pcEmailAddress=null;
+
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		pcEmailAddress=cscockpitCustomerSearchTabPage.getEmailIdOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+		cscockpitAutoshipTemplateTabPage.selectPCPerksCancellationReasonFromDropDownInAutoShipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.selectPCPerksRequestSourceFromDropDownInAutoShipTemplateTab();
+		cscockpitAutoshipTemplateTabPage.enterPCPerksCancellationMessage("Automation termination"+randomNum);
+		cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+		cscockpitAutoshipTemplateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailAddress);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsCancelled();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyDisabledRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Run Now button is enabled in order from autoship template section");
+		s_assert.assertAll();
+
+	}
+
 }

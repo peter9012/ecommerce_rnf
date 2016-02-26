@@ -1582,7 +1582,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5160:Save Main address as shipping for PC in Salesforce
-	@Test(enabled=false)//WIP
+	@Test
 	public void testSaveMainAddressAsShippingForPC_5160() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -1603,7 +1603,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5161:Save Main address as shipping for RC in Salesforce
-	@Test(enabled=false)//WIP
+	@Test
 	public void testSaveMainAddressAsShippingForRC_5161() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomRCUserList =  null;
@@ -1890,7 +1890,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		s_assert.assertAll();
 	}
-		
+
 	//Hybris Project-4509:Edit Spouse Contact details for PC
 	@Test(enabled=false)//WIP
 	public void testEditSpouseContactDetailsForPC_4509() throws InterruptedException{
@@ -2212,6 +2212,114 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
 			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
 		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4547:View Preferred Customer Account details
+	@Test(enabled=false)//WIP 
+	public void testViewPreferredCustomerAccountDetails_4547() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPreferredCustomerList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcEmailID = null;
+		randomPreferredCustomerList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPreferredCustomerList, "UserName");
+		logger.info("The email address is "+pcEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsSectionPresent(), "Account Details Section is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Name"),"Account Name");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Recognition Name"),"Recognition Name");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Recognition Title"),"Recognition Title");
+		s_assert.assertTrue(crmAccountDetailsPage.isActiveLabelOnAccountDetailsSectionPresent(),"Active Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Status"),"Account Status Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Soft Termination Date"),"Soft Termination Date Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Number"),"Account Number Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Enrollment Sponsor"),"Enrollment Sponsor Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Placement Sponsor"),"Placement Sponsor Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Enrollment Date"),"Enrollment Date Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Main Phone"),"Main Phone Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Email Address"),"Email Address Label is not Present");
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+
+		s_assert.assertTrue(crmAccountDetailsPage.verifyRecognizationNameUnderAccountEditInAccountInformationIsEditable(), "Recognition Name is not Editable");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyAccountNameNameUnderAccountEditInAccountInformationIsEditable(), "Account Name is not Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Account Type"), "Account Type is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Soft Termination Date"), "Soft Termination Date is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Account Number"), "Account Number is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Enrollment Sponsor"), "Enrollment Sponsor is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Placement Sponsor"), "Placement Sponsor is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Enrollment Date"), "Enrollment Date is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyActiveCheckboxUnderAccountEditInAccountInformationIsEditable(), "Checkbox is Editable");
+
+		crmAccountDetailsPage.clickCancelButtonUnderAccountEditInAccountInformationSection();
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"), "Address Line 1 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"), "Address Line 2 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"), "Address Line 3 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"), "Locale Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"), "Sub Region Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"), "Region Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Postal code"), "Postal code Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Country"), "Country Label is not Present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4549:View Retail Customer Account details
+	@Test(enabled=false)//WIP 
+	public void testViewRetailCustomerAccountDetails_4549() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String rcEmailID = null;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		logger.info("The email address is "+rcEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsSectionPresent(), "Account Details Section is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Name"),"Account Name");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Recognition Name"),"Recognition Name");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Recognition Title"),"Recognition Title");
+		s_assert.assertTrue(crmAccountDetailsPage.isActiveLabelOnAccountDetailsSectionPresent(),"Active Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Status"),"Account Status Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Soft Termination Date"),"Soft Termination Date Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Account Number"),"Account Number Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Enrollment Sponsor"),"Enrollment Sponsor Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Placement Sponsor"),"Placement Sponsor Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Enrollment Date"),"Enrollment Date Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Main Phone"),"Main Phone Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnAccountDetailsSectionPresent("Email Address"),"Email Address Label is not Present");
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+
+		s_assert.assertTrue(crmAccountDetailsPage.verifyRecognizationNameUnderAccountEditInAccountInformationIsEditable(), "Recognition Name is not Editable");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyAccountNameNameUnderAccountEditInAccountInformationIsEditable(), "Account Name is not Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Account Type"), "Account Type is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Soft Termination Date"), "Soft Termination Date is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Account Number"), "Account Number is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Enrollment Sponsor"), "Enrollment Sponsor is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Placement Sponsor"), "Placement Sponsor is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyFieldsUnderAccountEditInAccountInformationIsEditable("Enrollment Date"), "Enrollment Date is Editable");
+		s_assert.assertFalse(crmAccountDetailsPage.verifyActiveCheckboxUnderAccountEditInAccountInformationIsEditable(), "Checkbox is Editable");
+
+		crmAccountDetailsPage.clickCancelButtonUnderAccountEditInAccountInformationSection();
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"), "Address Line 1 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"), "Address Line 2 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"), "Address Line 3 Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"), "Locale Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"), "Sub Region Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"), "Region Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Postal code"), "Postal code Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Country"), "Country Label is not Present");
 		s_assert.assertAll();
 	}
 

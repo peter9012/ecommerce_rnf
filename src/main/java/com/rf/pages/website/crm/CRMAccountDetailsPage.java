@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -914,5 +915,79 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}
 		return flag;
 	}
+
+	public boolean verifyFieldsUnderAccountEditInAccountInformationIsEditable(String label){
+		boolean flag = true;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		try{
+			driver.findElement(By.xpath("//td[text()='"+label+"']/following::td[1]")).clear();
+		}catch(Exception e){
+			String exceptionMessage = e.getMessage();
+			if(exceptionMessage.contains("Element must be user-editable in order to clear it."))
+				flag = false;
+		}
+		return flag;
+	}
+
+	public boolean verifyRecognizationNameUnderAccountEditInAccountInformationIsEditable(){
+		boolean flag = true;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		try{
+			driver.findElement(By.xpath("//label[text()='Recognition Name']/following::td[1]//input")).clear();
+		}catch(Exception e){
+			String exceptionMessage = e.getMessage();
+			if(exceptionMessage.contains("Element must be user-editable in order to clear it."))
+				flag = false;
+		}
+		return flag;
+	}
+
+	public boolean verifyAccountNameNameUnderAccountEditInAccountInformationIsEditable(){
+		boolean flag = true;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		try{
+			driver.findElement(By.xpath("//label[text()='Account Name']/following::td[1]//input")).clear();
+			driver.findElement(By.xpath("//label[text()='Account Name']/following::td[1]//input")).sendKeys(Keys.TAB);
+		}catch(Exception e){
+			String exceptionMessage = e.getMessage();
+			if(exceptionMessage.contains("Element must be user-editable in order to clear it."))
+				flag = false;
+		}
+		return flag;
+	}
+
+	public boolean verifyActiveCheckboxUnderAccountEditInAccountInformationIsEditable(){
+		boolean flag = true;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).click();
+		if(driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).getAttribute("title").equalsIgnoreCase("Checked")){
+			flag = false;
+		}
+		return flag;
+	}
+
+	public void clickCancelButtonUnderAccountEditInAccountInformationSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//h2[text()='Account Edit']/../following-sibling::td/input[@title='Cancel']"));
+		driver.findElement(By.xpath("//h2[text()='Account Edit']/../following-sibling::td/input[@title='Cancel']")).click();
+	}
+
+	public boolean isActiveLabelOnAccountDetailsSectionPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//td[text()='Recognition Title']/../following::tr[1]/td[text()='Active']"));
+	}
+
 }
 

@@ -1797,6 +1797,35 @@ public class DBQueries_RFO {
 	public static String GET_ACCOUNT_ID_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountNumber='%s'";
 	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressID IN (select top 1 EmailAddressID from RFO_Accounts.AccountEmails where AccountContactId IN (select top 1 AccountContactId from RFO_Accounts.AccountContacts where AccountId = '%s'))";
 	public static String GET_RETURN_ORDER_DETAILS_FROM_RMA_NUMBER ="select top 1 * from Hybris.ReturnOrder where returnordernumber='%s'";
+	public static String GET_ACTIVE_US_CONSULTANT_WITHOUT_PWS_AND_PULSE="SELECT TOP 1 HYBRIS.dbo.USERS.P_CUSTOMEREMAIL ,HYBRIS.dbo.USERS.P_RFACCOUNTID, RFO_Accounts.AccountRF.Active, "+
+			"HYBRIS.dbo.users.p_rfaccountnumber, RFO_Accounts.AccountBase.AccountNumber "+
+			"FROM HYBRIS.dbo.USERS "+ 
+			"left join RFO_Accounts.AccountBase on HYBRIS.dbo.users.p_rfaccountid=RFO_accounts.Accountbase.AccountID "+
+			"left join RFO_Accounts.AccountRF ON RFO_Accounts.AccountRF.AccountID = RFO_Accounts.AccountBase.AccountID "+
+			"WHERE HYBRIS.dbo.USERS.P_LOGINDISABLED=0 AND HYBRIS.dbo.USERS.P_SOURCENAME='Hybris-DM' "+
+			"AND HYBRIS.dbo.USERS.P_ENROLLEDASPULSE=0 AND HYBRIS.dbo.USERS.P_COUNTRY= 8796100624418 "+
+			"AND HYBRIS.dbo.USERS.P_CUSTOMURLPREFIX IS NULL AND RFO_Accounts.AccountRF.Active=1 "+
+			"AND RFO_Accounts.AccountBase.AccountTypeID = 1 order by newid()";
+
+	public static String GET_ACTIVE_CA_CONSULTANT_WITHOUT_PWS_AND_PULSE="SELECT TOP 1 HYBRIS.dbo.USERS.P_CUSTOMEREMAIL ,HYBRIS.dbo.USERS.P_RFACCOUNTID, RFO_Accounts.AccountRF.Active, "+
+			"HYBRIS.dbo.users.p_rfaccountnumber, RFO_Accounts.AccountBase.AccountNumber "+
+			"FROM HYBRIS.dbo.USERS "+ 
+			"left join RFO_Accounts.AccountBase on HYBRIS.dbo.users.p_rfaccountid=RFO_accounts.Accountbase.AccountID "+
+			"left join RFO_Accounts.AccountRF ON RFO_Accounts.AccountRF.AccountID = RFO_Accounts.AccountBase.AccountID "+
+			"WHERE HYBRIS.dbo.USERS.P_LOGINDISABLED=0 AND HYBRIS.dbo.USERS.P_SOURCENAME='Hybris-DM' "+
+			"AND HYBRIS.dbo.USERS.P_ENROLLEDASPULSE=0 AND HYBRIS.dbo.USERS.P_COUNTRY= 8796094300194 "+
+			"AND HYBRIS.dbo.USERS.P_CUSTOMURLPREFIX IS NULL AND RFO_Accounts.AccountRF.Active=1 "+
+			"AND RFO_Accounts.AccountBase.AccountTypeID = 1 order by newid()";
+
+	public static String GET_ACTIVE_CONSULTANT_WITHOUT_PWS_AND_PULSE="SELECT TOP 1 HYBRIS.dbo.USERS.P_CUSTOMEREMAIL ,HYBRIS.dbo.USERS.P_RFACCOUNTID, RFO_Accounts.AccountRF.Active, "+ 
+			"HYBRIS.dbo.users.p_rfaccountnumber, RFO_Accounts.AccountBase.AccountNumber "+
+			"FROM HYBRIS.dbo.USERS "+
+			"left join RFO_Accounts.AccountBase on HYBRIS.dbo.users.p_rfaccountid=RFO_accounts.Accountbase.AccountID "+
+			"left join RFO_Accounts.AccountRF ON RFO_Accounts.AccountRF.AccountID = RFO_Accounts.AccountBase.AccountID "+
+			"WHERE HYBRIS.dbo.USERS.P_LOGINDISABLED=0 AND HYBRIS.dbo.USERS.P_SOURCENAME='Hybris-DM' "+
+			"AND HYBRIS.dbo.USERS.P_ENROLLEDASPULSE=0 AND RFO_Accounts.AccountBase.CountryID = '%s' "+
+			"AND HYBRIS.dbo.USERS.P_CUSTOMURLPREFIX IS NULL AND RFO_Accounts.AccountRF.Active=1 "+ 
+			"AND RFO_Accounts.AccountBase.AccountTypeID = 1 order by newid()";
 
 	/**
 	 * 

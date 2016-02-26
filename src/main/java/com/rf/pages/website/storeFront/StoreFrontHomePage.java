@@ -2075,8 +2075,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyProductPrice(String Price){
-		driver.quickWaitForElementPresent(By.xpath("//p[@id='retail-price']/span"));
-		String name=driver.findElement(By.xpath("//p[@id='retail-price']/span")).getText();
+		driver.quickWaitForElementPresent(By.xpath("//span[@id='quickinfo-new-price']"));
+		String name=driver.findElement(By.xpath("//span[@id='quickinfo-new-price']")).getText();
 		return name.contains(Price);
 	}
 
@@ -2417,6 +2417,21 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.isElementPresent(By.id("description-box"));
 	}
 
+	public boolean verifyProductDescriptionBox(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Description')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Description')]"));
+	}
+
+	public boolean verifyProductUsageNotesBox(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Usage Notes')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Usage Notes')]"));
+	}
+
+	public boolean verifyProductIngredientsBox(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Ingredients')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='product-description']//li[contains(text(),'Ingredients')]"));
+	}
+
 	public boolean verifyAddToCRPButtonOnQuickInfoPopup(){
 		driver.quickWaitForElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
 		return driver.isElementPresent(By.xpath("//form[@id='productDetailForm']/input[3]"));
@@ -2608,10 +2623,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyContactBoxIsPresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='contactBox']"));
 		return driver.isElementPresent(By.xpath("//div[@class='contactBox']"));
 	}
 
 	public boolean verifyEmailIdIsPresentInContactBox(){
+		driver.waitForElementPresent(By.xpath("//a[@id='txtContactMe']"));
 		return driver.isElementPresent(By.xpath("//a[@id='txtContactMe']"));
 	}
 
@@ -3850,6 +3867,29 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			return true;
 		}
 		return false;
+	}
+
+	public String validate2ProductsAreDisplayedInReviewOrderSection(){
+		driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div/div[1]/div//div[contains(text(),'Items in Order')]/ancestor::div[1]/following-sibling::div"));
+		return String.valueOf(driver.findElements(By.xpath("//div[@id='shopping-wrapper']/div[2]/div/div[1]/div//div[contains(text(),'Items in Order')]/ancestor::div[1]/following-sibling::div")).size());
+	}
+
+	public boolean validateReleventTextPresentOnFindASponsorPopup(){
+		driver.waitForElementPresent(By.xpath("//div[@id='find-sponsor-right']/p[contains(text(),'To make your experience as personal as possible, we highly recommend connecting with a Rodan + Fields Consultant')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='find-sponsor-right']/p[contains(text(),'To make your experience as personal as possible, we highly recommend connecting with a Rodan + Fields Consultant')]"));
+	}
+
+	public void mouseHoverSponsorDataAndClickContinuePCAndRC() throws InterruptedException{
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[1]//input[@value='Select']")));
+		logger.info("First result of sponsor has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifySponserSearchResult(String accountNumber){
+		return driver.isElementPresent(By.xpath("//span[text()='No result found for "+accountNumber+"']"));
+
 	}
 
 }

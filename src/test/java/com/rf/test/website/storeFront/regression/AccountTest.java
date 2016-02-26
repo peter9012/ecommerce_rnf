@@ -352,7 +352,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1276:Email field validation for Active/Inactive users
-	@Test//(enabled=false)//Wrong results from database
+	@Test(enabled=false)//Wrong results from database
 	public void testEmailValidationsDuringEnroll_1276() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> consultantEmailList =  null;
@@ -389,21 +389,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_PERSONAL, TestConstants.REGIMEN_NAME);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
-//		storeFrontHomePage.enterFirstName(TestConstants.FIRST_NAME+randomNum);
-//		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
-//		storeFrontHomePage.enterPassword(password);
-//		storeFrontHomePage.enterConfirmPassword(password);
-//		storeFrontHomePage.enterAddressLine1(addressLine1);
-//		storeFrontHomePage.enterCity(city);
-//		storeFrontHomePage.selectProvince();
-//		storeFrontHomePage.enterPostalCode(postalCode);
-//		storeFrontHomePage.enterPhoneNumber(phoneNumber);
+
 		//Code for email field validation
 		// assertion for Inactive consultant less than 6 month
 		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_CONSULTANT_LESS_THAN_6_MONTH_RFO,countryId),RFO_DB);
 		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
 		logger.info("Account Id for Inactive consultant less than 6 month = "+accountID);
-		if(accountID!=null){
+		if(accountID.equals(null)==false){
 			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
 			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 
@@ -434,7 +426,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_PC_MORE_THAN_90_DAYS_RFO,countryId),RFO_DB);
 		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
 		logger.info("Account Id for Inactive PC greater than 90 days = "+accountID);
-		if(accountID!=null){
+		if(accountID.equals(null)==false){
 			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
 			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 
@@ -450,7 +442,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_CONSULTANT_MORE_THAN_6_MONTH_RFO,countryId),RFO_DB);
 		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
 		logger.info("Account Id for Inactive consultant greater than 6 month = "+accountID);
-		if(accountID!=null){
+		if(accountID.equals(null)==false){
 			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
 			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 
@@ -1465,10 +1457,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 			logger.info("login is successful");
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+			String dueAutoshipDateFromBeforeTerminationUI = storeFrontOrdersPage.getAutoshipOrderDate();
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 			storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
-			storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();			
+			storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();   
 			s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
 			storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 			storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
@@ -1505,11 +1500,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage.clickOnWelcomeDropDown();
 			storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-			String dueAutoshipDateFromUI = storeFrontOrdersPage.getAutoshipOrderDate();
-			String currentPSTDate = storeFrontOrdersPage.getCurrentPSTDate();
-			String extendedDueAutoshipDate = storeFrontHomePage.getOneMonthExtendAutoshipDateFromCurrentDate(currentPSTDate);
-
-			s_assert.assertTrue(extendedDueAutoshipDate.contains(dueAutoshipDateFromUI), "Next Autoship date is not after one month");
+			String dueAutoshipDateFromAfterReactivationUI = storeFrontOrdersPage.getAutoshipOrderDate();
+			s_assert.assertTrue(dueAutoshipDateFromAfterReactivationUI.contains(dueAutoshipDateFromBeforeTerminationUI), "Autoship date after reactivation is not same as before account termination");
 			s_assert.assertAll();
 		}else{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");

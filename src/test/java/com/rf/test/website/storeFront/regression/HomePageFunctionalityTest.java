@@ -824,7 +824,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnSponsorName();
 			s_assert.assertTrue(storeFrontHomePage.verifyJoinMyTeamLinkPresent(), "Join My Team Link is not present on the Com page");
 			s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(), "Contact Box is not Present");
-			s_assert.assertTrue(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(), "Email Address is not Present in contact box");
+
 			//Login with same PWS consultant
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -1667,5 +1667,27 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		}else{
 			logger.info("Not Executed Test is for 'US' Environment");
 		}
+	}
+
+	//Hybris Project-3978:Go to 'Find a consultant page' and search with CA consultnat Full name
+	@Test
+	public void testToFindAConsultantPageAndSearchWithCAConsultantFullName_3978(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantFirstName = null;
+		String consultantlastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
+		consultantFirstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
+		consultantlastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantlastName);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+
 	}
 }

@@ -126,8 +126,7 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public void clickSearchAutoshipButton() {
 		driver.click(SEARCH_AUTOSHIP_BUTTON_LOC);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-		driver.pauseExecutionFor(6000);
+		driver.waitForCSCockpitLoadingImageToDisappear(30000);		
 	}
 
 	public boolean isSearchResultsColumnNamePresent(String value){

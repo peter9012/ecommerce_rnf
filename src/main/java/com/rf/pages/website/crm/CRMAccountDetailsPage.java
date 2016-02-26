@@ -765,5 +765,154 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@class='errorMsg']/strong"));
 		return driver.findElement(By.xpath("//div[@class='errorMsg']/strong")).getText().contains("Error");
 	}
+
+	public void clickAccountMainMenuOptions(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
+		driver.findElement(By.xpath("//span[contains(text(),'"+label+"')]")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void clickNewContactButtonUnderContactSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.findElement(By.xpath("//div[@class='listRelatedObject contactBlock']//table[1]//h3[text()='Contacts']/../../td[2]/input")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void enterFirstAndLastNameInCreatingNewContactForSpouse(String firstName , String lastName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.type(By.id("name_firstcon2"), firstName);
+		driver.type(By.id("name_lastcon2"), lastName);
+	}
+
+	public void enterEmailIdInNewContactForSpouse(String email){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.type(By.xpath("//table[@class='detailList']/tbody/tr[2]/td[4]/input"), email);
+	}
+
+	public String enterBirthdateInCreatingNewContactForSpouse(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.click(By.id("con7"));
+		actions.moveToElement(driver.findElement(By.xpath("//td[@class='weekday todayDate']"))).click().build().perform();
+		return driver.findElement(By.id("con7")).getAttribute("value");
+	}
+
+
+	public void clickSaveButtonForNewContactSpouse(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.findElement(By.xpath("//td[@id='topButtonRow']/input[@title='Save']")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public void closeFrameAfterSavingDetailsForNewContactSpouse(String firstName){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]"));
+		actions.moveToElement(driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]"))).build().perform();
+		actions.moveToElement(driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/preceding::a[@class='x-tab-strip-close'][1]"))).click().build().perform();
+	}
+
+	public void clickOnSpouseForNewContact(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//td[text()='Spouse']/preceding::th[1]"));
+		driver.findElement(By.xpath("//td[text()='Spouse']/preceding::th[1]")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+
+	public void clickEditButtonForNewContactSpouseInContactDetailsPage(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//div[@class='pbHeader']//td[@class='pbTitle']/../td[2]/input"));
+		driver.findElement(By.xpath("//div[@class='pbHeader']//td[@class='pbTitle']/../td[2]/input")).click();
+	}
+
+	public String isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.findElement(By.xpath("//div[@class='errorMsg']")).getText();
+
+	}
+
+	public void enterMainPhoneInNewContactForSpouse(String mainPhone){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.type(By.xpath("//table[@class='detailList']//label[text()='Main Phone']/../following-sibling::td/input"), mainPhone);
+	}
+
+	public String verifyDataAfterSavingInNewContactForSpouse(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.findElement(By.xpath("//div[@class='pbSubsection']//td[text()='"+label+"']/following::td[1]")).getText();
+	}
+
+	public int getCountOfAccountMainMenuOptions(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElements(By.xpath("//h3[contains(text(),'"+label+"')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]")).size();
+	}
+
+	public boolean verifyIsSpouseContactTypePresentNew(int count){
+		boolean flag = false;
+		if(count==0){
+			logger.info("No Contact Is Available Under Contact Section");
+			return flag;
+		}else{
+			for (int i = 2; i < count+2; i++) {
+				String contactType = driver.findElement(By.xpath("//div[@class='listRelatedObject contactBlock']//table[@class='list']//tr["+i+"]//th/following::td[1]")).getText();
+				if(!contactType.equals("Spouse")){
+					continue;
+				}else{
+					flag = true;
+					break;
+				}
+			}
+			return flag;
+		}
+	}
+
+	public void clickOnEditUnderContactSection(String contactType){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.findElement(By.xpath("//td[text()='"+contactType+"']/..//a[text()='Edit']")).click();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public boolean verifyDataUnderContactSectionInContactDetailsPageIsEditable(String label){
+		boolean flag = false;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		try{
+			driver.findElement(By.xpath("//div[@class='pbSubsection']//td[text()='"+label+"']/following::td[1]")).clear();	
+		}catch(Exception e){
+			String exceptionMessage = e.getMessage();
+			if(exceptionMessage.contains("Element must be user-editable in order to clear it."))
+				System.out.println( "element xpath==>> "+driver.findElement(By.xpath("//div[@class='pbSubsection']//td[text()='"+label+"']/following::td[1]"))+" is read-only");
+			flag = false;
+		}
+		return flag;
+	}
 }
 

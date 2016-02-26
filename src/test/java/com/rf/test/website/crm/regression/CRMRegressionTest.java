@@ -1890,5 +1890,329 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		s_assert.assertAll();
 	}
+		
+	//Hybris Project-4509:Edit Spouse Contact details for PC
+	@Test(enabled=false)//WIP
+	public void testEditSpouseContactDetailsForPC_4509() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCListToVerify =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String pcEmailID = null;
+		String pcEmailIDToVerifiy = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomFirstName = CommonUtils.getRandomWord(4);
+		String randomLastName = randomFirstName;
+		String randomWrongPhoneNumber = String.valueOf(randomNum);
+		String mainPhoneNumber = TestConstants.PHONE_NUMBER; 
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String dob = null;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		String emailId = firstName+"@gmail.com";
+		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
+		pcEmailIDToVerifiy = (String) getValueFromQueryResult(randomPCListToVerify, "UserName");
+		logger.info("The email address is "+pcEmailID);
+		logger.info("The another email address to verify is "+pcEmailIDToVerifiy);	
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			crmAccountDetailsPage.closeFrameAfterSavingDetailsForNewContactSpouse(firstName);
+			crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			s_assert.assertFalse(crmAccountDetailsPage.verifyDataUnderContactSectionInContactDetailsPageIsEditable("Contact Type"), "Contact Type is Editable");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(randomFirstName, randomLastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(randomFirstName+" "+randomLastName), "Name of the spouse not Reflected in SalesForce");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(pcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			s_assert.assertFalse(crmAccountDetailsPage.verifyDataUnderContactSectionInContactDetailsPageIsEditable("Contact Type"), "Contact Type is Editable");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(pcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4506:Edit Spouse Contact details for Consultant
+	@Test(enabled=false)//WIP 
+	public void testEditSpouseContactDetailsForConsultant_4506() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantListToVerify =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String consultantEmailID = null;
+		String consultantEmailIDToVerifiy = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomFirstName = CommonUtils.getRandomWord(4);
+		String randomLastName = randomFirstName;
+		String randomWrongPhoneNumber = String.valueOf(randomNum);
+		String mainPhoneNumber = TestConstants.PHONE_NUMBER; 
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String dob = null;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		String emailId = firstName+"@gmail.com";
+		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		consultantEmailIDToVerifiy = (String) getValueFromQueryResult(randomConsultantListToVerify, "UserName");
+		logger.info("The email address is "+consultantEmailID);
+		logger.info("The another email address to verify is "+consultantEmailIDToVerifiy);	
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			crmAccountDetailsPage.closeFrameAfterSavingDetailsForNewContactSpouse(firstName);
+			crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			s_assert.assertFalse(crmAccountDetailsPage.verifyDataUnderContactSectionInContactDetailsPageIsEditable("Contact Type"), "Contact Type is Editable");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(randomFirstName, randomLastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(randomFirstName+" "+randomLastName), "Name of the spouse not Reflected in SalesForce");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(consultantEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			s_assert.assertFalse(crmAccountDetailsPage.verifyDataUnderContactSectionInContactDetailsPageIsEditable("Contact Type"), "Contact Type is Editable");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(consultantEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4485:Add a new contact - spouse to a RC
+	@Test(enabled=false)//WIP  
+	public void testAddNewContactSpouseToRC_4485() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> randomRCListToVerify =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String rcEmailID = null;
+		String rcEmailIDToVerifiy = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomWrongPhoneNumber = String.valueOf(randomNum);
+		String mainPhoneNumber = TestConstants.PHONE_NUMBER; 
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String dob = null;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		String emailId = firstName+"@gmail.com";
+		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		randomRCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		rcEmailIDToVerifiy = (String) getValueFromQueryResult(randomRCListToVerify, "UserName");
+		logger.info("The email address is "+rcEmailID);
+		logger.info("The another email address to verify is "+rcEmailIDToVerifiy);	
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}		
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4484:Add a new contact - spouse to a PC
+	@Test(enabled=false)//WIP  
+	public void testAddNewContactSpouseToPC_4484() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String pcEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
+		logger.info("The email address is "+pcEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+		}	
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4483:Add a new contact - spouse to a consultant
+	@Test(enabled=false)//WIP 
+	public void testAddNewContactSpouseToConsultant_4483() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		logger.info("The email address is "+consultantEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+		}
+		s_assert.assertAll();
+	}
 
 }

@@ -17,7 +17,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String customerTypeLoc = "//span[contains(text(),'Customer Type')]/following::span[text()='%s']";
 	private static String autoshipTemplateDetailsLoc = "//span[contains(text(),'Autoship Templates')]/following::div[contains(text(),'%s')]";
 	private static String orderNumberLoc = "//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a[contains(text(),'%s')]";
-
+	
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
 	private static final By FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a");
@@ -68,6 +68,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
 	private static final By PULSE_TEMPLATE_NEXT_DUE_DATE_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../following::td[4]//span");
 	private static final By RELOAD_PAGE_BTN_IN_LEFT_PANEL = By.xpath("//td[text()='Reload Page']");
+	private static final By DEFAULT_SELECTED_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Default shipping address')]/following::option[@selected='selected'][1]");
 	
 	protected RFWebsiteDriver driver;
 
@@ -476,4 +477,11 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.findElement(By.xpath(String.format(orderNumberLoc, orderNumber))).click();
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+	
+	public String getDefaultSelectedShippingAddressFromDropDown(){
+		  driver.waitForElementPresent(DEFAULT_SELECTED_SHIPPING_ADDRESS);
+		  logger.info("Default selected shipping address in customer tab is "+driver.findElement(DEFAULT_SELECTED_SHIPPING_ADDRESS).getText());
+		  return driver.findElement(DEFAULT_SELECTED_SHIPPING_ADDRESS).getText().trim();
+		 }
+		
 }

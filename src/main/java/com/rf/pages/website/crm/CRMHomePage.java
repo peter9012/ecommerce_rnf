@@ -336,4 +336,16 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
+
+	public void clickAnyTypeOfActiveCustomerInSearchResult(String customer){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		driver.click(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		driver.switchTo().defaultContent();
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+
 }

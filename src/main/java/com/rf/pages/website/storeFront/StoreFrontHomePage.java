@@ -3805,4 +3805,51 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return orderNum;
 	}
 
+	public void clickAddNewAddressLink(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new address')]"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//a[contains(text(),'Add new address')]"));
+	}
+
+	public void enterNewBillingAddressNameDuringEnrollment(String name){
+		driver.waitForElementPresent(By.id("billingAddressattention"));
+		driver.clear(By.id("billingAddressattention"));
+		driver.type(By.id("billingAddressattention"),name);
+		logger.info("New Billing Address name is "+name);
+	}
+
+	public void enterNewBillingAddressLine1DuringEnrollment(String addressLine1){
+		driver.clear(By.id("billingAddressline1"));
+		driver.type(By.id("billingAddressline1"),addressLine1);
+		logger.info("New Billing Address is "+addressLine1);
+	}
+
+	public void enterNewBillingAddressCityDuringEnrollment(String city){
+		driver.clear(By.id("billingAddresstownCity"));
+		driver.type(By.id("billingAddresstownCity"),city);
+		logger.info("New Billing City is "+city);
+	}
+
+	public void selectNewBillingAddressStateDuringEnrollment(){
+		driver.click(By.id("addressState"));
+		driver.waitForElementPresent(By.xpath("//select[@id='addressState']//option[2]"));
+		driver.click(By.xpath("//select[@id='addressState']//option[2]"));
+		logger.info("State/Province selected");
+	}
+
+	public void enterNewBillingAddressZipCodeDuringEnrollment(String code){
+		driver.clear(By.id("billingAddresspostcode"));
+		driver.type(By.id("billingAddresspostcode"),code);
+		logger.info("New Billing code is "+code);
+	}
+
+	public boolean validateNewBillingAddressPresentOnReviewPage(String newBillingAddName) {
+		System.out.println(newBillingAddName);
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+newBillingAddName+"')]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='summarySection']//span[contains(text(),'"+newBillingAddName+"')]"))){
+			return true;
+		}
+		return false;
+	}
+
 }

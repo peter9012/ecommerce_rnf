@@ -1618,8 +1618,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnEditMyPWS(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
-		driver.click(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Edit My PWS')]"));
+		driver.click(By.xpath("//a[contains(text(),'Edit My PWS')]"));
 	}
 
 	public void enterPhoneNumberOnEditPWS(String number){

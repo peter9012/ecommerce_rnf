@@ -438,6 +438,8 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		String firstName = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		String shippingAddress = cscockpitCustomerTabPage.getDefaultSelectedShippingAddressFromDropDown().split("\\,")[0];
+		String shippingAddressFirstName = shippingAddress.split("\\ ")[0];
 		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
 		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
 		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
@@ -452,9 +454,9 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceIsPresentInCartSectionInCheckoutTab(), "Total price is not present in cart section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryCVIsPresentInCartSectionInCheckoutTab(), "Entry CV is not present in cart section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryQVIsPresentInCartSectionInCheckoutTab(), "Entry QV is not present in cart section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().contains(firstName),"selected delivery address on UI "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+firstName);
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().trim().contains(shippingAddressFirstName),"selected delivery address on UI "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+shippingAddressFirstName);
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNewAddressIsPresentInDeliverySectionInCheckoutTab(), "New address button is not present in delivery section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues().contains("3"),"CSCockpit checkout tab no of delivery mode expected = 3 and on UI = " +cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues());
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(), "Subtotal is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of checkeout tab");
@@ -495,6 +497,8 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		firstName = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		shippingAddress = cscockpitCustomerTabPage.getDefaultSelectedShippingAddressFromDropDown().split("\\,")[0];
+		shippingAddressFirstName = shippingAddress.split("\\ ")[0];
 		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
 		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
 		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();	
@@ -509,9 +513,9 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceIsPresentInCartSectionInCheckoutTab(), "Total price is not present in cart section of checkeout tab_CA");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryCVIsPresentInCartSectionInCheckoutTab(), "Entry CV is not present in cart section of checkeout tab_CA");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyEntryQVIsPresentInCartSectionInCheckoutTab(), "Entry QV is not present in cart section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().contains(firstName),"selected delivery address on UI_CA "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+firstName);
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab().contains(shippingAddressFirstName),"selected delivery address on UI_CA "+cscockpitCheckoutTabPage.getSelectedDeliveryAddressInCheckoutTab()+" does not contain "+shippingAddressFirstName);
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyNewAddressIsPresentInDeliverySectionInCheckoutTab(), "New address button is not present in delivery section of checkeout tab_CA");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI_CA = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues().contains("3"),"CSCockpit checkout tab no of delivery mode expected = 3 and on UI = " +cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues());
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySubtotalTxtIsPresentInTotalsSectionInCheckoutTab(), "Subtotal is not present in totals section of checkeout tab_CA");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of checkeout tab_CA");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of checkeout tab_CA");
@@ -541,6 +545,5 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDoNotShipChkBoxIsPresentInCheckoutTab(), "Do Not Ship checkbox is not present in order note info section of checkeout tab_CA");
 		s_assert.assertAll();
 	}
-
 
 }

@@ -247,6 +247,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	}
 	
+	public void waitForCSCockpitLoadingImageToDisappear(int time){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@class='z-loading-indicator']");
+		logger.info("Waiting for loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(time);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("loading image disappears");
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+
+	}
+	
 	public void waitForCRMLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[contains(text(),'Loading')]");

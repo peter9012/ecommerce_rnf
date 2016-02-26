@@ -4450,7 +4450,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-90:Standard Enrollment Billing Profile - Main Account Info - New
-	@Test(enabled=false) //ISSUE No Add New Shiiping Address link
+	@Test
 	public void testStandardEnrollmentBillingProfile_MainAccountInfo_New_90() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -4459,7 +4459,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		String lastName = TestConstants.LAST_NAME;
-		String newShippingAddName = firstName+randomNum;
+		String newBillingAddName = firstName+randomNum;
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_EXPRESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -4491,23 +4491,20 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		storeFrontHomePage.clickOnReviewAndConfirmBillingEditBtn();
-		storeFrontHomePage.clickAddNewShippingProfileLink();
-		storeFrontHomePage.enterNewShippingAddressNameDuringEnrollment(newShippingAddName+" "+lastName);
-		storeFrontHomePage.enterNewShippingAddressLine1DuringEnrollment(addressLine1);
-		storeFrontHomePage.enterNewShippingAddressCityDuringEnrollment(city);
-		storeFrontHomePage.selectProvince();
-		storeFrontHomePage.enterNewShippingAddressPostalCode(postalCode);
-		storeFrontHomePage.enterNewShippingAddressPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickAddNewAddressLink();
+		storeFrontHomePage.enterNewBillingAddressNameDuringEnrollment(newBillingAddName+" "+lastName);
+		storeFrontHomePage.enterNewBillingAddressLine1DuringEnrollment(addressLine1);
+		storeFrontHomePage.enterNewBillingAddressCityDuringEnrollment(city);
+		storeFrontHomePage.selectNewBillingAddressStateDuringEnrollment();
+		storeFrontHomePage.enterNewBillingAddressZipCodeDuringEnrollment(postalCode);
+		storeFrontHomePage.enterNewBillingNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.validateNewShippingAddressPresentOnReviewPage(newShippingAddName),"new shipping address is not present on Review and confirm page");
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		s_assert.assertTrue(storeFrontHomePage.validateNewBillingAddressPresentOnReviewPage(newBillingAddName),"new billing address is not present on Review and confirm page");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
-		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
@@ -7890,7 +7887,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
-		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");

@@ -114,6 +114,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By REVIEW_CREDIT_CARD_DETAILS_POPUP = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By NO_STORED_CREDIT_CARD_DETAILS = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By NO_SELECTED_DELIVERY_ADDRESS_DETAILS = By.xpath("//select[contains(@class,'csDeliveryAddressList')]//option[@selected='selected'][contains(text(),'Non')]");
+	private static final By DELIVERY_MODE_DD_VALUES = By.xpath("//div[@class='csDeliveryModeContainer']//select/option");
 
 	protected RFWebsiteDriver driver;
 
@@ -683,6 +684,12 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.click(DELIVERY_ADDRESS_POPUP_SAVE_BUTTON);
 			driver.waitForCSCockpitLoadingImageToDisappear();
 		}
+	}
+
+	public String getSizeOfDeliveryModeDDValues(){
+		int deliveryModes = driver.findElements(DELIVERY_MODE_DD_VALUES).size();
+		String noOfDeliveryMode = ""+deliveryModes;
+		return noOfDeliveryMode;
 	}
 
 }

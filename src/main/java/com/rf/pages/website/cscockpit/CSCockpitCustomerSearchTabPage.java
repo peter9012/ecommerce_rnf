@@ -17,7 +17,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String emailIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customeraccountStatusInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 
-	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[3]//span";
+	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[2]//span";
 	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']");
 	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
 	private static final By ENTER_EMAIL_ID = By.xpath("//span[contains(text(),'Email Address')]/following::input[1]");

@@ -77,7 +77,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-4661:Change the Sponsor of RC user from Cscockpit
-	@Test(enabled=false)//WIP
+	@Test
 	public void testChangeSponserOfRCFromCSCockpit_4661() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
@@ -216,7 +216,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2013:To verify that for terminated user can do returns
-	@Test(enabled=false) //WIP
+	@Test
 	public void testToVerifyThatForTerminatedUserCanDoReturns_2013(){
 		String randomCustomerSequenceNumber = null;
 		driver.get(driver.getCSCockpitURL());
@@ -470,7 +470,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		String SKUValue = null;
 		String accountID = null;
 		String refundSubtotal="Refunded SubTotals";
-		String refundDiscount="Refunded Discount";
 		String refundTax="Refunded Tax";
 		String refundShipping="Refunded Shipping";
 		String refundHandling="Refunded Handling";
@@ -515,7 +514,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("FedEx Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = FedEx Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues().contains("3"),"CSCockpit checkout tab delivery mode address count expected = 3 and on UI = " +cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues());
 		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
@@ -539,7 +538,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Shipping and tax on shipping details.
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for US "+1.28+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for US "+15.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for US "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
@@ -594,7 +592,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
-
+		logout();
 		//-------------------FOR CA----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/ca");
 		randomConsultantList =  null;
@@ -632,7 +630,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
-		//s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = UPS Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues().contains("3"),"CSCockpit checkout tab delivery mode address count expected = 3 and on UI = " +cscockpitCheckoutTabPage.getSizeOfDeliveryModeDDValues());
 		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
@@ -656,7 +654,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Shipping and tax on shipping details.
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund Total expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund Tax expected on UI for ca "+1.28+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund Shipping expected on UI for ca "+15.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
@@ -711,6 +708,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		s_assert.assertTrue(orderHistoryNumber.contains(orderNumber.split("\\-")[0].trim()),"CSCockpit Order number expected = "+orderNumber.split("\\-")[0].trim()+" and on UI = " +orderHistoryNumber);
+		logout();
 		s_assert.assertAll();		
 	}
 

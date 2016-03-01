@@ -1543,4 +1543,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("UPS Standard Overnight/1day shipping method is selected"); 
 	}
 
+	public String getQtyOfAddedProduct(String SKUValue){
+		driver.waitForElementPresent(By.xpath("//p[contains(text(),'"+SKUValue+"')]/preceding::input[1]"));
+		logger.info("Qty of product in storefornt "+driver.findElement(By.xpath("//p[contains(text(),'"+SKUValue+"')]/preceding::input[1]")).getAttribute("value"));
+		return driver.findElement(By.xpath("//p[contains(text(),'"+SKUValue+"')]/preceding::input[1]")).getAttribute("value");
+	}
+
 }

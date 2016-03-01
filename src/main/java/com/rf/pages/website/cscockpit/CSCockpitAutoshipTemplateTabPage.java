@@ -17,6 +17,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static String orderFromAutoShipTemplateSectionLoc= "//span[text()='Number of Consecutive Autoship Orders From Template']/../../following-sibling::div[1]/div[2]/div/div[1]//tbody[2]//th/div[text()='%s']";
 	private static String orderNoteUILoc="//span[contains(text(),'%s')]";
 	private static String appliedPromotionsLoc= "//span[contains(text(),'Applied Promotions')]/following::div[contains(text(),'%s')]";
+	private static String changeDelayAutoshipDate = "//label[contains(text(),'%s Days from next ship date')]/preceding::input[1]";
+	private static String nextDelayautoshipdateFromPopup = "//label[contains(text(),'%s Days from next ship date')]";
 
 	private static final By SHIPPING_ADDRESS_NAME = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[1]/span");
 	private static final By SHIPPING_ADDRESS_LINE_1 = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[2]/span");
@@ -76,6 +78,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By REQUEST_SOURCE_DD = By.xpath("//span[contains(text(),'Request Source')]/following-sibling::span//img");
 	private static final By REQUEST_SOURCE_DD_OPTION = By.xpath("//span[contains(text(),'Request Source')]/following-sibling::span//img/following::td[contains(text(),'EMAIL')]");
 	private static final By PC_PERKS_MESSAGE_TEXT_BOX = By.xpath("//span[text()='Message']/following::textarea[1]");
+	private static final By DELAY_AUTOSHIP_LINK = By.xpath("//a[text()='Delay Autoship']");
+	private static final By POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='Save']");
+	private static final By NEXT_CART_DATE = By.xpath("//div[@class='csObjectPCPerksOrderContainer']/div[8]//span//input");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -796,6 +801,82 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public void enterPCPerksCancellationMessage(String message){
 		driver.waitForElementPresent(PC_PERKS_MESSAGE_TEXT_BOX);
 		driver.type(PC_PERKS_MESSAGE_TEXT_BOX, message);
+	}
+
+	public void clickDelayAutoshipLink(){
+		driver.waitForElementPresent(DELAY_AUTOSHIP_LINK);
+		driver.click(DELAY_AUTOSHIP_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void selectNextDelayAutoshipDateInPopup(String noOfDays){
+		driver.waitForElementPresent(By.xpath(String.format(changeDelayAutoshipDate, noOfDays)));
+		driver.click(By.xpath(String.format(changeDelayAutoshipDate, noOfDays)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getNextDelayAutoshipDateFromPopup(String noOfDays){
+		driver.waitForElementPresent(By.xpath(String.format(nextDelayautoshipdateFromPopup, noOfDays)));
+		return driver.findElement(By.xpath(String.format(nextDelayautoshipdateFromPopup, noOfDays))).getText();
+	}
+
+	public void clickSaveBtnInPopUP() {
+		driver.waitForElementPresent(POPUP_SAVE_BUTTON_LOC);
+		driver.click(POPUP_SAVE_BUTTON_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getNextCartDate(){
+		driver.waitForElementPresent(NEXT_CART_DATE);
+		return driver.findElement(NEXT_CART_DATE).getAttribute("value").trim();
+	}
+
+	public String convertCartDateToFormat(String UIDate){
+		String UIMonth=null;
+		String[] splittedDate = UIDate.split("\\/");
+		String date = splittedDate[1];
+		String month = splittedDate[0];
+		String year  = splittedDate[2];
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="January";
+			break;
+		case 2:
+			UIMonth="February";
+			break;
+		case 3:
+			UIMonth="March";
+			break;
+		case 4:
+			UIMonth="April";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="June";
+			break;
+		case 7:
+			UIMonth="July";
+			break;
+		case 8:
+			UIMonth="August";
+			break;
+		case 9:
+			UIMonth="September";
+			break;
+		case 10:
+			UIMonth="October";
+			break;
+		case 11:
+			UIMonth="November";
+			break;
+		case 12:
+			UIMonth="December";
+			break;  
+		}
+		logger.info("Next due date in format "+UIMonth+" "+date+", "+year);
+		return UIMonth+" "+date+", "+year;
 	}
 
 }

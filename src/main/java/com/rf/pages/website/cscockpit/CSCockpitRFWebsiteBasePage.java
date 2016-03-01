@@ -582,5 +582,34 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return orderNumber;
 	}
 
+	public String clickAddToCartBtnInCartTab(String SKU){
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			clearCatalogSearchFieldAndClickSearchBtn();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+			for(int i=1; i<=noOfProducts; i++){
+				String randomCustomerFromSearchResult = String.valueOf(CommonUtils.getRandomNum(1, noOfProducts));
+				SKU = getCustomerSKUValueInCartTab(randomCustomerFromSearchResult);
+				searchSKUValueInCartTab(SKU);
+				driver.click(ADD_TO_CART_BTN);
+				logger.info("Add to cart button clicked for "+i+" another product");
+				if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+					driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+					clearCatalogSearchFieldAndClickSearchBtn();
+					driver.waitForCSCockpitLoadingImageToDisappear();
+					continue;
+				}else{
+					break;
+				}
+			}
+		}
+		return SKU;
+	}
 
 }

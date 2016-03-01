@@ -1690,4 +1690,196 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
+
+	//Hybris Project-3979:search with CA consultnat Last name
+	@Test
+	public void testSearchWithCAConsultantLastName_3979(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantlastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
+		consultantlastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantlastName);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+
+	}
+
+	//Hybris Project-3980:Go to 'Find a consultant page' and search with CA consultnat Full name
+	@Test
+	public void testGoToFindAConsultantPageAndSearchWithCAConsultantFullName_3980(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantFirstName = null;
+		String consultantlastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
+		consultantFirstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
+		consultantlastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantlastName);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3981:search with CA consultant with CID
+	@Test
+	public void testSearchWithCAConsultantWithCID_3981(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		String CCS = null;
+		randomConsultantList = 	DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = 
+				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3982:Search with CA consultant First name
+	@Test
+	public void testSearchWithCAConsultantFirstName_3982(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantFirstName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
+		consultantFirstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3983:Search with PWS prefix COM site
+	@Test
+	public void testSearchWithPWSPrefixCOMSite_3983(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomActiveSitePrefixList =  null;
+		String activeSitePrefix = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomActiveSitePrefixList = 
+				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(activeSitePrefix);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3984:search with CA consultnat's account number
+	@Test
+	public void testSearchWithCAConsultantAccountNumber_3984(){
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		country = driver.getCountry();
+		String CCS = null;
+		randomConsultantList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = 
+				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3985:Search with Active Retail customers full name
+	@Test
+	public void testSearchWithActiveRetailCustomersFullName_3985(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> randomRCDetailList = null;
+		String rcFirstName = null;
+		String rcLastName = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+		logger.info("Account Id of the user is "+accountId);
+		randomRCDetailList =  
+				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
+		rcFirstName = String.valueOf(getValueFromQueryResult(randomRCDetailList, "FirstName"));
+		rcLastName = String.valueOf(getValueFromQueryResult(randomRCDetailList, "LastName"));
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(rcFirstName+" "+rcLastName);
+		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3986:Search with ActiveRetail customers Account ID
+	@Test
+	public void testSearchWithActiveRetailCustomersAccountID_3986(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountId);
+		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3987:Search with Active Preferred customer's full name
+	@Test
+	public void testSearchWithActivePrefferedCustomerFullName_3987(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		List<Map<String, Object>> randomPCDetailList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountId = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+		randomPCDetailList =  
+				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
+		String pcFirstName = String.valueOf(getValueFromQueryResult(randomPCDetailList, "FirstName"));
+		String pcLastName = String.valueOf(getValueFromQueryResult(randomPCDetailList, "LastName"));
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(pcFirstName+" "+pcLastName);
+		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
+		s_assert.assertAll();
+	}
 }

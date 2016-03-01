@@ -39,6 +39,7 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CUSTOMER_NAME_TXT_AREA_LOC = By.xpath("//span[text()='Customer Name or CID']/following::input[1]");
 	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
 	private static final By CALENDER_ICON__FOR_ALL_DUE_DATE = By.xpath("//img[@class='z-datebox-img']/../ancestor::span[@style='display: none;']");
+	private static final By TEMPLATE_NUMBER_INPUT_TXT = By.xpath("//span[contains(text(),'Template Number')]/following::input[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -194,6 +195,11 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean isCalenderIconPresentForAllDueDate(){
 		driver.waitForElementPresent(CALENDER_ICON__FOR_ALL_DUE_DATE);
 		return driver.isElementPresent(CALENDER_ICON__FOR_ALL_DUE_DATE);
+	}
+
+	public void enterTemplateNumber(String number){
+		driver.waitForElementPresent(TEMPLATE_NUMBER_INPUT_TXT);
+		driver.type(TEMPLATE_NUMBER_INPUT_TXT, number);
 	}
 
 }

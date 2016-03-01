@@ -42,7 +42,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/../../preceding-sibling::td//a");
 	private static final By CREATE_PULSE_TEMPLATE_BTN = By.xpath("//td[contains(text(),'Create Pulse Template')]");
 	private static final By CREATE_PULSE_TEMPLATE_BTN_ON_POPUP = By.xpath("//div[contains(text(),'Add PWS Prefix')]/following::td[contains(text(),'Create Pulse Template')]");
-	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC = By.xpath("//span[contains(text(),'Autoship Templates')]/following::div[@class='csWidgetContent'][1]//div[@class='z-listbox-body']//tbody[2]//tr[2]/td[5]//span");
+	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE_LOC = By.xpath("//span[contains(text(),'Autoship Templates')]/following::div[@class='csWidgetContent'][1]//div[@class='z-listbox-body']//tbody[2]//tr[2]/td[7]//span");
 	private static final By PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate'][1]/../../preceding-sibling::td//a");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/ancestor::td[contains(@style,'display:none;')]");
 	private static final By SHIPPING_PROFILE_ERROR_POPUP_OK_BTN = By.xpath("//div[@class='z-window-modal']//td[text()='OK']");

@@ -49,7 +49,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
 		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){		
-			driver.get(driver.getURL());}
+			driver.get(driver.getURL());
+		}
 		else{
 			driver.get(driver.getURL()+"/"+country);
 		}

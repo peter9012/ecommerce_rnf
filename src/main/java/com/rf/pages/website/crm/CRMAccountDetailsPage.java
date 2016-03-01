@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
@@ -987,6 +988,59 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return driver.isElementPresent(By.xpath("//td[text()='Recognition Title']/../following::tr[1]/td[text()='Active']"));
+	}
+
+	public void clickClearButtonInLogAccountActivity(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//a[text()='Clear fields']"));
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public boolean verifyDropdownTextfieldsAreClearedInLogAccountActivity(String label){
+		boolean flag = false;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
+		WebElement mySelectElm = driver.findElement(By.xpath("//div[contains(text(),'"+label+"')]/..//select"));
+		Select mySelect= new Select(mySelectElm);
+		WebElement option = mySelect.getFirstSelectedOption();
+		String dropdownSelectedValue = option.getText();
+		if(dropdownSelectedValue.equals("--None--")){
+			flag = true;
+		}
+		return flag;
+	}
+
+	public String IsLogInAccountActivityUpdated(String label){
+		int id = 0 ;
+		switch (label){
+		case "Notes":   id = 3;
+		break;
+		case "Channel": id = 4;
+		break;
+		case "Reason":  id = 5;
+		break;
+		case "Detail":  id = 6;
+		break;
+		}
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]")));
+		return driver.findElement(By.xpath("//h3[contains(text(),'Account Activities')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')][1]/td["+id+"]")).getText();
+	}
+
+	public boolean isDataValuesInDropDownUnderLogAccountActivityPresent(String label){
+		boolean flag = false;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
+		int size = driver.findElements(By.xpath("//div[contains(text(),'"+label+"')]/../select/option")).size();
+		if(size>1){
+			flag = true;
+		}
+		return flag;  
 	}
 
 }

@@ -952,4 +952,3 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	}
 
 }
-

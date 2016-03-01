@@ -612,4 +612,98 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return SKU;
 	}
 
+	public String clickAddToCartBtnTillProductAddedInCartTab(String SKU){
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			clearCatalogSearchFieldAndClickSearchBtn();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			boolean isNextArrowPresent = false;
+			int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+			do{
+				isNextArrowPresent = false;
+				for(int i=noOfProducts;i>=1; i--){
+					SKU = getCustomerSKUValueInCartTab(Integer.toString(i));
+					searchSKUValueInCartTab(SKU);
+					driver.click(ADD_TO_CART_BTN);
+					logger.info("Add to cart button clicked for "+i+" another product");
+					driver.waitForCSCockpitLoadingImageToDisappear();
+					if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+						driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+						clearCatalogSearchFieldAndClickSearchBtn();
+						driver.waitForCSCockpitLoadingImageToDisappear();
+						continue;
+					}else{
+						break;
+					}
+				}
+				if(driver.isElementPresent(AUTOSHIP_DETAIL_NEXT_PAGE_DISABLE)==false){
+					isNextArrowPresent = true;
+					driver.waitForElementNotPresent(AUTOSHIP_DETAIL_NEXT_PAGE);
+					driver.click(AUTOSHIP_DETAIL_NEXT_PAGE);
+				}
+			}
+			while(isNextArrowPresent==true);
+		}
+		return SKU;
+	}
+
+	public void enterBillingInfo(String cardNumber,String profileName,String securityCode){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, securityCode);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+
+	public void enterBillingInfoWithoutSelectAddress(String profileName){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+	}
+
+	public boolean isReviewCreditCardDetailsErrorMsgPresent(){
+		driver.waitForElementPresent(REVIEW_CREDIT_CARD_DETAILS_POPUP);
+		return driver.isElementPresent(REVIEW_CREDIT_CARD_DETAILS_POPUP);
+	}
+
+	public void selectBillingAddressInPaymentProfilePopup(){
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+
+	public void enterBillingInfoWithoutEnterCreditCardAndAddress(String profileName){
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+	}
+
+	public void enterCreditCardNumberInPaymentProfilePopup(){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+	}
+
 }

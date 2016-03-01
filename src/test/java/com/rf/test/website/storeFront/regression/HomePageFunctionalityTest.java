@@ -1746,8 +1746,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		logger.info("Account Id of the user is "+accountID);
 
 		// Get Account Number
-		List<Map<String, Object>>sponsorIdList = 
-				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
@@ -1785,8 +1784,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomActiveSitePrefixList =  null;
 		String activeSitePrefix = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomActiveSitePrefixList = 
-				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
 		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(activeSitePrefix);
@@ -1812,8 +1810,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		logger.info("Account Id of the user is "+accountID);
 
 		// Get Account Number
-		List<Map<String, Object>>sponsorIdList = 
-				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
@@ -1838,8 +1835,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 		accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 		logger.info("Account Id of the user is "+accountId);
-		randomRCDetailList =  
-				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
+		randomRCDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
 		rcFirstName = String.valueOf(getValueFromQueryResult(randomRCDetailList, "FirstName"));
 		rcLastName = String.valueOf(getValueFromQueryResult(randomRCDetailList, "LastName"));
 		storeFrontHomePage.clickOnSponsorName();
@@ -1873,13 +1869,12 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-		randomPCDetailList =  
-				DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
+		randomPCDetailList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountId),RFO_DB);
 		String pcFirstName = String.valueOf(getValueFromQueryResult(randomPCDetailList, "FirstName"));
 		String pcLastName = String.valueOf(getValueFromQueryResult(randomPCDetailList, "LastName"));
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(pcFirstName+" "+pcLastName);
 		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
 		s_assert.assertAll();
-	}
+	}	
 }

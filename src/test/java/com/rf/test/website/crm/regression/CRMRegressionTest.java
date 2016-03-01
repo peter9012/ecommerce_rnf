@@ -1624,7 +1624,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4487:Verify Adding shipping profiles with different country for a Consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddingShippingProfilesWithDifferentCountryForAConsultant_4487() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1669,7 +1669,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4488:Verify Adding shipping profiles with different country for a PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddingShippingProfilesWithDifferentCountryForAPC_4488() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -1714,7 +1714,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4489:Verify Adding shipping profiles with different country for a RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddingShippingProfilesWithDifferentCountryForARC_4489() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO(); 
 		crmLoginpage = new CRMLoginPage(driver);
@@ -2320,6 +2320,120 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"), "Region Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Postal code"), "Postal code Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Country"), "Country Label is not Present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4477:Clear and Add new Account Notes for RC
+	@Test(enabled=false)//WIP
+	public void testClearAndAddNewAccountNotesForRC_4477() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String rcEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String accountActivityNote=TestConstants.ORDER_NOTE+randomNum;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+		logger.info("The username is "+rcEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
+		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
+
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Channel"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
+
+		crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectReasonDropdown("Consultants");
+		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
+		crmAccountDetailsPage.enterNote(accountActivityNote);
+		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+
+		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4476:Clear and Add new Account Notes for PC
+	@Test(enabled=false)//WIP
+	public void testClearAndAddNewAccountNotesForPC_4476() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String accountActivityNote=TestConstants.ORDER_NOTE+randomNum;
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");  
+		logger.info("The username is "+pcEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
+		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
+
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Channel"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
+
+		crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectReasonDropdown("Consultants");
+		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
+		crmAccountDetailsPage.enterNote(accountActivityNote);
+		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+
+		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4475:Clear and Add new Account Notes for Consultant
+	@Test(enabled=false)//WIP
+	public void testClearAndAddNewAccountNotesForConsultant_4475() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String accountActivityNote=TestConstants.ORDER_NOTE+randomNum;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
+		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
+		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
+
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Channel"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
+		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
+
+		crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectReasonDropdown("Consultants");
+		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
+		crmAccountDetailsPage.enterNote(accountActivityNote);
+		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+
+		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
 		s_assert.assertAll();
 	}
 

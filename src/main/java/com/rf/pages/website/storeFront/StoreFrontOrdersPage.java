@@ -37,7 +37,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	private String ORDER_NUMBER_STATUS_LOC = "//table[@id='history-orders-table']//a[text()='%s']/following::td[@class='fourth'][1]";
 	private final By ACTIONS_BUTTON_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]");
 	private final By ACTIONS_DROPDOWN_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]/following::a[@id='idReportProblem'][1]");
-	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a");
+	private final By ORDER_NUM_OF_ORDER_HISTORY = By.xpath(".//div[@id='history-orders-table']/descendant::a[1]");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//div[@id='left-menu']//div/button[contains(text(),'Your Account')]");
 	private final By AUTOSHIP_DATE_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[2]");
 
@@ -325,15 +325,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnFirstAdHocOrder(){
-		try{
-			driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-			driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-			logger.info("First order from the order history clicked");
-		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath(".//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a"));
-			driver.click(By.xpath("//div[@id='history-orders-table']/div[2]/div[2]/div/div/div[1]/a"));	
-			logger.info("First order from the order history clicked");
-		}
+		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
+		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
+		logger.info("First order from the order history clicked");		
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){

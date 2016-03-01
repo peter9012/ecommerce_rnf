@@ -16,7 +16,7 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 	private static final Logger logger = LogManager
 			.getLogger(RFPWSLoginTest.class.getName());
 	private StoreFrontHomePage storeFrontHomePage;
-	private StoreFrontConsultantPage storeFrontConsulatantPage;
+	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private String RFO_DB = null;
 
 	//Hybris Phase 2-4396 Consultant with PWS - Corporate site - Her own .com PWS
@@ -30,13 +30,22 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		while(true){
+			// Get Consultant with PWS from database
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-		s_assert.assertTrue(!consultantPWSURL.contains(".biz"),"Consultant is not on her own .com PWS");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantWithPWSEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(!consultantPWSURL.toLowerCase().contains(".biz"),"Consultant is not on her own .com PWS");
 
 		s_assert.assertAll();
 	}
@@ -52,14 +61,23 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
-		storeFrontHomePage.openConsultantPWS(consultantPWSURL);
-		consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
+		while(true){
+			// Get Consultant with PWS from database
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+			storeFrontHomePage.openConsultantPWS(consultantPWSURL);
+			consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantWithPWSEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(consultantPWSURL.toLowerCase()),"Consultant is not on her own PWS");
 
 		s_assert.assertAll();			
 	}
@@ -75,23 +93,31 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String otherPWSURL = null;
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
+		while(true){
+			// Get Consultant with PWS from database
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
-		// Get Consultant with PWS from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			// Get consultant's PWS from database.
+			consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
 
-		// Get consultant's PWS from database.
-		consultantPWSURL = (String) getValueFromQueryResult(randomConsultantList, "URL");
+			// Get another PWS from database
+			randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
-		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(consultantPWSURL),"Consultant is not on her own PWS");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWSURL);
+			consultantPWSURL = storeFrontHomePage.splitPWS(consultantPWSURL);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantWithPWSEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(consultantPWSURL.toLowerCase()),"Consultant is not on her own PWS");
 
 		s_assert.assertAll();
 	}
@@ -103,11 +129,20 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"Consultant is not on corporate site");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"Consultant is not on corporate site");
 
 		s_assert.assertAll();		
 	}
@@ -124,19 +159,28 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String country = driver.getCountry();
 
 		String otherPWSURL = null;
+		while(true){
+			// get consultant without PWS email Id from database
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
-		// get consultant without PWS email Id from database
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_NO_PWS_RFO,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			// Get another PWS from database
+			randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
-		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWSURL);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);  
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"Consultant is not on corporate site");
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"Consultant is not on corporate site");
 
 		s_assert.assertAll();    
 	}
@@ -151,19 +195,27 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String otherPWSURL = null;
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
 
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-		rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
+			// Get another PWS from database
+			randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
 
-		// Get another PWS from database
-		randomOtherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWSURL = (String) getValueFromQueryResult(randomOtherPWSList, "URL");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWSURL);
-		otherPWSURL = storeFrontHomePage.splitPWS(otherPWSURL);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(otherPWSURL),"RC is not on someone's PWS");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWSURL);
+			otherPWSURL = storeFrontHomePage.splitPWS(otherPWSURL);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(otherPWSURL.toLowerCase()),"RC is not on someone's PWS");
 
 		s_assert.assertAll();  
 	}
@@ -174,13 +226,21 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		RFO_DB = driver.getDBNameRFO();  
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
 
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-		rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"RC is not on corporate site");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(rcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"RC is not on corporate site");
 
 		s_assert.assertAll();    
 	}
@@ -193,15 +253,24 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
 		String pcEmailID = null;
 		String sponsorsPWS = null;
-		randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
-		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(sponsorsPWS+"/"+driver.getCountry());
-		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
-		logger.info("sponsorsPWS after string split is "+sponsorsPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
+		while(true){
+			randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
+			sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(sponsorsPWS+"/"+driver.getCountry());
+			sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
+			logger.info("sponsorsPWS after string split is "+sponsorsPWS);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS.toLowerCase()),"PC is not on Sponsor's PWS");
 
 		s_assert.assertAll();
 	}
@@ -218,21 +287,29 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String otherPWS = null;		
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
+		while(true){
+			randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
 
-		randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
+			//sponsorPWSList = DBUtil.performDatabaseQuery(,RFO_DB);
+			sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
-		//sponsorPWSList = DBUtil.performDatabaseQuery(,RFO_DB);
-		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
+			otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWS);
-		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWS);
+			sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS.toLowerCase()),"PC is not on Sponsor's PWS");
 
 		s_assert.assertAll();
 	}
@@ -245,17 +322,25 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		List<Map<String, Object>> randomPCWithPWSSponsorList =  null;
 		String pcEmailID = null;
 		String sponsorsPWS = null;
+		while(true){
+			randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
 
-		randomPCWithPWSSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Username");
+			//sponsorPWSList = DBUtil.performDatabaseQuery(,RFO_DB);
+			sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
 
-		//sponsorPWSList = DBUtil.performDatabaseQuery(,RFO_DB);
-		sponsorsPWS = (String) getValueFromQueryResult(randomPCWithPWSSponsorList, "Sponsor_PWS");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(sponsorsPWS),"PC is not on Sponsor's PWS");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			sponsorsPWS = storeFrontHomePage.splitPWS(sponsorsPWS);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(sponsorsPWS.toLowerCase()),"PC is not on Sponsor's PWS");
 
 		s_assert.assertAll();
 	}
@@ -268,20 +353,26 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		List<Map<String, Object>> otherPWSList =  null;
 		String pcEmailID = null;
 		String otherPWS = null;		
-		String env = driver.getEnvironment();
-		String country = driver.getCountry();
+		while(true){
+			randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO,RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
 
-		randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO,RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
+			otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWS);
 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
-
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"PC is not on Corporate. Expected URl is "+driver.getURL().toLowerCase()+" actual URL is "+storeFrontConsultantPage.getCurrentURL().toLowerCase());
 		s_assert.assertAll();
 	}
 
@@ -292,13 +383,21 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomPCWithSponsorNoPWSList =  null;
 		String pcEmailID = null;
+		while(true){
+			randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO,RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
 
-		randomPCWithSponsorNoPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_NOPWS_RFO,RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithSponsorNoPWSList, "Username");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"PC is not on Corporate");
 
 		s_assert.assertAll();
 
@@ -315,17 +414,25 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		String otherPWS = null;		
 		String env = driver.getEnvironment();
 		String country = driver.getCountry();
+		while(true){
+			randomPCWithNoSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WITH_NO_SPONSOR_RFO,RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
 
-		randomPCWithNoSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WITH_NO_SPONSOR_RFO,RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
+			otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
 
-		otherPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-		otherPWS = (String) getValueFromQueryResult(otherPWSList, "URL");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(otherPWS);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.openConsultantPWS(otherPWS);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"PC is not on Corporate");
 
 		s_assert.assertAll();
 
@@ -337,13 +444,21 @@ public class RFPWSLoginTest extends RFWebsiteBaseTest {
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomPCWithNoSponsorList =  null;
 		String pcEmailID = null;
+		while(true){
+			randomPCWithNoSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WITH_NO_SPONSOR_RFO,RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
 
-		randomPCWithNoSponsorList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_WITH_NO_SPONSOR_RFO,RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCWithNoSponsorList, "Username");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsulatantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
-		s_assert.assertTrue(storeFrontConsulatantPage.getCurrentURL().contains(driver.getURL()),"PC is not on Corporate");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}		
+		s_assert.assertTrue(storeFrontConsultantPage.getCurrentURL().toLowerCase().contains(".rodanandfields.com"),"PC is not on Corporate");
 
 		s_assert.assertAll();
 	}

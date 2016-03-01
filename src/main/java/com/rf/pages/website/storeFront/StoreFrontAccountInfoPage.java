@@ -161,11 +161,23 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(By.xpath(String.format(ACCOUNT_INFO_GENDER_LOC,TestConstants.CONSULTANT_GENDER)));
 	}
 
+	public void uncheckSpouseCheckBox(){
+		if(driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']")).isSelected()==true){
+			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']")).click();
+		}
+	}
+
 	public void clickSaveAccountBtn(){
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
-		driver.waitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
-		driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
 		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+			driver.click(ACCOUNT_INFO_VERIFY_ADDRESS_LOC);
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		
 		driver.waitForPageLoad();
 	}
 

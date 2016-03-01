@@ -81,6 +81,16 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By DELAY_AUTOSHIP_LINK = By.xpath("//a[text()='Delay Autoship']");
 	private static final By POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='Save']");
 	private static final By NEXT_CART_DATE = By.xpath("//div[@class='csObjectPCPerksOrderContainer']/div[8]//span//input");
+	private static final By DISABLED_EDIT_AUTOSHIP_TEMPLATE_BTN_ = By.xpath("//div[@class='csObjectCRPOrderContainer']/div[9]//span[@style='display:none']");
+	private static final By QTY_INPUT_TXT_BOX_OF_FIRST_PRODUCT = By.xpath("//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[1]/td[8]//input");
+	private static final By FIRST_UPDATE_LINK_OF_ORDER_DETAIL = By.xpath("//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[1]/td[9]//a[text()='Update']");
+	private static final By THRESHOLD_POPUP_FOR_ORDER_TOTAL = By.xpath("//div[@class='z-messagebox']");
+	private static final By ADD_CARD_BTN = By.xpath("//div[@class='csPaymentInfoLine']/following::td[text()='Add Card'][1]");
+	private static final By ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(@class,'csCardPaymentProfileCreatePopup')]");
+	private static final By CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'Add a New Payment Profile')]/div");
+	private static final By SELECT_BILLING_ADDRESS_ERROR_MSG = By.xpath("//span[contains(text(),'Please select Billing Address')]");
+	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
+	private static final By PAYMENT_INFO_ADDRESS_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']//input");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -877,6 +887,82 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		}
 		logger.info("Next due date in format "+UIMonth+" "+date+", "+year);
 		return UIMonth+" "+date+", "+year;
+	}
+
+	public boolean isEditTemplateBtnDisabled(){
+		driver.waitForElementPresent(DISABLED_EDIT_AUTOSHIP_TEMPLATE_BTN_);
+		return driver.isElementPresent(DISABLED_EDIT_AUTOSHIP_TEMPLATE_BTN_);
+	}
+
+	public void enterQtyOfFirstProduct(String qty){
+		driver.waitForElementPresent(QTY_INPUT_TXT_BOX_OF_FIRST_PRODUCT);
+		driver.type(QTY_INPUT_TXT_BOX_OF_FIRST_PRODUCT, qty);
+	}
+
+	public void clickUpdateLinkOfOrderDetail(){
+		driver.waitForElementPresent(FIRST_UPDATE_LINK_OF_ORDER_DETAIL);
+		driver.click(FIRST_UPDATE_LINK_OF_ORDER_DETAIL);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+
+	public void clickRemoveLinkOfOrderDetailForOrderTotal(){
+		while(true){
+			driver.waitForElementPresent(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+			driver.pauseExecutionFor(2000);
+			driver.click(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			if(driver.isElementPresent(THRESHOLD_POPUP_FOR_ORDER_TOTAL)==true){
+				break;
+			}else{
+				continue;
+			}
+		}
+	}
+
+	public boolean verifyThresholdPopupForOrderTotal(){
+		return driver.isElementPresent(THRESHOLD_POPUP_FOR_ORDER_TOTAL);
+	}
+
+	public void clickAddCardBtnInPaymentInfoSection(){
+		driver.waitForElementPresent(ADD_CARD_BTN);
+		driver.click(ADD_CARD_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isAddNewPaymentProfilePopup(){
+		driver.waitForElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+		return driver.isElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+	}
+
+	public void clickCloseOfAddANewPaymentProfilePopup(){
+		driver.waitForElementPresent(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+		driver.click(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isSelectBillingAddressMsgPresent(){
+		driver.waitForElementPresent(SELECT_BILLING_ADDRESS_ERROR_MSG);
+		return driver.isElementPresent(SELECT_BILLING_ADDRESS_ERROR_MSG);
+	}
+
+	public void clickAddANewAddressOfAddANewPaymentProfilePopup(){
+		driver.waitForElementPresent(ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP);
+		driver.click(ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickPaymentInfoAddressDropDown(){
+		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
+		driver.click(PAYMENT_INFO_ADDRESS_DD);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+	
+	public String getDefaultSelectedPaymentInfoAddress(){
+		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
+		String profileName=driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
+		logger.info("profile name from dropdown is "+profileName);
+		return profileName;
 	}
 
 }

@@ -79,11 +79,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		cityDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Locale");
 		assertTrue("City on UI is different from DB", storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(cityDB));
 
-		// assert State with RFO
-		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
-		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
-		assertTrue("Province on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB));
-
 		//assert Postal Code eith RFO
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");

@@ -17,7 +17,9 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String customerTypeLoc = "//span[contains(text(),'Customer Type')]/following::span[text()='%s']";
 	private static String autoshipTemplateDetailsLoc = "//span[contains(text(),'Autoship Templates')]/following::div[contains(text(),'%s')]";
 	private static String orderNumberLoc = "//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a[contains(text(),'%s')]";
-
+	private static String autoshipIdStatusLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'pcAutoship')]/following::span[1]";
+	 private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
+	
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
 	private static final By FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a");
@@ -70,6 +72,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By RELOAD_PAGE_BTN_IN_LEFT_PANEL = By.xpath("//td[text()='Reload Page']");
 	private static final By DEFAULT_SELECTED_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Default shipping address')]/following::option[@selected='selected'][1]");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_CANCELLED = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pcAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a");
+	private static final By AUTOSHIP_TEMPLATE_WITH_NO_ENTRIES_TXT = By.xpath("//span[text()='Autoship Templates']/following::span[1][text()='No Entries']");
 
 	protected RFWebsiteDriver driver;
 
@@ -492,6 +495,25 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_CANCELLED);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		return autoshipID;
+	}
+
+	public boolean isAutoshipTemplateHavingNoEntries(){
+		driver.waitForElementPresent(AUTOSHIP_TEMPLATE_WITH_NO_ENTRIES_TXT);
+		return driver.isElementPresent(AUTOSHIP_TEMPLATE_WITH_NO_ENTRIES_TXT);
+	}
+
+	public String getStatusOfAutoShipIdFromAutoshipTemplate(String autoshipId){
+		driver.waitForElementPresent(By.xpath(String.format(autoshipIdStatusLoc, autoshipId)));
+		String autoshipIDStatus = driver.findElement(By.xpath(String.format(autoshipIdStatusLoc, autoshipId))).getText();
+		logger.info("Autoship id status from CS cockpit UI Is"+autoshipIDStatus);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipIDStatus;
+	}
+
+	public void clickAutoshipIDHavingTypeAsPCAutoshipAndStatusAsCancelled(String autoshipId){
+		driver.waitForElementPresent(By.xpath(String.format(autoshipNumberWhoseAutoshipIsCancelledLoc, autoshipId)));
+		driver.click(By.xpath(String.format(autoshipNumberWhoseAutoshipIsCancelledLoc, autoshipId)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

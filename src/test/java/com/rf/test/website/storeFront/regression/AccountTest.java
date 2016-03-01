@@ -959,6 +959,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		logger.info("State/province selected is "+state);
 		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
 		storeFrontAccountInfoPage.updateDateOfBirthAndGender();
+		storeFrontAccountInfoPage.uncheckSpouseCheckBox();
 		storeFrontAccountInfoPage.clickSaveAccountBtn();
 		//assert First Name with RFO
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstName), "First Name on UI is not updated");

@@ -971,6 +971,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		while(true){
 			driver.get(getBizPWS(country, env));
 			driver.waitForPageLoad();
+			driver.pauseExecutionFor(2000);
 			if(driver.getCurrentUrl().contains("sitenotfound")){
 				logger.info("SITE NOT FOUND error,try new PWS");
 				continue;

@@ -134,9 +134,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
-			driver.type(By.id("sponsor-name-id"),"test");
+			driver.type(By.id("sponsor-name-id"),"abc");
 		}catch(NoSuchElementException e){
-			driver.type(By.id("sponserparam"),"test");
+			driver.type(By.id("sponserparam"),"abc");
 		}
 		try{
 			driver.click(By.xpath("//input[@value='Search']"));			

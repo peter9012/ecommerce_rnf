@@ -1876,5 +1876,195 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(pcFirstName+" "+pcLastName);
 		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
 		s_assert.assertAll();
-	}	
+	}
+
+	//Hybris Project-3988:Search with Active Preferred customer's Account id
+	@Test
+	public void testSearchWithActivePreferredCustomerAccountId_3988(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountId = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountId);
+		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4003:Look up with Active CA consultant's full name
+	@Test
+	public void testLookUpActiveCAConsultantFullName_4003() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomConsultantList =  null;
+			List<Map<String, Object>> randomConsultantDetailList = null;
+			String accountID = null;
+			String consultantFirstName = null;
+			String consultantLastName = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			randomConsultantList = 	DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+
+			randomConsultantDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountID),RFO_DB);
+			consultantFirstName = (String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
+			consultantLastName = (String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
+			storeFrontHomePage.clickOnSponsorName();
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantLastName);
+			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			s_assert.assertTrue(storeFrontHomePage.verifyUserRedirectingToComSite(),"user is not redirecting to com site");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-4004:Look up with Active CA consultant's Account ID
+	@Test
+	public void testLookUpWithActiveCAConsultantAccountID_4004() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomConsultantList =  null;
+			String accountID = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			randomConsultantList = 	DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			storeFrontHomePage.clickOnSponsorName();
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountID);
+			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			s_assert.assertTrue(storeFrontHomePage.verifyUserRedirectingToComSite(),"user is not redirecting to com site");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-4002:Look up with Terminated Retail consultant's Full name/ Account ID
+	@Test
+	public void testTerminatedRetailConsultantFullName_4002() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+
+		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+		logger.info("login is successful");
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountID);
+		s_assert.assertTrue(storeFrontHomePage.verifyNotFoundMsgPresent(), "Not found msg not present for rc");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4007:Look up with Active CA consultnat who has no pulse/ PWS
+	@Test
+	public void testLookUpWithActiveCAConsultantWithNoPulseOrPWS_4007() throws InterruptedException	{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();  
+			List<Map<String, Object>> randomConsultantList =  null;
+			//List<Map<String, Object>> randomConsultantPWSList =  null;
+			String consultantWithPWSEmailID = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			// Get Consultant with PWS from database
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+				consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantWithPWSEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+
+			logger.info("login is successful");
+			//cancel pulse ofr the consultant user
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+			storeFrontAccountInfoPage.clickOnAutoShipStatus();
+			//Verify  user can cancel Pulse subscription through my account.
+			storeFrontAccountInfoPage.cancelPulseSubscription();
+			s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse subscription is not cancelled for the user");
+			//Navigate to the base url
+			driver.get(driver.getURL());
+			//connect with a consultant
+			storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+			//search with Active PC Act ID
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantWithPWSEmailID);
+			//verify 'No Result found' is displayed
+			s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"'No Result Found' is not displayed!!");
+			s_assert.assertAll(); 
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-4005:Look up with Teminated CA consultnat's full name / Account ID
+	@Test
+	public void testLookUpWithTerminatedCAConsultantFullNameOrActID_4005() throws InterruptedException	{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomConsultantList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+			storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+			storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+			s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+			s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+			storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+			storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+			storeFrontHomePage.clickOnCountryAtWelcomePage();
+			//connect with a consultant
+			storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+			//search with terminated consultant
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
+			//verify 'No Result found' is displayed
+			s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated CA Consultant is Present!!!");
+			s_assert.assertAll(); 
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+
+	}
 }

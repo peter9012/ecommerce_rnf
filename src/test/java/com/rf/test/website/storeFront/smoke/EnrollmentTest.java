@@ -176,7 +176,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -269,7 +269,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("login error for the user "+rcUserEmailID);
 				driver.get(driver.getURL());
@@ -338,7 +338,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}	
-
 
 	
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
@@ -416,7 +415,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	}
 
-	
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
 	@Test
 	public void testTermsAndConditionsRCEnrollment_2188() throws InterruptedException	 {
@@ -535,7 +533,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
+	//Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
 	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -555,7 +553,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL());

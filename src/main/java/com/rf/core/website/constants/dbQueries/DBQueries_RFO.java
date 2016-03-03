@@ -1827,6 +1827,9 @@ public class DBQueries_RFO {
 			"AND HYBRIS.dbo.USERS.P_CUSTOMURLPREFIX IS NULL AND RFO_Accounts.AccountRF.Active=1 "+ 
 			"AND RFO_Accounts.AccountBase.AccountTypeID = 1 order by newid()";
 
+	public static String GET_ACCOUNT_ID_FOR_PENDING_USER="select tOP 1 * from RFO_Accounts.AccountBase where AccountStatusID = 4 ORDER BY newid()";
+	
+
 	/**
 	 * 
 	 * @param query

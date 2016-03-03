@@ -17,8 +17,10 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 			.getLogger(DSVStoreFrontQuickShopPage.class.getName());
 
 	private static final By FIRST_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']");
+	private static final By SECOND_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']");
 	private static final By FIRST_PRODUCT_NAME = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]/h3"); 
 	private static final By FIRST_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//span[@class='old-price']");
+	private static final By SECOND_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//span[@class='old-price']");
 	private static final By PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]");
 	private static final By PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]");
 	private static final By ALL_PRODUCTS_FROM_PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li");
@@ -50,6 +52,14 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 		return new DSVStoreFrontAutoshipCartPage(driver);
 	}
 
+	public DSVStoreFrontAutoshipCartPage clickAddToCRPForSecondProduct(){
+		driver.quickWaitForElementPresent(SECOND_PRODUCT_ADD_TO_CRP_BTN);
+		driver.click(SECOND_PRODUCT_ADD_TO_CRP_BTN);
+		driver.waitForLoadingImageToDisappear();
+		return new DSVStoreFrontAutoshipCartPage(driver);
+	}
+
+
 	public String getFirstProductName(){
 		return driver.findElement(FIRST_PRODUCT_NAME).getText().trim();
 	}
@@ -58,6 +68,9 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 		return driver.findElement(FIRST_PRODUCT_RETAIL_PRICE).getText().trim();
 	}
 
+	public String getSecondProductRetailPrice(){
+		return driver.findElement(SECOND_PRODUCT_RETAIL_PRICE).getText().trim();
+	}
 
 	public List<String> getAllProductsFromProductFilterList(){
 		List<String> allProductsList = new ArrayList<String>();

@@ -3889,7 +3889,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifySponserSearchResult(String accountNumber){
 		return driver.isElementPresent(By.xpath("//span[text()='No result found for "+accountNumber+"']"));
+	}
 
+	public boolean validateSearchFunctionalityWorking(){
+		driver.waitForElementPresent(By.xpath("//div[@id='search-results']"));
+		return driver.isElementPresent(By.xpath("//div[@id='search-results']"));
 	}
 
 }

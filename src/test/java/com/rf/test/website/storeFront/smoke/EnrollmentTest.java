@@ -477,7 +477,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	//	Test Case Hybris Project-3255 :: Version : 1 :: Standard EnrollmentTest without CRP and Pulse
+	//Test Case Hybris Project-3255 :: Version : 1 :: Standard EnrollmentTest without CRP and Pulse
 	@Test //smoke test
 	public void testStandardEnrollmentWithoutCRPAndPulse_3255() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

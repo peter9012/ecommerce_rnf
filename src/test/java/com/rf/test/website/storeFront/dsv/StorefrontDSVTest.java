@@ -48,6 +48,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	@Test(priority=2)
 	public void testEditCRPAutoshipTemplate_5315(){
 		String quantityOfProduct = "10";
+		String secondProductRetailPrice=null;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
 		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
@@ -67,7 +68,19 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(firstProductRetailPrice);
 		s_assert.assertTrue(dsvStoreFrontAutoshipCartPage.getQuantityOfProduct(firstProductRetailPrice).contains(quantityOfProduct), "Quantity of "+firstProductName+" expected is "+quantityOfProduct+"but on UI is "+dsvStoreFrontAutoshipCartPage.getQuantityOfProduct(firstProductRetailPrice));
 		dsvStoreFrontAutoshipCartPage.clickRemoveProduct(firstProductRetailPrice);
-		s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductRetailPrice+" is not removed from the cart");
+		if(dsvStoreFrontAutoshipCartPage.isThresholdMessageAppeared()==true){
+			dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
+			secondProductRetailPrice = dsvStoreFrontQuickShopPage.getSecondProductRetailPrice();
+			logger.info("Retail price of second product added to CRP is "+secondProductRetailPrice);
+			dsvStoreFrontAutoshipCartPage = dsvStoreFrontQuickShopPage.clickAddToCRPForSecondProduct();
+			dsvStoreFrontAutoshipCartPage.addQuantityOfProduct(secondProductRetailPrice, quantityOfProduct);
+			dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(secondProductRetailPrice);
+			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(secondProductRetailPrice), secondProductRetailPrice+" is not removed from the cart");
+		}
+		else{
+			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductRetailPrice+" is not removed from the cart");	
+		}
+		
 		s_assert.assertAll();
 	}
 

@@ -325,7 +325,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Phase 2-4223 :: Version : 1 :: Account with multiple payment profiles
-	@Test(enabled=false) //Query giving wrong results
+	@Test
 	public void testBillingInfoPageDetails_4223() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomEmailList =  null;

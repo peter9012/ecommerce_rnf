@@ -27,9 +27,9 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	public boolean isProductPresentOnCart(String retailPrice){
 		return driver.isElementPresent((By.xpath(String.format(RetailPrice, retailPrice))));		
 	}
-	
+
 	public void addQuantityOfProduct(String retailPrice,String quantity){
-		 driver.type(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//input[@name='quantity']"), quantity);		
+		driver.type(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//input[@name='quantity']"), quantity);		
 	}
 
 	public void clickUpdateQuantityBtnOfProduct(String retailPrice){
@@ -37,15 +37,24 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}
-	
+
 	public String getQuantityOfProduct(String retailPrice){
 		return driver.findElement(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//input[@name='quantity']")).getAttribute("value");
 	}
-	
+
 	public void clickRemoveProduct(String retailPrice){
 		driver.click(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::a[1][text()='Remove']"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
+	}
+
+	public boolean isThresholdMessageAppeared(){
+		try{
+			driver.findElement(By.xpath("//div[@id='globalMessages']//p[contains(text(),'greater than the threshold')]"));
+			return true;
+		}catch(Exception e){
+			return false;
+		}
 	}
 
 }

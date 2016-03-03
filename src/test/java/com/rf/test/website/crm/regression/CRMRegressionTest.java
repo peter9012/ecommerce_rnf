@@ -2198,7 +2198,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
 		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
 			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();

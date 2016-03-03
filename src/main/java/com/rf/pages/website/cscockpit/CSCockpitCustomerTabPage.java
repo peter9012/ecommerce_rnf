@@ -18,8 +18,9 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipTemplateDetailsLoc = "//span[contains(text(),'Autoship Templates')]/following::div[contains(text(),'%s')]";
 	private static String orderNumberLoc = "//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a[contains(text(),'%s')]";
 	private static String autoshipIdStatusLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'pcAutoship')]/following::span[1]";
-	 private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
-	
+	private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
+	private static String autoshipTemplateID = "//span[contains(text(),'Autoship Templates')]/following::a[text()='%s']";
+
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
 	private static final By FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a");
@@ -73,6 +74,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By DEFAULT_SELECTED_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Default shipping address')]/following::option[@selected='selected'][1]");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_CANCELLED = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pcAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a");
 	private static final By AUTOSHIP_TEMPLATE_WITH_NO_ENTRIES_TXT = By.xpath("//span[text()='Autoship Templates']/following::span[1][text()='No Entries']");
+
 
 	protected RFWebsiteDriver driver;
 
@@ -513,6 +515,12 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickAutoshipIDHavingTypeAsPCAutoshipAndStatusAsCancelled(String autoshipId){
 		driver.waitForElementPresent(By.xpath(String.format(autoshipNumberWhoseAutoshipIsCancelledLoc, autoshipId)));
 		driver.click(By.xpath(String.format(autoshipNumberWhoseAutoshipIsCancelledLoc, autoshipId)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickAutoshipTemplateIdViaUsingId(String id){
+		driver.waitForElementPresent(By.xpath(String.format(autoshipTemplateID, id)));
+		driver.click(By.xpath(String.format(autoshipTemplateID, id)));
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 

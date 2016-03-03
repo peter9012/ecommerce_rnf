@@ -295,7 +295,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 
 
 	//Hybris Phase 2-4404 PC, with no sponsor - someone's site - Corporate Site 
-	@Test(enabled=false)
+	@Test
 	public void testPreferredCustomerNoSponsorLoginFromOthersPWS_4404() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithNoSponsorList =  null;
@@ -319,7 +319,7 @@ public class PWSLoginTest extends RFWebsiteBaseTest {
 	}
 
 	//Hybris Phase 2-4405 PC, with no sponsor - corporate site - Corporate Site
-	@Test(enabled=false)
+	@Test
 	public void testPreferredCustomerNoSponsorLoginFromCorp_4405() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();		
 		List<Map<String, Object>> randomPCWithNoSponsorList =  null;

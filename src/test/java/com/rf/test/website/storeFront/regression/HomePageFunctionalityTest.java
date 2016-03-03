@@ -2,6 +2,8 @@ package com.rf.test.website.storeFront.regression;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
@@ -2067,4 +2069,145 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		}
 
 	}
+
+	//Hybris Project-4011:Look up with Active Retail customer's full name / Account ID
+	@Test
+	public void testLookUpWithActiveRCFullNameOrAccountID_4011(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontHomePage.clickOnUserName();
+		//search with account ID
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountId);
+		//verify 'No Result found' is displayed
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Respective RC User is Present!!!");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-4009:Look up with Active preferred customer's full name / Account ID
+	@Test
+	public void testLookUpWithActivePCFullNameOrAccountID_4009(){
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+		logger.info("Account Id of the user is "+accountId);
+		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
+		//search with account ID
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountId);
+		//verify 'No Result found' is displayed
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Respective PC User is Present!!!");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-4005:Look up with Terminated consultnat's full name / Account ID
+	@Test
+	public void testLookUpWithTerminatedConsultantFullNameOrccountID_4005() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//connect with a consultant
+		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+		//search with terminated consultant
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
+		//verify 'No Result found' is displayed
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated Consultant is Present!!!");
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-4002:Look up with Terminated Retail consultant's Full name/ Account ID
+	@Test
+	public void testLookUpWithTerminatedRCFullNameOrccountID_4002() throws InterruptedException	{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontRCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup(); 
+		//Navigate to the base url
+		driver.get(driver.getURL());
+		//connect with a consultant
+		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+		//search with terminated RC
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountId);
+		//verify 'No Result found' is displayed
+		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated RC User is Present!!!");
+		s_assert.assertAll(); 
+	}
+
+	
 }

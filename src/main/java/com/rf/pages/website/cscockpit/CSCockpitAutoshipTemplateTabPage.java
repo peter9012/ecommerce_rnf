@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.website.constants.TestConstants;
 
 public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final Logger logger = LogManager
@@ -19,7 +20,10 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static String appliedPromotionsLoc= "//span[contains(text(),'Applied Promotions')]/following::div[contains(text(),'%s')]";
 	private static String changeDelayAutoshipDate = "//label[contains(text(),'%s Days from next ship date')]/preceding::input[1]";
 	private static String nextDelayautoshipdateFromPopup = "//label[contains(text(),'%s Days from next ship date')]";
+	private static String ProductCountOnAutoshipTemplateLoc ="//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[%s]/td[8]/div/input";
+	private static String allAboveTabOfCSCockpit = "//span[text()='%s']/ancestor::li";
 
+	private static final By NEXT_CRP_CART_LINK=By.xpath("//div[@class='csObjectCRPOrderContainer']//span[text()='Next CRP Cart']");
 	private static final By SHIPPING_ADDRESS_NAME = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[1]/span");
 	private static final By SHIPPING_ADDRESS_LINE_1 = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[2]/span");
 	private static final By SHIPPING_ADDRESS_LOCALE_POSTCODE_REGION = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[3]/span");
@@ -91,6 +95,11 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By SELECT_BILLING_ADDRESS_ERROR_MSG = By.xpath("//span[contains(text(),'Please select Billing Address')]");
 	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By PAYMENT_INFO_ADDRESS_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']//input");
+	private static final By CANCEL_AUTOSHIP_TEMPLATE_POPUP_CANCEL_BTN_LOC = By.xpath("//td[text()='Cancel']");
+	private static final By DISABLED_EDIT_TEMPLATE = By.xpath("//td[text()='Edit Template']/ancestor::span[@style='display:none']");
+	private static final By CANCEL_AUTOSHIP_POPUP_ALERT = By.xpath("//div[text()='Cancel Autoship Popup']");
+	private static final By NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE = By.xpath("//div[@class='csConsecutiveOrders']/input");
+
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -957,12 +966,116 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.click(PAYMENT_INFO_ADDRESS_DD);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public String getDefaultSelectedPaymentInfoAddress(){
 		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
 		String profileName=driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
 		logger.info("profile name from dropdown is "+profileName);
 		return profileName;
 	}
+
+	public boolean verifyNextCRPCartInAutoshipTemplateTab(){
+		return driver.isElementPresent(NEXT_CRP_CART_LINK);      
+	}
+
+	public String getQuantityOfProductInAutoshipTemplateTabPage(String productNumber){
+		driver.waitForElementPresent(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc, productNumber)));
+		String count=driver.findElement(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc, productNumber))).getAttribute("value");
+		logger.info("Qty for product"+productNumber+"is "+count);
+		return count;
+	}
+
+	public int getCountOfProductInAutoshipTemplateTabPage(){
+		int count=driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size();
+		logger.info("count for total products in autoship template is "+count);
+		return count;
+	}
+
+	public void addProductInAutoShipCartTillHaveRequiredProduct(int reqProduct,String profileName){
+		boolean addBillingProfile=true;
+		boolean autoshipProductList=true;
+		do{
+			if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=reqProduct){
+				break;
+			}else{
+				clickAddMoreLinesLinkInAutoShipTemplateTab();
+				clearCatalogSearchFieldAndClickSearchBtn();
+				selectValueFromSortByDDInCartTab("Price: High to Low");
+				selectCatalogFromDropDownInCartTab(); 
+				String newRandomProductSequenceNumber = String.valueOf(getRandomProductWithSKUFromSearchResult()); 
+				String SKUValues = getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+				searchSKUValueInCartTab(SKUValues);
+				clickAddToCartBtnInCartTab();
+				//clickAddToCartBtnTillProductAddedInCartTab();
+				clickCheckoutBtnInCartTab();
+				if(addBillingProfile){
+					clickAddNewPaymentAddressInCheckoutTab();
+					enterBillingInfo(TestConstants.CARD_NUMBER,profileName,TestConstants.SECURITY_CODE);
+					clickSaveAddNewPaymentProfilePopUP();
+					addBillingProfile=false;
+				}
+				enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+				clickUseThisCardBtnInCheckoutTab();
+				clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+				if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=reqProduct){
+					autoshipProductList=false; 
+					break;
+				}
+			}
+		}while(autoshipProductList);
+	}
+
+	public void clickRemoveLinkToRemoveProductFromAutoshipCart(){
+		driver.waitForElementPresent(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+		driver.pauseExecutionFor(2000);
+		driver.click(FIRST_REMOVE_LINK_OF_ORDER_DETAIL);
+		driver.waitForCSCockpitLoadingImageToDisappear();		   
+	}
+
+	public int getQuantityOfAllProductInAutoshipTemplateTabPage(){
+		driver.waitForElementPresent(REMOVE_LINK_OF_ORDER_DETAIL);
+		int count=driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size();
+		int returnCountValue=0;
+		for(int i=1;i<=count;i++){
+			driver.waitForElementPresent(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc,i)));
+			String counts=driver.findElement(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc,i))).getAttribute("value");
+			returnCountValue=returnCountValue+Integer.parseInt(counts);
+			logger.info("Qty for product"+i+"is "+counts);
+		}
+		logger.info("Quantity sum for all products is "+returnCountValue);
+		return returnCountValue;
+	}
+
+	public void clickCancelButtonOfCancelAutoshipTemplatePopup(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(CANCEL_AUTOSHIP_TEMPLATE_POPUP_CANCEL_BTN_LOC);
+		driver.click(CANCEL_AUTOSHIP_TEMPLATE_POPUP_CANCEL_BTN_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isEditTemplateInAutoshipTemplateTabPresent(){
+		driver.waitForElementPresent(DISABLED_EDIT_TEMPLATE);
+		return driver.isElementPresent(DISABLED_EDIT_TEMPLATE);  
+	}
+
+	public boolean isCancelAutoshipPopupAlertPresent(){
+		driver.waitForElementPresent(CANCEL_AUTOSHIP_POPUP_ALERT);
+		return driver.isElementPresent(CANCEL_AUTOSHIP_POPUP_ALERT);  
+	}
+
+	public boolean IsPageTabSelected(String tabName){
+		boolean flag = false;
+		String isSelected = driver.findElement(By.xpath(String.format(allAboveTabOfCSCockpit, tabName))).getAttribute("z.sel");
+		if(isSelected.equals("true")){
+			flag = true;
+		}
+		return flag;
+	}
+
+	public int getNumberOfConsecutiveAutoshipOrdersFromTemplate(){
+		driver.waitForElementPresent(NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE);
+		return Integer.parseInt(driver.findElement(NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE).getAttribute("value"));
+	}
+
 
 }

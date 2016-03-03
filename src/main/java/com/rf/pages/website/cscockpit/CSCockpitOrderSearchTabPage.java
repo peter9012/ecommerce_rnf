@@ -24,6 +24,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String anotherCustomerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
 	private static String orderStatusCorrespondingOrderLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[8]//span";
+	private static String customerFirstNameInSearchResultsLoc = "//div[@class='z-listbox-body']/descendant::table/tbody[2]/tr[%s]/td[3]//span";
 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']"); 
 	private static final By TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS = By.xpath("//div[@class='orderDetailOrderItemsWidget']//div[@class='z-listbox-body']/table/tbody[2]/tr");
@@ -236,6 +237,13 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(By.linkText(orderNumber));
 		logger.info(orderNumber+" link clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getfirstNameOfTheCustomerInOrderSearchTab(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber)));
+		String firstname = driver.findElement(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber))).getText();
+		logger.info("Selected Cutomer first Name is = "+firstname);
+		return firstname;
 	}
 
 }

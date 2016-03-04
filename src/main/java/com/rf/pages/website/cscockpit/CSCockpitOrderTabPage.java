@@ -27,6 +27,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String disabledProductInfoCheckbox="//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[1]//input[@disabled='']";
 	private static String returnQuantityAnotherLoc = "//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/ancestor::div[contains(@class,'csReturnRequestCreateWidget')]/following-sibling::div//td[text()='%s']";
 	private static String rmaNumberOfReturnOrderInReturnRequestSsection  = "//span[contains(text(),'Return Requests')]/following::div[1]//a[contains(text(),'%s')]";
+	private static String ProductCountOnAutoshipTemplateLoc ="//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[%s]/td[6]/div";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -595,5 +596,25 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.isElementPresent(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
 		driver.click(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public int getQuantityOfAllProductInOrderTabPage(){
+		driver.waitForElementPresent(TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS);
+		int returnCountValue=0;
+		if(driver.isElementPresent(TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS)){
+			int count=driver.findElements(TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS).size();
+			for(int i=1;i<=count;i++){
+				driver.waitForElementPresent(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc,i)));
+				String counts=driver.findElement(By.xpath(String.format(ProductCountOnAutoshipTemplateLoc,i))).getText();
+				returnCountValue=returnCountValue+Integer.parseInt(counts);
+				logger.info("Qty for product"+i+"is "+counts); 
+			}
+			logger.info("Quantity sum for all products is "+returnCountValue);
+			return returnCountValue;
+		}else{
+			logger.info("No product found in order detail ");
+			logger.info("Quantity sum for all products is "+returnCountValue);
+			return 0;
+		}
 	}
 }

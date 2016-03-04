@@ -13,6 +13,7 @@ public class CSCockpitAutoshipTemplateUpdateTabPage extends CSCockpitRFWebsiteBa
 	private static String sortByDropDownLoc= "//div[@class='csResultsSortList']/select/option[text()='%s']";
 	private static final By PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN = By.xpath("//td[@class='z-button-cm'][text()='OK']");
 	private static final By UPDATE_AUTOSHIP_TEMPLATE = By.xpath("//td[contains(text(),'Update Autoship Template')]");
+	private static final By CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div");
 
 	protected RFWebsiteDriver driver;
 
@@ -28,6 +29,12 @@ public class CSCockpitAutoshipTemplateUpdateTabPage extends CSCockpitRFWebsiteBa
 	public void clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab(){
 		driver.waitForElementPresent(UPDATE_AUTOSHIP_TEMPLATE);
 		driver.click(UPDATE_AUTOSHIP_TEMPLATE);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCloseOfAddANewPaymentProfilePopup(){
+		driver.waitForElementPresent(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+		driver.click(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 

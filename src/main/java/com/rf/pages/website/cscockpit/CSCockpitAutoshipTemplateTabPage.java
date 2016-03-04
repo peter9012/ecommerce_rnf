@@ -90,7 +90,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By FIRST_UPDATE_LINK_OF_ORDER_DETAIL = By.xpath("//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[1]/td[9]//a[text()='Update']");
 	private static final By THRESHOLD_POPUP_FOR_ORDER_TOTAL = By.xpath("//div[@class='z-messagebox']");
 	private static final By ADD_CARD_BTN = By.xpath("//div[@class='csPaymentInfoLine']/following::td[text()='Add Card'][1]");
-	private static final By ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(@class,'csCardPaymentProfileCreatePopup')]");
 	private static final By CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'Add a New Payment Profile')]/div");
 	private static final By SELECT_BILLING_ADDRESS_ERROR_MSG = By.xpath("//span[contains(text(),'Please select Billing Address')]");
 	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
@@ -99,7 +98,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By DISABLED_EDIT_TEMPLATE = By.xpath("//td[text()='Edit Template']/ancestor::span[@style='display:none']");
 	private static final By CANCEL_AUTOSHIP_POPUP_ALERT = By.xpath("//div[text()='Cancel Autoship Popup']");
 	private static final By NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE = By.xpath("//div[@class='csConsecutiveOrders']/input");
-
+	private static final By NEXT_PC_PERKS_CART=By.xpath("//div[@class='csObjectPCPerksOrderContainer']//span[text()='Next PCPerks Cart']");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -939,11 +938,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public boolean isAddNewPaymentProfilePopup(){
-		driver.waitForElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
-		return driver.isElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
-	}
-
 	public void clickCloseOfAddANewPaymentProfilePopup(){
 		driver.waitForElementPresent(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
 		driver.click(CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP);
@@ -1077,5 +1071,14 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		return Integer.parseInt(driver.findElement(NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE).getAttribute("value"));
 	}
 
+	public boolean verifyNextPCPerksCartInAutoshipTemplateTab(){
+		return driver.isElementPresent(NEXT_PC_PERKS_CART);      
+	}
+
+	public String getPaymentInfoAddressNameFromAddressDropDown(){
+		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
+		String addressName = driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
+		return addressName;
+	}
 
 }

@@ -28,7 +28,6 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ACCOUNT_STATUS_ON_CUSTOMER_TAB_LOC = By.xpath("//span[contains(text(),'Account Status:')]/following::span[1]");
 	private static final By ADD_CARD_BTN = By.xpath("//span[contains(text(),'Billing Information')]/following::td[text()='ADD CARD']");
 	private static final By CREDIT_CARD_EDIT_BTN = By.xpath("//span[contains(text(),'Billing Information')]/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/tr[1]//td[text()='EDIT']");
-	private static final By ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]");
 	private static final By EDIT_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]");
 	private static final By SHIPPING_ADDRESS_EDIT_BUTTON = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/tr[1]//td[text()='Edit']");
 	private static final By EDIT_ADDRESS = By.xpath("//div[contains(text(),'Edit Address')]");
@@ -60,13 +59,6 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CLOSE_POPUP_OF_CREATE_NEW_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]/div[contains(@id,'close')]");
 	private static final By ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//span[contains(text(),'Address Cannot be added for Inactive user')]");
 	private static final By OK_BTN_OF_ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//td[text()='OK']");
-	private static final By ATTENDENT_NAME_TEXT_BOX = By.xpath("//span[text()='Attention']/following::input[1]");
-	private static final By CITY_TOWN_TEXT_BOX = By.xpath("//span[text()='City/Town']/following::input[1]");
-	private static final By POSTAL_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
-	private static final By COUNTRY_TEXT_BOX = By.xpath("//span[text()='Country']/following::input[1]");
-	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
-	private static final By PHONE_TEXT_BOX = By.xpath("//span[text()='Phone1']/following::input[1]");
-	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
 	private static final By NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='crpAutoship']/following::span[contains(text(),'PENDING')]/../../following::td[4]//span");
 	private static final By PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
 	private static final By PULSE_TEMPLATE_NEXT_DUE_DATE_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate']/../../..//span[contains(text(),'PENDING')]/../../following::td[4]//span");
@@ -172,11 +164,6 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean isEditButtonForCreditCardPresentInCustomerTab(){
 		driver.isElementPresent(CREDIT_CARD_EDIT_BTN);
 		return driver.isElementPresent(CREDIT_CARD_EDIT_BTN);  
-	}
-
-	public boolean isAddNewPaymentProfilePopupPresentInCustomerTab(){
-		driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);
-		return driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);  
 	}
 
 	public void clickEditButtonForCreditCardInCustomerTab(){
@@ -417,33 +404,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
-		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
-		driver.clear(ATTENDENT_NAME_TEXT_BOX);
-		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
-		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
-		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
-		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
-		logger.info("Address line 1 entered is "+addressLine);
-		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
-		driver.type(CITY_TOWN_TEXT_BOX, city);
-		logger.info("City entered is "+city);
-		driver.waitForElementPresent(POSTAL_TEXT_BOX);
-		driver.type(POSTAL_TEXT_BOX, postalCode);
-		logger.info("Postal code entered is "+postalCode);
-		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
-		driver.type(COUNTRY_TEXT_BOX, Country);
-		logger.info("Country entered is "+Country);
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
-		driver.type(PROVINCE_TEXT_BOX, province);
-		logger.info("Province entered is "+province);
-		driver.waitForElementPresent(PHONE_TEXT_BOX);
-		driver.type(PHONE_TEXT_BOX, phoneNumber);
-		logger.info("Phone number entered is "+phoneNumber);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
+	
 	public String getNextDueDateOfCRPAutoshipAndStatusIsPending(){
 		driver.waitForElementPresent(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE);
 		return driver.findElement(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE).getText();

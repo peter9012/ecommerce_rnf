@@ -3896,4 +3896,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//div[@id='search-results']"));
 	}
 
+	public void selectShipNextMonthOnCRPSummaryPage(){
+		driver.waitForElementPresent(By.xpath("//input[@id='next-month']"));
+		driver.click(By.xpath("//input[@id='next-month']"));
+		driver.pauseExecutionFor(1500);
+	}
+
 }

@@ -153,7 +153,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1807:To verify that cscommissionadmin can Edit Autoship for consultant and PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSComissionCanEditAutoshipForConsultantAndPC_1807(){ 
 		String randomCustomerSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -410,5 +410,167 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.IsPageTabSelected("Autoship Template"), "We are here on Autoship Template Tab");
 		s_assert.assertAll();
+	}
+
+	//Hybris Project-1808:To verify that cssalessupervisory can Edit Autoship for consultant and PC
+	@Test(enabled=false)//WIP
+	public void testVerifyCSSalesSupervisoryCanEditAutoshipForConsultantAndPC_1808(){ 
+		String randomCustomerSequenceNumber = null;
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		String accountID=null;
+		String pcEmailID=null;
+		//----------------------------------------
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB); 
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			pcEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else{
+				break;
+			}
+		}
+		logout();
+		logger.info("emaild of consultant username "+pcEmailID);
+		driver.get(driver.getCSCockpitURL()); 
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyNextPCPerksCartInAutoshipTemplateTab(),"Next PC Perks cart link is not on Autoship template Tab Page");
+		//Update quantity of product in autoship template and verify it.
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProduct(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
+		String count=cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("2");
+		String qty=Integer.toString(Integer.parseInt(count)+9);
+		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct(qty);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("2").equals(qty), "qty of product has not been updated");
+		//Remove Product from autoship template and verify it.
+		int countofDistinctProduct=cscockpitAutoshipTemplateTabPage.getCountOfProductInAutoshipTemplateTabPage();
+		cscockpitAutoshipTemplateTabPage.clickRemoveLinkToRemoveProductFromAutoshipCart();
+		int newCountofDistinctProduct=cscockpitAutoshipTemplateTabPage.getCountOfProductInAutoshipTemplateTabPage();
+		s_assert.assertTrue(!(newCountofDistinctProduct==countofDistinctProduct), "product has not been successfully removed from autoship cart");
+		//Add product to autoship cart and verify it.
+		int totalQtyBefore=cscockpitAutoshipTemplateTabPage.getQuantityOfAllProductInAutoshipTemplateTabPage();
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
+		//String qtyOfProduct =  cscockpitAutoshipCartTabPage.getQtyOfProductAddedInToCart(SKUValue);
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(TestConstants.CARD_NUMBER,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum,TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		int totalQtyAfter=cscockpitAutoshipTemplateTabPage.getQuantityOfAllProductInAutoshipTemplateTabPage();
+		s_assert.assertTrue(!(totalQtyAfter==totalQtyBefore), "Product has not been successfully added to cart");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1813:To verify the cscommissionadmin can do Sales Override
+	@Test(enabled=false)//WIP
+	public void testVerifyCSCommissionAdminCanDoSalesOverride_1813() throws InterruptedException{ 
+		String randomCustomerSequenceNumber = null;
+		RFO_DB = driver.getDBNameRFO();
+		String priceValue = "500";
+		String cvValue = "500";
+		String qvValue = "500";
+		String delCost = "20";
+		String handCost = "5";
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		String consultantEmailID=null;
+		String accountID=null;
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("login is successful");
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		String cid = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+
+		driver.get(driver.getCSCockpitURL());
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
+		cscockpitOrderSearchTabPage.enterCIDInOrderSearchTab(cid);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		String randomSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String orderNumber=cscockpitOrderSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomSequenceNumber);
+		int previousCount=cscockpitOrderTabPage.getQuantityOfAllProductInOrderTabPage();
+		cscockpitOrderTabPage.clickPlaceAnOrderButtonInOrderTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		String randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		String SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPerformSooButton();
+		cscockpitCheckoutTabPage.enterPriceValueInSalesOrderOverridePopUp(priceValue);
+		cscockpitCheckoutTabPage.enterCVValueInSalesOrderOverrridePoPuP(cvValue);
+		cscockpitCheckoutTabPage.enterQVValueInSalesOrderOvverridePopUp(qvValue);
+		cscockpitCheckoutTabPage.enterDeliveryCostsInSalesOrderOvverridePopUp(delCost);
+		cscockpitCheckoutTabPage.enterHandlingCostsInSalesOrderOvveridePOpUp(handCost);
+		cscockpitCheckoutTabPage.selectOverrideReasonSooDept();
+		cscockpitCheckoutTabPage.selectOverrideReasonSooType();
+		cscockpitCheckoutTabPage.selectOverrideReasonSooReason();
+		cscockpitCheckoutTabPage.clickUpdateButtonSalesOverridePopUp();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
+		String newlyPlacedOrderNumber = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
+		int newCount=cscockpitOrderTabPage.getQuantityOfAllProductInOrderTabPage();
+		s_assert.assertTrue(!(newCount==previousCount), "Product has not been successfully added to order detail in order tab");
+		cscockpitOrderTabPage.clickCustomerTab();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(newlyPlacedOrderNumber).contains("Override Order"),"This is not Override Order");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(newlyPlacedOrderNumber.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
+		s_assert.assertAll();
+		logout();
 	}
 }

@@ -26,6 +26,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static String orderSectionLoc ="//div[text()='%s']";
 	public static String addedOrderNoteLoc = "//span[contains(text(),'%s')]";
 	public static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
+	public static String viewOrderBtnLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]//td[contains(text(),'View Orders')]";
 
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
@@ -72,6 +73,16 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By CREATE_AUTOSHIP_TEMPLATE_BTN = By.xpath("//td[contains(text(),'Create Autoship Template')]");
 	private static final By ADD_NEW = By.xpath("//span[text()='Payment']/following::td[contains(text(),'Add New')]");
 	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
+	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
+	private static final By ATTENDENT_NAME_TEXT_BOX = By.xpath("//span[text()='Attention']/following::input[1]");
+	private static final By CITY_TOWN_TEXT_BOX = By.xpath("//span[text()='City/Town']/following::input[1]");
+	private static final By POSTAL_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
+	private static final By COUNTRY_TEXT_BOX = By.xpath("//span[text()='Country']/following::input[1]");
+	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
+	private static final By PHONE_TEXT_BOX = By.xpath("//span[text()='Phone1']/following::input[1]");
+	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
+	private static final By ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]");
+	private static final By ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(@class,'csCardPaymentProfileCreatePopup')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -704,6 +715,60 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 
 	public void enterCreditCardNumberInPaymentProfilePopup(){
 		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+	}
+
+	public void clickViewOrderBtn(String customerSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(viewOrderBtnLoc, customerSequenceNumber)));
+		driver.click(By.xpath(String.format(viewOrderBtnLoc, customerSequenceNumber)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+
+	public void clickAddANewAddressOfAddANewPaymentProfilePopup(){
+		driver.waitForElementPresent(ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP);
+		driver.click(ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterCVVNumberInPaymentProfilePopup(){
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+	}	
+
+	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+		driver.clear(ATTENDENT_NAME_TEXT_BOX);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
+		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+		logger.info("Address line 1 entered is "+addressLine);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+		driver.type(CITY_TOWN_TEXT_BOX, city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(POSTAL_TEXT_BOX);
+		driver.type(POSTAL_TEXT_BOX, postalCode);
+		logger.info("Postal code entered is "+postalCode);
+		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+		driver.type(COUNTRY_TEXT_BOX, Country);
+		logger.info("Country entered is "+Country);
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+		driver.type(PROVINCE_TEXT_BOX, province);
+		logger.info("Province entered is "+province);
+		driver.waitForElementPresent(PHONE_TEXT_BOX);
+		driver.type(PHONE_TEXT_BOX, phoneNumber);
+		logger.info("Phone number entered is "+phoneNumber);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isAddNewPaymentProfilePopupPresentInCustomerTab(){
+		driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);
+		return driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);  
+	}
+
+	public boolean isAddNewPaymentProfilePopup(){
+		driver.waitForElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+		return driver.isElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
 	}
 
 }

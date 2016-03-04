@@ -16,6 +16,7 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipSearchResultsLoc = "//div[@class='csSearchResults']//div[@class='z-listbox-header']//table/tbody[2]//div[contains(text(),'%s')]";
 	private static String lastOrderStatusResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[11]//span";
 	private static String lastOrderNumberLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[10]//a";
+	public static String viewOrderPopupValuesLoc = "//div[contains(@class,'z-window-modal-cnt-noborder')]//div[text()='%s']";
 
 	private static final By SEARCH_BY_FIELD_LOC = By.xpath("//span[text()='Search By:']//ancestor::div[1]");
 	private static final By TEMPLATE_TYPE_FIELD_LOC = By.xpath("//span[text()='Template Type:']//ancestor::div[1]");
@@ -40,6 +41,8 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE = By.xpath("//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr");
 	private static final By CALENDER_ICON__FOR_ALL_DUE_DATE = By.xpath("//img[@class='z-datebox-img']/../ancestor::span[@style='display: none;']");
 	private static final By TEMPLATE_NUMBER_INPUT_TXT = By.xpath("//span[contains(text(),'Template Number')]/following::input[1]");
+	private static final By VIEW_ORDER_POP = By.xpath("//div[@class='z-window-modal-header']//div");
+	private static final By CLOSE_BTN_VIEW_ORDER_POPUP = By.xpath("//div[@class='z-window-modal-header']//div");
 
 	protected RFWebsiteDriver driver;
 
@@ -200,6 +203,24 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void enterTemplateNumber(String number){
 		driver.waitForElementPresent(TEMPLATE_NUMBER_INPUT_TXT);
 		driver.type(TEMPLATE_NUMBER_INPUT_TXT, number);
+	}
+
+	public boolean isViewOrderPopupPresent(){
+		driver.waitForElementPresent(VIEW_ORDER_POP);
+		return driver.isElementPresent(VIEW_ORDER_POP);
+	}
+
+
+	public boolean verifyViewOrderPopupValues(String value){
+		driver.waitForElementPresent(By.xpath(String.format(viewOrderPopupValuesLoc, value)));
+		return driver.isElementPresent(By.xpath(String.format(viewOrderPopupValuesLoc, value)));
+	}
+
+
+	public void clickCloseOfViewOrderDetailPopup(){
+		driver.waitForElementPresent(CLOSE_BTN_VIEW_ORDER_POPUP);
+		driver.click(CLOSE_BTN_VIEW_ORDER_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

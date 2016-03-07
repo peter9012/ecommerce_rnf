@@ -43,6 +43,7 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By TEMPLATE_NUMBER_INPUT_TXT = By.xpath("//span[contains(text(),'Template Number')]/following::input[1]");
 	private static final By VIEW_ORDER_POP = By.xpath("//div[@class='z-window-modal-header']//div");
 	private static final By CLOSE_BTN_VIEW_ORDER_POPUP = By.xpath("//div[@class='z-window-modal-header']//div");
+	private static final By SELECT_ALL_LINKS = By.xpath("//a[text()='Select All']");
 
 	protected RFWebsiteDriver driver;
 
@@ -221,6 +222,11 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(CLOSE_BTN_VIEW_ORDER_POPUP);
 		driver.click(CLOSE_BTN_VIEW_ORDER_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifySelectAllLinkIsPresentInOrderSearchTab(){
+		driver.waitForElementPresent(SELECT_ALL_LINKS);
+		return driver.isElementPresent(SELECT_ALL_LINKS);
 	}
 
 }

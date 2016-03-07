@@ -2450,66 +2450,163 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-//--
-	
+	//--
+
 	//Hybris Project-4658:Place an adhoc order for RC user enrolled without creating an order
-	 @Test
-	 public void testPlaceAnAdhocOrderForRCUserEnrolledWithoutCreatingAnOrder_4658() throws InterruptedException{
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String firstName=TestConstants.FIRST_NAME+randomNum;
-	  String country = driver.getCountry();
-	    
-	  if(country.equalsIgnoreCase("CA")){
-	   kitName = TestConstants.KIT_NAME_PERSONAL;    
-	   addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-	   city = TestConstants.CITY_CA;
-	   postalCode = TestConstants.POSTAL_CODE_CA;
-	   phoneNumber = TestConstants.PHONE_NUMBER_CA;
-	  }else{
-	   kitName = TestConstants.KIT_NAME_PERSONAL;
-	   addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-	   city = TestConstants.NEW_ADDRESS_CITY_US;
-	   postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-	   phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-	  }
-	  storeFrontHomePage = new StoreFrontHomePage(driver);
-	  storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
-	  storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
-	  storeFrontHomePage.clickSignUpnowOnbizSite();
-	  storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
-	  storeFrontHomePage.clickOnWelcomeDropDown();
-	  storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-	  storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
-	     storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
-	     storeFrontAccountInfoPage.clickSaveAccountBtn();
-	     s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"updation message not appeared");
-	     storeFrontHomePage.clickOnWelcomeDropDown();
-	     storeFrontShippingInfoPage = storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
-	     storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-	     storeFrontShippingInfoPage.enterNewShippingAddressName(firstName+" "+TestConstants.LAST_NAME+randomNum);
-	     storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
-	     storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-	     storeFrontShippingInfoPage.selectNewShippingAddressState();
-	     storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
-	     storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
-	     storeFrontShippingInfoPage.clickOnSaveShippingProfile();
-	     storeFrontHomePage.clickOnWelcomeDropDown();
-	     storeFrontBillingInfoPage = storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-	     storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	     storeFrontBillingInfoPage.enterNewBillingNameOnCard(firstName);
-	     storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH,TestConstants.CARD_EXP_YEAR);
-	     storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	     storeFrontBillingInfoPage.selectNewBillingCardAddress();
-	     storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-	     storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	     storeFrontHomePage.clickAddToBagButtonWithoutFilter();
-	     storeFrontHomePage.clickOnCheckoutButton();
-	     storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-	     storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-	     storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-	     storeFrontHomePage.clickOnBillingNextStepBtn();
-	     storeFrontHomePage.clickPlaceOrderBtn();
-	     s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "order is not placed successfully");
-	  s_assert.assertAll();
-	 }
+	@Test
+	public void testPlaceAnAdhocOrderForRCUserEnrolledWithoutCreatingAnOrder_4658() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String country = driver.getCountry();
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
+		storeFrontHomePage.clickSignUpnowOnbizSite();
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
+		storeFrontAccountInfoPage.clickSaveAccountBtn();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"updation message not appeared");
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
+		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
+		storeFrontShippingInfoPage.enterNewShippingAddressName(firstName+" "+TestConstants.LAST_NAME+randomNum);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
+		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontHomePage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(firstName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH,TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
+		storeFrontHomePage.clickOnCheckoutButton();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "order is not placed successfully");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-3990:Search with CA Pending consultnat's Full name/Account ID
+	@Test
+	public void testSearchWithCAPendingConsultantFullNameOrAccountID_3990()	{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> pendingUserList =  null;
+			String accountIDPendingUser=null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			pendingUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACCOUNT_ID_FOR_PENDING_USER,RFO_DB);
+			accountIDPendingUser=(String.valueOf(getValueFromQueryResult(pendingUserList, "AccountID")));
+			//Navigate to find A Consultant page..
+			storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
+			//search with Consultant's first Name
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountIDPendingUser);
+			//verify 'No Result found' is displayed
+			s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Result shown for pending user!!!");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	//Hybris Project-3994:Search with US Pending consultnat's Full name
+	@Test
+	public void testSearchWithUSPendingConsultantFullNameOrAccountID_3994()	{
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			RFO_DB = driver.getDBNameRFO(); 
+			List<Map<String, Object>> pendingUserList =  null;
+			String accountIDPendingUser=null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			pendingUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACCOUNT_ID_FOR_PENDING_USER,RFO_DB);
+			accountIDPendingUser=(String.valueOf(getValueFromQueryResult(pendingUserList, "AccountID")));
+			//Navigate to find A Consultant page..
+			storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
+			//search with Consultant's first Name
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountIDPendingUser);
+			//verify 'No Result found' is displayed
+			s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Result shown for pending user!!!");
+			s_assert.assertAll();
+		}
+		else{
+			logger.info("NOT EXECUTED...Test is ONLY for US env");
+		}
+	}
+
+	//Hybris Project-1907:To verify JOIN MY TEAM functionality in edit meet the consultant page from biz site
+	@Test
+	public void testToVerifyJOINMyTeamFunctionalityInEditMeetTheConsultantPageFromBizSite_1907() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String sRandName = RandomStringUtils.randomAlphabetic(12);
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.clickOnJoinMyTeamBtn();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll();
+	}
 }

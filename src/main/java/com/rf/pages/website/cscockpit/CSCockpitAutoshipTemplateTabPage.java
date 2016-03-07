@@ -22,6 +22,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static String nextDelayautoshipdateFromPopup = "//label[contains(text(),'%s Days from next ship date')]";
 	private static String ProductCountOnAutoshipTemplateLoc ="//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[%s]/td[8]/div/input";
 	private static String allAboveTabOfCSCockpit = "//span[text()='%s']/ancestor::li";
+	private static String addressValuesInPaymentProfilePopup = "//span[text()='%s']";
 
 	private static final By NEXT_CRP_CART_LINK=By.xpath("//div[@class='csObjectCRPOrderContainer']//span[text()='Next CRP Cart']");
 	private static final By SHIPPING_ADDRESS_NAME = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following::div[1]/span");
@@ -99,6 +100,10 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By CANCEL_AUTOSHIP_POPUP_ALERT = By.xpath("//div[text()='Cancel Autoship Popup']");
 	private static final By NUMBER_OF_CONSECUTIVE_AUTOSHIP_ORDERS_FROM_TEMPLATE = By.xpath("//div[@class='csConsecutiveOrders']/input");
 	private static final By NEXT_PC_PERKS_CART=By.xpath("//div[@class='csObjectPCPerksOrderContainer']//span[text()='Next PCPerks Cart']");
+	private static final By EDIT_PAYMENT_INFO = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//td[text()='Edit']");
+	private static final By CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div");
+	private static final By EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//a[text()='Edit Address']");
+	private static final By FIRST_CREDIT_CARD_PAYMENT_INFO = By.xpath("//body/div[3]//tbody//tr[2]/td[2]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -1079,6 +1084,35 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
 		String addressName = driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
 		return addressName;
+	}
+
+	public void clickEditUnderPaymentInfoSection(){
+		driver.waitForElementPresent(EDIT_PAYMENT_INFO);
+		driver.click(EDIT_PAYMENT_INFO);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCloseOfEditPaymentProfilePopup(){
+		driver.waitForElementPresent(CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.click(CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickEditAddressInEditPaymentProfilePopup(){
+		driver.click(EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isAddressValuesPresentInPaymentProfilePopup(String addressValue){
+		driver.waitForElementPresent(By.xpath(String.format(addressValuesInPaymentProfilePopup, addressValue)));
+		return driver.isElementPresent(By.xpath(String.format(addressValuesInPaymentProfilePopup, addressValue)));
+	}
+
+	public void clickFirstCreditCardInPaymentAddressDropDown(){
+		driver.waitForElementPresent(FIRST_CREDIT_CARD_PAYMENT_INFO);
+		driver.click(FIRST_CREDIT_CARD_PAYMENT_INFO);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 }

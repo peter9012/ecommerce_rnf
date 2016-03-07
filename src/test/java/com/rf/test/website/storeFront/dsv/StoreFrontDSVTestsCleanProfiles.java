@@ -15,7 +15,7 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 	public void cleanAllBillingProfilesConsultant() throws Exception{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
@@ -27,7 +27,7 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 	public void cleanAllBillingProfilesPC() throws Exception{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
@@ -39,7 +39,7 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 	public void cleanAllBillingProfilesRC() throws Exception{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		dsvStoreFrontHomePage.clickWelcomeDropDown();

@@ -3902,4 +3902,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(1500);
 	}
 
+	public String getPriceInformationOfProductsOnProductsPage(){
+		driver.quickWaitForElementPresent(By.xpath("//p[@class='prices']"));
+		return driver.findElement(By.xpath("//p[@class='prices']")).getText();
+	}
+
 }

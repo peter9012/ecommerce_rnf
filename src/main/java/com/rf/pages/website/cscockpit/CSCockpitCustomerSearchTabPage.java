@@ -34,6 +34,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
 	private static final By TOTAL_NUMBER_OF_PAGES = By.xpath("//div[@class='csToolbar']/div/table/tbody//td[6]//span");
 	private static final By CID_LINK_SECTION_LOCATOR = By.xpath("//div[contains(@class,'listbox-body')]/table/tbody[2]/tr[1]/td[1]//a");
+	private static final By SEARCH_AUTOSHIP_BTN = By.xpath("//td[text()='Search Autoship']");
 
 	protected RFWebsiteDriver driver;
 
@@ -203,6 +204,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		logger.info("Selected Customer status is = "+status);
 		return status.trim();
 	}
+
 	public String getCIDNumberInCustomerSearchTab(int size){
 		String cid=null;
 		String status=null;
@@ -216,5 +218,13 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 			}}
 		logger.info("Fetched cid is = "+cid);
 		return cid.trim();
+	}
+
+	public void clickSearchAutoshipBtn(){
+		driver.waitForElementPresent(SEARCH_AUTOSHIP_BTN);
+		driver.click(SEARCH_AUTOSHIP_BTN);
+		logger.info("Search Autoship button clicked");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 }

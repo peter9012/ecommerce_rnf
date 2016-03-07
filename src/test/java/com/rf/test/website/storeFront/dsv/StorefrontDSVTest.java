@@ -34,7 +34,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testUserAccountLoginAsConsultant_5314(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -51,7 +51,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String secondProductRetailPrice=null;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -75,6 +75,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 			dsvStoreFrontAutoshipCartPage = dsvStoreFrontQuickShopPage.clickAddToCRPForSecondProduct();
 			dsvStoreFrontAutoshipCartPage.addQuantityOfProduct(secondProductRetailPrice, quantityOfProduct);
 			dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(secondProductRetailPrice);
+			dsvStoreFrontAutoshipCartPage.clickRemoveProduct(firstProductRetailPrice);
 			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(secondProductRetailPrice), secondProductRetailPrice+" is not removed from the cart");
 		}
 		else{
@@ -89,7 +90,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testFilteringAllProductsOnEditCRPAutoshipTemplate_5316(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -124,7 +125,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String lName = "RFTestU"+randomNum;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -154,7 +155,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -183,7 +184,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -210,7 +211,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		String name1 = fName+" "+lName1;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -233,7 +234,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();	
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -251,7 +252,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL(); 
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -282,7 +283,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -312,7 +313,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -341,7 +342,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_PC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_PC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -364,7 +365,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();		
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertFalse(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "RC is on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -383,7 +384,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();  
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertFalse(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "RC is on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -415,7 +416,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "RC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -445,7 +446,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertFalse(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "RC is on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -474,7 +475,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_RC_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_RC_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertFalse(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "RC is on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -497,7 +498,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testAccessBizAndComWithNonSecureURL_5332(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
@@ -514,7 +515,7 @@ public class StorefrontDSVTest extends RFWebsiteBaseTest{
 	public void testAccessBizAndComWithSecureURL_5333(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.clickLoginLink();
-		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_USERNAME);
+		dsvStoreFrontHomePage.enterUsername(TestConstants.DSV_CONSULTANT_EMAILID);
 		dsvStoreFrontHomePage.enterPassword(TestConstants.DSV_CONSULTANT_PASSWORD);
 		dsvStoreFrontHomePage.clickLoginBtn();
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());

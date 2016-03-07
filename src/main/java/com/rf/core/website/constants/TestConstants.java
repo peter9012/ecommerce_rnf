@@ -390,15 +390,18 @@ public class TestConstants {
 	public static final String NEW_EMAIL_ADDRESS_SUFFIX = "@xyp.com";
 
 	//PRODUCTION DSV DATA
-	public static final String DSV_CONSULTANT_USERNAME = "rftestcon1125@mailinator.com";
+	public static final String DSV_CONSULTANT_EMAILID = "rftestcon1125@mailinator.com";
 	public static final String DSV_CONSULTANT_PASSWORD = "test1234";
+	public static final String DSV_CONSULTANT_CID = "06386788";
 
-	public static final String DSV_PC_USERNAME = "rftestpc1125@mailinator.com";
+	public static final String DSV_PC_EMAILID = "rftestpc1125@mailinator.com";
 	public static final String DSV_PC_PASSWORD = "test1234";
+	public static final String DSV_PC_CID = "06386790";
 
-	public static final String DSV_RC_USERNAME = "rftestlast@mailinator.com";
+	public static final String DSV_RC_EMAILID = "rftestlast@mailinator.com";
 	public static final String DSV_RC_PASSWORD = "test1234";
-
+	public static final String DSV_RC_CID = "06368553";
+	
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 
@@ -412,6 +415,7 @@ public class TestConstants {
 	//public static final String DSV_CARD_NUMBER = "379622509583005";
 	public static final String DSV_CARD_NUMBER = "379064060092003";	
 	public static final String DSV_EXPIRY_MONTH = "SEP";
+	public static final String DSV_EXPIRY_MONTH_NUMBER = "09";
 	public static final String DSV_EXPIRY_YEAR = "2019";
 
 	public static final String DSV_CANADIAN_SPONSOR_WITH_PWS = "Erica MacKinnon";
@@ -425,6 +429,10 @@ public class TestConstants {
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
+	
+	//DSV CSCOCKPIT
+	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";
+	public static final String DSV_CSCOCKPIT_PASSWORD = "csr@user";
 
 	//CSCockpit Constants
 
@@ -483,6 +491,7 @@ public class TestConstants {
 	public static final String CRM_NEW_PROFILENAME_CA = "NewProfileCA";
 
 }
+
 
 
 

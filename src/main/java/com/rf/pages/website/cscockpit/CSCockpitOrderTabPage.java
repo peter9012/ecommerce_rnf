@@ -101,6 +101,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By UPDATE_BTN_IN_COMMISSION_INFO  = By.xpath("//span[contains(text(),'Commission Info')]/following::div[@class='csWidgetContent'][1]//td[contains(text(),'Update')]");
 	private static final By ONLY_TAX_RETURN_VALUE_IN_RETURN_REQUEST = By.xpath("//div[text()='Only Tax Returned']/following::table[1]//tbody[2]//tr[2]/td[4]//span");
 	private static final By RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP = By.xpath("//label[contains(text(),'Return Only tax')]/preceding::input[1]");
+	private static final By GET_SKU_VALUE_ORDER_DETAIL=By.xpath("//div[@class='csWidgetMasterDetailListboxCellLine1']/span");
 
 	protected RFWebsiteDriver driver;
 
@@ -616,5 +617,31 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 			logger.info("Quantity sum for all products is "+returnCountValue);
 			return 0;
 		}
+	}
+
+	public boolean checkReturnCompleteOrderAndChkShippingChkBoxOnRefundPopUpAndReturnTrueElseFalse(){
+		driver.waitForElementPresent(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);
+		if(driver.isElementPresent(By.xpath("//span[contains(text(),'This Order was placed over 120 days ago')]")) || driver.isElementPresent(By.xpath("//div[@class='rmanumber']/a[contains(text(),'RMA')]"))==false){
+			driver.click(RETURN_COMPLETE_ORDER_CHKBOX_REFUND_POPUP);
+			logger.info("Return Complete Order checkbox clicked");
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			return true;
+		}
+		else{
+			driver.click(RETURN_SHIPPING_CHKBOX_REFUND_POPUP);
+			logger.info("Return Shipping checkbox clicked");
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			driver.click(RETURN_HANDLING_CHKBOX_REFUND_POPUP);
+			logger.info("Return Handling checkbox clicked");
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
+		return false;
+	}
+
+	public String getSKUValueOfExistingProduct(){
+		driver.waitForElementPresent(GET_SKU_VALUE_ORDER_DETAIL);
+		String skuValue=driver.findElement(GET_SKU_VALUE_ORDER_DETAIL).getText().split("\\-")[0];
+		logger.info("Sku Value Of Product is "+skuValue);
+		return skuValue;
 	}
 }

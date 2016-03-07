@@ -461,7 +461,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			return false;
 		}
 	}
-
+	
 	public String convertPSTDateToNextDueDateFormat(String date){
 		String completeDate[] = date.split(" ");
 		String year =completeDate[2];
@@ -530,7 +530,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
-
+	
 	public void clickSaveAddNewPaymentProfilePopUP() {
 		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
 		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
@@ -676,6 +676,34 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, securityCode);
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+	
+	public void enterBillingInfo(String profileName,String cardNumber,String cardType,String securityCode,String expMonth,String expYear){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+cardType+"']"));
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+expMonth+"']"));
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+expYear+"']"));
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, securityCode);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+	
+	public void enterBillingInfoWithoutSelectingAddress(String profileName,String cardNumber,String cardType,String securityCode,String expMonth,String expYear){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+cardType+"']"));
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+expMonth+"']"));
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath("//td[text()='"+expYear+"']"));
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, securityCode);		
 	}
 
 	public void enterBillingInfoWithoutSelectAddress(String profileName){

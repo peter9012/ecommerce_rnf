@@ -2656,4 +2656,75 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-1815:To verify cancel Pulse
+	@Test(enabled=false)//WIP
+	public void testVerifyPulse_1815() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		String consultantEmailID=null;
+		String accountId=null;
+
+
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		} 
+		logout();
+		logger.info("emaild of Consultant user "+consultantEmailID);
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Different Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page for US");
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerOrderSectionInCustomerTab(),"Customer Order section is not on Customer Tab Page for US");
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerBillingInfoSectionInCustomerTab(),"Customer Billing Info section is not on Customer Tab Page for US");
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerAddressSectionInCustomerTab(),"Customer Address section is not on Customer Tab Page for US");
+		String autoshipId=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isCancelAutoshipPopupAlertPresent(), "Cancel Autoship Popup is not Present");
+		cscockpitAutoshipTemplateTabPage.clickCancelButtonOfCancelAutoshipTemplatePopup();
+		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.isCancelAutoshipPopupAlertPresent(), "Cancel Autoship Popup is Present after clicking cancel button");
+		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+		cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link is present after cancelling Autoship");
+		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		String statusAfterAutoshipCancelled=cscockpitCustomerTabPage.getStatusOfAutoShipIdForCRPAutoshipTypeFromAutoshipTemplate(autoshipId);
+		s_assert.assertTrue(statusAfterAutoshipCancelled.equals("Cancelled"),"Autoship status after cancelled autoship is not cancelled for US");
+		cscockpitCustomerTabPage.clickAutoshipIDHavingTypeAsPCAutoshipAndStatusAsCancelled(autoshipId);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link is present after cancelling Autoship");
+		cscockpitAutoshipTemplateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnYourAccountDropdown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "Login is successful with autoship cancelled PC user");
+		s_assert.assertAll();
+		logout();
+	}
+
 }

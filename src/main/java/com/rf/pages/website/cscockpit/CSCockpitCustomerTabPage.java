@@ -1,8 +1,12 @@
 package com.rf.pages.website.cscockpit;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 
@@ -20,6 +24,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipIdStatusLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'pcAutoship')]/following::span[1]";
 	private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
 	private static String autoshipTemplateID = "//span[contains(text(),'Autoship Templates')]/following::a[text()='%s']";
+	private static String autoshipIdStatusForCustomerLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'crpAutoship')]/following::span[1]";
 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
@@ -153,6 +158,21 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean isAddCardButtonPresentInCustomerTab(){
 		driver.isElementPresent(ADD_CARD_BTN);
 		return driver.isElementPresent(ADD_CARD_BTN);  
+	}
+
+	public boolean isBillingListContainsBillingName(String billingProfileName){
+		List<WebElement> allBillingProfiles=driver.findElements(By.xpath("//span[text()='Billing Information']/following::tr[contains(@class,'csListItem')]/td[2]/div"));
+		for(WebElement billingProfile : allBillingProfiles){
+			if(billingProfile.getText().contains(billingProfileName)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void clickEditBtnForTheBillingProfile(String billingProfile){
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'"+billingProfile+"')]/following::td[text()='EDIT'][1]"));
+		driver.click(By.xpath("//div[contains(text(),'"+billingProfile+"')]/following::td[text()='EDIT'][1]"));
 	}
 
 	public void clickAddCardButtonInCustomerTab(){
@@ -404,7 +424,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	
+
 	public String getNextDueDateOfCRPAutoshipAndStatusIsPending(){
 		driver.waitForElementPresent(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE);
 		return driver.findElement(NEXT_DUE_DATE_OF_AUTOSHIP_TEMPLATE).getText();
@@ -483,6 +503,30 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath(String.format(autoshipTemplateID, id)));
 		driver.click(By.xpath(String.format(autoshipTemplateID, id)));
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isPulseTemplateAutoshipIDHavingStatusIsPendingPresent(){
+		driver.waitForElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
+		String autoshipID = driver.findElement(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		return driver.isElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
+	}
+
+	public String getStatusOfAutoShipIdForCRPAutoshipTypeFromAutoshipTemplate(String autoshipId){
+		driver.waitForElementPresent(By.xpath(String.format(autoshipIdStatusForCustomerLoc, autoshipId)));
+		String autoshipIDStatus = driver.findElement(By.xpath(String.format(autoshipIdStatusForCustomerLoc, autoshipId))).getText();
+		logger.info("Autoship id status from CS cockpit UI Is"+autoshipIDStatus);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipIDStatus;
+	}
+
+	public String getEmailAddressFromTopSectionInCustomerTabPage(){
+		driver.waitForElementPresent(By.xpath("//div[@class='csObjectCustomerContainer']//span[contains(text(),'Email')]/following-sibling::span[1]"));
+		return driver.findElement(By.xpath("//div[@class='csObjectCustomerContainer']//span[contains(text(),'Email')]/following-sibling::span[1]")).getText();
+	}
+
+	public String getUserNameAndCIDStringFromTopSectionInCustomerTabPage(){
+		return driver.findElement(By.xpath("//div[@class='csObjectCustomerContainer']/descendant::span[contains(@class,'csCustomerNameLabelValue')][1]")).getText();
 	}
 
 }

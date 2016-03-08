@@ -29,13 +29,10 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CV2_TEXT_FIELD_LOC = By.xpath("//input[@class='z-textbox']");
 	private static final By USE_THIS_CARD_BUTTON_LOC = By.xpath("//td[contains(text(),'Use this card')]");
 	private static final By CREDIT_CARD_VALIDATION_FAILED_OK_LOC = By.xpath("//td[contains(text(),'OK')]");
-	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
 	private static final By POSTAL_CODE_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
 	private static final By CLOSE_POPUP_OF_PAYMENT_ADDRESS = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
 	private static final By POPUP_SAVE_BUTTON = By.xpath("//td[text()='SAVE']");
-	private static final By POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/following::span[2]");
-	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
 	private static final By ADD_NEW_ADDRESS = By.xpath("//span[text()='Delivery Address']/following::td[contains(text(),'New Address')]");
 	private static final By CLOSE_POPUP_OF_DELIVERY_ADDRESS = By.xpath("//div[contains(text(),'Create Delivery Address')]/div[contains(@id,'close')]");
 	private static final By DELIVERY_ADDRESS_POPUP_SAVE_BUTTON = By.xpath("//td[text()='Create new address']");
@@ -181,14 +178,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
-	public void clickAddNewAddressLinkInPopUpInCheckoutTab(){
-		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(ADD_NEW_ADDRESS_LINK);
-		driver.click(ADD_NEW_ADDRESS_LINK);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-
 	public boolean verifyAddressTextBoxInPopUpInCheckoutTab(){
 		driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
 		return driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
@@ -214,11 +203,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		logger.info("Save button clicked after entering billing and shipping address. ");
 		driver.pauseExecutionFor(4000);
-	}
-
-	public String getErrorMessageOfPopupWithoutFillingDataInCheckoutTab(){
-		driver.waitForElementPresent(POPUP_ERROR_TEXT);
-		return driver.findElement(POPUP_ERROR_TEXT).getText();
 	}
 
 	public void enterPaymentDetailsInPopUpInCheckoutTab(String cardNumber,String nameOnCard,String securityCode,String month,String year,String cardType){
@@ -255,37 +239,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath(String.format(selectYearDDLoc, year)));
 		logger.info("new billing year selected as "+year);
-	}
-
-	public void enterShippingDetailsInPopUpInCheckoutTab(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
-		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
-		driver.clear(ATTENDENT_NAME_TEXT_BOX);
-		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
-		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
-		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
-		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
-		logger.info("Address line 1 entered is "+addressLine);
-		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
-		driver.type(CITY_TOWN_TEXT_BOX, city);
-		logger.info("City entered is "+city);
-		driver.waitForElementPresent(POSTAL_TEXT_BOX);
-		driver.type(POSTAL_TEXT_BOX, postalCode);
-		logger.info("Postal code entered is "+postalCode);
-		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
-		driver.type(COUNTRY_TEXT_BOX, Country);
-		logger.info("Country entered is "+Country);
-		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
-		driver.type(PROVINCE_TEXT_BOX, province);
-		logger.info("Province entered is "+province);
-		driver.waitForElementPresent(PHONE_TEXT_BOX);
-		driver.type(PHONE_TEXT_BOX, phoneNumber);
-		logger.info("Phone number entered is "+phoneNumber);
-
-	}
-
-	public String getNewBillingAddressNameInCheckoutTab(){
-		driver.waitForElementPresent(NEW_BILLING_ADDRESS);
-		return driver.findElement(NEW_BILLING_ADDRESS).getText();
 	}
 
 	public void clickCloseOfDeliveryAddressPopUpInCheckoutTab(){

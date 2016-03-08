@@ -1294,4 +1294,69 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 		logout();
 	}
+
+	//Hybris Project-1821:To verify that admin can place order
+	@Test(enabled=false)//WIIP
+	public void testVerifyAdminCanPlaceOrder_1821() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String consultantEmailID = null;
+		String SKUValue = null;
+		String orderNumber = null;
+		String orderHistoryNumber = null;
+		String accountId = null;
+		String cardNumber=TestConstants.CARD_NUMBER;
+		String profileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String securityCode=TestConstants.SECURITY_CODE;
+		RFO_DB = driver.getDBNameRFO();
+
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful"); 
+		logout(); 
+		driver.get(driver.getCSCockpitURL());
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
+		cscockpitOrderTabPage.clickPlaceAnOrderButtonInOrderTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		SKUValue=cscockpitCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		//cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.enterBillingInfo(cardNumber, profileName, securityCode);
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab("Order #"),"order page is not displayed");
+		s_assert.assertAll();
+	}
 }

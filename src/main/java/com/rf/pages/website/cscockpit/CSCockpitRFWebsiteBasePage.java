@@ -27,6 +27,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public static String addedOrderNoteLoc = "//span[contains(text(),'%s')]";
 	public static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
 	public static String viewOrderBtnLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]//td[contains(text(),'View Orders')]";
+	public static String billingAddressValueOnAddNewBillingProfilePopupLoc="//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::td[contains(text(),'%s')]";
 
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
@@ -83,6 +84,10 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By ADDRESS_LINE_TEXT_BOX = By.xpath("//span[text()='Line 1']/following::input[1]");
 	private static final By ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]");
 	private static final By ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(@class,'csCardPaymentProfileCreatePopup')]");
+	private static final By EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//a[text()='Edit Address']");
+	private static final By POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/following::span[2]");
+	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
+	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -461,7 +466,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			return false;
 		}
 	}
-	
+
 	public String convertPSTDateToNextDueDateFormat(String date){
 		String completeDate[] = date.split(" ");
 		String year =completeDate[2];
@@ -530,7 +535,22 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
-	
+
+	public void enterBillingInfo(String cardNumber,String profileName,String securityCode,String billingAddress){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, securityCode);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(By.xpath(String.format(billingAddressValueOnAddNewBillingProfilePopupLoc, billingAddress)));
+	}
+
 	public void clickSaveAddNewPaymentProfilePopUP() {
 		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
 		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
@@ -663,6 +683,23 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return SKU;
 	}
 
+	public void enterBillingInfo(String profileName){
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.pauseExecutionFor(2000);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+	}
+
+
+
 	public void enterBillingInfo(String cardNumber,String profileName,String securityCode){
 		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
 		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
@@ -677,7 +714,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
-	
+
 	public void enterBillingInfo(String profileName,String cardNumber,String cardType,String securityCode,String expMonth,String expYear){
 		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
 		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
@@ -692,7 +729,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 	}
-	
+
 	public void enterBillingInfoWithoutSelectingAddress(String profileName,String cardNumber,String cardType,String securityCode,String expMonth,String expYear){
 		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP,cardNumber);
 		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, profileName);
@@ -797,6 +834,53 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public boolean isAddNewPaymentProfilePopup(){
 		driver.waitForElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
 		return driver.isElementPresent(ADD_A_NEW_PAYMENT_PROFILE_POPUP);
+	}
+
+	public void clickEditAddressInEditPaymentProfilePopup(){
+		driver.click(EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getErrorMessageOfPopupWithoutFillingDataInCheckoutTab(){
+		driver.waitForElementPresent(POPUP_ERROR_TEXT);
+		return driver.findElement(POPUP_ERROR_TEXT).getText();
+	}
+
+	public void clickAddNewAddressLinkInPopUpInCheckoutTab(){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(ADD_NEW_ADDRESS_LINK);
+		driver.click(ADD_NEW_ADDRESS_LINK);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterShippingDetailsInPopUpInCheckoutTab(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+		driver.clear(ATTENDENT_NAME_TEXT_BOX);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
+		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+		logger.info("Address line 1 entered is "+addressLine);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+		driver.type(CITY_TOWN_TEXT_BOX, city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(POSTAL_TEXT_BOX);
+		driver.type(POSTAL_TEXT_BOX, postalCode);
+		logger.info("Postal code entered is "+postalCode);
+		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+		driver.type(COUNTRY_TEXT_BOX, Country);
+		logger.info("Country entered is "+Country);
+		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+		driver.type(PROVINCE_TEXT_BOX, province);
+		logger.info("Province entered is "+province);
+		driver.waitForElementPresent(PHONE_TEXT_BOX);
+		driver.type(PHONE_TEXT_BOX, phoneNumber);
+		logger.info("Phone number entered is "+phoneNumber);
+	}
+
+	public String getNewBillingAddressNameInCheckoutTab(){
+		driver.waitForElementPresent(NEW_BILLING_ADDRESS);
+		return driver.findElement(NEW_BILLING_ADDRESS).getText();
 	}
 
 }

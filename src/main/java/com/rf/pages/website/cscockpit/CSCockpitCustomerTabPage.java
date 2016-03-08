@@ -25,6 +25,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
 	private static String autoshipTemplateID = "//span[contains(text(),'Autoship Templates')]/following::a[text()='%s']";
 	private static String autoshipIdStatusForCustomerLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'crpAutoship')]/following::span[1]";
+	private static String creditCardOwnerName ="//div[contains(text(),'%s')]";
 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
@@ -71,7 +72,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By DEFAULT_SELECTED_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Default shipping address')]/following::option[@selected='selected'][1]");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_CANCELLED = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pcAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a");
 	private static final By AUTOSHIP_TEMPLATE_WITH_NO_ENTRIES_TXT = By.xpath("//span[text()='Autoship Templates']/following::span[1][text()='No Entries']");
-
+	private static final By SET_AS_AUTOSHIP_BILLING_PROFILE_CHK_BOX = By.xpath("//span[contains(text(),'Set as a Autoship Billing Profile')]/preceding::td[1]//input");
 
 	protected RFWebsiteDriver driver;
 
@@ -169,7 +170,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		}
 		return false;
 	}
-	
+
 	public void clickEditBtnForTheBillingProfile(String billingProfile){
 		driver.waitForElementPresent(By.xpath("//div[contains(text(),'"+billingProfile+"')]/following::td[text()='EDIT'][1]"));
 		driver.click(By.xpath("//div[contains(text(),'"+billingProfile+"')]/following::td[text()='EDIT'][1]"));
@@ -527,6 +528,17 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public String getUserNameAndCIDStringFromTopSectionInCustomerTabPage(){
 		return driver.findElement(By.xpath("//div[@class='csObjectCustomerContainer']/descendant::span[contains(@class,'csCustomerNameLabelValue')][1]")).getText();
+	}
+
+	public boolean isNewlyAddedCreditCardPresent(String profileName){
+		driver.waitForElementPresent(By.xpath(String.format(creditCardOwnerName, profileName)));
+		return driver.isElementPresent(By.xpath(String.format(creditCardOwnerName, profileName)));
+	}
+
+	public void clickOnSetAsAutoshipBillingProfileChkBox(){
+		driver.waitForElementPresent(SET_AS_AUTOSHIP_BILLING_PROFILE_CHK_BOX);
+		driver.click(SET_AS_AUTOSHIP_BILLING_PROFILE_CHK_BOX);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

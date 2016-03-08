@@ -94,7 +94,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By CLOSE_BTN_OF_ADD_A_NEW_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'Add a New Payment Profile')]/div");
 	private static final By SELECT_BILLING_ADDRESS_ERROR_MSG = By.xpath("//span[contains(text(),'Please select Billing Address')]");
 	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
-	private static final By PAYMENT_INFO_ADDRESS_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']//input");
+	private static final By PAYMENT_INFO_ADDRESS_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']/span/span");
 	private static final By CANCEL_AUTOSHIP_TEMPLATE_POPUP_CANCEL_BTN_LOC = By.xpath("//td[text()='Cancel']");
 	private static final By DISABLED_EDIT_TEMPLATE = By.xpath("//td[text()='Edit Template']/ancestor::span[@style='display:none']");
 	private static final By CANCEL_AUTOSHIP_POPUP_ALERT = By.xpath("//div[text()='Cancel Autoship Popup']");
@@ -102,7 +102,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By NEXT_PC_PERKS_CART=By.xpath("//div[@class='csObjectPCPerksOrderContainer']//span[text()='Next PCPerks Cart']");
 	private static final By EDIT_PAYMENT_INFO = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//td[text()='Edit']");
 	private static final By CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div");
-	private static final By EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//a[text()='Edit Address']");
 	private static final By FIRST_CREDIT_CARD_PAYMENT_INFO = By.xpath("//body/div[3]//tbody//tr[2]/td[2]");
 
 	protected RFWebsiteDriver driver;
@@ -1095,11 +1094,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public void clickCloseOfEditPaymentProfilePopup(){
 		driver.waitForElementPresent(CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP);
 		driver.click(CLOSE_BTN_OF_EDIT_PAYMENT_PROFILE_POPUP);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-	public void clickEditAddressInEditPaymentProfilePopup(){
-		driver.click(EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 

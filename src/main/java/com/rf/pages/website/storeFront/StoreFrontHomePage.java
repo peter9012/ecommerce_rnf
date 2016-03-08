@@ -3907,4 +3907,49 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.findElement(By.xpath("//p[@class='prices']")).getText();
 	}
 
+	public boolean isPwsOwnerNamePresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='content-header-filled txtConsultantName']"));
+		return driver.isElementPresent(By.xpath("//div[@class='content-header-filled txtConsultantName']"));
+	}
+
+	public boolean verifyNameFieldPresent() {
+		return driver.isElementPresent(By.id("name"));
+	}
+	public boolean verifyEmailIdFieldPresent(){
+		return driver.isElementPresent(By.id("senderEmailId"));
+	}
+	public boolean verifyMessageFieldPresent(){
+		return driver.isElementPresent(By.id("message"));
+	}
+	public boolean verifySendButtonPresent(){
+		return driver.isElementPresent(By.xpath("//form[@id='contactConsultantForm']//input[@value='SEND']"));
+	}
+
+	public boolean verifyFaceboobTwitterPinInterestlinkPresent() {
+
+		return driver.isElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[@class='follow-consultant']/input"));
+	}
+
+	public boolean verifyHomeTownFieldPresent() {
+		return driver.isElementPresent(By.id("homeTown"));
+	}
+
+	public boolean verifyFooterOptionOnThePOage() {
+		return driver.isElementPresent(By.xpath("//div[@class='footer-sections']"));
+	}
+
+	public boolean verifyAddToBagButtonPresent() {
+		return driver.isElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+	}
+
+	public boolean isPersonalizeMyProfileLinkNotPresent() {
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+	}
+
+	public void clickOnCancelEnrollmentOnExistingConsultantPopUp(){
+		driver.waitForElementPresent(By.xpath("//div[@class='fancybox-inner']//input[3]"));
+		driver.click(By.xpath("//div[@class='fancybox-inner']//input[3]"));
+		driver.waitForPageLoad();
+	}
+
 }

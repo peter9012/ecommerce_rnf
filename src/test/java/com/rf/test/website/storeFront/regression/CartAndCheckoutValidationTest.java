@@ -6229,4 +6229,57 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4013:Logged in RC/PC/ Consultant to Corp site and click on "Buy Now"
+	@Test
+	public void testLoggedInPCtoCorpSiteAndClickOnBuyNow_4013() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		//s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontPCUserPage.clickAddToBagButtonWithoutFilter();
+		s_assert.assertTrue(storeFrontPCUserPage.isCartPageDisplayed(),"card page is not displayed after clicking buy now button");
+		s_assert.assertAll();
+
+	}
+	//Hybris Project-4014:Guest user on the BIZ and Click on "Buy Now"
+	@Test
+	public void testGuestUserOnTheBizAndClickOnBuyNow_4014() throws InterruptedException{
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, env);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(),"card page is not displayed after clicking buy now button");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4015:Guest user on the COM and Click on "Buy Now"
+	@Test
+	public void testGuestUserOnTheComAndClickOnBuyNow_4015() throws InterruptedException{
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(),"card page is not displayed after clicking buy now button");
+		s_assert.assertAll();
+	}
+
 }

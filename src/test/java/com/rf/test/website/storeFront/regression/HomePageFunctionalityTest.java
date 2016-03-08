@@ -2450,8 +2450,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	//--
-
 	//Hybris Project-4658:Place an adhoc order for RC user enrolled without creating an order
 	@Test
 	public void testPlaceAnAdhocOrderForRCUserEnrolledWithoutCreatingAnOrder_4658() throws InterruptedException{
@@ -2608,5 +2606,98 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		s_assert.assertAll();
+	}	
+
+	// Hybris Project-3829:Verify MeetYourConsultant Page as PC,RC,Con WITHOUT Logging in
+	@Test
+	public void testVerifyMeetYourConsultantPageAsPcRcAndConWithoutLoggingIn_3829() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openComPWSSite(country, env);
+		storeFrontHomePage.clickOnSponsorName();
+		s_assert.assertTrue(storeFrontHomePage.isPwsOwnerNamePresent(),"pws owner name not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"contact box is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyNameFieldPresent(),"name field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifyMessageFieldPresent(),"message field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdFieldPresent(),"emailId field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifySendButtonPresent(),"send button not present in contact section");
+		s_assert.assertAll();
 	}
+
+	//Hybris Project-3830:Verify MeetYourConsultant Page as PC,RC,Con as LOGGED IN User
+	@Test
+	public void testVerifyMeetYourConsultantPageAsPCRCConAsLoggingInUser_3830() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openComPWSSite(country, env);
+		storeFrontHomePage.clickOnSponsorName();
+		s_assert.assertTrue(storeFrontHomePage.isPwsOwnerNamePresent(),"pws owner name not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"contact box is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyNameFieldPresent(),"name field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifyMessageFieldPresent(),"message field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdFieldPresent(),"emailId field not present in contact section");
+		s_assert.assertTrue(storeFrontHomePage.verifySendButtonPresent(),"send button not present in contact section");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
+		s_assert.assertTrue(storeFrontHomePage.verifyHomeTownFieldPresent(),"Home Town field not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyFaceboobTwitterPinInterestlinkPresent(),"social networking sites link not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyFooterOptionOnThePOage(),"footer section is not present on the page");
+		s_assert.assertTrue(storeFrontHomePage.isUserNamePresentOnDropDown());
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonPresent(),"add to bag button not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonPresent(),"add to CRP Button not present");
+		s_assert.assertAll();
+
+	}
+
+	//Hybris Project-4057:Navigate to Home page and LOGOUT
+	@Test
+	public void testNavigateToHomePageAndLogout_4057() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		logout();
+		s_assert.assertFalse(storeFrontHomePage.isUserNamePresentOnDropDown(), "user is not logged out successfully");
+		s_assert.assertAll();
+	}
+
 }

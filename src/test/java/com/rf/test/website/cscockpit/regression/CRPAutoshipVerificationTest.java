@@ -2727,4 +2727,412 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		logout();
 	}
 
+	//Hybris Project-1744:To verify Edit card functionality in the PCperks Edit Autoship template Page
+	@Test(enabled=false)//WIP
+	public void testVerifyEditCardFunctionalityInPCPerksEditAutoshipTemplatePage_1744(){
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountID = null;
+		String pcEmailID;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String country = null;
+		String addressLine = null;
+		String attention = "Attention";
+		String line1 = "Line 1";
+		addressLine = TestConstants.ADDRESS_LINE_1_US;
+		city = TestConstants.CITY_US;
+		postal = TestConstants.POSTAL_CODE_US;
+		province = TestConstants.PROVINCE_ALABAMA_US;
+		phoneNumber = TestConstants.PHONE_NUMBER_US;
+		country = "United States";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomPCList = null;
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of PC username "+pcEmailID);
+
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		cscockpitAutoshipTemplateTabPage.clickPaymentInfoAddressDropDown();
+		cscockpitAutoshipTemplateTabPage.clickFirstCreditCardInPaymentAddressDropDown();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateTabPage.clickCloseOfEditPaymentProfilePopup();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
+		String profileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		cscockpitAutoshipTemplateTabPage.enterBillingInfoWithoutSelectAddress(profileName);	
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		cscockpitAutoshipTemplateTabPage.clickEditAddressInEditPaymentProfilePopup();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddressValuesPresentInPaymentProfilePopup(attention), "Attention field is not present in payment profile popup");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddressValuesPresentInPaymentProfilePopup(line1), "line 1 field is not present in payment profile popup");
+		cscockpitAutoshipTemplateTabPage.clickCloseOfEditPaymentProfilePopup();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		profileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum2;
+		cscockpitAutoshipTemplateTabPage.enterBillingInfoWithoutSelectAddress(profileName);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		s_assert.assertAll();
+	}
+
+
+	//Hybris Project-1743:To verify Edit card functionality in the CRP Edit Autoship template Page
+	@Test(enabled=false)//WIP
+	public void testVerifyEditCardFunctionalityInCRPEditAutoshipTemplatePage_1743(){
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountID = null;
+		String pcEmailID;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String country = null;
+		String addressLine = null;
+		String attention = "Attention";
+		String line1 = "Line 1";
+		addressLine = TestConstants.ADDRESS_LINE_1_US;
+		city = TestConstants.CITY_US;
+		postal = TestConstants.POSTAL_CODE_US;
+		province = TestConstants.PROVINCE_ALABAMA_US;
+		phoneNumber = TestConstants.PHONE_NUMBER_US;
+		country = "United States";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else{
+				break;
+			}
+		}
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+pcEmailID);
+
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		cscockpitAutoshipTemplateTabPage.clickPaymentInfoAddressDropDown();
+		cscockpitAutoshipTemplateTabPage.clickFirstCreditCardInPaymentAddressDropDown();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateTabPage.clickCloseOfEditPaymentProfilePopup();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
+		String profileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		cscockpitAutoshipTemplateTabPage.enterBillingInfoWithoutSelectAddress(profileName);	
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		cscockpitAutoshipTemplateTabPage.clickEditAddressInEditPaymentProfilePopup();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddressValuesPresentInPaymentProfilePopup(attention), "Attention field is not present in payment profile popup");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddressValuesPresentInPaymentProfilePopup(line1), "line 1 field is not present in payment profile popup");
+		cscockpitAutoshipTemplateTabPage.clickCloseOfEditPaymentProfilePopup();
+		cscockpitAutoshipTemplateTabPage.clickEditUnderPaymentInfoSection();
+		profileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum2;
+		cscockpitAutoshipTemplateTabPage.enterBillingInfoWithoutSelectAddress(profileName);
+		cscockpitAutoshipTemplateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
+		cscockpitAutoshipTemplateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-1816:To verify Add New payment profile functionality in the CRP Checkout Page
+	@Test(enabled=false)//WIP
+	public void testVerifyAddNewPaymentProfileFunctionalityInCRPCheckout_1816() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumb = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+
+		String consultantEmailID=null;
+		String accountId=null;
+		String SKUValue=null;
+		String attendeeLastName=null;
+		String newBillingProfileName=null;
+		String securityCode=null;
+		String cardNumber=null;
+		String attendeeFirstName=null;
+		String addressLine=null;
+		String city=null;
+		String postalCode=null;
+		String Country=null;
+		String Province=null;
+		String phoneNumber=null;
+		String profileName=null;
+		String secondProfileName=null;
+
+		profileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		secondProfileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNumb;
+		attendeeLastName="IN";
+		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
+		securityCode=TestConstants.SECURITY_CODE;
+		cardNumber=TestConstants.CARD_NUMBER;
+		attendeeFirstName=TestConstants.FIRST_NAME+randomNumbers;
+		addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
+		city=TestConstants.NEW_ADDRESS_CITY_US;
+		postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+		Country=TestConstants.COUNTRY_DD_VALUE_US;
+		Province=TestConstants.PROVINCE_ALABAMA_US;
+		phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+
+		//-------------------FOR US----------------------------------
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		logout(); 
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		//Add new payment profile.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
+		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutSelectAddress(profileName);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isSelectBillingAddressMsgPresent(), "select billing address error popup msg is not present");
+		cscockpitAutoshipTemplateTabPage.selectBillingAddressInPaymentProfilePopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().contains(profileName.toLowerCase()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		//Add new payment profile with payment address.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
+		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutEnterCreditCardAndAddress(newBillingProfileName);
+		cscockpitAutoshipTemplateUpdateTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.enterCreditCardNumberInPaymentProfilePopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab());
+		//Add new payment profile by selecting newly created billing address.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(cardNumber, secondProfileName, securityCode,attendeeFirstName);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
+		//Check the billing address on storefront.
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(secondProfileName),"billing profile is not present on storefront UI");
+		logout();
+		//-------------------FOR CA----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		randomNumb = CommonUtils.getRandomNum(10000, 1000000);
+		randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+		profileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		secondProfileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNumb;
+		attendeeLastName="IN";
+		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
+		securityCode=TestConstants.SECURITY_CODE;
+		cardNumber=TestConstants.CARD_NUMBER;
+		attendeeFirstName=TestConstants.FIRST_NAME+randomNumbers;
+		addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		city=TestConstants.CITY_CA;
+		postalCode=TestConstants.POSTAL_CODE_CA;
+		Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		Province=TestConstants.PROVINCE_CA;
+		phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		logout(); 
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		SKUValue=cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		//Add new payment profile.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
+		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutSelectAddress(profileName);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isSelectBillingAddressMsgPresent(), "select billing address error popup msg is not present");
+		cscockpitAutoshipTemplateTabPage.selectBillingAddressInPaymentProfilePopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().contains(profileName.toLowerCase()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
+		//Add new payment profile with payment address.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
+		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutEnterCreditCardAndAddress(newBillingProfileName);
+		cscockpitAutoshipTemplateUpdateTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
+		cscockpitAutoshipTemplateUpdateTabPage.enterCreditCardNumberInPaymentProfilePopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitAutoshipTemplateUpdateTabPage.getNewBillingAddressNameInCheckoutTab());
+		//Add new payment profile by selecting newly created billing address.
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(cardNumber, secondProfileName, securityCode,attendeeFirstName);
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
+		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
+		//Check the billing address on storefront.
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(secondProfileName),"billing profile is not present on storefront UI");
+		logout(); 
+		s_assert.assertAll();
+	}
+
 }

@@ -510,7 +510,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String accountIdForRCUser = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
 			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForRCUser);
@@ -1469,10 +1469,20 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testSearchWithUSConsultantFirstNameOnFindAConsultantPage_3991()	{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantDetailsList =  null;
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
 		String firstName= null;
 		String lastName =null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAIL_FROM_ACCOUNTID_RFO,countryId),RFO_DB);
+		
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		
+		randomConsultantDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAIL_FROM_ACCOUNTID_RFO,accountID),RFO_DB);
 		firstName = (String) getValueFromQueryResult(randomConsultantDetailsList, "FirstName");
 		lastName = (String) getValueFromQueryResult(randomConsultantDetailsList, "LastName");
 		//Navigate to find A Consultant page..
@@ -1600,41 +1610,70 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-	// Hybris Project-4063:Access Canadian PWS site of USConsultant as US RCUser
+	// Hybris Project-4063:Access Canadian PWS site of USConsultant as RCUser
 	@Test
-	public void testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063() throws InterruptedException	{
+	public void testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String bizPWS=storeFrontHomePage.getBizPWS(country, env);
-		//Navigate to canadian PWS
-		String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
-		driver.get(bizPWSCA);
-		//Access Canadian PWS site of US Consultant as US RC user
-		List<Map<String, Object>> randomRCList =  null;
-		String rcUserEmailID =null;
-		String accountId = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			logger.info("Account Id of the user is "+accountId);
+		if(driver.getCountry().toLowerCase().trim().equalsIgnoreCase("us")){
+			String bizPWSUS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWSUS);
+			driver.get(bizPWSCA);
+			//Access Canadian PWS site of US Consultant as Canadian RC user
+			List<Map<String, Object>> randomRCList =  null;
+			String rcUserEmailID =null;
+			String accountId = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"40"),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
 
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-		logger.info("login is successful");
-		//verify US RC user should login and redirect to US site of same PWS.
-		s_assert.assertTrue(driver.getCurrentUrl().trim().equalsIgnoreCase(bizPWS+"/"),"US RC user is not redirected to US Site of same PWS");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful");
+			//verify RC user should login and redirect to same PWS.
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWSCA.split(":")[1].toLowerCase())," RC user is not redirected to US Site of same PWS");
+		}else{
+			String bizPWSCA=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to US PWS
+			String bizPWSUS=storeFrontHomePage.convertCABizPWSToUS(bizPWSCA);
+			driver.get(bizPWSUS);
+			//Access US PWS site of US Consultant as US RC user
+			List<Map<String, Object>> randomRCList =  null;
+			String rcUserEmailID =null;
+			String accountId = null;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"236"),RFO_DB);
+				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+rcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful");
+			//verify RC user should login and redirect to same PWS.
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWSUS.split(":")[1].toLowerCase()),"RC user is not redirected to US Site of same PWS");
+		}
 		s_assert.assertAll();
 	}
 
@@ -2608,7 +2647,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}	
 
-	// Hybris Project-3829:Verify MeetYourConsultant Page as PC,RC,Con WITHOUT Logging in
+	//Hybris Project-3829:Verify MeetYourConsultant Page as PC,RC,Con WITHOUT Logging in
 	@Test
 	public void testVerifyMeetYourConsultantPageAsPcRcAndConWithoutLoggingIn_3829() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
@@ -2669,7 +2708,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonPresent(),"add to bag button not present");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonPresent(),"add to CRP Button not present");
 		s_assert.assertAll();
-
 	}
 
 	//Hybris Project-4057:Navigate to Home page and LOGOUT

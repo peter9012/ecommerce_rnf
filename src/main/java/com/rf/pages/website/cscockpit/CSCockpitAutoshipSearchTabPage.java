@@ -193,7 +193,8 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 				}
 			}
 		}
-
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public boolean isCalenderIconPresentForAllDueDate(){

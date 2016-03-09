@@ -419,7 +419,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
-		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
@@ -616,6 +616,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.id("saveAccountAddress"));
 		driver.click(By.id("saveAccountAddress"));
 		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
@@ -1378,17 +1379,17 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
-		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span"));
 		driver.pauseExecutionFor(2000);
-		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span")).isSelected();
 	}
 
 	public boolean selectSecondAddressAndValidateFirstIsUnSelected(){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
-		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span"));
 		driver.pauseExecutionFor(2000);
-		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")).isSelected();
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span")).isSelected();
 	}
 
 	public String selectAndGetBillingMethodName(String country) throws InterruptedException{

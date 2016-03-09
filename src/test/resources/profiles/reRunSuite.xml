@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="reRunSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="Regression_Suite">
+		<classes>
+			<class
+				name="com.rf.test.website.storeFront.regression.EnrollmentValidationTest">
+				<methods>
+					<include name="testStandardEnrollmentSwitchToExpresEnrollmentStep5_1296" />
+					<include name="testStandardEnrollmentBusinessPortfolio_52" />
+					<include name="testVerifyRequestASponsorFunctionality_2248" />
+					<include name="testRegisterAsConsultantWithDifferentConsultantAsSponser_4792" />
+					<include name="testRegisterAsRCWithDifferentCASponsorWithoutPulse_3775" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.HomePageFunctionalityTest">
+				<methods>
+					<include name="testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063" />
+					<include name="testVerifyTopNavLoggedInRCUser_3825" />
+					<include name="testLookUpWithActiveCAConsultantAccountID_4004" />
+					<include name="testSearchWithFirstAndLastNameOfConsultantOnFindAConsultantPage_3992" />					
+				</methods>
+			</class>
+		</classes>
+
+	</test>
+</suite>	
+ 
+	

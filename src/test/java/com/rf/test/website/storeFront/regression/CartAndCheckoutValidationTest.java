@@ -1511,7 +1511,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(priceOfProduct),"Product price is not as expected");
+	
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 
@@ -1723,7 +1723,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToPCPerksButtonOnProductDetailPage(),"Add to PC Perks Button is not present on product detail page");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(priceOfProduct),"Product price is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
@@ -1767,7 +1766,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProductName),"Product name is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(selectedProductPrice),"Product price is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
@@ -1812,7 +1810,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyProductName(ProductName),"Product name is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToCRPButtonOnProductDetailPage(),"Add to CRP Button is not present on product detail page");
-		s_assert.assertTrue(storeFrontHomePage.verifyProductPrice(productPrice),"Product price is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductLongDescription(),"Product Description is not present on product detail page");
 		s_assert.assertAll(); 
 	}
@@ -3501,7 +3498,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
 		logger.info(" pws after successful  enroll is "+currentURL);
-		s_assert.assertTrue(currentURL.contains(urlToAssert),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains(urlToAssert.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 
@@ -4225,98 +4222,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	//	// Hybris Project-3866:Update PC Perks template from sponsor's PWS site
-	//	@Test
-	//	public void testUpdatePCPerksTemplateFromSponserComPWS_3866() throws InterruptedException{
-	//		RFO_DB = driver.getDBNameRFO();
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
-	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-	//		String lastName = "lN";
-	//		country = driver.getCountry();
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		String firstName=TestConstants.FIRST_NAME+randomNum;
-	//		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
-	//
-	//		//Hover shop now and click all products link.
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//
-	//		//1 product is in the Shopping Cart?
-	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-	//		logger.info("1 product is successfully added to the cart");
-	//
-	//		//Click on Check out
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Log in or create an account page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-	//		logger.info("Login or Create Account page is displayed");
-	//
-	//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-	//		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
-	//
-	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-	//		storeFrontHomePage.enterMainAccountInfo();
-	//		logger.info("Main account details entered");
-	//
-	//		//Get Sponser from database.
-	//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
-	//		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-	//		// sponser search by Account Number
-	//		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-	//		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-	//
-	//		//Search for sponser and ids.
-	//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(accountnumber);
-	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-	//
-	//		//Enter Billing Profile
-	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-	//		storeFrontHomePage.selectNewBillingCardAddress();
-	//		storeFrontHomePage.clickOnSaveBillingProfile();
-	//		storeFrontHomePage.clickOnBillingNextStepBtn();
-	//		storeFrontHomePage.clickPlaceOrderBtn();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-	//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-	//		storeFrontHomePage.clickPlaceOrderBtn();
-	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-	//		//Add new product and verify products of autoship cart
-	//		storeFrontHomePage.clickOnAutoshipCart();
-	//		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
-	//		int getProductCountOnCartPage=Integer.parseInt(storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage());
-	//		int expectedProductCount=getProductCountOnCartPage+1;
-	//		storeFrontUpdateCartPage.clickOnContinueShoppingLink();
-	//		storeFrontUpdateCartPage.selectDifferentProductAndAddItToPCPerks();
-	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInAutoshipCart(Integer.toString(expectedProductCount)), "Product in Autoship cart is not as expected");
-	//		//update quantity of existing product.
-	//		int getNewProductCountOnCartPage=storeFrontUpdateCartPage.getDifferentProductCountOnAutoShipCartPage();
-	//		if(getNewProductCountOnCartPage<=2){
-	//			storeFrontUpdateCartPage.addQuantityOfProduct("5");
-	//		}else{
-	//			storeFrontUpdateCartPage.updateQuantityOfProductToTheSecondProduct("5");
-	//		}
-	//		s_assert.assertTrue(storeFrontUpdateCartPage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg());
-	//		s_assert.assertAll(); 
-	//
-	//	}
-
 	//Hybris Project-3860:Update the PC Perks Template from US sponsor's COMPWS who has Pulse/ PWS
 	@Test
 	public void testUpdateThePCPerksTemplateFromUSSponsorCOMPWSWithPulseAndPWS_3860() throws InterruptedException{
@@ -4695,7 +4600,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
-		s_assert.assertTrue(currentURL.contains(comPWSOfSponser),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains(comPWSOfSponser.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 

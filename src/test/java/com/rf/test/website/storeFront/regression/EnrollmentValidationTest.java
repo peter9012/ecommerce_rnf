@@ -5436,7 +5436,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertTrue(driver.getCurrentUrl().contains(urlToAssert), "User NOT on Choosen Sponser PWS after enrollment");
+		s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(urlToAssert.split(":")[1].toLowerCase()),"User NOT on Choosen Sponser PWS after enrollment");
 		s_assert.assertAll(); 
 	}
 
@@ -6499,7 +6499,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
-		s_assert.assertTrue(currentURL.contains(pwsToAssert),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains(pwsToAssert.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 
@@ -6604,7 +6604,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
-		s_assert.assertTrue(currentURL.contains(comPWSOfSponser),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains(comPWSOfSponser.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 

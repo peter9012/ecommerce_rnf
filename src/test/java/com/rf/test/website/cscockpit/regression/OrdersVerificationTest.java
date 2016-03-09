@@ -1331,11 +1331,9 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumberForRC = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -1347,7 +1345,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		randomCustomerSequenceNumberForRC = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberForRC);
 		s_assert.assertTrue(cscockpitCustomerTabPage.validateAccountStatusOnCustomerTab().contains("ACTIVE"),"Account status is not Active For US RC");
-
 		cscockpitCustomerTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1356,7 +1353,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.validateAccountStatusOnCustomerTab().contains("ACTIVE"),"Account status is not Active For US consultant");
 		cscockpitCustomerTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		//cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -1369,64 +1366,19 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		String newlyPlacedConsultantOrderNumber = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
 		cscockpitOrderTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(newlyPlacedConsultantOrderNumber);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.validateOrderStatusOnOrderSearchTab(newlyPlacedConsultantOrderNumber),"Order Status is not submitted for US");
-		//-------------------------------FOR CA-----------------------
-		driver.get(driver.getCSCockpitURL());
-		driver.pauseExecutionFor(5000);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		s_assert.assertTrue(cscockpitCustomerTabPage.validateAccountStatusOnCustomerTab().contains("ACTIVE"),"Account status is not Active For CA PC");
-		cscockpitCustomerTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumberForRC = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberForRC);
-		s_assert.assertTrue(cscockpitCustomerTabPage.validateAccountStatusOnCustomerTab().contains("ACTIVE"),"Account status is not Active For CA RC");
-
-		cscockpitCustomerTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumberForRC = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberForRC);
-		s_assert.assertTrue(cscockpitCustomerTabPage.validateAccountStatusOnCustomerTab().contains("ACTIVE"),"Account status is not Active For CA consultant");
-		cscockpitCustomerTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
-		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		String newlyPlacedPcOrderNumberForCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		cscockpitOrderTabPage.clickOrderSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(newlyPlacedPcOrderNumberForCA);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		s_assert.assertTrue(cscockpitOrderSearchTabPage.validateOrderStatusOnOrderSearchTab(newlyPlacedPcOrderNumberForCA),"Order Status is not submitted For CA");
 		s_assert.assertAll();
 	}
-
 
 	//Hybris Project-1950:Verify the Order Detail Page UI
 	@Test
@@ -1742,7 +1694,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.selectOrderStatusFromDropDownInOrderTab(TestConstants.ORDER_STATUS_DD_VALUE);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		String randomSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String firstNameFromDatabase = cscockpitCustomerSearchTabPage.getfirstNameOfTheCustomerInCustomerSearchTab(randomSequenceNumber);
+		String firstNameFromDatabase = cscockpitOrderSearchTabPage.getfirstNameOfTheCustomerInOrderSearchTab(randomSequenceNumber);
 		String lastNameFromDatabase=cscockpitOrderSearchTabPage.getLastNameOfTheCustomerInOrderSearchTab(randomSequenceNumber);
 		String completeName=firstNameFromDatabase+" "+lastNameFromDatabase;
 		//select general values

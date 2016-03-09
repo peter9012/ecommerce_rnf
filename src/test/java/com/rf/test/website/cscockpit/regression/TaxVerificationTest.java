@@ -177,8 +177,8 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyTaxCommittedEntryInOrderTab(orderNumber),"Tax committed entry is not present in order");
 		s_assert.assertAll();
-
 	}
 
+	
 
 }

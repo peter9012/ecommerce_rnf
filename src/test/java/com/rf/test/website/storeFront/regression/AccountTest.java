@@ -1613,7 +1613,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
 		logger.info("Current URL is "+currentURL);
-		s_assert.assertTrue(currentURL.contains(comPWSOfSponser),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains(comPWSOfSponser.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 

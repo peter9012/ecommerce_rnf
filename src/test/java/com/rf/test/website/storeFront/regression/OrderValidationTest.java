@@ -1042,7 +1042,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// phase 2 4287 -> Verify order details of consultant order
+	// Hybris Project-4287 -> Verify order details of consultant order
 	@Test
 	public void testOrdersDetailsOfConsultant_HP2_4287() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();

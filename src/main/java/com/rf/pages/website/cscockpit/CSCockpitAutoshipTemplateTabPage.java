@@ -55,7 +55,6 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By AUTOSHIP_TEMPLATE_CID_AUTOSHIP_ID = By.xpath("//span[text()='Autoship Template #']/following-sibling::span");
 	private static final By CANCEL_AUTOSHIP = By.xpath("//a[text()='Cancel Autoship']");
 	private static final By CANCEL_AUTOSHIP_DISABLE_LINK = By.xpath("//a[text()='Cancel Autoship' and @style='display:none;']");
-	private static final By EDIT_AUTOSHIP_ANOTHER_LINK = By.xpath("//td[text()='Edit Template']/ancestor::table[contains(@style,'moz-user-select')]");
 	private static final By EDIT_AUTOSHIP_LINK = By.xpath("//td[text()='Edit Template']");
 	private static final By PLUS_LINK_NEXT_TO_FIRST_PRODUCT = By.xpath("//span[text()='Order Detail Items']/following::div/div//a[text()='+'][1]");
 	private static final By VIEW_PRODUCT_PAGE_LINK = By.xpath("//a[text()='View Product Page']");
@@ -151,8 +150,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyEditAutoshipTemplateLinkInAutoshipTemplateTab(){
-		driver.isElementPresent(EDIT_AUTOSHIP_ANOTHER_LINK);
-		return driver.isElementPresent(EDIT_AUTOSHIP_ANOTHER_LINK);  
+		driver.isElementPresent(EDIT_AUTOSHIP_LINK);
+		return driver.isElementPresent(EDIT_AUTOSHIP_LINK);  
 	}
 
 	public boolean verifyAppliedPromotionSectionInAutoshipTemplateTab(){

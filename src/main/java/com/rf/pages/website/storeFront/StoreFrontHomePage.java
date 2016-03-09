@@ -134,9 +134,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
-			driver.type(By.id("sponsor-name-id"),"abc");
+			driver.type(By.id("sponsor-name-id"),"test");
 		}catch(NoSuchElementException e){
-			driver.type(By.id("sponserparam"),"abc");
+			driver.type(By.id("sponserparam"),"test");
 		}
 		try{
 			driver.click(By.xpath("//input[@value='Search']"));			
@@ -483,8 +483,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error'][contains(text(),'Your credit card could not be processed')]"));
-		if(driver.findElement(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error'][contains(text(),'Your credit card could not be processed')]")).isDisplayed()){
+		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']"));
+		if(driver.findElement(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -2075,8 +2075,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyProductPrice(String Price){
-		driver.quickWaitForElementPresent(By.xpath("//span[@id='quickinfo-new-price']"));
-		String name=driver.findElement(By.xpath("//span[@id='quickinfo-new-price']")).getText();
+		driver.quickWaitForElementPresent(By.xpath("//p[@id='your-price']//span"));
+		String name=driver.findElement(By.xpath("//p[@id='your-price']//span")).getText();
 		return name.contains(Price);
 	}
 
@@ -2102,8 +2102,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
+		driver.pauseExecutionFor(2000);
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
+			driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponserparam"),sponsor);
@@ -3950,6 +3951,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@class='fancybox-inner']//input[3]"));
 		driver.click(By.xpath("//div[@class='fancybox-inner']//input[3]"));
 		driver.waitForPageLoad();
+	}
+
+	public String convertCABizPWSToUS(String PWS){
+		return PWS.replaceAll("ca","us");
 	}
 
 }

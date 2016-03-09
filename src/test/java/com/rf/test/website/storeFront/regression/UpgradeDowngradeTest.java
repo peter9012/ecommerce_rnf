@@ -1777,7 +1777,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-3958:CORP: Active PC emial id during consultant enrollment under same sponsor.
+	//Hybris Project-3958:CORP: Active PC email id during consultant enrollment under same sponsor.
 	@Test
 	public void testActivePCEmailIdDuringConsultantEnrollmentUnderSameSponsor_3958() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  

@@ -222,25 +222,12 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is not present on order tab for US");
-		//-----------------------FOR CA---------------------
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is not present on order tab for CA");
 		s_assert.assertAll();
 	}
 
@@ -793,7 +780,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Handling and tax on Handling details.
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for us "+0.24+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for us "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund handling expected on UI for us "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
@@ -886,7 +872,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab().contains("************"),"CSCockpit checkout tab credit card number expected = ************ and on UI = " +cscockpitCheckoutTabPage.getCreditCardNumberInCheckoutTab());
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = UPS Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
+		//		s_assert.assertTrue(cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab().contains("UPS Ground (HD)"),"CSCockpit checkout tab delivery mode type expected = UPS Ground (HD) and on UI = " +cscockpitCheckoutTabPage.getDeliverModeTypeInCheckoutTab());
 		s_assert.assertTrue(cscockpitCheckoutTabPage.isCommissionDatePopulatedInCheckoutTab(), "Commission date is not populated in UI");
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifySelectPaymentDetailsPopupInCheckoutTab(), "Select payment details popup is not present");
@@ -910,7 +896,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Handling and tax on Handling details.
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax).contains("0.00"),"Refund tax expected on UI for ca "+0.24+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundTax));
 		s_assert.assertTrue(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for ca "+0.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund handling expected on UI for ca "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
@@ -1211,7 +1196,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
 		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp("1");
 		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(qtyOfFirstProduct,"1");
-		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp("1");
 		cscockpitOrderTabPage.checkReturnShippingCheckboxInPopUp();
 		cscockpitOrderTabPage.checkReturnHandlingCheckboxInPopUp();
 		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
@@ -1221,7 +1206,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Shipping and tax on shipping details.
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for US "+240.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for US "+6.72+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for US "+19.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for US "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for US "+23.33+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
@@ -1344,7 +1328,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present on us");
 		cscockpitOrderTabPage.checkProductInfoCheckboxInPopUp("1");
 		cscockpitOrderTabPage.selectReturnQuantityOnPopUp(qtyOfFirstProduct,"1");
-		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp();
+		cscockpitOrderTabPage.checkRestockingFeeCheckboxInPopUp("1");
 		cscockpitOrderTabPage.checkReturnShippingCheckboxInPopUp();
 		cscockpitOrderTabPage.checkReturnHandlingCheckboxInPopUp();
 		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
@@ -1354,7 +1338,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		//Verify Shipping and tax on shipping details.
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal).contains("0.00"),"Refund subtotal expected on UI for US "+240.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundSubtotal));
-		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount).contains("0.00"),"Refund discount expected on UI for US "+6.72+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundDiscount));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping).contains("0.00"),"Refund shipping expected on UI for US "+19.00+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundShipping));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling).contains("0.00"),"Refund Handling expected on UI for US "+2.50+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(refundHandling));
 		s_assert.assertFalse(cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee).contains("0.00"),"Restocking fee expected on UI for US "+23.33+"while Actual on UI is "+cscockpitOrderTabPage.getShippingAndHandlingVariousSectionTaxInPopup(restockingFee));
@@ -1435,7 +1418,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		randomCustomerSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomCustomerFromSearchResult());
 		orderNumber=cscockpitOrderSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		//Return partially shipped order.
-		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		orderNumber = cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab(orderNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present.");
 		boolean isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
 		if(isReturnCompleteOrderChecked==true){
@@ -1447,7 +1430,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
 		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
 		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
-		String rmaNumber=cscockpitOrderTabPage.getRMANumberFromPopup();
+		String rmaNumber=cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
 		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
 		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyReturnOrderRMANumberInOrderTab(rmaNumber), "Expected RMA number in return request section is "+rmaNumber+"Actual on UI, it is not present ");

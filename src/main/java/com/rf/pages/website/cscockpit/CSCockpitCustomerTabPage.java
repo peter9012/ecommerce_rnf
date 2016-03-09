@@ -508,8 +508,6 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public boolean isPulseTemplateAutoshipIDHavingStatusIsPendingPresent(){
 		driver.waitForElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
-		String autoshipID = driver.findElement(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING).getText();
-		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
 		return driver.isElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
 	}
 
@@ -539,6 +537,11 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(SET_AS_AUTOSHIP_BILLING_PROFILE_CHK_BOX);
 		driver.click(SET_AS_AUTOSHIP_BILLING_PROFILE_CHK_BOX);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isCRPAutoshipIDHavingStatusIsPendingPresent(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING);
+		return driver.isElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING);
 	}
 
 }

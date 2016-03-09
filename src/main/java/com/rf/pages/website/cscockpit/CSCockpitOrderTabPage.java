@@ -143,7 +143,26 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.findElement(DO_NOT_SHIP_CHKBOX).isSelected();
 	}
 
-
+	public String clickRefundOrderBtnOnOrderTab(String order){
+		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);
+		driver.click(REFUND_ORDER_BTN_ORDER_TAB);
+		if(driver.isElementPresent(NO_REFUNDABLE_ITEMS_LBL)){
+			while(true){
+				clickCloseRefundRequestPopUP();
+				clickOrderSearchTab();
+				String randomCustomer = String.valueOf(getRandomCustomerFromSearchResult());
+				order=clickAndReturnCIDNumberInCustomerSearchTab(randomCustomer);
+				clickRefundOrderBtnOnOrderTab();
+				if(driver.isElementPresent(NO_REFUNDABLE_ITEMS_LBL)){
+					continue;
+				}else{
+					break;
+				}
+			}
+		}
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return order;
+	}
 
 	public void clickRefundOrderBtnOnOrderTab(){
 		driver.waitForElementPresent(REFUND_ORDER_BTN_ORDER_TAB);

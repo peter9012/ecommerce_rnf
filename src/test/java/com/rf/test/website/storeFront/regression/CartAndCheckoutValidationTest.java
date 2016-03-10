@@ -1511,7 +1511,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isProductImageExist(),"product image not present");
 		s_assert.assertTrue(storeFrontHomePage.verifyProductName(selectedProduct),"Product name is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyAddToBagButtonOnProductDetailPage(),"Add to Bag Button is not present on product detail page");
-	
+
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 
@@ -6184,6 +6184,102 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(),"card page is not displayed after clicking buy now button");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4840:Product Prices and SV/QV Values display
+	@Test
+	public void testProductPricesAndSVQVValuesDisplay_4840() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//For Consultant
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		//verify 'Price' & 'SV' Value is displayed for each product
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Your Price"),"Price is not shown for the products");
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is not shown for the products");
+		logout();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//verify when user is not logged IN only 'Retail' Price is displayed and no 'SV' Value is shown
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Retail"),"Retail Price is not shown for the products");
+		s_assert.assertFalse(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is shown for the products");
+		//For PC User
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		//verify 'Price' displayed & 'SV' Value is not displayed for each product
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Your Price"),"Price is not shown for the products");
+		s_assert.assertFalse(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is shown for the products");
+		logout();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//verify when user is not logged IN only 'Retail' Price is displayed and no 'SV' Value is shown
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Retail"),"Retail Price is not shown for the products");
+		s_assert.assertFalse(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is shown for the products");
+		//For RC USER
+		List<Map<String, Object>> randomRCList =  null;
+		String rcUserEmailID =null;
+		accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+			System.out.println("Account ID IS"+accountId);
+			logger.info("Account Id of the user is "+accountId);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		//verify 'Retail Price' displayed & 'SV' Value is not displayed for each product
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Retail"),"Retail Price is not shown for the products");
+		s_assert.assertFalse(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is shown for the products");
+		logout();
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//verify when user is not logged IN only 'Retail' Price is displayed and no 'SV' Value is shown
+		s_assert.assertTrue(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("Retail"),"Retail Price is not shown for the products");
+		s_assert.assertFalse(storeFrontHomePage.getPriceInformationOfProductsOnProductsPage().trim().contains("SV"),"SV Value is shown for the products");
 		s_assert.assertAll();
 	}
 

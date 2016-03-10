@@ -1476,12 +1476,12 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String firstName= null;
 		String lastName =null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		
+
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("Account Id of the user is "+accountID);
-		
+
 		randomConsultantDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAIL_FROM_ACCOUNTID_RFO,accountID),RFO_DB);
 		firstName = (String) getValueFromQueryResult(randomConsultantDetailsList, "FirstName");
 		lastName = (String) getValueFromQueryResult(randomConsultantDetailsList, "LastName");
@@ -2735,6 +2735,225 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		logout();
 		s_assert.assertFalse(storeFrontHomePage.isUserNamePresentOnDropDown(), "user is not logged out successfully");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4058:View US consultant's PWS site on Canada as another US Consultant
+	@Test
+	public void testViewUSConsultantPWSSiteOnCanadaAsAnotherUSConsultant_4058() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			country = driver.getCountry();
+			env = driver.getEnvironment();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com","us",countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "URL"); 
+			storeFrontHomePage.openConsultantPWS(consultantEmailID);
+			storeFrontHomePage.clickOnSponsorName();
+			s_assert.assertFalse(storeFrontHomePage.isPersonalizeMyProfileLinkNotPresent(),"personalize my profile link present");
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+		}
+	}
+
+	// Hybris Project-4070:Login to US Con's PWS(.BIZ, .COM) as Another US Consultant With Pulse
+	@Test
+	public void testLoginToUSConsultantPWSAsAnotherUSConsultantWithPulse_4070() {
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+		//Navigate to canadian PWS
+		String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+		driver.get(bizPWSCA);
+		//Get the Consultant with PWS 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantWithPWSEmailID = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,driver.getCountry(),countryId),RFO_DB);
+			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+			logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantWithPWSEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+			//Verify user is redirected to its ows pws site
+			s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4072:Try Accessing canadian PWS site of EXISTING OLD USConsultant
+	@Test
+	public void testAccessingCanadianPWSiteOfExistingOldUSConsultant_4072() {
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			driver.get(bizPWSCA);
+			//Access Canadian PWS site of US Consultant as US Consultant
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountID = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			}
+			logger.info("login is successful");
+			//click on user name
+			storeFrontHomePage.clickOnUserName();
+			//validate we are navigated to "Meet your Consultant" page
+			s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+			s_assert.assertAll();
+		}else{
+			logger.info("Not Executed Test is for 'US' Environment");
+		}
+	}
+
+	//Hybris Project-4062:Access Canadian PWS site of USConsultant as US PCUser
+	@Test
+	public void testAccessCanadianPWSiteOfUSConsultantAsUSPCUser_4062() {
+		RFO_DB = driver.getDBNameRFO(); 
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			driver.get(bizPWSCA);
+			//Access Canadian PWS site of US Consultant as US PC user
+			List<Map<String, Object>> randomPCUserList =  null;
+			String pcUserEmailID = null;
+			String accountId = null;
+			while(true){
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("Account Id of the user is "+accountId);
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+			} 
+			logger.info("login is successful");
+			//verify US PC user should login and redirect to US .COM PWS of its sponsor.
+			s_assert.assertTrue(driver.getCurrentUrl().contains("us") && driver.getCurrentUrl().contains(".com") && !driver.getCurrentUrl().equals(bizPWS) && !driver.getCurrentUrl().equals(bizPWSCA),"US PC user is not redirected to US .COM PWS of its sponsor.");
+			s_assert.assertAll();
+		}else{
+			logger.info("Not Executed Test is for 'US' Environment");
+		}
+	}
+
+	//Hybris Project-101:SSN Validation for consultant trying to cancel under invalid sponsor
+	@Test
+	public void testSSNValidationForConsultantTryingToCancelUnderInvalidSponsorUpline_101() throws InterruptedException	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = TestConstants.SOCIAL_INSURANCE_NUMBER;
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		String sRandName = RandomStringUtils.randomAlphabetic(12);
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");
+		//click on cancel 'Enrollment'
+		storeFrontHomePage.clickOnCancelEnrollmentOnExistingConsultantPopUp();
+		//verify page navigated to Corp site/PWS Site
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corp")||driver.getCurrentUrl().contains("biz")||driver.getCurrentUrl().contains("com"),"Page not navigated to corp or pws Site");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-100:SSN Validation for consultant trying to enroll under invalid sponsor's upline
+	@Test
+	public void testSSNValidationForConsultantTryingToEnrollUnderInvalidSponsorUpline_100() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = TestConstants.SOCIAL_INSURANCE_NUMBER;
+		country = driver.getCountry();
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		String sRandName = RandomStringUtils.randomAlphabetic(12);
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID();
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");
 		s_assert.assertAll();
 	}
 

@@ -22,6 +22,7 @@ import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.RFBasePage;
+import com.thoughtworks.selenium.webdriven.commands.IsElementPresent;
 
 
 public class StoreFrontRFWebsiteBasePage extends RFBasePage{
@@ -850,23 +851,20 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		return validateHomePage();
+		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']")); 
 	}
 
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
-		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
-			JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]")));
-			//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
-			driver.pauseExecutionFor(2000);
-			driver.waitForLoadingImageToDisappear();
-			driver.pauseExecutionFor(2000);
-			return validateHomePage();   
-		}catch(NoSuchElementException e){
-			return driver.isElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
+		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]")));
+		//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
+		driver.pauseExecutionFor(2000);
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']")); 
+
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
@@ -874,7 +872,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		return validateHomePage();
+		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']"));
 	}
 
 	public boolean validateHomePage(){
@@ -1174,10 +1172,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 
-//	public String getQuantityOfProductFromAutoshipTemplate(){
-//		String quantity = driver.findElement(By.xpath("//div[@class='order-summary-left spacer'][2]/div[1]/div[2]/div[2]/div[3]")).getText();
-//		return quantity;
-//	}
+	//	public String getQuantityOfProductFromAutoshipTemplate(){
+	//		String quantity = driver.findElement(By.xpath("//div[@class='order-summary-left spacer'][2]/div[1]/div[2]/div[2]/div[3]")).getText();
+	//		return quantity;
+	//	}
 
 	public void clickOnBillingNextStepButton() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));

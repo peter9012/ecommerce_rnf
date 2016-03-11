@@ -62,7 +62,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By UPDATE_ADDRESS_IN_SHIPPING_ADDRESS_POPUP = By.xpath("//td[contains(text(),'Update address')]");
 	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='crpAutoship']/../../..//span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]");
-	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::div[1]//div/span[text()='pcAutoship']/following::span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
+	private static final By AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pcAutoship']/../../..//span[contains(text(),'PENDING')]/../../preceding-sibling::td//a");
 	private static final By CLOSE_POPUP_OF_CREATE_NEW_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]/div[contains(@id,'close')]");
 	private static final By ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//span[contains(text(),'Address Cannot be added for Inactive user')]");
 	private static final By OK_BTN_OF_ADDRESS_CAN_NOT_BE_ADDED_POPUP = By.xpath("//td[text()='OK']");
@@ -79,6 +79,8 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CREDIT_CARD_DROP_DOWN_IMG_ON_NEW_SHIPPING_ADDRESS_POPUP= By.xpath("//span[contains(text(),'Credit Card')]/following::img[1]");
 	private static final By CREDIT_CARD_DROP_DOWN_FIRST_VALUE_ON_NEW_SHIPPING_ADDRESS_POPUP= By.xpath("//td[contains(text(),'Credit')]/following::td[2]");
 	private static final By CVV_TXTFIELD_ON_NEW_SHIPPING_ADDRESS_POPUP= By.xpath("//span[text()='CVV']/following::input[1]");
+	private static final By UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//div[@class='csCreateAddressActions']//td[text()='Update address']");
+	private static final By USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP = By.xpath("//td[contains(text(),'Use Entered Address')]");
 
 	protected RFWebsiteDriver driver;
 
@@ -360,7 +362,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
-	
+
 	public void clickUpdateAddressBtn(){
 		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(UPDATE_ADDRESS_IN_SHIPPING_ADDRESS_POPUP);
@@ -576,16 +578,23 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		return autoshipID;
 	}
-	
+
 	public void selectCreditCardDropDownImgOnNewShippingAddressPopUp(){
 		driver.click(CREDIT_CARD_DROP_DOWN_IMG_ON_NEW_SHIPPING_ADDRESS_POPUP);
 		driver.quickWaitForElementPresent(CREDIT_CARD_DROP_DOWN_FIRST_VALUE_ON_NEW_SHIPPING_ADDRESS_POPUP);
 		driver.click(CREDIT_CARD_DROP_DOWN_FIRST_VALUE_ON_NEW_SHIPPING_ADDRESS_POPUP);
 	}
-	
+
 	public void enterCVVOnNewShippingAddressPopUp(String cvv){
 		driver.waitForElementPresent(CVV_TXTFIELD_ON_NEW_SHIPPING_ADDRESS_POPUP);
 		driver.type(CVV_TXTFIELD_ON_NEW_SHIPPING_ADDRESS_POPUP,cvv);
+	}
+
+
+	public void clickUpdateAddressbtnInEditAddressPopup(){
+		driver.waitForElementPresent(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.click(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

@@ -418,7 +418,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1808:To verify that cssalessupervisory can Edit Autoship for consultant and PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSSalesSupervisoryCanEditAutoshipForConsultantAndPC_1808(){ 
 		String randomCustomerSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -493,7 +493,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1813:To verify the cscommissionadmin can do Sales Override
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSCommissionAdminCanDoSalesOverride_1813() throws InterruptedException{ 
 		String randomCustomerSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -695,7 +695,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1784:To verify CSR can create create Pulse
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSRCanCreatepulse_1784() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

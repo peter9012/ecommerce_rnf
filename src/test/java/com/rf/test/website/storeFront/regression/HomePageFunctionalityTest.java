@@ -257,7 +257,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//click on logo and validate the homepage
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.validateHomePage(),"Home page is not displayed ");
 		//click login  link and validate username,password,login button & forgot pwd link
 		s_assert.assertTrue(storeFrontHomePage.validateLoginFunctionality(),"All the Elements of login functionality are not displayed!");
 		//validate 'shop','About' &'Become a Consultant' Menu 
@@ -503,8 +502,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3825:Verify Top Nav as Logged in RC User(.com)
-	@Test 
+	@Test
 	public void testVerifyTopNavLoggedInRCUser_3825() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCUserList =  null;
 		String rcUserEmailID = null;
 		String accountIdForRCUser = null;
@@ -515,17 +515,15 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForRCUser);
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound")||driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+				logger.info("SITE NOT FOUND/login error for the user "+rcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else
 				break;
 		}
 		logger.info("login is successful");
-		//validate home page
-		s_assert.assertTrue(storeFrontRCUserPage.validateHomePage(),"home -page is not displayed");
 		//add product to cart..
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks(); 
 		storeFrontHomePage.selectProductAndProceedToBuy();
@@ -543,7 +541,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//click on logo and validate the homepage
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.validateHomePage(),"Home page is not displayed ");
 		//click login  link and validate username,password,login button & forgot pwd link
 		s_assert.assertTrue(storeFrontHomePage.validateLoginFunctionality(),"All the Elements of login functionality are not displayed!");
 		//validate 'shop','About' &'Become a Consultant' Menu 
@@ -1967,7 +1964,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4004:Look up with Active CA consultant's Account ID
-	@Test
+	@Test(enabled=false)//TEST NOT VALID
 	public void testLookUpWithActiveCAConsultantAccountID_4004() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();

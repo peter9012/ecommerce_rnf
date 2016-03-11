@@ -28,6 +28,10 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public static String customerCIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[1]//a";
 	public static String viewOrderBtnLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]//td[contains(text(),'View Orders')]";
 	public static String billingAddressValueOnAddNewBillingProfilePopupLoc="//div[contains(@class,'csAddCardPaymentWidgetFrame')]//span[text()='Select Billing Address']/following::td[contains(text(),'%s')]";
+	private static String crossButtonOfDeliveryAndShippingAddress = "//div[text()='%s']/div";
+	private static String buttonsInDeliveryAndShippingAddressPopup = "//td[contains(text(),'%s')]";
+	private static String  deliveryAndShippingAddressPopup = "//div[text()='%s']";
+	private static String shippingAddressDropdownValueInPopupLoc ="//div[@class='csPopupArea']//following::td[contains(text(),'%s')]";
 
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
@@ -89,6 +93,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
 	private static final By CHANGE_SPONSER_LINK = By.xpath("//a[text()='Change']");
+	private static final By CREATE_NEW_ADDRESS_BTN_LOC = By.xpath("//td[text()='Create new address']");
+	private static final By MESSAGE_FOR_EMPTY_CREATE_EDIT_SHIPPING_ADDRESS_POPUP = By.xpath("//span[contains(text(),'Attention should contain First Name and Last Name')]");
+	private static final By OK_BUTTON_OF_CREATE_EDIT_SHIPPING_ADDRESS_POPUP = By.xpath("//td[text()='OK']");
+	private static final By SHIPPING_ADDRESS_DROPDOWN_IN_POPUP = By.xpath("//div[@class='csPopupArea']//img[1]");
+	private static final By USE_THIS_ADDRESS_ANOTHER_BTN_IN_POPUP = By.xpath("//td[contains(text(),'Use this address')]");
+	private static final By USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP = By.xpath("//td[contains(text(),'Use Entered Address')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -825,7 +835,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		logger.info("Phone number entered is "+phoneNumber);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public boolean isAddNewPaymentProfilePopupPresentInCustomerTab(){
 		driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);
 		return driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);  
@@ -886,6 +896,59 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public boolean isChangeSponserLinkPresent(){
 		driver.waitForElementPresent(CHANGE_SPONSER_LINK);
 		return driver.isElementPresent(CHANGE_SPONSER_LINK);
+	}
+
+	public void clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage(){
+		driver.waitForElementPresent(CREATE_NEW_ADDRESS_BTN_LOC);
+		driver.click(CREATE_NEW_ADDRESS_BTN_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCloseButtonToCloseDeliveryAndShippingAddressPopUp(String labelText){
+		driver.waitForElementPresent(By.xpath(String.format(crossButtonOfDeliveryAndShippingAddress, labelText)));
+		driver.click(By.xpath(String.format(crossButtonOfDeliveryAndShippingAddress, labelText)));
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String verifyPopUpMessageForEmptyTextFieldsInDeliveryAndShippingAddressPopup(){
+		driver.waitForElementPresent(MESSAGE_FOR_EMPTY_CREATE_EDIT_SHIPPING_ADDRESS_POPUP);
+		return driver.findElement(MESSAGE_FOR_EMPTY_CREATE_EDIT_SHIPPING_ADDRESS_POPUP).getText().trim();
+	}
+
+	public void clickOkButtonToCloseWarningPopUp(){
+		driver.waitForElementPresent(OK_BUTTON_OF_CREATE_EDIT_SHIPPING_ADDRESS_POPUP);
+		driver.click(OK_BUTTON_OF_CREATE_EDIT_SHIPPING_ADDRESS_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifyDeliveryAndShippingAddressPopupPresent(String headerString){
+		driver.waitForElementPresent(By.xpath(String.format(deliveryAndShippingAddressPopup, headerString)));
+		return driver.isElementPresent(By.xpath(String.format(deliveryAndShippingAddressPopup, headerString)));
+	}
+
+	public void selectAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(String partOfShippingAddress){
+		driver.waitForElementPresent(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);
+		driver.click(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);
+		driver.waitForElementPresent(By.xpath(String.format(shippingAddressDropdownValueInPopupLoc, partOfShippingAddress)));
+		driver.click(By.xpath(String.format(shippingAddressDropdownValueInPopupLoc, partOfShippingAddress)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickButtonsInDeliveryAndShippingAddressPopup(String buttonName){
+		driver.waitForElementPresent(By.xpath(String.format(buttonsInDeliveryAndShippingAddressPopup, buttonName)));
+		driver.click(By.xpath(String.format(buttonsInDeliveryAndShippingAddressPopup, buttonName)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isQASpopupPresent(){
+		driver.waitForElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		return driver.isElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+	}
+
+	public void clickUseEnteredAddressbtnInEditAddressPopup(){
+		driver.waitForElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		driver.click(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

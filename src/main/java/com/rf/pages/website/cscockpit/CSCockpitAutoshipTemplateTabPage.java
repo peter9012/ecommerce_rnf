@@ -104,7 +104,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By FIRST_CREDIT_CARD_PAYMENT_INFO = By.xpath("//body/div[3]//tbody//tr[2]/td[2]");
 	private static final By AUTOSHIP_TEMPLATE_TYPE = By.xpath("//span[text()='Template Type:']/following-sibling::span");
 	private static final By ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS = By.xpath("//td[text()='Add New Address']");
-
+	private static final By SHIPPING_METHOD_NAME_FROM_UI = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following-sibling::div[2]/span");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -1121,8 +1121,11 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForElementPresent(ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS);
 		driver.click(ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS);
 		driver.waitForLoadingImageToDisappear();
+	}
 
-
+	public String getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab(){
+		driver.waitForElementPresent(SHIPPING_METHOD_NAME_FROM_UI);
+		return driver.findElement(SHIPPING_METHOD_NAME_FROM_UI).getText().trim();
 	}
 
 }

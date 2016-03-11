@@ -95,6 +95,17 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
 	}
+	
+	public void selectCountry(String country){
+		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
+		if(country.equalsIgnoreCase("ca")){
+			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownCA']")).click();
+		}
+		else{
+			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownUS']")).click();
+		}
+		waitForPageLoad();
+	}
 
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");

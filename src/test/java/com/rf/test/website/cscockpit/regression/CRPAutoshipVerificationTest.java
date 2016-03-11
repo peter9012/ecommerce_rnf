@@ -2387,7 +2387,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1724:To verify the View order page UI from the find autoship search results page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyViewOrderPageUIFromTheFindAutoshipSearchResultsPage_1724(){
 		String orderID = "Order ID";
 		String orderDate = "Order Date";
@@ -2414,7 +2414,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1736:To verify create payment address functionality in the CRP Checkout Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCreatePaymentAddressFunctionalityInCRPCheckoutPage_1736() throws InterruptedException{
 		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -3147,6 +3147,110 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(secondProfileName),"billing profile is not present on storefront UI");
 		logout(); 
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1746:To verify Add New Ahipping address functionality on PCPerk Autoship template Page
+	@Test(enabled=false)//WIP
+	public void testVerifyAddNewShippingAddressFunctionalityOnPCPerks_1746(){
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendentNewFirstName = TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String country = null;
+		String addressLine = null;
+		String addressLine2=null;
+		String addresstoPass=null;
+		String randomCustomerSequenceNumber = null;
+		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCUsernameList =  null;
+		String pcEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			addressLine2=TestConstants.ADDRESS_LINE_2_US;
+			addresstoPass="Hemlock";
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			country=TestConstants.COUNTRY_DD_VALUE_US;
+
+		}else if(driver.getCountry().equalsIgnoreCase("ca")){
+			addressLine=TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2=TestConstants.ADDRESS_LINE_2_CA;
+			addresstoPass="54th";
+			city=TestConstants.CITY_CA;
+			postal=TestConstants.POSTAL_CODE_CA;
+			country=TestConstants.COUNTRY_DD_VALUE_CA;
+			province=TestConstants.PROVINCE_CA;
+			phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		}
+
+
+		//----------------------FOR US------------------------------------
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logout();
+		logger.info("emaild of PC User username "+pcEmailID);
+		logger.info("login is successful");
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickAddNewAddressButtonUnderShippingAddress();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyDeliveryAndShippingAddressPopupPresent("Create/Edit Shipping Address"),"Create/Edit Shipping Address Popup is not Present");
+		cscockpitAutoshipTemplateTabPage.clickCloseButtonToCloseDeliveryAndShippingAddressPopUp("Create/Edit Shipping Address");
+		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyDeliveryAndShippingAddressPopupPresent("Create/Edit Shipping Address"),"Create/Edit Shipping Address Popup is  Present");
+		cscockpitAutoshipTemplateTabPage.clickAddNewAddressButtonUnderShippingAddress();
+		cscockpitAutoshipTemplateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyPopUpMessageForEmptyTextFieldsInDeliveryAndShippingAddressPopup().contains("Attention should contain First Name and Last Name"), "Warning Message for keeping all empty fields in Shipping Address Popup is not Present ");
+		cscockpitAutoshipTemplateTabPage.clickOkButtonToCloseWarningPopUp();
+		cscockpitAutoshipTemplateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
+		cscockpitAutoshipTemplateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isQASpopupPresent(), "QAS popup is not present while creating  new shipping address");
+		cscockpitAutoshipTemplateTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
+		String getShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab();
+		s_assert.assertTrue(getShippingAddressLineFromUI.equalsIgnoreCase(addressLine),"Newly created shipping address is not selected from dropdown");
+		cscockpitAutoshipTemplateTabPage.clickAddNewAddressButtonUnderShippingAddress();
+		cscockpitAutoshipTemplateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentNewFirstName, attendeeLastName, addressLine2, city, postal, country, province, phoneNumber);
+		cscockpitAutoshipTemplateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isQASpopupPresent(), "QAS popup is not present while creating  new shipping address");
+		cscockpitAutoshipTemplateTabPage.selectAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(addresstoPass);;
+		cscockpitAutoshipTemplateTabPage.clickButtonsInDeliveryAndShippingAddressPopup("Use this address");
+		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab();
+		s_assert.assertTrue(getNewShippingAddressLineFromUI.equalsIgnoreCase(addressLine2),"Newly created shipping address is not selected from dropdown");
 		s_assert.assertAll();
 	}
 

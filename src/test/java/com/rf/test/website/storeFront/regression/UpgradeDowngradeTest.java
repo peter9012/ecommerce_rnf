@@ -1182,7 +1182,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4313:Soft-Terminated Consultant becomes a RC
-	@Test
+	@Test(enabled=false)//ISSUE The UPDATE permission was denied on the object 'AccountRF'
 	public void testSoftTerminatedConsultantBecomesRC_4313() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

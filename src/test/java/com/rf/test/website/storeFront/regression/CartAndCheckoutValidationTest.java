@@ -4291,8 +4291,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontCartAutoShipPage.clickOnRodanAndFieldsLogo();
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
-		logout();
-		driver.get(driver.getURL()+"/"+driver.getCountry());
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(emailAddress, password);
 		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage= new StoreFrontUpdateCartPage(driver);

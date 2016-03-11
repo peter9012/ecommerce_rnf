@@ -63,6 +63,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";	
+		if(driver.getCurrentUrl().contains(country)==false)
+			driver.selectCountry(country);
 		setStoreFrontPassword(driver.getStoreFrontPassword());
 	}
 

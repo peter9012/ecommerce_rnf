@@ -88,6 +88,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/following::span[2]");
 	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
+	private static final By CHANGE_SPONSER_LINK = By.xpath("//a[text()='Change']");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -801,7 +802,6 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 
 	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
 		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
-		driver.clear(ATTENDENT_NAME_TEXT_BOX);
 		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
 		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
 		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
@@ -825,7 +825,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		logger.info("Phone number entered is "+phoneNumber);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-
+	
 	public boolean isAddNewPaymentProfilePopupPresentInCustomerTab(){
 		driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);
 		return driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);  
@@ -881,6 +881,11 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public String getNewBillingAddressNameInCheckoutTab(){
 		driver.waitForElementPresent(NEW_BILLING_ADDRESS);
 		return driver.findElement(NEW_BILLING_ADDRESS).getText();
+	}
+
+	public boolean isChangeSponserLinkPresent(){
+		driver.waitForElementPresent(CHANGE_SPONSER_LINK);
+		return driver.isElementPresent(CHANGE_SPONSER_LINK);
 	}
 
 }

@@ -433,7 +433,13 @@ public class TestConstants {
 	//DSV CSCOCKPIT
 	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";
 	public static final String DSV_CSCOCKPIT_PASSWORD = "csr@user";
-
+	public static final String DSV_CONSULTANT_ORDER_NUMBER = "1000327681";
+	public static final String DSV_CONSULTANT_ORDER_STATUS = "Submitted";
+	public static final String DSV_PC_ORDER_NUMBER = "1000327687";
+	public static final String DSV_PC_ORDER_STATUS = "Shipped";
+	public static final String DSV_RC_ORDER_NUMBER = "1000409096";
+	//public static final String DSV_RC_ORDER_STATUS = "Completed";
+	
 	//CSCockpit Constants
 
 	public static final String ADMIN_USERNAME = "admin";

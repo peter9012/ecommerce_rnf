@@ -224,5 +224,209 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Verify the add/edit shipping for Consultant
+	@Test
+	public void testVerifyAddAndEditShippingForConsultant() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String addressLine = null;
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String contry = null;		
+		addressLine = TestConstants.ADDRESS_LINE_1_CA;
+		city = TestConstants.CITY_CA;
+		postal = TestConstants.POSTAL_CODE_CA;
+		province = TestConstants.PROVINCE_ALBERTA;
+		phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		contry = "Canada";
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		cscockpitCustomerSearchTabPage.verifyCountForCustomerFromSearchResult();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()==1, "searched consultant is not showing 1 result");
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab("1");
+		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_CONSULTANT_EMAILID), "Customer details page doesn't contain the email Id of consultant as "+TestConstants.DSV_CONSULTANT_EMAILID);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_CONSULTANT_CID), "Customer details page doesn't contain the CID of consultant as "+TestConstants.DSV_CONSULTANT_CID);
+		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
+		attendentFirstName= attendentFirstName+"edit";
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickUpdateAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		s_assert.assertAll();
+	}
+
+	//Verify the add/edit shipping for PC
+	@Test
+	public void testVerifyAddAndEditShippingForPC() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String addressLine = null;
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String contry = null;		
+		addressLine = TestConstants.ADDRESS_LINE_1_CA;
+		city = TestConstants.CITY_CA;
+		postal = TestConstants.POSTAL_CODE_CA;
+		province = TestConstants.PROVINCE_ALBERTA;
+		phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		contry = "Canada";
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_PC_EMAILID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		cscockpitCustomerSearchTabPage.verifyCountForCustomerFromSearchResult();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()==1, "searched PC is not showing 1 result");
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab("1");
+		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_PC_EMAILID), "Customer details page doesn't contain the email Id of pc as "+TestConstants.DSV_PC_EMAILID);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_PC_CID), "Customer details page doesn't contain the CID of pc as "+TestConstants.DSV_PC_CID);
+		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
+		attendentFirstName= attendentFirstName+"edit";
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickUpdateAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		s_assert.assertAll();
+	}
+
+	//Verify the add/edit shipping for RC
+	@Test
+	public void testVerifyAddAndEditShippingForRC() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String addressLine = null;
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String contry = null;		
+		addressLine = TestConstants.ADDRESS_LINE_1_CA;
+		city = TestConstants.CITY_CA;
+		postal = TestConstants.POSTAL_CODE_CA;
+		province = TestConstants.PROVINCE_ALBERTA;
+		phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		contry = "Canada";
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_RC_EMAILID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		cscockpitCustomerSearchTabPage.verifyCountForCustomerFromSearchResult();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()==1, "searched RC is not showing 1 result");
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab("1");
+		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_RC_EMAILID), "Customer details page doesn't contain the email Id of RC as "+TestConstants.DSV_RC_EMAILID);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_RC_CID), "Customer details page doesn't contain the CID of RC as "+TestConstants.DSV_RC_CID);
+		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
+		attendentFirstName= attendentFirstName+"edit";
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
+		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
+		cscockpitCustomerTabPage.clickUpdateAddressBtn();
+		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		s_assert.assertAll();
+	}
+
+	//Order Search for Consultant
+	@Test
+	public void testOrderSearchForConsultant(){		
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_CONSULTANT_ORDER_STATUS);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_CONSULTANT_CID);
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_CONSULTANT_ORDER_NUMBER);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_CONSULTANT_ORDER_NUMBER),"Order number "+TestConstants.DSV_CONSULTANT_ORDER_NUMBER+" is not present on Order details page");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_CONSULTANT_CID),"CID number "+TestConstants.DSV_CONSULTANT_CID+" is not present on Order details page");		
+		s_assert.assertAll();
+	}
+
+	//Order Search for PC
+	@Test
+	public void testOrderSearchForPC(){		
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_PC_ORDER_STATUS);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_PC_CID);
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_PC_ORDER_NUMBER);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_PC_ORDER_NUMBER),"Order number "+TestConstants.DSV_PC_ORDER_NUMBER+" is not present on Order details page");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_PC_CID),"CID number "+TestConstants.DSV_PC_CID+" is not present on Order details page");		
+		s_assert.assertAll();
+	}
+
+	//Order Search for RC
+	@Test
+	public void testOrderSearchForRC(){		
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		//cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_RC_ORDER_STATUS);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_RC_CID);
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_RC_ORDER_NUMBER);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_RC_ORDER_NUMBER),"Order number "+TestConstants.DSV_RC_ORDER_NUMBER+" is not present on Order details page");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_RC_CID),"CID number "+TestConstants.DSV_RC_CID+" is not present on Order details page");		
+		s_assert.assertAll();
+	}
 
 }
+

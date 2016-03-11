@@ -102,6 +102,12 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ONLY_TAX_RETURN_VALUE_IN_RETURN_REQUEST = By.xpath("//div[text()='Only Tax Returned']/following::table[1]//tbody[2]//tr[2]/td[4]//span");
 	private static final By RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP = By.xpath("//label[contains(text(),'Return Only tax')]/preceding::input[1]");
 	private static final By GET_SKU_VALUE_ORDER_DETAIL=By.xpath("//div[@class='csWidgetMasterDetailListboxCellLine1']/span");
+	private static final By CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//div[text()='CHANGE CONSULTANT RECEIVING COMMISSIONS']");
+	private static final By TEXTFIELD_OF_CONSULTANT_NAME_OR_CID_IN_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//span[text()='Consultant Name or CID']/following-sibling::input");
+	private static final By FIRST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']/ancestor::tr/td[2]//span");
+	private static final By LAST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']/ancestor::tr/td[3]//span");
+	private static final By SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']");
+
 
 	protected RFWebsiteDriver driver;
 
@@ -663,4 +669,38 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		logger.info("Sku Value Of Product is "+skuValue);
 		return skuValue;
 	}
+
+
+	public boolean isChangeSponserLinkPresent(){
+		driver.waitForElementPresent(CHANGE_SPONSER_LINK);
+		return driver.isElementPresent(CHANGE_SPONSER_LINK);
+	}
+
+	public boolean verifyClickingChangeLinkChangeConsultantReceivingCommissionsPopUPPresentInOrderTab(){
+		driver.waitForElementPresent(CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+		return driver.isElementPresent(CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+	}
+
+	public void enterAccountNumberInConsultantNameOrCIDOfChangeConsultantReceivingCommissionsPopUPInOrderTab(String enterConsultantNameOrCID){
+		driver.waitForElementPresent(TEXTFIELD_OF_CONSULTANT_NAME_OR_CID_IN_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+		driver.type(TEXTFIELD_OF_CONSULTANT_NAME_OR_CID_IN_CONSULTANT_RECEIVING_COMMISSIONS_POPUP, enterConsultantNameOrCID);
+	}
+
+	public void clickSearchButtonInChangeConsultantReceivingCommissionsPopUPInOrderTab(){
+		driver.waitForElementPresent(SEARCH_BTN_ANOTHER_LOCATOR);
+		driver.click(SEARCH_BTN_ANOTHER_LOCATOR);
+	}
+
+	public String getCIDFirstAndLastNameFromChangeConsultantReceivingCommissionsPopUPInOrderTab(){
+		driver.waitForElementPresent(FIRST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+		String firstName = driver.findElement(FIRST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP).getText();
+		String lastName = driver.findElement(LAST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP).getText();
+		return firstName+" "+lastName;
+	}
+
+	public void clickSelectButtonInChangeConsultantReceivingCommissionsPopUPInOrderTab(){
+		driver.waitForElementPresent(SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+		driver.click(SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+	}
+
 }

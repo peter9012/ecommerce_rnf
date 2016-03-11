@@ -25,6 +25,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String countryDDLoc = "//span[contains(text(),'Country')]/select/option[text()='%s']";
 	private static String orderStatusCorrespondingOrderLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[8]//span";
 	private static String customerFirstNameInSearchResultsLoc = "//div[@class='z-listbox-body']/descendant::table/tbody[2]/tr[%s]/td[3]//span";
+	private static String orderSearchLabel = "//div[text()='%s']";
 
 	private static final By SEARCH_BTN = By.xpath("//td[text()='Search']"); 
 	private static final By TOTAL_ORDERS_ON_PLACED_ORDER_DETAILS = By.xpath("//div[@class='orderDetailOrderItemsWidget']//div[@class='z-listbox-body']/table/tbody[2]/tr");
@@ -244,6 +245,17 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		String firstname = driver.findElement(By.xpath(String.format(customerFirstNameInSearchResultsLoc, customerSequenceNumber))).getText();
 		logger.info("Selected Cutomer first Name is = "+firstname);
 		return firstname;
+	}
+	
+	public boolean isOrderSearchLabelPresent(String label){
+		driver.waitForElementPresent(By.xpath(String.format(orderSearchLabel, label)));
+		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(orderSearchLabel, label))));
+	}
+
+	public String getCIDOrderNumberInOrderSearchResultsInOrderSearchTab(String orderSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber)));
+		return driver.findElement(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber))).getText();
+
 	}
 
 }

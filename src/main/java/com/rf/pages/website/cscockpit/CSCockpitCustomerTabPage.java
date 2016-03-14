@@ -239,12 +239,18 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		try{
 			driver.quickWaitForElementPresent(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
 			driver.click(AUTOSHIP_ID_CONSULTANT_CUSTOMER_TAB_LOC);
-			driver.waitForLoadingImageToDisappear();
+			driver.waitForCSCockpitLoadingImageToDisappear();
 		}catch(Exception e){
 			driver.waitForElementPresent(AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC);
 			driver.click(AUTOSHIP_ID_PC_CUSTOMER_TAB_LOC);
-			driver.waitForLoadingImageToDisappear();
+			driver.waitForCSCockpitLoadingImageToDisappear();
 		}
+	}
+	
+	public void clickOnAutoShipId(String status,String isActive){
+		List<WebElement> autoshipIdsList = driver.findElements(By.xpath("//span[text()='PENDING']/following::span[text()='Yes']/ancestor::tr[1]//a"));
+		autoshipIdsList.get(0).click();
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public boolean verifyAutoshipTemplateSectionInCustomerTab(){

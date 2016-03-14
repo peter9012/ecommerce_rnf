@@ -579,10 +579,8 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		logout();
 	}
 
-	//--
-
 	//Hybris Project-1783:To verify User permission for Return
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyUserPermissionForReturn_1783(){
 		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -746,7 +744,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1787:To verify cssalessupervisory can create create Pulse
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCssalessupervisoryCanCreatePulse_1787() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -798,7 +796,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1786:To verify cscommissionadmin can create create Pulse
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCscommissionadminCanCreatePulse_1786() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -851,7 +849,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1788:To verify CSR can create CRP
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSRCanCreateCRP_1788() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

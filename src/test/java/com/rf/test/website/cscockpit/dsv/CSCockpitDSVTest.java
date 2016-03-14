@@ -12,6 +12,9 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipCartTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateUpdateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
@@ -40,6 +43,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
+	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
+	private CSCockpitAutoshipCartTabPage cscockpitAutoshipCartTabPage;
+	private CSCockpitAutoshipTemplateUpdateTabPage cscockpitAutoshipTemplateUpdateTabPage;
 	private StoreFrontHomePage storeFrontHomePage; 
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
@@ -57,12 +63,15 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
 		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+		cscockpitAutoshipCartTabPage= new CSCockpitAutoshipCartTabPage(driver);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
 		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
+		cscockpitAutoshipTemplateUpdateTabPage = new CSCockpitAutoshipTemplateUpdateTabPage(driver);
 	}
 
 	private String RFO_DB = null;
@@ -428,5 +437,39 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Add more products in the autoship
+	@Test
+	public void testAddMoreProductsInTheAutoship(){		
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
+		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("Consultant");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		cscockpitCustomerSearchTabPage.verifyCountForCustomerFromSearchResult();
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getTotalResultsInCustomerSearchOnCustomerSearchTab()==1, "searched Consultant is not showing 1 result");
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab("1");
+		cscockpitCustomerTabPage.clickAutoshipIdOnCustomerTab();
+		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+//		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+//		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(TestConstants.CARD_NUMBER,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum,TestConstants.SECURITY_CODE);
+//		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+//		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+//		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+//		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+//		int totalQtyAfter=cscockpitAutoshipTemplateTabPage.getQuantityOfAllProductInAutoshipTemplateTabPage();
+		s_assert.assertAll();
+	}
 }
-

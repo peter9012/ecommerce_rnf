@@ -2582,7 +2582,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1741:To verify Add card functionality in the CRP Edit Autoship template Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddCardFunctionalityInCRPEditAutoshipTemplate_1741(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

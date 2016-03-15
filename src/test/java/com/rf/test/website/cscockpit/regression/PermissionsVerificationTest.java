@@ -847,7 +847,6 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	//Hybris Project-1788:To verify CSR can create CRP
 	@Test
 	public void testVerifyCSRCanCreateCRP_1788() throws InterruptedException{

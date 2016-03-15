@@ -1,6 +1,7 @@
 package com.rf.pages.website.cscockpit;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
@@ -91,6 +92,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By EDIT_ADDRESS_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//a[text()='Edit Address']");
 	private static final By POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/following::span[2]");
 	private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new Address')]");
+	public static final By ADD_NEW_ADDRESS = By.xpath("//span[text()='Delivery Address']/following::td[contains(text(),'New Address')]");
 	private static final By NEW_BILLING_ADDRESS = By.xpath("//div[contains(text(),'Billing address')]/following::tr[2]/td[7]");
 	private static final By CHANGE_SPONSER_LINK = By.xpath("//a[text()='Change']");
 	private static final By CREATE_NEW_ADDRESS_BTN_LOC = By.xpath("//td[text()='Create new address']");
@@ -99,6 +101,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By SHIPPING_ADDRESS_DROPDOWN_IN_POPUP = By.xpath("//div[@class='csPopupArea']//img[1]");
 	private static final By USE_THIS_ADDRESS_ANOTHER_BTN_IN_POPUP = By.xpath("//td[contains(text(),'Use this address')]");
 	private static final By USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP = By.xpath("//td[contains(text(),'Use Entered Address')]");
+	private static final By SUBTOTAL_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'Subtotal')]/following::span[1]");
+	private static final By DELIVERY_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'Delivery Costs')]/following::span[1]");
+	private static final By HANDLING_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'Handling Costs')]/following::span[1]");
+	private static final By GST_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'GST')]/following::span[1]");
+	private static final By PST_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'PST')]/following::span[1]");
+	private static final By USE_ENTERED_ADDRESS_BUTTON = By.xpath("//td[contains(text(),'Use Entered Address')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -951,4 +959,94 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
+	public double calculateAmountAccordingToPercent(double subTotal, double deliveryCost, double handlingCost, double percent) {
+		double calculatedAmount = (subTotal+deliveryCost+handlingCost)*percent;
+		logger.info("Calculated amount is "+calculatedAmount);
+		return calculatedAmount;
+	}
+
+	public boolean isGSTTaxPresentInUI() {
+		return driver.isElementPresent(GST_COST_IN_TOTAL_LOC);
+	}
+
+	public double getSubTotalFromUI() {
+		String[] subTotal = driver.findElement(SUBTOTAL_IN_TOTAL_LOC).getText().split("\\ ");
+		if(subTotal[1].contains(",")){
+			String[] subTotalRequiredFinal = subTotal[1].split("\\,");
+			String finalsub = subTotalRequiredFinal[0]+subTotalRequiredFinal[1];
+			double subTotalAmount = Double.parseDouble(finalsub);
+			return subTotalAmount;
+		}
+		double subTotalAmount = Double.parseDouble(subTotal[1]);
+		logger.info("subTotalAmount======="+subTotalAmount);
+		return subTotalAmount;
+
+	}
+	public double getDeliveryCostFromUI() {
+		String[] deliveryCost =  driver.findElement(DELIVERY_COST_IN_TOTAL_LOC).getText().split("\\ ");
+		double deliveryCostAmount = Double.parseDouble(deliveryCost[1]);
+		logger.info("deliveryCostAmount======="+deliveryCostAmount);
+		return deliveryCostAmount;
+	}
+	public double getHandlingCostFromUI(){
+		String[] handlingCost = driver.findElement(HANDLING_COST_IN_TOTAL_LOC).getText().split("\\ ");
+		double handlingCostAmount = Double.parseDouble(handlingCost[1]);
+		logger.info("handlingCostAmount======="+handlingCostAmount);
+		return handlingCostAmount;
+	}
+
+	public double getGstAmountFromUI() {
+		String[] gst = driver.findElement(GST_COST_IN_TOTAL_LOC).getText().split("\\ ");
+		double gstAmount = Double.parseDouble(gst[1]);
+		logger.info("GST AMOUNT ON UI======="+gstAmount);
+		return gstAmount;
+	}
+
+	public void clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup(){
+		driver.waitForElementPresent(USE_ENTERED_ADDRESS_BUTTON);
+		driver.click(USE_ENTERED_ADDRESS_BUTTON);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean validateGstAmountOnUI(double gst, double calculatedGstAmount) {
+		DecimalFormat dff = new DecimalFormat("#.0");
+		String gstToCompare = String.valueOf(dff.format(gst));
+		String calculatedgstToCompare = String.valueOf(dff.format(calculatedGstAmount));
+		if(gstToCompare.contains(calculatedgstToCompare)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isPstTaxPresentInUI() {
+		return driver.isElementPresent(PST_COST_IN_TOTAL_LOC);
+	}
+
+	public double getPstAmountFromUI() {
+		String[] pst = driver.findElement(PST_COST_IN_TOTAL_LOC).getText().split("\\ ");
+		double pstAmount = Double.parseDouble(pst[1]);
+		return pstAmount;  
+	}
+
+	public boolean validatePstAmountOnUI(double pst, double calculatePstAmount) {
+		DecimalFormat dff = new DecimalFormat("#.0");
+		String pstToCompare = String.valueOf(dff.format(pst));
+		String calculatedPstToCompare = String.valueOf(dff.format(calculatePstAmount));
+		if(pstToCompare.contains(calculatedPstToCompare)){
+			return true;
+		}
+		return false;
+	}
+
+	public void clickOnCreateNewAddressButtonInAutoshipTemplateTabPage(){
+		driver.waitForElementPresent(CREATE_NEW_ADDRESS_BTN_LOC);
+		driver.click(CREATE_NEW_ADDRESS_BTN_LOC);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickAddNewAddressUnderDeliveryAddressInCheckoutTab(){
+		driver.waitForElementPresent(ADD_NEW_ADDRESS);
+		driver.click(ADD_NEW_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
 }

@@ -1032,4 +1032,14 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']/following::div[2]"));
 		return driver.findElement(By.xpath("//h3[contains(text(),'Return Order and Credits')]/following::a[text()='"+rmaNumber+"']/following::div[2]")).getText();
 	}
+
+	public boolean validateSameDatePresentForAutoship(String autoshipDate) {
+		Date d = new Date();
+		String date = d.toString();
+		String []requiredDate = date.split("\\ ");
+		if(autoshipDate.contains(requiredDate[2])){
+			return true;
+		}
+		return false;
+	}
 }

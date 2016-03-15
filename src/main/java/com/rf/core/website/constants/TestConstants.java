@@ -401,7 +401,7 @@ public class TestConstants {
 	public static final String DSV_RC_EMAILID = "rftestlast@mailinator.com";
 	public static final String DSV_RC_PASSWORD = "test1234";
 	public static final String DSV_RC_CID = "06368553";
-	
+
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 
@@ -429,7 +429,7 @@ public class TestConstants {
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
-	
+
 	//DSV CSCOCKPIT
 	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";
 	public static final String DSV_CSCOCKPIT_PASSWORD = "csr@user";
@@ -439,7 +439,7 @@ public class TestConstants {
 	public static final String DSV_PC_ORDER_STATUS = "Shipped";
 	public static final String DSV_RC_ORDER_NUMBER = "1000409096";
 	//public static final String DSV_RC_ORDER_STATUS = "Completed";
-	
+
 	//CSCockpit Constants
 
 	public static final String ADMIN_USERNAME = "admin";
@@ -476,6 +476,11 @@ public class TestConstants {
 	public static final String ORDER_STATUS_DD_FOURTH_VALUE = "Shipped";
 	public static final String INVALID_CUSTOMER_NAME = "abcdef5544";
 	public static final String INVALID_EMAIL_ADDRESS = "ccvvff@mnv.com";
+	public static final double FIVE_PERCENT_TAX = 0.05;
+	public static final double SEVEN_PERCENT_TAX = 0.07;
+	public static final double EIGHT_PERCENT_TAX = 0.08;
+	public static final double NINE_PERCENT_TAX = 0.09;
+	public static final String PROVINCE_NEW_FOUNDLAND_AND_LABRADOR = "Newfoundland and Labrador";
 
 	//CRM data
 	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";

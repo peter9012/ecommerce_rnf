@@ -177,7 +177,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		}catch(Exception e){
 
 		}
-		
+
 		driver.waitForPageLoad();
 	}
 
@@ -942,6 +942,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		String dueDate=driver.findElement(NEXT_DUE_DATE_PULSE_SUBSCRIPTION_STATUS).getText();
 		logger.info("Due date of CRP from UI is "+dueDate);
 		return dueDate;
+	}
+
+	public boolean verifyThresholdErrorMsgPresent() {
+		return driver.isElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[contains(@class,'error')]"));
 	}
 
 }

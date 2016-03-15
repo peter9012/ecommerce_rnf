@@ -33,7 +33,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By POSTAL_CODE_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
 	private static final By CLOSE_POPUP_OF_PAYMENT_ADDRESS = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
 	private static final By POPUP_SAVE_BUTTON = By.xpath("//td[text()='SAVE']");
-	private static final By ADD_NEW_ADDRESS = By.xpath("//span[text()='Delivery Address']/following::td[contains(text(),'New Address')]");
 	private static final By CLOSE_POPUP_OF_DELIVERY_ADDRESS = By.xpath("//div[contains(text(),'Create Delivery Address')]/div[contains(@id,'close')]");
 	private static final By DELIVERY_ADDRESS_POPUP_SAVE_BUTTON = By.xpath("//td[text()='Create new address']");
 	private static final By DELIVERY_ADDRESS_POPUP_ERROR_TEXT = By.xpath("//div[contains(text(),'ZK')]/following::span[1]");
@@ -244,12 +243,6 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickCloseOfDeliveryAddressPopUpInCheckoutTab(){
 		driver.waitForElementPresent(CLOSE_POPUP_OF_DELIVERY_ADDRESS);
 		driver.click(CLOSE_POPUP_OF_DELIVERY_ADDRESS);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-	}
-
-	public void clickAddNewAddressUnderDeliveryAddressInCheckoutTab(){
-		driver.waitForElementPresent(ADD_NEW_ADDRESS);
-		driver.click(ADD_NEW_ADDRESS);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 

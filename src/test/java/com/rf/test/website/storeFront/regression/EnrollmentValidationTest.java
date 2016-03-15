@@ -8455,4 +8455,55 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
+	//--
+	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
+	@Test
+	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String accountId = null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			String userName = (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+userName);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}  
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnYourAccountDropdown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		if(storeFrontAccountInfoPage.verifyCRPCancelled()==false){
+			storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		}
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontAccountInfoPage.applyPriceFilterLowToHigh();
+		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyThresholdErrorMsgPresent(),"Message for threshold present on UI");
+		storeFrontAccountInfoPage.clickOnContinueShoppingLink();
+		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
+		storeFrontAccountInfoPage.updateQuantityOfProductToTheSecondProduct("3");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyConfirmationMessagePresentOnUI(),"Your next autoship cart has been updated message not present");
+		storeFrontAccountInfoPage.clickOnCRPCheckout();
+		storeFrontAccountInfoPage.clickOnShippingAddressNextStepBtn();
+		storeFrontAccountInfoPage.clickOnBillingNextStepButtonDuringEnrollInCRP();
+		storeFrontAccountInfoPage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontAccountInfoPage.isOrderPlacedSuccessfully(), "Order is not placed successfully");
+		storeFrontAccountInfoPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontAccountInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		String autoshipDate = storeFrontOrdersPage.getAutoshipOrderDate();
+		System.out.println(autoshipDate+"===autoshipDate");
+		s_assert.assertTrue(storeFrontOrdersPage.validateSameDatePresentForAutoship(autoshipDate),"Same date is not present");
+		s_assert.assertAll();
+	}
 }

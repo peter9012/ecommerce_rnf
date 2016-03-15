@@ -107,7 +107,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By FIRST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']/ancestor::tr/td[2]//span");
 	private static final By LAST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']/ancestor::tr/td[3]//span");
 	private static final By SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']");
-
+	private static final By CREATE_NEW_ADDRESS_BTN_LOC = By.xpath("//td[text()='Create new address']");
 
 	protected RFWebsiteDriver driver;
 

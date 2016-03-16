@@ -2516,7 +2516,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
 		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
 		storeFrontAccountInfoPage.clickSaveAccountBtn();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"updation message not appeared");
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();

@@ -40,6 +40,7 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	
 	public void enterNewShippingAddressDetails(String name,String addressLine1,String city,String postalCode,String phoneNumber,String securityCode) throws Exception{
 		logger.info("Shipping Name entered is "+name);
+		driver.waitForElementPresent(NAME_TXT_FIELD);
 		driver.type(NAME_TXT_FIELD, name);
 		driver.type(ADDRESS_LINE_1_TXT_FIELD, addressLine1);
 		driver.type(CITY_TXT_FIELD, city);
@@ -76,6 +77,7 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	
 	public void enterNameWithCardNumberAndSecurityCode(String shippingName,String securityCode){
 		logger.info("Shipping name entered for edit is "+shippingName);
+		driver.waitForElementPresent(NAME_TXT_FIELD);
 		driver.type(NAME_TXT_FIELD, shippingName);
 		Select cardNumberDD = new Select(driver.findElement(CARD_NUMBER_DROP_DOWN));
 		cardNumberDD.selectByIndex(1);

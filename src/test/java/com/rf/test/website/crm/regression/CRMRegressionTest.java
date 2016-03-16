@@ -1826,7 +1826,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4514:Edit Shipping Profile for PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditShippingProfileForPC_4514() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		crmLoginpage = new CRMLoginPage(driver);
@@ -1892,7 +1892,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4509:Edit Spouse Contact details for PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testEditSpouseContactDetailsForPC_4509() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCList =  null;

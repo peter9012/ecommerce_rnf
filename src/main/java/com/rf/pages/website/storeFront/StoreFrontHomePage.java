@@ -132,6 +132,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void searchCID() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.type(By.id("sponsor-name-id"),"test");
@@ -150,6 +151,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void searchCID(String cid) throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.type(By.id("sponsor-name-id"),cid);
@@ -997,12 +999,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnCountryAtWelcomePage(){
 		String country = driver.getCountry();
 		if(country.equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Can')]"));
-			driver.click(By.xpath("//a[contains(text(),'Can')]"));
+			driver.waitForElementPresent(By.xpath("//h2[text()='Select your location']/following::a[1]"));
+			driver.click(By.xpath("//h2[text()='Select your location']/following::a[1]"));
 
 		}else{
-			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Uni')]"));
-			driver.click(By.xpath("//a[contains(text(),'Uni')]"));
+			driver.waitForElementPresent(By.xpath("//h2[text()='Select your location']/following::a[2]"));
+			driver.click(By.xpath("//h2[text()='Select your location']/following::a[2]"));
 		}
 	}
 

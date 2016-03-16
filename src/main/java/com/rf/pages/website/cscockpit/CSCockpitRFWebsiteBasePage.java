@@ -107,6 +107,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By GST_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'GST')]/following::span[1]");
 	private static final By PST_COST_IN_TOTAL_LOC = By.xpath("//div[@class='order-totals']//span[contains(text(),'PST')]/following::span[1]");
 	private static final By USE_ENTERED_ADDRESS_BUTTON = By.xpath("//td[contains(text(),'Use Entered Address')]");
+	private static final By TOTAL_NUMBER_OF_PAGE = By.xpath("//button[@class='z-paging-next']/preceding::span[@class='z-paging-text'][1]");
+	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -304,27 +306,43 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		logger.info("Add to cart button clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		boolean isProductFound = false;
 		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
 			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
 			clearCatalogSearchFieldAndClickSearchBtn();
 			driver.waitForCSCockpitLoadingImageToDisappear();
-			int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
-			for(int i=1; i<=noOfProducts; i++){
-				String randomCustomerFromSearchResult = String.valueOf(CommonUtils.getRandomNum(1, noOfProducts));
-				String SKU = getCustomerSKUValueInCartTab(randomCustomerFromSearchResult);
-				searchSKUValueInCartTab(SKU);
-				driver.click(ADD_TO_CART_BTN);
-				logger.info("Add to cart button clicked for "+i+" another product");
-				if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
-					driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
-					clearCatalogSearchFieldAndClickSearchBtn();
-					driver.waitForCSCockpitLoadingImageToDisappear();
+			String totalNoOfPage = driver.findElement(TOTAL_NUMBER_OF_PAGE).getText().replaceAll("/", "").trim();
+			int noOfPagesInSearchResult = Integer.parseInt(totalNoOfPage);
+			for(int i =1;i<=noOfPagesInSearchResult; i++){
+				enterRandomPageNumber(""+i);
+				int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+				String[] SKUValues = getCustomerSKUValueInCartTab(noOfProducts);
+				for(int j=1; j<SKUValues.length; j++){
+					searchSKUValueInCartTab(SKUValues[j]);
+					driver.click(ADD_TO_CART_BTN);
+					if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+						driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+						clearCatalogSearchFieldAndClickSearchBtn();
+						driver.waitForCSCockpitLoadingImageToDisappear();
+						continue;
+					}else{
+						isProductFound = true;
+						break;
+					}
+				}
+				if(isProductFound == false){
 					continue;
 				}else{
 					break;
 				}
 			}
 		}
+	}
+
+	public void enterRandomPageNumber(String pageNo){
+		driver.waitForElementPresent(PAGE_INPUT_TXT_LOC);
+		driver.type(PAGE_INPUT_TXT_LOC, pageNo+"\t");
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void clickCheckoutBtnInCartTab(){
@@ -1049,4 +1067,14 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.click(ADD_NEW_ADDRESS);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
+
+	public String[] getCustomerSKUValueInCartTab(int noOfProducts){
+		String[] listOfSKUValues = new String[noOfProducts+1];
+		for(int i=1; i<=noOfProducts; i++){
+			driver.waitForElementPresent(By.xpath(String.format(skuValueOfProductFromSearchResultLoc, i)));
+			listOfSKUValues[i] =  driver.findElement(By.xpath(String.format(skuValueOfProductFromSearchResultLoc, i))).getText();
+		}
+		return listOfSKUValues;
+	}
+
 }

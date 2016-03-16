@@ -8455,7 +8455,6 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	//--
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
 	@Test
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{

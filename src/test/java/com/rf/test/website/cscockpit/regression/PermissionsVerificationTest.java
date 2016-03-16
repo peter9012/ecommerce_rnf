@@ -915,7 +915,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1790:To verify cscommissionadmin can create CRP
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCscommissionadminCanCreateCRP_1790() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -983,7 +983,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1791:To verify cssalessupervisory can create CRP
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCssalessupervisoryCanCreateCRP_1791() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -1051,7 +1051,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1793:To verify that CSR can Cancel Autoship for consultant and PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCSRCanCancelAutoshipForConsultantAndPC_1793() throws InterruptedException{
 		String randomOrderSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();

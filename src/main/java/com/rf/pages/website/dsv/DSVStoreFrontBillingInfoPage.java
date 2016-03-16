@@ -39,6 +39,7 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 	}
 
 	public void enterNewBillingProfileDetails(String cardNumber,String nameOnCard,String expiryMonth,String expiryYear,String securityCode) throws Exception{
+		driver.waitForElementPresent(CARD_NUMBER_TXT_FIELD);
 		driver.type(CARD_NUMBER_TXT_FIELD, cardNumber);
 		driver.type(NAME_ON_CARD_TXT_FIELD, nameOnCard);
 		Select expirationMonthDD= new Select(driver.findElement(EXPIRY_MONTH_DROP_DOWN));
@@ -107,6 +108,7 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 	}
 
 	public void enterNameAndSecurityCode(String billingName,String securityCode){
+		driver.waitForElementPresent(NAME_ON_CARD_TXT_FIELD);
 		driver.type(NAME_ON_CARD_TXT_FIELD, billingName);
 		driver.type(SECURITY_CODE_TXT_FIELD, securityCode);
 	}

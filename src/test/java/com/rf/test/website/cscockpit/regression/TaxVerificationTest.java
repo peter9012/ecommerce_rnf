@@ -3129,4 +3129,509 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		}
 		s_assert.assertAll();
 	}
+	//--
+	//Hybris Project-1567:To verify the Canada tax for Prince Edward Island for Retail Order
+	@Test(enabled=false)//WIP
+	public void testToVerifyCanadaTaxForPrinceEdwardIslandForRCOrder_1567(){ 
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String province=TestConstants.PROVINCE_PRINCE_EDWARD_ISLAND;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, province, phoneNumber);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		double subTotal = cscockpitOrderTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitOrderTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitOrderTabPage.getHandlingCostFromUI();
+		if(cscockpitCheckoutTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitOrderTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitOrderTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitOrderTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1568:To verify the Canada tax for New foundland for Retail Order
+	@Test(enabled=false)//WIP
+	public void testToVerifyCanadaTaxForNewFoundlandForRCOrder_1568(){ 
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String province=TestConstants.PROVINCE_NEW_FOUNDLAND_AND_LABRADOR;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, province, phoneNumber);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		double subTotal = cscockpitOrderTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitOrderTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitOrderTabPage.getHandlingCostFromUI();
+		if(cscockpitCheckoutTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitOrderTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitOrderTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitOrderTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1569:To verify the Canada tax for Yukon for Retail Order
+	@Test(enabled=false)//WIP
+	public void testToVerifyCanadaTaxForYukonForRCOrder_1569(){ 
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String province=TestConstants.PROVINCE_YUKON;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, province, phoneNumber);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		double subTotal = cscockpitOrderTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitOrderTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitOrderTabPage.getHandlingCostFromUI();
+		if(cscockpitCheckoutTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitOrderTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitOrderTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitOrderTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+
+	//Hybris Project-1571:To verify the Canada tax for Bristish Columbia for Create CRP Autoship
+	@Test(enabled=false)//WIP
+	public void testVerifyCanadaTaxForBritishColumbiaForCreateCRPAutoship_1571() throws InterruptedException{
+		String randomProductSequenceNumber = null;
+		RFO_DB = driver.getDBNameRFO();
+		String SKUValue = null;
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String province=TestConstants.PROVINCE_BRITISH_COULMBIA;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		if(cscockpitCustomerTabPage.isCRPAutoshipIDHavingStatusIsPendingPresent()==true){
+			cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+			cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+			cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+			cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		}
+		if(cscockpitCustomerTabPage.isPulseTemplateAutoshipIDHavingStatusIsPendingPresent()==true){
+			cscockpitCustomerTabPage.getAndClickPulseTemplateAutoshipIDHavingStatusIsPending();
+			cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+			cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+			cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		}
+		cscockpitCustomerTabPage.clickCreateAutoshipTemplateBtn();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
+		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, province, phoneNumber);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickCreateAutoshipTemplateBtn();
+		double subTotal = cscockpitAutoshipTemplateTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitAutoshipTemplateTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitAutoshipTemplateTabPage.getHandlingCostFromUI();
+		if(cscockpitAutoshipTemplateTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitAutoshipTemplateTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitAutoshipTemplateTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitAutoshipTemplateTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1586:To verify the Canada tax for Quebec for CRP Autoship
+	@Test(enabled=false)//WIP
+	public void testVerifyCanadaTaxForQubecForCRPAutoship_1586(){
+		RFO_DB = driver.getDBNameRFO();
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String Province=TestConstants.PROVINCE_QUEBEC;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		//Declare variables.
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		String consultantEmailID=null;
+		String accountID=null;
+		//Get Email from database.
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		//Login to cscockpit.	
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickRemoveLinkToRemoveProductFromAutoshipCart();	
+		if(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab()){
+			cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		}
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyDeliveryAndShippingAddressPopupPresent("Create Delivery Address"),"Create Delivery Address Popup is not Present");
+		cscockpitAutoshipTemplateUpdateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, Province, phoneNumber);
+		cscockpitAutoshipTemplateUpdateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		double subTotal = cscockpitAutoshipTemplateTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitAutoshipTemplateTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitAutoshipTemplateTabPage.getHandlingCostFromUI();
+		if(cscockpitAutoshipTemplateTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitAutoshipTemplateTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitAutoshipTemplateTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitAutoshipTemplateTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1584:To verify the Canada tax for Manitoba for CRP Autoship
+	@Test(enabled=false)//WIP
+	public void testVerifyCanadaTaxForManitobaForCRPAutoship_1584(){
+		RFO_DB = driver.getDBNameRFO();
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String Province=TestConstants.PROVINCE_MANITOBA;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		//Declare variables.
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
+		String consultantEmailID=null;
+		String accountID=null;
+		//Get Email from database.
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
+		//Login to cscockpit.	
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
+		cscockpitAutoshipTemplateTabPage.clickRemoveLinkToRemoveProductFromAutoshipCart();	
+		if(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab()){
+			cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
+		}
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyDeliveryAndShippingAddressPopupPresent("Create Delivery Address"),"Create Delivery Address Popup is not Present");
+		cscockpitAutoshipTemplateUpdateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, Province, phoneNumber);
+		cscockpitAutoshipTemplateUpdateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
+		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+		double subTotal = cscockpitAutoshipTemplateTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitAutoshipTemplateTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitAutoshipTemplateTabPage.getHandlingCostFromUI();
+		if(cscockpitAutoshipTemplateTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitAutoshipTemplateTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitAutoshipTemplateTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitAutoshipTemplateTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitAutoshipTemplateTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1570:To verify the Canada tax for Nunavat for Retail Order
+	@Test(enabled=false)//WIP
+	public void testToVerifyCanadaTaxForNunavatForRCOrder_1570(){ 
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String randomProductSequenceNumber = null;
+		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+		String  addressLine=TestConstants.ADDRESS_LINE_1_CA;
+		String city=TestConstants.CITY_CA;
+		String postalCode=TestConstants.POSTAL_CODE_CA;
+		String Country=TestConstants.COUNTRY_DD_VALUE_CA;
+		String province=TestConstants.PROVINCE_NUNAVUT;
+		String phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		double gstFromUI = 0.00;
+		double calculatedGstAmount = 0.00;
+		double pstFromUI = 0.00;
+		double calculatedPstAmount = 0.00;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
+		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
+		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
+		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postalCode, Country, province, phoneNumber);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
+		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
+		double subTotal = cscockpitOrderTabPage.getSubTotalFromUI();
+		double deliveryCost = cscockpitOrderTabPage.getDeliveryCostFromUI();
+		double handlingCost = cscockpitOrderTabPage.getHandlingCostFromUI();
+		if(cscockpitCheckoutTabPage.isGSTTaxPresentInUI()==true){
+			gstFromUI = cscockpitOrderTabPage.getGstAmountFromUI();
+			calculatedGstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.FIVE_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validateGstAmountOnUI(gstFromUI,calculatedGstAmount),"GST Amount on UI is "+gstFromUI+" and calculated GST Amount is "+calculatedGstAmount+"");
+		}else{
+			logger.info("GST NOT PRESENT FOR THIS ORDER");
+		}
+		if(cscockpitOrderTabPage.isPstTaxPresentInUI() == true){
+			pstFromUI = cscockpitOrderTabPage.getPstAmountFromUI();
+			calculatedPstAmount = cscockpitOrderTabPage.calculateAmountAccordingToPercent(subTotal, deliveryCost, handlingCost, TestConstants.SEVEN_PERCENT_TAX);
+			s_assert.assertTrue(cscockpitOrderTabPage.validatePstAmountOnUI(pstFromUI,calculatedPstAmount),"PST Amount on UI is "+pstFromUI+" and calculated GST Amount is "+calculatedPstAmount);
+		}else{
+			logger.info("PST NOT PRESENT FOR THIS ORDER");
+		}
+		s_assert.assertAll();
+	}
 }

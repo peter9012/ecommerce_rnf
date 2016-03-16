@@ -168,6 +168,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickSaveAccountBtn(){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.click(ACCOUNT_SAVE_BUTTON_LOC);
 		driver.waitForLoadingImageToDisappear();
 		try{

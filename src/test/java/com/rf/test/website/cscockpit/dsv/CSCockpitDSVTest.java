@@ -463,13 +463,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
 		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
 		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-//		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-//		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(TestConstants.CARD_NUMBER,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum,TestConstants.SECURITY_CODE);
-//		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-//		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-//		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-//		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-//		int totalQtyAfter=cscockpitAutoshipTemplateTabPage.getQuantityOfAllProductInAutoshipTemplateTabPage();
+
 		s_assert.assertAll();
 	}
 }

@@ -144,7 +144,7 @@ EXECUTE
 ('SELECT ho.*   INTO ' + @BackupTemplateName +
 'FROM  Hybris.dbo.orders ho
 join Hybris..users u on u.pk=ho.userpk
-join Hybris..vEnumerationValues v on v.pk=u.p_accountstatus AND v.Value=''ACTIVE''
+join Hybris..EnumerationValues v on v.pk=u.p_accountstatus AND v.Code=''ACTIVE''
 WHERE ho.p_template=1
  AND ho.currencypk=8796125855777
 AND ho.p_active = 1           
@@ -157,7 +157,7 @@ AND ho.p_active = 1
 UNION ALL
 SELECT  ho.*    FROM  Hybris.dbo.orders ho
 join Hybris..users u on u.pk=ho.userpk
-join Hybris..vEnumerationValues v on v.pk=u.p_accountstatus AND v.Value=''ACTIVE''
+join Hybris..EnumerationValues v on v.pk=u.p_accountstatus AND v.Code=''ACTIVE''
 WHERE ho.p_template=1
  AND ho.currencypk=8796125855777
 AND ho.p_active = 1           
@@ -241,11 +241,11 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 
 SELECT  COUNT(*) ,
         c.InternalCode--,CAST(b.p_schedulingdate AS DATE)
-FROM    DataMigration.dbo.Temp_11_14_BackUp b --<<<<<<Get BackUpTable
+FROM    Hybris..orders  b --<<<<<<Get BackUpTable
         JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
         JOIN Hybris..users u ON u.PK = b.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
-                                             AND v.Value = 'ACTIVE'
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
 WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124676178, 8796124741714 )
@@ -259,11 +259,11 @@ GROUP BY c.InternalCode--,CAST(b.p_schedulingdate AS DATE)
 UNION ALL
 SELECT  COUNT(*) ,
         c.InternalCode--,CAST(b.p_schedulingdate AS DATE)
-FROM    DataMigration.dbo.Temp_11_14_BackUp b --<<<<<<<<<<<<<Get BackUpTable
+FROM    Hybris..orders b --<<<<<<<<<<<<<Get BackUpTable
         JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
         JOIN Hybris..users u ON u.PK = b.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
-                                             AND v.Value = 'ACTIVE'
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
 WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124708946 )
@@ -277,6 +277,150 @@ GROUP BY c.InternalCode;
 --,CAST(b.p_schedulingdate AS DATE)
 
 
+/*
+
+/* Forwarding UnWanted  templates SchedulingDate to Future */
+
+--CRP and Pulse
+DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+
+UPDATE b 
+SET b.p_schedulingdate=DATEADD(MONTH,1,GETDATE())
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+       -- AND b.currencypk = 8796125855777
+        AND b.TypePkString IN ( 8796124676178, 8796124741714 )
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 3
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+        AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
+                                             AND     @Date
+
+
+	--PCPerks
+UPDATE b 
+SET b.p_schedulingdate=DATEADD(MONTH,1,GETDATE()) 
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+		
+WHERE   b.p_template = 1
+       -- AND b.currencypk = 8796125855777
+        AND b.TypePkString IN ( 8796124708946 )
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 4
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+        AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
+                                             AND     @Date
+
+
+
+/* Getiing Sample DATA AND Loading to Temp */
+IF OBJECT_ID('Tempdb..#TEMP') IS NOT NULL 
+DROP TABLE #TEMP
+
+DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+SELECT TOP 1000  b.pk INTO #TEMP
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+       AND b.currencypk = 8796125855777
+        AND b.TypePkString IN ( 8796124676178)
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 3
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -7, @Date)
+       
+UNION 
+SELECT TOP 1000   b.pk 
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+       AND b.currencypk = 8796125855777
+        AND b.TypePkString IN (8796124741714 )
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 3
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -7, @Date)       
+
+UNION 
+SELECT TOP 1000  b.pk 
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+        AND b.currencypk = 8796125855777
+        AND b.TypePkString IN (8796124708946)
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 4
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -7, @Date)
+       
+	   /* Modifying SchedulingDate to Selected Temp */
+
+	   UPDATE ho
+	   SET ho.p_schedulingdate=DATEADD(DAY,-10,GETDATE())
+	   FROM Hybris..orders ho 
+	   JOIN #Temp t ON t.pk=ho.PK
+
+	  
+	  
+	   /* Checking Eligible Templates with Types */
+
+	   DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+SELECT  COUNT(*) ,
+        c.InternalCode ,CAST(b.p_schedulingdate AS DATE),b.currencypk
+FROM   Hybris..orders b --<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+       -- AND b.currencypk = 8796125855777
+        AND b.TypePkString IN ( 8796124676178, 8796124741714 )
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 3
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+        AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
+                                             AND     @Date
+GROUP BY c.InternalCode ,CAST(b.p_schedulingdate AS DATE),b.currencypk
+UNION ALL
+SELECT  COUNT(*) ,
+        c.InternalCode ,CAST(b.p_schedulingdate AS DATE),b.currencypk
+FROM    Hybris..orders  b --<<<<<<<<<<<<<Get BackUpTable
+        JOIN Hybris..composedtypes c ON b.TypePkString = c.PK
+        JOIN Hybris..users u ON u.PK = b.userpk
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
+                                             AND v.Code = 'ACTIVE'
+WHERE   b.p_template = 1
+       -- AND b.currencypk = 8796125855777
+        AND b.TypePkString IN ( 8796124708946 )
+        AND b.p_active = 1
+        AND b.p_ccfailurecount < 4
+        AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+        AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
+                                             AND     @Date
+GROUP BY c.InternalCode
+ ,CAST(b.p_schedulingdate AS DATE),b.currencypk;
+
+														*/
 
 
 --*****************************************************************************************************************
@@ -294,7 +438,7 @@ FROM    Hybris..orders ho
         JOIN DataMigration.dbo.Temp_01_11 b --<<<<<<<<<<<<<<<<<<<<<<Get BackUpTable
         ON ho.p_associatedtemplate = b.PK
         JOIN Hybris..users u ON u.PK = b.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124676178, 8796124741714 )
@@ -303,7 +447,7 @@ WHERE   b.p_template = 1
               OR b.p_ccfailurecount >= 3
               OR ho.currencypk <> 8796125855777
               OR CAST(b.p_schedulingdate AS DATE) < DATEADD(DAY, -30, @Date)
-              OR v.Value <> 'ACTIVE'
+              OR v.Code <> 'ACTIVE'
             )
 UNION ALL
 SELECT  ho.PK ,
@@ -313,7 +457,7 @@ FROM    Hybris..orders ho
         JOIN DataMigration.dbo.Temp_01_11 b --<<<<<<<<<<<<<<<<<<<<<<<<<<<<Get BackUpTable
         ON ho.p_associatedtemplate = b.PK
         JOIN Hybris..users u ON u.PK = b.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124708946 )
@@ -322,7 +466,7 @@ WHERE   b.p_template = 1
               OR b.p_ccfailurecount >= 4
               OR ho.currencypk <> 8796125855777
               OR CAST(b.p_schedulingdate AS DATE) < DATEADD(DAY, -30, @Date)
-              OR v.Value <> 'ACTIVE'
+              OR v.Code <> 'ACTIVE'
             );
 
 
@@ -345,64 +489,91 @@ GROUP BY c.InternalCode;
 	
 	
 	/* Checking Eligible Templates not been Picked.*/
-
 	
 	/* Task 3 : Counts By Templates types.8 */
+		
 	
-DECLARE @Date DATE = CAST(GETDATE() AS DATE);
-SELECT  COUNT(a.code) Counts ,
-        c.InternalCode
-FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.
-        JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
-        JOIN Hybris..users u ON u.PK = a.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
-                                             AND v.Value = 'ACTIVE'
-WHERE   a.TypePkString IN ( 8796124676178, 8796124741714 )
-        AND a.p_active = 1
-        AND a.p_template = 1
-        AND a.currencypk = 8796125855777
-        AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+    DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+    SELECT  a.Code AS Templates ,
+            c.InternalCode AS TemplateType
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
+            JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
+    WHERE   a.TypePkString IN ( 8796124676178 )
+            AND a.p_active = 1
+            AND a.p_template = 1
+            AND a.currencypk = 8796125855777
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -5, @Date)
-        AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
-                                             AND     @Date
-        AND a.p_ccfailurecount < 3
-        AND a.PK NOT IN ( SELECT    p_associatedtemplate
-                          FROM      Hybris..orders
-                          WHERE     CAST(createdTS AS DATE) = @Date
-                                    AND currencypk = 8796125855777 )
-GROUP BY c.InternalCode
-UNION ALL
-SELECT  COUNT(a.code) Counts ,
-        c.InternalCode
-FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<< BackUpTable
-        JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
-        JOIN Hybris..users u ON u.PK = a.userpk
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
-                                             AND v.Value = 'ACTIVE'
-WHERE   a.TypePkString IN ( 8796124708946 )
-        AND a.p_active = 1
-        AND a.p_template = 1
-        AND a.currencypk = 8796125855777
-        AND a.p_ccfailurecount < 4
-        AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
+            AND a.p_ccfailurecount < 3
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date )
+    UNION ALL
+    SELECT  a.Code AS Templates ,
+            c.InternalCode AS TemplateType
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
+            JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
+    WHERE   a.TypePkString IN ( 8796124741714 )
+            AND a.p_active = 1
+            AND a.p_template = 1
+            AND a.currencypk = 8796125855777
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -5, @Date)
-        AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
-                                             AND     @Date
-        AND a.PK NOT IN ( SELECT    p_associatedtemplate
-                          FROM      Hybris..orders
-                          WHERE     CAST(createdTS AS DATE) = @Date
-                                    AND currencypk = 8796125855777 )
-GROUP BY c.InternalCode;
-
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
+            AND a.p_ccfailurecount < 3
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date )
+    UNION ALL
+    SELECT  a.Code AS Templates ,
+            c.InternalCode AS TemplateType
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
+            JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
+    WHERE   a.TypePkString IN ( 8796124708946 )
+            AND a.p_active = 1
+            AND a.p_template = 1
+            AND a.currencypk = 8796125855777
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
+            AND a.p_ccfailurecount < 4
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date );
 	
 
 
 	/* Task 4: Details of Not Picked Eligible Templates*/
 	
-	
 	/*
-	DECLARE @Date DATE =CAST(GETDATE() AS DATE)
-    SELECT  a.code Templates,
+	
+    DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+    SELECT   a.code Templates,
             a.p_template ,
             a.p_active ,
             a.p_ccfailurecount ,
@@ -410,24 +581,29 @@ GROUP BY c.InternalCode;
             CAST(a.p_lastprocessingdate AS DATE) LastPDate ,
             c.InternalCode,
 			u.p_rfaccountid,
-			v.Value AS AccountStatus,
+			v.Code AS AccountStatus,
 			u.p_sourcename
-    FROM    DataMigration.dbo.Temp_01_11 a --This is BackUp TableName.
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
             JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
-			JOIN Hybris..users u  ON u.pk=a.userpk
-			JOIN Hybris..vEnumerationValues v ON v.pk=u.p_accountstatus AND v.Value='ACTIVE'
-    WHERE   a.TypePkString IN ( 8796124676178, 8796124741714 )
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
+    WHERE   a.TypePkString IN ( 8796124676178 )
             AND a.p_active = 1
             AND a.p_template = 1
             AND a.currencypk = 8796125855777
-			AND CAST(ISNULL(a.p_lastprocessingdate,'1900-01-01') AS DATE)<DATEADD(DAY,-5,@Date)
-			AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY,-30,@Date )AND @Date
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
             AND a.p_ccfailurecount < 3
-            AND a.PK NOT IN (
-            SELECT  p_associatedtemplate
-            FROM    Hybris..orders
-            WHERE   CAST(createdTS AS DATE) =@Date
-                    AND currencypk = 8796125855777 )
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date )
     UNION ALL
     SELECT  a.code Templates,
             a.p_template ,
@@ -437,24 +613,61 @@ GROUP BY c.InternalCode;
             CAST(a.p_lastprocessingdate AS DATE) LastPDate ,
             c.InternalCode,
 			u.p_rfaccountid,
-			v.Value AS AccountStatus,
+			v.Code AS AccountStatus,
 			u.p_sourcename
-    FROM    DataMigration.dbo.Temp_01_11 a --This is BackUp TableName.
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
             JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
-			JOIN Hybris..users u  ON u.pk=a.userpk
-			JOIN Hybris..vEnumerationValues v ON v.pk=u.p_accountstatus AND v.Value='ACTIVE'
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
+    WHERE   a.TypePkString IN ( 8796124741714 )
+            AND a.p_active = 1
+            AND a.p_template = 1
+            AND a.currencypk = 8796125855777
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
+            AND a.p_ccfailurecount < 3
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date )
+    UNION ALL
+    SELECT   a.code Templates,
+            a.p_template ,
+            a.p_active ,
+            a.p_ccfailurecount ,
+            CAST(a.p_schedulingdate AS DATE) ScheduleDate ,
+            CAST(a.p_lastprocessingdate AS DATE) LastPDate ,
+            c.InternalCode,
+			u.p_rfaccountid,
+			v.Code AS AccountStatus,
+			u.p_sourcename
+    FROM    RFOperations.dbo.[Templates_2016-03-10_BackUp] a --<<<<<<<<<<<<<<<<<<<<<  BackUpTable.   
+            JOIN Hybris..composedtypes c ON c.PK = a.TypePkString
+            JOIN Hybris..users u ON u.PK = a.userpk
+            JOIN Hybris..enumerationvalues v ON v.PK = u.p_accountstatus
+                                                AND v.Code = 'ACTIVE'
     WHERE   a.TypePkString IN ( 8796124708946 )
             AND a.p_active = 1
             AND a.p_template = 1
             AND a.currencypk = 8796125855777
+            AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
+                                                              -5, @Date)
+            AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
+                                                              @Date)
+                                                 AND     @Date
             AND a.p_ccfailurecount < 4
-			AND CAST(ISNULL(a.p_lastprocessingdate,'1900-01-01') AS DATE)<DATEADD(DAY,-5,@Date)
-			AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY,-30,@Date )AND @Date
-            AND a.PK NOT IN (
-            SELECT  p_associatedtemplate
-            FROM    Hybris..orders
-            WHERE   CAST(createdTS AS DATE) = @Date
-                    AND currencypk = 8796125855777 );
+            AND NOT EXISTS ( SELECT 1
+                             FROM   Hybris..orders ho
+                             WHERE  ho.p_associatedtemplate = a.PK
+                                    AND ho.TypePkString <> 8796127723602
+                                    AND ho.p_template = 0
+                                    AND CAST(ho.createdTS AS DATE) = @Date );
 
 					*/
 
@@ -469,41 +682,41 @@ GROUP BY c.InternalCode;
 
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124676178  --CRP 
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 				   
 					/* Task 6: Checking RFO Flown (Not for Created Status) */
 
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Hybris.Orders b ON ho.PK = b.OrderID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124676178
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 
 					/* Task 7: Checking BoomiError  */
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         r.ErrorMessage
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Logging.BoomiError r ON ho.PK = r.RecordID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124676178
-GROUP BY v.Value ,
+GROUP BY v.Code ,
         r.ErrorMessage;
 
 				  
@@ -513,11 +726,11 @@ SELECT  a.code AS Templates ,
         ho.createdTS ,
         ho.PK AS OrderPk ,
         ho.code AS OrderNumber ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
-                                             AND v.Value = 'CREATED'
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
+                                             AND v.Code = 'CREATED'
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124676178; 
 
@@ -527,10 +740,10 @@ SELECT  COUNT(*) Counts ,
         n.p_ordernotes
 FROM    Hybris..orders a --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND a.TypePkString = 8796124676178
 GROUP BY n.p_ordernotes;
 				 
@@ -540,13 +753,13 @@ SELECT  a.code AS Templates ,
         ho.createdTS ,
         ho.PK AS OrderPk ,
         ho.code AS OrderNumber ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         n.p_ordernotes
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
-                                        AND v.Value = 'FAILED'
+                                        AND v.Code = 'FAILED'
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124676178; 
 
@@ -557,7 +770,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.code AS Templates ,
         b.modifiedTS ,
@@ -566,10 +779,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a -- This is Back up Table.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'SUBMITTED'
+        AND v.Code = 'SUBMITTED'
         AND b.TypePkString = 8796124676178
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> DATEADD(MONTH, 1, @Date)
@@ -579,7 +792,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.modifiedTS ,
         b.code AS Templates ,
@@ -588,10 +801,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a -- This is Back up Table.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND b.TypePkString = 8796124676178
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> CAST(a.p_schedulingdate AS DATE)
@@ -610,39 +823,39 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);	 
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124741714  --PULSE 
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 					
 					/* Task 13: Checking RFO Flown (Not for Created Status)	*/
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Hybris.Orders b ON ho.PK = b.OrderID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124741714
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 					/* Task 14: Checking BoomiError */
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         r.ErrorMessage
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Logging.BoomiError r ON ho.PK = r.RecordID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124741714
-GROUP BY v.Value ,
+GROUP BY v.Code ,
         r.ErrorMessage;
 
 					--Failed Status:
@@ -653,10 +866,10 @@ SELECT  COUNT(*) Counts ,
         n.p_ordernotes
 FROM    Hybris..orders a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND a.TypePkString = 8796124741714
 GROUP BY n.p_ordernotes;
 
@@ -666,14 +879,14 @@ SELECT  a.code AS Templates ,
         ho.createdTS ,
         ho.PK AS OrderPk ,
         ho.code AS OrderNumber ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         n.p_ordernotes
 FROM    Hybris..orders a --<<<<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         LEFT JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND a.TypePkString = 8796124741714; 
 
 							
@@ -684,7 +897,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.code AS Templates ,
         b.p_lastprocessingdate ,
@@ -692,10 +905,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'COMPLETED'
+        AND v.Code = 'COMPLETED'
         AND b.TypePkString = 8796124741714
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> DATEADD(MONTH, 1, @Date)
@@ -706,7 +919,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.code AS Templates ,
         b.p_lastprocessingdate ,
@@ -714,10 +927,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a -- <<<<<<<<<<<<<<<<<<<<<<<< BackTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND b.TypePkString = 8796124741714
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> CAST(a.p_schedulingdate AS DATE)
@@ -735,41 +948,41 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 
 DECLARE @Date DATE= CAST(GETDATE() AS DATE);	 
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
 WHERE   CAST(ho.createdTS AS DATE) >= @Date
         AND a.TypePkString = 8796124708946			--PCPERKS  
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 
 					/* Task 19: Checking RFO Flown (Not for Created Status)*/
 								
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType
+        v.Code AS OrderType
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Hybris.Orders b ON ho.PK = b.OrderID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124708946
-GROUP BY v.Value;
+GROUP BY v.Code;
 
 					/* Task 20: Checking BoomiError */
 
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  COUNT(*) NoOfOrders ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         r.ErrorMessage
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN RFOperations.Logging.BoomiError r ON ho.PK = r.RecordID
 WHERE   CAST(ho.createdTS AS DATE) = @Date
         AND a.TypePkString = 8796124708946
-GROUP BY v.Value ,
+GROUP BY v.Code ,
         r.ErrorMessage;
 				
 
@@ -779,10 +992,10 @@ SELECT  COUNT(*) Counts ,
         n.p_ordernotes
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         LEFT JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND a.TypePkString = 8796124708946
 GROUP BY n.p_ordernotes;
 
@@ -792,14 +1005,14 @@ SELECT  a.code AS Templates ,
         ho.createdTS ,
         ho.PK AS OrderPk ,
         ho.code AS OrderNumber ,
-        v.Value AS OrderType ,
+        v.Code AS OrderType ,
         n.p_ordernotes
 FROM    DataMigration.dbo.Temp_01_11 a --<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         LEFT JOIN Hybris.dbo.ordernotes n ON n.p_order = ho.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND a.TypePkString = 8796124708946; 
 
 
@@ -811,7 +1024,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.code AS Templates ,
         b.p_lastprocessingdate ,
@@ -819,10 +1032,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a --  <<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'SUBMITTED'
+        AND v.Code = 'SUBMITTED'
         AND b.TypePkString = 8796124708946
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> DATEADD(MONTH, 2, @Date)
@@ -833,7 +1046,7 @@ WHERE   CAST(ho.createdTS AS DATE) = @Date
 DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 SELECT  ho.PK AS OrderPK ,
         ho.code AS OrderNumber ,
-        v.Value ,
+        v.Code ,
         ho.createdTS ,
         b.code AS Templates ,
         b.p_lastprocessingdate ,
@@ -841,10 +1054,10 @@ SELECT  ho.PK AS OrderPK ,
         b.p_ccfailurecount
 FROM    Hybris..orders a --		<<<<<<<<<<<<<<<<<<<<< BackUpTable.
         JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
-        JOIN Hybris..vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris..EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris..orders b ON a.PK = b.PK
 WHERE   CAST(ho.createdTS AS DATE) = @Date
-        AND v.Value = 'FAILED'
+        AND v.Code = 'FAILED'
         AND b.TypePkString = 8796124708946
         AND ( CAST(b.p_lastprocessingdate AS DATE) <> @Date
               OR CAST(b.p_schedulingdate AS DATE) <> CAST(a.p_schedulingdate AS DATE)
@@ -873,14 +1086,14 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate;
 
@@ -895,14 +1108,14 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -922,20 +1135,20 @@ SELECT  a.code AS Templates ,
         CAST(a.p_lastprocessingdate AS DATE) OldLastPDate ,
         ho.p_ccfailurecount ,
         ho.p_active ,
-        v.Value AS TemplateStatus ,
+        v.Code AS TemplateStatus ,
         CAST(ho.p_schedulingdate AS DATE) AS ScheduledDate ,
         CAST(ho.p_lastprocessingdate AS DATE) LastpDate
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -947,9 +1160,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
@@ -957,10 +1170,10 @@ WHERE   a.TypePkString = 8796124676178
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND at.Active = 0
         AND CAST(at.EndDate AS DATE) = @RunDate;
@@ -973,9 +1186,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
@@ -983,10 +1196,10 @@ WHERE   a.TypePkString = 8796124676178
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND ( at.Active = 0
               OR CAST(at.EndDate AS DATE) = @RunDate
@@ -998,20 +1211,20 @@ DECLARE @RunDate DATE= CAST(GETDATE() AS DATE);
 DECLARE @Date DATE= DATEADD(DAY, -10, @RunDate); 
 SELECT  a.code AS Templates ,
         ho.p_active ,
-        v.Value AS HybrisTempStatus ,
+        v.Code AS HybrisTempStatus ,
         ho.modifiedTS ,
         ho.p_cancelationdate ,
         u.p_rfaccountid ,
-        n.Value AS UserStatus ,
+        n.Code AS UserStatus ,
         u.modifiedTS AS UserModified ,
         at.Active AS RFOTempFlag ,
         at.EndDate AS RfoEndDate
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124676178
         AND a.p_active = 1
@@ -1019,10 +1232,10 @@ WHERE   a.TypePkString = 8796124676178
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND ( at.Active = 0
               OR CAST(at.EndDate AS DATE) = @RunDate
@@ -1044,14 +1257,14 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate;
 
@@ -1066,14 +1279,14 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -1093,20 +1306,20 @@ SELECT  a.code AS Templates ,
         CAST(a.p_lastprocessingdate AS DATE) OldLastPDate ,
         ho.p_ccfailurecount ,
         ho.p_active ,
-        v.Value AS TemplateStatus ,
+        v.Code AS TemplateStatus ,
         CAST(ho.p_schedulingdate AS DATE) AS ScheduledDate ,
         CAST(ho.p_lastprocessingdate AS DATE) LastpDate
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 3
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -1119,9 +1332,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
@@ -1129,7 +1342,7 @@ WHERE   a.TypePkString = 8796124741714
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
         AND at.Active = 0
@@ -1143,9 +1356,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
@@ -1153,7 +1366,7 @@ WHERE   a.TypePkString = 8796124741714
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
         AND ( at.Active = 0
@@ -1166,19 +1379,19 @@ DECLARE @RunDate DATE= CAST(GETDATE() AS DATE);
 DECLARE @Date DATE= DATEADD(DAY, -10, @RunDate); 
 SELECT  a.code AS Templates ,
         ho.p_active ,
-        v.Value AS HybrisTempStatus ,
+        v.Code AS HybrisTempStatus ,
         ho.modifiedTS ,
         ho.p_cancelationdate ,
         u.p_rfaccountid ,
-        n.Value AS UserStatus ,
+        n.Code AS UserStatus ,
         at.Active AS RFOTempFlag ,
         at.EndDate AS RfoEndDate
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124741714
         AND a.p_active = 1
@@ -1186,7 +1399,7 @@ WHERE   a.TypePkString = 8796124741714
         AND CAST(a.p_schedulingdate AS DATE) < @FirstDayofMonth
         AND CAST(ISNULL(a.p_lastprocessingdate, '1900-01-01') AS DATE) < @FirstDayofMonth
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
         AND ( at.Active = 0
@@ -1213,14 +1426,14 @@ DECLARE @Date DATE= DATEADD(DAY, -10, @RunDate);
 							
 SELECT  COUNT(*)
 FROM    DataMigration.dbo.TempTermNew a
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = a.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = a.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
 WHERE   a.TypePkString = 8796124708946
         AND a.p_active = 1
         AND a.p_template = 1
         AND a.p_ccfailurecount >= 4
-        AND v.Value = 'Pending'
+        AND v.Code = 'Pending'
         AND CAST(a.p_schedulingdate AS DATE) < @Date;
 														
 
@@ -1233,18 +1446,18 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
 WHERE   a.TypePkString = 8796124708946
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate;
 														
 								/* Task 14: Getting Counts of EligibleTemplates Not Terminated */
@@ -1257,13 +1470,13 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124708946
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -1283,19 +1496,19 @@ SELECT  a.code AS Templates ,
         CAST(a.p_lastprocessingdate AS DATE) OldLastPDate ,
         ho.p_ccfailurecount ,
         ho.p_active ,
-        v.Value AS TemplateStatus ,
+        v.Code AS TemplateStatus ,
         CAST(ho.p_schedulingdate AS DATE) AS ScheduledDate ,
         CAST(ho.p_lastprocessingdate AS DATE) LastpDate
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
 WHERE   a.TypePkString = 8796124708946
         AND a.p_active = 1
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ( ho.p_active <> 0
-              OR v.Value <> 'CANCELLED'
+              OR v.Code <> 'CANCELLED'
               OR CAST(ho.modifiedTS AS DATE) <> @RunDate
               OR CAST(ho.p_cancelationdate AS DATE) <> @RunDate
             );
@@ -1308,9 +1521,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124708946
@@ -1318,10 +1531,10 @@ WHERE   a.TypePkString = 8796124708946
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND CAST(rf.SoftTerminationDate AS DATE) = @RunDate
         AND CAST(rf.ServerModifiedDate AS DATE) > -@RunDate
@@ -1335,9 +1548,9 @@ SELECT  COUNT(*)
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124708946
@@ -1345,10 +1558,10 @@ WHERE   a.TypePkString = 8796124708946
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND ( CAST(rf.SoftTerminationDate AS DATE) = @RunDate
               OR CAST(rf.ServerModifiedDate AS DATE) >= @RunDate
@@ -1362,11 +1575,11 @@ DECLARE @RunDate DATE= CAST(GETDATE() AS DATE);
 DECLARE @Date DATE= DATEADD(DAY, -10, @RunDate); 
 SELECT  a.code AS Templates ,
         ho.p_active ,
-        v.Value AS HybrisTempStatus ,
+        v.Code AS HybrisTempStatus ,
         ho.modifiedTS ,
         ho.p_cancelationdate ,
         u.p_rfaccountid ,
-        n.Value AS UserStatus ,
+        n.Code AS UserStatus ,
         u.modifiedTS AS UserModified ,
         rf.SoftTerminationDate ,
         rf.Active AS RFOAccountStatus ,
@@ -1376,9 +1589,9 @@ SELECT  a.code AS Templates ,
 FROM    Hybris.dbo.orders a -- This is a Back Up Table.
         JOIN Hybris.dbo.orders ho ON a.PK = ho.PK
                                      AND ho.p_template = 1
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = ho.statuspk
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = ho.statuspk
         JOIN Hybris.dbo.users u ON u.PK = a.userpk
-        JOIN Hybris.dbo.vEnumerationValues n ON n.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues n ON n.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
         JOIN RFOperations.Hybris.Autoship at ON at.AutoshipID = a.PK
 WHERE   a.TypePkString = 8796124708946
@@ -1386,10 +1599,10 @@ WHERE   a.TypePkString = 8796124708946
         AND a.p_ccfailurecount >= 4
         AND CAST(a.p_schedulingdate AS DATE) < @Date
         AND ho.p_active = 0
-        AND v.Value = 'CANCELLED'
+        AND v.Code = 'CANCELLED'
         AND CAST(ho.modifiedTS AS DATE) = @RunDate
         AND CAST(ho.p_cancelationdate AS DATE) = @RunDate
-        AND n.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND n.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.modifiedTS AS DATE) = @RunDate
         AND ( CAST(rf.SoftTerminationDate AS DATE) = @RunDate
               OR CAST(rf.ServerModifiedDate AS DATE) >= @RunDate
@@ -1440,7 +1653,7 @@ DECLARE @OrderDate DATE= '2015-10-01';
 
 SELECT  COUNT(*) TotalRenewedConsultants
 	--CAST(u.modifiedTS AS DATE) ModifiedTS ,
- --       v.Value AS AccountStatus ,
+ --       v.Code AS AccountStatus ,
  --       CAST(u.p_expirationdate AS DATE) ExpirationDate ,
  --       t.QV AS MaxofQV
 	--	,t.expdate AS OldExpDate		
@@ -1454,10 +1667,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u -- This is BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND u.p_consultantsince IS NOT NULL
                                     AND CAST(u.p_expirationdate AS DATE) = @Date
@@ -1475,7 +1688,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1483,9 +1696,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) >= 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
-        AND v.Value = 'Active'
+        AND v.Code = 'Active'
         AND u.p_expirationdate = DATEADD(YEAR, 1, t.expdate);
 
 	  
@@ -1496,11 +1709,11 @@ DECLARE @OrderDate DATE= '2015-10-01';
 SELECT  COUNT(*) TotalRenewedInRFO
 FROM    Hybris.dbo.users a --<<<<<<<<<<<<<<<<<<< This is BackUp Table.
         JOIN Hybris.dbo.users u ON a.p_rfaccountid = u.p_rfaccountid
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
         AND u.p_expirationdate = DATEADD(YEAR, 1, a.p_expirationdate)
-        AND v.Value = 'Active'
+        AND v.Code = 'Active'
         AND CAST(u.p_expirationdate AS DATE) = CAST(rf.NextRenewalDate AS DATE)
         AND rf.Active = 1; 
 
@@ -1511,17 +1724,17 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 DECLARE @OrderDate DATE= '2015-10-01';
 SELECT  u.p_rfaccountid ,
         u.p_expirationdate ,
-        v.Value AS HybrisUserStatus ,
+        v.Code AS HybrisUserStatus ,
         rf.NextRenewalDate ,
         rf.Active ,
         rf.ServerModifiedDate
 FROM    Hybris.dbo.users a --<<<<<<<<<<<<<<<<<<< This is BackUp Table.
         JOIN Hybris.dbo.users u ON a.p_rfaccountid = u.p_rfaccountid
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
         AND u.p_expirationdate = DATEADD(YEAR, 1, a.p_expirationdate)
-        AND v.Value = 'Active'
+        AND v.Code = 'Active'
         AND ( CAST(u.p_expirationdate AS DATE) <> CAST(rf.NextRenewalDate AS DATE)
               OR rf.Active <> 1
             );
@@ -1534,7 +1747,7 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE) ,
     @OrderDate DATE= '2015-10-01';
 
 SELECT  CAST(u.modifiedTS AS DATE) ModifiedTS ,
-        v.Value AS AccountStatus ,
+        v.Code AS AccountStatus ,
         CAST(u.p_expirationdate AS DATE) ExpirationDate ,
         t.QV AS MaxofQV ,
         t.expdate AS OldExpDate
@@ -1548,10 +1761,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u -- This is BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND u.p_consultantsince IS NOT NULL
                                     AND CAST(u.p_expirationdate AS DATE) = @Date
@@ -1569,7 +1782,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1577,9 +1790,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) >= 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) <> @Date
-        OR v.Value <> 'Active'
+        OR v.Code <> 'Active'
         OR u.p_expirationdate <> DATEADD(YEAR, 1, t.expdate);
 
 
@@ -1590,7 +1803,7 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE) ,
     @OrderDate DATE= '2015-10-01';
 
 SELECT  CAST(u.modifiedTS AS DATE) ModifiedTS ,
-        v.Value AS AccountStatus ,
+        v.Code AS AccountStatus ,
         CAST(u.p_expirationdate AS DATE) ExpirationDate ,
         t.QV AS MaxofQV ,
         t.expdate AS OldExpDate
@@ -1604,10 +1817,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u --<<<<<<<<<<<<<<<<<<<<<<<<This is BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND CAST(u.p_expirationdate AS DATE) = @Date
                                     AND CAST(ho.createdTS AS DATE) > @OrderDate	--  <<<<<<<<<<<<<<<<<<<<<<<<<Make Sure the Dates.
@@ -1624,7 +1837,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1632,9 +1845,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) < 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
-        AND v.Value = 'Active'
+        AND v.Code = 'Active'
         AND u.p_expirationdate = DATEADD(YEAR, 1, t.expdate);
 
 --********************************************************************************************************************************
@@ -1679,7 +1892,7 @@ DECLARE @OrderDate DATE= '2015-09-01';
 
 SELECT  COUNT(*) TotalRenewedConsultants
 	--CAST(u.modifiedTS AS DATE) ModifiedTS ,
- --       v.Value AS AccountStatus ,
+ --       v.Code AS AccountStatus ,
  --       CAST(u.p_expirationdate AS DATE) ExpirationDate ,
  --       t.QV AS MaxofQV
 	--	,t.expdate AS OldExpDate		
@@ -1693,10 +1906,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND u.p_consultantsince IS NOT NULL
                                     AND CAST(u.p_expirationdate AS DATE) = DATEADD(MONTH,
@@ -1715,7 +1928,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1723,9 +1936,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) < 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
-        AND v.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND v.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.p_expirationdate AS DATE) = t.expdate;
 
 	
@@ -1737,11 +1950,11 @@ DECLARE @OrderDate DATE= '2015-10-01';
 SELECT  COUNT(*) TotalRenewedInRFO
 FROM    Hybris.dbo.users a --<<<<<<<<<<<<<<<<<<< This is BackUp Table.
         JOIN Hybris.dbo.users u ON a.p_rfaccountid = u.p_rfaccountid
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
         AND u.p_expirationdate = a.p_expirationdate
-        AND v.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND v.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(rf.SoftTerminationDate AS DATE) = CAST(u.modifiedTS AS DATE)
         AND rf.Active = 1; 
 
@@ -1753,17 +1966,17 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE);
 DECLARE @OrderDate DATE= '2015-10-01';
 SELECT  u.p_rfaccountid ,
         u.p_expirationdate ,
-        v.Value AS HybrisUserStatus ,
+        v.Code AS HybrisUserStatus ,
         rf.NextRenewalDate ,
         rf.Active ,
         rf.ServerModifiedDate
 FROM    Hybris.dbo.users a --<<<<<<<<<<<<<<<<<<< This is BackUp Table.
         JOIN Hybris.dbo.users u ON a.p_rfaccountid = u.p_rfaccountid
-        JOIN Hybris.dbo.vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris.dbo.EnumerationValues v ON v.PK = u.p_accountstatus
         JOIN RFOperations.RFO_Accounts.AccountRF rf ON CAST(rf.AccountID AS NVARCHAR) = u.p_rfaccountid
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
         AND u.p_expirationdate = DATEADD(YEAR, 1, a.p_expirationdate)
-        AND v.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND v.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND ( CAST(u.p_expirationdate AS DATE) <> CAST(rf.NextRenewalDate AS DATE)
               OR rf.Active <> 1
               OR rf.SoftTerminationDate IS NOT NULL
@@ -1779,7 +1992,7 @@ DECLARE @OrderDate DATE= '2015-09-01';
 
 SELECT  COUNT(*) TotalRenewedConsultants
 	--CAST(u.modifiedTS AS DATE) ModifiedTS ,
- --       v.Value AS AccountStatus ,
+ --       v.Code AS AccountStatus ,
  --       CAST(u.p_expirationdate AS DATE) ExpirationDate ,
  --       t.QV AS MaxofQV
 	--	,t.expdate AS OldExpDate		
@@ -1793,10 +2006,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND u.p_consultantsince IS NOT NULL
                                     AND CAST(u.p_expirationdate AS DATE) = DATEADD(MONTH,
@@ -1815,7 +2028,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1823,9 +2036,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) < 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) <> @Date
-        OR v.Value <> 'SOFTTERMINATEDINVOLUNTARY'
+        OR v.Code <> 'SOFTTERMINATEDINVOLUNTARY'
         OR CAST(u.p_expirationdate AS DATE) <> t.expdate;
 
 
@@ -1835,7 +2048,7 @@ DECLARE @Date DATE = CAST(GETDATE() AS DATE) ,
     @OrderDate DATE= '2015-10-01';
 
 SELECT  CAST(u.modifiedTS AS DATE) ModifiedTS ,
-        v.Value AS AccountStatus ,
+        v.Code AS AccountStatus ,
         CAST(u.p_expirationdate AS DATE) ExpirationDate ,
         t.QV AS MaxofQV ,
         t.expdate AS OldExpDate
@@ -1849,10 +2062,10 @@ FROM    Hybris..users u
                                     DATEPART(MONTH,
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) AS OrderMonth ,
                                     CAST(u.p_expirationdate AS DATE) expdate ,
-                                    v.Value AS Accountstatus
+                                    v.Code AS Accountstatus
                           FROM      Hybris..users u --<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  BackUp Teble.
                                     LEFT  JOIN Hybris..orders ho ON ho.userpk = u.PK
-                                    LEFT JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+                                    LEFT JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND u.p_consultantsince IS NOT NULL
                                     AND CAST(u.p_expirationdate AS DATE) = DATEADD(MONTH,
@@ -1871,7 +2084,7 @@ FROM    Hybris..users u
                                              CAST(ISNULL(ho.createdTS, 1) AS DATE)) ,
                                     u.p_rfaccountid ,
                                     CAST(u.p_expirationdate AS DATE) ,
-                                    v.Value
+                                    v.Code
                         ) a
                GROUP BY a.p_rfaccountid ,
                         a.Accountstatus ,
@@ -1879,9 +2092,9 @@ FROM    Hybris..users u
                HAVING   MAX(QV) > 100
                         AND a.Accountstatus IN ( 'Active' )
              ) t ON u.p_rfaccountid = t.p_rfaccountid
-        JOIN Hybris..vEnumerationValues v ON v.PK = u.p_accountstatus
+        JOIN Hybris..EnumerationValues v ON v.PK = u.p_accountstatus
 WHERE   CAST(u.modifiedTS AS DATE) = @Date
-        AND v.Value = 'SOFTTERMINATEDINVOLUNTARY'
+        AND v.Code = 'SOFTTERMINATEDINVOLUNTARY'
         AND CAST(u.p_expirationdate AS DATE) = t.expdate;
 
 --*******************************************************************************************************************************

@@ -88,11 +88,11 @@ FROM    RFOperations.RFO_Accounts.AccountRF RF
 
 		  -- for Business Rule: https://rodanandfields.atlassian.net/wiki/display/GP/US+Hybris+Launch+Data+Migration%3A+Business+Rules+Implemented
 
-
     SELECT  COUNT(*) --Should be Null after update.
 	--SELECT ab.AccountID,ab.AccountTypeID,NextRenewalDate,LastRenewalDate,EnrollmentDate,ab.CountryID 
     FROM    RFOperations.RFO_Accounts.AccountRF RF
             JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = RF.AccountID
+			JOIN Hybris..users u ON u.p_rfaccountid=CAST(rf.accountID AS NVARCHAR)
     WHERE   ab.CountryID = 236
             AND ab.AccountTypeID = 1
             AND ( ( LastRenewalDate IS NULL
@@ -106,10 +106,14 @@ FROM    RFOperations.RFO_Accounts.AccountRF RF
                      )
                   OR ( LastRenewalDate IS   NULL
                        AND NextRenewalDate IS NOT NULL 
-                       AND EnrollmentDate < DATEADD(YEAR, -1,
-                                                    CAST(GETDATE() AS DATE))
-                     )
+                       AND EnrollmentDate < DATEADD(YEAR, -2,
+                                                    CAST(GETDATE() AS DATE)))
+				OR (lastRenewalDate IS NULL 
+				AND NextRenewalDate IS NULL 
+				AND DATEPART(YEAR, EnrollmentDate)=DATEPART(YEAR,GETDATE()))
+                     
                 );
+
 
 
 		--AND rf.ChangedByApplication = 'US-HybrisLaunch'AND  rf.ChangedByUser = 'GP-1790'

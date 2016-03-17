@@ -1,3 +1,10 @@
+
+/*********************************************************************************************************
+Customer Header  Validation Script 
+Revised 03/03/2013 
+
+Run Parts 1,2 and 3 separately 
+***********************************************************************************************************/
 USE [DataMigration];
 GO
 SET ANSI_NULLS ON;
@@ -7,74 +14,64 @@ GO
 SET NOCOUNT ON;
 SET ANSI_WARNINGS OFF; 
 
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+--SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;( Commeted Excluding not to read Uncommited DATA)
 
 
 /*=================================================================================================
 -- Part 1: Counts, Missing Keys, Duplicates 
 ================================================================================================= */
 
-
-
-IF OBJECT_ID('DataMigration.Migration.AccountsMissing') IS NOT NULL
-    DROP TABLE DataMigration.Migration.AccountsMissing;
-
-
-IF OBJECT_ID('TEMPDB.dbo.#Accounts_Dups') IS NOT NULL
-    DROP TABLE #Accounts_Dups; 
-
+SET ANSI_WARNINGS OFF;
 IF OBJECT_ID('TEMPDB.dbo.#AccountIDs') IS NOT NULL
     DROP TABLE #AccountIDs;
-
-SET ANSI_WARNINGS OFF;
- 
 IF OBJECT_ID('TEMPDB.dbo.#PCNoTemplate') IS NOT NULL
     DROP TABLE #PCNoTemplate;
 
 SELECT  ab.AccountID
 INTO    #PCNoTemplate
 FROM    RFOperations.RFO_Accounts.AccountBase ab
-        LEFT JOIN ( SELECT a.AccountID FROM  RFOperations.[Hybris].[Autoship] A 
-		 JOIN RodanFieldsLive.dbo.AutoshipOrders ao  ON ao.TemplateOrderID = a.AutoshipNumber
-         JOIN RFOperations.Hybris.AutoshipItem AI ON AI.AutoshipId = A.AutoshipID ) sub ON sub.AccountID = ab.AccountID
-
+        LEFT JOIN ( SELECT  A.AccountID
+                    FROM    RFOperations.[Hybris].[Autoship] A
+                            JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = A.AutoshipNumber--(Key been Updated )
+                            JOIN RFOperations.Hybris.AutoshipItem AI ON AI.AutoshipId = A.AutoshipID
+                  ) sub ON sub.AccountID = ab.AccountID
 WHERE   ab.CountryID = 236
         AND ab.AccountTypeID = 2
-        AND (sub.AccountID IS NULL); 
+        AND ( sub.AccountID IS NULL ); 
 
 
 
-DECLARE @Country NVARCHAR(20)= 'US';
-DECLARE @RFOCountry INT = ( SELECT  CountryID
-                            FROM    RFOperations.RFO_Reference.Countries (NOLOCK)
-                            WHERE   Alpha2Code = @Country
+DECLARE @Country NVARCHAR(20)= 'US' ,
+    @RFOCountry INT = ( SELECT  CountryID
+                        FROM    RFOperations.RFO_Reference.Countries (NOLOCK)
+                        WHERE   Alpha2Code = @Country
+                      ) ,
+    @Loaddate DATETIME2 = ( SELECT TOP 1
+                                    DateValue
+                            FROM    DataMigration.dbo.Configuration
+                            WHERE   Name = 'OrderLoadStartDate'
                           ) ,
     @RowCount BIGINT ,
     @HybCountry BIGINT = ( SELECT   PK
                            FROM     Hybris.dbo.countries (NOLOCK)
                            WHERE    isocode = @Country
-                         );
-							 --SELECT @HybCountry
-
-
-
---DECLARE @Loaddate DATETIME2 = ( SELECT TOP 1
---                                        DateValue
---                                FROM    DataMigration.dbo.Configuration
---                                WHERE   Name = 'OrderLoadStartDate'
---                              );
-				
-
-
-
+                         ) ,
+    @AccountLoadDate DATETIME2  = ( SELECT TOP 1
+                                            UploadStartTime
+                                    FROM    DataMigration.dbo.ErrorSP
+                                    WHERE   SPName = 'Customer_InitialMigration_3_Upload'
+                                            AND [Status] <> 'ERROR'
+                                  );
+							
 
 
 SELECT   DISTINCT
         a.AccountID
-INTO    #AccountIDs --COUNT( DISTINCT a.AccountID)
+INTO    #AccountIDs 
+--COUNT( DISTINCT a.AccountID)
 FROM    RFOperations.RFO_Accounts.AccountRF (NOLOCK) a
         JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK) b ON a.AccountID = b.AccountID
-        JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) d ON b.AccountID = d.AccountID
+        JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) d ON b.AccountID = d.AccountId
         JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactId = d.AccountContactId
         JOIN RFOperations.RFO_Accounts.AccountContactAddresses (NOLOCK) g ON g.AccountContactId = d.AccountContactId
         JOIN RFOperations.RFO_Accounts.AccountContactPhones (NOLOCK) j ON j.AccountContactId = d.AccountContactId
@@ -88,14 +85,17 @@ FROM    RFOperations.RFO_Accounts.AccountRF (NOLOCK) a
         LEFT JOIN RFOperations.Security.AccountSecurity (NOLOCK) k ON k.AccountID = a.AccountID
         LEFT JOIN ( SELECT DISTINCT
                             AccountID
-                    FROM    RFOperations.Hybris.Orders (NOLOCK) d
-                            JOIN RFOperations.ETL.OrderDate (NOLOCK) od ON d.OrderID = od.Orderid
-                    WHERE   od.Startdate >= '06/01/2014'
+                    FROM    RFOperations.Hybris.Orders O
+                            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.OrderID
+                                                              AND rfl.OrderTypeID NOT IN (
+                                                              4, 5, 9 )
+                                                              AND rfl.StartDate >= @Loaddate --'08/01/2014' 
+                                                              AND O.CountryId = 236
                   ) c ON b.AccountID = c.AccountID
 WHERE   1 = 1
         AND b.CountryID = @RFOCountry
         AND ( SoftTerminationDate IS NULL
-              OR SoftTerminationDate >= '06/01/2014'
+              OR SoftTerminationDate >= @Loaddate --'06/01/2014'
             )
         AND ( b.AccountStatusID <> 3
               OR c.AccountID IS NOT NULL
@@ -109,17 +109,28 @@ WHERE   1 = 1
                          WHERE  p.AccountID = a.AccountID );
 --AND NOT EXISTS (SELECT 1 FROM Hybris.dbo.Users u WHERE u.p_rfAccountID = CAST (a.AccountID AS VARCHAR) AND p_sourcename IS NULL)
 --AND NOT EXISTS (SELECT 1 FROM DataMigration.dbo.EmailAddressinHybris ea WHERE ea.uid = k.Username)
+--AND NOT EXISTS (SELECT 1  FROM Hybris..users WHERE u.uniqueID=f.Emailaddress AND CAST(u.ModifiedTS AS  DATE)<@AccountLoadDate)
 
 
 
-DECLARE @RFOAccount BIGINT, @HYBAccount BIGINT
-SELECT @RFOAccount =COUNT( DISTINCT AccountID) FROM RFOPerations.RFO_Accounts.AccountBase (NOLOCK)
-WHERE CountryID =@RFOCountry AND AccountID IN (SELECT AccountID FROM #AccountIDs)
+DECLARE @RFOAccount BIGINT ,
+    @HYBAccount BIGINT;
+SELECT  @RFOAccount = COUNT(DISTINCT AccountID)
+FROM    RFOperations.RFO_Accounts.AccountBase (NOLOCK)
+WHERE   CountryID = @RFOCountry
+        AND AccountID IN ( SELECT   AccountID
+                           FROM     #AccountIDs );
 
 
-SELECT @HYBAccount=COUNT(PK) FROM Hybris.dbo.Users (NOLOCK) WHERE  p_sourcename = 'Hybris-DM' --p_country =@HybCountry AND
+SELECT  @HYBAccount = COUNT(PK)
+FROM    Hybris.dbo.users (NOLOCK)
+WHERE   -- p_sourcename = 'Hybris-DM';
+        p_country = @HybCountry; 
 
-SELECT 'Accounts', @RFOAccount AS RFO_Accounts, @HYBAccount AS Hybris_Accounts, @RFOAccount - @HYBAccount AS Differences
+SELECT  'Accounts' ,
+        @RFOAccount AS RFO_Accounts ,
+        @HYBAccount AS Hybris_Accounts ,
+        @RFOAccount - @HYBAccount AS Differences;
 
 
 /******************************************************************************************************************************************************************************
@@ -139,28 +150,45 @@ WHERE NOT EXISTS (SELECT 1 FROM Hybris.dbo.Users  (NOLOCK) u WHERE p_country =87
 --DROP TABLE DataMigration.Migration.AccountsMissing
 
 
-SELECT  AccountID AS RFO_AccountID,
- b.p_rfaccountid AS Hybris_rfAccountID , CASE WHEN b.p_rfaccountid IS NULL THEN 'Destination'
-											  WHEN a.AccountID IS NULL THEN 'Source' END AS MissingFROM
-INTO DataMigration.Migration.AccountsMissing
-FROM 
 
-
-( SELECT AccountID FROM #AccountIDs) a
-  
-    FULL OUTER JOIN 
-   
-   ( SELECT p_rfAccountID FROM  Hybris.dbo.Users  (NOLOCK)
-    WHERE p_country = @HybCountry AND p_sourcename = 'Hybris-DM') b 
+IF OBJECT_ID('DataMigration.Migration.AccountsMissing') IS NOT NULL
+    DROP TABLE DataMigration.Migration.AccountsMissing;
 	
-	ON CAST (a.AccountID AS VARCHAR) =b.p_rfaccountid
-WHERE (a.AccountID IS NULL OR b.p_rfaccountid IS NULL) 
+DECLARE @Country NVARCHAR(20)= 'US';
+DECLARE @RFOCountry INT = ( SELECT  CountryID
+                            FROM    RFOperations.RFO_Reference.Countries (NOLOCK)
+                            WHERE   Alpha2Code = @Country
+                          ) ,
+    @HybCountry BIGINT = ( SELECT   PK
+                           FROM     Hybris.dbo.countries (NOLOCK)
+                           WHERE    isocode = @Country
+                         );
 
-SELECT ' Total Missing ' + @Country + ' Accounts', @@ROWCOUNT
+SELECT  AccountID AS RFO_AccountID ,
+        b.p_rfaccountid AS Hybris_rfAccountID ,
+        CASE WHEN b.p_rfaccountid IS NULL THEN 'Destination'
+             WHEN a.AccountID IS NULL THEN 'Source'
+        END AS MissingFROM
+INTO    DataMigration.Migration.AccountsMissing
+FROM    ( SELECT    AccountID
+          FROM      #AccountIDs
+        ) a
+        FULL OUTER JOIN ( SELECT    p_rfaccountid
+                          FROM      Hybris.dbo.users  (NOLOCK)
+                          WHERE     p_country = @HybCountry
+                                    AND p_sourcename = 'Hybris-DM'
+                        ) b ON CAST (a.AccountID AS VARCHAR) = b.p_rfaccountid
+WHERE   ( a.AccountID IS NULL
+          OR b.p_rfaccountid IS NULL
+        ); 
 
-SELECT MissingFROM, COUNT(*)
-FROM DataMigration.Migration.AccountsMissing  
-GROUP BY MissingFROM
+SELECT  ' Total Missing ' + @Country + ' Accounts' ,
+        @@ROWCOUNT;
+
+SELECT  MissingFROM ,
+        COUNT(*)
+FROM    DataMigration.Migration.AccountsMissing
+GROUP BY MissingFROM;
 
 
 /***************************************************************************************************************
@@ -177,6 +205,72 @@ SELECT * FROM Hybris.dbo.USERS
  SELECT * FROM Hybris.dbo.USERs
 	WHERE p_rfAccountID  IN (SELECT CAST(RFO_AccountID AS VARCHAR) FROM  DataMigration.Migration.AccountsMissing 
 								WHERE MissingFROM = 'Destination') 
+
+
+/* Checking Extra Loaded Customer In Hybris execpting   Exsting US Customer  */
+
+SELECT CAST(RFO_AccountID AS VARCHAR) P_rfaccountId  into #temp
+ FROM  DataMigration.Migration.AccountsMissing 
+								WHERE MissingFROM = 'Destination'
+									except 
+SELECT P_rfaccountid --,p_Sourcename,modifiedTS,CreatedTS,p_country 
+FROM Hybris.dbo.USERS
+	WHERE p_rfAccountID  IN (SELECT CAST(RFO_AccountID AS VARCHAR) FROM  DataMigration.Migration.AccountsMissing 
+								WHERE MissingFROM = 'Destination') 
+/*Checking Extra Loaded Customer In Hybris execpting   Exsting US Customer and Pre-existing Email in Hybris   */
+
+
+SELECT   DISTINCT
+        a.AccountID ,
+        f.EmailAddress
+ --INTO    #AccountIDs --COUNT( DISTINCT a.AccountID)
+FROM    RFOperations.RFO_Accounts.AccountRF (NOLOCK) a
+        JOIN RFOperations.RFO_Accounts.AccountBase (NOLOCK) b ON a.AccountID = b.AccountID
+        JOIN RFOperations.RFO_Accounts.AccountContacts (NOLOCK) d ON b.AccountID = d.AccountID
+        JOIN RFOperations.RFO_Accounts.AccountEmails (NOLOCK) e ON e.AccountContactId = d.AccountContactId
+        JOIN RFOperations.RFO_Accounts.AccountContactAddresses (NOLOCK) g ON g.AccountContactId = d.AccountContactId
+        JOIN RFOperations.RFO_Accounts.AccountContactPhones (NOLOCK) j ON j.AccountContactId = d.AccountContactId
+        LEFT JOIN RFOperations.RFO_Accounts.Phones (NOLOCK) p ON j.PhoneId = p.PhoneId
+                                                              AND p.PhoneTypeID = 1
+        LEFT JOIN RFOperations.RFO_Accounts.Addresses (NOLOCK) i ON i.AddressID = g.AddressID
+                                                              AND i.AddressTypeID = 1
+                                                              AND i.IsDefault = 1
+        LEFT JOIN RFOperations.RFO_Accounts.EmailAddresses (NOLOCK) f ON f.EmailAddressID = e.EmailAddressId
+                                                              AND EmailAddressTypeID = 1
+        LEFT JOIN RFOperations.Security.AccountSecurity (NOLOCK) k ON k.AccountID = a.AccountID
+        LEFT JOIN ( SELECT DISTINCT
+                            AccountID
+                    FROM    RFOperations.Hybris.Orders O
+                            INNER JOIN RodanFieldsLive.dbo.Orders rfl ON O.OrderID = rfl.OrderID
+                                                              AND rfl.OrderTypeID NOT IN (
+                                                              4, 5, 9 )
+                                                              AND rfl.StartDate >= '08/01/2014'
+                                                              AND O.CountryId = 236
+                  ) c ON b.AccountID = c.AccountID
+WHERE   1 = 1
+        AND b.CountryID = 236
+        AND ( SoftTerminationDate IS NULL
+              OR SoftTerminationDate >= '08/01/2014'
+            )
+        AND ( ( b.AccountStatusID = 3
+                AND c.AccountID IS NOT NULL
+              )
+              OR b.AccountStatusID <> 3
+            )
+        AND f.EmailAddressID IS NOT NULL
+        AND i.AddressID IS NOT NULL
+        AND p.PhoneId IS NOT NULL
+        AND k.AccountID IS NOT NULL
+        AND NOT EXISTS ( SELECT 1
+                         FROM   #PCNoTemplate p
+                         WHERE  p.AccountID = a.AccountID )
+        AND NOT EXISTS ( SELECT 1
+                         FROM   Hybris..users u
+                         WHERE  u.uniqueid = f.EmailAddress
+                                AND CAST(u.modifiedTS AS DATE) < '2016-02-22' )
+        AND a.accountId IN ( SELECT P_rfaccountid
+                             FROM   #temp )
+
 							
 ********************************************************************************************************/	
 							
@@ -187,28 +281,47 @@ SELECT * FROM Hybris.dbo.USERS
 -- Duplicates 
 --------------------------------------------------------------------------------------
 
-    SELECT  AccountID ,
-            COUNT(PK) AS CountofDups
-    INTO    #Accounts_Dups
-    FROM    Hybris.dbo.users a
-            JOIN RFOperations.RFO_Accounts.AccountBase b ON a.p_rfaccountid = CAST(b.AccountID AS VARCHAR)
-    WHERE   CountryID = @RFOCountry
-    GROUP BY AccountID
-    HAVING  COUNT(PK) > 1; 
+
+IF OBJECT_ID('TEMPDB.dbo.#Accounts_Dups') IS NOT NULL
+    DROP TABLE #Accounts_Dups; 
+	
+
+DECLARE @Country NVARCHAR(20)= 'US';
+DECLARE @RFOCountry INT = ( SELECT  CountryID
+                            FROM    RFOperations.RFO_Reference.Countries (NOLOCK)
+                            WHERE   Alpha2Code = @Country
+                          ); 
+
+SELECT  AccountID ,
+        COUNT(PK) AS CountofDups
+INTO    #Accounts_Dups
+FROM    Hybris.dbo.users a
+        JOIN RFOperations.RFO_Accounts.AccountBase b ON a.p_rfaccountid = CAST(b.AccountID AS VARCHAR)
+WHERE   CountryID = @RFOCountry
+GROUP BY AccountID
+HAVING  COUNT(PK) > 1; 
 
 
-        SELECT  'Duplicate ' + CAST(@@ROWCOUNT AS VARCHAR) + ' Accounts in Hybris';
+SELECT  'Duplicate ' + CAST(@@ROWCOUNT AS VARCHAR) + ' Accounts in Hybris';
 
-            SELECT  *
-            FROM    #Accounts_Dups;
+/* Checking if those duplicate not from US Migration.*/
+SELECT  *
+FROM    #Accounts_Dups;
 
        
-SELECT a.p_rfaccountid, PK, p_sourcename, uniqueid, modifiedts, * FROM Hybris.dbo.Users a
-WHERE p_rfAccountID IN (SELECT CAST (AccountID AS VARCHAR) FROM #Accounts_Dups)
-ORDER BY a.p_rfaccountid
+SELECT  a.p_rfaccountid ,
+        PK ,
+        p_sourcename ,
+        uniqueid ,
+        modifiedTS ,
+        *
+FROM    Hybris.dbo.users a
+WHERE   p_rfaccountid IN ( SELECT   CAST (AccountID AS VARCHAR)
+                           FROM     #Accounts_Dups )
+ORDER BY a.p_rfaccountid;
 
 
-	/*
+	
 /*=================================================================================================
 -- Part 2 EXCEPTS TESTS 
 ================================================================================================= */
@@ -280,25 +393,34 @@ DECLARE @Loaddate DATETIME2 = ( SELECT TOP 1
                         AND A.CountryID = @RFOCountry)
        ,
         EnrolledPC
-          AS ( SELECT   AccountID ,
+          AS ( SELECT DISTINCT  A.AccountID ,
                         1 AS EnrolledASPC
-               FROM     RFOperations.Hybris.Autoship
-               WHERE    Active = 1
-                        AND AutoshipTypeID = 1
+               FROM     RFOperations.[Hybris].[Autoship] A
+                        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = A.AutoshipNumber 
+                                                              AND ao.AccountID = A.AccountID  -- Extra restriction excludes up to 1,947 records
+                        INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = A.AutoshipID
+               WHERE    -- Active = 1  AND (Any Status Templates )
+                        AutoshipTypeID = 1
              ),
         EnrolledCRP
-          AS ( SELECT   AccountID ,
+          AS (  SELECT DISTINCT  A.AccountID ,
                         1 AS EnrolledASCRP
-               FROM     RFOperations.Hybris.Autoship
-               WHERE    Active = 1
-                        AND AutoshipTypeID = 2
+               FROM     RFOperations.[Hybris].[Autoship] A
+                        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = A.AutoshipNumber
+                                                              AND ao.AccountID = A.AccountID  -- Extra restriction excludes up to 1,947 records
+                        INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = A.AutoshipID
+               WHERE    --Active = 1 AND (Any Status Templates )
+                        AutoshipTypeID = 2
              ),
         EnrolledPulse
-          AS ( SELECT   AccountID ,
+          AS (  SELECT DISTINCT  A.AccountID ,
                         1 AS EnrolledASPulse
-               FROM     RFOperations.Hybris.Autoship
-               WHERE    Active = 1
-                        AND AutoshipTypeID = 3
+               FROM     RFOperations.[Hybris].[Autoship] A
+                        INNER JOIN RodanFieldsLive.dbo.AutoshipOrders ao ON ao.TemplateOrderID = A.AutoshipNumber
+                                                              AND ao.AccountID = A.AccountID  -- Extra restriction excludes up to 1,947 records
+                        INNER JOIN RFOperations.Hybris.AutoshipItem (NOLOCK) ai ON ai.AutoshipId = A.AutoshipID
+               WHERE    --Active = 1 AND (Any Status Templates )
+                        AutoshipTypeID = 3
              )
     SELECT DISTINCT
             CAST (AB.AccountID AS NVARCHAR(100)) AS AccountID				--p_rfaccountid
@@ -553,29 +675,32 @@ SELECT  'Excepts' ,
 FROM    #Accounts; 
 
 
-/*
+
+/* TAKING SAMPLE RECORDS TO SEE THE DIFFERENT FIELDS NOT MATCHING */
+DECLARE @sample NCHAR(12)
+SET  @sample= (SELECT TOP  1 AccountID FROM   #Accounts )
+SELECT * FROM  #RFO_Accounts WHERE AccountID=@sample
+SELECT * FROM #Hybris_Accounts WHERE p_rfAccountID=@sample
+
+/* Checking if Any Accounts not Existing RFO and HYBRIS As OF NOW 
 
 SELECT * FROM #Hybris_Accounts a 
 WHERE NOT EXISTS (SELECT 1 FROM #RFO_Accounts ra WHERE CAST(ra.AccountId AS VARCHAR)= a.p_rfAccountID)
 
-SELECT AccountID INTO #Accounts1 FROM #RFO_Accounts ra 
+SELECT AccountID --INTO #Accounts1
+FROM #RFO_Accounts ra 
 WHERE NOT EXISTS (SELECT 1 FROM #Hybris_Accounts a WHERE CAST(ra.AccountId AS VARCHAR)= a.p_rfAccountID)
-
-
-*/ 
-
-
-*/
-
-
-/*
+*******************************************/
+ 
 	
 /*=================================================================================================
 -- Part 3 Column to Column Comparisons 
 ================================================================================================= */
 
 
- --TRUNCATE TABLE DataMigration.Migration.Metadata_Accounts 
+/* DELETING PREVIOUS LOADED ERRORS  ***/
+ DELETE DataMigration.Migration.ErrorLog_Accounts
+ WHERE  identifier = 'AccountID'
 
 DECLARE @I INT = (SELECT MIN(MapID) FROM  DataMigration.Migration.Metadata_Accounts WHERE HybrisObject = 'Users') , 
 @C INT =  (SELECT MAX(MapID) FROM  DataMigration.Migration.Metadata_Accounts WHERE HybrisObject = 'Users') 
@@ -667,19 +792,34 @@ END
 END 
 
 
-SELECT b.MapID,  b.RFO_column, COUNT(*) AS Counts
-FROM DataMigration.Migration.ErrorLog_Accounts A JOIN DataMigration.Migration.Metadata_Accounts B ON a.MapID =b.MapID
-GROUP BY b.MapID, RFO_Column
+/* GETTING COUNTS OF ERRORS BY FIELDS ****/
+SELECT  B.MapID ,
+        B.RFO_column ,
+        COUNT(*) AS Counts
+FROM    DataMigration.Migration.ErrorLog_Accounts A
+        JOIN DataMigration.Migration.Metadata_Accounts B ON A.MapID = B.MapID
+WHERE   A.identifier = 'AccountID'
+GROUP BY B.MapID ,
+        RFO_Column
 
 
-*/ 
 
 
- /********************************************************************************************************************
+
+	/* DROPING ALL THE INDEXES CREATED FOR TEMPS ***/
+
+
+ /********************************************************************************************************************/
 -- FOR TROUBLESHOOTING INDIVIDUAL Accounts 
 
-SELECT MapID, RecordID, '['+ RFO_Value + ']', '['+ Hybris_Value + ']' FROM DataMigration.Migration.ErrorLog_Accounts
-WHERE MapID =6
+SELECT  A.MapID ,
+        RecordID ,
+        '[' + RFO_Value + ']' RFO ,
+        '[' + Hybris_Value + ']' HYBRIS
+FROM    DataMigration.Migration.ErrorLog_Accounts A
+        JOIN DataMigration.Migration.Metadata_Accounts B ON A.MapID = B.MapID
+WHERE   A.identifier = 'AccountID' 
+--AND MapID =6
 
 -- SponsorID 
 
@@ -692,34 +832,93 @@ WHERE p_rfAccountID ='1240439'
 
 --- HardTermination 
 
-SELECT * FROM RFOperations.Audit.RFOAccountsAccountRF 
-WHERE AccountID =1494406
+DECLARE @sample NVARCHAR(12)
+SELECT  *
+FROM    DataMigration.Migration.METADATA_Accounts
+WHERE   MAPID = 2
+SET @sample = ( SELECT TOP 1
+                        RecordID
+                FROM    DataMigration.Migration.ErrorLog_Accounts
+                WHERE   MapID = 2
+              )
+SELECT  *
+FROM    RFOperations.Audit.RFOAccountsAccountRF
+WHERE   AccountID = @sample
 ORDER BY AuditDate DESC 
  
-SELECT CAST (HardTerminationDate AS NVARCHAR(255)), * FROM RFoperations.RFO_Accounts.AccountRF
-WHERE AccountID = 1494406
+SELECT  CAST (HardTerminationDate AS NVARCHAR(255)) ,
+        *
+FROM    RFoperations.RFO_Accounts.AccountRF
+WHERE   AccountID = @sample
 
-SELECT P_hardterminationdate, p_sourcename,CAST (P_hardterminationdate AS NVARCHAR(255)), *FROM Hybris.dbo.Users 
-WHERE p_rfAccountID ='1494406'
+SELECT  P_hardterminationdate ,
+        p_sourcename ,
+        CAST (P_hardterminationdate AS NVARCHAR(255)) ,
+        *
+FROM    Hybris.dbo.Users
+WHERE   p_rfAccountID = @sample
 
 -- EmailAddress 
-SELECT CAST (EmailAddress AS NVARCHAR(255)), * FROM RFoperations.RFO_Accounts.AccountContacts a JOIN RFOPerations.RFO_Accounts.AccountEmails b ON a.AccountContactID = b.AccountContactID 
-JOIN RFOperations.RFO_Accounts.EmailAddresses c ON c.EmailAddressID =b.EmailAddressID
-WHERE AccountID = 1122067 AND EmailAddressTypeID =  1
+DECLARE @sample NVARCHAR(12)
+SELECT  *
+FROM    DataMigration.Migration.METADATA_Accounts
+WHERE   MAPID = 4
+SET @sample = ( SELECT TOP 1
+                        RecordID
+                FROM    DataMigration.Migration.ErrorLog_Accounts
+                WHERE   MapID = 4
+              )
+SELECT  CAST (EmailAddress AS NVARCHAR(255)) ,
+        *
+FROM    RFOperations.RFO_Accounts.AccountContacts a
+        JOIN RFOperations.RFO_Accounts.AccountEmails b ON a.AccountContactID = b.AccountContactID
+        JOIN RFOperations.RFO_Accounts.EmailAddresses c ON c.EmailAddressID = b.EmailAddressID
+WHERE   AccountID = @sample
+        AND EmailAddressTypeID = 1
 
-SELECT p_customeremail, p_sourcename,CAST (p_customeremail AS NVARCHAR(255)), *FROM Hybris.dbo.Users 
-WHERE p_rfAccountID ='1122067'
+SELECT  p_customeremail ,
+        p_sourcename ,
+        CAST (p_customeremail AS NVARCHAR(255)) ,
+        *
+FROM    Hybris.dbo.users
+WHERE   p_rfaccountid = @sample
 
 --PhoneNumber
-SELECT CAST (PhoneNumberRaw AS NVARCHAR(255)), * FROM RFoperations.RFO_Accounts.AccountContacts a JOIN RFOPerations.RFO_Accounts.AccountContactPhones b ON a.AccountContactID = b.AccountContactID 
-JOIN RFOperations.RFO_Accounts.Phones c ON c.PhoneID =b.PhoneID
-WHERE AccountID = 648462 
+DECLARE @sample NVARCHAR(12)
+SELECT  *
+FROM    DataMigration.Migration.METADATA_Accounts
+WHERE   MAPID = 8
+SET @sample = ( SELECT TOP 1
+                        RecordID
+                FROM    DataMigration.Migration.ErrorLog_Accounts
+                WHERE   MapID = 8
+              )
 
-SELECT p_mainphone, p_sourcename,CAST (p_customeremail AS NVARCHAR(255)), *FROM Hybris.dbo.Users 
-WHERE p_rfAccountID ='648462'
+ SELECT CAST (PhoneNumberRaw AS NVARCHAR(255)) ,
+        *
+ FROM   RFOperations.RFO_Accounts.AccountContacts a
+        JOIN RFOperations.RFO_Accounts.AccountContactPhones b ON a.AccountContactID = b.AccountContactID
+        JOIN RFOperations.RFO_Accounts.Phones c ON c.PhoneID = b.PhoneID
+ WHERE  AccountID =@sample
+
+ SELECT p_mainphone ,
+        p_sourcename ,
+        CAST (p_customeremail AS NVARCHAR(255)) ,
+        *
+ FROM   Hybris.dbo.users
+ WHERE  p_rfaccountid = @sample
 
 --EnrollmentDate
 
+DECLARE @sample NVARCHAR(12)
+SELECT  *
+FROM    DataMigration.Migration.METADATA_Accounts
+WHERE   MAPID = 8
+SET @sample = ( SELECT TOP 1
+                        RecordID
+                FROM    DataMigration.Migration.ErrorLog_Accounts
+                WHERE   MapID = 8
+              )
 SELECT CAST (EnrollmentDate AS NVARCHAR(255)), * FROM RFoperations.RFO_Accounts.AccountRF
 WHERE AccountID = 965195
 

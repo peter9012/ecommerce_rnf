@@ -127,6 +127,11 @@ WHERE   ( a.AddressID IS NULL
           OR b.p_rfaddressid IS NULL
         )
 
+        SELECT  COUNT(*) MissingkeysCounts ,
+                MissingFROM
+        FROM    DataMigration.Migration.Addresses_Billing_Missing
+        GROUP BY MissingFROM
+
 --------------------------------------------------------------------------------------------------------------------------
 SELECT  AddressID ,
         COUNT(*) AS AddressDups

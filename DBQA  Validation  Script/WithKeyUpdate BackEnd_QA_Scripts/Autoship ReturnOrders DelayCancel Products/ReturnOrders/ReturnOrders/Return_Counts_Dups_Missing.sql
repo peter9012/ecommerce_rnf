@@ -25,7 +25,7 @@ SELECT  @StartedTime = CAST(GETDATE() AS TIME);
 SELECT  'Count Comparison between ReturnOrder & ReturnRequest Started' AS ValidationTypes ,
         CAST(GETDATE() AS TIME) AS Startedtime;
 	
-		 SELECT   COUNT(ho.PK) RetunNumberNotInReturnRequest
+		 SELECT   COUNT (a.PK) RetunNumberNotInReturnRequest FROM (SELECT (ho.PK)
                               FROM      Hybris.dbo.orders (NOLOCK) ho
                                         JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
                                                               AND u.p_country = 8796100624418
@@ -42,7 +42,7 @@ SELECT  'Count Comparison between ReturnOrder & ReturnRequest Started' AS Valida
                                                               AND u.p_country = 8796100624418
                                                               AND u.p_sourcename = 'Hybris-DM'
                                         WHERE   ISNULL(ho.p_template, 0) = 0
-                                                AND ho.TypePkString = 8796127723602)
+                                                AND ho.TypePkString = 8796127723602))a
 										
                  
 
@@ -105,17 +105,19 @@ FROM    ( SELECT    COUNT(ho.PK) hybris_cnt
                                                            AND rfl.OrderTypeID = 9
                     JOIN Hybris.dbo.orders (NOLOCK) ho ON ro.OrderID = ho.Pk
                     JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
-          WHERE     ro.ReturnOrderNumber NOT IN (
-                    SELECT  a.ReturnOrderNumber
-                    FROM    Hybris.ReturnOrder (NOLOCK) a
-                            JOIN RodanFieldsLive.dbo.Orders rfl ON a.ReturnOrderNumber = CAST(rfl.OrderID AS NVARCHAR)
-                                                              AND rfl.OrderTypeID = 9
-                            JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
-                                                             AND a.CountryID = 236 )
-                    AND ro.ReturnOrderID IN (
-                    SELECT  ReturnOrderID
-                    FROM    Hybris.ReturnItem (NOLOCK) )
-                    AND ro.CountryID = 236
+          WHERE 
+		  ---Commented, No Issues after CleanUp.   
+		   --ro.ReturnOrderNumber NOT IN (
+     --               SELECT  a.ReturnOrderNumber
+     --               FROM    Hybris.ReturnOrder (NOLOCK) a
+     --                       JOIN RodanFieldsLive.dbo.Orders rfl ON a.ReturnOrderNumber = CAST(rfl.OrderID AS NVARCHAR)
+     --                                                         AND rfl.OrderTypeID = 9
+     --                       JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
+     --                                                        AND a.CountryID = 236 )
+     --               AND
+					-- ro.ReturnOrderID IN ( SELECT  ReturnOrderID  FROM    Hybris.ReturnItem (NOLOCK) ) AND
+					--Excluding Items not having return.
+                    ro.CountryID = 236
                     AND p_sourcename = 'Hybris-DM'
                     AND ro.ReturnStatusID = 5
         ) t2;
@@ -136,17 +138,16 @@ FROM    ( SELECT    ro.ReturnOrderID
                                                            AND rfl.OrderTypeID = 9
                     JOIN Hybris.dbo.orders (NOLOCK) ho ON ro.OrderID = ho.pk
                     JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
-          WHERE     ro.ReturnOrderNumber NOT IN (
-                    SELECT  a.ReturnOrderNumber
-                    FROM    Hybris.ReturnOrder (NOLOCK) a
-                            JOIN RodanFieldsLive.dbo.Orders rfl ON a.ReturnorderNumber = rfl.OrderID
-                                                              AND rfl.OrderTypeID = 9
-                            JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
-                                                             AND a.CountryID = 236 )
-                    AND ro.ReturnOrderID IN (
-                    SELECT  ReturnOrderID
-                    FROM    Hybris.ReturnItem (NOLOCK) )
-                    AND ro.CountryID = 236
+          WHERE     
+		  --ro.ReturnOrderNumber NOT IN (
+    --                SELECT  a.ReturnOrderNumber
+    --                FROM    Hybris.ReturnOrder (NOLOCK) a
+    --                        JOIN RodanFieldsLive.dbo.Orders rfl ON a.ReturnorderNumber = rfl.OrderID
+    --                                                          AND rfl.OrderTypeID = 9
+    --                        JOIN Hybris.Orders (NOLOCK) b ON a.ReturnOrderNumber = b.OrderNumber
+    --                                                         AND a.CountryID = 236 )
+                   -- AND ro.ReturnOrderID IN ( SELECT  ReturnOrderID FROM    Hybris.ReturnItem (NOLOCK) ) AND 
+                   ro.CountryID = 236
                     AND p_sourcename = 'Hybris-DM'
                     AND ro.ReturnStatusID = 5
         ) a
@@ -157,11 +158,36 @@ FROM    ( SELECT    ro.ReturnOrderID
                                                               AND u.p_sourcename = 'Hybris-DM'
                           WHERE     ISNULL(ho.p_template, 0) = 0
                                     AND ho.TypePkString = 8796127723602 --Returns
-                                    AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
+                                   --AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
                         ) b ON a.ReturnOrderID = b.pk
 WHERE   ( b.pk IS NULL
           OR a.ReturnOrderID IS NULL
         );  
+
+
+		SELECT COUNT(*),MissingFrom
+		FROM #missing 
+		GROUP BY missingFrom
+
+
+
+
+
+		/* Checking Key been Updated In RFO properly .*/
+
+			SELECT  COUNT(ho.PK) [Counts of ReturnOrder Key Updted in RFO]
+			FROM    Hybris.dbo.orders (NOLOCK) ho
+					JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
+														AND u.p_country = 8796100624418
+														AND u.p_sourcename = 'Hybris-DM'
+			WHERE   EXISTS ( SELECT 1
+							 FROM   RFOperations.Hybris.ReturnOrder ro
+							 WHERE  ro.ReturnOrderID = ho.PK )
+					AND ISNULL(ho.p_template, 0) = 0
+					AND ho.TypePkString = 8796127723602; --Returns
+
+
+
 
 SELECT  'Return  header WithKey' AS EntityName ,
         GETDATE() AS CompletionTime;
@@ -186,6 +212,8 @@ INSERT  INTO DataMigration.dbo.ExecResult
 				
 				/* Return Entries */
 
+--DECLARE @StartedTime TIME;
+--DECLARE @EndTime TIME; 
 
 		
 SELECT  'Return Entries ' AS EntityName ,
@@ -219,7 +247,7 @@ FROM    ( SELECT    COUNT(*) cnt ,
         ) t1;
 
 --Counts check between ReturnRequest & ReturnEntry
-SELECT  CASE WHEN COUNT(1) > 0
+SELECT  CASE WHEN COUNT(pk) > 0
              THEN 'Count Comparison between ReturnRequest & ReturnEntry - Failed!'
              ELSE 'Count Comparison between ReturnRequest & ReturnEntry - Passed'
         END Results
@@ -274,34 +302,24 @@ FROM    ( SELECT    COUNT(d.PK) hybris_cnt
                                          FROM   #missing
                                          WHERE  MissingFrom = 'Source' )
         ) t1 , --106994
-        ( SELECT    COUNT(ReturnItemID) RFO_CNT
-          FROM      Hybris.ReturnOrder a
-                    JOIN RodanFieldsLive.dbo.Orders rfl ON a.ReturnOrderID = rfl.OrderID
-                                                           AND rfl.OrderTypeID = 9 ,
-                    Hybris.dbo.orders b ,
-                    Hybris.dbo.users c ,
-                    Hybris.ReturnItem d ,
-                    Hybris.dbo.products e
-								--,Hybris.dbo.orders r
-          WHERE     a.ReturnOrderID = b.pk
-                    AND b.userpk = c.PK
-                    AND a.ReturnOrderID = d.ReturnOrderID
-                    AND d.ProductID = e.p_rflegacyproductid
-                    AND p_catalog = '8796093088344'
+        ( SELECT    COUNT(ri.ReturnItemID) RFO_CNT
+        FROM      Hybris.ReturnOrder ro
+                    JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber= rfl.OrderID
+                                                           AND rfl.OrderTypeID = 9 
+					JOIN  Hybris.dbo.orders ho ON ho.pk=ro.returnOrderId
+					JOIN  Hybris.dbo.users u ON u.pk=ho.userpk
+					join  Hybris.ReturnItem ri ON ri.ReturnOrderId=ro.ReturnOrderId AND ri.orderItemId IS NOT NULL 
+					JOIN  Hybris.dbo.products p ON p.p_rflegacyproductid=ri.productId
+          WHERE     p_catalog = '8796093088344'
                     AND p_catalogversion = '8796093153881'
-                    AND a.ReturnOrderNumber NOT IN (
-                    SELECT  a.ReturnOrderNumber
-                    FROM    Hybris.ReturnOrder a
-                            JOIN Hybris.Orders b ON a.ReturnOrderNumber = b.OrderNumber
-                                                    AND a.CountryID = 236 )
-                    AND a.ReturnOrderID NOT IN (
-                    SELECT  ReturnOrderID
-                    FROM    #missing
-                    WHERE   MissingFrom = 'Destination' )
-                    AND b.pk  NOT IN ( SELECT  pk
-                                        FROM    #missing
-                                        WHERE   MissingFrom = 'Source' )
-                    AND a.CountryID = 236
+                    --AND a.ReturnOrderNumber NOT IN (
+                    --SELECT  a.ReturnOrderNumber
+                    --FROM    Hybris.ReturnOrder a
+                    --        JOIN Hybris.Orders b ON a.ReturnOrderNumber = b.OrderNumber
+                    --                                AND a.CountryID = 236 ) --CleanUP fixed this Issues
+                    AND ro.ReturnOrderID NOT IN (  SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
+                    AND ho.pk  NOT IN ( SELECT  pk    FROM    #missing  WHERE   MissingFrom = 'Source' )
+                    AND ro.CountryID = 236
                     AND p_sourcename = 'Hybris-DM'
         ) t2;
   --107014
@@ -342,7 +360,22 @@ FROM    ( SELECT    COUNT(d.PK) hybris_cnt
   --                  ) a
 
 				
-				
+		
+		
+		/* Checking Key been Uddated properly with the counts */
+		
+         SELECT COUNT(d.PK) [Counts RFO ReturnItem  KeyUpdated]
+         FROM   Hybris.dbo.orders (NOLOCK) ho
+                JOIN Hybris.dbo.users (NOLOCK) u ON u.PK = ho.userpk
+                                                    AND u.p_country = 8796100624418
+                                                    AND u.p_sourcename = 'Hybris-DM'
+                JOIN Hybris..orderentries d ON d.orderpk = ho.PK
+         WHERE EXISTS (SELECT 1 FROM RFOperations.Hybris.ReturnItem ri WHERE ri.ReturnItemID=d.pk)
+		 AND  ISNULL(ho.p_template, 0) = 0
+                AND ho.TypePkString = 8796127723602 --Returns             
+                AND ho.PK NOT IN ( SELECT   PK FROM     #missing WHERE    MissingFrom = 'Source' );		
+
+
 
 SELECT  'Return  Entries' AS EntityName ,
         GETDATE() AS CompletionTime;
@@ -369,6 +402,8 @@ INSERT  INTO DataMigration.dbo.ExecResult
 
 
 
+--DECLARE @StartedTime TIME;
+--DECLARE @EndTime TIME; 
 
 		
 SELECT  'Return PaymentInfos ' AS EntityName ,
@@ -397,7 +432,6 @@ FROM    ( SELECT    COUNT(*) DupCount
 SELECT  hybris_cnt ,
         rfo_cnt ,
         t1.hybris_cnt - t2.rfo_cnt AS Diff ,
-        t1.hybris_cnt - t2.rfo_cnt AS Diff ,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
@@ -411,10 +445,9 @@ FROM    ( SELECT    COUNT(hpi.Pk) hybris_cnt
           WHERE     hpi.duplicate = 1
                     AND ISNULL(ho.p_template, 0) = 0
                     AND ho.TypePkString = 8796127723602
-                    AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
-                    AND ho.Pk NOT IN ( SELECT Pk
-                                         FROM   #missing
-                                         WHERE  MissingFrom = 'Source' )
+                   -- AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
+                    AND ho.Pk NOT IN ( SELECT Pk  FROM   #missing  WHERE  MissingFrom = 'Source' )
+					 AND ho.Pk NOT IN (  SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
         ) t1 , --119320
         ( SELECT    COUNT(rp.ReturnPaymentId) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
@@ -423,19 +456,18 @@ FROM    ( SELECT    COUNT(hpi.Pk) hybris_cnt
                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                AND ro.CountryID = 236
                                                AND u.p_sourcename = 'Hybris-DM'
-                    JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
-                    JOIN Hybris..orders ho ON ho.code = ro.ReturnOrderID
+                    JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID 
+                    JOIN Hybris..orders ho ON ho.PK = ro.ReturnOrderID
                                               AND ho.TypePkString = 8796127723602
                     --JOIN RodanFieldsLive.dbo.OrderPayments rrp ON rrp.OrderPaymentID = rp.ReturnPaymentId
-          WHERE    
+          WHERE      LEN(rp.ReturnPaymentId)>11  AND --Excluding Non Key Updated
+		 rp.PaymenttypeId IS NOT NULL AND 
 		   --( LTRIM(RTRIM(rrp.BillingFirstName)) <> ''
      --                 OR LTRIM(RTRIM(rrp.BillingLastName)) <> ''
      --               )
      --               AND 
-					ro.ReturnOrderID NOT IN (
-                    SELECT  ReturnOrderID
-                    FROM    #missing
-                    WHERE   MissingFrom = 'Destination' )
+					ro.ReturnOrderID NOT IN (  SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
+				AND ro.ReturnOrderID NOT IN  ( SELECT Pk  FROM   #missing  WHERE  MissingFrom = 'Source' )
         ) t2;
 --120368
  
@@ -459,32 +491,29 @@ FROM    ( SELECT    hpi.pk
                                                         AND ho.TypePkString = 8796127723602
                                                         AND ho.p_template IS NULL
                     JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK
-          WHERE     ho.pk NOT IN ( SELECT pk
-                                     FROM   #missing
-                                     WHERE  MissingFrom = 'Source' )
+          WHERE     ho.pk NOT IN ( SELECT pk  FROM   #missing WHERE  MissingFrom = 'Source' )
+		  AND  ho.pk NOT IN   (SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
         ) hybris
-        FULL OUTER JOIN ( SELECT    rp.ReturnPaymentId
+        FULL OUTER JOIN ( SELECT    rp.ReturnPaymentId 
                           FROM      RFOperations.Hybris.ReturnOrder ro
                                     JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.OrderID
-                                                              AND rfl.OrderTypeID = 9
+                                                              AND rfl.OrderTypeID = 9 
                                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                               AND ro.CountryID = 236
                                                               AND u.p_sourcename = 'hybris-dm'
-                                    JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
+                                    JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID 
                                     JOIN Hybris..orders ho ON ho.pk = ro.ReturnOrderID
-                                    JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId
-                                    --JOIN RodanFieldsLive.dbo.OrderPayments rop ON rop.OrderPaymentID = rp.ReturnPaymentId
-                          WHERE    
+                                    JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId 
+                                   -- JOIN RodanFieldsLive.dbo.OrderPayments rop ON rop.OrderPaymentID = rp.ReturnPaymentId
+                          WHERE     LEN(rp.ReturnPaymentId)>11 AND  rp.PaymenttypeId IS NOT NULL AND 
 						   --AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
          --                           AND ( LTRIM(RTRIM(rop.BillingFirstName)) <> ''
          --                                 OR LTRIM(RTRIM(rop.BillingLastName)) <> ''
          --                               )
          --                           AND 
-									ro.ReturnOrderID NOT IN (
-                                    SELECT  ReturnOrderID
-                                    FROM    #missing
-                                    WHERE   MissingFrom = 'Destination' )
-                        ) rfo ON hybris.p_code = rfo.code
+									ro.ReturnOrderID NOT IN (SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
+									AND ro.ReturnOrderID NOT IN( SELECT pk  FROM   #missing WHERE  MissingFrom = 'Source' )
+                        ) rfo ON hybris.pk = rfo.ReturnPaymentID
 WHERE   rfo.ReturnPaymentId IS NULL
         OR hybris.PK IS NULL; 
 								
@@ -494,21 +523,16 @@ DECLARE @dupcounts INT;
 SELECT  @dupcounts = COUNT(*)
 FROM    #missingInfo;
 		
-IF @dupcounts > 0
-    UPDATE  DataMigration..map_tab
-    SET     prev_run_err = @dupcounts
-    WHERE   [owner] = '853-returnpaymenttransaction'
-            AND [rfo_column ] = 'a.code';
 
-SELECT TOP 10
+SELECT  
         *
 FROM    #missingInfo
-WHERE   code IS NULL; 
+WHERE   ReturnPaymentId IS NULL; 
 		
-SELECT TOP 10
+SELECT 
         *
 FROM    #missingInfo
-WHERE   p_code IS NULL; 
+WHERE   pk IS NULL; 
     
 	
 
@@ -517,7 +541,30 @@ SELECT  'Return  PaymentInfos' AS EntityName ,
 SELECT  @EndTime = CAST(GETDATE() AS TIME);
 
 
-     
+     /* Checking Counts of Key Updated In RFO Correctly.*/
+
+     SELECT COUNT(hpi.PK) [Counts of RFO ReturnPayment KeyUpdated]
+     FROM   Hybris.dbo.orders ho
+            JOIN Hybris..users u ON u.PK = ho.userpk
+                                    AND u.p_sourcename = 'Hybris-DM'
+                                    AND u.p_country = 8796100624418
+            JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+     WHERE  EXISTS ( SELECT 1
+                     FROM   RFOperations.Hybris.ReturnPayment rp
+                     WHERE  rp.ReturnPaymentId = hpi.PK )
+            AND hpi.duplicate = 1
+            AND ISNULL(ho.p_template, 0) = 0
+            AND ho.TypePkString = 8796127723602
+                   -- AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
+            AND ho.PK NOT IN ( SELECT   PK
+                               FROM     #missing
+                               WHERE    MissingFrom = 'Source' )
+            AND ho.PK NOT IN ( SELECT   ReturnOrderID
+                               FROM     #missing
+                               WHERE    MissingFrom = 'Destination' );
+
+
+
 SELECT  @StartedTime AS StartedTime ,
         @EndTime AS CompletionTime ,
         DATEDIFF(MINUTE, @StartedTime, @EndTime) AS [Total Time (MM)] ,
@@ -544,6 +591,10 @@ INSERT  INTO DataMigration.dbo.ExecResult
 			
 				/* Returnpayment Billing Addresses*/
 
+
+--DECLARE @StartedTime TIME;
+--DECLARE @EndTime TIME; 
+
 				
 SELECT  'Return PaymentBillingAddress ' AS EntityName ,
         GETDATE() AS StartedTime;
@@ -569,11 +620,9 @@ SELECT  @StartedTime = CAST(GETDATE() AS TIME);
                           WHERE     hpi.duplicate = 1 AND hpi.P_sourcename='hybris-DM'
                                     AND ISNULL(ho.p_template, 0) = 0
                                     AND ho.TypePkString = 8796127723602
-                                    AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
-                                    AND ho.PK NOT IN (
-                                    SELECT  pk
-                                    FROM    #missing
-                                    WHERE   MissingFrom = 'Source' )
+                                   -- AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
+                                    AND ho.PK NOT IN (  SELECT  pk  FROM    #missing WHERE   MissingFrom = 'Source' )
+									AND ho.PK NOT IN( SELECT  ReturnOrderID  FROM    #missing  WHERE   MissingFrom = 'Destination' )
                         ) t1 , --119320
                         ( SELECT    COUNT(DISTINCT rba.ReturnBillingAddressId) rfo_cnt
                           FROM      RFOperations.Hybris.ReturnOrder ro
@@ -587,19 +636,47 @@ SELECT  @StartedTime = CAST(GETDATE() AS TIME);
                                                               AND ho.TypePkString = 8796127723602
                                    -- JOIN RodanFieldsLive.dbo.OrderPayments rrp ON rrp.OrderPaymentID = rp.ReturnPaymentId
 									JOIN RFOperations.Hybris.ReturnBillingAddress rba ON rba.ReturnOrderId=ro.returnOrderId
-                          WHERE    
+                          WHERE      LEN(rp.ReturnPaymentId)>11 AND  rp.PaymenttypeId IS NOT NULL AND 
 						  --If any Discripancy we should find the another method to join with RFL.
 						   --( LTRIM(RTRIM(rrp.BillingFirstName)) <> ''
          --                             OR LTRIM(RTRIM(rrp.BillingLastName)) <> ''
          --                           )
          --                           AND 
-									ro.ReturnOrderID NOT IN (
-                                    SELECT  ReturnOrderID
-                                    FROM    #missing
-                                    WHERE   MissingFrom = 'Destination' )
+									ro.ReturnOrderID NOT IN ( SELECT  ReturnOrderID  FROM    #missing  WHERE   MissingFrom = 'Destination' )
+									AND ro.ReturnOrderID NOT IN (  SELECT  pk  FROM    #missing WHERE   MissingFrom = 'Source' )
                         ) t2;
 						
+
+						/* Checking Key Updated Properly in RFO */
 				
+                        SELECT  COUNT(ad.PK) [Counts of RFO ReturnBillingAddress KeyUpdated]
+                        FROM    Hybris.dbo.orders ho
+                                JOIN Hybris..users u ON u.PK = ho.userpk
+                                                        AND u.p_sourcename = 'Hybris-DM'
+                                                        AND u.p_country = 8796100624418
+                                JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                                JOIN Hybris..addresses ad ON ad.OwnerPkString = hpi.PK
+                                                             AND ad.duplicate = 1
+                                                             AND ad.p_billingaddress = 1
+                        WHERE   EXISTS ( SELECT 1
+                                         FROM   RFOperations.Hybris.ReturnBillingAddress rb
+                                         WHERE  rb.ReturnBillingAddressID = ad.PK )
+                                AND hpi.duplicate = 1
+                                AND hpi.p_sourcename = 'hybris-DM'
+                                AND ISNULL(ho.p_template, 0) = 0
+                                AND ho.TypePkString = 8796127723602
+                                   -- AND CAST(ho.modifiedTS AS DATE) = @ModifiedDate
+                                AND ho.PK NOT IN (
+                                SELECT  PK
+                                FROM    #missing
+                                WHERE   MissingFrom = 'Source' )
+                                AND ho.PK NOT IN (
+                                SELECT  ReturnOrderID
+                                FROM    #missing
+                                WHERE   MissingFrom = 'Destination' );
+
+
+
 SELECT  'Return  PaymentBillingAddress' AS EntityName ,
         GETDATE() AS CompletionTime;
 SELECT  @EndTime = CAST(GETDATE() AS TIME);
@@ -631,7 +708,9 @@ INSERT  INTO DataMigration.dbo.ExecResult
 			
 				/* Return paymentTransanction  */
 
-
+				
+--DECLARE @StartedTime TIME;
+--DECLARE @EndTime TIME; 
 		
 SELECT  'Return PaymentTransaction With Key PaymentInfos ' AS EntityName ,
         GETDATE() AS StartedTime;
@@ -679,7 +758,7 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.pk) hybris_cnt
           WHERE     ho.pk NOT IN ( SELECT pk
                                      FROM   #missing
                                      WHERE  MissingFrom = 'Source' )
-        ) t1 , --105789
+        ) t1 , --181619
         ( SELECT    COUNT(DISTINCT rpt.ReturnPaymentId) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
                     JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.OrderID
@@ -691,7 +770,7 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.pk) hybris_cnt
                     JOIN Hybris..orders ho ON ho.pk = ro.ReturnOrderID
                     JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId
                     --JOIN RodanFieldsLive.dbo.OrderPayments rop ON rop.OrderPaymentID = rp.ReturnPaymentId
-          WHERE    
+          WHERE     LEN(rp.ReturnPaymentId)>11 AND  rp.PaymenttypeId IS NOT NULL AND 
 		   --( LTRIM(RTRIM(rop.BillingFirstName)) <> ''
      --                 OR LTRIM(RTRIM(rop.BillingLastName)) <> ''
      --               )
@@ -702,16 +781,16 @@ FROM    ( SELECT    COUNT(DISTINCT hpi.pk) hybris_cnt
                     FROM    #missing
                     WHERE   MissingFrom = 'Destination' )
         ) t2;
- --149286
+ --181616
 
 
 
-SELECT  hybris.PK ,
-        rfo.ReturnPaymentTransactionId ,
-        CASE WHEN hybris.pk IS NULL THEN 'missing in hybris'
-             WHEN rfo.ReturnPaymentTransactionId IS NULL THEN 'missing in rfo'
+SELECT  hybris.p_requestid ,
+        rfo.transactionId ,
+        CASE WHEN hybris.p_requestid IS NULL THEN 'missing in hybris'
+             WHEN rfo.transactionId IS NULL THEN 'missing in rfo'
         END results
-FROM    ( SELECT    hpt.pk
+FROM    ( SELECT    hpt.p_requestid 
           FROM      Hybris.dbo.orders ho
                     JOIN Hybris.dbo.users u ON ho.userpk = u.PK
                                                AND u.p_sourcename = 'hybris-dm'
@@ -721,38 +800,55 @@ FROM    ( SELECT    hpt.pk
                                                         AND hpi.duplicate = 1
                                                         AND ho.TypePkString = 8796127723602
                                                         AND ho.p_template IS NULL
-                    JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK
-          WHERE     ho.pk NOT IN ( SELECT pk
-                                     FROM   #missing
-                                     WHERE  MissingFrom = 'Source' )
+                    JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK 
+          WHERE     ho.pk NOT IN ( SELECT pk FROM   #missing  WHERE  MissingFrom = 'Source' )
+		  AND ho.pk NOT IN ( SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
         ) hybris
-        FULL OUTER JOIN ( SELECT   rpt.ReturnPaymentTransactionId
-                          FROM      RFOperations.Hybris.ReturnOrder ro
-                                    JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderID = rfl.OrderID
+        FULL OUTER JOIN ( SELECT  rpt.transactionId 
+                         FROM      RFOperations.Hybris.ReturnOrder ro
+                                    JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.OrderID
                                                               AND rfl.OrderTypeID = 9
                                     JOIN Hybris.dbo.users u ON u.p_rfaccountid = CAST(ro.AccountID AS NVARCHAR)
                                                               AND ro.CountryID = 236
                                                               AND u.p_sourcename = 'hybris-dm'
                                     JOIN RFOperations.Hybris.ReturnPayment rp ON rp.ReturnOrderID = ro.ReturnOrderID
-                                    JOIN Hybris..orders ho ON ho.code = ro.ReturnOrderID
-                                    JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId
+                                    JOIN Hybris..orders ho ON ho.pk = ro.ReturnOrderID
+                                    JOIN Hybris.ReturnPaymentTransaction rpt ON rpt.ReturnPaymentId = rp.ReturnPaymentId  
                                   --  JOIN RodanFieldsLive.dbo.OrderPayments rop ON rop.OrderPaymentID = rp.ReturnPaymentId
-                          WHERE   
+                          WHERE     LEN(rp.ReturnPaymentId)>11 AND  rp.PaymenttypeId IS NOT NULL AND 
 						    --AccountNumber <> 'HDCm5F9HLZ6JyWpnoVViLw=='
           --                          AND ( LTRIM(RTRIM(rop.BillingFirstName)) <> ''
           --                                OR LTRIM(RTRIM(rop.BillingLastName)) <> ''
           --                              )
           --                          AND 
-									ro.ReturnOrderID NOT IN (
-                                    SELECT  ReturnOrderID
-                                    FROM    #missing
-                                    WHERE   MissingFrom = 'Destination' )
-                        ) rfo ON hybris.pk = rfo.ReturnPaymentTransactionId
-WHERE   rfo.ReturnPaymentTransactionId IS NULL
-        OR hybris.PK IS NULL; 
+									ro.ReturnOrderID NOT IN ( SELECT  ReturnOrderID FROM    #missing WHERE   MissingFrom = 'Destination' )
+									AND ro.ReturnOrderID NOT IN( SELECT pk FROM   #missing  WHERE  MissingFrom = 'Source' )
+                        ) rfo ON hybris.p_requestid = rfo.transactionId
+WHERE   rfo.transactionId IS NULL
+        OR hybris.p_requestid IS NULL; 
 								
 
-
+/* Checking Key Updated properly In RFO with Hybris Key.*/
+SELECT  COUNT(hpt.p_requestid) [Counts of RFO ReturnPaymentTransaction Key Updated]
+FROM    Hybris.dbo.orders ho
+        JOIN Hybris.dbo.users u ON ho.userpk = u.PK
+                                   AND u.p_sourcename = 'hybris-dm'
+        JOIN Hybris..countries c ON c.PK = u.p_country
+                                    AND c.isocode = 'us'
+        JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                                            AND hpi.duplicate = 1
+                                            AND ho.TypePkString = 8796127723602
+                                            AND ho.p_template IS NULL
+        JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK
+WHERE   EXISTS ( SELECT 1
+                 FROM   RFOperations.Hybris.ReturnPaymentTransaction rpt
+                 WHERE  rpt.TransactionID = hpt.p_requestid )
+        AND ho.PK NOT IN ( SELECT   PK
+                           FROM     #missing
+                           WHERE    MissingFrom = 'Source' )
+        AND ho.PK NOT IN ( SELECT   ReturnOrderID
+                           FROM     #missing
+                           WHERE    MissingFrom = 'Destination' );
 		
 
 SELECT  'Return  PaymentTransaction  With Key PaymentInfos' AS EntityName ,
@@ -783,7 +879,9 @@ INSERT  INTO DataMigration.dbo.ExecResult
 				
 				/* Return PaymentTransaction */
 
-
+				
+--DECLARE @StartedTime TIME;
+--DECLARE @EndTime TIME; 
 		
 SELECT  'Return PaymentTransaction ' AS EntityName ,
         GETDATE() AS StartedTime;
@@ -821,6 +919,7 @@ GROUP BY            f.p_paymenttransaction
 --Counts check on Hybris side for US
 SELECT  hybris_cnt ,
         rfo_cnt ,
+		t1.hybris_cnt-t2.rfo_cnt AS diff,
         CASE WHEN hybris_cnt > rfo_cnt THEN 'Hybris count more than RFO count'
              WHEN rfo_cnt > hybris_cnt THEN 'RFO count more than Hybris count'
              ELSE 'Count matches - validation passed'
@@ -837,7 +936,7 @@ FROM    ( SELECT    COUNT(hpe.PK) hybris_cnt
                                                         AND hpi.duplicate = 1
                     JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK
                     JOIN Hybris.dbo.paymnttrnsctentries hpe ON hpe.p_paymenttransaction = hpt.PK
-        ) t1 , --110286
+        ) t1 , --181630
         ( SELECT    COUNT([ReturnPaymentTransactionId]) rfo_cnt
           FROM      RFOperations.Hybris.ReturnOrder ro
                     JOIN RodanFieldsLive.dbo.Orders rfl ON ro.ReturnOrderNumber = rfl.OrderID
@@ -854,8 +953,25 @@ FROM    ( SELECT    COUNT(hpe.PK) hybris_cnt
           --          )
 
         ) t2;
- --149286
+ --181629
 	
+
+	/* Checking If RFO side Key been Updated Properly*/
+
+	 SELECT    COUNT(hpe.PK) [Counts of RFO ReturnPaymentTransaction Key Updated]
+          FROM      Hybris.dbo.orders ho
+                    JOIN Hybris.dbo.users u ON u.PK = ho.userpk
+                                               AND ho.TypePkString = 8796127723602
+                                               AND ISNULL(ho.p_template, 0) = 0
+                                               AND u.p_sourcename = 'Hybris-DM'
+                    JOIN Hybris.dbo.countries c ON c.PK = u.p_country
+                                                   AND c.isocode = 'US'
+                    JOIN Hybris.dbo.paymentinfos hpi ON hpi.OwnerPkString = ho.PK
+                                                        AND hpi.duplicate = 1
+                    JOIN Hybris.dbo.paymenttransactions hpt ON hpt.p_order = ho.PK
+                    JOIN Hybris.dbo.paymnttrnsctentries hpe ON hpe.p_paymenttransaction = hpt.PK
+					WHERE EXISTS(SELECT 1 FROM RFOperations.Hybris.ReturnPaymentTransaction rpt WHERE rpt.ReturnPaymentTransactionId=hpe.pk)
+
 	
 
 SELECT  'Return  PaymentTransaction' AS EntityName ,

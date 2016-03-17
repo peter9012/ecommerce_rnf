@@ -40,11 +40,12 @@ SELECT  @StartedTime = CAST(GETDATE() AS TIME);
                                            AND ro.CountryId = 236
                                            AND u.p_sourcename = 'hybris-DM'
                 JOIN RFOperations.Hybris.ReturnItem ri ON ri.ReturnOrderID = ro.ReturnOrderID
-        WHERE   ro.ReturnOrderNumber NOT IN (
-                SELECT  a.ReturnOrderNumber
-                FROM    Hybris.ReturnOrder a
-                        JOIN Hybris.Orders b ON a.ReturnOrderNumber = b.OrderNumber
-                                                AND a.CountryID = 236 )               
+        WHERE  EXISTS (SELECT 1 FROM Hybris..orders ho WHERE  ho.pk=ro.returnOrderID)     
+		--AND  ro.ReturnOrderNumber NOT IN (
+  --              SELECT  a.ReturnOrderNumber
+  --              FROM    Hybris.ReturnOrder a
+  --                      JOIN Hybris.Orders b ON a.ReturnOrderNumber = b.OrderNumber
+  --                                              AND a.CountryID = 236 )               
                 AND ro.ReturnStatusID = 5
 				--AND CAST(ho.modifiedTS AS DATE)=@modifiedDate
 		
@@ -102,7 +103,14 @@ DECLARE @temp TABLE
     );
 
 
-	
+	/* Deleting the OLD records */
+
+    DELETE-- SELECT  *
+            FROM DataMigration..dm_log
+    WHERE   test_area = '853-Returns'
+            AND test_type IN ( 'c2c', 'Defaults' );
+
+
 SET @cnt = 1;
 SELECT  @lt_1 = COUNT(*)
 FROM    DataMigration.dbo.map_tab

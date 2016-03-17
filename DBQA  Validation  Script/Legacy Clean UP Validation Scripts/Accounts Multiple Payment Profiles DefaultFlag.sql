@@ -22,6 +22,24 @@ WHERE   AB.AccountID = PP.AccountID
 --AND PP.CHANGEDBYUSER='GP-2029'
 ORDER BY AccountID;
 
+/* Checking if Any Accounts not having Default PaymentProfile.*/
+SELECT  PP.*
+FROM    RFOperations.RFO_Accounts.PaymentProfiles PP ,
+        RFOperations.RFO_Accounts.AccountBase AB
+WHERE   AB.AccountID = PP.AccountID
+        AND IsDefault = 1
+        AND AB.CountryID = 236
+        AND AB.AccountID NOT  IN (
+        SELECT  AB.AccountID
+        FROM    RFOperations.RFO_Accounts.PaymentProfiles PP ,
+                RFOperations.RFO_Accounts.AccountBase AB
+        WHERE   AB.AccountID = PP.AccountID
+                AND IsDefault = 1
+                AND AB.CountryID = 236
+        GROUP BY AB.AccountID
+        HAVING  COUNT(*) = 1 )
+--AND PP.CHANGEDBYUSER='GP-2029'
+ORDER BY AccountID;
 /*
 Biling Address Check
 This script will return Accounts having MULTIPLE BillingAddresses with IsDefault=1. 

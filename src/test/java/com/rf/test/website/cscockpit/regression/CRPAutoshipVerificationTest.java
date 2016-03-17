@@ -2672,7 +2672,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1815:To verify cancel Pulse
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyPulse_1815() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2743,7 +2743,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1744:To verify Edit card functionality in the PCperks Edit Autoship template Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditCardFunctionalityInPCPerksEditAutoshipTemplatePage_1744(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -2831,7 +2831,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1743:To verify Edit card functionality in the CRP Edit Autoship template Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditCardFunctionalityInCRPEditAutoshipTemplatePage_1743(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

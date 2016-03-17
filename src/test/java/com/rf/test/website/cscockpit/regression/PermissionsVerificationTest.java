@@ -1141,7 +1141,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1792:To verify User permission for Autoship search
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyUserPermissionForAutoshipSearch_1792() throws InterruptedException{
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		driver.get(driver.getCSCockpitURL());

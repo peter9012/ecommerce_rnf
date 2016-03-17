@@ -1043,5 +1043,38 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return flag;  
 	}
 
+	public boolean isAccountStatusActive(){
+		boolean isActive = false;
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		String checkboxStatus = driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).getAttribute("title");
+		if(checkboxStatus.equalsIgnoreCase("Checked")){
+			isActive = true;
+		}
+		return isActive;
+	}
+
+	public void selectReasonToChangeAccountStatusFromDropDown(String dropdownValue){
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+
+		driver.waitForElementNotPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select"));
+		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select"));
+		driver.waitForElementPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
+		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
+	}
+
+	public void clickSaveButtonToChangeAccountStatus(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
+		driver.click(By.xpath("//a[text()='Save']"));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
+	}
+
 }
 

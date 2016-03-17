@@ -1077,4 +1077,9 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return listOfSKUValues;
 	}
 
+	public boolean isCreateAutoshipTemplateBtnPresent(){
+		driver.waitForElementPresent(CREATE_AUTOSHIP_TEMPLATE_BTN);
+		return driver.isElementPresent(CREATE_AUTOSHIP_TEMPLATE_BTN);
+	}
+
 }

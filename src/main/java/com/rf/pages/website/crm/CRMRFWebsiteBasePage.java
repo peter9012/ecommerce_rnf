@@ -1984,4 +1984,11 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 			driver.pauseExecutionFor(1000);
 		}
 	}
+
+	public void closeTabViaNumberWise(int number){
+		driver.switchTo().defaultContent();
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+number+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+		driver.pauseExecutionFor(1000);
+	}
 }

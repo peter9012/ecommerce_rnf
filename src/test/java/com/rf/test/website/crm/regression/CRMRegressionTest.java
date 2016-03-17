@@ -2437,4 +2437,33 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4472:Verify Status changes of Soft terminated Consultant
+	@Test(enabled=false)//WIP
+	public void testVerifyStatusChangesOfSoftTerminatedConsultant_4472() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		if(crmAccountDetailsPage.isAccountStatusActive()==true){
+			crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+			crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
+			crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+			crmAccountDetailsPage.closeTabViaNumberWise(2);
+			crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+			s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		}
+		s_assert.assertAll();
+	}
+
 }

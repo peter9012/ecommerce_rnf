@@ -18,7 +18,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 			.getLogger(StoreFrontShippingInfoPage.class.getName());
 
 	private final By SHIPPING_PAGE_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']/div[text()='Shipping info']");  
-	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
+	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//div[@id='multiple-billing-profiles']/div");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");

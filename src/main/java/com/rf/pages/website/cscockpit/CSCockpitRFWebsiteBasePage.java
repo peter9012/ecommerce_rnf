@@ -1082,4 +1082,48 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(CREATE_AUTOSHIP_TEMPLATE_BTN);
 	}
 
+	public String getOneMonthExtendedDateAfter17(String date, String day){
+		String completeDate[] = date.split(" ");
+		String year =completeDate[2];
+		String month=completeDate[0];
+		if(month.equalsIgnoreCase("Jan")){
+			month="Feb";
+		}else if(month.equalsIgnoreCase("Feb")){
+			month="Mar";
+		}else if(month.equalsIgnoreCase("Mar")){
+			month="Apr";
+		}
+		else if(month.equalsIgnoreCase("Apr")){
+			month="May";
+		}
+		else if(month.equalsIgnoreCase("May")){
+			month="Jun";
+		}
+		else if(month.equalsIgnoreCase("Jun")){
+			month="Jul";
+		}
+		else if(month.equalsIgnoreCase("Jul")){
+			month="Aug";
+		}
+		else if(month.equalsIgnoreCase("Aug")){
+			month="Sep";
+		}
+		else if(month.equalsIgnoreCase("Sep")){
+			month="Oct";
+		}
+		else if(month.equalsIgnoreCase("Oct")){
+			month="Nov";
+		}
+		else if(month.equalsIgnoreCase("Nov")){
+			month="Dec";
+		}else if(month.equalsIgnoreCase("Dec")){
+			month="Jan";
+			int nxtYear = Integer.parseInt(year)+1;
+			year = ""+nxtYear;
+		}
+		String dateAfterOneMonth=month+" "+day+","+" "+year;
+		System.out.println("created date "+dateAfterOneMonth);
+		return dateAfterOneMonth;
+	}
+
 }

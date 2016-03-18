@@ -1203,7 +1203,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1814:To verify the cssalessupervisory can do Sales Override
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCSSalesSuperVisoryCanDoSalesOverride_1814() throws InterruptedException{ 
 		String randomCustomerSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -1293,7 +1293,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1821:To verify that admin can place order
-	@Test(enabled=false)//WIIP
+	@Test
 	public void testVerifyAdminCanPlaceOrder_1821() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;

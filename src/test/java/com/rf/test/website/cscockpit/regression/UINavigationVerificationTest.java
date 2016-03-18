@@ -87,7 +87,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-1837:To verify that change consultant Receiving Commissions can be done for corporate sponsor for RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyChangeTheConsultantRecievingCommisionsCanBeDoneForCorporateSponsorForRC_1837() throws InterruptedException{
 		String randomOrderSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -138,7 +138,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1835:Autoship template page for cancelled Pulse change consultant Receiving Commissions should not happen
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAutoshipTemplatePageForCancelledPulseChangeConsultantRecievingCommissionsShouldNotHappen_1835() throws InterruptedException{
 		String randomOrderSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();

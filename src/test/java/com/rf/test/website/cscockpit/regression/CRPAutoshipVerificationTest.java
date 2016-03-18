@@ -2918,7 +2918,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1816:To verify Add New payment profile functionality in the CRP Checkout Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddNewPaymentProfileFunctionalityInCRPCheckout_1816() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -3251,6 +3251,168 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickButtonsInDeliveryAndShippingAddressPopup("Use this address");
 		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab();
 		s_assert.assertTrue(getNewShippingAddressLineFromUI.equalsIgnoreCase(addressLine2),"Newly created shipping address is not selected from dropdown");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4723:Verify that CRP scheduling date has to be between 1st and 17th (including).
+	@Test(enabled=false)//WIP
+	public void testVerifyCRPSchedulingDateHasToBeBetween1stTo17th_4723(){
+		RFO_DB = driver.getDBNameRFO();
+		//Get Email from database.
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		List<Map<String, Object>> randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		String consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		String date = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		String dateAfterOneMonth = cscockpitAutoshipTemplateTabPage.getOneMonthExtendedDateAfter17(date, "22");
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(dateAfterOneMonth);
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isSelectValidFutureDatePopupPresent(), "Select valid future date popup is not present");
+		cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4782:CSCockpit _Change date for PC perks autoship template
+	@Test(enabled=false)//WIP
+	public void testChangeDateForPCPerksAutoshipTemplate_4782(){
+		RFO_DB = driver.getDBNameRFO();
+		//Get Email from database.
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		List<Map<String, Object>> randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		String consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		String date = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		String modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(date);
+		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
+		String updatedDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
+		s_assert.assertTrue(modifiedDate.contains(updatedDate), "Expected date after update is"+modifiedDate+"Actual on UI is "+updatedDate);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4783:CSCockpit _Delay teh PC perks autoship template by 30 days
+	@Test(enabled=false)//WIP
+	public void testDelayPCPerksAutoshipTemplateBy30Days_4783() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String randomCustomerSequenceNumber = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String accountID;
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
+		driver.get(driver.getStoreFrontURL()+"/us");
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful"); 
+		logout();
+		//get emailId of username
+		List<Map<String, Object>> randomPCUsernameList =  null;
+		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+pcEmailID); 
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
+		String noOfDays = "30";
+		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
+		String delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
+		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
+		String delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
+		driver.get(driver.getStoreFrontURL()+"/us");
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnPcPerksStatus();
+		String dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
+		logout();
+		//------------------CA----------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful"); 
+		logout();
+		//get emailId of username
+		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
+		logger.info("emaild of consultant username "+pcEmailID); 
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
+		noOfDays = "30";
+		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
+		delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
+		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
+		delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
+
+		driver.get(driver.getStoreFrontURL()+"/ca");
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnPcPerksStatus();
+		dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
+		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
+		logout();
 		s_assert.assertAll();
 	}
 

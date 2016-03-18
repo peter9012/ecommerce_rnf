@@ -2144,7 +2144,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4484:Add a new contact - spouse to a PC
-	@Test(enabled=false)//WIP  
+	@Test 
 	public void testAddNewContactSpouseToPC_4484() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCList =  null;
@@ -2180,7 +2180,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4483:Add a new contact - spouse to a consultant
-	@Test(enabled=false)//WIP 
+	@Test 
 	public void testAddNewContactSpouseToConsultant_4483() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2460,6 +2460,64 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 			crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
 			crmAccountDetailsPage.closeTabViaNumberWise(2);
 			crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+			s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		}
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4474:Verify Status changes of Soft terminated RC
+	@Test(enabled=false)//WIP
+	public void testVerifyStatusChangesOfSoftTerminatedRC_4474() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		if(crmAccountDetailsPage.isAccountStatusActive()==true){
+			crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+			crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
+			crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+			crmAccountDetailsPage.closeTabViaNumberWise(2);
+			crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+			s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4473:Verify Status changes of Soft terminated PC
+	@Test(enabled=false)//WIP 
+	public void testVerifyStatusChangesOfSoftTerminatedPC_4473() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		if(crmAccountDetailsPage.isAccountStatusActive()==true){
+			crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+			crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
+			crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+			crmAccountDetailsPage.closeTabViaNumberWise(2);
+			crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 
 			s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
 		}

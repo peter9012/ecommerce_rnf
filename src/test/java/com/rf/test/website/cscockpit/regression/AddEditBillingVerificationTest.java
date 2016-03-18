@@ -324,7 +324,7 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1728:To verify Add card functionality from customer detail page for preferred customer
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddCardFunctionalityFromCustomerDetailPageForPC_1728() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -564,7 +564,7 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1729:To verify Add card functionality from customer detail page for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddCardFunctionalityFromCustomerDetailPageForRC_1729() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

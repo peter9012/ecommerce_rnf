@@ -246,7 +246,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		logger.info("Selected Cutomer first Name is = "+firstname);
 		return firstname;
 	}
-	
+
 	public boolean isOrderSearchLabelPresent(String label){
 		driver.waitForElementPresent(By.xpath(String.format(orderSearchLabel, label)));
 		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(orderSearchLabel, label))));
@@ -255,7 +255,14 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public String getCIDOrderNumberInOrderSearchResultsInOrderSearchTab(String orderSequenceNumber){
 		driver.waitForElementPresent(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber)));
 		return driver.findElement(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber))).getText();
+	}
 
+	public String getAndclickOrderNumberInOrderSearchResultsInOrderSearchTab(String orderSequenceNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber)));
+		String orderNumber=driver.findElement(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber))).getText();
+		driver.click(By.xpath(String.format(orderNumberFromOrdersResultLoc,orderSequenceNumber)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return orderNumber;
 	}
 
 }

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -67,6 +68,25 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
+		if(driver.getURL().contains("salesforce")==true){
+			try{
+				crmLogoutFromHome();
+				driver.get(driver.getURL());
+			}catch(Exception e){
+
+			}
+		}
+	}
+	
+	@AfterMethod
+	public void tearDownAfterMethod(){
+		if(driver.getURL().contains("salesforce")==true){
+			try{
+				crmLogout();
+			}catch(Exception e){
+
+			}
+		}
 	}
 
 	/**
@@ -81,12 +101,23 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void setStoreFrontPassword(String pass){
 		password=pass;
 	}
-	public void crmLogout(){
-		driver.findElement(By.id("userNavLabel")).click();
-		driver.waitForElementPresent(By.id("app_logout"));
-		driver.findElement(By.id("app_logout")).click();
-		logger.info("Logout");
 
+	public void crmLogout(){
+		driver.switchTo().defaultContent();
+		driver.quickWaitForElementPresent(By.id("userNavLabel"));
+		driver.click(By.id("userNavLabel"));
+		driver.waitForElementPresent(By.id("app_logout"));
+		driver.click(By.id("app_logout"));
+		logger.info("Logout");
+	}
+	
+	public void crmLogoutFromHome(){
+		driver.switchTo().defaultContent();
+		driver.quickWaitForElementPresent(By.id("userNavLabel"));
+		driver.click(By.id("userNavLabel"));
+		driver.waitForElementPresent(By.xpath("//a[@title='Logout']"));
+		driver.click(By.xpath("//a[@title='Logout']"));
+		logger.info("Logout");
 	}
 
 	public void logout(){

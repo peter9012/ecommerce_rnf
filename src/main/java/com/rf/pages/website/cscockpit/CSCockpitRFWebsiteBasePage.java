@@ -1126,4 +1126,15 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return dateAfterOneMonth;
 	}
 
+	public int getCountOfOptionsInCatalogFromDropDownInCartTab(){
+		driver.waitForElementPresent(CATALOG_DD);
+		driver.click(CATALOG_DD);
+		int noOfOptions = driver.findElements(CATALOG_DD_OPTION).size();
+		return noOfOptions;
+	}
+
+	public String getSelectProductCatalogValue(){
+		return driver.findElement(CATALOG_DD_OPTION).getText().trim();
+	}
+
 }

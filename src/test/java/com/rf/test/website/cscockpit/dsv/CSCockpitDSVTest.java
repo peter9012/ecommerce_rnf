@@ -76,9 +76,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 
 	private String RFO_DB = null;
 
-	//Verify the Consultant Search
+	//Hybris Project-5493:Verify Consultant Search Criteria
 	@Test
-	public void testVerifyConsultantSearchCriteria() throws InterruptedException{
+	public void testVerifyConsultantSearchCriteria_5493() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
@@ -96,9 +96,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the PC Search
+	//Hybris Project-5494:Verify Preferred Customer Search Criteria
 	@Test
-	public void testVerifyPreferredCustomerSearchCriteria() throws InterruptedException{
+	public void testVerifyPreferredCustomerSearchCriteria_5494() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
@@ -116,9 +116,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the RC Search
+	// Hybris Project-5495:Verify Retail Customer Search Criteria
 	@Test
-	public void testVerifyRetailCustomerSearchCriteria() throws InterruptedException{
+	public void testVerifyRetailCustomerSearchCriteria_5495() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
@@ -136,9 +136,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the add/edit billing for Consultant
+	// Hybris Project-5496:Verify Add and Edit Billing for Consultant
 	@Test
-	public void testVerifyAddAndEditBillingForConsultant() throws InterruptedException{
+	public void testVerifyAddAndEditBillingForConsultant_5496() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -168,9 +168,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the add/edit billing for PC
+	//Hybris Project-5497:Verify Add and Edit Billing for PC
 	@Test
-	public void testVerifyAddAndEditBillingForPC() throws InterruptedException{
+	public void testVerifyAddAndEditBillingForPC_5497() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -200,10 +200,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-	//Verify the add/edit billing for RC
+	// Hybris Project-5498:Verify Add and Edit Billing for RC
 	@Test
-	public void testVerifyAddAndEditBillingForRC() throws InterruptedException{
+	public void testVerifyAddAndEditBillingForRC_5498() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -233,9 +232,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the add/edit shipping for Consultant
+	// Hybris Project-5499:Verify Add and Edit Shipping for Consultant
 	@Test
-	public void testVerifyAddAndEditShippingForConsultant() throws InterruptedException{
+	public void testVerifyAddAndEditShippingForConsultant_5499() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -284,9 +283,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the add/edit shipping for PC
+	//Hybris Project-5500:Verify Add and Edit Shipping for PC
 	@Test
-	public void testVerifyAddAndEditShippingForPC() throws InterruptedException{
+	public void testVerifyAddAndEditShippingForPC_5500() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -335,9 +334,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify the add/edit shipping for RC
+	//Hybris Project-5501:Verify Add and Edit Shipping for RC
 	@Test
-	public void testVerifyAddAndEditShippingForRC() throws InterruptedException{
+	public void testVerifyAddAndEditShippingForRC_5501() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -386,9 +385,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Order Search for Consultant
+	//Hybris Project-5502:Verify Order Search for Consultant
 	@Test
-	public void testOrderSearchForConsultant(){		
+	public void testVerifyOrderSearchForConsultant_5502(){		
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -403,9 +402,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Order Search for PC
+	// Hybris Project-5503:Verify Order Search for PC
 	@Test
-	public void testOrderSearchForPC(){		
+	public void testVerifyOrderSearchForPC_5503(){		
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -420,9 +419,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Order Search for RC
+	//Hybris Project-5504:Verify Order Search for RC
 	@Test
-	public void testOrderSearchForRC(){		
+	public void testVerifyOrderSearchForRC_5504(){		
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -437,9 +436,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Add more products in the autoship
-	@Test
-	public void testAddMoreProductsInTheAutoship(){		
+	//Hybris Project-5505:Verify Update CRP Autoship for Consultant
+	@Test(enabled=false)//WIP
+	public void testVerifyUpdateCRPAutoshipConsultant_5505(){		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);

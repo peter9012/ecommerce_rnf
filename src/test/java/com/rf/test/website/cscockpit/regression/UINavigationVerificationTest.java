@@ -191,7 +191,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1829:To verify that in Order detail page consultant receiving cannot happen for cancelled CRP
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyOrderDetailPageConsultantRecievingCannotHappenForCancelledCRP_1829(){
 		String randomOrderSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -222,7 +222,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1824:To verify that change the Consultant Receiving Commissions  not allowed for Inactive users
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyChangeTheConsultantRecievingCommisionsNotAllowedForInactiveUsers_1824() throws InterruptedException{
 		String randomOrdersCIDNumber = null;
 		String randomOrderSequenceNumber = null;
@@ -409,7 +409,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1823:To Verify that change link not for Consultant Receiving Commissions admin or CS agent
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyChangeLinkNotForConsultantRecievingCommisionAdminOrCSAgent_1823(){
 		String randomOrderSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -459,7 +459,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-1830:To verify that consultant Receiving Commission cannot happen on Cancelled PCperks
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyConsultantRecevingCommissionCannotHappenOnCancelledPCPerks_1830() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -513,7 +513,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1831:To verify that consultant Receiving Commissions cannot happen on cancelled CRP
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyConsultantRecevingCommissionCannotHappenOnCancelledCRP_1831() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;

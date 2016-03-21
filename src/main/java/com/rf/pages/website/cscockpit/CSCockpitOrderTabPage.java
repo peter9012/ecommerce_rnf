@@ -28,6 +28,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String returnQuantityAnotherLoc = "//div[contains(text(),'Product Info')]/ancestor::div[@class='z-listbox-header']/ancestor::div[contains(@class,'csReturnRequestCreateWidget')]/following-sibling::div//td[text()='%s']";
 	private static String rmaNumberOfReturnOrderInReturnRequestSsection  = "//span[contains(text(),'Return Requests')]/following::div[1]//a[contains(text(),'%s')]";
 	private static String ProductCountOnAutoshipTemplateLoc ="//div[contains(@class,'csWidgetListbox')]/div[2]//tbody/tr[%s]/td[6]/div";
+	private static String disableReturnOnlyTaxCheckboxInPopup="//span[text()='Refund']/following::div[@class='z-listbox-body'][1]//tbody[2]/tr[%s]/td[9]//input[@type='checkbox' and @disabled]";
 
 	private static final By SEARCH_BTN_ANOTHER_LOCATOR = By.xpath("//td[text()='SEARCH']"); 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");
@@ -108,6 +109,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By LAST_NAME_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']/ancestor::tr/td[3]//span");
 	private static final By SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']");
 	private static final By CREATE_NEW_ADDRESS_BTN_LOC = By.xpath("//td[text()='Create new address']");
+	private static final By REFUND_TAX_LBL = By.xpath("//span[text()='Refunded Tax']/following::span[1]");
 
 	protected RFWebsiteDriver driver;
 
@@ -701,6 +703,15 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickSelectButtonInChangeConsultantReceivingCommissionsPopUPInOrderTab(){
 		driver.waitForElementPresent(SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
 		driver.click(SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP);
+	}
+
+	public String getRefundTaxFromRefundConfirmationPopUp(){
+		return driver.findElement(REFUND_TAX_LBL).getText();
+	}
+
+	public boolean verifyReturnTaxOnlyCheckboxIsDisabled(String rowNum){
+		driver.waitForElementPresent(By.xpath(String.format(disableReturnOnlyTaxCheckboxInPopup, rowNum)));
+		return driver.isElementPresent(By.xpath(String.format(disableReturnOnlyTaxCheckboxInPopup, rowNum)));
 	}
 
 }

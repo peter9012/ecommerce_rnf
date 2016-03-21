@@ -1,15 +1,20 @@
 package com.rf.pages.website.crm;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
@@ -1074,6 +1079,81 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//a[text()='Save']"));
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
+	}
+
+	public boolean handleAlertPopUpForMyAccountProxy() {
+		try{
+			//Wait 10 seconds till alert is present
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+			String alertMessage = alert.getText();
+			//Accepting alert.
+			alert.accept();
+			logger.info("Accepted the alert successfully.");
+			if(alertMessage.contains("Account is Inactive")){
+				return true;
+			}
+		}catch(Throwable e){
+			System.err.println("Error came while waiting for the alert popup. "+e.getMessage());
+		}
+		return false;
+	}
+
+	public boolean isAutoshipStatusActive() {
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
+		if(checkboxStatus.equalsIgnoreCase("Checked")){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean validateNewUrlWithNewWindow() {
+
+		String parentWindowID=driver.getWindowHandle();
+		clickAccountDetailsButton("My Account");
+		driver.pauseExecutionFor(8000);
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("corprfo")){
+					status=true;
+				}
+
+			}
+		}
+		driver.close();
+		driver.switchTo().window(parentWindowID);
+		return status;
+	}
+
+	public void checkUnKnownAccountChkBox(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
+		if(!driver.isElementPresent(By.xpath("//input[@type='checkbox' and @checked='checked']"))){
+			driver.click(By.xpath("//input[@type='checkbox']"));
+		}
+	}
+
+	public int getCountUnderAccountPoliciesSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return (driver.findElements(By.xpath("//h3[text()='Account Policies']/ancestor::div[3]//tr")).size())-2;
+	}
+
+	public boolean isLabelOfAccountMainMenuOptionsPresent(String accountMainMenuOption, String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::table[@class='list'][1]//th[text()='"+label+"']"));
 	}
 
 }

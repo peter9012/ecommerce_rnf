@@ -53,4 +53,23 @@ public class CSCockpitCartTabPage extends CSCockpitRFWebsiteBasePage{
 		return countOfProduct;
 	}
 
+	public void addProductToCartPageTillRequiredDistinctProducts(String count){
+		while(true){
+			if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
+				logger.info("Required products are there in cart");
+				break;
+			}else{
+				clearCatalogSearchFieldAndClickSearchBtn();
+				String SKUValue=getCustomerSKUValueInCartTab(String.valueOf(getRandomProductWithSKUFromSearchResult()));
+				searchSKUValueInCartTab(SKUValue);
+				clickAddToCartBtnInCartTab();
+				if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
+					break;
+				}else{
+					continue;
+				}
+			}
+		}
+	}
+
 }

@@ -6,21 +6,9 @@
 	</listeners>
 	<test name="CRMRegressionTestSuite.xml">
 		<classes>
-			<class name="com.rf.test.website.crm.smoke.CRMSmokeTest"></class>
-			<class name="com.rf.test.website.crm.miniRegression.CRMMiniRegressionTest"></class>
-			<class name="com.rf.test.website.crm.regression.CRMRegressionTest"> 
-				<methods> 
-					<include name="testAddAccountNoteForPCUser_4480" /> 
-					<include name="testAddAccountNoteForRC_4481" /> 
-					<include name="testAddShippingProfileForConsultant_4491" /> 
-					<include name="testAddShippingProfileForPC_4492" /> 
-					<include name="testAddShippingProfileForRC_4493" /> 
-					<include name="testEditConsultantContactDetails_4504" /> 
-					<include name="testEditPreferredCustomerContactDetails_4508" />
-					<include name="testSearchForAccountByAccountNumber_4526" />
-					<include name="testVerifyDisplayAutoshipDetailsForPC_4536" />
-					<include name="testChangeDefaultConsultantShippingAddress_5007" /> 
-				</methods> 
+			<!-- <class name="com.rf.test.website.crm.smoke.CRMSmokeTest"></class>
+			<class name="com.rf.test.website.crm.miniRegression.CRMMiniRegressionTest"></class> -->
+			<class name="com.rf.test.website.crm.regression.CRMRegressionTest"> 				
 			</class>
 			
 		</classes>

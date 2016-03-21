@@ -2216,7 +2216,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4547:View Preferred Customer Account details
-	@Test(enabled=false)//WIP 
+	@Test
 	public void testViewPreferredCustomerAccountDetails_4547() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPreferredCustomerList =  null;
@@ -2270,7 +2270,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4549:View Retail Customer Account details
-	@Test(enabled=false)//WIP 
+	@Test
 	public void testViewRetailCustomerAccountDetails_4549() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
@@ -2521,6 +2521,158 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 			s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
 		}
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4518:Change Account status for Preferred customer from Active to Inactive
+	@Test(enabled=false)//WIP
+	public void testChangeAccountStatusForPreferredCustomerFromActiveToInactive_4518() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomPCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcUserName = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
+		crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(),"Account status is active");
+		crmAccountDetailsPage.clickAccountDetailsButton("My Account");
+		s_assert.assertTrue(crmAccountDetailsPage.handleAlertPopUpForMyAccountProxy(),"account is active and proxy of my account is allowed");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Autoships");
+		s_assert.assertFalse(crmAccountDetailsPage.isAutoshipStatusActive(),"Autoship Status is active");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4519:Change Account status for Preferred customer from Inactive to Active
+	@Test(enabled=false)//WIP
+	public void testChangeAccountStatusForPreferredCustomerFromInactiveToActive_4519() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomPCUserList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String pcUserName = null;
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+		logger.info("The username is "+pcUserName); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
+		crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(),"Account status is active");
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Changed my mind");
+		crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(),"Account status is active");
+		System.out.println("before validate new url method");
+		s_assert.assertTrue(crmAccountDetailsPage.validateNewUrlWithNewWindow(),"new window is not opened for account proxy");
+		System.out.println("after validate old url method");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Autoships");
+		s_assert.assertTrue(crmAccountDetailsPage.isAutoshipStatusActive(),"Autoship Status is not active");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4482:Add the Account Notes for unknown
+	@Test(enabled=false)//WIP
+	public void testAddAccountNoteForUnknown_4482() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		String orderNote="This is automation note"+randomNum;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
+
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//check Unknown Account CB
+		crmAccountDetailsPage.checkUnKnownAccountChkBox();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Activity Section is not present on Account Details page");
+		//verify channel dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");
+		//Verify reason dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Consultants"),"Reason dropdown Consultants option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("CRP"),"Reason dropdown CRP option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PCs"),"Reason dropdown PCs option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Order"),"Reason dropdown Order option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
+		//s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Sales Support RF Connection Transfer"),"Reason dropdown Sales Support RF option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
+		//verify details dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isDetailsDropdownOnAccountDetailPagePresent(),"Detail dropdown is not present on Account Details page");
+		//verify note section
+		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
+		//add note and click save.
+		crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectReasonDropdown("Consultants");
+		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
+		crmAccountDetailsPage.enterNote(orderNote);
+		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
+		//Verify channel account and reason dropdown are disabled.
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPageIsEnabled(),"Account dropdown is not disable on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPageIsEnabled(),"Channel dropdown is not disable on Account Details page");
+		s_assert.assertFalse(crmAccountDetailsPage.isDetailDropdownOnAccountDetailPageIsEnabled(),"Detail dropdown is not disable on Account Details page");
+		//verify the note in account activity section present
+		s_assert.assertTrue(crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage().contains(orderNote),"Note text from UI is "+crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage()+" While expected text is "+orderNote);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4494:View the Account Policies for Consultant
+	@Test(enabled=false)//WIP
+	public void testViewAccountPoliciesForConsultant_4494() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		String orderNote="This is automation note"+randomNum;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The username is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
+
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		int accountPoliciesHyperLinkCount=crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Policies");
+		//Navigate to Account Policies
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Policies");
+		int accountPoliciesTabCount=crmAccountDetailsPage.getCountUnderAccountPoliciesSection();
+		//verify the counts are same for Account Policies Hyper link and  Account Policies Tab
+		s_assert.assertTrue(accountPoliciesHyperLinkCount==accountPoliciesTabCount,"Counts are different for Act Policies HyperLink and Act Policies Tab");
+		//verify the fields/labels in Account Policy Section
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Date Released"),"'Date Released' label is not present under Account Policy Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Date Accepted"),"'Date Accepted' label is not present under Account Policy Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Policy Link"),"'Policy Link' label is not present under Account Policy Section");
 		s_assert.assertAll();
 	}
 

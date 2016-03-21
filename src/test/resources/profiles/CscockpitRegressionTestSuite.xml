@@ -6,16 +6,20 @@
 	</listeners>
 	<test name="CscockpitRegressionTestSuite.xml">
 		<classes>
-		    <class name="com.rf.test.website.cscockpit.regression.OrdersVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.regression.AddEditBillingVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.regression.AddEditShippingVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.CheckoutVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.CreditCardVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.CRPAutoshipVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.CustomerVerificationTest"></class>
+		    <class name="com.rf.test.website.cscockpit.regression.OrdersVerificationTest"></class>
+		    <class name="com.rf.test.website.cscockpit.regression.PermissionsVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.regression.PulseVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.ReturnVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.SearchVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.SecurityVerificationTest"></class>
-			<class name="com.rf.test.website.cscockpit.regression.PulseVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.regression.TaxVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.regression.UINavigationVerificationTest"></class>
 		</classes>		
 	</test>
 </suite>

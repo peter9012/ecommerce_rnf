@@ -46,12 +46,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private CSCockpitAutoshipCartTabPage cscockpitAutoshipCartTabPage;
 	private CSCockpitAutoshipTemplateUpdateTabPage cscockpitAutoshipTemplateUpdateTabPage;
-	private StoreFrontHomePage storeFrontHomePage; 
-	private StoreFrontConsultantPage storeFrontConsultantPage;
-	private StoreFrontOrdersPage storeFrontOrdersPage;
-	private StoreFrontPCUserPage storeFrontPCUserPage;
-	private StoreFrontRCUserPage storeFrontRCUserPage;	
-	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
+	
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -64,12 +59,6 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
 		cscockpitAutoshipCartTabPage= new CSCockpitAutoshipCartTabPage(driver);
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
-		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
-		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
 		cscockpitAutoshipTemplateUpdateTabPage = new CSCockpitAutoshipTemplateUpdateTabPage(driver);
 	}
@@ -79,7 +68,6 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	//Hybris Project-5493:Verify Consultant Search Criteria
 	@Test
 	public void testVerifyConsultantSearchCriteria_5493() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
 		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -461,8 +449,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
 		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
 		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();		
 		s_assert.assertAll();
 	}
+	
+	
 }

@@ -109,6 +109,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By USE_ENTERED_ADDRESS_BUTTON = By.xpath("//td[contains(text(),'Use Entered Address')]");
 	private static final By TOTAL_NUMBER_OF_PAGE = By.xpath("//button[@class='z-paging-next']/preceding::span[@class='z-paging-text'][1]");
 	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
+	private static final By PRODUCT_COUNT_ON_CART = By.xpath("//div[@class='csToolbarLeftButtons']//td[contains(@class,'csMasterContentCell')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -1135,6 +1136,25 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 
 	public String getSelectProductCatalogValue(){
 		return driver.findElement(CATALOG_DD_OPTION).getText().trim();
+	}
+
+	public void addProductToCartPageTillRequiredDistinctProducts(String count){
+		while(true){
+			if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
+				logger.info("Required products are there in cart");
+				break;
+			}else{
+				clearCatalogSearchFieldAndClickSearchBtn();
+				String SKUValue=getCustomerSKUValueInCartTab(String.valueOf(getRandomProductWithSKUFromSearchResult()));
+				searchSKUValueInCartTab(SKUValue);
+				clickAddToCartBtnInCartTab();
+				if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
+					break;
+				}else{
+					continue;
+				}
+			}
+		}
 	}
 
 }

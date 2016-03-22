@@ -5,7 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 
 /**
@@ -87,6 +91,17 @@ public class CommonUtils {
 			r += (char)(Math.random() * 26 + 97);
 		}
 		return r;
+	}
+
+	public static String getCurrentDate(String dayFormat, TimeZone timeZone) {
+		Date date = new Date();
+		/* Specifying the format */
+		DateFormat requiredFormat = new SimpleDateFormat(dayFormat);
+		/* Setting the Timezone */
+		requiredFormat.setTimeZone(timeZone);
+		/* Picking the day value in the required Format */
+		String strCurrentDay = requiredFormat.format(date).toUpperCase();
+		return strCurrentDay;
 	}
 
 }

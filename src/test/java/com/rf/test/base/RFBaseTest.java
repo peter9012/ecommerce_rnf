@@ -18,6 +18,10 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import atu.testng.reports.listeners.ATUReportsListener;
+import atu.testng.reports.listeners.ConfigurationListener;
+import atu.testng.reports.listeners.MethodListener;
+
 import com.rf.core.utils.ExcelReader;
 import com.rf.core.utils.PropertyFile;
 import com.rf.core.utils.SoftAssert;
@@ -28,7 +32,7 @@ import com.rf.core.website.constants.TestConstants;
  *         likeMobile, Desktop etc
  */
 
-@Listeners({ com.rf.core.listeners.TestListner.class })
+@Listeners({ com.rf.core.listeners.TestListner.class,ATUReportsListener.class,ConfigurationListener.class,MethodListener.class })
 public class RFBaseTest{
 	public static WebDriver driver;
 	// Added for local testing and will be removed later
@@ -48,6 +52,8 @@ public class RFBaseTest{
 	@Parameters({"envproperties"})
 	public void beforeSuite(@Optional String envproperties) {
 		System.out.println("Started execution with " + " " + envproperties);
+		System.setProperty("atu.reporter.config", "atu.properties");
+		String pathOfAtuReports = System.getProperty("user.dir")+"\\ATU Reports";
 		logger.debug("Started execution with " + " " + envproperties);
 		if (!StringUtils.isEmpty(envproperties)) {
 			propertyFile.loadProps(envproperties);
@@ -75,6 +81,10 @@ public class RFBaseTest{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
+		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");
+		
 	}
 
 	@AfterSuite(alwaysRun=true)

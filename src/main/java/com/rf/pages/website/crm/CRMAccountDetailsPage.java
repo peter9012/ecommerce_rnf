@@ -3,6 +3,7 @@ package com.rf.pages.website.crm;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1071,15 +1072,18 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
 	}
 
-	public void clickSaveButtonToChangeAccountStatus(){
-		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
-		driver.click(By.xpath("//a[text()='Save']"));
-		driver.waitForCRMLoadingImageToDisappear();
-		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
-	}
+	 public String clickSaveButtonToChangeAccountStatus(){
+		  TimeZone timeZone = TimeZone.getTimeZone("US/Pacific");//"US/Pacific"
+		  driver.switchTo().defaultContent();
+		  driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		  driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		  driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
+		  driver.click(By.xpath("//a[text()='Save']"));
+		  driver.waitForCRMLoadingImageToDisappear();
+		  driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
+		  String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
+		  return strCurrentDay;
+		 }
 
 	public boolean handleAlertPopUpForMyAccountProxy() {
 		try{
@@ -1111,7 +1115,6 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	}
 
 	public boolean validateNewUrlWithNewWindow() {
-
 		String parentWindowID=driver.getWindowHandle();
 		clickAccountDetailsButton("My Account");
 		driver.pauseExecutionFor(8000);
@@ -1156,5 +1159,34 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::table[@class='list'][1]//th[text()='"+label+"']"));
 	}
 
-}
+	public boolean isMessageOfAccountStatusChangedPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
+	}
 
+	public String getValuesOfLabelInAccountStatusesHistory(int columnNumber){
+		String value = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		String reasonFistTime = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[2]/td[2]")).getText();
+		if(reasonFistTime.contains("Fist Time activation")){
+			if(columnNumber==0){
+				value = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[3]/th")).getText().trim();
+			}else{
+				value = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[3]/td["+columnNumber+"]")).getText().trim();
+			}
+		}else{
+			if(columnNumber==0){
+				value = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[2]/th")).getText().trim();
+			}else{
+				value = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[2]/td["+columnNumber+"]")).getText().trim();
+			}
+		}
+
+		return value;
+	}
+
+}

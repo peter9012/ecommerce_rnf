@@ -13,9 +13,8 @@ public class CSCockpitCartTabPage extends CSCockpitRFWebsiteBasePage{
 	protected RFWebsiteDriver driver;
 	public static String individualProductCountOnCart = "//div[text()='Product']/ancestor::div[@class='z-listbox-header']/following::div[1]//tbody[2]/tr[%s]/td[6]//input";
 
-	private static final By PRODUCT_COUNT_ON_CART = By.xpath("//td[text()='Update Cart']");
+	private static final By PRODUCT_COUNT_ON_CART =By.xpath("//div[@class='csToolbarLeftButtons']//td[contains(@class,'csMasterContentCell')]");
 	private static final By PRODUCT_NOT_AVAILABLE_FOR_CRP_AUTOSHIP = By.xpath("//td[@class='z-button-cm'][text()='OK']");
-
 
 	public CSCockpitCartTabPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -51,25 +50,6 @@ public class CSCockpitCartTabPage extends CSCockpitRFWebsiteBasePage{
 		String countOfProduct=driver.findElement(By.xpath(String.format(individualProductCountOnCart, row))).getAttribute("value");
 		logger.info("product count for row"+row+" is"+countOfProduct);
 		return countOfProduct;
-	}
-
-	public void addProductToCartPageTillRequiredDistinctProducts(String count){
-		while(true){
-			if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
-				logger.info("Required products are there in cart");
-				break;
-			}else{
-				clearCatalogSearchFieldAndClickSearchBtn();
-				String SKUValue=getCustomerSKUValueInCartTab(String.valueOf(getRandomProductWithSKUFromSearchResult()));
-				searchSKUValueInCartTab(SKUValue);
-				clickAddToCartBtnInCartTab();
-				if(driver.findElements(PRODUCT_COUNT_ON_CART).size()>=Integer.parseInt(count)){
-					break;
-				}else{
-					continue;
-				}
-			}
-		}
 	}
 
 }

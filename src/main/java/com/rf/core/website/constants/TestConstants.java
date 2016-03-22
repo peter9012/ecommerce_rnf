@@ -429,6 +429,11 @@ public class TestConstants {
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
 	public static final String PC_FIRST_NAME = "PC";
 	public static final String RC_FIRST_NAME = "RCUser";
+	public static final String DEACTIVATED_BY_MISTAKE_USER_ERROR ="Deactivated by mistake (user error)";
+	public static final String DEACTIVATED_IN_ERROR_INTERNAL_ERROR ="Deactivated in error (internal error)";
+	public static final String CHANGED_MY_MIND ="Changed my mind";
+	public static final String FIRST_TIME_ACTIVATION ="First Time activation";
+	public static final String COMPLIANCE_RE_ACTIVATION ="Compliance re-activation";
 
 	//DSV CSCOCKPIT
 	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";

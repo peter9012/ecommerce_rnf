@@ -24,7 +24,6 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 	private CRMHomePage crmHomePage;
 	private CRMAccountDetailsPage crmAccountDetailsPage; 
 
-
 	private String RFO_DB = null;
 
 	//Hybris Project-4527:Search for account by email address
@@ -132,7 +131,6 @@ public class CRMSmokeTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in main address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"),"Locale label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"),"Sub Region label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"),"Region label is not present in main address section");

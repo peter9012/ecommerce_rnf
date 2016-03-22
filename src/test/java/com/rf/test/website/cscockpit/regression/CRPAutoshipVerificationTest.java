@@ -3151,7 +3151,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1746:To verify Add New Ahipping address functionality on PCPerk Autoship template Page
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyAddNewShippingAddressFunctionalityOnPCPerks_1746(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -3241,7 +3241,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isQASpopupPresent(), "QAS popup is not present while creating  new shipping address");
 		cscockpitAutoshipTemplateTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
-		String getShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab();
+		String getShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingAddressLine1UnderShippingAddress();
 		s_assert.assertTrue(getShippingAddressLineFromUI.equalsIgnoreCase(addressLine),"Newly created shipping address is not selected from dropdown");
 		cscockpitAutoshipTemplateTabPage.clickAddNewAddressButtonUnderShippingAddress();
 		cscockpitAutoshipTemplateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentNewFirstName, attendeeLastName, addressLine2, city, postal, country, province, phoneNumber);
@@ -3249,7 +3249,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isQASpopupPresent(), "QAS popup is not present while creating  new shipping address");
 		cscockpitAutoshipTemplateTabPage.selectAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(addresstoPass);;
 		cscockpitAutoshipTemplateTabPage.clickButtonsInDeliveryAndShippingAddressPopup("Use this address");
-		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab();
+		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingAddressLine1UnderShippingAddress();
 		s_assert.assertTrue(getNewShippingAddressLineFromUI.equalsIgnoreCase(addressLine2),"Newly created shipping address is not selected from dropdown");
 		s_assert.assertAll();
 	}
@@ -3635,6 +3635,43 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(), "Refund Order button is not present for shipped order");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2678:CSCockpit _Edit PC perks autoship template
+	@Test(enabled=false)//WIP
+	public void testVerifyEditPCPerksAutoshipTemplate_2678(){
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//Verify Autoship template Section on Customer tab page.
+		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
+		String quantityOfProduct = cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1");
+		int updateQuantity = Integer.parseInt(quantityOfProduct)+1;
+		String updatedQuantity = ""+updateQuantity;
+		cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct(updatedQuantity);
+		cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1").contains(updatedQuantity), "Expected quantity of product after updation "+updatedQuantity+"Actual On UI "+cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1"));
+		//decrease the qty
+		cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct(quantityOfProduct);
+		cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1").contains(quantityOfProduct), "Expected quantity of product after updation "+quantityOfProduct+"Actual On UI "+cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1"));
+		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
+		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
+		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
+		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
+		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
+		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
+		String noOfProductTobeAdded = "2";
+		cscockpitAutoshipCartTabPage.addProductToCartPageTillRequiredDistinctProducts(noOfProductTobeAdded);
+		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
+		String totalNoOfProductInCart = ""+cscockpitAutoshipTemplateUpdateTabPage.getCountOfProduct();
+		s_assert.assertTrue(totalNoOfProductInCart.contains(noOfProductTobeAdded), "Expected count of product is "+noOfProductTobeAdded+" Actual on UI is "+totalNoOfProductInCart);
 		s_assert.assertAll();
 	}
 

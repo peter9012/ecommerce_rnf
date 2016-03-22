@@ -30,6 +30,9 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import atu.testng.reports.ATUReports;
+
 import com.rf.core.driver.RFDriver;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.utils.PropertyFile;
@@ -77,6 +80,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		// for clearing cookies
 		driver.manage().deleteAllCookies();
 		logger.info("All cookies deleted");
+		ATUReports.setWebDriver(driver);
 		//	driver.get(propertyFile.getProperty("baseUrl"));
 	}
 

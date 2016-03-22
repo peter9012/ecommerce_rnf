@@ -104,7 +104,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By FIRST_CREDIT_CARD_PAYMENT_INFO = By.xpath("//body/div[3]//tbody//tr[2]/td[2]");
 	private static final By AUTOSHIP_TEMPLATE_TYPE = By.xpath("//span[text()='Template Type:']/following-sibling::span");
 	private static final By ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS = By.xpath("//td[text()='Add New Address']");
-	private static final By SHIPPING_METHOD_NAME_FROM_UI = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following-sibling::div[2]/span");
+	private static final By SHIPPING_ADDRESS_LINE1 = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following-sibling::div[2]/span");
 	private static final By SELECT_VALID_FUTURE_DATE_POPUP = By.xpath("//span[contains(text(),'Please select a valid future date before 18th of month')]");
 
 	protected RFWebsiteDriver driver;
@@ -1124,10 +1124,10 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	public String getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab(){
-		driver.waitForElementPresent(SHIPPING_METHOD_NAME_FROM_UI);
-		return driver.findElement(SHIPPING_METHOD_NAME_FROM_UI).getText().trim();
-	}
+	public String getShippingAddressLine1UnderShippingAddress(){
+		  driver.waitForElementPresent(SHIPPING_ADDRESS_LINE1);
+		  return driver.findElement(SHIPPING_ADDRESS_LINE1).getText().trim();
+		 }
 
 	public boolean isSelectValidFutureDatePopupPresent(){
 		driver.waitForElementPresent(SELECT_VALID_FUTURE_DATE_POPUP);

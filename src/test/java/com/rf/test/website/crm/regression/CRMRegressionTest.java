@@ -135,7 +135,6 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in main address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"),"Locale label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"),"Sub Region label is not present in main address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"),"Region label is not present in main address section");
@@ -2362,7 +2361,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4476:Clear and Add new Account Notes for PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testClearAndAddNewAccountNotesForPC_4476() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCList =  null;
@@ -2400,7 +2399,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4475:Clear and Add new Account Notes for Consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testClearAndAddNewAccountNotesForConsultant_4475() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2673,6 +2672,187 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Date Released"),"'Date Released' label is not present under Account Policy Section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Date Accepted"),"'Date Accepted' label is not present under Account Policy Section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Policies","Policy Link"),"'Policy Link' label is not present under Account Policy Section");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4495:View Account Status History for Consultant
+	@Test(enabled=false)//WIP 
+	public void testViewAccountStatusHistoryForConsultant_4495() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		String otherReason = TestConstants.OTHER_REASON;
+		String changedMyMind = TestConstants.CHANGED_MY_MIND;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		int accountStatusesHistoryCount = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		if(accountStatusesHistoryCount>0){
+			crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label 1 is not Present");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label 1 is not Present");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By 1 Label is not Present");
+		}
+		/////////////////////////////Change Customer's Status from Active to InActive//////////////////////////
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown(otherReason);
+		String dateOfAccountStatusChangedFromActiveToInactive = crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		crmAccountDetailsPage.closeTabViaNumberWise(2);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		int accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive == accountStatusesHistoryCount+1, "Account Statues History Actual is "+accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive + " & Account Statues History after changing statues Expected is "+ accountStatusesHistoryCount+1);
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label 2 is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label 2 is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By 2 Label is not Present");
+		String accountStatusChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(0); // 0 : For Account Status
+		String reasonChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(2);   // 2 : For Reason
+		String lastModifiedChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(3);  // 3 : For Last Modified Value
+		s_assert.assertTrue(accountStatusChangedFromActiveToInactive.equalsIgnoreCase("Soft Terminated Voluntary"), "Account Status 1 Not Matched Actual is "+accountStatusChangedFromActiveToInactive+" & Expected is Soft Terminated Voluntary");
+		s_assert.assertTrue(reasonChangedFromActiveToInactive.equalsIgnoreCase(otherReason), "Reason Not 1 Matched Actual is "+reasonChangedFromActiveToInactive +" & Expected is "+otherReason);
+		s_assert.assertTrue(lastModifiedChangedFromActiveToInactive.contains(dateOfAccountStatusChangedFromActiveToInactive), "Last Modified By 1 Date Not Matched Actual is "+lastModifiedChangedFromActiveToInactive+" & Expected is "+dateOfAccountStatusChangedFromActiveToInactive);
+		/////////////////////////////Change Customer's Status from InActive to Active//////////////////////////
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown(changedMyMind);
+		String dateOfAccountStatusChangedChangedFromInactiveToActive = crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		crmAccountDetailsPage.closeTabViaNumberWise(2);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		int accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive == accountStatusesHistoryCount+2, "Account Statues History Actual is "+ accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive + " & Account Statues History after changing statuses Expected is "+ accountStatusesHistoryCount+2);
+
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By Label is not Present");
+		String account_StatusChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(0); // 0 : For Account Status
+		String reasonChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(2);   // 2 : For Reason
+		String last_ModifiedChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(3); // 3 : For Last Modified Value
+		s_assert.assertTrue(account_StatusChangedFromInactiveToActive.equalsIgnoreCase("Active"), "Account Status 2 Not Matched Actual is "+account_StatusChangedFromInactiveToActive +" & Expected is Active");
+		s_assert.assertTrue(reasonChangedFromInactiveToActive.equalsIgnoreCase(changedMyMind), "Reason Not 2 Matched Actual is "+reasonChangedFromInactiveToActive +"<<=& Expected is "+changedMyMind);
+		s_assert.assertTrue(last_ModifiedChangedFromInactiveToActive.contains(dateOfAccountStatusChangedChangedFromInactiveToActive), "Last Modified By 2 Date Not Matched Actual is "+last_ModifiedChangedFromInactiveToActive + " & Expected is "+dateOfAccountStatusChangedChangedFromInactiveToActive);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4522:View Account Status History for RC
+	@Test(enabled=false)//WIP
+	public void testViewAccountStatusHistoryForRC_4522() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomRCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String rcEmailID = null;
+		String otherReason = TestConstants.OTHER_REASON;
+		String changedMyMind = TestConstants.CHANGED_MY_MIND;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+		logger.info("The email address is "+rcEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		int accountStatusesHistoryCount = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		if(accountStatusesHistoryCount>0){
+			crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label 1 is not Present");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label 1 is not Present");
+			s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By 1 Label is not Present");
+		}
+		/////////////////////////////Change Customer's Status from Active to InActive//////////////////////////
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown(otherReason);
+		String dateOfAccountStatusChangedFromActiveToInactive = crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		crmAccountDetailsPage.closeTabViaNumberWise(2);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		int accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive == accountStatusesHistoryCount+1, "Account Statues History Actual is "+accountStatusesHistoryCountAfterAccountStatusChangedFromActiveToInactive + " & Account Statues History after changing statues Expected is "+ accountStatusesHistoryCount+1);
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label 2 is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label 2 is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By 2 Label is not Present");
+		String accountStatusChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(0); // 0 : For Account Status
+		String reasonChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(2);   // 2 : For Reason
+		String lastModifiedChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(3);  // 3 : For Last Modified Value
+		s_assert.assertTrue(accountStatusChangedFromActiveToInactive.equalsIgnoreCase("Soft Terminated Voluntary"), "Account Status 1 Not Matched Actual is "+accountStatusChangedFromActiveToInactive+" & Expected is Soft Terminated Voluntary");
+		s_assert.assertTrue(reasonChangedFromActiveToInactive.equalsIgnoreCase(otherReason), "Reason Not 1 Matched Actual is "+reasonChangedFromActiveToInactive +" & Expected is "+otherReason);
+		s_assert.assertTrue(lastModifiedChangedFromActiveToInactive.contains(dateOfAccountStatusChangedFromActiveToInactive), "Last Modified By 1 Date Not Matched Actual is "+lastModifiedChangedFromActiveToInactive+" & Expected is "+dateOfAccountStatusChangedFromActiveToInactive);
+		/////////////////////////////Change Customer's Status from InActive to Active//////////////////////////
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown(changedMyMind);
+		String dateOfAccountStatusChangedChangedFromInactiveToActive = crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		crmAccountDetailsPage.closeTabViaNumberWise(2);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+		int accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive = crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive == accountStatusesHistoryCount+2, "Account Statues History Actual is "+ accountStatusesHistoryCountAfterAccountStatusChangedFromInactiveToActive + " & Account Statues History after changing statuses Expected is "+ accountStatusesHistoryCount+2);
+
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Account Status"), "Account Status Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Reason"), "Reason Label is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOfAccountMainMenuOptionsPresent("Account Statuses History", "Last Modified By"), "Last Modified By Label is not Present");
+		String account_StatusChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(0); // 0 : For Account Status
+		String reasonChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(2);   // 2 : For Reason
+		String last_ModifiedChangedFromInactiveToActive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(3); // 3 : For Last Modified Value
+		s_assert.assertTrue(account_StatusChangedFromInactiveToActive.equalsIgnoreCase("Active"), "Account Status 2 Not Matched Actual is "+account_StatusChangedFromInactiveToActive +" & Expected is Active");
+		s_assert.assertTrue(reasonChangedFromInactiveToActive.equalsIgnoreCase(changedMyMind), "Reason Not 2 Matched Actual is "+reasonChangedFromInactiveToActive +"<<=& Expected is "+changedMyMind);
+		s_assert.assertTrue(last_ModifiedChangedFromInactiveToActive.contains(dateOfAccountStatusChangedChangedFromInactiveToActive), "Last Modified By 2 Date Not Matched Actual is "+last_ModifiedChangedFromInactiveToActive + " & Expected is "+dateOfAccountStatusChangedChangedFromInactiveToActive);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4523:Change Account status for Retail customer from Active to Inactive
+	@Test(enabled=false)//WIP 
+	public void testChangeAccountStatusForRetailCustomerFromActiveToInactive_4523() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomRCList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String rcEmailID = null;
+		String otherReason = TestConstants.OTHER_REASON;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+		logger.info("The email address is "+rcEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is not Active");
+
+		/////////////////////////////Change Customer's Status from Active to InActive//////////////////////////
+
+		crmAccountDetailsPage.clickAccountDetailsButton("Change Account Status");
+		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown(otherReason);
+		crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
+		crmAccountDetailsPage.closeTabViaNumberWise(2);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+
+		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(), "Account Status is Active");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Statuses History");
+
+		String reasonChangedFromActiveToInactive = crmAccountDetailsPage.getValuesOfLabelInAccountStatusesHistory(2);   // 2 : For Reason
+		s_assert.assertTrue(reasonChangedFromActiveToInactive.equalsIgnoreCase(otherReason), "Reason Not 1 Matched Actual is "+reasonChangedFromActiveToInactive +" & Expected is "+otherReason);
 		s_assert.assertAll();
 	}
 

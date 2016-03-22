@@ -85,7 +85,7 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 	private String RFO_DB = null;
 
 	//Hybris Project-1754:To verify Edit address functionality in the Customer detail Page for consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditAddressFunctionalityInCustomerDetailPageForConsultant_1754() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -227,7 +227,7 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-1753:To verify Edit address functionality in the Customer detail Page for PC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditAddressFunctionalityInCustomerDetailPageForPC_1753() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -324,7 +324,7 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1752:To verify Edit address functionality in the Customer detail Page for RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyEditAddressFunctionalityInCustomerDetailPageForRC_1752() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;

@@ -250,7 +250,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
-		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Email Address')]/following::tr[1]/td[9]/a")).getText();		
+		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Email Address')]/following::tr[1]/td[10]/a")).getText();		
 		return emailOnfirstRow;
 	}
 

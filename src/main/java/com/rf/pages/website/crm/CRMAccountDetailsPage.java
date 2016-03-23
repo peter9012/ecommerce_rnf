@@ -1072,18 +1072,18 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
 	}
 
-	 public String clickSaveButtonToChangeAccountStatus(){
-		  TimeZone timeZone = TimeZone.getTimeZone("US/Pacific");//"US/Pacific"
-		  driver.switchTo().defaultContent();
-		  driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		  driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		  driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
-		  driver.click(By.xpath("//a[text()='Save']"));
-		  driver.waitForCRMLoadingImageToDisappear();
-		  driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
-		  String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
-		  return strCurrentDay;
-		 }
+	public String clickSaveButtonToChangeAccountStatus(){
+		TimeZone timeZone = TimeZone.getTimeZone("US/Pacific");//"US/Pacific"
+		driver.switchTo().defaultContent();
+		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
+		driver.click(By.xpath("//a[text()='Save']"));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
+		String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
+		return strCurrentDay;
+	}
 
 	public boolean handleAlertPopUpForMyAccountProxy() {
 		try{
@@ -1185,8 +1185,39 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 				value = driver.findElement(By.xpath("//h3[contains(text(),'Account Statuses History')]/following::tr[2]/td["+columnNumber+"]")).getText().trim();
 			}
 		}
-
 		return value;
+	}
+
+	public boolean verifyWelcomeDropdownToCheckUserRegistered(){  
+		driver.waitForElementPresent(By.id("account-info-button"));
+		return driver.isElementPresent(By.id("account-info-button"));
+	}
+
+	public String verifyWelcomeDropDownPresent() {
+		String parentWindowID=driver.getWindowHandle();
+		clickAccountDetailsButton("My Account");
+		driver.pauseExecutionFor(8000);
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID = it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("corprfo") && verifyWelcomeDropdownToCheckUserRegistered()){
+					String username  = getUserNameFromStoreFrontAccountDetails();
+					return username;
+				}
+
+			}
+		}
+		driver.close();
+		driver.switchTo().window(parentWindowID);
+		return null;
+	}
+
+	public String getUserNameFromStoreFrontAccountDetails(){
+		String username = driver.findElement(By.id("email-account")).getAttribute("value");
+		return username;
 	}
 
 }

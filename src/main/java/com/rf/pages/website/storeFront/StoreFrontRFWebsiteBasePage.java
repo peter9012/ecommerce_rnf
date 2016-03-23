@@ -993,6 +993,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void switchToChildWindow(){
+		driver.pauseExecutionFor(2000);
 		driver.switchToSecondWindow();
 		driver.waitForPageLoad();
 	}

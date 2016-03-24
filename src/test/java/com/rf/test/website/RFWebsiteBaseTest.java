@@ -109,6 +109,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.waitForElementPresent(By.id("app_logout"));
 		driver.click(By.id("app_logout"));
 		logger.info("Logout");
+		driver.pauseExecutionFor(3000);
 	}
 	
 	public void crmLogoutFromHome(){

@@ -2466,7 +2466,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4474:Verify Status changes of Soft terminated RC
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyStatusChangesOfSoftTerminatedRC_4474() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2495,7 +2495,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4473:Verify Status changes of Soft terminated PC
-	@Test(enabled=false)//WIP 
+	@Test 
 	public void testVerifyStatusChangesOfSoftTerminatedPC_4473() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;

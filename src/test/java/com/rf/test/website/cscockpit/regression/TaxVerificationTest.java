@@ -582,7 +582,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1540:To verify the Canada tax for Nova Scotia for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNovaScotiaForPCOrder_1540(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -648,7 +648,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1541:To verify the Canada tax for New Brunswick for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNewBrunswickForPCOrder_1541(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -713,7 +713,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1542:To verify the Canada tax for Prince Edward Island for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForPrinceEdwardIslandForPCOrder_1542(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -778,7 +778,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1543:To verify the Canada tax for New foundland for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNewFoundlandForPCOrder_1543(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -843,7 +843,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1544:To verify the Canada tax for Yukon for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForYukonForPCOrder_1544(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -908,7 +908,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1545:To verify the Canada tax for Northwest Territories for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNorthwestTerritoriesForPCOrder_1545(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;

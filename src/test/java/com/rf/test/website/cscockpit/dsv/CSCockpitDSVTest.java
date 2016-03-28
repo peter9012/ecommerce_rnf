@@ -1,17 +1,11 @@
 package com.rf.test.website.cscockpit.dsv;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
-import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateUpdateTabPage;
@@ -22,16 +16,10 @@ import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
-import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
-import com.rf.pages.website.storeFront.StoreFrontHomePage;
-import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
-import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
-import com.rf.test.website.RFWebsiteBaseTest;
+import com.rf.test.website.RFDSVWebsiteBaseTest;
 
 
-public class CSCockpitDSVTest extends RFWebsiteBaseTest{
+public class CSCockpitDSVTest extends RFDSVWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitDSVTest.class.getName());
 
@@ -46,7 +34,6 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private CSCockpitAutoshipCartTabPage cscockpitAutoshipCartTabPage;
 	private CSCockpitAutoshipTemplateUpdateTabPage cscockpitAutoshipTemplateUpdateTabPage;
-	
 
 	//-----------------------------------------------------------------------------------------------------------------
 
@@ -63,15 +50,11 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage = new CSCockpitAutoshipTemplateUpdateTabPage(driver);
 	}
 
-	private String RFO_DB = null;
 
 	//Hybris Project-5493:Verify Consultant Search Criteria
-	@Test
+	@Test(priority=1)
 	public void testVerifyConsultantSearchCriteria_5493() throws InterruptedException{
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
@@ -85,13 +68,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5494:Verify Preferred Customer Search Criteria
-	@Test
+	@Test(priority=2)
 	public void testVerifyPreferredCustomerSearchCriteria_5494() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_PC_EMAILID);
@@ -105,13 +84,9 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5495:Verify Retail Customer Search Criteria
-	@Test
+	@Test(priority=3)
 	public void testVerifyRetailCustomerSearchCriteria_5495() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_RC_EMAILID);
@@ -125,17 +100,13 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5496:Verify Add and Edit Billing for Consultant
-	@Test
+	@Test(priority=4)
 	public void testVerifyAddAndEditBillingForConsultant_5496() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
@@ -157,17 +128,13 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5497:Verify Add and Edit Billing for PC
-	@Test
+	@Test(priority=5)
 	public void testVerifyAddAndEditBillingForPC_5497() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_PC_EMAILID);
@@ -189,17 +156,13 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5498:Verify Add and Edit Billing for RC
-	@Test
+	@Test(priority=6)
 	public void testVerifyAddAndEditBillingForRC_5498() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_RC_EMAILID);
@@ -221,9 +184,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5499:Verify Add and Edit Shipping for Consultant
-	@Test
+	@Test(priority=7)
 	public void testVerifyAddAndEditShippingForConsultant_5499() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String addressLine = null;
@@ -240,10 +202,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
@@ -272,9 +231,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5500:Verify Add and Edit Shipping for PC
-	@Test
+	@Test(priority=8)
 	public void testVerifyAddAndEditShippingForPC_5500() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String addressLine = null;
@@ -291,10 +249,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_PC_EMAILID);
@@ -323,9 +278,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5501:Verify Add and Edit Shipping for RC
-	@Test
+	@Test(priority=9)
 	public void testVerifyAddAndEditShippingForRC_5501() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String addressLine = null;
@@ -342,10 +296,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_RC_EMAILID);
@@ -374,11 +325,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5502:Verify Order Search for Consultant
-	@Test
+	@Test(priority=10)
 	public void testVerifyOrderSearchForConsultant_5502(){		
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_CONSULTANT_ORDER_STATUS);
 		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_CONSULTANT_CID);
@@ -391,11 +339,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-5503:Verify Order Search for PC
-	@Test
+	@Test(priority=11)
 	public void testVerifyOrderSearchForPC_5503(){		
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_PC_ORDER_STATUS);
 		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_PC_CID);
@@ -408,11 +353,8 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5504:Verify Order Search for RC
-	@Test
+	@Test(priority=12)
 	public void testVerifyOrderSearchForRC_5504(){		
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		//cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_RC_ORDER_STATUS);
 		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_RC_CID);
@@ -429,10 +371,7 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 	public void testVerifyUpdateCRPAutoshipConsultant_5505(){		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		cscockpitLoginPage.enterUsername(TestConstants.DSV_CSCOCKPIT_USERNAME);
-		cscockpitLoginPage.enterPassword(TestConstants.DSV_CSCOCKPIT_PASSWORD);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		//get valid cid from database.
+		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("Consultant");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(TestConstants.DSV_CONSULTANT_EMAILID);
@@ -452,6 +391,5 @@ public class CSCockpitDSVTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();		
 		s_assert.assertAll();
 	}
-	
-	
+
 }

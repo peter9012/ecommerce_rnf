@@ -14,6 +14,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String selectYearDDLoc = "//td[text()='%s']";
 	private static String selectCardTypeDDLoc = "//td[text()='%s']";
 	private static String firstName = "//span[contains(text(),'%s')]";
+	private static String totalsSectionValues = "//span[contains(text(),'%s')]/following::span[1]";
 
 	private static final By CREDIT_CARD = By.xpath("//div[contains(text(),'************')]");
 	private static final By DELIVERY_MODE = By.xpath("//span[contains(text(),'Delivery Mode')]/following::option[@selected='selected']");
@@ -636,6 +637,13 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		int deliveryModes = driver.findElements(DELIVERY_MODE_DD_VALUES).size();
 		String noOfDeliveryMode = ""+deliveryModes;
 		return noOfDeliveryMode;
+	}
+
+	public String getValuesFromTotalsSection(String sectionName){
+		driver.waitForElementPresent(By.xpath(String.format(totalsSectionValues, sectionName)));
+		String value = driver.findElement(By.xpath(String.format(totalsSectionValues, sectionName))).getText();
+		logger.info("Value of "+sectionName+" is = "+value);
+		return value;
 	}
 
 }

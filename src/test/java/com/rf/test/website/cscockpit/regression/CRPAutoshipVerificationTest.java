@@ -25,6 +25,7 @@ import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontBillingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
@@ -55,6 +56,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontRCUserPage storeFrontRCUserPage;	
+	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
@@ -80,6 +82,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
 	}
 
 	private String RFO_DB = null;
@@ -3672,6 +3675,63 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
 		String totalNoOfProductInCart = ""+cscockpitAutoshipTemplateUpdateTabPage.getCountOfProduct();
 		s_assert.assertTrue(totalNoOfProductInCart.contains(noOfProductTobeAdded), "Expected count of product is "+noOfProductTobeAdded+" Actual on UI is "+totalNoOfProductInCart);
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-130:change shipping method on autoship - PC
+	@Test(enabled=false)//WIP
+	public void testVerifyChangeShippingMethodOnAutoshipPC_130() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		driver.get(driver.getStoreFrontURL()+"/us");
+		String accountID;
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
+			logger.info("Account Id of user "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getStoreFrontURL()+"/ca");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful"); 
+
+		//get emailId of username
+		List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
+		logger.info("emaild of username "+pcEmailID); 
+		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
+		storeFrontHomePage.clickOnAddToPcPerksButton();
+		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		String selectedShippingMethod = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
+		logger.info("Shipping Method selected is: "+selectedShippingMethod);
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();  
+		//assert in CSCockpit
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		}else{
+			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		}
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab().contains(selectedShippingMethod), "Expected shipping method name on cscockpit is "+selectedShippingMethod+" Actual on UI is "+cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab());
 		s_assert.assertAll();
 	}
 

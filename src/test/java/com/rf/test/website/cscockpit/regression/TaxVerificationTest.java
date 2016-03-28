@@ -973,7 +973,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1546:To verify the Canada tax for Nunavat for Preferred Customer Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNunavatForPCOrder_1546(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1038,7 +1038,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1547:To verify the Canada tax for British Columbia for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyTheCanadaTaxForBritishColumbiaForConsultantOrder_1547(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1102,7 +1102,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1548:To verify the Canada tax for Alberta for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForAlbertaForConsultantOrder_1548(){ 
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -1167,7 +1167,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1549:To verify the Canada tax for saskatchewan for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForSaskatchewanForConsultantOrder_1549(){ 
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -1231,7 +1231,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1550:To verify the Canada tax for Manitoba for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForManitobaForConsultantOrder_1550(){ 
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
@@ -1295,7 +1295,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1551:To verify the Canada tax for Ontario for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForOntarioForConsultantOrder_1551(){ 
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;

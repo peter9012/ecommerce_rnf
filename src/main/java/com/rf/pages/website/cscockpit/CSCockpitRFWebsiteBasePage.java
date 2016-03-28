@@ -236,6 +236,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickCustomerSearchTab() {
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(CUSTOMER_SEARCH_TAB_LOC);
 		driver.click(CUSTOMER_SEARCH_TAB_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
@@ -593,6 +594,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
 		driver.click(PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public boolean clickAddToCartBtnInCartTabForThreeProducts(){

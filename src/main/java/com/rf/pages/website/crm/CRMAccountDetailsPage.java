@@ -803,7 +803,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.type(By.xpath("//table[@class='detailList']/tbody/tr[2]/td[4]/input"), email);
+		driver.type(By.xpath("//table[@class='detailList']/tbody/tr[2]/td[4]//input"), email);
 	}
 
 	public String enterBirthdateInCreatingNewContactForSpouse(){
@@ -863,7 +863,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.type(By.xpath("//table[@class='detailList']//label[text()='Main Phone']/../following-sibling::td/input"), mainPhone);
+		driver.type(By.xpath("//table[@class='detailList']//label[text()='Main Phone']/../following-sibling::td//input"), mainPhone);
 	}
 
 	public String verifyDataAfterSavingInNewContactForSpouse(String label){
@@ -1218,6 +1218,67 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public String getUserNameFromStoreFrontAccountDetails(){
 		String username = driver.findElement(By.id("email-account")).getAttribute("value");
 		return username;
+	}
+
+	public boolean isLabelOnPerformanceKPIsSectionPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::table[@class='list'][1]//th[text()='"+label+"']"));
+	}
+
+	public String getPerformanceKPIsCount(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return String.valueOf(driver.findElements(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')]")).size());
+	}
+
+	public boolean verifyActionItemsOnlyViewable() {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::div[1]//tr[2]/td/a[text()='Edit']"));
+	}
+
+	public boolean isPeriodDisplayedInYYYY_MMFormat() {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		String expiryYear = driver.findElement(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::th[text()='Period']/following::td[2]")).getText();
+		System.out.println("exp year is "+expiryYear);
+		if(expiryYear.split("/")[1].length()==2){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isPerformanceKPIsDetailsPresent() {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[text()='Performance KPI Information']"));
+	}
+
+	public boolean isLabelPresentUnderPerformanceKPIsInformation(String label) {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Performance KPI Information')]/following::table[@class='detailList'][1]//td[text()='"+label+"']"));
+	}
+
+	public boolean isLabelPresentUnderPerformanceKPIsDetails(String label) {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Performance KPI Details')]/following::table//tr//td[text()='"+label+"']"));
+	}
+
+	public void clickPerformanceKPIsName(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::th[text()='Period']/following::tr[1]/th/a"));
 	}
 
 }

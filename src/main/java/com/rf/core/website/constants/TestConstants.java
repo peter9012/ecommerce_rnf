@@ -443,6 +443,11 @@ public class TestConstants {
 	public static final String DSV_PC_ORDER_NUMBER = "1000327687";
 	public static final String DSV_PC_ORDER_STATUS = "Shipped";
 	public static final String DSV_RC_ORDER_NUMBER = "1000409096";
+	public static final String PRICE_VALUE = "500";
+	public static final String CVVALUE = "500";
+	public static final String QVVALUE = "500";
+	public static final String DELIVERY_COST = "20";
+	public static final String HANDLING_COST = "5";
 	//public static final String DSV_RC_ORDER_STATUS = "Completed";
 
 	//CSCockpit Constants

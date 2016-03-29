@@ -1281,4 +1281,31 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//h3[contains(text(),'Performance KPIs')]/following::th[text()='Period']/following::tr[1]/th/a"));
 	}
 
+	public boolean isConsultantDetailsHighlightPanelDisplayed(String label) {
+		driver.switchTo().defaultContent();
+		return driver.isElementPresent(By.xpath("//div[text()='"+label+"']"));
+	}
+
+	public void hoverOnMainMenuOptionsLink(String label){
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		action.moveToElement(driver.findElement(By.xpath("//span[contains(text(),'"+label+"')]"))).perform();
+	}
+
+	public boolean isRelatedListItemPresent() {
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//div[@class='bRelatedList']"));
+	}
+
+	public boolean isAccountMainMenuOptionsPresent(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
+	}
+
 }

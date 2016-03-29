@@ -101,6 +101,13 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	public String getNextCRPText(){
 		return driver.findElement(NXT_CRP_TXT).getText();
 	}
+	
+	public void clickLogo(){
+		driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+		System.out.println("R+F logo clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
 
 	public DSVStoreFrontAutoshipCartPage clickOnCRPCartImg(){
 		driver.quickWaitForElementPresent(CRP_CART_IMG);

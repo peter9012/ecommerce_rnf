@@ -24,8 +24,9 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipIdStatusLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'pcAutoship')]/following::span[1]";
 	private static String autoshipNumberWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[contains(text(),'Cancelled')]/preceding::a[text()='%s'][1]";
 	private static String autoshipTemplateID = "//span[contains(text(),'Autoship Templates')]/following::a[text()='%s']";
-	private static String autoshipIdStatusForCustomerLoc = "//span[text()='Autoship Templates']/following::div[1]//div/a[text()='%s']/following::span[contains(text(),'crpAutoship')]/following::span[1]";
+	private static String autoshipIdStatusForCustomerLoc = "//span[text()='Autoship Templates']/following::a[contains(text(),'%s')]/following::span[contains(text(),'crpAutoship')]/following::span[1]";
 	private static String creditCardOwnerName ="//div[contains(text(),'%s')]";
+	private static String crpAutoshipIdWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[text()='crpAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a[contains(text(),'%s')]";
 
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
@@ -81,6 +82,9 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CVV_TXTFIELD_ON_NEW_SHIPPING_ADDRESS_POPUP= By.xpath("//span[text()='CVV']/following::input[1]");
 	private static final By UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP = By.xpath("//div[@class='csCreateAddressActions']//td[text()='Update address']");
 	private static final By USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP = By.xpath("//td[contains(text(),'Use Entered Address')]");
+	private static final By POPUP_ERROR_MESSAGE = By.xpath("//div[@class='z-messagebox']//span");
+	private static final By CLOSE_POPUP_OF_EDIT_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div[contains(@id,'close')]");
+	private static final By CLOSE_POPUP_OF_ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
 
 	protected RFWebsiteDriver driver;
 
@@ -246,7 +250,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.waitForCSCockpitLoadingImageToDisappear();
 		}
 	}
-	
+
 	public void clickOnAutoShipId(String status,String isActive){
 		List<WebElement> autoshipIdsList = driver.findElements(By.xpath("//span[text()='PENDING']/following::span[text()='Yes']/ancestor::tr[1]//a"));
 		autoshipIdsList.get(0).click();
@@ -601,6 +605,54 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
 		driver.click(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public String getPopupMessage(){
+		driver.waitForElementPresent(POPUP_ERROR_MESSAGE);
+		return driver.findElement(POPUP_ERROR_MESSAGE).getText();
+	}
+
+	public boolean isPCAutoshipIDHavingStatusIsPendingPresent(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING);
+		return driver.isElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_PC_AUTOSHIP_STATUS_AS_PENDING);
+	}
+
+	public void clickCloseOfAddNewPaymentProfilePopUpInCustomerTab(){
+		driver.waitForElementPresent(CLOSE_POPUP_OF_ADD_NEW_PAYMENT_PROFILE);
+		driver.click(CLOSE_POPUP_OF_ADD_NEW_PAYMENT_PROFILE);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickCloseOfEditPaymentProfilePopUpInCustomerTab(){
+		driver.waitForElementPresent(CLOSE_POPUP_OF_EDIT_PAYMENT_PROFILE);
+		driver.click(CLOSE_POPUP_OF_EDIT_PAYMENT_PROFILE);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean isPulseTemplateAutoshipIDHavingStatusIsCancelledPresent(){
+		driver.waitForElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_CANCELLED);
+		return driver.isElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_CANCELLED);
+	}
+
+	public boolean isCRPAutoshipIDHavingStatusIsCancelledPresent(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_CANCELLED);
+		return driver.isElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_CANCELLED);
+	}
+
+	public String getAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsCancelled(){
+		driver.waitForElementPresent(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_CANCELLED);
+		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_CANCELLED).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		return autoshipID;
+	}
+
+	public String getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsCancelled(String autoshipId){
+		driver.waitForElementPresent(By.xpath(String.format(crpAutoshipIdWhoseAutoshipIsCancelledLoc, autoshipId)));
+		String autoshipID = driver.findElement(By.xpath(String.format(crpAutoshipIdWhoseAutoshipIsCancelledLoc, autoshipId))).getText();
+		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
+		driver.click(By.xpath(String.format(crpAutoshipIdWhoseAutoshipIsCancelledLoc, autoshipId)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return autoshipID;
 	}
 
 }

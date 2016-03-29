@@ -287,4 +287,14 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 			return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		}
 	}
+
+	public boolean isQuebecProvinceDisabled(){
+		driver.waitForElementPresent(By.xpath("//option[contains(text(),'Quebec')][@disabled='disabled']"));
+		return driver.isElementPresent(By.xpath("//option[contains(text(),'Quebec')][@disabled='disabled']"));
+	}
+
+	public void clickSelectStateDD(){
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+	}
 }

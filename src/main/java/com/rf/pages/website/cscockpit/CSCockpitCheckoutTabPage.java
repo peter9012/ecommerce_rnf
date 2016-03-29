@@ -15,6 +15,9 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String selectCardTypeDDLoc = "//td[text()='%s']";
 	private static String firstName = "//span[contains(text(),'%s')]";
 	private static String totalsSectionValues = "//span[contains(text(),'%s')]/following::span[1]";
+	private static String sooPopupvalues = "//span[contains(text(),'%s')]";
+	private static String sooValues = "//div[contains(text(),'%s')]";
+	private static String sooDDValues = "//td[contains(text(),'%s')]";
 
 	private static final By CREDIT_CARD = By.xpath("//div[contains(text(),'************')]");
 	private static final By DELIVERY_MODE = By.xpath("//span[contains(text(),'Delivery Mode')]/following::option[@selected='selected']");
@@ -112,6 +115,11 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By NO_STORED_CREDIT_CARD_DETAILS = By.xpath("//span[contains(text(),'Please review credit card information entered')]");
 	private static final By NO_SELECTED_DELIVERY_ADDRESS_DETAILS = By.xpath("//select[contains(@class,'csDeliveryAddressList')]//option[@selected='selected'][contains(text(),'Non')]");
 	private static final By DELIVERY_MODE_DD_VALUES = By.xpath("//div[@class='csDeliveryModeContainer']//select/option");
+	private static final By CANCEL_THIS_SOO_LINK = By.xpath("//a[text()='Cancel This SOO']");
+	private static final By SOO_DEPARTMENT_DD = By.xpath("//span[@class='soo-popup-bottom-left']//div[2]//span[@class='z-combobox-btn']");
+	private static final By SOO_TYPE_DD = By.xpath("//span[@class='soo-popup-bottom-left']//div[3]//span[@class='z-combobox-btn']");
+	private static final By SOO_REASON_DD = By.xpath("//span[@class='soo-popup-bottom-left']//div[4]//span[@class='z-combobox-btn']");
+	private static final By SOO_POPUP_HEADER = By.xpath("//div[@class='soo-popup-header']");
 
 	protected RFWebsiteDriver driver;
 
@@ -644,6 +652,50 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		String value = driver.findElement(By.xpath(String.format(totalsSectionValues, sectionName))).getText();
 		logger.info("Value of "+sectionName+" is = "+value);
 		return value;
+	}
+
+	public boolean verifyPerformSOOPopupValues(String value){
+		driver.waitForElementPresent(By.xpath(String.format(sooPopupvalues, value)));
+		return driver.isElementPresent(By.xpath(String.format(sooPopupvalues, value)));
+	}
+
+	public boolean verifySOOPopupValues(String value){
+		driver.waitForElementPresent(By.xpath(String.format(sooValues, value)));
+		return driver.isElementPresent(By.xpath(String.format(sooValues, value)));
+	}
+
+	public boolean verifyCancelThisSOOLink(){
+		driver.waitForElementPresent(CANCEL_THIS_SOO_LINK);
+		return driver.isElementPresent(CANCEL_THIS_SOO_LINK);
+	}
+
+	public void clickSOODepartmentDD(){
+		driver.waitForElementPresent(SOO_DEPARTMENT_DD);
+		driver.click(SOO_DEPARTMENT_DD);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickSOOTypeDD(){
+		driver.waitForElementPresent(SOO_TYPE_DD);
+		driver.click(SOO_TYPE_DD);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void clickSOOReasonDD(){
+		driver.waitForElementPresent(SOO_REASON_DD);
+		driver.click(SOO_REASON_DD);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public boolean verifySOODDValues(String value){
+		driver.waitForElementPresent(By.xpath(String.format(sooDDValues, value)));
+		return driver.isElementPresent(By.xpath(String.format(sooDDValues, value)));
+	}
+
+	public void clickSOOPopupHeader(){
+		driver.waitForElementPresent(SOO_POPUP_HEADER);
+		driver.click(SOO_POPUP_HEADER);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 }

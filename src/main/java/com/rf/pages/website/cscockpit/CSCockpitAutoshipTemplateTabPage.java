@@ -107,6 +107,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By SHIPPING_ADDRESS_LINE1 = By.xpath("//div[@class='csWidgetContent']//span[contains(text(),'Shipping Address')]/../following-sibling::div[2]/span");
 	private static final By SELECT_VALID_FUTURE_DATE_POPUP = By.xpath("//span[contains(text(),'Please select a valid future date before 18th of month')]");
 	private static final By SHIPPING_METHOD_NAME_FROM_UI = By.xpath("//span[text()='Shipping Method']/following::span[1]");
+	private static final By PAYMENT_INFO_PROFILE_NAME_FROM_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']/span/input");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
@@ -970,8 +971,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public String getDefaultSelectedPaymentInfoAddress(){
-		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
-		String profileName=driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
+		driver.waitForElementPresent(PAYMENT_INFO_PROFILE_NAME_FROM_DD);
+		String profileName=driver.findElement(PAYMENT_INFO_PROFILE_NAME_FROM_DD).getAttribute("value");
 		logger.info("profile name from dropdown is "+profileName);
 		return profileName;
 	}
@@ -1084,8 +1085,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public String getPaymentInfoAddressNameFromAddressDropDown(){
-		driver.waitForElementPresent(PAYMENT_INFO_ADDRESS_DD);
-		String addressName = driver.findElement(PAYMENT_INFO_ADDRESS_DD).getAttribute("value");
+		driver.waitForElementPresent(PAYMENT_INFO_PROFILE_NAME_FROM_DD);
+		String addressName = driver.findElement(PAYMENT_INFO_PROFILE_NAME_FROM_DD).getAttribute("value");
 		return addressName;
 	}
 

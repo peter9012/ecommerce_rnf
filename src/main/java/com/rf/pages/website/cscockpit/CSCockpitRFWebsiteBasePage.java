@@ -110,6 +110,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By TOTAL_NUMBER_OF_PAGE = By.xpath("//button[@class='z-paging-next']/preceding::span[@class='z-paging-text'][1]");
 	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
 	private static final By PRODUCT_COUNT_ON_CART = By.xpath("//div[@class='csToolbarLeftButtons']//td[contains(@class,'csMasterContentCell')]");
+	private static final By ADD_NEW_CUSTOMER_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -1157,6 +1158,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 				}
 			}
 		}
+	}
+
+	public boolean isAddNewAddressProfilePopupPresentInCustomerTab(){
+		driver.waitForElementPresent(ADD_NEW_CUSTOMER_ADDRESS);
+		driver.isElementPresent(ADD_NEW_CUSTOMER_ADDRESS);
+		return driver.isElementPresent(ADD_NEW_CUSTOMER_ADDRESS);  
 	}
 
 }

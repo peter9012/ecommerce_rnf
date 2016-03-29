@@ -2590,7 +2590,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4482:Add the Account Notes for unknown
-	@Test(enabled=false)//WIP
+	@Test
 	public void testAddAccountNoteForUnknown_4482() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2649,7 +2649,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4494:View the Account Policies for Consultant
-	@Test(enabled=false)//WIP
+	@Test
 	public void testViewAccountPoliciesForConsultant_4494() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -3196,6 +3196,95 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4719:Single sign on to CRM
+	@Test(enabled=false)//WIP
+	public void testSingleSignOnToCRM_4719() throws InterruptedException{
+		//Enter Incorrect login credentials and verify user should not be able to login and salesforce should throw error
+		String accountID = null;
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmContactDetailsPage= new CRMContactDetailsPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_INVALID_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);  
+		s_assert.assertTrue(crmLoginpage.getErrorMessageOnLoginPage().contains("Please check your username and password"),"Salesforce didn't throw the required message for Invalid login");
+		//Enter correct login credentials and verify user should be able to login
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4546:Consultant detail view page
+	@Test(enabled=false)//WIP
+	public void testConsultantDetailViewPage_4546() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		crmLoginpage = new CRMLoginPage(driver);
+		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+		logger.info("The email address is "+consultantEmailID); 
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Account Type"),"Account Type field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Account Status"),"Account Status field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Account Number"),"Account Number field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Country"),"Country field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Email Address"),"Email Address field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("Recognition Title"),"Recognition Title field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("SV"),"SV field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isConsultantDetailsHighlightPanelDisplayed("PSQV"),"PSQV field not present in Highlight panel");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Contacts"),"contact option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Autoships"),"Autoships option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Performance KPIs"),"Performance KPIs option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Account Activities"),"Account Activities option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Shipping Profiles"),"Shipping Profiles option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Billing  Profiles"),"Billing Profiles option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Account Policies"),"Account Policies option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Account Statuses History"),"Account Statuses History option not present");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountMainMenuOptionsPresent("Account History"),"Account History option not present");
+		crmAccountDetailsPage.hoverOnMainMenuOptionsLink("Shipping Profiles");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Action"),"Action label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Name"),"Name label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("ProfileName"),"ProfileName label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Default"),"Default label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
+		s_assert.assertTrue(crmAccountDetailsPage.isRelatedListItemPresent(),"related item is not present");
+		crmAccountDetailsPage.clickPerformanceKPIsName();
+		s_assert.assertTrue(crmAccountDetailsPage.isPerformanceKPIsDetailsPresent(),"Performance KPIs Detail is not present on UI as expected");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Period"),"Period label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Account"),"Account label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Recognized Title"),"Recognized Title label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Qualification Title"),"Qualification Title label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Sales Volume"),"Sales Volume label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Paid As Title"),"Paid As Title label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Estimated Sales Volume"),"Estimated Sales Volume label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Period Status"),"Period Status label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsInformation("Created By"),"Created By label is not present under PerformanceKPIs Information Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsDetails("EC Leg Current"),"Period label is not present under PerformanceKPIs Details Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsDetails("EC Leg Prior Month"),"EC Leg Prior Month label is not present under PerformanceKPIs Details Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsDetails("LV EC Legs"),"LV EC Legs label is not present under PerformanceKPIs Details Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsDetails("L1+L2 Volume"),"L1+L2 Volume label is not present under PerformanceKPIs Details Section");
+		s_assert.assertTrue(crmAccountDetailsPage.isLabelPresentUnderPerformanceKPIsDetails("L1-L6 Volume"),"L1-L6 Volume label is not present under PerformanceKPIs Details Section");
+
 		s_assert.assertAll();
 	}
 }

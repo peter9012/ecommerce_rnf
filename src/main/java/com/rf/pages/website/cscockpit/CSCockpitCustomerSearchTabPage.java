@@ -220,4 +220,12 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
+
+	public String getAccountStatusOfTheCustomerInCustomerSearchTab(String custmerSequenceNumber){
+		String status=null;
+		driver.waitForElementPresent(By.xpath(String.format(customeraccountStatusInSearchResultsLoc,custmerSequenceNumber)));
+		status = driver.findElement(By.xpath(String.format(customeraccountStatusInSearchResultsLoc,custmerSequenceNumber))).getText();
+		logger.info("Selected Customer status is = "+status);
+		return status.trim();
+	}
 }

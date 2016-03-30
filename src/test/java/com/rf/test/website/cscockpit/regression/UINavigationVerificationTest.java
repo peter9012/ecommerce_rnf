@@ -542,15 +542,6 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		logger.info("login is successful"); 
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontConsultantPage.clickOnYourAccountDropdown();
-		storeFrontConsultantPage.clickOnAutoshipStatusLink();
-		if(storeFrontAccountInfoPage.verifyCRPCancelled()==false){
-			storeFrontAccountInfoPage.clickOnCancelMyCRP();
-		}
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
 		logout();
 		driver.get(driver.getCSCockpitURL());
 		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
@@ -560,6 +551,12 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		if(cscockpitCustomerTabPage.isCRPAutoshipIDHavingStatusIsPendingPresent()){
+			cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+			cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+			cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+			cscockpitAutoshipTemplateTabPage.clickCustomerTab();
+		}
 		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsCancelled();
 		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.isChangeSponserLinkPresent(), "Change Link is Present on Order Tab Page for PC");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getAutoShipTemplateStatus().contains("CANCELLED"),"Autoship template status expected CANCELLED while Actual on UI"+cscockpitAutoshipTemplateTabPage.getAutoShipTemplateStatus());
@@ -567,9 +564,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		s_assert.assertAll();
-
 	}
-
 
 	//Hybris Project-2194:CSCockpit: Making quebec address as default address for consultant.
 	@Test(enabled=false)//WIP

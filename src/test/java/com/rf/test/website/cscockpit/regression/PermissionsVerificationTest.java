@@ -525,20 +525,17 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		}
 		logout();
 		logger.info("login is successful");
-		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-		String cid = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-
 		driver.get(driver.getCSCockpitURL());
 		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
-		cscockpitOrderSearchTabPage.enterCIDInOrderSearchTab(cid);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		String randomSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String orderNumber=cscockpitOrderSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomSequenceNumber);
-		int previousCount=cscockpitOrderTabPage.getQuantityOfAllProductInOrderTabPage();
-		cscockpitOrderTabPage.clickPlaceAnOrderButtonInOrderTab();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickPlaceOrderButtonInCustomerTab();
 		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
 		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab(); 
 		String randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
@@ -564,8 +561,6 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String newlyPlacedOrderNumber = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
-		int newCount=cscockpitOrderTabPage.getQuantityOfAllProductInOrderTabPage();
-		s_assert.assertTrue(!(newCount==previousCount), "Product has not been successfully added to order detail in order tab");
 		cscockpitOrderTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(newlyPlacedOrderNumber).contains("Override Order"),"This is not Override Order");
 		cscockpitOrderTabPage.clickMenuButton();
@@ -575,8 +570,8 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(newlyPlacedOrderNumber.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of US");
-		s_assert.assertAll();
 		logout();
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-1783:To verify User permission for Return

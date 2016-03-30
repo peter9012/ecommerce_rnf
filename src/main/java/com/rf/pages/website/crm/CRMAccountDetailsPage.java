@@ -24,6 +24,8 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(CRMAccountDetailsPage.class.getName());
 
+	private static String userEnteredAddress = "//label[contains(text(),'%s')]/../input";
+
 	public CRMAccountDetailsPage(RFWebsiteDriver driver) {
 		super(driver);
 	}
@@ -469,14 +471,14 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.type(By.xpath("//label[contains(text(),'ProfileName')]/following::input[1]"), profileName);
+		driver.type(By.xpath("//label[contains(text(),'Profile Name')]/following::input[1]"), profileName);
 	}
 
 	public void clickSaveBtnAfterEditShippingAddress(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.click(By.xpath("//td[@id='topButtonRow']/input[1]"));
+		driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -497,10 +499,10 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		if(driver.isElementPresent(By.xpath("//label[text()='Default']/following::input[1][@checked='checked']"))==true){
+		if(driver.isElementPresent(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"))==true){
 			logger.info("CheckBox is already selected");
 		}else{
-			driver.click(By.xpath("//label[text()='Default']/following::input[1]"));
+			driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
 		}
 	}
 
@@ -519,8 +521,8 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//label[contains(text(),'Address Line 1')]/following::input[1]"));
 		driver.type(By.xpath("//label[contains(text(),'Address Line 1')]/following::input[1]"), addressLine1);
 		driver.type(By.xpath("//label[contains(text(),'Locale')]/following::input[1]"), city);
-		driver.type(By.xpath("//label[text()='Region']/following::input[1]"), state);
-		driver.type(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"), postalCode);
+		driver.type(By.xpath(".//label[contains(text(),'Region')]/following::input[1]"), state);
+		driver.type(By.xpath("//label[contains(text(),'Postal')]/following::input[1]"), postalCode);
 		driver.type(By.xpath("//label[contains(text(),'Phone')]/following::input[1]"), phoneNumber);
 	}
 
@@ -1306,6 +1308,36 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return driver.isElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
+	}
+
+	public void selectUserEnteredAddress(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+		driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+	}
+
+	public boolean isProfileNameValueOfDefaultShippingProfilesPresent(String profileName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::img[@title='Checked'][1]/../preceding-sibling::td[text()='"+profileName+"']"));
+	}
+
+	public void clickUserEnteredAddress(String addressLocaleRegion){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.click(By.xpath(String.format(userEnteredAddress,addressLocaleRegion)));
+		driver.waitForCRMLoadingImageToDisappear();
+	}		
+
+	public boolean isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(String addressLocaleRegionPostalCode){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::img[@title='Checked'][1]/../following-sibling::td[text()='"+addressLocaleRegionPostalCode+"']"));
 	}
 
 }

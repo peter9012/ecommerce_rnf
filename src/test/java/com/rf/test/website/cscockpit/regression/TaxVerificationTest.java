@@ -1743,7 +1743,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1559:To verify the Canada tax for Nunavat for Consultant Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForNunavatForConsultantOrder_1559(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1807,7 +1807,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1560:To verify the Canada tax for Alberta for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForAlbertaForRCOrder_1560(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1871,7 +1871,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1561:To verify the Canada tax for saskatchewan for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForSaskatchewanForRCOrder_1561(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1935,7 +1935,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1562:To verify the Canada tax for Manitoba for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForManitobaForRCOrder_1562(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -1999,7 +1999,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1563:To verify the Canada tax for Ontario for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForOntarioForRCOrder_1563(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2063,7 +2063,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1564:To verify the Canada tax for Quebec for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForQuebecForRCOrder_1564(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;

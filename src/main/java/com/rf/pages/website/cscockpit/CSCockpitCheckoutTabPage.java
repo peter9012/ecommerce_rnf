@@ -156,11 +156,11 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.findElement(DELIVERY_MODE).getText();
 	}
 
-	public boolean isCommissionDatePopulatedInCheckoutTab(){
-		boolean isCommissionDatePopulatedInCheckoutTab = !(driver.findElement(COMMISSION_DATE).getAttribute("value").isEmpty());
-		logger.info("is Commission Date Populated In Checkout Tab = "+isCommissionDatePopulatedInCheckoutTab);
-		return isCommissionDatePopulatedInCheckoutTab;
-	}
+//	public boolean isCommissionDatePopulatedInCheckoutTab(){
+//		boolean isCommissionDatePopulatedInCheckoutTab = !(driver.findElement(COMMISSION_DATE).getAttribute("value").isEmpty());
+//		logger.info("is Commission Date Populated In Checkout Tab = "+isCommissionDatePopulatedInCheckoutTab);
+//		return isCommissionDatePopulatedInCheckoutTab;
+//	}
 
 	public void clickPlaceOrderButtonInCheckoutTab(){
 		driver.waitForElementPresent(PLACE_ORDER_BUTTON_CHECKOUT_TAB);

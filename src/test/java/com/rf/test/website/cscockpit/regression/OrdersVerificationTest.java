@@ -1936,7 +1936,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-1949:To verify the order Type in the Order Detail page
 	@Test
-	public void testToVerifyTheOrderTypeInTheOrderDetailPage_194(){
+	public void testToVerifyTheOrderTypeInTheOrderDetailPage_1949(){
 		String randomOrderSequenceNumber = null;
 		String orderTypeConsultant = "Consultant Order";
 		String orderTypePulseAutoship = "Pulse Autoship";

@@ -79,7 +79,9 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
-
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String billingProfile = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		//-------------------FOR US----------------------------------
 
 		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
@@ -99,7 +101,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.enterBillingInfo(TestConstants.CARD_NUMBER, billingProfile, TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
@@ -107,6 +109,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder()>0, "Order was NOT placed successfully,expected count after placing order in order detail items section >0 but actual count on UI = "+cscockpitOrderTabPage.getCountOfOrdersOnOrdersDetailsPageAfterPlacingOrder());
 
 		//-------------------FOR CA----------------------------------
+		billingProfile = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
 		driver.get(driver.getCSCockpitURL());
 		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -125,7 +128,7 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
 		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.enterBillingInfo(TestConstants.CARD_NUMBER, billingProfile, TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();

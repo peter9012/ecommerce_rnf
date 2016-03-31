@@ -16,10 +16,10 @@ import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
-import com.rf.test.website.RFDSVWebsiteBaseTest;
+import com.rf.test.website.RFDSVCscockpitWebsiteBaseTest;
 
 
-public class CSCockpitDSVTest extends RFDSVWebsiteBaseTest{
+public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(CSCockpitDSVTest.class.getName());
 

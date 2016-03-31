@@ -2917,7 +2917,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSSNValidationForConsultantTryingToEnrollUnderInvalidSponsorUpline_100() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String socialInsuranceNumber = TestConstants.SOCIAL_INSURANCE_NUMBER;
+		String socialInsuranceNumber = TestConstants.SOCIAL_INSURANCE_NUMBER_INVALID;
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;

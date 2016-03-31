@@ -764,16 +764,16 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 		driver.waitForElementPresent(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"));
-		driver.clear(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"));
-		driver.type(By.xpath("//label[contains(text(),'Postal code')]/following::input[1]"), postalCode);
+		driver.clear(By.xpath("//label[contains(text(),'Postal Code')]/following::input[1]"));
+		driver.type(By.xpath("//label[contains(text(),'Postal Code')]/following::input[1]"), postalCode);
 	}
 
 	public boolean validateErrorMsgIsDisplayedForPostalCode(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.waitForElementPresent(By.xpath("//div[@class='errorMsg']/strong"));
-		return driver.findElement(By.xpath("//div[@class='errorMsg']/strong")).getText().contains("Error");
+		driver.waitForElementPresent(By.xpath("//div[@class='messageText']"));
+		return driver.findElement(By.xpath("//div[@class='messageText']")).getText().contains("Postal code format is incorrect. USA Postal code format is [99999]-[0000]/CA Postal code format is 6 Alphanumerics [A0A 0A0]");
 	}
 
 	public void clickAccountMainMenuOptions(String label){

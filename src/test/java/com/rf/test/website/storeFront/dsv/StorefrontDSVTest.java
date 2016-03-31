@@ -14,9 +14,9 @@ import com.rf.pages.website.dsv.DSVStoreFrontBillingInfoPage;
 import com.rf.pages.website.dsv.DSVStoreFrontHomePage;
 import com.rf.pages.website.dsv.DSVStoreFrontQuickShopPage;
 import com.rf.pages.website.dsv.DSVStoreFrontShippingInfoPage;
-import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFDSVStoreFrontWebsiteBaseTest;
 
-public class StorefrontDSVTest extends RFStoreFrontWebsiteBaseTest{
+public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(StorefrontDSVTest.class.getName());
 

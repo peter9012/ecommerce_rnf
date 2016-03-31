@@ -1652,12 +1652,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		String consultantEmailID = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = TestConstants.LAST_NAME;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The username is "+consultantEmailID); 
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		crmHomePage.clickNameOnFirstRowInSearchResults();
@@ -1665,12 +1665,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
 		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
 		crmAccountDetailsPage.clickEditFirstShippingProfile();
-		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstName+" "+lastName);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
-		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
 		if(countryId.trim().equalsIgnoreCase("40")){
 			crmAccountDetailsPage.clickEditFirstShippingProfile();
@@ -1697,7 +1697,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		String pcUserName = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = TestConstants.LAST_NAME;
 		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
@@ -1710,12 +1710,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
 		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
 		crmAccountDetailsPage.clickEditFirstShippingProfile();
-		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstName+" "+lastName);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
-		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
 		if(countryId.trim().equalsIgnoreCase("40")){
 			crmAccountDetailsPage.clickEditFirstShippingProfile();
@@ -1735,12 +1735,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4489:Verify Adding shipping profiles with different country for a RC
 	@Test
-	public void testAddingShippingProfilesWithDifferentCountryForARC_4489() throws InterruptedException	{
+	public void testAddingShippingProfilesWithDifferentCountryForARC_4489() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
+		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = TestConstants.LAST_NAME;
 		String rcEmailID = null;
 		List<Map<String, Object>> randomRCList =  null;
@@ -1756,12 +1756,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
 		s_assert.assertTrue(crmAccountDetailsPage.verifyShippingProfileCountIsEqualOrGreaterThanOne(noOfShippingProfile),"expected minium number of shipping profile is 1 actual on UI "+noOfShippingProfile);
 		crmAccountDetailsPage.clickEditFirstShippingProfile();
-		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstNameWithSpecialChar+" "+lastName);
+		crmAccountDetailsPage.updateShippingProfileName(shippingProfileFirstName+" "+lastName);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
-		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
+		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		//IN Shipping Profile Section Add a new shipping profile address with a different country of which the order is placed
 		if(countryId.trim().equalsIgnoreCase("40")){
 			crmAccountDetailsPage.clickEditFirstShippingProfile();
@@ -2661,8 +2661,6 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPageIsEnabled(),"Account dropdown is not disable on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPageIsEnabled(),"Channel dropdown is not disable on Account Details page");
 		s_assert.assertFalse(crmAccountDetailsPage.isDetailDropdownOnAccountDetailPageIsEnabled(),"Detail dropdown is not disable on Account Details page");
-		//verify the note in account activity section present
-		s_assert.assertTrue(crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage().contains(orderNote),"Note text from UI is "+crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage()+" While expected text is "+orderNote);
 		s_assert.assertAll();
 	}
 

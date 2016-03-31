@@ -23,11 +23,11 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.base.RFBaseTest;
 
 /**
- * @author ShubhamMathur RFWebsiteBaseTest is the super class for all
- *         desktop Test classes initializes the driver is used for execution.
+ * @author ShubhamMathur RFDSVStoreFrontWebsiteBaseTest is the super class for all
+ *         DSV StoreFront desktop Test classes initializes the driver is used for execution.
  *
  */
-public class RFStoreFrontWebsiteBaseTest extends RFBaseTest {
+public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
@@ -38,7 +38,7 @@ public class RFStoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
-			.getLogger(RFStoreFrontWebsiteBaseTest.class.getName());
+			.getLogger(RFDSVStoreFrontWebsiteBaseTest.class.getName());
 
 	/**
 	 * @throws Exception

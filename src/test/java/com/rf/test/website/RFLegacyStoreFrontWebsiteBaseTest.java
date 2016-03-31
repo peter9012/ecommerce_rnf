@@ -17,26 +17,21 @@ import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
-import com.rf.core.website.constants.TestConstants;
 import com.rf.test.base.RFBaseTest;
 
 /**
- * @author ShubhamMathur RFWebsiteBaseTest is the super class for all
- *         desktop Test classes initializes the driver is used for execution.
+ * @author ShubhamMathur RFLegacyStoreFrontWebsiteBaseTest is the super class for all
+ *         Legacy desktop Test classes initializes the driver is used for execution.
  *
  */
-public class RFDSVWebsiteBaseTest extends RFBaseTest {
+public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
-	private static final By MENU_BTN_LOCATOR = By.xpath("//span[text()='Menu']");
-	private static final By LOGOUT_BTN_LOCATOR = By.xpath("//a[contains(text(),'Logout')]");
-	private static final By LOGIN_BTN = By.xpath("//td[text()='Login']");
-	private static final By USERNAME_TXT_FIELD = By.name("j_username");
-	private static final By PASSWORD_TXT_FIELD = By.name("j_password");
+
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
-			.getLogger(RFDSVWebsiteBaseTest.class.getName());
+			.getLogger(RFLegacyStoreFrontWebsiteBaseTest.class.getName());
 
 	/**
 	 * @throws Exception
@@ -46,16 +41,34 @@ public class RFDSVWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
 		driver.loadApplication();		
-		driver.get(driver.getURL());
-		logger.info("Application loaded");	
-		System.out.println("Application loaded");
-		cscockpitLogin(TestConstants.DSV_CSCOCKPIT_USERNAME, TestConstants.DSV_CSCOCKPIT_PASSWORD);	
+		logger.info("Application loaded");				
+		driver.setDBConnectionString();		
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
+		s_assert = new SoftAssert();
+		String country = driver.getCountry();
 		driver.get(driver.getURL());
-		s_assert = new SoftAssert();	
+		try{
+			logout();
+		}catch(NoSuchElementException e){
+
+		}	
+		if(country.equalsIgnoreCase("ca"))
+			countryId = "40";
+		else if(country.equalsIgnoreCase("us"))
+			countryId = "236";	
+		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
+//			driver.selectCountry(country);
+		}
+		setStoreFrontPassword(driver.getStoreFrontPassword());
+
+	}
+
+	@AfterMethod
+	public void tearDownAfterMethod(){
+
 	}
 
 	/**
@@ -63,31 +76,23 @@ public class RFDSVWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		cscockpitLogout();
 		new HtmlLogger().createHtmlLogFile();		
 		driver.quit();
 	}
 
-	public void cscockpitLogout(){		
-		driver.waitForElementPresent(MENU_BTN_LOCATOR);
-		driver.click(MENU_BTN_LOCATOR);
-		driver.waitForCSCockpitLoadingImageToDisappear();
-		driver.waitForElementPresent(LOGOUT_BTN_LOCATOR);
-		driver.click(LOGOUT_BTN_LOCATOR);
-		driver.waitForCSCockpitLoadingImageToDisappear();
+	public void setStoreFrontPassword(String pass){
+		password=pass;
 	}
 
-	public void cscockpitLogin(String userName,String password){
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(USERNAME_TXT_FIELD);
-		driver.type(USERNAME_TXT_FIELD, userName);
-		logger.info("username is "+userName);
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(PASSWORD_TXT_FIELD);
-		driver.type(PASSWORD_TXT_FIELD, password);
-		logger.info("password is "+password);
-		driver.click(LOGIN_BTN);
-		driver.waitForCSCockpitLoadingImageToDisappear();
+
+
+	public void logout(){
+//		driver.quickWaitForElementPresent(By.id("account-info-button"));
+//		driver.findElement(By.id("account-info-button")).click();
+//		driver.waitForElementPresent(By.linkText("Log out"));
+//		driver.findElement(By.linkText("Log out")).click();
+//		logger.info("Logout");		
+//		driver.pauseExecutionFor(3000);
 	}
 
 	// This assertion for the UI Texts

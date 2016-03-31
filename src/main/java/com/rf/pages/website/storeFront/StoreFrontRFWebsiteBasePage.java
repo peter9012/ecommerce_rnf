@@ -135,6 +135,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
@@ -1070,6 +1071,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnYourAccountDropdown(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
 		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
 		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
 	}
@@ -1310,6 +1313,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);		
 		logger.info("User has clicked on account link from welcome drop down");
+		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		return new StoreFrontAccountInfoPage(driver);
 	}

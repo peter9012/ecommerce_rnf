@@ -427,6 +427,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnNextStepBtnShippingAddress(){
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.id("use_address"));
 		driver.click(By.id("use_address"));
 		logger.info("Next button on shipping address clicked"); 

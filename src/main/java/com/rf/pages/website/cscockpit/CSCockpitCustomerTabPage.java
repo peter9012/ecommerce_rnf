@@ -655,5 +655,10 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		return autoshipID;
 	}
 
+	public boolean isOrderPresentInCustomerOrderSection(){
+		driver.waitForElementPresent(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);
+		return driver.isElementPresent(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);  
+	}
+
 }
 

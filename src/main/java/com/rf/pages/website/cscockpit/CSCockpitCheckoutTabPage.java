@@ -363,10 +363,10 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(COMMISSION_DATE_TXT);
 	}
 
-	public boolean verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(){
-		driver.waitForElementPresent(COMMISSION_DATE);
-		return driver.isElementPresent(COMMISSION_DATE);
-	}
+//	public boolean verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(){
+//		driver.waitForElementPresent(COMMISSION_DATE);
+//		return driver.isElementPresent(COMMISSION_DATE);
+//	}
 
 	public boolean verifyOrderNotesTextInOrderInfoSectionInCheckoutTab(){
 		driver.waitForElementPresent(ORDER_NOTES_TXT_LOCATOR);

@@ -87,12 +87,13 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 
 
 	public void logout(){
-//		driver.quickWaitForElementPresent(By.id("account-info-button"));
-//		driver.findElement(By.id("account-info-button")).click();
+		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
 //		driver.waitForElementPresent(By.linkText("Log out"));
 //		driver.findElement(By.linkText("Log out")).click();
 //		logger.info("Logout");		
-//		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(3000);
+		driver.waitForPageLoad();
 	}
 
 	// This assertion for the UI Texts
@@ -233,5 +234,5 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
-
+	
 }

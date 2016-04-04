@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
+import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.dsv.DSVStoreFrontAccountInfoPage;
@@ -437,34 +438,32 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		dsvStoreFrontBillingInfoPage.clickDeleteBillingProfileLink(lName1);
 		s_assert.assertFalse(dsvStoreFrontBillingInfoPage.isBillingProfilePresentonPage(lName1), name1+" billing profile is not deleted from the page");
 		s_assert.assertTrue(dsvStoreFrontBillingInfoPage.isBillingProfileRemovedMsgAppeared(), "'Your Billing profile has been removed' message has not appeared on the page");
-		dsvStoreFrontHomePage.clickLogo();
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-5332:Access .biz and .com with non-secure url
-	@Test(groups = { "consultant" },priority=18)
+	@Test(groups = { "nonLogin" },priority=18)
 	public void testAccessBizAndComWithNonSecureURL_5332(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		dsvStoreFrontHomePage.openURL(TestConstants.DSV_BIZ_PWS);
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz non-secure pws");
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com non-secure pws");
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .biz non-secure pws");
-		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .com non-secure pws");
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-5333:Access .biz and .com with secure url
-	@Test(groups = { "consultant" },priority=19)
+	@Test(groups = { "nonLogin" },priority=19)
 	public void testAccessBizAndComWithSecureURL_5333(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		dsvStoreFrontHomePage.openURL(TestConstants.DSV_BIZ_PWS);
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com secure pws");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz secure pws");
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
 		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .biz secure pws");
-		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com secure pws");
 		s_assert.assertAll();
 	}
 
@@ -472,11 +471,11 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	@Test(groups = { "nonLogin" },priority=20)
 	public void testCanadianSponsorWithPwsForEnrollment_5334(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
 		dsvStoreFrontHomePage.enterSponsorAndSearch(TestConstants.DSV_CANADIAN_SPONSOR_WITH_PWS);
 		dsvStoreFrontHomePage.mouseHoverOnSponsorAndClickSelectAndContinue();
 		s_assert.assertTrue(dsvStoreFrontHomePage.validateCurrentURLContainsBiz(),"url does not contain biz");
-		dsvStoreFrontHomePage.clickLogo();
 		s_assert.assertAll();
 	}
 
@@ -484,11 +483,11 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	@Test(groups = { "nonLogin" },priority=21)
 	public void testSelectUSSponsorForEnrolment_5335(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
 		dsvStoreFrontHomePage.enterSponsorAndSearch(TestConstants.DSV_US_SPONSOR_WITH_PWS);
 		dsvStoreFrontHomePage.mouseHoverOnSponsorAndClickSelectAndContinue();
 		s_assert.assertTrue(dsvStoreFrontHomePage.validateCurrentURLContainsCom(),"url does not contain rodanandfields.com");
-		dsvStoreFrontHomePage.clickLogo();
 		s_assert.assertAll();
 	}
 
@@ -496,11 +495,11 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	@Test(groups = { "nonLogin" },priority=22)
 	public void testSelectCanadianSponsorWithNoPWSForEnrolment_5336(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
 		dsvStoreFrontHomePage.enterSponsorAndSearch(TestConstants.DSV_CA_SPONSOR_WITH_NO_PWS);
 		dsvStoreFrontHomePage.mouseHoverOnSponsorAndClickSelectAndContinue();
 		s_assert.assertTrue(dsvStoreFrontHomePage.validateCurrentURLContainsCom(),"url does not contain rodanandfields.com");
-		dsvStoreFrontHomePage.clickLogo();
 		s_assert.assertAll();
 	}
 

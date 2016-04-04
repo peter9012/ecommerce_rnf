@@ -2127,7 +2127,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1565:To verify the Canada tax for Nova Scotia for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForNovaScotiaForRCOrder_1565(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2191,7 +2191,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1566:To verify the Canada tax for New Brunswick for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForNewBrunswickForRCOrder_1566(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2255,7 +2255,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1604:To verify the Canada tax for Yukon for Create PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForYukonForPCPerksAutoship_1604(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2325,7 +2325,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1605:To verify the Canada tax for Northwest Territories for Create PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNorthwestTerritoriesForPCPerksAutoship_1605(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2395,7 +2395,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1606:To verify the Canada tax for Nunavat for Create PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNunavatForPCPerksAutoship_1606(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2465,7 +2465,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1607:To verify the Canada tax for Bristish Columbia for PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForBritishColumbiaForPCPerksAutoship_1607(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2539,7 +2539,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1608:To verify the Canada tax for Alberta for PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForAlbertaForPCPerksAutoship_1608(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2613,7 +2613,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1609:To verify the Canada tax for saskatchewan for PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForSaskatchewanForPCPerksAutoship_1609(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2687,7 +2687,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1610:To verify the Canada tax for Manitoba for PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForManitobaForPCPerksAutoship_1610(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2761,7 +2761,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1612:To verify the Canada tax for Quebec for PCPerks Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForQubecForPCPerksAutoship_1612(){
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -2835,7 +2835,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1591:To verify the Canada tax for Yukon for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForYukonForCRPAutoship_1591(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -2934,7 +2934,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1592:To verify the Canada tax for Northwest Territories for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNorthwestTerritoriesForCRPAutoship_1592(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3033,7 +3033,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1593:To verify the Canada tax for Nunavat for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNunavutForCRPAutoship_1593(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3131,7 +3131,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 	//--
 	//Hybris Project-1567:To verify the Canada tax for Prince Edward Island for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForPrinceEdwardIslandForRCOrder_1567(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -3195,7 +3195,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1568:To verify the Canada tax for New foundland for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForNewFoundlandForRCOrder_1568(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -3259,7 +3259,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1569:To verify the Canada tax for Yukon for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForYukonForRCOrder_1569(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;

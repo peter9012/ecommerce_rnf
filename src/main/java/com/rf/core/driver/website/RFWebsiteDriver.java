@@ -96,7 +96,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
 	}
-	
+
 	public void selectCountry(String country){
 		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
 		if(country.equalsIgnoreCase("ca")){
@@ -258,7 +258,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-	
+
 	public void waitForCSCockpitLoadingImageToDisappear(int time){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
@@ -280,7 +280,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}
-	
+
 	public void waitForCRMLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[contains(text(),'Loading')]");
@@ -302,7 +302,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 	}	
-	
+
 	public void waitForLoadingImageToAppear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
@@ -347,6 +347,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 	}
 
+	public void waitForStorfrontLegacyLoadingImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[contains(@id,'UpdateProgress')][contains(@style,'display: block;')]");
+		logger.info("Waiting for storefront legacy loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("Storefront legacy loading image disappears");
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+
+	}
+
 	public void waitForElementTobeEnabled(By locator){
 		for(int time=1;time<=30;time++){
 			if(driver.findElement(locator).isEnabled()==true){
@@ -378,15 +400,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}catch(Exception e){
 			retryingFindClick(locator);
 		}
-//		waitForLoadingImageToDisappear();
+		//		waitForLoadingImageToDisappear();
 	}
 
 	public void type(By locator, String input) {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		 */		
 		// quickWaitForElementPresent(locator);
-		 findElement(locator).clear();
-		 findElement(locator).sendKeys(input);
+		findElement(locator).clear();
+		findElement(locator).sendKeys(input);
 	}
 
 	public void quit() {
@@ -454,7 +476,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void clear(By by) {
-//		quickWaitForElementPresent(by);
+		//		quickWaitForElementPresent(by);
 		findElement(by).clear();
 	}
 

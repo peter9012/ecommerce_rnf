@@ -403,6 +403,7 @@ public class TestConstants {
 	public static final String DSV_RC_PASSWORD = "test1234";
 	public static final String DSV_RC_CID = "06368553";
 
+	public static final String DSV_BIZ_PWS = "http://rrftestu0328.myrandf.biz/ca/";
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 

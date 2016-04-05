@@ -3,14 +3,13 @@ package com.rf.pages.website.storeFrontLegacy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstantsRFL;
 
 import com.rf.pages.RFBasePage;
-
-
 
 public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
@@ -28,7 +27,9 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By COMPLETE_ORDER_BTN = By.xpath("//input[contains(@id,'uxSubmitOrder')]");
 	private static final By ORDER_CONFIRMATION_THANK_YOU_TXT = By.xpath("//cufontext[contains(text(),'Thank')]");
 	private static final By CONTINUE_BTN_BILLING_PAGE = By.xpath("//span[contains(text(),'Change Billing Information')]/following::a[contains(@id,'uxContinue')]");
-	private final By CONTINUE_WITHOUT_CONSULTANT_LINK = By.xpath("//a[contains(@id,'uxSkipStep')]");
+	private static final By CONTINUE_WITHOUT_CONSULTANT_LINK = By.xpath("//a[contains(@id,'uxSkipStep')]");
+	private static final By ADD_TO_CART_BTN_AS_PER_REGIMEN = By.xpath("//div[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']");
+	private static final By HELLO_OR_WELCOME_TXT_ON_CORP = By.xpath("//*[contains(text(),'Hello') or contains(text(),'Welcome')]");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -43,13 +44,6 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(LOGOUT_BTN_LOC);
 	}
 
-	public void openBizPWS(){
-		driver.get(TestConstantsRFL.BIZ_PWS);
-	}
-	public void openComPWS(){
-		driver.get(TestConstantsRFL.COM_PWS);
-	}
-
 	public void clickShopSkinCareHeader() {
 		driver.waitForElementPresent(SHOP_SKINCARE_HEADER_LOC);
 		driver.click(SHOP_SKINCARE_HEADER_LOC);
@@ -61,6 +55,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath(String.format(regimenProductLoc, regimen)));
 		logger.info("Regimen selected is: "+regimen);
 	}
+
 	public void clickAddToCartButtonAfterLogin() {
 		driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
 		driver.click(ADD_TO_CART_BTN_LOC);
@@ -113,8 +108,26 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void openPWSSite(String pws){
+		boolean isAlreadylogin = false;
 		driver.get(pws);
+		try{
+			logout();
+			isAlreadylogin = true;
+		}catch(NoSuchElementException e){
+
+		} 
+		if(isAlreadylogin == true){
+			driver.get(pws);
+		}
 		logger.info("Open Pws Site Is: "+pws);
+		driver.waitForPageLoad();
+	}
+
+	public void logout(){
+		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		logger.info("Logout");  
+		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
 
@@ -122,6 +135,23 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.quickWaitForElementPresent(CONTINUE_WITHOUT_CONSULTANT_LINK);
 		driver.click(CONTINUE_WITHOUT_CONSULTANT_LINK);
 		logger.info("Continue without sponser link clicked");
+	}
+
+	public String getCurrentURL(){
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl();
+	}
+
+	public void clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin() {
+		driver.quickWaitForElementPresent(ADD_TO_CART_BTN_AS_PER_REGIMEN);
+		driver.click(ADD_TO_CART_BTN_AS_PER_REGIMEN);
+		logger.info("Add to cart button is clicked");
+	}
+
+	public boolean verifyUserSuccessfullyLoggedIn() {
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(HELLO_OR_WELCOME_TXT_ON_CORP);
+		return driver.isElementPresent(HELLO_OR_WELCOME_TXT_ON_CORP);
 	}
 
 }

@@ -60,7 +60,7 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";	
 		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
-//			driver.selectCountry(country);
+			//			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
 
@@ -89,9 +89,7 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
 		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
-//		driver.waitForElementPresent(By.linkText("Log out"));
-//		driver.findElement(By.linkText("Log out")).click();
-//		logger.info("Logout");		
+		logger.info("Logout");  
 		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
@@ -234,5 +232,5 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
-	
+
 }

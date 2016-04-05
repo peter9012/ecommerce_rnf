@@ -23,6 +23,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
 	private static final By SEARCH_RESULTS_LOC = By.xpath("//div[@id='searchResults']//a");
 	private static final By BIG_BUSINESS_LAUNCH_KIT_LOC = By.xpath("//cufontext[contains(text(),'Big')]/ancestor::div[@class='KitContent'][1]");
+	private static final By BUSINESS_PORTFOLIO_KIT_LOC =By.xpath("//cufontext[contains(text(),'Portfolio')]/ancestor::div[@class='KitContent'][1]");
+	private static final By SELECT_ENROLLMENT_KIT_NEXT_BTN_LOC =By.xpath("//a[@id='BtnNext']//canvas");
+	private static final By ACCOUNT_INFORMATION_NEXT_BTN = By.xpath("//a[@id='btnNext']//cufon");
 	private static final By REDEFINE_REGIMEN_LOC = By.xpath("//cufontext[text()='REDEFINE ']/ancestor::a[1]");
 	private static final By REGIMEN_NEXT_BTN_LOC = By.xpath("//a[@id='BtnDone']");
 	private static final By EXPRESS_ENROLLMENT_LOC = By.id("btnGoToExpressEnroll");
@@ -117,6 +120,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private static final By LOGIN_BTN_LOC = By.xpath("//a[@id='loginButton']");
 	private static final By CLICK_HERE_LINK_FOR_RC = By.xpath("//a[contains(@id,'RetailLink')]");
+	private static final By LOG_OUT_ON_CORP_BTN = By.xpath("//a[text()='Log-Out']");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -372,6 +376,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickProductsBtn(){
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(PRODUCT_LOC);
 		driver.click(PRODUCT_LOC);
 		logger.info("Products button clicked");
@@ -469,9 +474,6 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 
-
-
-
 	public void enterShippingProfileDetails(String addressName, String firstName,String lastName,String addressLine1,String postalCode,String phnNumber){
 		driver.type(ADDRESS_NAME_FOR_SHIPPING_PROFILE, addressName);
 		logger.info("Address name entered as: "+addressName);
@@ -488,6 +490,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("City dropdown clicked");
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
+		driver.waitForElementPresent(COUNTRY_DD);
 		driver.click(COUNTRY_DD);
 		logger.info("Country dropdown clicked");
 		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
@@ -575,6 +578,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
+		driver.waitForPageLoad();
 	}
 
 	public void clickClickHereLinkForRC(){
@@ -596,5 +600,41 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		String alertTxt=alert.getText();
 		logger.info("Txt From java Script popup is "+alertTxt);
 		return alertTxt;
+	}
+
+	public boolean verifyUserSuccessfullyLoggedInOnCorpSite() {
+		driver.waitForElementPresent(LOG_OUT_ON_CORP_BTN);
+		if(driver.isElementPresent(LOG_OUT_ON_CORP_BTN)){
+			logger.info("User Successfully Logged In");
+			return true;
+		}else return false;
+	}
+
+	public void selectBusinessPortfolioEnrollmentKit(){
+		driver.quickWaitForElementPresent(BUSINESS_PORTFOLIO_KIT_LOC);
+		driver.click(BUSINESS_PORTFOLIO_KIT_LOC);
+		logger.info("Business Portfolio Kit is selected");
+	}
+
+	public void clickNextBtnOnSelectEnrollmentKitPage(){
+		driver.quickWaitForElementPresent(SELECT_ENROLLMENT_KIT_NEXT_BTN_LOC);
+		driver.click(SELECT_ENROLLMENT_KIT_NEXT_BTN_LOC);
+		logger.info("Business Portfolio Kit is selected");
+		driver.waitForPageLoad();
+	}
+
+	public void clickAccountInformationNextBtn(){
+		driver.quickWaitForElementPresent(ACCOUNT_INFORMATION_NEXT_BTN);
+		driver.click(ACCOUNT_INFORMATION_NEXT_BTN);
+		logger.info("Account Information Next button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickChargeMyCardAndEnrollMeWithOutConfirmAutoship(){
+		driver.quickWaitForElementPresent(CHARGE_AND_ENROLL_ME_BTN_LOC);
+		driver.click(CHARGE_AND_ENROLL_ME_BTN_LOC);
+		logger.info("Charge and enroll me button clicked");
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
 	}
 }

@@ -19,7 +19,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void testPlaceAnAdhocOrderFromBizPWS(){
 		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.openBizPWS();
+		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.BIZ_PWS);
 		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(),"consultant is not logged in successfully");
 		storeFrontLegacyHomePage.clickShopSkinCareHeader();
@@ -39,7 +39,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void testPlaceAnAdhocOrderFromComPWS(){
 		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.openComPWS();
+		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
 		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(),"consultant is not logged in successfully");
 		storeFrontLegacyHomePage.clickShopSkinCareHeader();

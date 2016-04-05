@@ -34,6 +34,8 @@ public class TestConstantsRFL {
 	public static final String NEW_ADDRESS_PHONE_NUMBER_US="4155555555";
 	public static final String USERNAME_RC = "lacey@test.test";
 	public static final String RC_ACCOUNT_CONFIRMATION_POPUP_TXT="You have successfully created an account. Press OK to proceed to checkout.";
+	public static final String REGIMEN_NAME_ESSENTIALS = "ESSENTIALS";
+	public static final String REGIMEN_NAME_ENHANCEMENTS = "ENHANCEMENTS";
 
 }
 

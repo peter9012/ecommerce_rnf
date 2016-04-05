@@ -62,6 +62,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickRenewLater()  {
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			driver.pauseExecutionFor(2000);
 			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
 			logger.info("Renew later button clicked");
 			driver.waitForLoadingImageToDisappear();
@@ -452,9 +453,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
+		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 		logger.info("Yes,enroll me in CRP checkbox is unchecked");
-		driver.pauseExecutionFor(2000);
 	}
 
 

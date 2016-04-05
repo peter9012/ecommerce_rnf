@@ -1930,17 +1930,19 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 			driver.switchTo().defaultContent();
 			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[1]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_ADDRESS_LINE_1_CA);
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[4]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_LOCALE_CA);
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[6]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_REGION_CA);
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[7]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_POSTALCODE_CA);
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[8]/td[4]//input")).sendKeys(TestConstants.CRM_NEW_PHONENUM_CA);
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[2]/td[2]//input")).sendKeys(TestConstants.CRM_NEW_PROFILENAME_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Address Line 1')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_ADDRESS_LINE_1_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Locale')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_LOCALE_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Region')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_REGION_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Postal Code')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_POSTALCODE_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Address Phone')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_PHONENUM_CA);
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'Profile Name')]/parent::td/following-sibling::td/input")).sendKeys(TestConstants.CRM_NEW_PROFILENAME_CA);
 			//check default check box
-			driver.findElement(By.xpath("//table[@class='detailList']//tr[3]/td[2]//input")).click();
+			driver.findElement(By.xpath("//table[@class='detailList']//label[contains(text(),'IsDefault')]/parent::td/following-sibling::td/input")).click();
 			//click save
-			driver.click(By.xpath("//td[@id='topButtonRow']/input[@title='Save']"));
-			driver.waitForPageLoad();
+			driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
+			driver.pauseExecutionFor(4000);
+			driver.click(By.xpath("//input[@title='Choose Address']"));
+			driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
 		}else{
 
 		}

@@ -407,7 +407,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Verify Redefine regimen Sections And Subsections should be displayed properly.
-	@Test(enabled=false)//WIP
+	/*@Test(enabled=false)//WIP
 	public void testVerifyRedefineRegimenLinksDisplayedProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subSectionRegimen = "Regimen";
@@ -488,6 +488,6 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.navigateToBackPage();
 		s_assert.assertAll();
 
-	}
+	}*/
 
 }

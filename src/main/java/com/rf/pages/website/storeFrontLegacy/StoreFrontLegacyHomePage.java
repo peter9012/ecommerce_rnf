@@ -908,10 +908,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return fetchPWS;
 	}
 
-	public boolean verifyRedefineRegimenSections(String sublinkName){
+/*	public boolean verifyRedefineRegimenSections(String sublinkName){
 		driver.quickWaitForElementPresent(By.xpath(String.format(redefineRegimenSubLinks, sublinkName)));
 		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(redefineRegimenSubLinks, sublinkName))));
-	}
+	}*/
 
 	public boolean verifyAddToCartButton() {
 		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);

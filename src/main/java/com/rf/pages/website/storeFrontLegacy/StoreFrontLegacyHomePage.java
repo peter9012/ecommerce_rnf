@@ -16,6 +16,20 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String genderLocForPCAndRC= "//label[text()='%s']/preceding::input[1]";
 	private static String expiryMonthLoc= "//select[contains(@id,'uxMonthDropDown')]//option[@value='%s']";
 	private static String expiryYearLoc= "//select[contains(@id,'uxYearDropDown')]//option[@value='%s']";
+	private static String regimenHeaderLoc = "//div[@id='HeaderCol']//span[text()='%s']";
+	private static String regimenNameLoc= "//cufon[@alt='%s']";
+
+	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
+	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
+	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
+	private static final By NEWS_TEXT_LOC = By.xpath("//div[@id='RFContent']");
+	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//cufontext[text()='Questions']");
+	private static final By ADVICE_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']//td[1]");
+	private static final By GLOSSARY_PAGE_CONTENT_LOC = By.xpath("//div[@id='GlossaryAF']");
+	private static final By INGREDIENTS_AND_USAGE_LINK_LOC = By.xpath("//a[text()='Ingredients and Usage']");
+	private static final By INGREDIENTS_CONTENT_LOC = By.xpath("//span[@id='ProductUsage']");
+	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//div[@id='FooterPane']//span[text()='Contact Us']");
+	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//cufontext[text()='About ']");
 
 	private static final By BUSINESS_SYSTEM_LOC = By.xpath("//span[text()='Business System']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//a[text()='ENROLL NOW']");
@@ -81,7 +95,6 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//div[@id='mainBanner']/div[1]/a/img");
 	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//a[text()='Enroll Now']");
 
-	private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
 	private static final By ADD_TO_CART_BTN = By.xpath("//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
 	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[text()='Enroll Now']");
@@ -121,6 +134,30 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By LOGIN_BTN_LOC = By.xpath("//a[@id='loginButton']");
 	private static final By CLICK_HERE_LINK_FOR_RC = By.xpath("//a[contains(@id,'RetailLink')]");
 	private static final By LOG_OUT_ON_CORP_BTN = By.xpath("//a[text()='Log-Out']");
+	private static final By CARRERS_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Careers']");
+	private static final By PRESS_ROOM_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Press Room']");
+	private static final By CONTACT_US_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Contact Us']");
+	private static final By WHO_WE_ARE_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Who We Are']");
+	private static final By PC_PERKS_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='PC PERKS']");
+	private static final By DIGITAL_PRODUCT_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Digital Product Catalog']");
+	private static final By PRODUCT_PHILOSOPHY_LOC = By.xpath("//span[text()='Product Philosophy']");
+	private static final By DIGITAL_PRODUCT_CATALOG_LOC = By.xpath("//span[text()='Digital Product Catalog']");
+	private static final By REAL_RESULTS_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Real Results']");
+	private static final By EXECUTIVE_TEAM_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Executive Team']");
+	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
+	private static final By SOLUTION_TOOL_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Solution Tool']");
+	private static final By PRIVACY_POLICY_LINK = By.xpath("//span[text()='Privacy Policy']");
+	private static final By PRIVACY_POLICY_TEXT = By.xpath("//u[text()='PRIVACY POLICY']");
+	private static final By SATISFACTION_GUARANTEE_LINK = By.xpath("//span[text()='Satisfaction Guarantee']");
+	private static final By SATISFACTION_GUARANTEE_TEXT = By.xpath("//cufontext[text()='Guarantee']");
+	private static final By TERMS_AND_CONDITIONS_LINK = By.xpath("//span[text()='Terms & Conditions']");
+	private static final By SOLUTION_TOOL_LOC = By.xpath("//span[text()='Products']/following::li/a/span[text()='Solution Tool']");
+	private static final By SOLUTION_TOOL_PAGE_LOC = By.xpath("//div[@id='RFContent']");
+	private static final By FIND_RODAN_FIELD_CONSULTANT_LINK_LOC = By.xpath("//div[@id='RFContent']//a[text()='Find a Rodan + Fields Consultant']");
+	private static final By SPONSOR_RADIO_BTN_ON_FIND_CONSULTANT_PAGE = By.xpath("//div[@class='DashRow']//input");
+	private static final By PWS_TXT_ON_FIND_CONSULTANT_PAGE = By.xpath("//span[contains(text(),'PWS URL')]/a");
+	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
+
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -364,7 +401,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return driver.isElementPresent(EXISTING_CONSULTANT_LOC);
 	}
 
-	public void loginAsConsultant(String userName, String password) {
+	public StoreFrontLegacyConsultantPage loginAsConsultant(String userName, String password) {
 		driver.waitForElementPresent(USERNAME_TEXT_BOX_LOC);
 		driver.type(USERNAME_TEXT_BOX_LOC, userName);
 		logger.info("Entered Username is: "+userName);
@@ -373,14 +410,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Entered Password is: "+password);
 		driver.click(ENTER_LOGIN_BTN_LOC);
 		logger.info("login  enter button clicked");
-	}
-
-	public void clickProductsBtn(){
-		driver.pauseExecutionFor(2000);
-		driver.quickWaitForElementPresent(PRODUCT_LOC);
-		driver.click(PRODUCT_LOC);
-		logger.info("Products button clicked");
 		driver.waitForPageLoad();
+		return new StoreFrontLegacyConsultantPage(driver);
 	}
 
 	public void selectRegimen(String regimen){
@@ -636,5 +667,259 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Charge and enroll me button clicked");
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
+	}
+
+	public void clickSubSectionUnderRegimen(String regimenHeader){
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenHeaderLoc, regimenHeader)));
+		driver.click(By.xpath(String.format(regimenHeaderLoc, regimenHeader)));
+		logger.info("Regimen selected is: "+regimenHeader);
+	}
+
+	public boolean verifyUserIsRedirectedToProductsPage() {
+		driver.waitForElementPresent(PRODUCTS_LIST_LOC);
+		return driver.isElementPresent(PRODUCTS_LIST_LOC); 
+	}
+
+	public boolean verifyUserIsRedirectedToResultsPage() {
+		driver.waitForElementPresent(RESULTS_TEXT_LOC);
+		return driver.isElementPresent(RESULTS_TEXT_LOC); 
+	}
+
+	public boolean verifyUserIsRedirectedToTestimonialsPage() {
+		// TODO Auto-generated method stub
+		driver.waitForElementPresent(TESTIMONIAL_PAGE_CONTENT_LOC);
+		return driver.isElementPresent(TESTIMONIAL_PAGE_CONTENT_LOC);
+	}
+
+	public boolean verifyUserIsRedirectedToNewsPage() {
+		driver.waitForElementPresent(NEWS_TEXT_LOC);
+		return driver.isElementPresent(NEWS_TEXT_LOC);
+	}
+
+	public boolean verifyUserIsRedirectedToFAQsPage() {
+		driver.waitForElementPresent(FAQS_TEXT_LOC);
+		return driver.isElementPresent(FAQS_TEXT_LOC);
+	}
+
+	public boolean verifyUserIsRedirectedToAdvicePage() {
+		driver.waitForElementPresent(ADVICE_PAGE_CONTENT_LOC);
+		return driver.isElementPresent(ADVICE_PAGE_CONTENT_LOC);
+	}
+
+	public boolean verifyUserIsRedirectedToGlossaryPage() {
+		driver.waitForElementPresent(GLOSSARY_PAGE_CONTENT_LOC);
+		return driver.isElementPresent(GLOSSARY_PAGE_CONTENT_LOC);
+	}
+
+	public void clickIngredientsAndUsageLink() {
+		driver.waitForElementPresent(INGREDIENTS_AND_USAGE_LINK_LOC);
+		driver.click(INGREDIENTS_AND_USAGE_LINK_LOC);
+		logger.info("INGREDIENTS AND USAGE LINK CLICKED");
+	}
+
+	public boolean verifyIngredientsAndUsageInfoVisible() {
+		driver.waitForElementPresent(INGREDIENTS_CONTENT_LOC);
+		return driver.IsElementVisible(driver.findElement(INGREDIENTS_CONTENT_LOC));
+
+	}
+
+	public void clickContactUsAtFooter() {
+		driver.waitForElementPresent(FOOTER_CONTACT_US_LINK_LOC);
+		driver.click(FOOTER_CONTACT_US_LINK_LOC);
+		logger.info("contact us link is clicked");
+	}
+
+	public boolean verifylinkIsRedirectedToContactUsPage() {
+		driver.waitForElementPresent(CONTACT_US_PAGE_HEADER_LOC);
+		return driver.isElementPresent(CONTACT_US_PAGE_HEADER_LOC);
+	}
+
+	public void clickProductPhilosophyLink(){
+		driver.quickWaitForElementPresent(PRODUCT_PHILOSOPHY_LOC);
+		driver.click(PRODUCT_PHILOSOPHY_LOC);
+		logger.info("Product Philosophy Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickDigitalProductCatalogLink(){
+		driver.quickWaitForElementPresent(DIGITAL_PRODUCT_CATALOG_LOC);
+		driver.click(DIGITAL_PRODUCT_CATALOG_LOC);
+		logger.info("Digital Product Catalog Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateProductPhilosohyPageDisplayed(){
+		return driver.getCurrentUrl().contains("Products/Philosophy");
+	}
+
+	public boolean validateRealResultsLink(){
+		driver.quickWaitForElementPresent(REAL_RESULTS_LINK_LOC);
+		driver.click(REAL_RESULTS_LINK_LOC);
+		logger.info("Real Results Link clicked");
+		driver.waitForPageLoad();
+		boolean status= driver.getCurrentUrl().contains("Results");
+		driver.navigate().back();
+		return status;
+	}
+
+	public boolean validateExecutiveTeamLinkPresent(){
+		driver.quickWaitForElementPresent(EXECUTIVE_TEAM_LINK_LOC);
+		return driver.isElementPresent(EXECUTIVE_TEAM_LINK_LOC);
+	}
+
+	public boolean validateExecuteTeamLink(){
+		driver.quickWaitForElementPresent(EXECUTIVE_TEAM_LINK_LOC);
+		driver.click(EXECUTIVE_TEAM_LINK_LOC);
+		logger.info("Execute Team Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("Executives");
+	}
+
+	public boolean validateCareersLinkPresent(){
+		driver.quickWaitForElementPresent(CARRERS_LINK_LOC);
+		return driver.isElementPresent(CARRERS_LINK_LOC);
+	}
+
+	public boolean validateContactUsLinkPresent(){
+		driver.quickWaitForElementPresent(CONTACT_US_LINK_LOC);
+		return driver.isElementPresent(CONTACT_US_LINK_LOC);
+	}
+
+	public boolean validateWhoWeAreLinkPresent(){
+		driver.quickWaitForElementPresent(WHO_WE_ARE_LINK_LOC);
+		return driver.isElementPresent(WHO_WE_ARE_LINK_LOC);
+	}
+
+	public boolean validatePressRoomLinkPresent(){
+		driver.quickWaitForElementPresent(PRESS_ROOM_LINK_LOC);
+		return driver.isElementPresent(PRESS_ROOM_LINK_LOC);
+	}
+
+	public boolean validateSolutionToolLink(){
+		driver.quickWaitForElementPresent(SOLUTION_TOOL_LINK_LOC);
+		driver.click(SOLUTION_TOOL_LINK_LOC);
+		logger.info("Solution Tool Link clicked");
+		driver.waitForPageLoad();
+		boolean status= driver.getCurrentUrl().contains("SolutionTool");
+		driver.navigate().back();
+		return status;
+	}
+
+	public boolean validatePCPerksLink(){
+		driver.quickWaitForElementPresent(PC_PERKS_LINK_LOC);
+		driver.click(PC_PERKS_LINK_LOC);
+		logger.info("PC Perks Link clicked");
+		driver.waitForPageLoad();
+		boolean status= driver.getCurrentUrl().contains("PCPerks");
+		driver.navigate().back();
+		return status;
+	}
+
+	public boolean validateDigitalProductCatalogLink(){
+		driver.quickWaitForElementPresent(DIGITAL_PRODUCT_LINK_LOC);
+		driver.click(DIGITAL_PRODUCT_LINK_LOC);
+		logger.info("Digital Product Link clicked");
+		driver.waitForPageLoad();
+		boolean status= driver.getCurrentUrl().contains("Digimag");
+		driver.navigate().back();
+		return status;
+	}
+
+	public void clickAboutRFBtn(){
+		driver.quickWaitForElementPresent(ABOUT_RF_LOC);
+		driver.click(ABOUT_RF_LOC);
+		logger.info("About RF button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickPrivacyPolicyLink(){
+		driver.quickWaitForElementPresent(PRIVACY_POLICY_LINK);
+		driver.click(PRIVACY_POLICY_LINK);
+		logger.info("Privacy policy link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isPrivacyPolicyPagePresent(){
+		driver.quickWaitForElementPresent(PRIVACY_POLICY_TEXT);
+		return driver.isElementPresent(PRIVACY_POLICY_TEXT);
+	}
+
+	public void clickSatisfactionGuaranteeLink(){
+		driver.quickWaitForElementPresent(SATISFACTION_GUARANTEE_LINK);
+		driver.click(SATISFACTION_GUARANTEE_LINK);
+		logger.info("Satisfaction guarantee link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isSatisfactionGuaranteePagePresent(){
+		driver.quickWaitForElementPresent(SATISFACTION_GUARANTEE_TEXT);
+		return driver.isElementPresent(SATISFACTION_GUARANTEE_TEXT);
+	}
+
+	public void selectPromotionRegimen(){
+		String regimen = "Promotions";
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
+		driver.click(By.xpath(String.format(regimenLoc, regimen)));
+		logger.info("Regimen selected is: "+regimen);
+	}
+
+	public boolean isRegimenNamePresentAfterClickedOnRegimen(String regimen){
+		regimen = regimen.toUpperCase();
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenNameLoc, regimen)));
+		return driver.isElementPresent(By.xpath(String.format(regimenNameLoc, regimen)));
+	}
+
+	public void clickTermsAndConditionsLink(){
+		driver.quickWaitForElementPresent(TERMS_AND_CONDITIONS_LINK);
+		driver.click(TERMS_AND_CONDITIONS_LINK);
+		logger.info("Terms & Conditions link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickSolutionToolUnderProduct(){
+		driver.quickWaitForElementPresent(SOLUTION_TOOL_LOC);
+		driver.click(SOLUTION_TOOL_LOC);
+		logger.info("Solution tool clicked under product tab button");
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifySolutionToolPage(){
+		driver.quickWaitForElementPresent(SOLUTION_TOOL_PAGE_LOC);
+		return driver.isElementPresent(SOLUTION_TOOL_PAGE_LOC);
+	}
+
+	public void clickFindRodanFieldConsultantLink(){
+		driver.quickWaitForElementPresent(FIND_RODAN_FIELD_CONSULTANT_LINK_LOC);
+		driver.click(FIND_RODAN_FIELD_CONSULTANT_LINK_LOC);
+		logger.info("Find rodan and fields consultant link is clicked.");
+		driver.waitForPageLoad();
+	}
+
+	public void selectSponsorRadioBtnOnFindConsultantPage(){
+		driver.quickWaitForElementPresent(SPONSOR_RADIO_BTN_ON_FIND_CONSULTANT_PAGE);
+		driver.click(SPONSOR_RADIO_BTN_ON_FIND_CONSULTANT_PAGE);
+		logger.info("Radio button of sponsor is selected");
+	}
+
+	public String getPWSFromFindConsultantPage(){
+		driver.quickWaitForElementPresent(PWS_TXT_ON_FIND_CONSULTANT_PAGE);
+		String fetchPWS=driver.findElement(PWS_TXT_ON_FIND_CONSULTANT_PAGE).getText();
+		logger.info("Fetched PWS from find a consultant page is"+fetchPWS);
+		return fetchPWS;
+	}
+
+	public boolean verifyRedefineRegimenSections(String sublinkName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(redefineRegimenSubLinks, sublinkName)));
+		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(redefineRegimenSubLinks, sublinkName))));
+	}
+
+	public boolean verifyAddToCartButton() {
+		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);
+		return driver.isElementPresent(ADD_TO_CART_BTN);
+	}
+
+	public boolean verifyCheckoutBtnOnMyShoppingCart() {
+		driver.quickWaitForElementPresent(CHECKOUT_BTN);
+		return driver.isElementPresent(CHECKOUT_BTN);
 	}
 }

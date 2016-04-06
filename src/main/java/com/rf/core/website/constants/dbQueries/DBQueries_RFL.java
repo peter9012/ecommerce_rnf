@@ -5,6 +5,9 @@ public class DBQueries_RFL {
 
 	//RFL Queries
 	public static String GET_EMAILID_FROM_ACCOUNTID = "select top 1 * from dbo.Accounts where accountID='%s'";
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
+	public static String GET_RANDOM_ACTIVE_PC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='2' AND Active='1' order by NEWID()";
+	public static String GET_RANDOM_ACTIVE_RC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='3' AND Active='1' order by NEWID()";
 	public static String GET_ACCOUNT_DETAILS_QUERY_TST4 = "select top 1 * from dbo.Accounts where emailAddress = '%s'";
 	public static String GET_SHIPPING_ADDRESS_COUNT_QUERY_TST4 = "select count(*) as count from dbo.AccountAddresses where addressTypeId = '2' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_BILLING_ADDRESS_COUNT_QUERY_TST4 = "select count(*) as count from dbo.AccountAddresses where addressTypeId = '3' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
@@ -175,11 +178,11 @@ public class DBQueries_RFL {
 			"ORDER BY NEWID()";
 
 	public static String GET_ORDER_DETAILS_ACTIVE_PC_USER_HAVING_AUTOSHIP_ORDER_RFL ="select top 1 * from dbo.Orders"+
-			   " join dbo.OrderCustomers ON dbo.OrderCustomers.OrderID = dbo.Orders.OrderID"+
-			   " join dbo.OrderShipments ON dbo.OrderShipments.OrderID = dbo.Orders.OrderID"+
-			   " join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
-			   " join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID"+
-			   " where dbo.Orders.OrderTypeID=4 and dbo.Orders.OrderNumber='%s'";
+			" join dbo.OrderCustomers ON dbo.OrderCustomers.OrderID = dbo.Orders.OrderID"+
+			" join dbo.OrderShipments ON dbo.OrderShipments.OrderID = dbo.Orders.OrderID"+
+			" join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
+			" join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID"+
+			" where dbo.Orders.OrderTypeID=4 and dbo.Orders.OrderNumber='%s'";
 
 
 	public static String GET_ACTIVE_RC_USER_WITH_ADHOC_ORDER_RFL = 

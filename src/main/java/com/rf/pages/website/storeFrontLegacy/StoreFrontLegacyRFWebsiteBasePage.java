@@ -30,6 +30,10 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By CONTINUE_WITHOUT_CONSULTANT_LINK = By.xpath("//a[contains(@id,'uxSkipStep')]");
 	private static final By ADD_TO_CART_BTN_AS_PER_REGIMEN = By.xpath("//div[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']");
 	private static final By HELLO_OR_WELCOME_TXT_ON_CORP = By.xpath("//*[contains(text(),'Hello') or contains(text(),'Welcome')]");
+	private static final By ORDER_PLACED_CONFIRMATION_TEXT = By.xpath("//div[@id='RFContent']//b");
+	private static final By CONSULTANTS_ONLY_PRODUCTS_REGIMEN = By.xpath("//cufontext[contains(text(),'Consultant-Only ')]/following::a[1]/img");
+	private static final By FORGOT_PASSWORD_LINK = By.xpath("//a[@id='uxForgotPasswordLink']");
+	private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -152,6 +156,37 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(HELLO_OR_WELCOME_TXT_ON_CORP);
 		return driver.isElementPresent(HELLO_OR_WELCOME_TXT_ON_CORP);
+	}
+
+	public void navigateToBackPage(){
+		driver.waitForPageLoad();
+		driver.navigate().back();
+	}
+
+	public String getOrderConfirmationTextMsgAfterOrderPlaced(){
+		driver.waitForElementPresent(ORDER_PLACED_CONFIRMATION_TEXT);
+		String confirmationMsg = driver.findElement(ORDER_PLACED_CONFIRMATION_TEXT).getText().trim();
+		logger.info("Order confirmation msg after order placed is: "+confirmationMsg);
+		return confirmationMsg;
+	}
+
+	public void selectConsultantOnlyProductsRegimen(){
+		driver.quickWaitForElementPresent(CONSULTANTS_ONLY_PRODUCTS_REGIMEN);
+		driver.click(CONSULTANTS_ONLY_PRODUCTS_REGIMEN);
+		logger.info("Consultants only products Regimen selected");
+	}
+
+	public boolean isForgotPasswordLinkPresent() {
+		driver.waitForElementPresent(FORGOT_PASSWORD_LINK);
+		return driver.isElementPresent(FORGOT_PASSWORD_LINK);
+	}
+
+	public void clickProductsBtn(){
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(PRODUCT_LOC);
+		driver.click(PRODUCT_LOC);
+		logger.info("Products button clicked");
+		driver.waitForPageLoad();
 	}
 
 }

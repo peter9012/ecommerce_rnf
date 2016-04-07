@@ -40,20 +40,24 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
+		logger.info("In the Before suite..");
 		driver.loadApplication();		
 		logger.info("Application loaded");				
 		driver.setDBConnectionString();		
+		logger.info("out of Before suite..");
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
+		logger.info("In Before method..");
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
 		driver.get(driver.getURL());
 		try{
+			logger.info("Go for logout,if user is logged in");
 			logout();
 		}catch(NoSuchElementException e){
-
+			logger.info("User already logged out");
 		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
@@ -63,7 +67,7 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 			//			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
-
+		logger.info("Out of Before method..");
 	}
 
 	@AfterMethod
@@ -89,9 +93,9 @@ public class RFLegacyStoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
 		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
-		logger.info("Logout");  
+		logger.info("Logout done");  
 		driver.pauseExecutionFor(3000);
-		driver.waitForPageLoad();
+		driver.waitForPageLoad();		
 	}
 
 	// This assertion for the UI Texts

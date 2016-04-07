@@ -92,7 +92,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("guarantee"), "Expected url having guarantee but actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertAll();
 	}
-	
+
 	//Verify solution tool rodan and fields consultant be working properly.
 	@Test(enabled=true)
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){

@@ -15,9 +15,11 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontLegacyRFWebsiteBasePage.class.getName());
 
+	private static String regimenProductLoc = "//div[@id='ProductCategories']//span[text()='%s']/preceding::p[1]//img";
+	private static String businessSystemSubLink= "//div[@id='ContentWrapper']//span[contains(text(),'%s')]";
+
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='SHOP SKINCARE']");
-	private static String regimenProductLoc = "//div[@id='ProductCategories']//span[text()='%s']/preceding::p[1]//img";
 	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']/span");
 	private static final By MY_SHOPPING_BAG_LINK = By.xpath("//a[@class='BagLink']");
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");
@@ -34,6 +36,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By CONSULTANTS_ONLY_PRODUCTS_REGIMEN = By.xpath("//cufontext[contains(text(),'Consultant-Only ')]/following::a[1]/img");
 	private static final By FORGOT_PASSWORD_LINK = By.xpath("//a[@id='uxForgotPasswordLink']");
 	private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
+	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -187,6 +190,25 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(PRODUCT_LOC);
 		logger.info("Products button clicked");
 		driver.waitForPageLoad();
+	}
+
+	public boolean isSublinkOfBusinessSystemPresent(String linkNameOfBusinessSystem){
+		driver.quickWaitForElementPresent(By.xpath(String.format(businessSystemSubLink, linkNameOfBusinessSystem)));
+		return driver.isElementPresent(By.xpath(String.format(businessSystemSubLink, linkNameOfBusinessSystem)));
+	}
+
+	public void clickSublinkOfBusinessSystem(String linkNameOfBusinessSystem){
+		driver.quickWaitForElementPresent(By.xpath(String.format(businessSystemSubLink, linkNameOfBusinessSystem)));
+		driver.click(By.xpath(String.format(businessSystemSubLink, linkNameOfBusinessSystem)));
+		logger.info("Sublink of business system i.e. :"+linkNameOfBusinessSystem+" clicked");
+		driver.waitForPageLoad();
+	}
+
+	public String getSelectedHighlightLinkName(){
+		driver.waitForElementPresent(SELECTED_HIGHLIGHT_LINK);
+		String linkName = driver.findElement(SELECTED_HIGHLIGHT_LINK).getText();
+		logger.info("Selected And highlight link: "+linkName);
+		return linkName;
 	}
 
 }

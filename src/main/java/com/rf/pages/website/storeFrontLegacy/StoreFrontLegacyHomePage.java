@@ -1,5 +1,8 @@
 package com.rf.pages.website.storeFrontLegacy;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -18,6 +21,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String expiryYearLoc= "//select[contains(@id,'uxYearDropDown')]//option[@value='%s']";
 	private static String regimenHeaderLoc = "//div[@id='HeaderCol']//span[text()='%s']";
 	private static String regimenNameLoc= "//cufon[@alt='%s']";
+	private static String redefineRegimenSubLinks= "//cufontext[text()='REDEFINE']/following::li//span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -157,6 +161,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By SPONSOR_RADIO_BTN_ON_FIND_CONSULTANT_PAGE = By.xpath("//div[@class='DashRow']//input");
 	private static final By PWS_TXT_ON_FIND_CONSULTANT_PAGE = By.xpath("//span[contains(text(),'PWS URL')]/a");
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
+	private static final By CLICK_HERE_LINK = By.xpath("//a[text()='Click here']");
+	private static final By DETAILS_LINK = By.xpath("//a[text()='Details']");
 
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
@@ -908,10 +914,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return fetchPWS;
 	}
 
-/*	public boolean verifyRedefineRegimenSections(String sublinkName){
+	public boolean verifyRedefineRegimenSections(String sublinkName){
 		driver.quickWaitForElementPresent(By.xpath(String.format(redefineRegimenSubLinks, sublinkName)));
 		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(redefineRegimenSubLinks, sublinkName))));
-	}*/
+	}
 
 	public boolean verifyAddToCartButton() {
 		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);
@@ -921,5 +927,32 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	public boolean verifyCheckoutBtnOnMyShoppingCart() {
 		driver.quickWaitForElementPresent(CHECKOUT_BTN);
 		return driver.isElementPresent(CHECKOUT_BTN);
+	}
+
+	public void clickClickhereLink(){
+		driver.quickWaitForElementPresent(CLICK_HERE_LINK);
+		driver.click(CLICK_HERE_LINK);
+		logger.info("Clicke here link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isClickHereLinkRedirectinToAppropriatePage(String redirectedPageLink){
+		driver.waitForPageLoad();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		String parentWindow=it.next();
+		String childWindow=it.next();
+		driver.switchTo().window(childWindow);
+		boolean status= driver.getCurrentUrl().contains(redirectedPageLink);
+		driver.close();
+		driver.switchTo().window(parentWindow);
+		return status;
+	}
+
+	public void clickDetailsLink(){
+		driver.quickWaitForElementPresent(DETAILS_LINK);
+		driver.click(DETAILS_LINK);
+		logger.info("Details link clicked");
+		driver.waitForPageLoad();
 	}
 }

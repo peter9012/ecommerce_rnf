@@ -20,7 +20,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
+		//storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
 		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(), "RC user not logged in successfully");
 		storeFrontLegacyHomePage.clickShopSkinCareHeader();

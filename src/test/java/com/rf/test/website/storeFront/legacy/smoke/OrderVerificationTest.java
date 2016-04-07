@@ -15,25 +15,25 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	private StoreFrontLegacyHomePage storeFrontLegacyHomePage;
 	private StoreFrontLegacyConsultantPage storeFrontLegacyConsultantPage;
 
-	//Adhoc Order - Consultant corp
-	@Test(enabled=true)
-	public void testConsultantAdhocOrder(){
-		String username = TestConstantsRFL.USERNAME_CONSULTANT;
-		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.loginAsConsultant(username,password);
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
-		storeFrontLegacyHomePage.clickProductsBtn();
-		storeFrontLegacyHomePage.selectRegimen(regimen);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		storeFrontLegacyHomePage.clickAddToCartBtn();
-		storeFrontLegacyHomePage.clickCheckoutBtn();
-		storeFrontLegacyHomePage.clickContinueBtn();
-		storeFrontLegacyHomePage.clickContinueBtnOnBillingPage();
-		storeFrontLegacyHomePage.clickCompleteOrderBtn();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
-		s_assert.assertAll();  
-	}
+	//	//Adhoc Order - Consultant corp
+	//	@Test(enabled=true)
+	//	public void testConsultantAdhocOrder(){
+	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
+	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
+	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
+	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
+	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.selectRegimen(regimen);
+	//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+	//		storeFrontLegacyHomePage.clickAddToCartBtn();
+	//		storeFrontLegacyHomePage.clickCheckoutBtn();
+	//		storeFrontLegacyHomePage.clickContinueBtn();
+	//		storeFrontLegacyHomePage.clickContinueBtnOnBillingPage();
+	//		storeFrontLegacyHomePage.clickCompleteOrderBtn();
+	//		s_assert.assertTrue(storeFrontLegacyHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
+	//		s_assert.assertAll();  
+	//	}
 
 	//Adhoc Order - PC corp
 	@Test(enabled=true)

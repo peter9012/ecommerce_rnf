@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
@@ -80,7 +81,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Reverse Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test
+	@Test(enabled=true)
 	public void testReverseProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		String subLinkProducts = "Products";
@@ -129,7 +130,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Unblemish Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testUnblemishProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
 		String subLinkProducts = "Products";
@@ -179,7 +180,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Soothe Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testSootheProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
 		String subLinkProducts = "Products";
@@ -267,7 +268,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer- Privacy Policy link should be redirecting to the appropriate page
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testFooterPrivacyPolicyLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickPrivacyPolicyLink();
@@ -277,7 +278,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer-Terms & Conditions link should redirecting to the appropriate page
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testFooterTermsAndConditionLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickTermsAndConditionsLink();
@@ -286,7 +287,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Satisfaction Guarantee-link should be redirecting properly 
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testSatisfactionGuaranteeLinkShouldBeRedirectionProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickSatisfactionGuaranteeLink();
@@ -296,7 +297,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Real results products- links should be redirecting to the appropriate page
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//For REDEFINE
@@ -345,7 +346,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as an existen consultant
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testLoginAsExistingConsultant(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -359,7 +360,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as valid PC customer
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testLoginAsExistingPC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList =  null;
@@ -373,7 +374,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in with a valid RC customer
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testLoginAsExistingRC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
@@ -406,8 +407,8 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
-	//Verify Redefine regimen Sections And Subsections should be displayed properly.
-	/*@Test(enabled=false)//WIP
+	//Redefine-Sub links should be displayed properly(regimen, products, results, testimonials, in the news, FAQs, Advice, Glossary)
+	@Test(enabled=true)
 	public void testVerifyRedefineRegimenLinksDisplayedProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subSectionRegimen = "Regimen";
@@ -487,7 +488,151 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 		s_assert.assertAll();
+	}
 
-	}*/
+	//log out with a valid user
+	@Test(enabled=false)//WIP
+	public void testLogoutWithAValidUser(){
+		String whyRF = "Why R+F";
+		String programsAndIncentives = "Programs and Incentives";
+		String incomeIllustrator = "Income Illustrator";
+		String events = "Events";
+		String meetOurCommunity = "Meet Our Community";
+		String enrollNow = "Enroll Now";
+		String gettingStarted = "Getting Started";
+		String businessKits = "Business Kits";
+		String redefineYourFuture = "Redefine Your Future";
+		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
+		logout();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isForgotPasswordLinkPresent(),"User is not logout successfully");
+		driver.getURL();
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(whyRF), "Why R+F link is not present under business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(programsAndIncentives), "Programs And Incentives link is not present under business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(incomeIllustrator), "Income Illustrator link is not present under business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(events), "Events link is not present under business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(meetOurCommunity), "Meet Our Community link is not present under business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "enroll Now link is not present under business system");
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(whyRF);
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(businessKits), "Business Kits link is not present under Why R+F for business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(redefineYourFuture), "Redefine Your Future link is not present under Why R+F for business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "Enroll Now link is not present under Why R+F for business system");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(gettingStarted), "Expected selected and highlight link name is: "+gettingStarted+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(businessKits);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(businessKits), "Expected selected and highlight link name is: "+businessKits+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("business/kits"), "Expected url contains is: business/kits but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(gettingStarted);
+		storeFrontLegacyHomePage.clickClickhereLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
+		s_assert.assertAll();
+	}
+
+	//Corporate_BUsinessSystem_ Direct Selling
+	@Test(enabled=false)//WIP
+	public void testCorporateBusinessSystemDirectSelling(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickClickhereLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("directselling.org"), "Click here link of business system is not redirecting to http://directselling.org/ page");
+		s_assert.assertAll();
+	}
+
+	//Corporate_BUsinessSystem_GettingStarted 
+	@Test(enabled=false)//WIP
+	public void testCorporateBusinessSystemGettingStarted(){
+		String gettingStarted = "Getting Started";
+		String whyRF = "Why R+F";
+		String redefineYourFuture = "Redefine Your Future";
+		String enrollNow = "Enroll Now";
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(00, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String CID = TestConstantsRFL.CID_CONSULTANT;
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(whyRF);
+		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(gettingStarted);
+		storeFrontLegacyHomePage.clickClickhereLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(redefineYourFuture);
+		storeFrontLegacyHomePage.clickDetailsLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("REDEFINE-Your-Future-with-BBL-020813.pdf"), "Details link of redefine your future is not redirecting to REDEFINE-Your-Future-with-BBL-020813.pdf");
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(enrollNow);
+		storeFrontLegacyHomePage.enterCID(CID);
+		storeFrontLegacyHomePage.clickSearchResults();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.clickTermsAndConditions();
+		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"Congratulations Message not appeared");
+		s_assert.assertAll();
+	}
+
+	//Corporate_BUsinessSystem_ SuccessStories
+	@Test(enabled=false)//WIP
+	public void testCorporateBusinessSystemSuccessStories(){
+		String meetOurCommunity = "Meet Our Community";
+		String rfxCircleAG = "RFx Circle: A-G";
+		String rfxCircleHZ = "RFx Circle: H-Z";
+		String eliteVAL = "Elite V: A-L";
+		String eliteVMZ = "Elite V: M-Z";
+		String carAchieversAC= "Car Achievers: A-C";
+		String carAchieversDE = "Car Achievers: D-E";
+		String carAchieversFG = "Car Achievers: F-G";
+		String carAchieversHL = "Car Achievers: H-L";
+		String carAchieversMR = "Car Achievers: M-R";
+		String carAchieversSZ = "Car Achievers: S-Z";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(meetOurCommunity);
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(rfxCircleAG);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("RFxcircleAG"), "Expected url contains is: RFxcircleAG but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(rfxCircleHZ);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("RFxcircleHZ"), "Expected url contains is: RFxcircleHZ but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(eliteVAL);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("EliteVAL"), "Expected url contains is: EliteVAL but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(eliteVMZ);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("EliteVMZ"), "Expected url contains is: EliteVMZ but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversAC);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversAC"), "Expected url contains is: CarAchieversAC but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversDE);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversDE"), "Expected url contains is: CarAchieversDE but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversFG);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversFG"), "Expected url contains is: CarAchieversFG but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversHL);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversHL"), "Expected url contains is: CarAchieversHL but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversMR);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversMR"), "Expected url contains is: CarAchieversMR but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(carAchieversSZ);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("CarAchieversSZ"), "Expected url contains is: CarAchieversSZ but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		s_assert.assertAll();
+	}
 
 }

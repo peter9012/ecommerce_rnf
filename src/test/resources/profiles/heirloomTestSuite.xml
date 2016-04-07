@@ -8,7 +8,7 @@
 		<classes>
 			<class name="com.rf.test.website.storeFront.legacy.smoke.EnrollmentTest" />
 			<class name="com.rf.test.website.storeFront.legacy.smoke.OrderVerificationTest" />
-			 <class name="com.rf.test.website.storeFront.legacy.regression.UINavigationTest.java" />
+			<class name="com.rf.test.website.storeFront.legacy.regression.UINavigationTest" />
 		</classes>
 	</test>
 </suite>

@@ -2176,6 +2176,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = firstName;
 		String combineFullName = firstName+" "+lastName;
+		String mainPhoneNumber = TestConstants.PHONE_NUMBER;
+		String emailId = firstName+"@gmail.com";
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
 		logger.info("The email address is "+pcEmailID);
@@ -2187,12 +2189,16 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
 			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
 			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
 			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
 			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
 		}else{
 			logger.info("Spouse is already present");
 			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
 			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
 			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
 			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
 		}	
@@ -2620,7 +2626,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The username is "+consultantEmailID); 
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_DSV_LOGIN_PASSWORD);
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();

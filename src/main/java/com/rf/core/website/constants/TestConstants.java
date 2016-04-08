@@ -425,7 +425,7 @@ public class TestConstants {
 	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
 
 	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.stg1";
-	public static final String CRM_LOGIN_PASSWORD = "518Soothe"; // for tst3 the password is tst3@123
+	public static final String CRM_LOGIN_PASSWORD = "CRM60Spear"; // for tst3 the password is tst3@123
 	public static final String CRM_DSV_LOGIN_USERNAME = "crmqa@rodanandfields.com";
 	public static final String CRM_DSV_LOGIN_PASSWORD = "518Soothe"; // for tst3 the password is tst3@123
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";

@@ -70,7 +70,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 			dsvStoreFrontAutoshipCartPage.addQuantityOfProduct(secondProductRetailPrice, quantityOfProduct);
 			dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(secondProductRetailPrice);
 			dsvStoreFrontAutoshipCartPage.clickRemoveProduct(firstProductRetailPrice);
-			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(secondProductRetailPrice), secondProductRetailPrice+" is not removed from the cart");
+			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), secondProductRetailPrice+" is not removed from the cart");
 		}
 		else{
 			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductRetailPrice+" is not removed from the cart");	
@@ -212,7 +212,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	public void testUserAccountLoginAsPC_5321(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();	
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
 		dsvStoreFrontHomePage.clickLogo();
 		s_assert.assertAll();		
@@ -227,7 +227,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		String lName = "RFTestC"+randomNum;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL(); 
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link"); 
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
 		dsvStoreFrontAccountInfoPage  = dsvStoreFrontHomePage.clickAccountInfoLinkFromWelcomeDropDown();  
@@ -255,7 +255,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		String name2 = fName+" "+lName2;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
 		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
@@ -282,7 +282,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
 		dsvStoreFrontBillingInfoPage = dsvStoreFrontHomePage.clickBillingInfoLinkFromWelcomeDropDown();
@@ -308,7 +308,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		String name1 = fName+" "+lName1;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "PC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
 		dsvStoreFrontHomePage.clickWelcomeDropDown();
 		dsvStoreFrontBillingInfoPage = dsvStoreFrontHomePage.clickBillingInfoLinkFromWelcomeDropDown();

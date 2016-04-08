@@ -240,7 +240,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 	//		String addressName = "Home";
 	//
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickProductsBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -290,7 +290,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	////		String phnNumber2 = "780";
 	////		String phnNumber3 = "9099";
 	////		String PWS = TestConstantsRFL.BIZ_PWS;
-	////		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	////		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	////		//Navigate to biz PWS
 	////		storeFrontLegacyHomePage.openBizPWS(PWS);
 	////		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
@@ -335,7 +335,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
 	//		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 	//		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickProductsBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -388,7 +388,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber2 = "780";
 	//		String phnNumber3 = "9099";
 	//
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);
@@ -432,7 +432,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber1 = "415";
 	//		String phnNumber2 = "780";
 	//		String phnNumber3 = "9099";
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);
@@ -481,7 +481,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
 	//		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 	//		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickProductsBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -540,7 +540,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 	//		String addressName = "Home";
 	//
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickProductsBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -591,7 +591,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber1 = "415";
 	//		String phnNumber2 = "780";
 	//		String phnNumber3 = "9099";
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);

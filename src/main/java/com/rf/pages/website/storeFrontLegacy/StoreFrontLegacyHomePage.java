@@ -22,6 +22,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String regimenHeaderLoc = "//div[@id='HeaderCol']//span[text()='%s']";
 	private static String regimenNameLoc= "//cufon[@alt='%s']";
 	private static String redefineRegimenSubLinks= "//cufontext[text()='REDEFINE']/following::li//span[text()='%s']";
+	private static String detailLinkOnProgramIncentivePageLoc = "//div[@id='RFContent']//td[1]/p/strong[text()='%s']/following-sibling::a[1]";
+	private static String businessSystemSubTitleLoc = "//div[@id='HeaderCol']//span[text()='%s']";
+	private static String subTitleLoc = "//div[@id='HeaderCol']//span[text()='%s']";
+	private static String essentialsRegimenSubLinks= "//cufontext[text()='ESSENTIALS']/following::li//span[text()='%s']";
+	private static String enhancementsRegimenSubLinks= "//cufontext[text()='ENHANCEMENTS']/following::li//span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -163,7 +168,29 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
 	private static final By CLICK_HERE_LINK = By.xpath("//a[text()='Click here']");
 	private static final By DETAILS_LINK = By.xpath("//a[text()='Details']");
-
+	private static final By CLICK_HERE_LOC = By.xpath("//div[@id='RFContent']//td[1]//a[1]");
+	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
+	private static final By REAL_RESULTS_PAGE_LOC = By.xpath("//div[@id='RFContent']//cufontext[text()='REAL ']/preceding::canvas[1]");
+	private static final By PC_PERKS_PAGE_LOC = By.xpath("//div[@id='HeaderCol']//cufontext[text()='PC ']/preceding::canvas[1]");
+	private static final By SOLUTION_TOOL_PAGE = By.xpath("//div[@id='RFContent']//a[text()='Find a Rodan + Fields Consultant']");
+	private static final By DIGITAL_PRODUCT_CATALOGUE = By.xpath("//div[@class='body']//a[text()='Digital Product Catalog']");
+	private static final By BUSINESS_PRESENTATION_SECTION_LOC = By.xpath("//div[@id='RFContent']//following::div[@style='margin-bottom:1em;']/h2//cufontext[text()='Presentations']/ancestor::cufon");
+	private static final By HOME_TAB_LOC = By.xpath("//span[text()='Home']");
+	private static final By FIND_A_CONSULTANT_IMAGE_LOC = By.xpath("//div[@id='CallBoxes']//following::div[@class='ctaBlock']//cufontext[text()='Find '][1]/following::cufontext[text()='a '][1]/following::cufontext[text()='Consultant'][1]/../../following-sibling::a/img");
+	private static final By START_NOW_BTN = By.xpath("//a[text()='START NOW']");
+	private static final By MEET_OUR_COMMUNITY_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Meet Our Community']");
+	private static final By EVENTS_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Events']");
+	private static final By INCOME_ILLUSTRATOR_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Income Illustrator']");
+	private static final By PROGRAMS_INCENTIVES_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Programs and Incentives']");
+	private static final By WHY_RF_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Why R+F']");
+	private static final By BUSINESS_KITS_LINK_LOC = By.xpath("//span[text()='Business Kits']");
+	private static final By BUSINESS_KITS_SECTION_LOC = By.xpath("//div[@id='RFContent']/div/div[@class='body']");
+	private static final By REDEFINE_YOUR_FUTURE_LINK_LOC = By.xpath("//span[text()='Redefine Your Future']");
+	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Enroll Now']");
+	private static final By ENROLL_NOW_LINK_UNDER_WHYRF_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Enroll Now']");
+	private static final By UPCOMING_EVENTS_LINK_LOC = By.xpath("//span[text()='Upcoming Events']");
+	private static final By DISCLAIMER_LINK_LOC = By.xpath("//span[text()='Disclaimer']");
+	private static final By GIVING_BACK_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Giving Back']");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -954,5 +981,269 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(DETAILS_LINK);
 		logger.info("Details link clicked");
 		driver.waitForPageLoad();
+	}
+
+	public boolean verifySubSectionPresentAtBusinessSystemPage(
+			String SubSectionUnderBusinessSystem) {
+		return driver.isElementPresent(By.xpath(String.format(businessSystemSubTitleLoc, SubSectionUnderBusinessSystem)));
+	}
+
+	public void clickSubSectionUnderBusinessSystem(String secondSubSectionUnderBusinessSystem) {
+		driver.quickWaitForElementPresent(By.xpath(String.format(businessSystemSubTitleLoc, secondSubSectionUnderBusinessSystem)));
+		driver.click(By.xpath(String.format(businessSystemSubTitleLoc, secondSubSectionUnderBusinessSystem)));
+		logger.info("business System SubTitle selected is: "+secondSubSectionUnderBusinessSystem);
+	}
+
+	public boolean verifySubSectionPresentAtProgramsAndIncentives(String firstSubSectionUnderProgramsAndIncentives) {
+		return driver.isElementPresent(By.xpath(String.format(subTitleLoc, firstSubSectionUnderProgramsAndIncentives)));
+	}
+
+	public void clickToReadIncomeDisclosure() {
+		driver.quickWaitForElementPresent(CLICK_HERE_LOC);
+		driver.click(CLICK_HERE_LOC);
+
+	}
+
+	public String getCurrentUrlOpenedWindow() {
+		//  driver.pauseExecutionFor(5000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				String currentUrl = driver.getCurrentUrl();
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+				return currentUrl;
+			}
+		}
+		return null;
+	}
+
+
+	public String getSelectedHighlightLinkName() {
+		driver.waitForElementPresent(SELECTED_HIGHLIGHT_LINK);
+		String linkName = driver.findElement(SELECTED_HIGHLIGHT_LINK).getText();
+		logger.info("Selected And highlight link: "+linkName);
+		return linkName;
+	}
+
+	public void clickDetailsLinkUnderProgramsIncentivePage(String sectionName) {
+		driver.quickWaitForElementPresent(By.xpath(String.format(detailLinkOnProgramIncentivePageLoc,sectionName)));
+		driver.click(By.xpath(String.format(detailLinkOnProgramIncentivePageLoc,sectionName)));
+		logger.info("detail link clicked for section :"+sectionName);
+
+	}
+
+	public boolean verifyEssentialsRegimenSections(String sublinkName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(essentialsRegimenSubLinks, sublinkName)));
+		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(essentialsRegimenSubLinks, sublinkName))));
+	}
+
+	public boolean verifyUserIsRedirectedToRealResultsPage() {
+		driver.waitForElementPresent(REAL_RESULTS_PAGE_LOC);
+		return driver.isElementPresent(REAL_RESULTS_PAGE_LOC); 
+	}
+
+	public boolean verifyUserIsRedirectedToPCPerksPage() {
+		driver.waitForElementPresent(PC_PERKS_PAGE_LOC);
+		return driver.isElementPresent(PC_PERKS_PAGE_LOC); 
+	}
+
+	public boolean verifyUserIsRedirectedToSolutionToolPage() {
+		driver.waitForElementPresent(SOLUTION_TOOL_PAGE);
+		return driver.isElementPresent(SOLUTION_TOOL_PAGE); 
+	}
+
+	public boolean verifyUserIsRedirectedToDigitalProductCataloguePage() {
+		driver.waitForElementPresent(DIGITAL_PRODUCT_CATALOGUE);
+		return driver.isElementPresent(DIGITAL_PRODUCT_CATALOGUE); 
+	}
+
+	public boolean verifyEnhancementsRegimenSections(String sublinkName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(enhancementsRegimenSubLinks, sublinkName)));
+		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(enhancementsRegimenSubLinks, sublinkName))));
+	}
+
+	public void clickSubSectionUnderBusinessSystemTab(String tabName) {
+		driver.quickWaitForElementPresent(By.xpath(String.format(businessSystemSubTitleLoc, tabName)));
+		driver.click(By.xpath(String.format(businessSystemSubTitleLoc, tabName)));
+		logger.info("business System SubTitle selected is: "+tabName);
+	}
+
+	public boolean verifyBusinessPresentationSectionUnderEvents() {
+		driver.quickWaitForElementPresent(BUSINESS_PRESENTATION_SECTION_LOC);
+		return driver.IsElementVisible(driver.findElement(BUSINESS_PRESENTATION_SECTION_LOC));
+	}
+
+	public void clickHomeTabBtn(){
+		driver.quickWaitForElementPresent(HOME_TAB_LOC);
+		driver.click(HOME_TAB_LOC);
+		logger.info("Home button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickFindAConsultantImageLink(){
+		driver.quickWaitForElementPresent(FIND_A_CONSULTANT_IMAGE_LOC);
+		driver.click(FIND_A_CONSULTANT_IMAGE_LOC);
+		logger.info("Find a consultant Image Link Is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isStartNowBtnRedirectinToAppropriatePage(String redirectedPageLink){
+		driver.waitForPageLoad();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		String parentWindow=it.next();
+		String childWindow=it.next();
+		driver.switchTo().window(childWindow);
+		boolean status= driver.getCurrentUrl().contains(redirectedPageLink);
+		driver.close();
+		driver.switchTo().window(parentWindow);
+		return status;
+	}
+
+	public void clickStartNowBtn(){
+		driver.quickWaitForElementPresent(START_NOW_BTN);
+		driver.click(START_NOW_BTN);
+		logger.info("Start now btn clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateWhoWeAreLink(){
+		driver.quickWaitForElementPresent(WHO_WE_ARE_LINK_LOC);
+		driver.click(WHO_WE_ARE_LINK_LOC);
+		logger.info("Who We Are Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("About");
+	}
+
+	public boolean validateCompanyCareersLink(){
+		driver.quickWaitForElementPresent(CARRERS_LINK_LOC);
+		driver.click(CARRERS_LINK_LOC);
+		logger.info("Company Careers Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("Company/careers");
+	}
+
+	public boolean validateCompanyPressRoomLink(){
+		driver.quickWaitForElementPresent(PRESS_ROOM_LINK_LOC);
+		driver.click(PRESS_ROOM_LINK_LOC);
+		logger.info("Company Press Room Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("Company/PR");
+	}
+
+	public boolean validateCompanyContactUsLink(){
+		driver.quickWaitForElementPresent(CONTACT_US_LINK_LOC);
+		driver.click(CONTACT_US_LINK_LOC);
+		logger.info("Company Contact Us Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("Company/Contact");
+	}
+
+	public boolean validateEnrollNowLinkPresent(){
+		driver.quickWaitForElementPresent(ENROLL_NOW_LINK_LOC);
+		return driver.isElementPresent(ENROLL_NOW_LINK_LOC);
+	}
+
+	public boolean validateMeetOurCommunityLinkPresent(){
+		driver.quickWaitForElementPresent(MEET_OUR_COMMUNITY_LINK_LOC);
+		return driver.isElementPresent(MEET_OUR_COMMUNITY_LINK_LOC);
+	}
+
+	public boolean validateEventsLinkPresent(){
+		driver.quickWaitForElementPresent(EVENTS_LINK_LOC);
+		return driver.isElementPresent(EVENTS_LINK_LOC);
+	}
+
+	public boolean validateIncomeIllustratorLinkPresent(){
+		driver.quickWaitForElementPresent(INCOME_ILLUSTRATOR_LINK_LOC);
+		return driver.isElementPresent(INCOME_ILLUSTRATOR_LINK_LOC);
+	}
+
+	public boolean validateProgramsAndIncentivesLinkPresent(){
+		driver.quickWaitForElementPresent(PROGRAMS_INCENTIVES_LINK_LOC);
+		return driver.isElementPresent(PROGRAMS_INCENTIVES_LINK_LOC);
+	}
+
+	public boolean validateWhyRFLinkPresent(){
+		driver.quickWaitForElementPresent(WHY_RF_LINK_LOC);
+		return driver.isElementPresent(WHY_RF_LINK_LOC);
+	}
+
+	public void clickWhyRFLinkUnderBusinessSystem(){
+		driver.quickWaitForElementPresent(WHY_RF_LINK_LOC);
+		driver.click(WHY_RF_LINK_LOC);
+		logger.info("Why RF Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickBusinessKitsUnderWhyRF(){
+		driver.quickWaitForElementPresent(BUSINESS_KITS_LINK_LOC);
+		driver.click(BUSINESS_KITS_LINK_LOC);
+		logger.info("Business Kits Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateBusinessKitSectionIsDisplayed(){
+		driver.quickWaitForElementPresent(BUSINESS_KITS_SECTION_LOC);
+		return driver.isElementPresent(BUSINESS_KITS_SECTION_LOC);
+	}
+
+	public void clickRedefineYourFutureLinkUnderWhyRF(){
+		driver.quickWaitForElementPresent(REDEFINE_YOUR_FUTURE_LINK_LOC);
+		driver.click(REDEFINE_YOUR_FUTURE_LINK_LOC);
+		logger.info("Redefine Your Future Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateRedefineYourFuturePageDisplayed(){
+		return driver.getCurrentUrl().contains("Business/Redefine");
+	}
+
+	public void clickEnrollNowLinkUnderWhyRF(){
+		driver.quickWaitForElementPresent(ENROLL_NOW_LINK_UNDER_WHYRF_LOC);
+		driver.click(ENROLL_NOW_LINK_UNDER_WHYRF_LOC);
+		logger.info("Enroll Now Link clicked");
+		driver.waitForPageLoad();
+	}
+
+
+	public boolean validateSearchSponsorPageDisplayed(){
+		return driver.getCurrentUrl().contains("NewEnrollment/SearchSponsor");
+	}
+
+	public void clickEventsLinkUnderBusinessSystem(){
+		driver.quickWaitForElementPresent(EVENTS_LINK_LOC);
+		driver.click(EVENTS_LINK_LOC);
+		logger.info("Events Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateUpcomingEventsLinkIsPresent(){
+		driver.quickWaitForElementPresent(UPCOMING_EVENTS_LINK_LOC);
+		return driver.isElementPresent(UPCOMING_EVENTS_LINK_LOC);
+	}
+
+	public boolean validateDisclaimerLinkInFooter(){
+		driver.quickWaitForElementPresent(DISCLAIMER_LINK_LOC);
+		driver.click(DISCLAIMER_LINK_LOC);
+		logger.info("Disclaimer Link clicked");
+		driver.waitForPageLoad();
+		return driver.getCurrentUrl().contains("Disclaimer");
+	}
+
+	public void clickGivingBackLinkUnderAboutRF(){
+		driver.quickWaitForElementPresent(GIVING_BACK_LINK_LOC);
+		driver.click(GIVING_BACK_LINK_LOC);
+		logger.info("Giving Back Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateCompanyPFCFoundationPageDisplayed(){
+		return driver.getCurrentUrl().contains("Company/PFCFoundation/Mission");
 	}
 }

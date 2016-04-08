@@ -391,19 +391,19 @@ public class TestConstants {
 	public static final String NEW_EMAIL_ADDRESS_SUFFIX = "@xyp.com";
 
 	//PRODUCTION DSV DATA
-	public static final String DSV_CONSULTANT_EMAILID = "rftestcon1125@mailinator.com";
+	public static final String DSV_CONSULTANT_EMAILID = "rftestcon0309@mailinator.com";
 	public static final String DSV_CONSULTANT_PASSWORD = "test1234";
-	public static final String DSV_CONSULTANT_CID = "06386788";
+	public static final String DSV_CONSULTANT_CID = "06405137";
 
-	public static final String DSV_PC_EMAILID = "rftestpc1125@mailinator.com";
+	public static final String DSV_PC_EMAILID = "rftestpc0309@mailinator.com";
 	public static final String DSV_PC_PASSWORD = "test1234";
-	public static final String DSV_PC_CID = "06386790";
+	public static final String DSV_PC_CID = "06405143";
 
-	public static final String DSV_RC_EMAILID = "rftestlast@mailinator.com";
+	public static final String DSV_RC_EMAILID = "rftestrc0309@mailinator.com";
 	public static final String DSV_RC_PASSWORD = "test1234";
-	public static final String DSV_RC_CID = "06368553";
+	public static final String DSV_RC_CID = "06405142";
 
-	public static final String DSV_BIZ_PWS = "http://rrftestu0328.myrandf.biz/ca/";
+	public static final String DSV_BIZ_PWS = "https://ericam.myrandf.biz/ca/";
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 

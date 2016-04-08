@@ -20,7 +20,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();

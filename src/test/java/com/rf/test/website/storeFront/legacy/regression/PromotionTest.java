@@ -36,7 +36,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultants Only -buy event support pack 
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void consultantsOnlyBuyEventSupportPack(){
 		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -58,7 +58,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultants Only -buy product promotion 
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void consultantsOnlyBuyProductPromotion(){
 		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -76,6 +76,25 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyConsultantPage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		s_assert.assertAll();
+	}
+
+	//The Events section Upcoming events is displayed
+	@Test(enabled=true)
+	public void testEventsSectionUpcomingEventsIsDisplayed(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		//verify the sub-menu title under the title business system?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
+		//Navigate to Events Section
+		storeFrontLegacyHomePage.clickEventsLinkUnderBusinessSystem();
+		//verify UPCOMING EVENTS is displayed?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateUpcomingEventsLinkIsPresent(),"Upcoming Events Link is not present");
 		s_assert.assertAll();
 	}
 }

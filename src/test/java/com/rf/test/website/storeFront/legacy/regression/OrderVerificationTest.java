@@ -20,7 +20,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -104,7 +104,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantRedefineAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -124,7 +124,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantReverseAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -144,7 +144,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testPlacedAdhocOrderFromCorpSiteUsingReverseRegimenForPC(){
 	//		String username = TestConstantsRFL.USERNAME_PC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -166,7 +166,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String username = TestConstantsRFL.USERNAME_RC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 	//
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
 	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(), "RC user not logged in successfully");
@@ -187,7 +187,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantUnblemishAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -207,7 +207,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testPlacedAdhocOrderFromCorpSiteUsingUnblemishRegimenForPC(){
 	//		String username = TestConstantsRFL.USERNAME_PC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -229,7 +229,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
 	//		String username = TestConstantsRFL.USERNAME_RC;
 	//		//Login as RC and place adhoc order.
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -250,7 +250,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantSootheAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -270,7 +270,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testPlacedAdhocOrderFromCorpSiteUsingSootheRegimenForPC(){
 	//		String username = TestConstantsRFL.USERNAME_PC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -293,7 +293,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
 	//		String username = TestConstantsRFL.USERNAME_RC;
 	//		//Login as RC and place adhoc order.
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//		storeFrontLegacyHomePage.clickProductsBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
@@ -313,7 +313,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantEssentialsAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -333,7 +333,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testPlacedAdhocOrderFromCorpSiteUsingEssentialsRegimenForPC(){
 	//		String username = TestConstantsRFL.USERNAME_PC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -355,7 +355,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
 	//		String username = TestConstantsRFL.USERNAME_RC;
 	//		//Login as RC and place adhoc order.
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"RC is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -376,7 +376,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testConsultantEnhancementsAdhocOrder(){
 	//		String username = TestConstantsRFL.USERNAME_CONSULTANT;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -396,7 +396,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	public void testPlacedAdhocOrderFromCorpSiteUsingEnhancementsRegimenForPC(){
 	//		String username = TestConstantsRFL.USERNAME_PC;
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -418,7 +418,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
 	//		String username = TestConstantsRFL.USERNAME_RC;
 	//		//Login as RC and place adhoc order.
-	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"RC is not logged in successfully");
 	//		storeFrontLegacyHomePage.clickProductsBtn();
@@ -442,7 +442,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	//	@Test
 	//	//	public void testPlaceAnAdhocOrderFromBizPWS(){
 	//	//		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
-	//	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//	//		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.BIZ_PWS);
 	//	//		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 	//	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(),"consultant is not logged in successfully");
@@ -462,7 +462,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	//	@Test
 	//	//	public void testPlaceAnAdhocOrderFromComPWS(){
 	//	//		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
-	//	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//	//		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
 	//	//		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 	//	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(),"consultant is not logged in successfully");
@@ -483,7 +483,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	//	public void testPlacedAdhocOrderFromBizSiteForPC(){
 	//	//		String username = TestConstantsRFL.USERNAME_PC;
 	//	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-	//	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//	//		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.BIZ_PWS);
 	//	//		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 	//	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(), "PC user not logged in successfully");
@@ -506,7 +506,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//	//		String username = TestConstantsRFL.USERNAME_RC;
 	//	//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 	//	//
-	//	//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+	//	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//	//		storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.BIZ_PWS);
 	//	//		storeFrontLegacyHomePage.loginAsRCUser(username, password);
 	//	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(), "RC user not logged in successfully");

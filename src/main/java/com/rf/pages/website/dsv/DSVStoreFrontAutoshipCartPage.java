@@ -49,6 +49,7 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isThresholdMessageAppeared(){
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='globalMessages']//p[contains(text(),'greater than the threshold')]"));
 		try{
 			driver.findElement(By.xpath("//div[@id='globalMessages']//p[contains(text(),'greater than the threshold')]"));
 			return true;

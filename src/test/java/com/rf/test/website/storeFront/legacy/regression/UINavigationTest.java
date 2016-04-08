@@ -491,7 +491,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//log out with a valid user
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testLogoutWithAValidUser(){
 		String whyRF = "Why R+F";
 		String programsAndIncentives = "Programs and Incentives";
@@ -532,7 +532,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ Direct Selling
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCorporateBusinessSystemDirectSelling(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBusinessSystemBtn();
@@ -542,7 +542,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_GettingStarted 
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCorporateBusinessSystemGettingStarted(){
 		String gettingStarted = "Getting Started";
 		String whyRF = "Why R+F";
@@ -596,7 +596,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ SuccessStories
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCorporateBusinessSystemSuccessStories(){
 		String meetOurCommunity = "Meet Our Community";
 		String rfxCircleAG = "RFx Circle: A-G";
@@ -635,4 +635,436 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//The Compensation Plan section Compensation Plan is displayed
+	@Test(enabled=true)
+	public void testCompensationPlanSectionIsDisplayed(){
+		String firstSubSectionUnderBusinessSystem = "Why R+F";
+		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
+		String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
+		String fourthSubSectionUnderBusinessSystem = "Events";
+		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
+		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
+
+		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
+		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
+
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(secondSubSectionUnderBusinessSystem),""+secondSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fifthSubSectionUnderBusinessSystem),""+fifthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(sixthSubSectionUnderBusinessSystem),""+sixthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Compensation Plan"), "Expected selected and highlight link name is: "+"Compensation Plan"+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(secondSubSectionUnderProgramsAndIncentives),""+secondSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(thirdSubSectionUnderProgramsAndIncentives),""+thirdSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		storeFrontLegacyHomePage.clickToReadIncomeDisclosure();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("RF-Income-Disclosure-Statement.pdf"),"current url is not a valid and Expected url");
+		s_assert.assertAll();
+	}
+
+	//The Compensation Plan section Programs and Incentives is displayed
+	@Test(enabled=true)
+	public void testCompensationPlanProgramsAndIncentivesIsDisplayed(){
+		String firstSubSectionUnderBusinessSystem = "Why R+F";
+		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
+		String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
+		String fourthSubSectionUnderBusinessSystem = "Events";
+		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
+		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
+
+		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
+		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
+
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(secondSubSectionUnderBusinessSystem),""+secondSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fifthSubSectionUnderBusinessSystem),""+fifthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(sixthSubSectionUnderBusinessSystem),""+sixthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(secondSubSectionUnderProgramsAndIncentives),""+secondSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(thirdSubSectionUnderProgramsAndIncentives),""+thirdSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Programs and Incentives"), "Expected selected and highlight link name is: "+"Programs and Incentives"+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Fast Start Program");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Fast_Start_Flyer_2013_Secured.pdf"),"current url is not a valid and Expected url");
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("2016_RFx_Circle_TCs.pdf"),"current url is not a valid and Expected url");
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Elite V Program");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Elite_V_Flyer_Hawaii_2016.pdf"),"current url is not a valid and Expected url");
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Road to RF");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Road-to-RFx-Car-Incentive-Program-Flyer-09.24.11.pdf"),"current url is not a valid and Expected url");
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF Center for Leadership");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("RFCL_Spring2016_Flyer.pdf"),"current url is not a valid and Expected url");
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Premier V Trip");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("PremierV_Flyer_F16_USA.pdf"),"current url is not a valid and Expected url");
+		s_assert.assertAll();
+	}
+
+	//The Compensation Plan section Enroll Now is displayed
+	@Test(enabled=false)//WIP
+	public void testCompensationPlanSectionEnrollNowIsDisplayed(){
+		String firstSubSectionUnderBusinessSystem = "Why R+F";
+		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
+		String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
+		String fourthSubSectionUnderBusinessSystem = "Events";
+		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
+		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
+
+		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
+		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
+
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(secondSubSectionUnderBusinessSystem),""+secondSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fifthSubSectionUnderBusinessSystem),""+fifthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(sixthSubSectionUnderBusinessSystem),""+sixthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(secondSubSectionUnderProgramsAndIncentives),""+secondSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(thirdSubSectionUnderProgramsAndIncentives),""+thirdSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(thirdSubSectionUnderProgramsAndIncentives);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains("NewEnrollment/SearchSponsor"),"current url is not a valid and Expected url");
+		s_assert.assertAll();
+	}
+
+	//Contact us-link should be redirecting properly
+	@Test(enabled=false)//WIP
+	public void testContactUsLinkShouldBeRedirectingProperly(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickContactUsAtFooter();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Contact".toLowerCase()), "URL does not contain Contact Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifylinkIsRedirectedToContactUsPage(),"link is not redirected to contact us page");
+		s_assert.assertAll();
+	}
+
+	//Essentials Products-links should be working properly (Real results, PC perks, solution tool, digital product catalog)
+	@Test(enabled=false)//WIP
+	public void testVerifyEssentialRegimenProductLinksWorkingProperly(){
+		String regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
+		String subSectionLinkRealResults = "Real Results";
+		String subSectionLinkPCPerks = "PC PERKS";
+		String subSectionSolutionTool = "Solution Tool";
+		String subSectionDigitalProductCatalogue = "Digital Product Catalog";
+
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.selectRegimen(regimen);
+
+		//Verify visibility of Essentials regimen Sections.
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEssentialsRegimenSections(subSectionLinkRealResults),"Essential regimen section real results is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEssentialsRegimenSections(subSectionLinkPCPerks),"Essential regimen section PC Perks is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEssentialsRegimenSections(subSectionSolutionTool),"Essential regimen section Solution tool is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEssentialsRegimenSections(subSectionDigitalProductCatalogue),"Essential regimen section Digital product catalogue is not displayed");
+
+		//Verify Visibility of Essentials Regimen Real Results subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionLinkRealResults);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Results".toLowerCase()), "Expected regimen name is "+"Results".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToRealResultsPage(),"user is not on Real results page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen PC Perks subSections.		
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionLinkPCPerks);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("PC".toLowerCase()), "Expected regimen name is "+"PCPerks".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());		
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToPCPerksPage(),"user is not on PC Perks page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen Solution tool subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionSolutionTool);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Solution".toLowerCase()), "Expected regimen name is "+"SolutionTool".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToSolutionToolPage(),"user is not on Solution tool page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen Digital product catalogue subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionDigitalProductCatalogue);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Digimag".toLowerCase()), "Expected regimen name is "+"Digimag".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToDigitalProductCataloguePage(),"user is not on Digital product catalogue page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+		s_assert.assertAll();
+	}
+
+	//Enhancements Products-links should be working properly (Real results, PC perks, solution tool, digital product catalog)
+	@Test(enabled=false)//WIP
+	public void testVerifyEnhancementsRegimenProductLinksWorkingProperly(){
+		String regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
+		String subSectionLinkRealResults = "Real Results";
+		String subSectionLinkPCPerks = "PC PERKS";
+		String subSectionSolutionTool = "Solution Tool";
+		String subSectionDigitalProductCatalogue = "Digital Product Catalog";
+
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.selectRegimen(regimen);
+
+		//Verify visibility of Essentials regimen Sections.
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEnhancementsRegimenSections(subSectionLinkRealResults),"Enhancements regimen section real results is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEnhancementsRegimenSections(subSectionLinkPCPerks),"Enhancements regimen section PC Perks is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEnhancementsRegimenSections(subSectionSolutionTool),"Enhancements regimen section Solution tool is not displayed");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyEnhancementsRegimenSections(subSectionDigitalProductCatalogue),"Enhancements regimen section Digital product catalogue is not displayed");
+
+		//Verify Visibility of Essentials Regimen Real Results subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionLinkRealResults);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Results".toLowerCase()), "Expected regimen name is "+"Results".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToRealResultsPage(),"user is not on Real results page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen PC Perks subSections.		
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionLinkPCPerks);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("PC".toLowerCase()), "Expected regimen name is "+"PCPerks".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());		
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToPCPerksPage(),"user is not on PC Perks page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen Solution tool subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionSolutionTool);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Solution".toLowerCase()), "Expected regimen name is "+"SolutionTool".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToSolutionToolPage(),"user is not on Solution tool page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+
+		//Verify Visibility of Essentials Regimen Digital product catalogue subSections.	
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionDigitalProductCatalogue);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Digimag".toLowerCase()), "Expected regimen name is "+"Digimag".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToDigitalProductCataloguePage(),"user is not on Digital product catalogue page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+		s_assert.assertAll();
+	}
+
+	//Corporate_ FindAConsultant
+	@Test(enabled=false)//WIP
+	public void testCorporateFindAConsultant(){
+		String expectedURL = "LocatePWS.aspx?fromHome=1";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickHomeTabBtn();
+		storeFrontLegacyHomePage.clickFindAConsultantImageLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
+		s_assert.assertAll();
+	}
+
+	//Corporate_BUsinessSystem_CompensationPlan
+	@Test(enabled=false)//WIP
+	public void testCorporateBusinessCompensationPlan(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(00, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String CID = TestConstantsRFL.CID_CONSULTANT;
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
+		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(firstSubSectionUnderProgramsAndIncentives);
+		//Verify Compensation page
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Compensation Plan"), "Expected selected and highlight link name is: "+"Compensation Plan"+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Compensation".toLowerCase()), "Expected url should contain: "+"Compensation"+" Actual on UI: "+storeFrontLegacyHomePage.getCurrentURL());
+		storeFrontLegacyHomePage.clickToReadIncomeDisclosure();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("RF-Income-Disclosure-Statement.pdf"),"current url is not a valid and Expected url");
+		//Click program and incentives link
+		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderProgramsAndIncentives);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("ProgramsIncentives".toLowerCase()), "Expected url should contain: "+"ProgramsIncentives"+" Actual on UI: "+storeFrontLegacyHomePage.getCurrentURL());
+		//click details link under fast start program section
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Fast Start Program");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Fast_Start_Flyer_2013_Secured.pdf"),"current url is not as expected under detail page of fast start program section page");
+		//click details link under Road to RFx car incentive program section
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Road to RF");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Road-to-RFx-Car-Incentive-Program-Flyer-09.24.11.pdf"),"current url is not as expected under detail page of road to rfx car incentive program section page");
+		//click details link under Elite V  program section
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Elite V Program");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Elite_V_Flyer_Hawaii_2016.pdf"),"current url is not as expected under detail page of Elite V  program section page");
+		//click details link under RFx Circle program section
+		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("2016_RFx_Circle_TCs.pdf"),"current url is not as expected under detail page of RFx Circle  program section page");
+		storeFrontLegacyHomePage.navigateToBackPage();
+		storeFrontLegacyHomePage.navigateToBackPage();
+		//complete enroll flow.
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
+		storeFrontLegacyHomePage.enterCID(CID);
+		storeFrontLegacyHomePage.clickSearchResults();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.clickTermsAndConditions();
+		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"");
+		s_assert.assertAll();
+	}
+
+	//Corporate_BUsinessSystem_ IncomeIllustrator  
+	@Test(enabled=false)//WIP
+	public void corporateBusinessSystemIncomeIllustrator(){
+		String incomeIllustrator = "Income Illustrator";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(incomeIllustrator);
+		storeFrontLegacyHomePage.clickStartNowBtn();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isStartNowBtnRedirectinToAppropriatePage("IncomeIllustrator/index.html"), "start now btn of income illustrator is not redirecting to IncomeIllustrator/index.html");
+		s_assert.assertAll();
+
+	}
+
+	//The Getting Started section Redefine Your Future is displayed
+	@Test(enabled=false)//WIP
+	public void testGettingStartedSectionRedefineYourFutureIsDisplayed(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		//verify the sub-menu title under the title business system?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
+		//Navigate to Redefine Your Future section-
+		storeFrontLegacyHomePage.clickWhyRFLinkUnderBusinessSystem();
+		storeFrontLegacyHomePage.clickRedefineYourFutureLinkUnderWhyRF();
+		//verify url for 'Redefine Your Future'
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateRedefineYourFuturePageDisplayed(),"'Redefine Your Future' Page Is not displayed");
+		s_assert.assertAll();
+	}
+
+	//The Getting Started Section Business Kit is displayed
+	@Test(enabled=true)
+	public void testGettingStartedSectionBusinessKitDisplayed(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		//verify the sub-menu title under the title business system?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
+		//Navigate to business kit section-
+		storeFrontLegacyHomePage.clickWhyRFLinkUnderBusinessSystem();
+		storeFrontLegacyHomePage.clickBusinessKitsUnderWhyRF();
+		//verify that the 'Business Kits' Section displays the information?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateBusinessKitSectionIsDisplayed(),"Business Kit Section is not displayed with the Information");
+		s_assert.assertAll();
+	}
+
+	//Company Contact us Link should be displayed properly
+	@Test(enabled=false)//WIP
+	public void testCompanyContactUsLink(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify company Contact Us Link?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateCompanyContactUsLink(),"Company Contact Us link didn't work");
+		s_assert.assertAll();
+	}
+
+	//Company Press Room Link should be displayed properly
+	@Test(enabled=false)//WIP
+	public void testCompanyPressRoomLink(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify company Press Room Link?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateCompanyPressRoomLink(),"Company Press Room link didn't work");
+		s_assert.assertAll();
+	}
+
+	//Company Careers Link should be displayed properly
+	@Test(enabled=false)//WIP
+	public void testCompanyCareersLink(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify company careers Link?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateCompanyCareersLink(),"Company careers link didn't work");
+		s_assert.assertAll();
+	}
+
+	//Company Our Story Link should be displayed properly
+	@Test(enabled=false)//WIP
+	public void testCompanyOurStoryLink(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify Our Story Link?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhoWeAreLink(),"Who We Are link didn't work");
+		s_assert.assertAll();
+	}
+
+	//Company Execute Link should be displayed properly
+	@Test(enabled=false)//WIP
+	public void testCompanyExecuteTeamLink(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify Execute Team Link?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateExecuteTeamLink(),"Execute Team link didn't work");
+		s_assert.assertAll();
+	}
+
+	//The Getting Started section Enroll Now is displayed
+	@Test(enabled=false)//WIP
+	public void testGettingStartedSectionEnrollNowIsDisplayed(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		//verify the sub-menu title under the title business system?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
+		//Navigate to Redefine Your Future section-
+		storeFrontLegacyHomePage.clickWhyRFLinkUnderBusinessSystem();
+		storeFrontLegacyHomePage.clickEnrollNowLinkUnderWhyRF();
+		//verify url for 'Enroll Now'
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateSearchSponsorPageDisplayed(),"'Search Sponsor' Page Is not displayed");
+		s_assert.assertAll();
+	}
+
+	//Disclaimer-link should be redirecting properly
+	@Test(enabled=false)//WIP
+	public void testDisclaimerLinkShouldBeRedirectedProperly(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		//verify Disclaimer in footer should redirect properly?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateDisclaimerLinkInFooter(),"'Disclaimer Link' doesn't redirect to disclaimer page");
+		s_assert.assertAll();
+	}
+
+	//Company-PFC Foundation link should be redirecting properly 
+	@Test(enabled=false)//WIP
+	public void testCompanyPFCFoundationLinkShouldRedirectProperly(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		//verify company PFC Foundation link?
+		storeFrontLegacyHomePage.clickGivingBackLinkUnderAboutRF();
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateCompanyPFCFoundationPageDisplayed(),"'Company PFC Foundation' page is not displayed");
+		s_assert.assertAll();
+	}
 }

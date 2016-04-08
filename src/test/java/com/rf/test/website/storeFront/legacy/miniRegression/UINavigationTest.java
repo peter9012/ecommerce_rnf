@@ -113,4 +113,24 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
+	//The Getting Started Section Business Kit is displayed
+	@Test(enabled=true)
+	public void testGettingStartedSectionBusinessKitDisplayed(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		//verify the sub-menu title under the title business system?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
+		//Navigate to business kit section-
+		storeFrontLegacyHomePage.clickWhyRFLinkUnderBusinessSystem();
+		storeFrontLegacyHomePage.clickBusinessKitsUnderWhyRF();
+		//verify that the 'Business Kits' Section displays the information?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateBusinessKitSectionIsDisplayed(),"Business Kit Section is not displayed with the Information");
+		s_assert.assertAll();
+	}
+
 }

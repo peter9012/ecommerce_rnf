@@ -19,7 +19,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static String businessSystemSubLink= "//div[@id='ContentWrapper']//span[contains(text(),'%s')]";
 
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
-	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='SHOP SKINCARE']");
+	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']/span");
 	private static final By MY_SHOPPING_BAG_LINK = By.xpath("//a[@class='BagLink']");
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");

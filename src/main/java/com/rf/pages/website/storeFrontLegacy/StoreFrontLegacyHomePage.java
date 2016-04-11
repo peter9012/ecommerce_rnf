@@ -191,8 +191,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By UPCOMING_EVENTS_LINK_LOC = By.xpath("//span[text()='Upcoming Events']");
 	private static final By DISCLAIMER_LINK_LOC = By.xpath("//span[text()='Disclaimer']");
 	private static final By GIVING_BACK_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Giving Back']");
-	private static final By BILLING_FIRST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxNameOnCard')]");
-	private static final By BILLING_LAST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxLastNameOnCard')]");
+	private static final By BILLING_FIRST_NAME = By.xpath("//td[@class='tdinput']//input[@type='text' and contains(@id,'uxAttentionFirstName')]");
+	private static final By BILLING_LAST_NAME = By.xpath("//td[@class='tdinput']//input[@type='text' and contains(@id,'uxAttentionLastName')]");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -552,14 +552,16 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.type(ZIP_CODE, postalCode+"\t");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		logger.info("Postal code entered as: "+postalCode);
-		//		driver.click(CITY_DD);
-		//		logger.info("City dropdown clicked");
+		driver.type(CITY_DD, "Fremont");
+		logger.info("City Selected");
 		//		driver.click(FIRST_VALUE_OF_CITY_DD);
 		//		logger.info("City selected");
 		//		driver.waitForElementPresent(COUNTRY_DD);
 		//		driver.click(COUNTRY_DD);
 		//		logger.info("Country dropdown clicked");
-		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+/*		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+		logger.info("Country selected");*/
+		driver.type(COUNTRY_DD, "ALAMEDA");
 		logger.info("Country selected");
 		driver.type(PHONE_NUMBER_SHIPPING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
@@ -595,6 +597,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		  logger.info("City dropdown clicked");
 		  driver.click(FIRST_VALUE_OF_CITY_DD);
 		  logger.info("City selected");*/
+		driver.type(CITY_DD, "Fremont");
+		logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}

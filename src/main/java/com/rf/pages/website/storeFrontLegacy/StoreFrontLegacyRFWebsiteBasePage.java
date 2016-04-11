@@ -35,7 +35,8 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By ORDER_PLACED_CONFIRMATION_TEXT = By.xpath("//div[@id='RFContent']//b");
 	private static final By CONSULTANTS_ONLY_PRODUCTS_REGIMEN = By.xpath("//cufontext[contains(text(),'Consultant-Only ')]/following::a[1]/img");
 	private static final By FORGOT_PASSWORD_LINK = By.xpath("//a[@id='uxForgotPasswordLink']");
-	private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
+	//private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
+	private static final By SHOP_SKINCARE_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 
 	protected RFWebsiteDriver driver;
@@ -184,10 +185,10 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(FORGOT_PASSWORD_LINK);
 	}
 
-	public void clickProductsBtn(){
+	public void clickShopSkinCareBtn(){
 		driver.pauseExecutionFor(2000);
-		driver.quickWaitForElementPresent(PRODUCT_LOC);
-		driver.click(PRODUCT_LOC);
+		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
+		driver.click(SHOP_SKINCARE_LOC);
 		logger.info("Products button clicked");
 		driver.waitForPageLoad();
 	}

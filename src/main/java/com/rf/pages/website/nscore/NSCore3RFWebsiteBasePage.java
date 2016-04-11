@@ -1,14 +1,13 @@
 package com.rf.pages.website.nscore;
 
-import org.openqa.selenium.WebDriver;
-
+import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
 
 public class NSCore3RFWebsiteBasePage extends RFBasePage{
-
-	public NSCore3RFWebsiteBasePage(WebDriver driver) {
+	protected RFWebsiteDriver driver;
+	public NSCore3RFWebsiteBasePage(RFWebsiteDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
-	}
+		this.driver = driver;
+	}	
 
 }

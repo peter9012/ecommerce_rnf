@@ -28,7 +28,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String subLinkGlossary = "Glossary";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectRegimen(subLinkRegimen);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 
@@ -100,7 +100,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String fetchedPWS = null;
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.clickSolutionToolUnderProduct();
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySolutionToolPage(),"Solution tool page is displayed");
 		storeFrontLegacyHomePage.clickFindRodanFieldConsultantLink();
@@ -117,7 +117,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testGettingStartedSectionBusinessKitDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		//verify the sub-menu title under the title business system?
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");

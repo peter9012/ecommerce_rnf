@@ -22,7 +22,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectPromotionRegimen();
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("promotions"), "Expected regimen name is: promotions Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
@@ -42,7 +42,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyConsultantPage = storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-		storeFrontLegacyConsultantPage.clickProductsBtn();
+		storeFrontLegacyConsultantPage.clickShopSkinCareBtn();
 		storeFrontLegacyConsultantPage.selectConsultantOnlyProductsRegimen();
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.getCurrentURL().toLowerCase().contains("consultantsonly"), "Expected regimen name is: consultantsonly Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyConsultantPage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_EVENT_SUPPORT);
@@ -64,7 +64,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyConsultantPage = storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-		storeFrontLegacyConsultantPage.clickProductsBtn();
+		storeFrontLegacyConsultantPage.clickShopSkinCareBtn();
 		storeFrontLegacyConsultantPage.selectConsultantOnlyProductsRegimen();
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.getCurrentURL().toLowerCase().contains("consultantsonly"), "Expected regimen name is: consultantsonly Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyConsultantPage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_PRODUCT_PROMOTION);
@@ -83,7 +83,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testEventsSectionUpcomingEventsIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		//verify the sub-menu title under the title business system?
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");

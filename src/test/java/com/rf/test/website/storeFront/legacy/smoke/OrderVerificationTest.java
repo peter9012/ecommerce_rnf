@@ -23,7 +23,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
 	//		storeFrontLegacyHomePage.loginAsConsultant(username,password);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
-	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -43,7 +43,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.loginAsPCUser(username, password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectRegimen(regimen);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyHomePage.clickAddToCartBtn();
@@ -63,7 +63,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyConsultantPage = storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-		storeFrontLegacyConsultantPage.clickProductsBtn();
+		storeFrontLegacyConsultantPage.clickShopSkinCareBtn();
 		storeFrontLegacyConsultantPage.selectConsultantOnlyProductsRegimen();
 		s_assert.assertTrue(storeFrontLegacyConsultantPage.getCurrentURL().toLowerCase().contains("consultantsonly"), "Expected regimen name is: consultantsonly Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyConsultantPage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);

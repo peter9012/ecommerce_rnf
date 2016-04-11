@@ -184,7 +184,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyTaxCommittedEntryInOrderTab(orderNumber),"Tax committed entry is not present in order");
 		s_assert.assertAll();
 	}
-	
+
 	//Hybris Project-1534:To verify the Canada tax for British Columbia for Preferred Customer Order
 	@Test
 	public void testVerifyCanadaTaxForBritishColumbiaForPCOrder_1534(){
@@ -3408,7 +3408,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1584:To verify the Canada tax for Manitoba for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForManitobaForCRPAutoship_1584(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3493,7 +3493,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1570:To verify the Canada tax for Nunavat for Retail Order
-	@Test(enabled=false)//WIP
+	@Test
 	public void testToVerifyCanadaTaxForNunavatForRCOrder_1570(){ 
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String randomCustomerSequenceNumber = null;
@@ -3557,7 +3557,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1581:To verify the Canada tax for Bristish Columbia for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForBritishColumbiaForCRPAutoship_1581(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3642,7 +3642,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1582:To verify the Canada tax for Alberta for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForAlbertaForCRPAutoship_1582(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3727,7 +3727,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1583:To verify the Canada tax for saskatchewan for CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForSaskatchewanForCRPAutoship_1583(){
 		RFO_DB = driver.getDBNameRFO();
 		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
@@ -3812,7 +3812,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1571:To verify the Canada tax for Bristish Columbia for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForBritishColumbiaForCreateCRPAutoship_1571() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -3893,7 +3893,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1572:To verify the Canada tax for Alberta for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForAlbertaForCreateCRPAutoship_1572() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -3974,7 +3974,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1573:To verify the Canada tax for saskatchewan for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForSaskatchewanForCreateCRPAutoship_1573() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();

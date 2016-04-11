@@ -40,7 +40,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectRegimen(regimen);
 		storeFrontLegacyHomePage.clickAddToCartBtn();
 		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -96,7 +96,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String addressName = "Home";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickProductsBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectRegimen(regimen);
 		storeFrontLegacyHomePage.clickAddToCartBtn();
 		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -145,7 +145,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber3 = "9099";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 		storeFrontLegacyHomePage.enterCID(CID);
 		storeFrontLegacyHomePage.clickSearchResults();
@@ -189,7 +189,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber3 = "9099";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 		storeFrontLegacyHomePage.enterCID(CID);
 		storeFrontLegacyHomePage.clickSearchResults();
@@ -241,7 +241,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String addressName = "Home";
 	//
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
 	//		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -336,7 +336,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 	//		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
 	//		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -389,7 +389,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber3 = "9099";
 	//
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+	//		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);
 	//		storeFrontLegacyHomePage.clickSearchResults();
@@ -433,7 +433,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber2 = "780";
 	//		String phnNumber3 = "9099";
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+	//		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);
 	//		storeFrontLegacyHomePage.clickSearchResults();
@@ -482,7 +482,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 	//		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
 	//		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -541,7 +541,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String addressName = "Home";
 	//
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickProductsBtn();
+	//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 	//		storeFrontLegacyHomePage.selectRegimen(regimen);
 	//		storeFrontLegacyHomePage.clickAddToCartBtn();
 	//		storeFrontLegacyHomePage.clickCheckoutBtn();
@@ -592,7 +592,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		String phnNumber2 = "780";
 	//		String phnNumber3 = "9099";
 	//		storeFrontLegacyHomePage =  new NSCore3HomePage(driver);
-	//		storeFrontLegacyHomePage.clickBusinessSystemBtn();
+	//		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 	//		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
 	//		storeFrontLegacyHomePage.enterCID(CID);
 	//		storeFrontLegacyHomePage.clickSearchResults();

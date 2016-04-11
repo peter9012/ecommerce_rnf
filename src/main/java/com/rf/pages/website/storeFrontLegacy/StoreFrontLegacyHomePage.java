@@ -40,7 +40,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//div[@id='FooterPane']//span[text()='Contact Us']");
 	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//cufontext[text()='About ']");
 
-	private static final By BUSINESS_SYSTEM_LOC = By.xpath("//span[text()='Business System']");
+	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//a[text()='ENROLL NOW']");
 	private static final By CID_LOC = By.id("NameOrId");
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
@@ -106,7 +106,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	private static final By ADD_TO_CART_BTN = By.xpath("//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
-	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[text()='Enroll Now']");
+	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[contains(text(),'Enroll Now')]");
 	private static final By FIRST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxFirstName')]");
 	private static final By LAST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxLastName')]");
 	private static final By EMAIL_ADDRESS_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxEmailAddress')]");
@@ -191,16 +191,18 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By UPCOMING_EVENTS_LINK_LOC = By.xpath("//span[text()='Upcoming Events']");
 	private static final By DISCLAIMER_LINK_LOC = By.xpath("//span[text()='Disclaimer']");
 	private static final By GIVING_BACK_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Giving Back']");
+	private static final By BILLING_FIRST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxNameOnCard')]");
+	private static final By BILLING_LAST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxLastNameOnCard')]");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
-	public void clickBusinessSystemBtn(){
-		driver.quickWaitForElementPresent(BUSINESS_SYSTEM_LOC);
-		driver.click(BUSINESS_SYSTEM_LOC);
-		logger.info("Business system button clicked");
+	public void clickBeAConsultantBtn(){
+		driver.quickWaitForElementPresent(BE_A_CONSULTANT_LOC);
+		driver.click(BE_A_CONSULTANT_LOC);
+		logger.info("Be a consultant button clicked");
 		driver.waitForPageLoad();
 	}
 
@@ -550,13 +552,13 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.type(ZIP_CODE, postalCode+"\t");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		logger.info("Postal code entered as: "+postalCode);
-		driver.click(CITY_DD);
-		logger.info("City dropdown clicked");
-		driver.click(FIRST_VALUE_OF_CITY_DD);
-		logger.info("City selected");
-		driver.waitForElementPresent(COUNTRY_DD);
-		driver.click(COUNTRY_DD);
-		logger.info("Country dropdown clicked");
+		//		driver.click(CITY_DD);
+		//		logger.info("City dropdown clicked");
+		//		driver.click(FIRST_VALUE_OF_CITY_DD);
+		//		logger.info("City selected");
+		//		driver.waitForElementPresent(COUNTRY_DD);
+		//		driver.click(COUNTRY_DD);
+		//		logger.info("Country dropdown clicked");
 		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
 		logger.info("Country selected");
 		driver.type(PHONE_NUMBER_SHIPPING_PROFILE_PAGE,phnNumber);
@@ -566,9 +568,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
-		driver.type(ATTENTION_FIRST_NAME, firstName);
+		//driver.type(ATTENTION_FIRST_NAME, firstName);
+		driver.type(BILLING_FIRST_NAME, firstName);
 		logger.info("Attention first name entered as: "+firstName);
-		driver.type(ATTENTION_LAST_NAME, lastName);
+		//driver.type(ATTENTION_LAST_NAME, lastName);
+		driver.type(BILLING_LAST_NAME, lastName);
 		logger.info("Attention last name entered as: "+lastName);
 		driver.type(NAME_ON_CARD, cardName);
 		logger.info("Card Name entered as: "+cardName);
@@ -587,10 +591,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
-		driver.click(CITY_DD);
-		logger.info("City dropdown clicked");
-		driver.click(FIRST_VALUE_OF_CITY_DD);
-		logger.info("City selected");
+		/*driver.click(CITY_DD);
+		  logger.info("City dropdown clicked");
+		  driver.click(FIRST_VALUE_OF_CITY_DD);
+		  logger.info("City selected");*/
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}

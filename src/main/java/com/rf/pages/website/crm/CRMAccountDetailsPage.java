@@ -478,7 +478,10 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
+		logger.info("CheckBox is selected");
 		driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
+		logger.info("Save Address Button clicked");
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -503,6 +506,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			logger.info("CheckBox is already selected");
 		}else{*/
 			driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
+			logger.info("CheckBox is selected");
 /*		}*/
 	}
 

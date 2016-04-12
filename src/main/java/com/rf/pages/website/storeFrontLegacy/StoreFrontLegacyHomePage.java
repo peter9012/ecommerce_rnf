@@ -176,7 +176,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By DIGITAL_PRODUCT_CATALOGUE = By.xpath("//div[@class='body']//a[text()='Digital Product Catalog']");
 	private static final By BUSINESS_PRESENTATION_SECTION_LOC = By.xpath("//div[@id='RFContent']//following::div[@style='margin-bottom:1em;']/h2//cufontext[text()='Presentations']/ancestor::cufon");
 	private static final By HOME_TAB_LOC = By.xpath("//span[text()='Home']");
-	private static final By FIND_A_CONSULTANT_IMAGE_LOC = By.xpath("//div[@id='CallBoxes']//following::div[@class='ctaBlock']//cufontext[text()='Find '][1]/following::cufontext[text()='a '][1]/following::cufontext[text()='Consultant'][1]/../../following-sibling::a/img");
+	private static final By FIND_A_CONSULTANT_IMAGE_LOC = By.xpath("//img[@alt='Find a Rodan and Fields Consultant']");
 	private static final By START_NOW_BTN = By.xpath("//a[text()='START NOW']");
 	private static final By MEET_OUR_COMMUNITY_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Meet Our Community']");
 	private static final By EVENTS_LINK_LOC = By.xpath("//div[@id='LeftNav']//span[text()='Events']");
@@ -193,6 +193,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By GIVING_BACK_LINK_LOC = By.xpath("//div[@id='HeaderCol']//span[text()='Giving Back']");
 	private static final By BILLING_FIRST_NAME = By.xpath("//td[@class='tdinput']//input[@type='text' and contains(@id,'uxAttentionFirstName')]");
 	private static final By BILLING_LAST_NAME = By.xpath("//td[@class='tdinput']//input[@type='text' and contains(@id,'uxAttentionLastName')]");
+	private static final By SOLUTION_TOOL_IMAGE_LOC = By.xpath("//img[@alt='Solution Tool']");
+	private static final By RF_IN_THE_NEWS_IMAGE_LOC = By.xpath("//img[@alt='Rodan and Fields AGING REDEFINED']");
+	private static final By USERNAME_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxUserNameText')]");
+	private static final By PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxPasswordText')]");
+	private static final By SIGN_IN_BTN_CHECKOUT_PAGE_LOC = By.xpath("//a[contains(@id,'lnkLogin')]");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -559,7 +564,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		//		driver.waitForElementPresent(COUNTRY_DD);
 		//		driver.click(COUNTRY_DD);
 		//		logger.info("Country dropdown clicked");
-/*		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+		/*		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
 		logger.info("Country selected");*/
 		driver.type(COUNTRY_DD, "ALAMEDA");
 		logger.info("Country selected");
@@ -1253,5 +1258,31 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	public boolean validateCompanyPFCFoundationPageDisplayed(){
 		return driver.getCurrentUrl().contains("Company/PFCFoundation/Mission");
+	}
+
+	public void clickSolutionToolImageLink(){
+		driver.quickWaitForElementPresent(SOLUTION_TOOL_IMAGE_LOC);
+		driver.click(SOLUTION_TOOL_IMAGE_LOC);
+		logger.info("Solution tool clicked under Home tab button");
+		driver.waitForPageLoad();
+	}
+
+	public void clickRFInTheNewsImageLink(){
+		driver.quickWaitForElementPresent(RF_IN_THE_NEWS_IMAGE_LOC);
+		driver.click(RF_IN_THE_NEWS_IMAGE_LOC);
+		logger.info("R+F In the news Image Link Is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void loginAsUserOnCheckoutPage(String username,String password){
+		driver.waitForElementPresent(USERNAME_TXTFLD_CHECKOUT_PAGE_LOC);
+		driver.type(USERNAME_TXTFLD_CHECKOUT_PAGE_LOC, username);
+		driver.click(PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC);
+		driver.type(PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC,password);  
+		logger.info("login username is "+username);
+		logger.info("login password is "+password);
+		driver.click(SIGN_IN_BTN_CHECKOUT_PAGE_LOC);
+		logger.info("Sign In button clicked");
+		driver.waitForPageLoad();
 	}
 }

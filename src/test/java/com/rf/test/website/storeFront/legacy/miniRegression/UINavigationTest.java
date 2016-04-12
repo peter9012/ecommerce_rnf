@@ -93,15 +93,16 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify solution tool rodan and fields consultant be working properly.
+
+	//Solution Tool-Find a Rodan  + Fields consultant should be working properly
 	@Test(enabled=true)
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String fetchedPWS = null;
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickShopSkinCareBtn();
-		storeFrontLegacyHomePage.clickSolutionToolUnderProduct();
+		storeFrontLegacyHomePage.clickHomeTabBtn();
+		storeFrontLegacyHomePage.clickSolutionToolImageLink();
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySolutionToolPage(),"Solution tool page is displayed");
 		storeFrontLegacyHomePage.clickFindRodanFieldConsultantLink();
 		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
@@ -110,7 +111,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.selectSponsorRadioBtnOnFindConsultantPage();
 		storeFrontLegacyHomePage.clickSelectAndContinueBtnForPCAndRC();
 		s_assert.assertFalse(storeFrontLegacyHomePage.getCurrentURL().contains(fetchedPWS),"Expected pws is: "+fetchedPWS +"While actual on UI: "+storeFrontLegacyHomePage.getCurrentURL());
-		s_assert.assertAll();	
+		s_assert.assertAll(); 
 	}
 
 	//The Getting Started Section Business Kit is displayed
@@ -130,6 +131,15 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickBusinessKitsUnderWhyRF();
 		//verify that the 'Business Kits' Section displays the information?
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateBusinessKitSectionIsDisplayed(),"Business Kit Section is not displayed with the Information");
+		s_assert.assertAll();
+	}
+
+	//Disclaimer-link should be redirecting properly
+	@Test(enabled=true)
+	public void testDisclaimerLinkShouldBeRedirectedProperly(){
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		//verify Disclaimer in footer should redirect properly?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateDisclaimerLinkInFooter(),"'Disclaimer Link' doesn't redirect to disclaimer page");
 		s_assert.assertAll();
 	}
 

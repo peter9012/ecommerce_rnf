@@ -296,7 +296,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Real results products- links should be redirecting to the appropriate page
-	@Test(enabled=true)
+	@Test(enabled=false)// No real results link
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//For REDEFINE
@@ -386,15 +386,14 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Verify solution tool rodan and fields consultant be working properly.
+	//Solution Tool-Find a Rodan  + Fields consultant should be working properly
 	@Test(enabled=true)
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String fetchedPWS = null;
-
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickShopSkinCareBtn();
-		storeFrontLegacyHomePage.clickSolutionToolUnderProduct();
+		storeFrontLegacyHomePage.clickHomeTabBtn();
+		storeFrontLegacyHomePage.clickSolutionToolImageLink();
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySolutionToolPage(),"Solution tool page is displayed");
 		storeFrontLegacyHomePage.clickFindRodanFieldConsultantLink();
 		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
@@ -403,7 +402,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.selectSponsorRadioBtnOnFindConsultantPage();
 		storeFrontLegacyHomePage.clickSelectAndContinueBtnForPCAndRC();
 		s_assert.assertFalse(storeFrontLegacyHomePage.getCurrentURL().contains(fetchedPWS),"Expected pws is: "+fetchedPWS +"While actual on UI: "+storeFrontLegacyHomePage.getCurrentURL());
-		s_assert.assertAll();	
+		s_assert.assertAll(); 
 	}
 
 	//Redefine-Sub links should be displayed properly(regimen, products, results, testimonials, in the news, FAQs, Advice, Glossary)
@@ -744,7 +743,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Contact us-link should be redirecting properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testContactUsLinkShouldBeRedirectingProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickContactUsAtFooter();
@@ -844,7 +843,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_ FindAConsultant
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCorporateFindAConsultant(){
 		String expectedURL = "LocatePWS.aspx?fromHome=1";
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -978,7 +977,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Contact us Link should be displayed properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCompanyContactUsLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -988,7 +987,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Press Room Link should be displayed properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCompanyPressRoomLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -998,7 +997,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Careers Link should be displayed properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCompanyCareersLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1008,7 +1007,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Our Story Link should be displayed properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCompanyOurStoryLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1018,7 +1017,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Execute Link should be displayed properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testCompanyExecuteTeamLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1048,7 +1047,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Disclaimer-link should be redirecting properly
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)
 	public void testDisclaimerLinkShouldBeRedirectedProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//verify Disclaimer in footer should redirect properly?
@@ -1064,6 +1063,17 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		//verify company PFC Foundation link?
 		storeFrontLegacyHomePage.clickGivingBackLinkUnderAboutRF();
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateCompanyPFCFoundationPageDisplayed(),"'Company PFC Foundation' page is not displayed");
+		s_assert.assertAll();
+	}
+
+	//Corporate_ R+FInTheNews
+	@Test(enabled=true)
+	public void testCorporateRFInTheNews(){
+		String expectedURL = "Company/PR";
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickHomeTabBtn();
+		storeFrontLegacyHomePage.clickRFInTheNewsImageLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
 }

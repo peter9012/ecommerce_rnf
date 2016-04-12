@@ -41,13 +41,12 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String username = TestConstantsRFL.USERNAME_PC;
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.loginAsPCUser(username, password);
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"consultant is not logged in successfully");
-		storeFrontLegacyHomePage.clickShopSkinCareBtn();
+		storeFrontLegacyHomePage.clickShopSkinCareHeader();
 		storeFrontLegacyHomePage.selectRegimen(regimen);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		storeFrontLegacyHomePage.clickAddToCartBtn();
 		storeFrontLegacyHomePage.clickCheckoutBtn();
+		storeFrontLegacyHomePage.loginAsUserOnCheckoutPage(username, password);
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
 		storeFrontLegacyHomePage.clickContinueBtn();
 		storeFrontLegacyHomePage.clickContinueBtnOnBillingPage();
 		storeFrontLegacyHomePage.clickCompleteOrderBtn();
@@ -61,16 +60,14 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void placedAdhocOrderFromComSiteForRC(){
 		String username = TestConstantsRFL.USERNAME_RC;
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		//storeFrontLegacyHomePage.openPWSSite(TestConstantsRFL.COM_PWS);
-		storeFrontLegacyHomePage.loginAsRCUser(username, password);
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnPWSSite(), "RC user not logged in successfully");
 		storeFrontLegacyHomePage.clickShopSkinCareHeader();
-		storeFrontLegacyHomePage.selectRegimenAfterLogin(regimen);
-		storeFrontLegacyHomePage.clickAddToCartButtonAfterLogin();
-		storeFrontLegacyHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
+		storeFrontLegacyHomePage.selectRegimen(regimen);
+		storeFrontLegacyHomePage.clickAddToCartBtn();
 		storeFrontLegacyHomePage.clickCheckoutBtn();
+		storeFrontLegacyHomePage.loginAsUserOnCheckoutPage(username, password);
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "RC user not logged in successfully");
+		storeFrontLegacyHomePage.clickContinueWithoutConsultantLink();
 		storeFrontLegacyHomePage.clickContinueBtn();
 		storeFrontLegacyHomePage.clickContinueBtnOnBillingPage();
 		storeFrontLegacyHomePage.clickCompleteOrderBtn();

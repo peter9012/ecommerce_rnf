@@ -168,7 +168,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
 	private static final By CLICK_HERE_LINK = By.xpath("//a[text()='Click here']");
 	private static final By DETAILS_LINK = By.xpath("//a[text()='Details']");
-	private static final By CLICK_HERE_LOC = By.xpath("//div[@id='RFContent']//td[1]//a[1]");
+	private static final By CLICK_HERE_LOC = By.xpath("//div[@id='RFContent']//a[contains(text(),'Income Disclosure Statement')]");
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 	private static final By REAL_RESULTS_PAGE_LOC = By.xpath("//div[@id='RFContent']//cufontext[text()='REAL ']/preceding::canvas[1]");
 	private static final By PC_PERKS_PAGE_LOC = By.xpath("//div[@id='HeaderCol']//cufontext[text()='PC ']/preceding::canvas[1]");

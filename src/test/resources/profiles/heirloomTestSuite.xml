@@ -8,7 +8,6 @@
 		<classes>
 			<class name="com.rf.test.website.storeFront.legacy.regression.EnrollmentTest" />
 			<class name="com.rf.test.website.storeFront.legacy.regression.OrderVerificationTest" />
-			<class name="com.rf.test.website.storeFront.legacy.regression.UINavigationTest" />
 			<class name="com.rf.test.website.storeFront.legacy.regression.PromotionTest" />
 		<!--	<class name="com.rf.test.website.storeFront.legacy.regression.UINavigationTest" />
 	-->	</classes>

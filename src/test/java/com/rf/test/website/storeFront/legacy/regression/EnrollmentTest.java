@@ -16,7 +16,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	private StoreFrontLegacyHomePage storeFrontLegacyHomePage;
 
 	//PC Enrollment From Corp site
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPCEnrollment(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -121,7 +121,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultant Express Enrollment from Corp
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantExpressEnrollment(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
@@ -165,7 +165,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultant Standard Enrollment
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantStandardEnrollment(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);

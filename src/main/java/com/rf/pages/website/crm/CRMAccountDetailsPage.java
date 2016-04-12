@@ -499,11 +499,11 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		if(driver.isElementPresent(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"))==true){
+/*		if(driver.isElementPresent(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"))==true){
 			logger.info("CheckBox is already selected");
-		}else{
+		}else{*/
 			driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
-		}
+/*		}*/
 	}
 
 	public void clickAddNewShippingProfileBtn(){

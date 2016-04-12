@@ -711,7 +711,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Enroll Now is displayed
-	@Test(enabled=false)//WIP
+	@Test(enabled=true)//WIP
 	public void testCompensationPlanSectionEnrollNowIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";

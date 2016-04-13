@@ -162,8 +162,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//p[@class='floated-right']//a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
-		driver.click(By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
+		driver.click(By.xpath("//div[@id='main-content']//div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Buy now']"));
 		logger.info("Buy Now button clicked and another product selected");
 		driver.waitForPageLoad();
 	}
@@ -253,6 +253,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
 			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_CA);
 			logger.info("City entered is "+TestConstants.CITY_CA);
+			driver.pauseExecutionFor(2000);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
@@ -266,6 +267,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_US);
 			logger.info("Address line 1 entered is "+TestConstants.ADDRESS_LINE_1_US);
 			driver.findElement(By.id("address.townCity")).sendKeys(TestConstants.CITY_US);
+			driver.pauseExecutionFor(2000);
 			driver.click(By.id("state"));
 			driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
 			driver.click(By.xpath("//select[@id='state']/option[2]"));
@@ -506,8 +508,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public void clickOKOnSponsorInformationPopup(){
 		//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
-		driver.waitForElementPresent(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
-		driver.click(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='popup-content']//div[@id='popup-sponsorMessage']/a/input"));
+		driver.click(By.xpath("//div[@id='popup-content']//div[@id='popup-sponsorMessage']/a/input"));
 	}
 
 	public void clickYesIWantToJoinPCPerksCB(){
@@ -649,8 +651,9 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
-		driver.findElement(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']")).click();
-		return driver.findElement(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password.')]")).getText().contains("An e-mail has been sent to reset your password");
+		boolean status=driver.isElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
+		driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+		return status;
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityPC(){

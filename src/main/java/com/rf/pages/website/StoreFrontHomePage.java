@@ -43,38 +43,40 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontEnrollNowPage(driver);
 	}
+
 	public StoreFrontConsultantPage dismissPolicyPopup(){
-		try {	
+		try { 
 			driver.waitForElementPresent(By.id("agree"));
 			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
 			if (we.isDisplayed()){
 				we.click();
 				driver.click(By.xpath("//input[@value='Continue']"));
 			}
-					//do nothing
-						
+			//do nothing
+
 		}
-		catch (IndexOutOfBoundsException e) {
-		
+		catch (Exception e) {
+
 			System.out.println("Policy Popup Dialog not seen.");
 		}
 		return null;
-	} 
-public void clickRenewLater()  {
-		
+	}
+
+	public void clickRenewLater()  {
+
 		driver.waitForElementPresent(By.xpath("//input[@value='Renew Later']"));
-//		driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
-		if (we.isDisplayed()){
-		
-			we.click();//(By.xpath("//input[@value='Renew Later']"));
-		} 
+		//  driver.findElement(By.xpath("//input[@value='Renew Later']"));
+		try{
+			WebElement we = driver.findElement(By.xpath("//input[@value='Renew Later']"));
+			if (we.isDisplayed()){
+
+				we.click();//(By.xpath("//input[@value='Renew Later']"));
+			} 
+		}catch(Exception e){
 			System.out.println ("No renewal popup for this consultant");
-		
 		}
-			
-		
-	
+	}
+
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -900,6 +902,10 @@ public void clickRenewLater()  {
 	public void checkPCPerksCheckBox(){
 		driver.findElement(By.xpath("//div[@id='pc-customer2-div-order-summary']")).click(); 
 		driver.pauseExecutionFor(2000);
+	}
+
+	public boolean verifyPcPerksConfirmMessage() {
+		return driver.isElementPresent(By.xpath("//div[@id='Congrats']"));
 	}
 }
 

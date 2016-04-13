@@ -44,7 +44,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	private String env = null;
 
 	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC EnrollmentTest 
-	@Test
+	@Test(enabled=false)
 	public void testRCEnrollment_1307() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -105,12 +105,11 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		s_assert.assertAll();	
-
+		s_assert.assertAll();
 	}
 
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
-	@Test
+	@Test(enabled=true)
 	public void testPCEnrollment_1308() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -179,11 +178,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();	
-
 	}
 
 	//Hybris Project-1288 :: Version : 1 :: 2. Terms and Conditions - Standard EnrollmentTest with both CRP and Pulse
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentTermsAndConditions_1288() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -204,7 +202,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
@@ -242,7 +239,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Test Case Hybris Project-3255 :: Version : 1 :: Standard EnrollmentTest without CRP and Pulse
-	@Test
+	@Test(enabled=true)
 	public void testStandardEnrollmentWithoutCRPAndPulse_3255() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -296,7 +293,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2230 :: Version : 1 :: Verify that user can enroll in CRP through my account.
-	@Test
+	@Test(enabled=false)
 	public void testUserEnrollCRPThroughMyAccount_2230() throws InterruptedException{		
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -366,14 +363,15 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3921 :: Version : 1 :: Verify subscribing to Pulse from My Account under .biz site 
-	@Test
+	@Test(enabled=false)
 	public void testSubscribingPulseMyAccount_3921() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_SOOTHE;
-		env = driver.getEnvironment();		
+		env = driver.getEnvironment();
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 
@@ -431,7 +429,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-52 :: Version : 1 :: BIZ:Standard Enroll Kit USD $45 Business Portfolio (CRP:Y P:Y) 
-	@Test
+	@Test(enabled=false)
 	public void testStandardEnrollmentBusinessPortfolio_52() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -490,7 +488,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-3009 :: Version : 1 :: Reset the password from the storefront and check login with new password
-	@Test(enabled=false) //wip
+	@Test(enabled=false)
 	public void testResetPasswordFromStorefrontAndRecheckLogin() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -541,7 +539,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4260 :: Version : 1 :: UserName Field: Edit & Login 
-	@Test(enabled=false) //wip
+	@Test(enabled=false)
 	public void testUxserNameFieldEditAndLogin() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -604,7 +602,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-86 :: Version : 1 :: Edit Allow my spouse in My Account  
-	@Test
+	@Test(enabled=false)
 	public void testEditAllowMySpouseInMyAccount() throws InterruptedException	{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -643,7 +641,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2304 :: Version : 1 :: check Cart from Mini cart after adding product
-	@Test
+	@Test(enabled=false)
 	public void testCheckCartFromMiniCartAfterAddingProduct_2304() throws InterruptedException	{
 		//Navigate to the website
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -668,7 +666,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2327 :: Version : 1 :: check Mini Cart - Not Logged In user
-	@Test
+	@Test(enabled=false)
 	public void testCheckMiniCartForNotLoggedInUser_2327() throws InterruptedException	{
 		//Navigate to the website
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -692,7 +690,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2329 :: Version : 1 :: check Mini Cart - Consultant 
-	@Test
+	@Test(enabled=false)
 	public void testCheckMiniCartForConsultant_2329() throws InterruptedException	 {
 		//Login as consultant and validate the 'Next CRP' mini cart in the header section
 		RFO_DB = driver.getDBNameRFO();	
@@ -738,7 +736,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2328 :: Version : 1 :: check Mini Cart - PC 
-	@Test
+	@Test(enabled=false)
 	public void testCheckMiniCartForPC_2328() throws InterruptedException	{
 		//Login as consultant and validate the 'Next PC PERKS' mini cart in the header section
 		RFO_DB = driver.getDBNameRFO();
@@ -784,7 +782,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-87 :: Version : 1 :: Standard Enrollment Billing Profile Edit Shipping Info 
-	@Test(enabled=false)//wip
+	@Test(enabled=false)
 	public void testStandardEnrollmentExpressBusinessKitRedefineRegimenEdit_87() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -853,7 +851,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1982:Order >>Actions >>Details
-	@Test
+	@Test(enabled=false)
 	public void testCheckOrdersDetailsFromActionsTab_1982() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -892,7 +890,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4156:Consultant who cancels the pulse subscription should have their prefix active (only for the month)
-	@Test
+	@Test(enabled=false)
 	public void testConsultantCancelPulseSubscriptionPrefixActive_4156() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -956,7 +954,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}	 	 
 
 	//Hybris Project-4281 :: Version : 1 :: Terminate User and Login with User Name
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)
 	public void terminateUserAndLoginWithSameUsername_4281() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -995,7 +993,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1976 :: Version : 1 :: Autoship Module. Check My Pulse UI 
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)
 	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException	 {
 		RFO_DB = driver.getDBNameRFO();	
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1032,7 +1030,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4161 :: Version : 1 :: During enrollment customer not opt for pulse but they still able to access the pws as a trial version 
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)
 	public void testCustomerEnrollWithoutPulseCanAccessPws_4161() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -1090,8 +1088,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1306 :: Version : 1 :: Biz: PC Enroll- Not my sponsor link 
-	@Test(enabled=false) //WIP
-	public void testPCEnrollNotMySponsorLink_1306() throws InterruptedException	 {
+	@Test(enabled=false)
+	public void testPCEnrollNotMySponsorLink_1306() throws InterruptedException  {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
@@ -1116,9 +1114,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
 		storeFrontHomePage.enterMainAccountInfo();
 		storeFrontHomePage.clickOnRequestASponsorBtn();
-		storeFrontHomePage.clickOnNotYourSponsorLink();
 		storeFrontHomePage.clickOKOnSponsorInformationPopup();
-		storeFrontHomePage.enterSponsorIdDuringCreationOfPC(TestConstants.SPONSOR_ID_US);
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+
+		storeFrontHomePage.enterSponsorIdDuringCreationOfPC("test");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
 
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
@@ -1137,14 +1136,14 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		s_assert.assertTrue(storeFrontHomePage.verifyPcPerksConfirmMessage(), "Order Not placed successfully");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); 
 	}
 
 	// Hybris Project-2153 :: Version : 1 :: Check the shipping method disclaimers for " UPS Standard Overnight/FedEx Standard Overnight" 
-	@Test(enabled=false) //WIP
+	@Test(enabled=false)
 	public void testCheckShippingMethodDisclaimersForUPSStandardOvernight_2153() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

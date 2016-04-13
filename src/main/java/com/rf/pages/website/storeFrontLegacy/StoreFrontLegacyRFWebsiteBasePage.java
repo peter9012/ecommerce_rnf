@@ -38,6 +38,8 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	//private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
 	private static final By SHOP_SKINCARE_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
+	private static final By CHANGE_BILLING_INFO = By.xpath("//a[contains(@id,'uxBillingInfo_uxChange')]");
+	private static final By USE_THIS_BILLING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewPayment')]");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -210,6 +212,20 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		String linkName = driver.findElement(SELECTED_HIGHLIGHT_LINK).getText();
 		logger.info("Selected And highlight link: "+linkName);
 		return linkName;
+	}
+
+	public void clickChangeBillingInformationBtn(){
+		driver.quickWaitForElementPresent(CHANGE_BILLING_INFO);
+		driver.click(CHANGE_BILLING_INFO);
+		logger.info("Change billing information button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickUseThisBillingInformationBtn(){
+		driver.quickWaitForElementPresent(USE_THIS_BILLING_INFORMATION);
+		driver.click(USE_THIS_BILLING_INFORMATION);
+		logger.info("Use this billing information clicked");
+		driver.waitForPageLoad();
 	}
 
 }

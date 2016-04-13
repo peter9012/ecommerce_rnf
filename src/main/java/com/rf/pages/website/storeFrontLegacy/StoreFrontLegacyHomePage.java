@@ -198,6 +198,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By USERNAME_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxUserNameText')]");
 	private static final By PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxPasswordText')]");
 	private static final By SIGN_IN_BTN_CHECKOUT_PAGE_LOC = By.xpath("//a[contains(@id,'lnkLogin')]");
+	private static final By RENEW_LATER_LINK = By.xpath("//a[@id='renewLater']");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -451,6 +452,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(ENTER_LOGIN_BTN_LOC);
 		logger.info("login  enter button clicked");
 		driver.waitForPageLoad();
+		clickRenewLater();
 		return new StoreFrontLegacyConsultantPage(driver);
 	}
 
@@ -1285,4 +1287,50 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Sign In button clicked");
 		driver.waitForPageLoad();
 	}
+
+	public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
+		logger.info("Billing profile name entered as: "+billingName);
+		driver.type(ATTENTION_FIRST_NAME, firstName);
+		driver.type(BILLING_FIRST_NAME, firstName);
+		logger.info("Attention first name entered as: "+firstName);
+		driver.type(ATTENTION_LAST_NAME, lastName);
+		driver.type(BILLING_LAST_NAME, lastName);
+		logger.info("Attention last name entered as: "+lastName);
+		driver.type(NAME_ON_CARD, cardName);
+		logger.info("Card Name entered as: "+cardName);
+		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
+		logger.info("Card number entered as: "+cardNumer);
+		driver.click(EXPIRATION_DATE_MONTH_DD);
+		logger.info("Expiration month dropdown clicked");
+		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
+		logger.info("Expiry month selected is: "+month);
+		driver.click(EXPIRATION_DATE_YEAR_DD);
+		logger.info("Expiration year dropdown clicked");
+		driver.click(By.xpath(String.format(expiryYearLoc, year)));
+		logger.info("Expiry year selected is: "+year);
+		driver.type(ADDRESS_LINE_1, addressLine1);
+		logger.info("Billing street address entered as: "+addressLine1);
+		driver.type(ZIP_CODE, postalCode+"\t");
+		logger.info("Postal code entered as: "+postalCode);
+		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		driver.click(CITY_DD);
+		logger.info("City dropdown clicked");
+		driver.click(FIRST_VALUE_OF_CITY_DD);
+		logger.info("City selected");
+		driver.type(CITY_DD, "Fremont");
+		logger.info("City Selected");
+		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
+		logger.info("Phone number entered as: "+phnNumber);
+	}
+
+	public void clickRenewLater(){
+		try {
+			driver.click(RENEW_LATER_LINK);
+			driver.waitForPageLoad();
+		} catch (Exception e) {
+
+		}
+	}
+
 }

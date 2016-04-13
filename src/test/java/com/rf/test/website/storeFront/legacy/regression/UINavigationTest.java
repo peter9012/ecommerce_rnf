@@ -491,6 +491,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//log out with a valid user
 	@Test(enabled=true)
 	public void testLogoutWithAValidUser(){
+		RFL_DB = driver.getDBNameRFL();
 		String whyRF = "Why R+F";
 		String programsAndIncentives = "Programs and Incentives";
 		String incomeIllustrator = "Income Illustrator";
@@ -500,8 +501,12 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String gettingStarted = "Getting Started";
 		String businessKits = "Business Kits";
 		String redefineYourFuture = "Redefine Your Future";
-		String consultantEmailID = TestConstantsRFL.USERNAME_CONSULTANT;
+		String consultantEmailID = null;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		List<Map<String, Object>> randomConsultantList =  null;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontLegacyHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		logout();

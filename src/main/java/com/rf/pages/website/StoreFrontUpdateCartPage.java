@@ -590,17 +590,6 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}
 	}
 
-	public boolean verifyOrderPlacedConfirmationMessage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/h1"));
-		String orderPlacedMessage = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/h1")).getText();
-		System.out.println("Message from UI is  "+orderPlacedMessage);
-		if(orderPlacedMessage.equalsIgnoreCase("Thank you for your order")){
-			return true;
-		}else{
-			return false;
-		}
-	}
-
 	public boolean checkDateFunctionality(){
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
 	}

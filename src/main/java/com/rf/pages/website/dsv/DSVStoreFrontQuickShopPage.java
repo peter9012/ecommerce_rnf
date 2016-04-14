@@ -30,6 +30,8 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 
 	private static final By CLEAR_ALL_LINK = By.xpath("//a[contains(text(),'Clear All')]");
 	private static final By SORT_DROP_DOWN = By.id("sortOptions");
+	private static final By FIRST_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to PC Perks']");
+	private static final By SECOND_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to PC Perks']");
 
 	private static String RandomProductFromProductFilterDropDown = "//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li[%s]//div[contains(@class,'repaired-checkbox')]/input";
 	private static String RandomProductCheckboxFromProductFilterDropDown = "//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li[%s]//div[contains(@class,'repaired-checkbox')]";
@@ -171,6 +173,20 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 		Double randomProductPrice = Double.parseDouble(driver.findElement(By.xpath(String.format(RandomProductPrice, randomValue))).getText().replaceAll("[^0-9.]", ""));
 		System.out.println("Random product price in double format is  "+randomProductPrice);
 		return randomProductPrice;
+	}
+
+	public DSVStoreFrontAutoshipCartPage clickAddToPCPerksForFirstProduct(){
+		driver.quickWaitForElementPresent(FIRST_PRODUCT_ADD_TO_PC_PERKS_BTN);
+		driver.click(FIRST_PRODUCT_ADD_TO_PC_PERKS_BTN);
+		driver.waitForLoadingImageToDisappear();
+		return new DSVStoreFrontAutoshipCartPage(driver);
+	}
+
+	public DSVStoreFrontAutoshipCartPage clickAddToPCPerksForSecondProduct(){
+		driver.quickWaitForElementPresent(SECOND_PRODUCT_ADD_TO_PC_PERKS_BTN);
+		driver.click(SECOND_PRODUCT_ADD_TO_PC_PERKS_BTN);
+		driver.waitForLoadingImageToDisappear();
+		return new DSVStoreFrontAutoshipCartPage(driver);
 	}
 
 }

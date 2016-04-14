@@ -7,27 +7,27 @@
 	<test name="regressionTestSuite_CA">
 		<classes>
  		
- 			<class name="com.rf.test.website.storeFront.regression.AccountTest"/>
-   			<class name="com.rf.test.website.storeFront.regression.CartAndCheckoutValidationTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.EnrollmentValidationTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.HomePageFunctionalityTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.OrderValidationTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.UpgradeDowngradeTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.AccountTest"/>
+   			<class name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.OrderValidationTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.UpgradeDowngradeTest"/>
  			
- 			<class name="com.rf.test.website.storeFront.regression.billingAndShipping.AddBillingTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.billingAndShipping.AddShippingTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.billingAndShipping.EditBillingTest"/>
- 			<class name="com.rf.test.website.storeFront.regression.billingAndShipping.EditShippingTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditBillingTest"/>
+ 			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditShippingTest"/>
 
-     		<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"/>
-     		<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
-     		<!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/> -->
-     		<class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/>
-    		<class name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.RFExpressBusinessKitTest"/>
+     		<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest"/>
+     		<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
+     		<!-- <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.RFExpressBusinessKitTest"/> -->
+     		<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.canadaProvince.EnrollmentTest"/>
+    		<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest"/>
      
-     		<class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.RFExpressBusinessKitTest"/>
-     		<class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.PersonalResultsKitTest"/>
-     		<class name="com.rf.test.website.storeFront.regression.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
+     		<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+     		<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest"/>
+     		<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
    
 		</classes>
 	</test>

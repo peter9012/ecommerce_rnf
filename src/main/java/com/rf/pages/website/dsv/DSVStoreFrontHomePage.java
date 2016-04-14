@@ -18,7 +18,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By PASSWORD_TXTFIELD = By.id("password");
 	private static final By LOGIN_BTN = By.xpath("//input[@value='Log in']");
 	private static final By WELCOME_TXT = By.xpath("//li[@id='account-info-button']/a");
-	private static final By CRP_CART_IMG = By.id("bag-special");
+	private static final By CART_IMG = By.id("bag-special");
 	private static final By NXT_CRP_TXT = By.xpath("//div[@id='bag-special']/following-sibling::div[1]");
 	private static final By WELCOME_DROP_DOWN = By.xpath("//li[@id='account-info-button']/a"); 
 	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Shipping Info']");
@@ -28,6 +28,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='dropdown-menu']//a[@title='Enroll Now']"); 
 	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	private static final By SEARCH_BUTTON_LOC = By.id("search-sponsor-button");
+	
 
 	public DSVStoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -95,13 +96,13 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isCRPCartImagePresent(){
-		return driver.isElementPresent(CRP_CART_IMG);
+		return driver.isElementPresent(CART_IMG);
 	}
 
 	public String getNextCRPText(){
 		return driver.findElement(NXT_CRP_TXT).getText();
 	}
-	
+
 	public void clickLogo(){
 		driver.click(By.xpath("//img[@title='Rodan+Fields']"));
 		System.out.println("R+F logo clicked");
@@ -110,8 +111,8 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public DSVStoreFrontAutoshipCartPage clickOnCRPCartImg(){
-		driver.quickWaitForElementPresent(CRP_CART_IMG);
-		driver.click(CRP_CART_IMG);
+		driver.quickWaitForElementPresent(CART_IMG);
+		driver.click(CART_IMG);
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 		return new DSVStoreFrontAutoshipCartPage(driver);
@@ -205,6 +206,11 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	}
 
-
+	public DSVStoreFrontAutoshipCartPage clickOnPCPerksCartImg(){
+		driver.quickWaitForElementPresent(CART_IMG);
+		driver.click(CART_IMG);
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
+		return new DSVStoreFrontAutoshipCartPage(driver);
+	}	
 }
-

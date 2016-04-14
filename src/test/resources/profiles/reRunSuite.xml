@@ -7,7 +7,7 @@
 	<test name="Regression_Suite">
 		<classes>
 			<!-- <class
-				name="com.rf.test.website.storeFront.regression.EnrollmentValidationTest">
+				name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
 				<methods>
 					<include name="testRegisterAsRCWithDifferentCASponsorWithoutPulse_3775" />
 					<include
@@ -17,7 +17,7 @@
 				</methods>
 			</class> -->
 			<class
-				name="com.rf.test.website.storeFront.regression.UpgradeDowngradeTest">
+				name="com.rf.test.website.storeFront.hybris.UpgradeDowngradeTest">
 				<methods>
 					<include name="testExistingConsultantPopupDuringRCRegistration_2201" />
 					<include
@@ -36,14 +36,14 @@
 				</methods>
 			</class>
 
-			<class name="com.rf.test.website.storeFront.regression.AccountTest">
+			<class name="com.rf.test.website.storeFront.hybris.AccountTest">
 				<methods>
 					<include name="testJoinPCPerksInOrderSummarySection_3877" />
 				</methods>
 			</class>
 
 			<class
-				name="com.rf.test.website.storeFront.regression.HomePageFunctionalityTest">
+				name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest">
 				<methods>
 					<include name="testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063" />
 					<include
@@ -57,7 +57,7 @@
 			</class>
 
 			<class
-				name="com.rf.test.website.storeFront.regression.CartAndCheckoutValidationTest">
+				name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest">
 				<methods>
 					<include name="testVerifyQuickInfoScreenLayoutAndProductDetails_2319" />
 					<include name="testViewProductDetailsFromQuickInfoPopup_2317" />

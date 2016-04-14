@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [CRMRegressionTestSuite.xml]">
   <listeners>
@@ -55,3 +56,39 @@
     </classes>
   </test> <!-- CRMRegressionTestSuite.xml(failed) -->
 </suite> <!-- Failed suite [CRMRegressionTestSuite.xml] -->
+=======
+<suite name="selectiveRegression">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="Regression_Suite">
+		<classes>
+
+<!-- 			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
+		 	<methods>
+			<include name="testEditAllowMySpouseInMyAccount_86" />
+			</methods>
+			</class> -->
+			
+			<class name="com.rf.test.website.storeFront.hybris.AccountTest">
+			<methods>
+<!-- 			<include name="testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143" />
+			<include name="testOrdersPageUIForRCUser_HP2_1981" /> -->
+			<include name="testVerifyUserCanCancelPulseSubscriptionThroughMyAccount_2233" />
+			<include name="ReactivateTerminatedConsultantAndSearchInSponsorList_4311" />
+			<include name="testConsultantToRCDowngrade_4821" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest">
+				<methods>
+				<include name="testExpressEnrollmentBusinessPorfolioKitRedefineRegimen_2204" />
+				</methods>
+			</class>
+		</classes>
+			
+		</test>
+</suite>	
+ 
+	
+>>>>>>> newUI

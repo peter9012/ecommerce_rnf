@@ -25,6 +25,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			.getLogger(CRMAccountDetailsPage.class.getName());
 
 	private static String userEnteredAddress = "//label[contains(text(),'%s')]/../input";
+	private static String addressFieldLoc = "//label[contains(text(),'%s')]/following::input[1]";
 
 	public CRMAccountDetailsPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -113,6 +114,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));		
 		driver.click(By.xpath("//input[@value='"+buttonName+"']"));
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isSVSectionPresentOnPulsePage(){
@@ -420,8 +422,10 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		driver.findElement(By.xpath("//label[contains(text(),'Recognition Name')]/following::input[1]")).clear();
+		//		driver.findElement(By.xpath("//label[contains(text(),'Recognition Name')]/following::input[1]")).clear();
 		driver.type(By.xpath("//label[contains(text(),'Recognition Name')]/following::input[1]"), RecognitionName);
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void clickSaveBtnUnderAccountDetail(){
@@ -443,8 +447,8 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		driver.findElement(By.xpath("//label[contains(text(),'ddress Line 3')]/following::input[1]")).clear();
-		driver.type(By.xpath("//label[contains(text(),'ddress Line 3')]/following::input[1]"), AddressLine3);
+		driver.findElement(By.xpath("//label[contains(text(),'Address Line 3')]/following::input[1]")).clear();
+		driver.type(By.xpath("//label[contains(text(),'Address Line 3')]/following::input[1]"), AddressLine3);
 	}
 
 	public String getMainAddressLine3(){
@@ -478,10 +482,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
-		logger.info("CheckBox is selected");
 		driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
-		logger.info("Save Address Button clicked");
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -502,12 +503,11 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-/*		if(driver.isElementPresent(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"))==true){
+		if(driver.findElement(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]")).isSelected()==true){
 			logger.info("CheckBox is already selected");
-		}else{*/
+		}else{
 			driver.click(By.xpath("//label[contains(text(),'IsDefault')]/following::input[1]"));
-			logger.info("CheckBox is selected");
-/*		}*/
+		}
 	}
 
 	public void clickAddNewShippingProfileBtn(){
@@ -549,7 +549,9 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		return driver.findElement(By.xpath("//td[contains(text(),'Account Name')]/following-sibling::td[1]")).getText();
+		String accountName = driver.findElement(By.xpath("//td[contains(text(),'Account Name')]/following-sibling::td[1]")).getText();
+		String accountNameee[] = accountName.split("\\[");
+		return accountNameee[0].trim();
 	}
 
 
@@ -599,7 +601,6 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
 		driver.click(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
-		System.out.println("Clicked");
 	}
 
 	public boolean isLabelUnderAutoshipNumberPresent(String label){
@@ -629,7 +630,6 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		String title = driver.findElement(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[@class='pbBody'][1]//tr[contains(@class,'dataRow')][1]//img")).getAttribute("title");
-		System.out.println("title is =====> "+ title );
 		if(title.equals("Not Checked")){
 			profileName = driver.findElement(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//tr[2]/td[2]")).getText();
 			driver.click(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::a[text()='Edit'][1]"));
@@ -733,13 +733,11 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean validateMainAddressIsSavedAsShippingProfile(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		int beforeCount=getShippingProfilesRowCount();
-		System.out.println("before saving count"+beforeCount);
+		int beforeCount=getCountOfAccountMainMenuOptions("Shipping Profiles");
 		clickSaveAsShippingLinkUnderMainAddress();
-		int afterCount=getShippingProfilesRowCount();
-		System.out.println("after saving count"+afterCount);
+		int afterCount=getCountOfAccountMainMenuOptions("Shipping Profiles");
 		if(beforeCount<afterCount){
 			return true;
 		}else{
@@ -923,8 +921,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}catch(Exception e){
 			String exceptionMessage = e.getMessage();
 			if(exceptionMessage.contains("Element must be user-editable in order to clear it."))
-				System.out.println( "element xpath==>> "+driver.findElement(By.xpath("//div[@class='pbSubsection']//td[text()='"+label+"']/following::td[1]"))+" is read-only");
-			flag = false;
+				flag = false;
 		}
 		return flag;
 	}
@@ -1344,4 +1341,43 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::img[@title='Checked'][1]/../following-sibling::td[text()='"+addressLocaleRegionPostalCode+"']"));
 	}
 
+	public void editAddressFieldsOfMainAddressSection(String addressField,String addressText){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.type(By.xpath("//label[contains(text(),'"+addressField+"')]/following::input[1]"), addressText);
+	}
+
+	public String getDataValueOfLabelsInMainAddressSection(String label){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElement(By.xpath("//td[contains(text(),'"+label+"')]/following-sibling::td[1]")).getText();
+	}
+
+	public void clickSaveAddressButtonInEditMainAddressSection(String addressLine){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		driver.click(By.xpath("//a[text()='Save Address']"));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.click(By.xpath(String.format(userEnteredAddress,addressLine)));
+		driver.waitForCRMLoadingImageToDisappear();
+		driver.click(By.xpath("//a[text()='Save Address']"));
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public String getValueOfLabelInAccountMainMenuOptionsPresent(String accountMainMenuOption, int columnNumber){
+		String value = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		if(columnNumber==0){
+			value = driver.findElement(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::tr[2]/th")).getText().trim();
+		}else{
+			value = driver.findElement(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::tr[2]/td["+columnNumber+"]")).getText().trim();
+		}
+		return value;
+	}
 }
+

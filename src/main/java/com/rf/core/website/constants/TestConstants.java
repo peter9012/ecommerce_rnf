@@ -39,7 +39,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US_STG1="06371149";
 
 
-	public static final String FIRST_NAME = "auto";
+	public static final String FIRST_NAME = "RFAutoCS";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 
@@ -337,7 +337,7 @@ public class TestConstants {
 	 * 
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
-	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String NEW_BILLING_PROFILE_NAME = "RFAutoCS";
 	public static final String BILLING_ADDRESS_NAME = "newBAName";
 	public static final String EDIT_BILLING_PROFILE_NAME = "newBPNameEdited";
 	public static final String ADDRESS_NAME = "newSAName";
@@ -450,7 +450,7 @@ public class TestConstants {
 	public static final String QVVALUE = "500";
 	public static final String DELIVERY_COST = "20";
 	public static final String HANDLING_COST = "5";
-	//public static final String DSV_RC_ORDER_STATUS = "Completed";
+	public static final String DSV_RC_ORDER_STATUS = "All";
 
 	//CSCockpit Constants
 
@@ -493,6 +493,9 @@ public class TestConstants {
 	public static final double EIGHT_PERCENT_TAX = 0.08;
 	public static final double NINE_PERCENT_TAX = 0.09;
 	public static final String PROVINCE_NEW_FOUNDLAND_AND_LABRADOR = "Newfoundland and Labrador";
+	public static final String DSV_CONSULTANT_CID_FOR_ORDER_SEARCH = "06386788";
+	public static final String DSV_PC_CID_FOR_ORDER_SEARCH = "06386790";
+	public static final String DSV_RC_CID_FOR_ORDER_SEARCH = "06368553";
 
 	//CRM data
 	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";

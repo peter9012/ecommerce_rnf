@@ -1,7 +1,9 @@
 package com.rf.pages.website;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -389,11 +391,23 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
+		String parentWindowID=driver.getWindowHandle();
 		driver.waitForElementPresent(By.id("placeOrderButton"));
 		driver.click(By.id("placeOrderButton"));
 		logger.info("Place order button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();		
+		driver.waitForPageLoad();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		String childWindowID = null;
+		while(it.hasNext()){
+			childWindowID = it.next();
+			if(!childWindowID.equalsIgnoreCase(parentWindowID)){
+				driver.switchTo().window(childWindowID);
+				driver.close();
+			}
+		}
+		driver.switchTo().window(parentWindowID);
 	}
 
 	public void clickOnRodanAndFieldsLogo(){

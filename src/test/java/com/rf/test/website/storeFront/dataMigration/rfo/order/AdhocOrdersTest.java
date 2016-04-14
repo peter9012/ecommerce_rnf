@@ -42,8 +42,8 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
-		
+
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
@@ -51,10 +51,10 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -102,7 +102,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		
+
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
@@ -134,12 +134,12 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-			
+
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -219,12 +219,12 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-			
+
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -232,7 +232,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		
+
 		storeFrontRCUserPage.clickOnShopLink();
 		storeFrontRCUserPage.clickOnAllProductsLink();   
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
@@ -266,7 +266,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		logger.info("Order Number after placing the order is "+orderNumber);
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		
+
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();

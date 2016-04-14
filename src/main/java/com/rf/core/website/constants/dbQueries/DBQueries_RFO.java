@@ -59,7 +59,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = 40 "+
 			"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
@@ -83,29 +83,29 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
 			"USE RFOperations "+
-			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
-			"BEGIN TRANSACTION "+
-			"SELECT TOP 1 "+
-			"ab.AccountID , "+
-			"[as].Username "+
-			"FROM    RFO_Accounts.AccountBase AS ab "+
-			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
-			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
-			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
-			/*Active Accounts*/
-			"AND NOT EXISTS ( SELECT 1 "+
-			"FROM   RFO_Accounts.AccountRF AS ar "+
-			"WHERE  ar.Active = 0 "+
-			"AND ar.HardTerminationDate IS NOT NULL "+
-			"AND ar.AccountID = ab.AccountID ) "+ 
-			/*Pending/Submitted Orders */
-			"AND EXISTS ( SELECT 1 "+
-			"FROM   Hybris.Orders AS o "+
-			"WHERE  o.AccountID = ab.AccountID "+
-			"AND o.OrderTypeID = 1 "+/*RC*/
-			"AND o.OrderStatusID IN (1,2) ) "+ 
-			"ORDER BY NEWID()";
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+					"BEGIN TRANSACTION "+
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"WHERE   ab.CountryID = 40 "+
+					"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+
+					"AND ar.AccountID = ab.AccountID ) "+ 
+					/*Pending/Submitted Orders */
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Orders AS o "+
+					"WHERE  o.AccountID = ab.AccountID "+
+					"AND o.OrderTypeID = 1 "+/*RC*/
+					"AND o.OrderStatusID IN (1,2) ) "+ 
+					"ORDER BY NEWID()";
 
 
 
@@ -1395,7 +1395,7 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE   ab.CountryID = 236 "+
+			"WHERE   ab.CountryID = 40 "+
 			"AND ab.AccountTypeID = 1 "+/*Consultant*/
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+

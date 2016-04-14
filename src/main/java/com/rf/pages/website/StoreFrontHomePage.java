@@ -907,6 +907,11 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean verifyPcPerksConfirmMessage() {
 		return driver.isElementPresent(By.xpath("//div[@id='Congrats']"));
 	}
+
+	public boolean isTermsAndConditionsMessgaePresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='content']/p"));
+		return driver.isElementPresent(By.xpath("//div[@class='content']/p"));
+	}
 }
 
 

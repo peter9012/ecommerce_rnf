@@ -1,6 +1,7 @@
 
 package com.rf.test.website;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,18 +42,21 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 			.getLogger(RFDSVStoreFrontWebsiteBaseTest.class.getName());
 
 	/**
+	 * @throws MalformedURLException 
 	 * @throws Exception
 	 *             setup function loads the driver and environment and baseUrl
 	 *             for the tests
 	 */
-	@BeforeSuite(alwaysRun=true)
-	public void setUp() throws Exception {
-		driver.loadApplication();		
-		logger.info("Application loaded");				
-	}
+	//	@BeforeSuite(alwaysRun=true)
+	//	public void setUp() throws Exception {
+	//		driver.loadApplication();		
+	//		logger.info("Application loaded");				
+	//	}
 
 	@BeforeGroups(groups = { "consultant"})
-	public void beforeGroupConsultant(){
+	public void beforeGroupConsultant() throws MalformedURLException{
+		driver.loadApplication();		
+		logger.info("Application loaded");	
 		String country = driver.getCountry();
 		driver.get(driver.getURL()+"/"+country);
 		if(country.equalsIgnoreCase("ca"))
@@ -70,15 +74,11 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-	
-	@BeforeGroups(groups = { "nonLogin"})
-	public void beforeGroupNonLogin(){
-		String country = driver.getCountry();
-		driver.get(driver.getURL()+"/"+country);		
-	}
 
 	@BeforeGroups(groups = { "pc" })
-	public void beforeGroupPC(){
+	public void beforeGroupPC() throws MalformedURLException{
+		driver.loadApplication();		
+		logger.info("Application loaded");	
 		String country = driver.getCountry();
 		driver.get(driver.getURL()+"/"+country);
 		if(country.equalsIgnoreCase("ca"))
@@ -97,7 +97,9 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	}
 
 	@BeforeGroups(groups = {"rc" })
-	public void beforeGroupRC(){
+	public void beforeGroupRC() throws MalformedURLException{
+		driver.loadApplication();		
+		logger.info("Application loaded");	
 		String country = driver.getCountry();
 		driver.get(driver.getURL()+"/"+country);
 		if(country.equalsIgnoreCase("ca"))
@@ -115,30 +117,52 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.waitForPageLoad();
 	}
 
+	@BeforeGroups(groups = {"nonLogin" })
+	public void beforeGroupnonLogin() throws MalformedURLException{
+		driver.loadApplication();		
+		logger.info("Application loaded");	
+		String country = driver.getCountry();
+		driver.get(driver.getURL()+"/"+country);
+		if(country.equalsIgnoreCase("ca"))
+			countryId = "40";
+		else if(country.equalsIgnoreCase("us"))
+			countryId = "236";	
+	}
+
 	@AfterGroups(groups = { "consultant"})
 	public void afterGroupCons(){
 		logout();
+		driver.quit();
 	}
 
 	@AfterGroups(groups = {"pc"})
 	public void afterGroupPC(){
 		logout();
+		driver.quit();
 	}
 
 	@AfterGroups(groups = {"rc" })
 	public void afterGroupRC(){
 		logout();
+		driver.quit();
+	}
+
+
+	@AfterGroups(groups = {"nonLogin"})
+	public void afterGroupNonLogin(){
+		logout();
+		driver.quit();
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
-//		String country = driver.getCountry();
-//		driver.get(driver.getURL()+"/"+country);
-//		if(country.equalsIgnoreCase("ca"))
-//			countryId = "40";
-//		else if(country.equalsIgnoreCase("us"))
-//			countryId = "236";			
+		//		String country = driver.getCountry();
+		//		driver.get(driver.getURL()+"/"+country);
+		//		if(country.equalsIgnoreCase("ca"))
+		//			countryId = "40";
+		//		else if(country.equalsIgnoreCase("us"))
+		//			countryId = "236";			
 	}
 
 	@AfterMethod
@@ -160,12 +184,16 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
-		driver.quickWaitForElementPresent(By.id("account-info-button"));
-		driver.findElement(By.id("account-info-button")).click();
-		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.findElement(By.linkText("Log out")).click();
-		logger.info("Logout");		
-		driver.pauseExecutionFor(3000);
+		try{
+			driver.quickWaitForElementPresent(By.id("account-info-button"));
+			driver.findElement(By.id("account-info-button")).click();
+			driver.waitForElementPresent(By.linkText("Log out"));
+			driver.findElement(By.linkText("Log out")).click();
+			logger.info("Logout");		
+			driver.pauseExecutionFor(3000);
+		}catch(Exception e){
+
+		}
 	}
 
 	// This assertion for the UI Texts

@@ -326,43 +326,43 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 
 	//Hybris Project-5502:Verify Order Search for Consultant
 	@Test(priority=10)
-	public void testVerifyOrderSearchForConsultant_5502(){		
+	public void testVerifyOrderSearchForConsultant_5502(){  
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_CONSULTANT_ORDER_STATUS);
-		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_CONSULTANT_CID);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_CONSULTANT_CID_FOR_ORDER_SEARCH);
 		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_CONSULTANT_ORDER_NUMBER);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_CONSULTANT_ORDER_NUMBER),"Order number "+TestConstants.DSV_CONSULTANT_ORDER_NUMBER+" is not present on Order details page");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_CONSULTANT_CID),"CID number "+TestConstants.DSV_CONSULTANT_CID+" is not present on Order details page");		
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_CONSULTANT_CID_FOR_ORDER_SEARCH),"CID number "+TestConstants.DSV_CONSULTANT_CID+" is not present on Order details page");  
 		s_assert.assertAll();
 	}
 
 	// Hybris Project-5503:Verify Order Search for PC
 	@Test(priority=11)
-	public void testVerifyOrderSearchForPC_5503(){		
+	public void testVerifyOrderSearchForPC_5503(){  
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_PC_ORDER_STATUS);
-		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_PC_CID);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_PC_CID_FOR_ORDER_SEARCH);
 		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_PC_ORDER_NUMBER);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_PC_ORDER_NUMBER),"Order number "+TestConstants.DSV_PC_ORDER_NUMBER+" is not present on Order details page");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_PC_CID),"CID number "+TestConstants.DSV_PC_CID+" is not present on Order details page");		
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_PC_CID_FOR_ORDER_SEARCH),"CID number "+TestConstants.DSV_PC_CID+" is not present on Order details page");  
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-5504:Verify Order Search for RC
 	@Test(priority=12)
-	public void testVerifyOrderSearchForRC_5504(){		
+	public void testVerifyOrderSearchForRC_5504(){  
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
 		//cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_RC_ORDER_STATUS);
-		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_RC_CID);
+		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_RC_CID_FOR_ORDER_SEARCH);
 		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_RC_ORDER_NUMBER);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab("1");
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_RC_ORDER_NUMBER),"Order number "+TestConstants.DSV_RC_ORDER_NUMBER+" is not present on Order details page");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_RC_CID),"CID number "+TestConstants.DSV_RC_CID+" is not present on Order details page");		
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyOrderDetailsIsPresentInOrderTab(TestConstants.DSV_RC_CID_FOR_ORDER_SEARCH),"CID number "+TestConstants.DSV_RC_CID+" is not present on Order details page");  
 		s_assert.assertAll();
 	}
 

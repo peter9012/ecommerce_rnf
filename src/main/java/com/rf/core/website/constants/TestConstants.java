@@ -493,6 +493,9 @@ public class TestConstants {
 	public static final double EIGHT_PERCENT_TAX = 0.08;
 	public static final double NINE_PERCENT_TAX = 0.09;
 	public static final String PROVINCE_NEW_FOUNDLAND_AND_LABRADOR = "Newfoundland and Labrador";
+	public static final String DSV_CONSULTANT_CID_FOR_ORDER_SEARCH = "06386788";
+	public static final String DSV_PC_CID_FOR_ORDER_SEARCH = "06386790";
+	public static final String DSV_RC_CID_FOR_ORDER_SEARCH = "06368553";
 
 	//CRM data
 	public static final String CRM_ACT_INFORMATION_RECOGNITION_NAME ="Act Inf Recognition Name";

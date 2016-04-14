@@ -132,32 +132,6 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-5318:Adding new and Editing existing Shipping Profile AS Consultant
-	@Test(groups = { "consultant" },priority=6)
-	public void testAddAndEditShippingProfileAsConsultant() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(1000, 9999);
-		String fName = "RF"; 
-		String lName1 = "Auto "+randomNum;
-		String lName2 = lName1+" edit";
-		String name1 = fName+" "+lName1;
-		String name2 = fName+" "+lName2;
-		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
-		dsvStoreFrontHomePage.clickWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
-		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
-		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
-		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
-		dsvStoreFrontHomePage.clickLogo();
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-5319:Adding new and Editing existing Billing Profile AS Consultant
 	@Test(groups = { "consultant" },priority=5)
 	public void testAddAndEditBillingProfileAsConsultant() throws Exception{
@@ -184,6 +158,34 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
+	//Hybris Project-5318:Adding new and Editing existing Shipping Profile AS Consultant
+	@Test(groups = { "consultant" },priority=6)
+	public void testAddAndEditShippingProfileAsConsultant() throws Exception{
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
+		String name1 = fName+" "+lName1;
+		String name2 = fName+" "+lName2;
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
+		dsvStoreFrontHomePage.clickWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
+		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
+		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
+		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
+		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertAll();
+	}
+
+
 	//Hybris Project-5320:Deleting Billing Profile for Consultant
 	@Test(groups = { "consultant" },priority=7)
 	public void testDeleteBillingProfileAsConsultant_5320() throws Exception{
@@ -207,8 +209,39 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-5332:Access .biz and .com with non-secure url
+	@Test(groups = { "consultant" },priority=8)
+	public void testAccessBizAndComWithNonSecureURL_5332(){
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		String pws = driver.getCurrentUrl();
+		logout();
+		dsvStoreFrontHomePage.openURL(pws);
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz non-secure pws");
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .com non-secure pws");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5333:Access .biz and .com with secure url
+	@Test(groups = { "consultant" },priority=9)
+	public void testAccessBizAndComWithSecureURL_5333(){
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		String pws = driver.getCurrentUrl();
+		logout();
+		dsvStoreFrontHomePage.openURL(pws);
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz secure pws");
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com secure pws");
+		s_assert.assertAll();
+	}
+
+
 	//Hybris Project-5321:User Account login As PC
-	@Test(groups = { "pc" },priority=8)
+	@Test(groups = { "pc" },priority=10)
 	public void testUserAccountLoginAsPC_5321(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();	
@@ -218,8 +251,47 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
+	//Hybris Project_XXXX:Edit PC Perks Autoship Template
+	@Test(groups = { "pc" },priority=11)
+	public void testEditPcPerksAutoshipTemplate_5322(){
+		String quantityOfProduct = "10";
+		String secondProductRetailPrice=null;
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		String baseURL = dsvStoreFrontHomePage.getBaseURL();
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains("myrandf"), "PC is not corp site or Sponsor's PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
+		dsvStoreFrontAutoshipCartPage = dsvStoreFrontHomePage.clickOnPCPerksCartImg();
+		dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
+		String firstProductRetailPrice = dsvStoreFrontQuickShopPage.getFirstProductRetailPrice();
+		String firstProductName = dsvStoreFrontQuickShopPage.getFirstProductName();
+		logger.info("Name of first product added to CRP is "+firstProductName);
+		logger.info("Retail price of first product added to CRP is "+firstProductRetailPrice);
+		dsvStoreFrontAutoshipCartPage = dsvStoreFrontQuickShopPage.clickAddToPCPerksForFirstProduct();
+		s_assert.assertTrue(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductName+" is not added to the cart");
+		dsvStoreFrontAutoshipCartPage.addQuantityOfProduct(firstProductRetailPrice, quantityOfProduct);
+		dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(firstProductRetailPrice);
+		s_assert.assertTrue(dsvStoreFrontAutoshipCartPage.getQuantityOfProduct(firstProductRetailPrice).contains(quantityOfProduct), "Quantity of "+firstProductName+" expected is "+quantityOfProduct+"but on UI is "+dsvStoreFrontAutoshipCartPage.getQuantityOfProduct(firstProductRetailPrice));
+		dsvStoreFrontAutoshipCartPage.clickRemoveProduct(firstProductRetailPrice);
+		if(dsvStoreFrontAutoshipCartPage.isThresholdMessageAppeared()==true){
+			dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
+			secondProductRetailPrice = dsvStoreFrontQuickShopPage.getSecondProductRetailPrice();
+			logger.info("Retail price of second product added to CRP is "+secondProductRetailPrice);
+			dsvStoreFrontAutoshipCartPage = dsvStoreFrontQuickShopPage.clickAddToPCPerksForSecondProduct();
+			dsvStoreFrontAutoshipCartPage.addQuantityOfProduct(secondProductRetailPrice, quantityOfProduct);
+			dsvStoreFrontAutoshipCartPage.clickUpdateQuantityBtnOfProduct(secondProductRetailPrice);
+			dsvStoreFrontAutoshipCartPage.clickRemoveProduct(firstProductRetailPrice);
+			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductRetailPrice+" is not removed from the cart");
+		}
+		else{
+			s_assert.assertFalse(dsvStoreFrontAutoshipCartPage.isProductPresentOnCart(firstProductRetailPrice), firstProductRetailPrice+" is not removed from the cart"); 
+		}
+		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertAll();
+	}
+
 	//Hybris Project-5323 Updating Account info As PC
-	@Test(groups = { "pc" },priority=9)
+	@Test(groups = { "pc" },priority=12)
 	public void testAccountInfoUpdateAsPC_5323() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
@@ -244,35 +316,8 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-5324:Adding new and Editing existing Shipping Profile As PC
-	@Test(groups = { "pc" },priority=11)
-	public void testAddAndEditShippingProfileAsPC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(1000, 9999);
-		String fName = "RF"; 
-		String lName1 = "Auto "+randomNum;
-		String lName2 = lName1+" edit";
-		String name1 = fName+" "+lName1;
-		String name2 = fName+" "+lName2;		
-		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		String baseURL = dsvStoreFrontHomePage.getBaseURL();
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
-		dsvStoreFrontHomePage.clickWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
-		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
-		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
-		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
-		dsvStoreFrontHomePage.clickLogo();
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-5325:Adding new and Editing existing Billing Profile As PC
-	@Test(groups = { "pc" },priority=10)
+	@Test(groups = { "pc" },priority=13)
 	public void testAddAndEditBillingProfileAsPC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -299,8 +344,35 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	}
 
 
+	// Hybris Project-5324:Adding new and Editing existing Shipping Profile As PC
+	@Test(groups = { "pc" },priority=14)
+	public void testAddAndEditShippingProfileAsPC() throws Exception{
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
+		String name1 = fName+" "+lName1;
+		String name2 = fName+" "+lName2;		
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		String baseURL = dsvStoreFrontHomePage.getBaseURL();
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(".myrandf.com/ca"), "PC is not corp site or .com pws site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
+		dsvStoreFrontHomePage.clickWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
+		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
+		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
+		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
+		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertAll();
+	}
+
 	//Hybris Project-5326:Deleting Billing Profile for PC
-	@Test(groups = { "pc" },priority=12)
+	@Test(groups = { "pc" },priority=15)
 	public void testDeleteBillingProfileAsPC_5326() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -324,7 +396,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-5327:User Account login As RC
-	@Test(groups = { "rc" },priority=13)
+	@Test(groups = { "rc" },priority=16)
 	public void testUserAccountLoginAsRC(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();		
@@ -336,7 +408,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-5328 Updating Account info As RC
-	@Test(groups = { "rc" },priority=14)
+	@Test(groups = { "rc" },priority=17)
 	public void testAccountInfoUpdateAsRC_5327() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(5000, 9999);
 		int randomDOB = CommonUtils.getRandomNum(1, 12);
@@ -362,35 +434,8 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-5329:Adding new and Editing existing Shipping Profile As RC
-	@Test(groups = { "rc" },priority=16)
-	public void testAddAndEditShippingProfileAsRC() throws Exception{
-		int randomNum = CommonUtils.getRandomNum(1000, 9999);
-		String fName = "RF"; 
-		String lName1 = "Auto "+randomNum;
-		String lName2 = lName1+" edit";
-		String name1 = fName+" "+lName1;
-		String name2 = fName+" "+lName2;
-		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		String baseURL = dsvStoreFrontHomePage.getBaseURL();
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "RC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
-		dsvStoreFrontHomePage.clickWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
-		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
-		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
-		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
-		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
-		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
-		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
-		dsvStoreFrontHomePage.clickLogo();
-		s_assert.assertAll();
-	}
-
 	//Hybris Project-5330:Adding new and Editing existing Billing Profile As RC
-	@Test(groups = { "rc" },priority=15)
+	@Test(groups = { "rc" },priority=18)
 	public void testAddAndEditBillingProfileAsRC() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -417,8 +462,37 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-5329:Adding new and Editing existing Shipping Profile As RC
+	@Test(groups = { "rc" },priority=19)
+	public void testAddAndEditShippingProfileAsRC() throws Exception{
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String fName = "RF"; 
+		String lName1 = "Auto "+randomNum;
+		String lName2 = lName1+" edit";
+		String name1 = fName+" "+lName1;
+		String name2 = fName+" "+lName2;
+		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
+		String baseURL = dsvStoreFrontHomePage.getBaseURL();
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "RC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
+		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");		
+		dsvStoreFrontHomePage.clickWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage = dsvStoreFrontHomePage.clickShippingInfoLinkFromWelcomeDropDown();
+		dsvStoreFrontShippingInfoPage.clickAddANewShippingAddressLink();
+		dsvStoreFrontShippingInfoPage.enterNewShippingAddressDetails(name1, TestConstants.DSV_ADDRESS_LINE_1_CA, TestConstants.DSV_CITY_CA, TestConstants.DSV_POSTAL_CODE_CA, TestConstants.DSV_PHONE_NUMBER,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName1), name1+" shipping profile is not added on the page");
+		dsvStoreFrontShippingInfoPage.clickEditShippingProfileLink(lName1);
+		dsvStoreFrontShippingInfoPage.enterNameWithCardNumberAndSecurityCode(name2,TestConstants.DSV_SECURITY_CODE);
+		dsvStoreFrontShippingInfoPage.clickSaveAddressBtn();
+		s_assert.assertTrue(dsvStoreFrontShippingInfoPage.isShippingProfilePresentonPage(lName2), name1+" shipping profile is not edited on the page");
+		dsvStoreFrontHomePage.clickLogo();
+		s_assert.assertAll();
+	}
+
+
+
 	//Hybris Project-5331:Deleting Billing Profile for RC
-	@Test(groups = { "rc" },priority=17)
+	@Test(groups = { "rc" },priority=20)
 	public void testDeleteBillingProfileAsRC_5331() throws Exception{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RF"; 
@@ -441,34 +515,9 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-5332:Access .biz and .com with non-secure url
-	@Test(groups = { "nonLogin" },priority=18)
-	public void testAccessBizAndComWithNonSecureURL_5332(){
-		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		dsvStoreFrontHomePage.openURL(TestConstants.DSV_BIZ_PWS);
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz non-secure pws");
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .com non-secure pws");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-5333:Access .biz and .com with secure url
-	@Test(groups = { "nonLogin" },priority=19)
-	public void testAccessBizAndComWithSecureURL_5333(){
-		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		dsvStoreFrontHomePage.openURL(TestConstants.DSV_BIZ_PWS);
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz secure pws");
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com secure pws");
-		s_assert.assertAll();
-	}
 
 	//Hybris Project-5334:Select Canadian sponsor with PWS for enrolment
-	@Test(groups = { "nonLogin" },priority=20)
+	@Test(groups = { "nonLogin" },priority=21)
 	public void testCanadianSponsorWithPwsForEnrollment_5334(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
@@ -480,7 +529,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-5335:Select US sponsor for enrolment 
-	@Test(groups = { "nonLogin" },priority=21)
+	@Test(groups = { "nonLogin" },priority=22)
 	public void testSelectUSSponsorForEnrolment_5335(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
@@ -492,7 +541,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-5336:Select Canadian sponsor with no PWS for enrolment
-	@Test(groups = { "nonLogin" },priority=22)
+	@Test(groups = { "nonLogin" },priority=23)
 	public void testSelectCanadianSponsorWithNoPWSForEnrolment_5336(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");

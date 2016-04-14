@@ -57,6 +57,15 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(SEARCH_BTN);
 		logger.info("Search button clicked");
 		driver.waitForCSCockpitLoadingImageToDisappear();
+		for(int i=1;i<=3;i++){
+			driver.waitForElementPresent(By.xpath(String.format(orderNumberFromOrdersResultLoc,"1")));
+			try{
+				driver.findElement(By.xpath(String.format(orderNumberFromOrdersResultLoc,"1")));
+				break;
+			}catch(Exception e){
+				continue;
+			}
+		}
 	}
 
 	public boolean isOrderTypeDDDisplayedOnOrderSearchTab(){

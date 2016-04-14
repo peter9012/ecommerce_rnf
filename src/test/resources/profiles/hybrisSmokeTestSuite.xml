@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="HybrisSmokeTestSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="HybrisSmokeTest">
+		<classes>
+			<class
+				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest">
+				<methods>
+					<include name="testStandardEnrollmentPersonalKitReverseRegimen_50"></include>
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest">
+				<methods>
+					<include
+						name="testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.OrderValidationTest">
+				<methods>
+					<include name="testCreateAdhocOrderConsultant_1878"></include>
+					<include name="testCreateAdhocOrderRC_1879"></include>
+					<include name="testCreateAdhocOrderPC_1877"></include>
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
+				<methods>
+					<include name="testTermsAndConditionsRCEnrollment_2188"></include>
+					<include name="testPCEnrollment_1308"></include>
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255"></include>
+				</methods>
+			</class>		
+		</classes>
+	</test>
+</suite>

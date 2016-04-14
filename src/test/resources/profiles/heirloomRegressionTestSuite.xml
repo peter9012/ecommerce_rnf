@@ -6,7 +6,7 @@
 	</listeners>
 	<test name="heirloomTests">
 		<packages>
-			<package name="com.rf.test.website.storeFront.legacy.regression"></package>
+			<package name="com.rf.test.website.storeFront.legacy"></package>
 		</packages>
 	</test>
 </suite>

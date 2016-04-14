@@ -670,4 +670,10 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 				&& driver.findElements(By.xpath("//ul[@class='order-detail-list']/li[3]/p")).size()>0 
 				&& driver.findElements(By.xpath("//table[@class='order-products']//tr[2]")).size()>0;
 	}
+
+	public boolean verifyShippingMethodOnTemplateAfterAdhocOrderPlaced(String selectedShippingMethod){
+		String shippingMethodUI = driver.findElement(By.xpath("//ul[@class='order-detail-list']/li[2]/p[1]")).getText().split("\\:")[1].trim();
+		logger.info("Shipping Method from UI is "+shippingMethodUI);
+		return selectedShippingMethod.trim().contains(shippingMethodUI);
+	}
 }

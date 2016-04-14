@@ -327,6 +327,12 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//input[@value='checkout']"));
 		driver.click(By.xpath("//input[@value='checkout']"));
 		logger.info("checkout button clicked");
+		try {
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-review']//input"));
+			driver.click(By.xpath("//div[@id='popup-review']//input"));
+		} catch (Exception e) {
+
+		}
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -582,5 +588,55 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		}else{
 			return false;
 		}
+	}
+
+	public boolean verifyOrderPlacedConfirmationMessage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']/h1"));
+		String orderPlacedMessage = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/h1")).getText();
+		System.out.println("Message from UI is  "+orderPlacedMessage);
+		if(orderPlacedMessage.equalsIgnoreCase("Thank you for your order")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean checkDateFunctionality(){
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Change next ship date')]"));
+	}
+
+	public String getTotalPriceOfProduct(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			String value = driver.findElement(By.xpath("//p[@id='total-shopping'][2]//span")).getText().trim();
+			System.out.println("total is "+value);
+			return value;
+
+
+		} else if(driver.getCountry().equalsIgnoreCase("US")){
+			String value = driver.findElement(By.xpath("//div[@id='total-shopping'][2]//span")).getText().trim();
+			return value;
+
+		}
+		return null;
+	}
+
+	public void selectShippingMethodUPS2DayInOrderSummary(){
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']"));
+		driver.click(By.xpath("//select[@id='deliveryMode']"));
+		driver.waitForElementPresent(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'2Day')]"));
+		driver.click(By.xpath("//select[@id='deliveryMode']/option[contains(text(),'2Day')]"));
+		driver.waitForLoadingImageToDisappear();
+		logger.info("UPS 2Day shipping method is selected");
+
+	}
+
+	public String getTotalPriceOfProductForPC(){
+		String value = driver.findElement(By.xpath("//p[@id='total-shopping']//span")).getText().trim();
+		return value;
+	}
+
+	public boolean verifyPCPerksPromoDuringPlaceAdhocOrder(){
+		//  return driver.isElementPresent(By.xpath("//div[contains(text(),'PC')]/.."));
+		return driver.isElementPresent(By.xpath("//span[contains(text(),'Subscribe and save')]"));
 	}
 }

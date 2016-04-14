@@ -250,6 +250,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterMainAccountInfo(){
+		driver.pauseExecutionFor(2000);
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.findElement(By.id("address.line1")).sendKeys(TestConstants.ADDRESS_LINE_1_CA);
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
@@ -330,6 +331,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
+		driver.waitForElementPresent(By.id("card-nr-masked"));
+		driver.click(By.id("card-nr-masked"));
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
 		logger.info("Billing card number entered is "+cardNumber);

@@ -1,5 +1,8 @@
 package com.rf.pages.website;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -24,7 +27,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
-
+	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -911,6 +914,176 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	public boolean isTermsAndConditionsMessgaePresent(){
 		driver.waitForElementPresent(By.xpath("//div[@class='content']/p"));
 		return driver.isElementPresent(By.xpath("//div[@class='content']/p"));
+	}
+
+	public void clickOnReviewAndConfirmBillingEditBtn(){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Billing info')]/a"));
+		driver.click(By.xpath("//h3[contains(text(),'Billing info')]/a"));
+	}
+
+	public boolean validateNewBillingAddressPresentOnReviewPage(String newBillingAddName) {
+		System.out.println(newBillingAddName);
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']//h3[contains(text(),'Billing info')]/following-sibling::p//span[contains(text(),'"+newBillingAddName+"')]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='summarySection']//h3[contains(text(),'Billing info')]/following-sibling::p//span[contains(text(),'"+newBillingAddName+"')]"))){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean validateBillingExpirationDate(String expirationYear) {
+		String text = driver.findElement(By.xpath("//div[@id='summarySection']//h3[contains(text(),'Billing info')]/following-sibling::p[2]")).getText();
+		logger.info("fetched card details are: "+text);
+		String[] splittedYear = text.split("\\/");
+		if(splittedYear[1].contains(expirationYear)){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean validateBillingInfoUpdated(String expirationMonth,String expirationYear,String cardLastfourdigits) {
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']//h3[contains(text(),'Billing info')]/following-sibling::p[2]"));
+		return (driver.findElement(By.xpath("//div[@id='summarySection']//h3[contains(text(),'Billing info')]/following-sibling::p[2]"))).getText().contains("4747");
+	}
+
+	public String getExpirationMonth() {
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@selected='selected']"));
+		return driver.findElement(By.xpath("//select[@id='expiryMonth']/option[@selected='selected']")).getText();
+
+	}
+
+	public String getExpirationYear() {
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[@selected='selected']"));
+		return driver.findElement(By.xpath("//select[@id='expiryYear']/option[@selected='selected']")).getText();
+	}
+
+	public String selectShippingMethodUPS2DayUnderShippingSectionAndGetName(){
+		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']//li[2]/span"));
+		driver.click(By.xpath("//div[@id='start-shipping-method']//li[2]/span"));
+		driver.pauseExecutionFor(1500);
+		logger.info("UPS Standard Overnight shipping method is selected"); 
+		return driver.findElement(By.xpath("//div[@id='start-shipping-method']//li[2]/label")).getText();
+	}
+
+	public void clickOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.click(WELCOME_USER_DD_LOC);
+		logger.info("clicked on welcome drop down");  
+	}
+
+	public void clickLearnMoreLinkUnderSolutionToolAndSwitchControl(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Get Started']"));
+		driver.click(By.xpath("//a[text()='Get Started']"));
+		driver.pauseExecutionFor(11000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+			}
+		}
+	}
+
+	public boolean validateConsultantNameOnTopRightCorner(){
+		driver.waitForElementPresent(By.xpath("//div[@id='dis_name']"));
+		return driver.isElementPresent(By.xpath("//div[@id='dis_name']"));
+	}
+
+	public String convertBizSiteToComSite(String pws){
+		String com  = "com";
+		String biz ="biz";
+		if(pws.contains(biz))
+			pws = pws.replaceAll(biz,com);
+		return pws;
+	}
+
+	public void openPWS(String pws){
+		driver.get(pws);
+		driver.waitForPageLoad();
+		while(true){
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				String bizPWS = getBizPWS(driver.getCountry(), driver.getEnvironment());
+				bizPWS = convertBizSiteToComSite(bizPWS);
+				System.out.println(bizPWS+"===bizPWS");
+				driver.get(bizPWS);
+				driver.waitForPageLoad();
+			}else{
+				break;
+			}
+		}
+	}
+
+	public String convertComSiteToBizSite(String pws){
+		String com  = "com";
+		String biz ="biz";
+		if(pws.contains(com))
+			pws = pws.replaceAll(com,biz);
+		return pws;  
+	}
+
+	public void clickOnPersonalizeMyProfileLink(){
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+	}
+
+	public boolean validateSubmissionGuideLinesLink(){
+		//click Submission Guidelines Link..
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Submission Guidelines')]"));
+		driver.click(By.xpath("//a[contains(text(),'Submission Guidelines')]"));
+		driver.pauseExecutionFor(4000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCountry().equalsIgnoreCase("CA")){
+					if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_CAN.pdf")){
+						status=true;
+					}
+				}else{
+					if(driver.getCurrentUrl().contains("PWS_Profile_Guidelines_US.pdf")){
+						status=true;
+					}
+
+				}
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+				return status;
+
+			}
+		}
+		return status;
+	}
+
+	public void clickEditShippingInShipmentOnCheckoutPage(){
+		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+		logger.info("Edit For shipping address clicked.");
+	}
+
+	public double getSubTotalOnShoppingCartPage(){
+		driver.waitForElementPresent(By.xpath("//p[@id='subtotal-shopping']//span"));
+		String total = driver.findElement(By.xpath("//p[@id='subtotal-shopping']//span")).getText();
+		String total1[] = total.split("\\$");
+		return Double.parseDouble(total1[1]);
+	}
+
+	public String getAutoshipTemplateUpdatedMsg(){
+		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+	}
+
+	public boolean verifySubTotalAccordingToQuantity(String qty,double subTotalOfAddedProduct,double subTotalOfAfterUpdate){
+		double quantity = Double.parseDouble(qty);
+		double totalAfterUpdate = (quantity*subTotalOfAddedProduct);
+		if(totalAfterUpdate == (subTotalOfAfterUpdate)){
+			return true;}
+		else{return false;}
 	}
 }
 

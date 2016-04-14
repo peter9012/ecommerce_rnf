@@ -76,7 +76,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-62 :: Version : 1 :: Express EnrollmentTest USD 695 Big Business Launch Kit, Personal Regimen REVERSE REGIMEN
-	@Test
+	@Test //working
 	public void testExpressEnrollmentBusinessKitReverseRegimen_62() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

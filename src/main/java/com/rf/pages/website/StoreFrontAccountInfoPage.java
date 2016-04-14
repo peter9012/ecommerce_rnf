@@ -17,7 +17,7 @@ import com.rf.core.website.constants.TestConstants;
 public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountInfoPage.class.getName());
-	
+
 	Actions actions;
 
 	private final By ACCOUNT_INFO_TEMPLATE_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top' and contains(text(),'Account info')]");
@@ -455,6 +455,26 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+	}
+
+	public boolean validateSubscribeToPulse(){
+		driver.quickWaitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+	}
+
+	public void clickCancelMyPulseSubscription(){
+		driver.quickWaitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.click(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+	}
+
+	public void clickCancelMyPulseSubscriptionNow(){
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancel-pulse-button']"));
+		driver.click(By.xpath("//input[@id='cancel-pulse-button']"));
+	}
+
+	public boolean isSubscribeToPulseButtonPresent(){
+		driver.waitForElementPresent(By.xpath("//input[@id='subscribe_pulse_button_new']"));
+		return driver.isElementPresent(By.xpath("//input[@id='subscribe_pulse_button_new']"));
 	}
 }
 

@@ -345,7 +345,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1361:Enroll as consultant using invalid card numbers
-	@Test
+	@Test//ok
 	public void testEnrollAsConsultantUsingInvalidCardNumbers_1361() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		country = driver.getCountry();
@@ -353,7 +353,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
+			kitName = TestConstants.KIT_PRICE_BIG_BUSINESS_CA;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -367,10 +367,11 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		//  storeFrontHomePage.searchCID();
+		//  storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
@@ -1045,91 +1046,44 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-1975 :: Version : 1 :: Retail user termination
-	@Test
-	public void testRetailUserTermination_1975() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String lastName = "lN";
+	// Hybris Project-1975:Consultant Termination
+	@Test//ok
+	public void testAccountTerminationPageForConsultant_1975() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		// Click on our product link that is located at the top of the page and then click in on quick shop
-		storeFrontHomePage.clickOnShopLink();
-		storeFrontHomePage.clickOnAllProductsLink();
 
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
 
-		//Select a product and proceed to buy it
-		storeFrontHomePage.selectProductAndProceedToBuy();
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Two products are in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("2"), "number of products in the cart is NOT 2");
-		logger.info("2 products are successfully added to the cart");
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
-		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		String newRCName=storeFrontHomePage.createNewRC(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-
-		//CheckoutPage is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCheckoutPageDisplayed(), "Checkout page has NOT displayed");
-		logger.info("Checkout page has displayed");
-
-		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-		storeFrontHomePage.enterMainAccountInfo();
-		logger.info("Main account details entered");
-
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		//Enter Billing Profile
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		logout();
-		//  RFO_DB = driver.getDBNameRFO();
-		//  List<Map<String, Object>> randomRCUserList =  null;
-		//  String rcUserEmailID = null;
-		//  String accountID = null;
-		//  randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(newRCName, password);
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontRCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationPageIsDisplayed(),"Account Termination Page has not been displayed");
-		storeFrontAccountTerminationPage.selectTerminationReason();
-		storeFrontAccountTerminationPage.enterTerminationComments();
-		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
 		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-		s_assert.assertFalse(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
-		storeFrontHomePage.loginAsRCUser(newRCName,password);
-		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");  
-
-		s_assert.assertAll();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupCancelTerminationButton(),"Account termination page Pop up cancel termination button is not present");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupConfirmTerminationButton(),"Account termination Page Pop Up Confirm termination button is not present");
+		storeFrontAccountTerminationPage.clickCancelTerminationButton();
+		s_assert.assertAll();   
 	}
 
 	//Hybris Project-2199 :: Version : 1 :: Verify Existing Preferred Customer popup during RC registration.
@@ -1259,7 +1213,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2198 :: Version : 1 :: Switch from RC to PC (Under Same Consultant) 
-	@Test
+	@Test//ok
 	public void testSwitchFromRCToPCUnderSameConsultant_2198() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;

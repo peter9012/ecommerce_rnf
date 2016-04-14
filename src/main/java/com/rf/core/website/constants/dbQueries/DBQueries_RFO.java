@@ -1519,6 +1519,10 @@ public class DBQueries_RFO {
 	public static String callQueryWithArguement(String query,String value){
 		return String.format(query, value);
 	}
+
+	public static String callQueryWithArguementPWS(String query,String env,String country,String countryID){
+		return String.format(query, env,country,countryID);
+	}
 }
 
 

@@ -331,8 +331,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-		driver.waitForElementPresent(By.id("card-nr-masked"));
-		driver.click(By.id("card-nr-masked"));
+//		driver.waitForElementPresent(By.id("card-nr-masked"));
+//		driver.click(By.id("card-nr-masked"));
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
 		logger.info("Billing card number entered is "+cardNumber);

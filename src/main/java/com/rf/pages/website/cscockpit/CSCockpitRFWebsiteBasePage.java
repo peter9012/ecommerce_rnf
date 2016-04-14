@@ -840,10 +840,36 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
 	}	
 
-	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
 		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
-		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendeeLastName);
-		logger.info("Attendee name entered is "+attendentFirstName+" "+attendeeLastName);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName);
+		logger.info("Attendee name entered is "+attendentFirstName);
+		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
+		logger.info("Address line 1 entered is "+addressLine);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
+		driver.type(CITY_TOWN_TEXT_BOX, city);
+		logger.info("City entered is "+city);
+		driver.waitForElementPresent(POSTAL_TEXT_BOX);
+		driver.type(POSTAL_TEXT_BOX, postalCode);
+		logger.info("Postal code entered is "+postalCode);
+		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
+		driver.type(COUNTRY_TEXT_BOX, Country);
+		logger.info("Country entered is "+Country);
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
+		driver.type(PROVINCE_TEXT_BOX, province);
+		logger.info("Province entered is "+province);
+		driver.waitForElementPresent(PHONE_TEXT_BOX);
+		driver.type(PHONE_TEXT_BOX, phoneNumber);
+		logger.info("Phone number entered is "+phoneNumber);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+
+	public void enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(String attendentFirstName,String attendentLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){
+		driver.waitForElementPresent(ATTENDENT_NAME_TEXT_BOX);
+		driver.type(ATTENDENT_NAME_TEXT_BOX,attendentFirstName+" "+attendentLastName);
+		logger.info("Attendee name entered is "+attendentFirstName+" "+attendentLastName);
 		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
 		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
 		logger.info("Address line 1 entered is "+addressLine);

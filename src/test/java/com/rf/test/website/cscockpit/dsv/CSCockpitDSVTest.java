@@ -102,9 +102,8 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	// Hybris Project-5496:Verify Add and Edit Billing for Consultant
 	@Test(priority=4)
 	public void testVerifyAddAndEditBillingForConsultant_5496() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;		
 		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
 		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -130,10 +129,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	//Hybris Project-5497:Verify Add and Edit Billing for PC
 	@Test(priority=5)
 	public void testVerifyAddAndEditBillingForPC_5497() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+" "+randomNum;
+		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+" "+randomNum+"edit";
 		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
@@ -158,9 +156,8 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	// Hybris Project-5498:Verify Add and Edit Billing for RC
 	@Test(priority=6)
 	public void testVerifyAddAndEditBillingForRC_5498() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum+" edit";
 		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
@@ -186,11 +183,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	// Hybris Project-5499:Verify Add and Edit Shipping for Consultant
 	@Test(priority=7)
 	public void testVerifyAddAndEditShippingForConsultant_5499() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
-		String attendeeLastName = TestConstants.LAST_NAME;
+		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;
@@ -213,7 +208,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_CONSULTANT_EMAILID), "Customer details page doesn't contain the email Id of consultant as "+TestConstants.DSV_CONSULTANT_EMAILID);
 		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_CONSULTANT_CID), "Customer details page doesn't contain the CID of consultant as "+TestConstants.DSV_CONSULTANT_CID);
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
@@ -221,7 +216,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+"edit";
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
@@ -233,11 +228,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	//Hybris Project-5500:Verify Add and Edit Shipping for PC
 	@Test(priority=8)
 	public void testVerifyAddAndEditShippingForPC_5500() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
-		String attendeeLastName = TestConstants.LAST_NAME;
+		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;
@@ -260,7 +253,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_PC_EMAILID), "Customer details page doesn't contain the email Id of pc as "+TestConstants.DSV_PC_EMAILID);
 		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_PC_CID), "Customer details page doesn't contain the CID of pc as "+TestConstants.DSV_PC_CID);
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
@@ -268,7 +261,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+"edit";
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
@@ -280,11 +273,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	//Hybris Project-5501:Verify Add and Edit Shipping for RC
 	@Test(priority=9)
 	public void testVerifyAddAndEditShippingForRC_5501() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
-		String attendeeLastName = TestConstants.LAST_NAME;
+		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;
@@ -307,7 +298,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getEmailAddressFromTopSectionInCustomerTabPage().equalsIgnoreCase(TestConstants.DSV_RC_EMAILID), "Customer details page doesn't contain the email Id of RC as "+TestConstants.DSV_RC_EMAILID);
 		s_assert.assertTrue(cscockpitCustomerTabPage.getUserNameAndCIDStringFromTopSectionInCustomerTabPage().contains(TestConstants.DSV_RC_CID), "Customer details page doesn't contain the CID of RC as "+TestConstants.DSV_RC_CID);
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
@@ -315,7 +306,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+"edit";
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
@@ -356,7 +347,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	@Test(priority=12)
 	public void testVerifyOrderSearchForRC_5504(){  
 		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		//cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_RC_ORDER_STATUS);
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.DSV_RC_ORDER_STATUS);
 		cscockpitOrderSearchTabPage.enterCIDOnOrderSearchTab(TestConstants.DSV_RC_CID_FOR_ORDER_SEARCH);
 		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(TestConstants.DSV_RC_ORDER_NUMBER);
 		cscockpitOrderSearchTabPage.clickSearchBtn();

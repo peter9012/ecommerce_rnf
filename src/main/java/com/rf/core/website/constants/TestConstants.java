@@ -39,7 +39,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US_STG1="06371149";
 
 
-	public static final String FIRST_NAME = "auto";
+	public static final String FIRST_NAME = "RFAutoCS";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 
@@ -337,7 +337,7 @@ public class TestConstants {
 	 * 
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
-	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String NEW_BILLING_PROFILE_NAME = "RFAutoCS";
 	public static final String BILLING_ADDRESS_NAME = "newBAName";
 	public static final String EDIT_BILLING_PROFILE_NAME = "newBPNameEdited";
 	public static final String ADDRESS_NAME = "newSAName";
@@ -450,7 +450,7 @@ public class TestConstants {
 	public static final String QVVALUE = "500";
 	public static final String DELIVERY_COST = "20";
 	public static final String HANDLING_COST = "5";
-	//public static final String DSV_RC_ORDER_STATUS = "Completed";
+	public static final String DSV_RC_ORDER_STATUS = "All";
 
 	//CSCockpit Constants
 

@@ -705,10 +705,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}catch(Exception e){
 			try{
 				driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
+				driver.waitForLoadingImageToDisappear();
 				logger.info("Add to CRP button clicked");
 			}catch(Exception e1){
 
 				driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[2]/div[1]/div[2]/div[2]//button"));
+				driver.waitForLoadingImageToDisappear();
 				logger.info("Add to CRP button clicked");    
 			}
 		}

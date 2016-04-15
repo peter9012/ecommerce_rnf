@@ -6,16 +6,113 @@
 	</listeners>
 	<test name="miniRegressionTest">
 		<classes>
-			<class
-				name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
-			<class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class>
+			<class name="com.rf.test.website.storeFront.hybris.AccountTest">
 			<methods>
-				<include name="testExpressEnrollmentLoginAfterLogout_3218" />
-				<include name="testCreatingCRPAutoshipUnderBizSite_3920" />
+			<include name="testAccountInformationForUpdate_2235"/>
+			<include name="testAutoshipModuleCHeckMyPulseUI_1976"/>
+			<include name="testChangeTheUserNameOfRCandLoginWithUpdateUsername_4659"/>
+			<include name="testCheckCartFromMiniCartAfterAddingProduct_2304"/>
+			<include name="testJoinPCPerksInOrderSummarySection_3877"/>
+			<include name="testPhoneNumberFieldValidationForConsultant_2241"/>
+			<include name="testSubscribingPulseMyAccount_3921"/>
+			<include name="testUpdateUserNameAndUpgradeUser_4278"/>
+			<include name="testCreatingCRPAutoshipUnderBizSite_3920"/>
+			<include name="testVerifyUserNameFieldValidation_4274"/>
+			</methods>
+		</class>
+			<class name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
+			<methods>
+				<include name="testAllowMySpouseThroughEnrollment_82" />
+				<include name="testBecomePCDuringCheckout_2299" />
 				<include name="ccsRCEnrollmentUnderUSSponsor_3618" />
 				<include name="testCcsPCEnrollmentUnderUSSponsor_3617" />
 				<include name="testSubscribingPulseMyAccount_3921" />				
+				<include name="testComPCEnrollment_3865" />				
+				<include name="testConsultantAccountTermination_4663" />				
+				<include name="testEnrollCAAndUsUserSponsorWithoutPWSAndUserEnrollsWithoutPulse_3925" />				
+				<include name="testEnrollInCRPFromMyAccountShipImmediately_132" />				
+				<include name="testExpressEnrollmentFieldsValidation_1274" />				
 			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest">
+			<methods>
+				<include name="testAddNewBillingAddressDuringCheckoutAndEditExistingOne_2277"/>
+				<include name="testCheckBuyNowLink_2323"/>
+				<include name="testCheckMIniCartForConsultant_2329"/>
+				<include name="testCheckPcPerksOrderConfirmationScreen_2263"/>
+				<include name="testCheckShippingAndHandlingFee_2144"/>
+				<include name="testCreateAdhocOrderConsultantAndVerifySVValue_2262"/>
+				<include name="testDelayPCPerks_139"/>
+				<include name="testEditSHoppingCartWhileCheckingOut_2092"/>
+				<include name="testFilterProductOnCategory_2306"/>
+				<include name="testIncreaseTheQuantity_2120"/>
+				<include name="testRemoveProductFromTheCart_2121" />
+				<include name="testTrySelecting2ShippingAddress_2282" />
+				<include name="testUpdatePCTemplate_145" />
+				<include name="testVerfifyKitProductAreNotDisplayedDuringAdhocORder_4773" />
+				<include name="testWithOutLoginQuickShopScreen_2293" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest">
+			<methods>
+				<include name="testAboutSectionOfMeetYourConsultantPage_3832"/>
+				<include name="testAccessSolutionToolFromComSite_4027"/>
+				<include name="testContactYourSponsorSectionInGettingStartedPage_1898"/>
+				<include name="testCountryCannotBeModified_4677"/>
+				<include name="testJoinMyTeamButtonPresentOnTheComAndBizSite_4350"/>
+				<include name="testLoginToUSConsultantPWSAsAnotherUSConsultantWithPulse_4070"/>
+				<include name="testSearchWithActivePreferredCustomerAccountId_3988"/>
+				<include name="testSSNValidationForConsultantTryingToCancelUnderInvalidSponsorUpline_101"/>
+				<include name="testVerifyMeetConsultantPage_1892"/>
+				<include name="testSearchWithPWSPrefixCOMSite_3983"/>		
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest">
+			<methods>
+				<include name="testCreateAdhocOrderPC_1877" />
+				<include name="testCreateAdhocOrderRC_1879" />
+				<include name="testCreateAdhocOrderConsultant_1878" />
+				<include name="testOrderDetailsForAdhocOrdersForRC_4293" />
+				<include name="testORderPAgeUIAndEditCartForPC_1979" />
+				<include name="testOrderReportProblems_1980" />
+				<include name="testPCAutoshipReturnOrderInformation_4459" />
+				<include name="testPCAutoShipTemplateDetails_HP2_4300" />
+				<include name="testVerifySponsorOnReturnOrder_3849" />
+				<include name="testCheckOrdersDetailsFromActionsTab_1982" />	
+			</methods>
+			</class>	
+			<class name="com.rf.website.storeFront.hybris.UpgradeDowngradeTest" >
+			<methods>
+				<include name="testActivePCEmailIdDuringConsultantEnrollmentUnderDifferentSponsor_3959" />
+				<include name="testActivePCEmailIdDuringConsultantEnrollmentUnderSameSponsor_3958" />
+				<include name="testConsultantToPCDownGradeforCanadianUser_4724" />
+				<include name="testDowngradePCToRCAtMainAccountInfoPage_3896" />
+				<include name="testExistingPCPopUpDuringRCRegistration_2199" />
+				<include name="testExistingRetailCustomerPopupDuringRCRegistration_2200" />
+				<include name="testRCToPcAndPCToConsultantUnderSameAndDifferentSponsor_4718" />
+				<include name="testSwitchFromRCToPC_1304" />
+				<include name="testSwitchFromRCToPCUnderSameConsultant_2198" />
+				<include name="testUpgradeRCUserToPCDuringCheckOutChkPrices_2311" />
+			</methods>
+			</class>
+			<class name="com.rf.website.storeFront.hybris.billingAndShipping.AddBillingTest">
+			<methods>
+				<include name="testAddBillingAddressConsultantEnrollment_2045" />
+				<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043" />
+				<include name="testAddBillingProfileDuringPCRegistration_2044" />
+				<include name="testAddNewBillingProfileOnBillingProfilePage_2041" />
+				<include name="testViewNewBillingProfile_HP2_4327" />
+			</methods>				
+			</class>	
+			<class name="com.rf.website.storeFront.hybris.billingAndShipping.AddShippingTest" >
+			<methods>
+				<include name="testAddShippingAddressDuringCheckout_2030" />
+				<include name="testAddShippingAddressDuringConsultantEnrollment_2033" />
+				<include name="testAddShippingAddressDuringCRPEnrollment_2034" />
+				<include name="testAddShippingAddressInAutoshipTemplate_2031" />
+				<include name="testQASValidationPerformEveryTimeUserAddsAShippingAddress_2238" />
+			</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

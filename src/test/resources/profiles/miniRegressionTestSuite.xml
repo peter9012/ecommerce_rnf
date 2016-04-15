@@ -95,7 +95,7 @@
 				<include name="testUpgradeRCUserToPCDuringCheckOutChkPrices_2311" />
 			</methods>
 			</class>
-			<class name="com.rf.website.storeFront.hybris.billingAndShipping.AddBillingTest">
+			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest">
 			<methods>
 				<include name="testAddBillingAddressConsultantEnrollment_2045" />
 				<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043" />
@@ -104,7 +104,7 @@
 				<include name="testViewNewBillingProfile_HP2_4327" />
 			</methods>				
 			</class>	
-			<class name="com.rf.website.storeFront.hybris.billingAndShipping.AddShippingTest" >
+			<class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest" >
 			<methods>
 				<include name="testAddShippingAddressDuringCheckout_2030" />
 				<include name="testAddShippingAddressDuringConsultantEnrollment_2033" />

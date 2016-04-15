@@ -1380,7 +1380,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	public boolean validatePasswordChangeAndEmailSent(){
 		Alert alt=driver.switchTo().alert();
-		return alt.getText().contains("resetting your password");
+		boolean status= alt.getText().contains("resetting your password");
+		alt.accept();
+		return status;
 	}
 
 }

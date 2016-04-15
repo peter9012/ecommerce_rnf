@@ -24,7 +24,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	private String RFL_DB = null;
 
 	//Consultants Only - buy business promotion 
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testConsultantsOnlyBuyBusinessPromotion(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -63,7 +63,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultants Only -buy event support pack 
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void consultantsOnlyBuyEventSupportPack(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -104,7 +104,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Consultants Only -buy product promotion 
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void consultantsOnlyBuyProductPromotion(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -145,7 +145,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Events section Upcoming events is displayed
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testEventsSectionUpcomingEventsIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();

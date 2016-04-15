@@ -27,6 +27,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String subTitleLoc = "//div[@id='HeaderCol']//span[text()='%s']";
 	private static String essentialsRegimenSubLinks= "//cufontext[text()='ESSENTIALS']/following::li//span[text()='%s']";
 	private static String enhancementsRegimenSubLinks= "//cufontext[text()='ENHANCEMENTS']/following::li//span[text()='%s']";
+	private static String regimenNameOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']";
+	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -199,6 +201,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxPasswordText')]");
 	private static final By SIGN_IN_BTN_CHECKOUT_PAGE_LOC = By.xpath("//a[contains(@id,'lnkLogin')]");
 	private static final By RENEW_LATER_LINK = By.xpath("//a[@id='renewLater']");
+	private static final By FORGOT_PASSWORD_PWS_LINK_LOC = By.xpath("//a[contains(text(),'Forgot password')]");
+	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']/p[contains(text(),'reset your password')]");
+	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Send Email']");
+	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//td[contains(text(),'Email Address')]/following-sibling::td/input");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -1331,6 +1337,50 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		} catch (Exception e) {
 
 		}
+	}
+
+
+	public boolean isRegimenNamePresent(String regimen){
+		regimen = regimen.toUpperCase();
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenNameOnPwsLoc, regimen)));
+		return driver.isElementPresent(By.xpath(String.format(regimenNameOnPwsLoc, regimen)));
+	}
+
+	public void clickRegimenOnPWS(String regimen){
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenImageOnPwsLoc, regimen)));
+		driver.click(By.xpath(String.format(regimenImageOnPwsLoc, regimen)));
+		logger.info("Regimen selected is: "+regimen);
+	}
+
+	public void clickForgotPasswordLinkOnBizHomePage(){
+		driver.quickWaitForElementPresent(FORGOT_PASSWORD_PWS_LINK_LOC);
+		driver.click(FORGOT_PASSWORD_PWS_LINK_LOC);
+		logger.info("Forgot Password Link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateChangePasswordMessagePrompt(){
+		driver.quickWaitForElementPresent(CHANGE_PASSWORD_TEXT_LOC);
+		return driver.isElementPresent(CHANGE_PASSWORD_TEXT_LOC);
+	}
+
+	public void enterEmailAddressToRecoverPassword(String emailID){
+		driver.quickWaitForElementPresent(EMAIL_ADDRESS_FIELD_LOC);
+		driver.type(EMAIL_ADDRESS_FIELD_LOC, emailID);
+		logger.info("email address entered to recover password is "+emailID);
+	}
+
+
+	public void clickSendEmailButton(){
+		driver.quickWaitForElementPresent(SEND_EMAIL_BTN_LOC);
+		driver.click(SEND_EMAIL_BTN_LOC);
+		logger.info("Send Email Button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean validatePasswordChangeAndEmailSent(){
+		Alert alt=driver.switchTo().alert();
+		return alt.getText().contains("resetting your password");
 	}
 
 }

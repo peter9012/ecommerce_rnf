@@ -40,6 +40,9 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 	private static final By CHANGE_BILLING_INFO = By.xpath("//a[contains(@id,'uxBillingInfo_uxChange')]");
 	private static final By USE_THIS_BILLING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewPayment')]");
+	private static final By SHOP_SKINCARE_ON_PWS_LOC = By.xpath("//span[text()='SHOP SKINCARE']");
+	private static final By PRODUCT_LINK_UNDER_SHOP_SKIN_CARE = By.xpath("//span[text()='CONSULTANT-ONLY PRODUCTS']");
+	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'Consultant-Only Products')]/preceding::a[1]/img";
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -226,6 +229,26 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(USE_THIS_BILLING_INFORMATION);
 		logger.info("Use this billing information clicked");
 		driver.waitForPageLoad();
+	}
+
+	public void clickShopSkinCareBtnOnPWS(){
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(SHOP_SKINCARE_ON_PWS_LOC);
+		driver.click(SHOP_SKINCARE_ON_PWS_LOC);
+		logger.info("Products button now as shop skincare clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink(){
+		actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).click(driver.findElement(PRODUCT_LINK_UNDER_SHOP_SKIN_CARE)).build().perform();
+		logger.info("Mouse hover on shop skincare link and clicked on product link on pws");
+	}
+
+	public void clickConsultantOnlyProductOnPWS(String productName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
+		driver.click(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
+		logger.info("consultant only product selected is: "+productName);
 	}
 
 }

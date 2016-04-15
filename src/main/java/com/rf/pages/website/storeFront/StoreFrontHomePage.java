@@ -697,7 +697,26 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='quick-refine']"));
-		try{
+		if(driver.isElementPresent(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']")))
+		{
+			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Add to CRP button clicked");
+		}
+		else if(driver.isElementPresent(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']")))
+		{
+			driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Add to CRP button clicked");
+		}
+		else
+		{
+			driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[2]/div[1]/div[2]/div[2]//button"));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Add to CRP button clicked");  	
+		}
+		
+/*		try{
 
 			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
 			driver.waitForLoadingImageToDisappear();
@@ -713,8 +732,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				driver.waitForLoadingImageToDisappear();
 				logger.info("Add to CRP button clicked");    
 			}
-		}
-
+		}*/
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));

@@ -9,8 +9,8 @@
 			<class name="com.rf.test.website.storeFront.legacy.EnrollmentTest" />
 			<class name="com.rf.test.website.storeFront.legacy.OrderVerificationTest" />
 			<class name="com.rf.test.website.storeFront.legacy.PromotionTest" />
-		<!-- 	<class name="com.rf.test.website.storeFront.legacy.UINavigationTest" />
-	-->	</classes>
+			<class name="com.rf.test.website.storeFront.legacy.ComPWSTest" />
+		</classes>
 	</test>
 </suite>
 		

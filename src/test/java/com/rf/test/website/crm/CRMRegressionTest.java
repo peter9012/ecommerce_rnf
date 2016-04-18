@@ -1039,9 +1039,12 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(crmContactDetailsPage.getName().trim().contains(TestConstants.CRM_CONTACTDETAILS_FIRSTNAME+randomNum),"User Name is not updated on store front");
 		//edit user name with alpha numeric and special characters
 		crmContactDetailsPage.clickContactDetailEditBtn(); 
-		crmContactDetailsPage.updateFirstNameField(TestConstants.CRM_CONTACTDETAILS_FIRSTNAMEWITHSPCLCHARS+randomNum);
+		crmContactDetailsPage.updateFirstNameField(" ");
+		crmContactDetailsPage.clickSaveBtnUnderAccountDetail();
+		s_assert.assertTrue(crmContactDetailsPage.validateErrorMsgIsDisplayed(),"Error: First Name is required field");
 		crmContactDetailsPage.updateLastNameField(TestConstants.CRM_CONTACTDETAILS_LASTNAME);
 		crmContactDetailsPage.clickSaveBtnUnderAccountDetail();
+		s_assert.assertTrue(crmContactDetailsPage.validateErrorMsgIsDisplayed(),"Error: You must enter a value");
 		//Verify it should save the entered user name
 		/* s_assert.assertFalse(crmContactDetailsPage.validateErrorMsgIsDisplayed(),"Error message is displayed for user name with alphanumeric & spcl chars");*/
 		//edit with existing user name

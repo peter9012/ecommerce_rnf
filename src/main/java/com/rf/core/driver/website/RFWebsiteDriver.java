@@ -78,7 +78,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		// for clearing cookies
 		driver.manage().deleteAllCookies();
 		logger.info("All cookies deleted");
-		//	driver.get(propertyFile.getProperty("baseUrl"));
+		//driver.get(propertyFile.getProperty("baseUrl"));
 	}
 
 	public void setDBConnectionString(){

@@ -22,7 +22,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	private String RFL_DB = null;
 
 	//Products-Redefine-Regimen-Links should be redirecting to the appropriate page
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testProductsRedefineRegimenLinksRedirectingToTheAppropriatePage(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subLinkProducts = "Products";
@@ -81,7 +81,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Reverse Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testReverseProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		String subLinkProducts = "Products";
@@ -130,7 +130,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Unblemish Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testUnblemishProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
 		String subLinkProducts = "Products";
@@ -179,7 +179,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Soothe Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testSootheProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
 		String subLinkProducts = "Products";
@@ -228,7 +228,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//product philosophy link should be working
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testProductsPhilosophyLinkShouldWorkingProper(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -239,7 +239,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Digital Product Catalog- Links should be displayed the information properly
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testDigitalProductCatalogLinkShouldDisplayInformationProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -253,7 +253,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Links Should be Present
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCompanyLinksShouldBePresent(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -267,7 +267,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer- Privacy Policy link should be redirecting to the appropriate page
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testFooterPrivacyPolicyLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickPrivacyPolicyLink();
@@ -277,7 +277,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer-Terms & Conditions link should redirecting to the appropriate page
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testFooterTermsAndConditionLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickTermsAndConditionsLink();
@@ -286,7 +286,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Satisfaction Guarantee-link should be redirecting properly 
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testSatisfactionGuaranteeLinkShouldBeRedirectionProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickSatisfactionGuaranteeLink();
@@ -296,7 +296,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Real results products- links should be redirecting to the appropriate page
-	@Test(enabled=false)// No real results link
+	@Test(enabled=false)//needs updation
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//For REDEFINE
@@ -345,7 +345,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as an existen consultant
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testLoginAsExistingConsultant(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -359,7 +359,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as valid PC customer
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testLoginAsExistingPC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList =  null;
@@ -373,7 +373,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in with a valid RC customer
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testLoginAsExistingRC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
@@ -387,7 +387,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Solution Tool-Find a Rodan  + Fields consultant should be working properly
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String fetchedPWS = null;
@@ -406,7 +406,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Redefine-Sub links should be displayed properly(regimen, products, results, testimonials, in the news, FAQs, Advice, Glossary)
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testVerifyRedefineRegimenLinksDisplayedProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subSectionRegimen = "Regimen";
@@ -489,7 +489,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//log out with a valid user
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testLogoutWithAValidUser(){
 		RFL_DB = driver.getDBNameRFL();
 		String whyRF = "Why R+F";
@@ -535,7 +535,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ Direct Selling
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCorporateBusinessSystemDirectSelling(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -545,7 +545,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_GettingStarted 
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCorporateBusinessSystemGettingStarted(){
 		String gettingStarted = "Getting Started";
 		String whyRF = "Why R+F";
@@ -599,7 +599,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ SuccessStories
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCorporateBusinessSystemSuccessStories(){
 		String meetOurCommunity = "Meet Our Community";
 		String rfxCircleAG = "RFx Circle: A-G";
@@ -639,7 +639,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Compensation Plan is displayed
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCompensationPlanSectionIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
@@ -672,7 +672,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Programs and Incentives is displayed
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testCompensationPlanProgramsAndIncentivesIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
@@ -716,7 +716,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Enroll Now is displayed
-	@Test(enabled=true)//WIP
+	@Test(enabled=false)//needs updation
 	public void testCompensationPlanSectionEnrollNowIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
@@ -748,7 +748,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Contact us-link should be redirecting properly
-	@Test(enabled=true)
+	@Test(enabled=false)//needs updation
 	public void testContactUsLinkShouldBeRedirectingProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickContactUsAtFooter();
@@ -758,7 +758,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Essentials Products-links should be working properly (Real results, PC perks, solution tool, digital product catalog)
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testVerifyEssentialRegimenProductLinksWorkingProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
 		String subSectionLinkRealResults = "Real Results";
@@ -803,7 +803,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Enhancements Products-links should be working properly (Real results, PC perks, solution tool, digital product catalog)
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testVerifyEnhancementsRegimenProductLinksWorkingProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
 		String subSectionLinkRealResults = "Real Results";
@@ -859,7 +859,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_CompensationPlan
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testCorporateBusinessCompensationPlan(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
@@ -929,7 +929,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ IncomeIllustrator  
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void corporateBusinessSystemIncomeIllustrator(){
 		String incomeIllustrator = "Income Illustrator";
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -942,7 +942,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Getting Started section Redefine Your Future is displayed
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testGettingStartedSectionRedefineYourFutureIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -962,7 +962,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Getting Started Section Business Kit is displayed
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testGettingStartedSectionBusinessKitDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -1032,7 +1032,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Getting Started section Enroll Now is displayed
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testGettingStartedSectionEnrollNowIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -1052,7 +1052,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Disclaimer-link should be redirecting properly
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void testDisclaimerLinkShouldBeRedirectedProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//verify Disclaimer in footer should redirect properly?
@@ -1061,7 +1061,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company-PFC Foundation link should be redirecting properly 
-	@Test(enabled=false)//WIP
+	@Test(enabled=false)//needs updation
 	public void testCompanyPFCFoundationLinkShouldRedirectProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();

@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.nscore.NSCore4LoginPage;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -28,6 +29,10 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	private static final By LOGIN_BTN = By.id("btnLogin");
+	private static final By USERNAME_TXT_FIELD = By.id("username");
+	private static final By PASSWORD_TXT_FIELD = By.id("password");
+	private static final By LOGOUT_LINK = By.xpath("//a[contains(text(),'Logout')]") ;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -51,28 +56,32 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		logger.info("In Before method..");
 		s_assert = new SoftAssert();
-		String country = driver.getCountry();
 		driver.get(driver.getURL());
-//		try{
-//			logger.info("Go for logout,if user is logged in");
-//			logout();
-//		}catch(NoSuchElementException e){
-//			logger.info("User already logged out");
-//		}	
-//		if(country.equalsIgnoreCase("ca"))
-//			countryId = "40";
-//		else if(country.equalsIgnoreCase("us"))
-//			countryId = "236";	
-//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
-//			//			driver.selectCountry(country);
-//		}
-//		setStoreFrontPassword(driver.getStoreFrontPassword());
+		login("admin", "skin123!");
 		logger.info("Out of Before method..");
+	}
+
+	public void login(String userName,String password){
+		driver.waitForElementPresent(USERNAME_TXT_FIELD);
+		driver.type(USERNAME_TXT_FIELD, userName+"\t");
+		logger.info("username is "+userName);
+		driver.waitForElementPresent(PASSWORD_TXT_FIELD);
+		driver.type(PASSWORD_TXT_FIELD, password);
+		logger.info("password is "+password);
+		driver.click(LOGIN_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();		
 	}
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
+		try{
+			driver.quickWaitForElementPresent(LOGOUT_LINK);
+			driver.click(LOGOUT_LINK);
+			logger.info("Logout link clicked");
+			driver.waitForPageLoad();
+		}catch(Exception e){
 
+		}
 	}
 
 	/**
@@ -91,7 +100,7 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 
 
 	public void logout(){
-				
+
 	}
 
 	// This assertion for the UI Texts

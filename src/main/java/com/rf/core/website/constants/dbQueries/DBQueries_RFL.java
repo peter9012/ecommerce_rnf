@@ -5,7 +5,11 @@ public class DBQueries_RFL {
 
 	//RFL Queries
 	public static String GET_EMAILID_FROM_ACCOUNTID = "select top 1 * from dbo.Accounts where accountID='%s'";
+	public static String GET_RANDOM_ACTIVE_SKU = "select top 1 * from Products where active='1' ORDER BY NEWID()";
+	public static String GET_RANDOM_ACCOUNT_DETAILS = "select top 1 * from Accounts ORDER BY NEWID()";
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
+	public static String GET_ORDER_DETAILS = "select * from dbo.Orders where OrderNumber = '%s'";
+	public static String GET_ACCOUNT_STATUS_ID = "select * from dbo.Accounts where emailAddress = '%s'";
 	public static String GET_RANDOM_ACTIVE_PC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='2' AND Active='1' order by NEWID()";
 	public static String GET_RANDOM_ACTIVE_RC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='3' AND Active='1' order by NEWID()";
 	public static String GET_ACCOUNT_DETAILS_QUERY_TST4 = "select top 1 * from dbo.Accounts where emailAddress = '%s'";
@@ -31,6 +35,11 @@ public class DBQueries_RFL {
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AddressTypeId='1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_AUTOSHIP_ADDRESS_QUERY_TST4 = "select top 1 * from dbo.AccountAddresses where addressTypeId = '2' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_SHIPPING_METHOD_FOR_CONSULTANT_RFL_4289 = "select * from dbo.ShippingMethods where ShippingMethodID='%s'";
+	public static String GET_RANDOM_COM_PWS_SITE_URL_RFL =
+			"SELECT TOP 1 "+
+					"SUL.URL "+
+					"FROM    dbo.SiteURLs AS SUL where URL Like '%.com'"+
+					"ORDER BY NEWID() ";
 	public static String GET_SHIPPING_ADDRESS_DETAILS_FOR_CONSULTANT_RFL_4289 = "SELECT  os.* "+
 			"FROM    dbo.OrderShipments AS os "+
 			"WHERE   os.OrderID = '%s'";
@@ -65,7 +74,8 @@ public class DBQueries_RFL {
 					"BEGIN TRANSACTION "+
 					"SELECT TOP 1 "+
 					"a.AccountID , "+
-					"[as].UserName "+
+					"[as].UserName ,"+
+					"a.AccountNumber "+
 					"FROM    dbo.Accounts AS a "+
 					"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
 					"WHERE   a.AccountTypeID = 1 "+/* Consultant*/

@@ -43,8 +43,8 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	//		s_assert.assertAll();  
 	//	}
 
-	//Adhoc Order - PC corp
-	@Test(enabled=true)
+	//Add Product to the Cart - Checkout as PC
+	@Test(enabled=true)//smoke
 	public void testPCAdhocOrderFromCorp(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -83,7 +83,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Adhoc order - RC corp
-	@Test(enabled=true)
+	@Test(enabled=true)//mini
 	public void placedAdhocOrderFromComSiteForRC(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -122,7 +122,7 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Adhoc Order - Consultant Only Products
-	@Test(enabled=true)
+	@Test(enabled=true)//smoke
 	public void AdhocOrderConsultantsOnlyProducts(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

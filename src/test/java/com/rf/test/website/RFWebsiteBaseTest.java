@@ -84,7 +84,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			try{
 				crmLogout();
 			}catch(Exception e){
-
+				driver.manage().deleteAllCookies();
 			}
 		}
 	}

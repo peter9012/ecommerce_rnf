@@ -6,21 +6,36 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
+			<class name="com.rf.test.website.storeFront.hybris.OrderValidationTest">
 				<methods>
 					<include name="testCreateAdhocOrderConsultant_1878" />
 					<include name="testCreateAdhocOrderPC_1877" />
 					<include name="testCreateAdhocOrderRC_1879" />
-					<!-- <include name="testCreateAdhocOrderPC_1877" /> -->
-					<include name="testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67" />
-					<include name="testPCEnrollment_1308" />
-					<include name="testStandardEnrollmentPersonalKitReverseRegimen_50" />
-					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
-					<include name="testTermsAndConditionsRCEnrollment_2188" />
-
 				</methods>
 			</class>
+			<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest">
+				<methods>
+					<include name="testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67" />
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
+				<methods>
+					<include name="testPCEnrollment_1308" />
+					<include name="testTermsAndConditionsRCEnrollment_2188" />
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />					
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest">
+				<methods>
+					<include name="testStandardEnrollmentPersonalKitReverseRegimen_50" />
+					<include name="testTermsAndConditionsRCEnrollment_2188" />					
+				</methods>
+			</class>			
  
 		</classes>
 	</test>
 </suite>
+					
+
+					
+					

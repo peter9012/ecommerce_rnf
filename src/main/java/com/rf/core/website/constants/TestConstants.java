@@ -60,7 +60,7 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_CA = "8067736419";
 	public static final String ADDRESS_LINE_1_QUEBEC = "2 Rue des Jardins";
 	public static final String CITY_QUEBEC = "Quebec";
-	public static final String CARD_NUMBER = "4111111111111111";
+	public static final String CARD_NUMBER = "4747474747474747";
 	public static final String CARD_NUMBER_SECOND = "4747474747474747";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";

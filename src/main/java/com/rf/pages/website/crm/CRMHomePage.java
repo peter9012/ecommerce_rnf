@@ -322,7 +322,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
-		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr//td[Text()='Consultant']/preceding-sibling::th"));
+		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr/td[contains(text(),'Active')]/preceding-sibling::th/a"));
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 	}

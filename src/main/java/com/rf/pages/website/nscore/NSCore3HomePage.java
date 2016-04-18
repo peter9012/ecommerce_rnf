@@ -35,6 +35,7 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 	private static final By CUSTOMER_TYPE = By.xpath("//select[contains(@id,'uxOrderCustomerDropDown')]//option");
 	private static final By SUBTOTAL_LOC = By.xpath("//span[contains(@id,'uxCustomerSubtotal')]");
 	private static final By GRAND_TOTAL_LOC = By.xpath("//span[contains(@id,'uxCustomerGrandTotal')]");
+	private static final By ACCOUNT_NUMBER_LOC = By.xpath("//span[contains(@id,'uxCustomerAccount')]");
 
 	public void clickOrdersLink(){
 		driver.waitForElementPresent(ORDERS_LINK);
@@ -122,26 +123,26 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		logger.info("return column number with no match is: "+i);
 		return i;
 	}
-	
+
 	public String getCellValue(int rowNumber, int columnNumber){
 		String cellValue= driver.findElement(By.xpath(String.format(cellValueLoc,rowNumber,columnNumber))).getText();
 		logger.info("Cell value is: "+cellValue);
 		return cellValue;
 	}
-	
+
 	public void clickDetails(int rowNumber){
 		driver.click(By.xpath(String.format(detailsBtn,rowNumber)));
 		logger.info("Details btn clicked at row number: "+rowNumber);
 		driver.waitForPageLoad();
 	}
-	
+
 	public String getOrderNumberFromOrderDetails(){
 		driver.waitForElementPresent(ORDER_NUMBER);
 		String orderNumber = driver.findElement(ORDER_NUMBER).getText();
 		logger.info("Order number at order details: "+orderNumber);
 		return orderNumber;
 	}
-	
+
 	public boolean isColumnNamePresent(String columnName){
 		int noOfColumns = driver.findElements(TOTAL_NO_OF_COLUMNS).size();
 		int i =1;
@@ -153,26 +154,40 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		} 
 		return false;
 	}
-	
+
 	public String getCustomerTypeFromOrderDetails(){
 		driver.waitForElementPresent(CUSTOMER_TYPE);
 		String customerType = driver.findElement(CUSTOMER_TYPE).getText();
 		logger.info("Customer type at order details: "+customerType);
 		return customerType;
 	}
-	
+
 	public String getSubTotalFromOrderDetails(){
 		driver.waitForElementPresent(SUBTOTAL_LOC);
 		String subTotal = driver.findElement(SUBTOTAL_LOC).getText();
 		logger.info("Subtotal at order details: "+subTotal);
 		return subTotal;
 	}
-	
+
 	public String getgrandTotalFromOrderDetails(){
 		driver.waitForElementPresent(GRAND_TOTAL_LOC);
 		String grandTotal = driver.findElement(GRAND_TOTAL_LOC).getText();
 		logger.info("Grand total at order details: "+grandTotal);
 		return grandTotal;
+	}
+
+	public void clickShowColumnSelection(){
+		driver.waitForElementPresent(SHOW_COLUMN_SELECTION);
+		driver.click(SHOW_COLUMN_SELECTION);
+		logger.info("Show column selection clicked");
+		driver.waitForPageLoad();
+	}
+
+	public String getAccountNumberFromOrderDetails() {
+		driver.waitForElementPresent(ACCOUNT_NUMBER_LOC);
+		String accountNumber = driver.findElement(ACCOUNT_NUMBER_LOC).getText();
+		logger.info("Account number at order details: "+accountNumber);
+		return accountNumber;
 	}
 
 }

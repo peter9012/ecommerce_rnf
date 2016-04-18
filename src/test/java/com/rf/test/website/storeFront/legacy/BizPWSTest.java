@@ -216,5 +216,67 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+	//Consultant enrollment-Sign up
+	@Test
+	public void testConsultantEnrollmentSignUp(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		List<Map<String, Object>> accountStatusIDList =  null;
+		String statusID = null;
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
+		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		String bizPWS = storeFrontLegacyHomePage.getBizPWSBeforeEnrollment();
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.clickTermsAndConditions();
+		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"Enrollment not completed successfully");
+		s_assert.assertTrue(driver.getCurrentUrl().contains(bizPWS.split("\\//")[1]), "Expected biz PWS is: "+bizPWS.split("\\//")[1]+" but Actual on UI is: "+driver.getCurrentUrl());
+		//verify Account status
+		accountStatusIDList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_STATUS_ID, emailAddress), RFL_DB);
+		statusID = String.valueOf(getValueFromQueryResult(accountStatusIDList, "StatusID"));
+		s_assert.assertTrue(statusID.contains("1"), "Account status is not active");
+		s_assert.assertAll();
+	}
+
+
 }

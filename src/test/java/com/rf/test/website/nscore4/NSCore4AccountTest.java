@@ -34,15 +34,6 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();		
 		s_assert.assertTrue(nscore4LoginPage.isLoginButtonPresent(),"Login page has not appeared after logout");
 		s_assert.assertAll();
-	}
-
-	//NSC4_AdministratorLogin_InvalidLoging
-	@Test
-	public void testAdministratorLoginInvalidLogin(){
-		nscore4LoginPage = nscore4HomePage.clickLogoutLink();	
-		login("abcd", "test1234!");
-		s_assert.assertTrue(nscore4LoginPage.isLoginCredentailsErrorMsgPresent(), "Login credentials error msg is not displayed");
-		s_assert.assertAll();
-	}
+	}	
 
 }

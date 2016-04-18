@@ -18,6 +18,7 @@ public class NSCore4LoginPage extends NSCore3RFWebsiteBasePage{
 	private static final By LOGIN_BTN = By.id("btnLogin");
 	private static final By USERNAME_TXT_FIELD = By.id("username");
 	private static final By PASSWORD_TXT_FIELD = By.id("passwordWatermarkReplacement");
+	private static final By LOGIN_VALIDATION_MSG = By.xpath("//div[@class='error_message_block']");
 
 	public boolean isLoginButtonPresent(){
 		driver.waitForElementPresent(LOGIN_BTN);
@@ -45,6 +46,11 @@ public class NSCore4LoginPage extends NSCore3RFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		return new NSCore4HomePage(driver);
+	}
+
+	public boolean isLoginCredentailsErrorMsgPresent(){
+		driver.waitForElementPresent(LOGIN_VALIDATION_MSG);
+		return driver.isElementPresent(LOGIN_VALIDATION_MSG);
 	}
 
 }

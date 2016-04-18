@@ -2,6 +2,7 @@ package com.rf.pages.website.storeFrontLegacy;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -17,7 +18,17 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 
 	private static String regimenProductLoc = "//div[@id='ProductCategories']//span[text()='%s']/preceding::p[1]//img";
 	private static String businessSystemSubLink= "//div[@id='ContentWrapper']//span[contains(text(),'%s')]";
+	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
+	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
+	private static String orderManagementSublink = "//a[@class='IconLink']//span[contains(text(),'%s')]";
 
+	private static final By ORDER_NUMBER_AFTER_PLACED = By.xpath("//span[contains(@id,'uxOrderNumber')]//cufon");
+	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
+	private static final By CHANGE_SHIPPING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
+	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//p[@class='FormButtons']//a[text()='Edit Order']");
+	private static final By ORDER_NUMBER_AT_ORDER_HISTORY = By.xpath("//table[@class='CartTable']//tr[2]/td[1]");
+	private static final By ADD_TO_CART_BTN_FOR_EDIT_ORDER = By.xpath("//div[@class='FloatCol']/div[1]//a[text()='Add to Cart']");
+	private static final By EDIT_ORDER_UPDATE_MESSAGE = By.xpath("//p[@class='success']");
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']/span");
@@ -250,5 +261,83 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
 		logger.info("consultant only product selected is: "+productName);
 	}
+
+	public void clickRegimenOnPWS(String regimen){
+		driver.quickWaitForElementPresent(By.xpath(String.format(regimenImageOnPwsLoc, regimen)));
+		driver.click(By.xpath(String.format(regimenImageOnPwsLoc, regimen)));
+		logger.info("Regimen selected is: "+regimen);
+	}
+
+	public String getOrderNumebrAfterOrderPlaced(){
+		driver.waitForPageLoad();
+		driver.waitForElementPresent(ORDER_NUMBER_AFTER_PLACED);
+		String orderNumber = driver.findElement(ORDER_NUMBER_AFTER_PLACED).getAttribute("alt");
+		logger.info("Order number is: "+orderNumber);
+		return orderNumber;
+	}
+
+	public void clickHeaderLinkAfterLogin(String linkName) {
+		linkName = linkName.toLowerCase();
+		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+		logger.info("my account link is clicked");
+	}
+
+	public void clickEditOrderLink(){
+		driver.quickWaitForElementPresent(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
+		driver.click(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
+		logger.info("edit order link is clicked"); 
+	}
+
+	public void clickChangeLinkUnderShippingToOnPWS(){
+		driver.quickWaitForElementPresent(CHANGE_SHIPPING_INFO_LINK_ON_PWS);
+		driver.click(CHANGE_SHIPPING_INFO_LINK_ON_PWS);
+		logger.info("Change Link under shipping to clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickEditOrderBtn(){
+		driver.quickWaitForElementPresent(EDIT_ORDER_BTN_LOC);
+		driver.click(EDIT_ORDER_BTN_LOC);
+		logger.info("edit order button is clicked"); 
+	}
+
+	public boolean isOrderManagementSublinkPresent(String sublinkName){
+		driver.waitForElementPresent(By.xpath(String.format(orderManagementSublink, sublinkName)));
+		return driver.isElementPresent(By.xpath(String.format(orderManagementSublink, sublinkName)));
+	}
+
+	public void clickOrderManagementSublink(String sublinkName){
+		driver.waitForElementPresent(By.xpath(String.format(orderManagementSublink, sublinkName)));
+		driver.click(By.xpath(String.format(orderManagementSublink, sublinkName)));
+		logger.info(sublinkName+"clicked");
+	}
+
+	public boolean isOrderNumberPresentAtOrderHistoryPage(){
+		driver.waitForElementPresent(ORDER_NUMBER_AT_ORDER_HISTORY);
+		return driver.isElementPresent(ORDER_NUMBER_AT_ORDER_HISTORY);
+	}
+
+	public void clickAddToCartBtnForEditOrder() {
+		driver.waitForElementPresent(ADD_TO_CART_BTN_FOR_EDIT_ORDER);
+		driver.click(ADD_TO_CART_BTN_FOR_EDIT_ORDER);
+		logger.info("Add to cart btn clicked");
+		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+	}
+
+	public String getOrderUpdateMessage(){
+		driver.waitForElementPresent(EDIT_ORDER_UPDATE_MESSAGE);
+		String messgae = driver.findElement(EDIT_ORDER_UPDATE_MESSAGE).getText();
+		logger.info("Order updation message is: "+messgae);
+		return messgae;
+	}
+
+	public void clickOKBtnOfJavaScriptPopUp(){
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+		logger.info("Ok button of java Script popup is clicked.");
+		driver.waitForPageLoad();
+	}
+
 
 }

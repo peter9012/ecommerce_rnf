@@ -175,7 +175,7 @@ public class ComPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
 			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
 			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
 			if(isSiteNotFoundPresent){
 				continue;
 			}else{
@@ -220,7 +220,7 @@ public class ComPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
 			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
 			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
 			if(isSiteNotFoundPresent){
 				continue;
 			}else{

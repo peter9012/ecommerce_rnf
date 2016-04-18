@@ -42,6 +42,7 @@ public class TestConstantsRFL {
 	public static final String CONSULTANT_ONLY_EVENT_SUPPORT = "Consultant-Only Event Support";
 	public static final String CONSULTANT_ONLY_PRODUCT_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_PRODUCT = "Consultant-Only Products";
+	public static final String CONSULTANT_RF_EXPRESS_BUSINESS_KIT = "$995";
 }
 
 

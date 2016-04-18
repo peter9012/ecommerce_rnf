@@ -8,6 +8,8 @@ public class DBQueries_RFL {
 	public static String GET_RANDOM_ACTIVE_SKU = "select top 1 * from Products where active='1' ORDER BY NEWID()";
 	public static String GET_RANDOM_ACCOUNT_DETAILS = "select top 1 * from Accounts ORDER BY NEWID()";
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
+	public static String GET_ORDER_DETAILS = "select * from dbo.Orders where OrderNumber = '%s'";
+	public static String GET_ACCOUNT_STATUS_ID = "select * from dbo.Accounts where emailAddress = '%s'";
 	public static String GET_RANDOM_ACTIVE_PC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='2' AND Active='1' order by NEWID()";
 	public static String GET_RANDOM_ACTIVE_RC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='3' AND Active='1' order by NEWID()";
 	public static String GET_ACCOUNT_DETAILS_QUERY_TST4 = "select top 1 * from dbo.Accounts where emailAddress = '%s'";

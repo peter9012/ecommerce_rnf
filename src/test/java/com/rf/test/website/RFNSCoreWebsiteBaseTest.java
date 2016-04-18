@@ -74,10 +74,14 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
-		driver.quickWaitForElementPresent(LOGOUT_LINK);
-		driver.click(LOGOUT_LINK);
-		logger.info("Logout link clicked");
-		driver.waitForPageLoad();	
+		try{
+			driver.quickWaitForElementPresent(LOGOUT_LINK);
+			driver.click(LOGOUT_LINK);
+			logger.info("Logout link clicked");
+			driver.waitForPageLoad();
+		}catch(Exception e){
+
+		}
 	}
 
 	/**

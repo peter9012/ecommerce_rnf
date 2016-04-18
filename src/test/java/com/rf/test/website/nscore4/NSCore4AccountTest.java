@@ -36,57 +36,12 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//NSC4_AccountsTab_AccountLookup
+	//NSC4_AdministratorLogin_InvalidLoging
 	@Test
-	public void testAccountsTabAccountLookup(){
-		String accountNumber = null;
-		String firstName = null;
-		String lastName = null;
-		List<Map<String, Object>> randomAccountList =  null;
-		RFL_DB = driver.getDBNameRFL();
-		logger.info("DB is "+RFL_DB);
-		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACCOUNT_DETAILS,RFL_DB);
-		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
-		firstName = (String) getValueFromQueryResult(randomAccountList, "FirstName");	
-		lastName = (String) getValueFromQueryResult(randomAccountList, "LastName");	
-		logger.info("Account number from DB is "+accountNumber);
-		logger.info("First name from DB is "+firstName);
-		logger.info("Last name from DB is "+lastName);
-		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-		s_assert.assertTrue(nscore4HomePage.isFirstAndLastNamePresentinSearchResults(firstName, lastName), "First and last name is not present in search result");
-		s_assert.assertAll();
-	}
-
-	//NSC4_AccountsTab_OverviewAutoshipsEdit
-	@Test
-	public void testAccountsTabOverviewAutoshipsEdit(){
-		String accountNumber = null;
-		List<Map<String, Object>> randomAccountList =  null;
-		List<Map<String, Object>> randomSKUList =  null;
-		String SKU = null;
-		RFL_DB = driver.getDBNameRFL();
-		logger.info("DB is "+RFL_DB);
-		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
-		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
-		logger.info("Account number from DB is "+accountNumber);
-		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
-		nscore4HomePage.clickConsultantReplenishmentEdit();
-		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
-		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
-		logger.info("SKUfrom DB is "+SKU);
-		nscore4HomePage.enterSKUValue(SKU);
-		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
-		nscore4HomePage.enterProductQuantityAndAddToOrder("10");
-		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
-		nscore4HomePage.clickSaveAutoshipTemplate();
-		s_assert.assertTrue(nscore4HomePage.isAddedProductPresentInOrderDetailPage(SKU), "SKU = "+SKU+" is not present in the Order detail page");
-		nscore4HomePage.clickCustomerlabelOnOrderDetailPage();
-		nscore4HomePage.clickPulseMonthlySubscriptionEdit();
-		String updatedQuantity = nscore4HomePage.updatePulseProductQuantityAndReturnValue();
-		logger.info("updated pulse product quantity = "+updatedQuantity);
-		nscore4HomePage.clickSaveAutoshipTemplate();
-		s_assert.assertTrue(nscore4HomePage.getQuantityOfPulseProductFromOrderDetailPage().contains(updatedQuantity), "updated pulse product qunatity is not present in the Order detail page");
+	public void testAdministratorLoginInvalidLogin(){
+		nscore4LoginPage = nscore4HomePage.clickLogoutLink();	
+		login("abcd", "test1234!");
+		s_assert.assertTrue(nscore4LoginPage.isLoginCredentailsErrorMsgPresent(), "Login credentials error msg is not displayed");
 		s_assert.assertAll();
 	}
 

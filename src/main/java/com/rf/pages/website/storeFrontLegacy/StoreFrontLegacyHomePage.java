@@ -29,6 +29,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String enhancementsRegimenSubLinks= "//cufontext[text()='ENHANCEMENTS']/following::li//span[text()='%s']";
 	private static String regimenNameOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
+	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -205,6 +206,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']/p[contains(text(),'reset your password')]");
 	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Send Email']");
 	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//td[contains(text(),'Email Address')]/following-sibling::td/input");
+	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
+	private static final By CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
+	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//b[text()='Shipping to:']/../following-sibling::p/span[1]");
+	private static final By USE_THIS_ADDRESS_SHIPPING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewAddress')]");
+	private static final By ENROLL_NOW_LINK = By.xpath("//span[text()='Enroll Now']");
+	private static final By WEBSITE_PREFIX_BIZ_PWS = By.xpath("//li[@id='Abailable1']");
+	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
+	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -536,7 +545,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		logger.info("Select and Continue button clicked");
-		driver.waitForPageLoad();
+		driver.waitForPageLoad();		
 	}
 
 	public void checkTermsAndConditionChkBoxForPCAndRC(){
@@ -623,13 +632,6 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.waitForPageLoad();
 	}
 
-	public void clickOKBtnOfJavaScriptPopUp(){
-		Alert alert = driver.switchTo().alert();
-		alert.accept();
-		logger.info("Ok button of java Script popup is clicked.");
-		driver.waitForPageLoad();
-	}
-
 	public void clickUseAsEnteredBtn(){
 		driver.quickWaitForElementPresent(USE_AS_ENTERED_BTN_LOC);
 		driver.findElement(USE_AS_ENTERED_BTN_LOC).click();
@@ -642,7 +644,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return driver.isElementPresent(WELCOME_TXT_AFTER_ENROLLMENT);
 	}
 
-	public void loginAsPCUser(String username,String password){
+	public StoreFrontLegacyPCUserPage loginAsPCUser(String username,String password){
 		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
@@ -651,7 +653,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
-		driver.waitForPageLoad();		
+		driver.waitForPageLoad();
+		return new StoreFrontLegacyPCUserPage(driver);		
 	}
 
 	public void loginAsRCUser(String username,String password){
@@ -1385,4 +1388,94 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return status;
 	}
 
+	public void clickHeaderLinkAfterLogin(String linkName) {
+		linkName = linkName.toLowerCase();
+		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+		logger.info("my account link is clicked");
+	}
+
+	public void clickEditOrderLink(){
+		driver.quickWaitForElementPresent(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
+		driver.click(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
+		logger.info("edit order link is clicked"); 
+	}
+
+	public void clickChangeLinkUnderShippingToOnPWS(){
+		driver.quickWaitForElementPresent(CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS);
+		driver.click(CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS);
+		logger.info("Change Link under shipping to clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void enterShippingProfileDetailsForPWS(String addressName, String firstName,String lastName,String addressLine1,String postalCode,String phnNumber){
+		driver.type(ADDRESS_NAME_FOR_SHIPPING_PROFILE, addressName);
+		logger.info("Address name entered as: "+addressName);
+		driver.type(ATTENTION_FIRST_NAME, firstName);
+		logger.info("Attention first name entered as: "+firstName);
+		driver.type(ATTENTION_LAST_NAME, lastName);
+		logger.info("Attention last name entered as: "+lastName);
+		driver.type(ADDRESS_LINE_1, addressLine1);
+		logger.info("Address line 1 entered as: "+addressLine1);
+		driver.type(ZIP_CODE, postalCode+"\t");
+		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		logger.info("Postal code entered as: "+postalCode);
+		driver.waitForElementPresent(CITY_DD);
+		driver.click(CITY_DD);
+		driver.click(FIRST_VALUE_OF_CITY_DD);
+		logger.info("First value of City selected");
+		driver.waitForElementPresent(COUNTRY_DD);
+		driver.click(COUNTRY_DD);
+		logger.info("Country dropdown clicked");
+		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+		logger.info("First value of Country selected");
+		driver.type(PHONE_NUMBER_SHIPPING_PROFILE_PAGE,phnNumber);
+		logger.info("Phone number entered as: "+phnNumber);
+	}
+
+	public String getShippingAddressName(){
+		String name = driver.findElement(SHIPPING_ADDRESS_NAME_LOC).getText();
+		logger.info("Fetched shipping address name is: "+name);
+		return name;
+	}
+
+	public void clickUseThisAddressShippingInformationBtn(){
+		driver.quickWaitForElementPresent(USE_THIS_ADDRESS_SHIPPING_INFORMATION);
+		driver.click(USE_THIS_ADDRESS_SHIPPING_INFORMATION);
+		logger.info("Use this Address shipping information clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickEnrollNowBtnAtWhyRFPage(){
+		driver.waitForElementPresent(ENROLL_NOW_LINK);
+		driver.click(ENROLL_NOW_LINK);
+		logger.info("Enroll now button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void selectConsultantEnrollmentKitByPrice(String price) {
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
+		driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
+		logger.info("Selected consultant enrollment kit's price is: "+price);
+	}
+
+	public void selectRegimenForConsultant(String regimen){
+		regimen = regimen.toUpperCase();
+		driver.waitForElementPresent(By.xpath(String.format(consultantRegimenLoc, regimen)));
+		driver.click(By.xpath(String.format(consultantRegimenLoc, regimen)));
+		logger.info("Regimen selected is: "+regimen);
+	}
+
+	public void clickNextBtnAfterSelectRegimen(){
+		driver.click(REGIMEN_NEXT_BTN_LOC);
+		logger.info("Regimen Next button clicked");
+	}
+
+	public String getBizPWSBeforeEnrollment(){
+		driver.waitForElementPresent(WEBSITE_PREFIX_BIZ_PWS);
+		String bizPWS = driver.findElement(WEBSITE_PREFIX_BIZ_PWS).getText().split("\\ ")[0];
+		logger.info("Biz PWS before enrollment is: "+bizPWS);
+		return bizPWS;
+	}
 }

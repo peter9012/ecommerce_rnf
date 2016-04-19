@@ -603,7 +603,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 			driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 			driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.waitForPageLoad();
+			driver.waitForCSCockpitLoadingImageToDisappear();
 			enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 			driver.click(USE_THIS_CARD_BTN);
 			driver.waitForCSCockpitLoadingImageToDisappear();

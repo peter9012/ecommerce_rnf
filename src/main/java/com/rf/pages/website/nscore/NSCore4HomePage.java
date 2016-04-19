@@ -35,7 +35,8 @@ public class NSCore4HomePage extends NSCore3RFWebsiteBasePage{
 	private static final By UPDATE_PULSE_CART_BTN  = By.id("btnUpdateCart");
 	private static final By SAVE_TEMPLATE_BTN  = By.id("btnSaveAutoship");
 	private static final By QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE  = By.xpath("//tr[@class='GridRow']/td[4]");
-
+	private static final By MOBILE_TAB_LOC  = By.xpath("//ul[@id='GlobalNav']//span[text()='Mobile']");
+	
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
 		return driver.isElementPresent(LOGOUT_LINK);
@@ -135,15 +136,22 @@ public class NSCore4HomePage extends NSCore3RFWebsiteBasePage{
 
 	public boolean isFirstAndLastNamePresentinSearchResults(String firstName,String lastName){
 		driver.waitForElementPresent(ACCOUNT_SEARCH_RESULTS);
-		return driver.isElementPresent(By.xpath("//div[contains(@class,'resultItem')][1]//p[contains(text(),'"+firstName+"')]"))
-				&& driver.isElementPresent(By.xpath("//div[contains(@class,'resultItem')][1]//p[contains(text(),'"+lastName+"')]"));
-
+		return driver.findElement(By.xpath("//div[contains(@class,'resultItem')][1]//p")).getText().contains(firstName)
+				&& driver.findElement(By.xpath("//div[contains(@class,'resultItem')][1]//p")).getText().contains(lastName);
 	}
 
 	public void clickCustomerlabelOnOrderDetailPage(){
 		driver.click(CUSTOMER_LABEL_ORDER_DETAIL_PAGE);
 		logger.info("customer label on order detail page clicked");
 		driver.waitForPageLoad();
+	}
+
+	public NSCore4MobilePage clickMobileTab(){
+		driver.quickWaitForElementPresent(MOBILE_TAB_LOC);
+		driver.click(MOBILE_TAB_LOC);
+		logger.info("Mobile Tab is clicked");
+		driver.waitForPageLoad();
+		return new NSCore4MobilePage(driver);
 	}
 
 }

@@ -9,10 +9,9 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
-import com.rf.pages.website.nscore.NSCore3HomePage;
-import com.rf.pages.website.nscore.NSCore3LoginPage;
 import com.rf.pages.website.nscore.NSCore4HomePage;
 import com.rf.pages.website.nscore.NSCore4LoginPage;
+import com.rf.pages.website.nscore.NSCore4MobilePage;
 import com.rf.test.website.RFNSCoreWebsiteBaseTest;
 
 public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
@@ -21,6 +20,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 	private NSCore4HomePage nscore4HomePage;
 	private NSCore4LoginPage nscore4LoginPage;
+	private NSCore4MobilePage nscore4MobilePage;
 	String RFL_DB = null;
 
 	public NSCore4AccountTest() {
@@ -34,6 +34,6 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();		
 		s_assert.assertTrue(nscore4LoginPage.isLoginButtonPresent(),"Login page has not appeared after logout");
 		s_assert.assertAll();
-	}	
+	}		
 
 }

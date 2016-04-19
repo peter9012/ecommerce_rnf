@@ -1663,14 +1663,14 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		String orderTotal = "Order Total";
 		String shipToCountry = "Ship To Country";
 
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		//-------------------FOR CA----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/ca");
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID=null;
 		String accountId=null;
 
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountId= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -1743,7 +1743,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(lastName), "Last name section is not present in order search tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(RFCID), "RFCID section is not present in order search tab");
 
-		//Search cid as customer Name which in database Having account status pending or terminated click search.
+		//Search cid as customer Name which in database Having account status pending or terminated click search. issue
 		cscockpitOrderSearchTabPage.enterCIDInOrderSearchTab(invalidCid);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifyOrderNumberSectionIsPresentWithClickableLinksInOrderSearchTab(), "Order # section is not present with clickable links");
@@ -1877,7 +1877,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.selectOrderStatusFromDropDownInOrderTab("All");
 
 		//select country one by one and assert values.
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(TestConstants.COUNTRY_DD_VALUE_US);
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(TestConstants.COUNTRY_DD_VALUE_US);//change
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(firstName), "First name section is not present in order search tab");
 		s_assert.assertTrue(cscockpitOrderSearchTabPage.verifySectionsIsPresentInOrderSearchTab(lastName), "Last name section is not present in order search tab");

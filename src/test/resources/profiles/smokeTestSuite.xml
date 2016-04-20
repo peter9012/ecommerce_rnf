@@ -6,9 +6,21 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-		    <class name="com.rf.test.website.storeFront.smoke.LoginTest"></class>
-			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"></class>		
-			<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
+			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"/>
+			<methods>
+				<method name="testAccountTerminationPageForConsultant_1975" />
+				<method name="testAccountTerminationPageForConsultant_3720" />
+				<method name="testAccountTerminationPageForPCUser_3719" />
+				<method name="testAccountTerminationPageForRCUser_2228" />
+				<method name="testEnrollAsConsultantUsingExpiredDataCard_1368" />
+				<method name="testEnrollAsConsultantUsingInvalidCardNumbers_1361" />
+				<method name="testEnrollConsultantWithEmptyCardNumber_1367" />
+				<method name="testExpressEnrollmentFieldsValidation_1274" />
+				<method name="testExpressEnrollmentSwitchToStandardEnrollment_1295" />
+			</methods>
+		    <class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"/>		
+			<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"/>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest" />
 	</classes>
 	</test>
 </suite>

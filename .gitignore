@@ -10,4 +10,5 @@ test-output/
 *.log
 *.DS_Store
 *.exe
+src/test/resources/chromedriver.exe
 logs/rf-info.html

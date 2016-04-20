@@ -1,4 +1,3 @@
-
 package com.rf.test.website;
 
 import java.util.ArrayList;
@@ -40,51 +39,55 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();		
-		logger.info("Application loaded");				
-		driver.setDBConnectionString();		
+		driver.loadApplication();                               
+		logger.info("Application loaded");                                                            
+		driver.setDBConnectionString();                
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
-		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){		
+		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
 			driver.get(driver.getURL());
 		}
 		else{
 			driver.get(driver.getURL()+"/"+country);
 		}
-		try{
-			logout();
-		}catch(NoSuchElementException e){
+		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
+			
+		}else{
+			try{
+				logout();
+			}catch(NoSuchElementException e){
 
-		}	
+			}   
+		}		           
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
-			countryId = "236";	
+			countryId = "236";            
 		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
 			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
-		if(driver.getURL().contains("salesforce")==true){
-			try{
-				crmLogoutFromHome();
-				driver.get(driver.getURL());
-			}catch(Exception e){
-
-			}
-		}
+//		if(driver.getURL().contains("salesforce")==true){
+//			try{
+//				crmLogoutFromHome();
+//				driver.get(driver.getURL());
+//			}catch(Exception e){
+//
+//			}
+//		}
 	}
-	
+
 	@AfterMethod
 	public void tearDownAfterMethod(){
 		if(driver.getURL().contains("salesforce")==true){
 			try{
 				crmLogout();
 			}catch(Exception e){
-				driver.manage().deleteAllCookies();
+
 			}
 		}
 	}
@@ -94,7 +97,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		new HtmlLogger().createHtmlLogFile();		
+		new HtmlLogger().createHtmlLogFile();                 
 		driver.quit();
 	}
 
@@ -111,7 +114,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		logger.info("Logout");
 		driver.pauseExecutionFor(3000);
 	}
-	
+
 	public void crmLogoutFromHome(){
 		driver.switchTo().defaultContent();
 		driver.quickWaitForElementPresent(By.id("userNavLabel"));
@@ -126,7 +129,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.findElement(By.id("account-info-button")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.findElement(By.linkText("Log out")).click();
-		logger.info("Logout");		
+		logger.info("Logout");                    
 		driver.pauseExecutionFor(3000);
 	}
 
@@ -134,8 +137,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void assertTrue(String message, boolean condition) {
 		if (!condition) {
 			logger.info("[FUNCTIONAL FAILURE - ASSERTION ERROR ----------- "
-					+ message + "]");			
-			Assert.fail(message);				
+					+ message + "]");                                              
+			Assert.fail(message);                                                      
 		}
 
 	}
@@ -177,12 +180,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			logger.info("[DATABASE ASSERTION FAILURE -  "+dbName+" ----------- " +message + "]");
 			if(!dbName.equals(driver.getDBNameRFL())){
 				Assert.fail(message);
-			}	
+			}              
 			else{
 				return false;
 			}
 		}
-		return true;		
+		return true;                        
 	}
 
 	public boolean assertEqualsDB(String message, int num1,int num2,String dbName) {
@@ -224,15 +227,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-	//	public void assertTrue(boolean condition) {
+	//            public void assertTrue(boolean condition) {
 	//
-	//		try {
-	//			assertTrue(condition);
+	//                            try {
+	//                                            assertTrue(condition);
 	//
-	//		} catch (Exception e) {
-	//			logger.trace(e.getMessage());
-	//		}
-	//	}
+	//                            } catch (Exception e) {
+	//                                            logger.trace(e.getMessage());
+	//                            }
+	//            }
 
 	public void assertEquals(String message, float num1,float num2) {
 
@@ -250,9 +253,9 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 			//logger.info("query result:" + map.get(column));
 
-			//	logger.info("query result:" + map.get(column));
+			//            logger.info("query result:" + map.get(column));
 
-			value = map.get(column);			
+			value = map.get(column);                                            
 		}
 		logger.info("Data returned by query: "+ value);
 		return value;

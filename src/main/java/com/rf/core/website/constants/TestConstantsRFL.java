@@ -8,7 +8,7 @@ public class TestConstantsRFL {
 	public static final String LAST_NAME = "ln";
 	public static final String ADDRESS_LINE1 = "60 Spear St";
 	public static final String POSTAL_CODE = "94536";
-	public static final String CARD_NUMBER = "5569710000253944";
+	public static final String CARD_NUMBER = "5424000000000015";
 	public static final String EXP_MONTH = "4";
 	public static final String EXP_YEAR = "2018";
 	public static final String CID_CONSULTANT = "069905";
@@ -43,6 +43,7 @@ public class TestConstantsRFL {
 	public static final String CONSULTANT_ONLY_PRODUCT_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_PRODUCT = "Consultant-Only Products";
 	public static final String CONSULTANT_RF_EXPRESS_BUSINESS_KIT = "$995";
+	public static final String PWS_SPCLCHARS = "ios%1";
 }
 
 

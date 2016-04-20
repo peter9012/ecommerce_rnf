@@ -588,7 +588,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public void addANewBillingProfileIfThereIsNoStoredCreditCard(){
-		if(driver.isElementPresent(NO_STORED_CREDIT_CARD_DETAILS)==true){
+		/*if(driver.isElementPresent(NO_STORED_CREDIT_CARD_DETAILS)==true){*/
 			driver.click(ADD_NEW_BILLING_PROFILE_BTN);
 			driver.waitForCSCockpitLoadingImageToDisappear();
 			driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
@@ -603,11 +603,11 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 			driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 			driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
 			driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.waitForPageLoad();
+			driver.waitForCSCockpitLoadingImageToDisappear();
 			enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 			driver.click(USE_THIS_CARD_BTN);
 			driver.waitForCSCockpitLoadingImageToDisappear();
-		}
+		/*}*/
 	}
 
 	public void addDeliveryAddressIfNonSelected(String attendentFirstName,String attendeeLastName,String addressLine,String city,String postalCode,String Country,String province,String phoneNumber){

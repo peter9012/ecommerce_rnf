@@ -9,6 +9,12 @@ public class DBQueries_RFL {
 	public static String GET_RANDOM_ACCOUNT_DETAILS = "select top 1 * from Accounts ORDER BY NEWID()";
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
 	public static String GET_ORDER_DETAILS = "select * from dbo.Orders where OrderNumber = '%s'";
+	public static String GET_RANDOM_EXISTING_CONSULTANT_SITE_URL = 
+			"SELECT TOP 1 "+
+					"SUL.URL "+
+					"FROM    dbo.SiteURLs AS SUL "+
+					"ORDER BY NEWID()";
+	public static String GET_RANDOM_INACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='0' order by NEWID()";
 	public static String GET_ACCOUNT_STATUS_ID = "select * from dbo.Accounts where emailAddress = '%s'";
 	public static String GET_RANDOM_ACTIVE_PC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='2' AND Active='1' order by NEWID()";
 	public static String GET_RANDOM_ACTIVE_RC_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='3' AND Active='1' order by NEWID()";

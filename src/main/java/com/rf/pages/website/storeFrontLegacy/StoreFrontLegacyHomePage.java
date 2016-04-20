@@ -7,7 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
@@ -30,6 +33,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String regimenNameOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
 	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
+	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
+	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
+	private static String retailPriceOfItem = "//div[@class='FloatCol']/div[%s]//tr[2]//div[1]/span[1]";
+	private static String addToCartBtnLoc = "//div[@class='FloatCol']/div[%s]//a[text()='Add to Cart']";
+	private static String sectionUnderReplenishmentOrderManagementLoc = "//a[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -105,7 +113,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//div[@id='mainBanner']/div[1]/a/img");
-	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//a[text()='Enroll Now']");
+	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
 
 	private static final By ADD_TO_CART_BTN = By.xpath("//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
@@ -212,8 +220,36 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By USE_THIS_ADDRESS_SHIPPING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewAddress')]");
 	private static final By ENROLL_NOW_LINK = By.xpath("//span[text()='Enroll Now']");
 	private static final By WEBSITE_PREFIX_BIZ_PWS = By.xpath("//li[@id='Abailable1']");
-	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
-	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
+	private static final By CHANGE_MY_PC_PERKS_STATUS_UNDER_MYACCOUNT_LINK = By.xpath("//a[@class='IconLink']/span[text()=' Change my PC Perks Status']");
+	private static final By DELAY_OR_CANCEL_PC_PERKS_LINK = By.xpath("//a[@id='PcCancellLink']/span[text()=' Delay or Cancel PC Perks']");
+	private static final By YES_CHANGE_MY_AUTOSHIP_DATE_BTN = By.xpath("//a[@id='BtnChangeAutoship']");
+	private static final By CHANGE_MY_AUTOSHIP_DATE_BTN = By.xpath("//a[@id='BtnChange']");
+	private static final By CONFIRMATION_MSG_LOC = By.xpath("//div[@id='RFContent']/p");
+	private static final By BACK_TO_MY_ACCOUNT_BTN_LOC = By.xpath("//a[@id='BtnBack']");
+	private static final By CONFIRM_MSG_AT_ORDERS_LOC = By.xpath("//div[@id='ContentWrapper']/div[2]");
+	private static final By RADIO_BUTTON_FOR_SIXTY_DAYS_LOC = By.xpath("//input[@value='60']");
+	private static final By TOTAL_ITEM_LOC = By.xpath("//div[@id='MyAutoshipItems']//li");
+	private static final By REMOVE_LINK_LOC = By.xpath("//div[@id='MyAutoshipItems']//li[1]/a");
+	private static final By ADD_TO_CART_LINK_LOC = By.xpath("//span[contains(text(),'Retail')]");
+	private static final By STATUS_MSG_LOC = By.xpath("//span[contains(@id,'uxStatusMessage')]");
+	private static final By UPDATE_ORDER_BTN_LOC = By.xpath("//div[@id='MyAutoshipItems']/following-sibling::p[2]/input");
+	private static final By MSG_UPDATE_ORDER_CONFIRMATION_LOC = By.xpath("//p[@class='success']");
+	private static final By ORDER_TOTAL_LOC = By.xpath("//div[@id='TotalBar']/p");
+	private static final By ORDER_TOTAL_AT_OVERVIEW_LOC = By.xpath("//span[contains(@id,'uxSubTotal')]");
+	private static final By PREFIX_SUGGESTIONS_LIST = By.xpath("//div[@class='websitePrefix']//li[contains(text(),'unavailable')]");
+	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//a[text()='Edit Order']");
+	private static final By CHANGE_BILLING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeAddressLink')]");
+	private static final By EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE = By.xpath("//p[contains(@class,'success Pad10')]");
+	private static final By WEBSITE_PREFIX_LOC = By.xpath("//input[@id='Account_EnrollSubdomain']");
+	private static final By INVALID_LOGIN = By.xpath("//p[@id='loginError']");
+	private static final By EXISTING_PC_LOC = By.xpath("//div[@id='ExistentPC']/p[contains(text(),'already have a Preferred Customer')]");
+	private static final By EXISTING_RC_LOC = By.xpath("//div[@id='ExistentRetail']/p[contains(text(),'already have a Retail account')]");
+	private static final By WEBSITE__PREFIX_LOC = By.xpath("//input[@id='Account_EnrollSubdomain']");
+	private static final By EDIT_MY_PHOTO_LINK = By.xpath("//a[contains(text(),'Edit My Photo')]");
+	private static final By UPLAOD_A_NEW_PHOTO_BTN = By.xpath("//div[@class='qq-uploader']");
+	private static final By EMAIL_VERIFICATION_TEXT = By.xpath("//div[@class='SubmittedMessage'][@style='']");
+	private static final By CANCEL_ENROLLMENT_BTN = By.xpath("//a[@id='BtnCancelEnrollment']");
+	private static final By SEND_EMAIL_TO_RESET_MY_PASSWORD_BTN = By.xpath("//a[@id='BtnResetPassword']");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -269,12 +305,12 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	public void selectEnrollmentType(String enrollmentType){
 		if(enrollmentType.equalsIgnoreCase("Express")){
-			driver.quickWaitForElementPresent(EXPRESS_ENROLLMENT_LOC);
+			driver.waitForElementPresent(EXPRESS_ENROLLMENT_LOC);
 			driver.click(EXPRESS_ENROLLMENT_LOC);
 			logger.info("express enrollment is selected");
 		}
 		else if(enrollmentType.equalsIgnoreCase("Standard")){
-			driver.quickWaitForElementPresent(STANDARD_ENROLLMENT_LOC);
+			driver.waitForElementPresent(STANDARD_ENROLLMENT_LOC);
 			driver.click(STANDARD_ENROLLMENT_LOC);
 			logger.info("standard enrollment is selected");
 		}
@@ -1389,7 +1425,6 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickHeaderLinkAfterLogin(String linkName) {
-		linkName = linkName.toLowerCase();
 		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		logger.info("my account link is clicked");
@@ -1478,4 +1513,299 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Biz PWS before enrollment is: "+bizPWS);
 		return bizPWS;
 	}
+
+	public void clickChangeMyPcPerksStatus() {
+		driver.waitForElementPresent(CHANGE_MY_PC_PERKS_STATUS_UNDER_MYACCOUNT_LINK);
+		driver.click(CHANGE_MY_PC_PERKS_STATUS_UNDER_MYACCOUNT_LINK);
+		logger.info("change my pc perks status link is clicked");
+
+	}
+
+	public void clickDelayCancelPcPerksLink() {
+		driver.quickWaitForElementPresent(DELAY_OR_CANCEL_PC_PERKS_LINK); 
+		driver.click(DELAY_OR_CANCEL_PC_PERKS_LINK);
+		logger.info("delay or cancel pc perks link is clicked");
+	}
+
+	public void clickPopUpYesChangeMyAutoshipDate() {
+		driver.waitForElementPresent(YES_CHANGE_MY_AUTOSHIP_DATE_BTN);
+		driver.click(YES_CHANGE_MY_AUTOSHIP_DATE_BTN);
+		logger.info("yes change my autoship date is clicked");
+
+	}
+
+	public void clickChangeAutohipDateBtn() {
+		driver.waitForElementPresent(CHANGE_MY_AUTOSHIP_DATE_BTN);
+		driver.click(CHANGE_MY_AUTOSHIP_DATE_BTN);
+		logger.info("change my date btn is clicked");
+	}
+
+	public boolean verifyConfirmationMessage() {
+		return driver.isElementPresent(CONFIRMATION_MSG_LOC);
+	}
+
+	public void clickBackToMyAccountBtn() {
+		driver.quickWaitForElementPresent(BACK_TO_MY_ACCOUNT_BTN_LOC);
+		driver.click(BACK_TO_MY_ACCOUNT_BTN_LOC);
+		logger.info("back to my account button is clicked");
+
+	}
+
+	public boolean verifyConfirmationMessageInOrders() {
+		return driver.isElementPresent(CONFIRM_MSG_AT_ORDERS_LOC);
+	}
+
+	public void selectSecondRadioButton() {
+		driver.click(RADIO_BUTTON_FOR_SIXTY_DAYS_LOC);
+		logger.info("radio button for 60 days is selected");
+	}
+
+	public void clickEditOrderbtn() {
+		driver.click(EDIT_ORDER_BTN_LOC);
+		logger.info("edit order button is clicked");
+
+	}
+
+	public void clickRemoveLinkAboveTotal() {
+		int numberofRemoveLink = driver.findElements(TOTAL_ITEM_LOC).size();
+		for(int i =1;i<=numberofRemoveLink;i++ ){
+
+			driver.click(REMOVE_LINK_LOC);
+			driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		}
+		logger.info("all products Removed"); 
+	}
+
+	public void clickAddToCartBtnForLowPriceItems() {
+		int numberofAddToCartLink = driver.findElements(ADD_TO_CART_LINK_LOC).size();
+		for(int i = 1;i<=numberofAddToCartLink;i++){
+			String LowerPrice = driver.findElement(By.xpath(String.format(retailPriceOfItem,i))).getText();
+			String []split = LowerPrice.split("\\$")[1].split("\\.");
+			int value = Integer.parseInt(split[0]);
+			if(value<50){
+				driver.click(By.xpath(String.format(addToCartBtnLoc,i)));
+				driver.waitForStorfrontLegacyLoadingImageToDisappear();
+				break;
+			}else
+				continue;
+		}
+	}
+
+	public void clickAddToCartBtnForHighPriceItems() {
+		int numberofAddToCartLink = driver.findElements(ADD_TO_CART_LINK_LOC).size();
+		for(int i = 1;i<=numberofAddToCartLink;i++){
+			String highPrice = driver.findElement(By.xpath(String.format(retailPriceOfItem,i))).getText();
+			String []split = highPrice.split("\\$")[1].split("\\.");
+			int value = Integer.parseInt(split[0]);
+			if(value>80){
+				driver.click(By.xpath(String.format(addToCartBtnLoc,i)));
+				driver.waitForStorfrontLegacyLoadingImageToDisappear();
+				break;
+			}else
+				continue;
+		}
+	}
+
+	public boolean isStatusMessageDisplayed() {
+		return driver.findElement(STATUS_MSG_LOC).isDisplayed();
+	}
+
+	public void clickOnUpdateOrderBtn() {
+		driver.click(UPDATE_ORDER_BTN_LOC);
+		logger.info("update order button is clicked");
+	}
+
+	public void handleAlertAfterUpdateOrder() {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+		} catch (Exception e) {
+			//exception handling
+		}
+	}
+
+	public String getConfirmationMessage() {
+		driver.waitForElementPresent(MSG_UPDATE_ORDER_CONFIRMATION_LOC);
+		String confirmationMessage = driver.findElement(MSG_UPDATE_ORDER_CONFIRMATION_LOC).getText();
+		System.out.println(confirmationMessage+"confirmatin mssge");
+		return confirmationMessage;
+
+	}
+
+	public void clickSectionUnderReplenishmentOrderManagement(String subSectionName) {
+		driver.quickWaitForElementPresent(By.xpath(String.format(sectionUnderReplenishmentOrderManagementLoc, subSectionName)));
+		driver.click(By.xpath(String.format(sectionUnderReplenishmentOrderManagementLoc, subSectionName)));
+		logger.info("subSection"+subSectionName+" link is clicked");
+
+	}
+
+	public String getOrderTotal() {
+		return driver.findElement(ORDER_TOTAL_LOC).getText();
+	}
+
+	public String getOrderTotalAtOverview() {
+		String totalAtOverview =  driver.findElement(ORDER_TOTAL_AT_OVERVIEW_LOC).getText();
+		return totalAtOverview;
+	}
+
+	public String getSplittedPrefixFromConsultantUrl(String url) {
+		String requiredPrefix[] = url.split("\\//")[1].split("\\.");
+		return requiredPrefix[0];
+	}
+
+	public boolean isExistingPrefixAvailable() {
+		driver.waitForElementPresent(PREFIX_SUGGESTIONS_LIST);
+		return driver.isElementPresent(PREFIX_SUGGESTIONS_LIST);
+	}
+
+	public void clickChangeBillingInformationLinkUnderBillingTabOnPWS(){
+		driver.quickWaitForElementPresent(CHANGE_BILLING_INFO_LINK_ON_PWS);
+		driver.click(CHANGE_BILLING_INFO_LINK_ON_PWS);
+		logger.info("Change Billing info link clicked");
+		driver.waitForPageLoad();
+	}
+	public void enterBillingInfoForPWS(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
+		logger.info("Billing profile name entered as: "+billingName);
+		driver.type(ATTENTION_FIRST_NAME, firstName);
+		driver.type(BILLING_FIRST_NAME, firstName);
+		logger.info("Attention first name entered as: "+firstName);
+		driver.type(ATTENTION_LAST_NAME, lastName);
+		driver.type(BILLING_LAST_NAME, lastName);
+		logger.info("Attention last name entered as: "+lastName);
+		driver.type(NAME_ON_CARD, cardName);
+		logger.info("Card Name entered as: "+cardName);
+		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
+		logger.info("Card number entered as: "+cardNumer);
+		driver.click(EXPIRATION_DATE_MONTH_DD);
+		logger.info("Expiration month dropdown clicked");
+		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
+		logger.info("Expiry month selected is: "+month);
+		driver.click(EXPIRATION_DATE_YEAR_DD);
+		logger.info("Expiration year dropdown clicked");
+		driver.click(By.xpath(String.format(expiryYearLoc, year)));
+		logger.info("Expiry year selected is: "+year);
+		driver.type(ADDRESS_LINE_1, addressLine1);
+		logger.info("Billing street address entered as: "+addressLine1);
+		driver.type(ZIP_CODE, postalCode+"\t");
+		logger.info("Postal code entered as: "+postalCode);
+		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		driver.click(CITY_DD);
+		logger.info("City dropdown clicked");
+		driver.click(FIRST_VALUE_OF_CITY_DD);
+		logger.info("City selected");
+		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
+		logger.info("Phone number entered as: "+phnNumber);
+	}
+	public String getOrderBillingDetailsUpdateMessage(){
+		driver.waitForElementPresent(EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE);
+		String messgae = driver.findElement(EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE).getText();
+		logger.info("Order updation message is: "+messgae);
+		return messgae;
+	}
+
+	public String getModifiedPWSValue(String url,String availablityText) {
+		String requiredPrefix[] = url.split("\\//")[1].split("\\/");
+		String siteprefixToAssert = requiredPrefix[0]+availablityText;
+		return siteprefixToAssert;
+	}
+
+	public String getModifiedEmailValue(String url) {
+		String requiredPrefix[] = url.split("\\//")[1].split("\\.");
+		String siteprefixToAssert = requiredPrefix[0]+"@"+requiredPrefix[1]+".com";
+		return siteprefixToAssert;
+	}
+
+	public void enterUserPrefixInPrefixField(String prefixField){
+		driver.quickWaitForElementPresent(WEBSITE_PREFIX_LOC);
+		driver.clear(WEBSITE_PREFIX_LOC);
+		driver.type(WEBSITE_PREFIX_LOC, prefixField);
+		logger.info("Prefix field enterd as: "+prefixField);
+	}
+
+	public boolean isInvalidLoginPresent(){
+		driver.waitForElementPresent(INVALID_LOGIN);
+		return driver.isElementPresent(INVALID_LOGIN);
+	}
+
+	public void enterEmailAddress(String emailAddress){
+		driver.waitForElementPresent(ACCOUNT_EMAIL_ADDRESS_LOC);
+		driver.type(ACCOUNT_EMAIL_ADDRESS_LOC, emailAddress+"\t");
+		logger.info("email address entered as: "+emailAddress);
+	}
+
+	public void clickSetUpAccountNextButton(){
+		driver.quickWaitForElementPresent(SETUP_ACCOUNT_NEXT_BTN_LOC);
+		driver.click(SETUP_ACCOUNT_NEXT_BTN_LOC);
+		logger.info("set up account next button is clicked");
+	}
+
+	public boolean validateExistingPCPopUp(String emailAddress){
+		driver.quickWaitForElementPresent(EXISTING_PC_LOC);
+		driver.type(ACCOUNT_EMAIL_ADDRESS_LOC, emailAddress);
+		logger.info("email address entered as: "+emailAddress);
+		driver.type(ACCOUNT_PASSWORD_LOC, "");
+		logger.info("password entered as: "+"");
+		return driver.isElementPresent(EXISTING_PC_LOC);
+	}
+
+	public boolean validateExistingRCPopUp(String emailAddress){
+		driver.quickWaitForElementPresent(EXISTING_RC_LOC);
+		driver.type(ACCOUNT_EMAIL_ADDRESS_LOC, emailAddress);
+		logger.info("email address entered as: "+emailAddress);
+		driver.type(ACCOUNT_PASSWORD_LOC, "");
+		logger.info("password entered as: "+"");
+		return driver.isElementPresent(EXISTING_RC_LOC);
+	}
+
+	public void enterSpecialCharacterInWebSitePrefixField(String prefixField){
+		driver.quickWaitForElementPresent(WEBSITE__PREFIX_LOC);
+		driver.clear(WEBSITE__PREFIX_LOC);
+		driver.type(WEBSITE__PREFIX_LOC, prefixField);
+		logger.info("PWS enterd as: "+prefixField);
+	}
+
+	public String getWebSitePrefixFieldText(){
+		driver.quickWaitForElementPresent(WEBSITE__PREFIX_LOC);
+		return driver.findElement(WEBSITE__PREFIX_LOC).getText();
+	}
+
+	public void clickEditMyPhotoLink(){
+		driver.waitForElementPresent(EDIT_MY_PHOTO_LINK);
+		driver.click(EDIT_MY_PHOTO_LINK);
+		logger.info("Edit my photo link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickCancelEnrollmentBtn(){
+		driver.waitForElementPresent(CANCEL_ENROLLMENT_BTN);
+		driver.click(CANCEL_ENROLLMENT_BTN);
+		logger.info("Cancel enrollment button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickSendEmailToResetMyPassword(){
+		driver.waitForElementPresent(SEND_EMAIL_TO_RESET_MY_PASSWORD_BTN);
+		driver.click(SEND_EMAIL_TO_RESET_MY_PASSWORD_BTN);
+		logger.info("Send email to reset my password button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isUploadANewPhotoButtonPresent(){
+		driver.waitForElementPresent(UPLAOD_A_NEW_PHOTO_BTN);
+		return driver.isElementPresent(UPLAOD_A_NEW_PHOTO_BTN);
+	}
+
+	public boolean isExistingConsultantPopupPresent(){
+		driver.waitForElementPresent(EXISTING_CONSULTANT_LOC);
+		return driver.isElementPresent(EXISTING_CONSULTANT_LOC);
+	}
+
+	public boolean isEmailVerificationTextPresent(){
+		driver.waitForElementPresent(EMAIL_VERIFICATION_TEXT);
+		return driver.isElementPresent(EMAIL_VERIFICATION_TEXT);
+	}
+
 }

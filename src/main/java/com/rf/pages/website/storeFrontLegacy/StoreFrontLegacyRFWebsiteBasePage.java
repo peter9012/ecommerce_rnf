@@ -54,6 +54,9 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By SHOP_SKINCARE_ON_PWS_LOC = By.xpath("//span[text()='SHOP SKINCARE']");
 	private static final By PRODUCT_LINK_UNDER_SHOP_SKIN_CARE = By.xpath("//span[text()='CONSULTANT-ONLY PRODUCTS']");
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'Consultant-Only Products')]/preceding::a[1]/img";
+	private static final By COM_PWS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[1]");
+	private static final By BIZ_PWS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[2]");
+	private static final By EMAIL_ADDRESS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[3]");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -339,5 +342,30 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
+	public String convertBizSiteToComSite(String pws){
+		String com  = "com";
+		String biz ="biz";
+		if(pws.contains(biz))
+			pws = pws.replaceAll(biz,com);
+		return pws;  
+	}
+
+	public String getDotComPWS(){
+		driver.waitForElementPresent(COM_PWS_CONSULTANT_ENROLLMENT);
+		String pwsUnderPulse = driver.findElement(COM_PWS_CONSULTANT_ENROLLMENT).getText();
+		return pwsUnderPulse;
+	}
+
+	public String getDotBizPWS(){
+		driver.waitForElementPresent(BIZ_PWS_CONSULTANT_ENROLLMENT);
+		String pwsUnderPulse = driver.findElement(BIZ_PWS_CONSULTANT_ENROLLMENT).getText();
+		return pwsUnderPulse;
+	}
+
+	public String getEmailId(){
+		driver.waitForElementPresent(EMAIL_ADDRESS_CONSULTANT_ENROLLMENT);
+		String pwsUnderPulse = driver.findElement(EMAIL_ADDRESS_CONSULTANT_ENROLLMENT).getText();
+		return pwsUnderPulse;
+	}
 
 }

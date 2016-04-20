@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
-public class NSCore4MobilePage extends NSCore3RFWebsiteBasePage{
+public class NSCore4MobilePage extends NSCore4RFWebsiteBasePage{
 
 	private static final Logger logger = LogManager
 			.getLogger(NSCore4MobilePage.class.getName());

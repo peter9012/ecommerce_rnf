@@ -914,7 +914,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyDataUnderContactSectionInContactDetailsPageIsEditable(String label){
 		boolean flag = false;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 		try{
 			driver.findElement(By.xpath("//div[@class='pbSubsection']//td[text()='"+label+"']/following::td[1]")).clear();	
@@ -929,7 +929,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyFieldsUnderAccountEditInAccountInformationIsEditable(String label){
 		boolean flag = true;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		try{
 			driver.findElement(By.xpath("//td[text()='"+label+"']/following::td[1]")).clear();
@@ -944,7 +944,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyRecognizationNameUnderAccountEditInAccountInformationIsEditable(){
 		boolean flag = true;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		try{
 			driver.findElement(By.xpath("//label[text()='Recognition Name']/following::td[1]//input")).clear();
@@ -959,7 +959,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyAccountNameNameUnderAccountEditInAccountInformationIsEditable(){
 		boolean flag = true;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		try{
 			driver.findElement(By.xpath("//label[text()='Account Name']/following::td[1]//input")).clear();
@@ -975,7 +975,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyActiveCheckboxUnderAccountEditInAccountInformationIsEditable(){
 		boolean flag = true;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).click();
 		if(driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).getAttribute("title").equalsIgnoreCase("Checked")){
@@ -986,7 +986,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public void clickCancelButtonUnderAccountEditInAccountInformationSection(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//h2[text()='Account Edit']/../following-sibling::td/input[@title='Cancel']"));
 		driver.findElement(By.xpath("//h2[text()='Account Edit']/../following-sibling::td/input[@title='Cancel']")).click();
@@ -1055,7 +1055,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean isAccountStatusActive(){
 		boolean isActive = false;
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		String checkboxStatus = driver.findElement(By.xpath("//td[text()='Active']/following-sibling::td//img")).getAttribute("title");
 		if(checkboxStatus.equalsIgnoreCase("Checked")){
@@ -1066,21 +1066,21 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public void selectReasonToChangeAccountStatusFromDropDown(String dropdownValue){
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 
-		driver.waitForElementNotPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select"));
+		driver.waitForElementPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select"));
 		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select"));
-		driver.waitForElementPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
+		//driver.waitForElementPresent(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
 		driver.click(By.xpath("//div[text()='Select the reason to Change Account Status']/../select/option[@value='"+dropdownValue+"']"));
 	}
 
 	public String clickSaveButtonToChangeAccountStatus(){
 		TimeZone timeZone = TimeZone.getTimeZone("US/Pacific");//"US/Pacific"
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.waitForElementNotPresent(By.xpath("//a[text()='Save']"));
+		driver.waitForElementPresent(By.xpath("//a[text()='Save']"));
 		driver.click(By.xpath("//a[text()='Save']"));
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
@@ -1108,7 +1108,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isAutoshipStatusActive() {
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
 		if(checkboxStatus.equalsIgnoreCase("Checked")){
@@ -1164,7 +1164,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isMessageOfAccountStatusChangedPresent(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementNotPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 		return driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
 	}

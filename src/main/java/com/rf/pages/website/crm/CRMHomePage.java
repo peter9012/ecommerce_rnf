@@ -51,7 +51,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public CRMHomePage(RFWebsiteDriver driver) {
 		super(driver);
 	}
-	public boolean verifyHomePage() throws InterruptedException{		
+	public boolean verifyHomePage() throws InterruptedException{
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
 		closeAllOpenedTabs();
@@ -231,7 +231,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 
 	public void enterTextInSearchFieldAndHitEnter(String text){
-		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(text);
+		driver.type(SEARCH_TEXT_BOX_LOC,text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
 	}

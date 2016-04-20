@@ -668,5 +668,282 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateExistingConsultantPopUp(consultantEmailID),"Existing Consultant Pop Up is not displayed!!");
 		s_assert.assertAll();
 	}
-	
+
+	///-----
+
+	//Registering the consultant using preffered customer's email id 
+	@Test
+	public void RegisterConsultantUsingExistingPrefferedCustomerEmailId(){
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		//Enter SetUp Account Information and validate existing PC PopUp?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateExistingPCPopUp(pcEmailID),"Existing PC Pop Up is not displayed!!");
+		s_assert.assertAll();
+	}
+
+	//Enroll a consultant using special characters in the prefix field
+	@Test
+	public void testEnrollConsultantUsingSpecialCharsInPrefixField(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String PWSSpclChars = TestConstantsRFL.PWS_SPCLCHARS;
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontLegacyHomePage.enterSpecialCharacterInWebSitePrefixField(PWSSpclChars);
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.navigateToBackPage();
+		s_assert.assertFalse(storeFrontLegacyHomePage.getWebSitePrefixFieldText().contains("%"),"WebSite Prefix Field accepts Special Character");
+		s_assert.assertAll();
+	}
+
+	//Registering the consultant using Retail customer's email id
+	@Test
+	public void RegisterConsultantUsingExistingRetailCustomerEmailId(){
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcEmailID = null;
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		//Enter SetUp Account Information and validate existing PC PopUp?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateExistingRCPopUp(rcEmailID),"Existing RC Pop Up is not displayed!!");
+		s_assert.assertAll();
+	}
+
+	//Register the consultant using existing consultant's SSN
+	@Test
+	public void testRegisterTheConsultantUsingExistingConsultantSSN(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum3 = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String lastNameForReEnrollment = TestConstantsRFL.LAST_NAME+randomNum2;
+		String emailAddressForReEnrollment = firstName+randomNum2+"@xyz.com";
+		String lastName2 = TestConstantsRFL.LAST_NAME+randomNum3;
+		String emailAddress2 = firstName+randomNum3+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		String editMyPWS = "edit my pws";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
+		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.clickTermsAndConditions();
+		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"Enrollment not completed successfully");
+		storeFrontLegacyHomePage.clickOnRodanAndFieldsLogo();
+		logout();
+		driver.get(PWS);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
+		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastNameForReEnrollment, emailAddressForReEnrollment, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		s_assert.assertTrue(storeFrontLegacyHomePage.isExistingConsultantPopupPresent(), "Existing consultant popup is not present");
+		storeFrontLegacyHomePage.clickCancelEnrollmentBtn();
+		driver.get(PWS);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
+		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName2, emailAddress2, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		s_assert.assertTrue(storeFrontLegacyHomePage.isExistingConsultantPopupPresent(), "Existing consultant popup is not present");
+		storeFrontLegacyHomePage.clickSendEmailToResetMyPassword();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isEmailVerificationTextPresent(), "Email verification message is not present");
+		s_assert.assertAll();
+	}
+
+	//My account- As a consultant customer
+	@Test
+	public void testMyAccountAsAConsultantCustomer(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
+		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+		String emailAddress = firstName+randomNum+"@xyz.com";
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
+		String enrollemntType = "Express";
+		String phnNumber1 = "415";
+		String phnNumber2 = "780";
+		String phnNumber3 = "9099";
+		String editMyPWS = "edit my pws";
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
+		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
+		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
+		storeFrontLegacyHomePage.clickTermsAndConditions();
+		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"Enrollment not completed successfully");
+		storeFrontLegacyHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontLegacyHomePage.clickHeaderLinkAfterLogin(editMyPWS);
+		storeFrontLegacyHomePage.clickEditMyPhotoLink();
+		s_assert.assertTrue(storeFrontLegacyHomePage.isUploadANewPhotoButtonPresent(),"Upload a new photo button is not present");
+		s_assert.assertAll();
+	}
 }

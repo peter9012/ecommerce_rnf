@@ -1213,7 +1213,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		boolean flag=false;
 		while(true){
 			try{
-				driver.waitForElementNotPresent(By.xpath("//a[text()='Remove']"));
+				driver.waitForElementPresent(By.xpath("//a[text()='Remove']"));
 				driver.click(By.xpath("//a[text()='Remove']"));				
 				if(driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().equalsIgnoreCase(TestConstants.AUTOSHIP_TEMPLATE_ERROR_MSG_PC)){
 					flag=true;
@@ -1231,7 +1231,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(){
-		driver.waitForElementNotPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		driver.waitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY);
 	}
 
@@ -1495,12 +1495,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateEmptyShoppingCartPageIsDisplayed(){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='left-shopping']//span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']//span"));
 		return driver.findElement(By.xpath("//div[@id='left-shopping']//span")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG);
 	}
 
 	public void clickOnContinueShoppingLinkOnEmptyShoppingCartPage(){
-		driver.waitForElementNotPresent(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
+		driver.waitForElementPresent(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
 		driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
 		driver.waitForPageLoad();
 	}
@@ -1914,7 +1914,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyShippingAddressIsPresentOnReviewPage(String name){
-		driver.waitForElementNotPresent(By.xpath("//div[@id='summarySection']/descendant::span[@class='font-bold' and contains(text(),'"+name+"')][1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='summarySection']/descendant::span[@class='font-bold' and contains(text(),'"+name+"')][1]"));
 		return driver.isElementPresent(By.xpath("//div[@id='summarySection']/descendant::span[@class='font-bold' and contains(text(),'"+name+"')][1]"));
 	}
 

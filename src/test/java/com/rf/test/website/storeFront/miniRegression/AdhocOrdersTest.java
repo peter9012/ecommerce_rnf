@@ -36,13 +36,13 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	public void testCreateAdhocOrderConsultant() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
-	//	List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -107,13 +107,13 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
-		//List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCList =  null;
 		String pcUserEmailID = TestConstants.PC_EMAIL_ID_STG2;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		//pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -176,7 +176,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	public void testCreateAdhocOrderRC_1879() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
-		//List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> randomRCList =  null;
 
 		String rcUserEmailID = TestConstants.RCUSER_EMAIL_ID;
 		String accountID = null;
@@ -184,10 +184,10 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-	//	randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-	//	rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-	//	accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-	//	logger.info("Account ID of the user is "+accountID);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+		logger.info("Account ID of the user is "+accountID);
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);

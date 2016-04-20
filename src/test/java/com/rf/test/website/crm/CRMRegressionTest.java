@@ -803,7 +803,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		//		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
-		String updatedProfileName = crmAccountDetailsPage.getFirstShippingProfileName();
+		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
 		s_assert.assertAll();
 	}
@@ -2337,7 +2337,6 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"), "Address Line 1 Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"), "Address Line 2 Label is not Present");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"), "Address Line 3 Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"), "Locale Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"), "Sub Region Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"), "Region Label is not Present");
@@ -2391,7 +2390,6 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 1"), "Address Line 1 Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 2"), "Address Line 2 Label is not Present");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Address Line 3"), "Address Line 3 Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Locale"), "Locale Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Sub Region"), "Sub Region Label is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnMainAddressSectionPresent("Region"), "Region Label is not Present");

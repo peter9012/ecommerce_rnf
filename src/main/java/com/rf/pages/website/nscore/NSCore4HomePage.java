@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -22,13 +23,12 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 	private static String productOnOrderTableOnOrderPage = "//table[@id='products']//td[contains(text(),'%s')]";
 	private static String productOnOrderTableOnOrderDetailPage = "//table[@class='DataGrid']//td[contains(text(),'%s')]";
-	private static final By ROWS_COUNT_OF_SEARCH_RESULT  = By.xpath("//table[@id='accounts']/tbody/tr");
 	private static String rowNumber = "//table[@id='accounts']/tbody/tr[%s]/td/a";
 	private static String proxyLinksLoc = "//div[@class='DistributorProxies']//li/a[text()='%s']";
 	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
 	private static String waitingForApprovalLink = "//ul[@id='stories']/li/a[contains(text(),'%s')]";
-
 	private static String storyNameOnEditOptionPage = "//p[text()='%s']";
+
 	private static final By TOTAL_NO_OF_COLUMNS = By.xpath("//tr[@class='GridColHead']//a");
 	private static final By EDIT_MY_STORY_LINK = By.xpath("//a[@class='EditButton' and contains(text(),'Edit My Story')]");
 	private static final By I_WANT_TO_WRITE_OWN_STORY = By.xpath("//a[@id='newStory']/span");
@@ -56,6 +56,11 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By ORDER_ID_PENDING_LOC = By.xpath("//table[@id='orders']//tr/td[text()='Pending'][1]//preceding::td[3]/a");
 	private static final By ORDER_ID_FROM_OVERVIEW_PAGE_LOC = By.xpath("//table[@id='orders']/tbody/tr[1]/td[1]/a");
 	private static final By ORDERS_TAB_LOC = By.xpath("//ul[@id='GlobalNav']//span[text()='Orders']");
+	private static final By ROWS_COUNT_OF_SEARCH_RESULT  = By.xpath("//table[@id='accounts']/tbody/tr");
+	private static final By ADMIN_TAB_LOC  = By.xpath("//ul[@id='GlobalNav']//span[text()='Admin']");
+	private static final By RECENT_ORDER_DROP_DOWN_LOC = By.id("orderStatusFilter");
+	private static final By NO_ORDER_FOUND_MSG_LOC = By.xpath("//table[@id='orders']//td[contains(text(),'No orders found')]");
+	private static final By FIRST_PENDING_ORDER_LOC = By.xpath("//table[@id='orders']/tbody/tr[1]/td/a"); 
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -175,8 +180,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	}
 
 	public NSCore4OrdersTabPage clickPendingOrderID() {
-		driver.click(ORDER_ID_PENDING_LOC);
-		logger.info("pending order id is clicked");
+		driver.click(FIRST_PENDING_ORDER_LOC);
 		return new NSCore4OrdersTabPage(driver);
 	}
 
@@ -289,6 +293,25 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		String denyTxt=driver.findElement(By.xpath(String.format(waitingForApprovalLink, storyTitle))).getText();
 		logger.info("Story deny text from UI is: "+denyTxt);
 		return denyTxt;
+	}
+
+	public NSCore4AdminPage clickAdminTab(){
+		driver.quickWaitForElementPresent(ADMIN_TAB_LOC);
+		driver.click(ADMIN_TAB_LOC);
+		logger.info("Admin Tab is clicked");
+		driver.waitForPageLoad();
+		return new NSCore4AdminPage(driver);
+	}
+
+	public void selectOrderStatusByDropDown(String value) {
+		Select select = new Select(driver.findElement(RECENT_ORDER_DROP_DOWN_LOC));
+		select.selectByVisibleText(value);
+		driver.pauseExecutionFor(2000);
+		
+	}
+
+	public boolean isNoOrderFoundMessagePresent() {
+		return driver.isElementPresent(NO_ORDER_FOUND_MSG_LOC);  
 	}
 
 }

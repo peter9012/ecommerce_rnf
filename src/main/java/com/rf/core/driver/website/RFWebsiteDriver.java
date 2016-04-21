@@ -369,6 +369,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	}
 
+	public void waitForNSCore4LoadingImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@style='display: block;']/img");
+		logger.info("Waiting for NSCore4 loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("NSCore4 loading image disappears");
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+
+	}
+
 	public void waitForElementTobeEnabled(By locator){
 		for(int time=1;time<=30;time++){
 			if(driver.findElement(locator).isEnabled()==true){

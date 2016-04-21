@@ -19,7 +19,7 @@ public class NSCore4MobilePage extends NSCore4RFWebsiteBasePage{
 	private static final By HEADLINE_NEWS_LOC = By.xpath("//ul[@id='SubNav']//span[text()='HeadLine News']");
 	private static final By RF_IN_NEWS_LOC = By.xpath("//ul[@id='SubNav']//span[text()='R+F In The News']");
 	private static final By BROWSEHEADLINE_NEWS_LOC = By.xpath("//td[@class='CoreContent']//h2[contains(text(),'Browse HeadLineNews')]");
-	private static final By BROWSERF_IN_NEWS_LOC = By.xpath("//td[@class='CoreContent']//h2[contains(text(),' Browse RF in the News')]");
+	private static final By BROWSERF_IN_NEWS_LOC = By.xpath("//td[@class='CoreContent']//h2[contains(text(),'Browse RF in the News')]");
 
 	public void clickHeadLineNewsLink(){
 		driver.quickWaitForElementPresent(HEADLINE_NEWS_LOC);

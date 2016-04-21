@@ -20,9 +20,11 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 	private static String productsInfoTableLoc = "//td[contains(text(),'%s')]/following-sibling::td";
 	private static String FirstNameLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[2]";
 	private static String LastNameLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[3]";
+	private static String orderStatusLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[4]";
+	private static String orderTypeLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[5]";
 
 	private final static By CANCEL_ORDER_LINK_LOC = By.xpath("//a[@id='cancelOrder']");
-	private final static By ORDER_STATUS_LOC = By.xpath("//div[@class='Content']//td[contains(text(),' Status')]/following::b[1]");
+	private final static By ORDER_STATUS_LOC = By.xpath("//div[@class='Content']//td[contains(text(),'Status')]/following::b[1]");
 	private final static By ORDER_ID_INPUT_FIELD_LOC = By.xpath("//input[@id='txtSearch']");
 	private static final By GO_SEARCH_BTN = By.xpath("//a[@id='btnGo']/img[@alt='Go']");
 	private static final By DROP_DOWN_LOC = By.xpath("//select[@id='cboSearchCol']");
@@ -34,6 +36,12 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 	private static final By TXT_FIELD_START_ORDER_LOC = By.id("txtCustomerSuggest");
 	private static final By SUGGESTION_START_ORDER_LOC = By.xpath("//div[@class='resultItem odd hover']");
 	private static final By START_ORDER_BTN_LOC = By.xpath("//a[@id='btnStartOrder']");
+	private final static By BROWSE_ORDERS_LINK_LOC = By.xpath("//a[text()='Browse Orders']");
+	private final static By SELECT_STATUS_DD_LOC = By.xpath("//select[@id='statusFilter']");
+	private final static By SELECT_TYPE_DD_LOC = By.xpath("//select[@id='typeFilter']");
+	private static final By GO_SEARCH_BTN_BROWSE_ORDERS_LOC = By.xpath("//a[@id='btnSearchAccounts']/img");
+	private static final By PAYMENT_APPLY_LINK_LOC = By.xpath("//a[text()='Apply']");
+	private static final By SUBMIT_ORDER_BTN_LOC = By.xpath("//a[@id='btnSubmitOrder']/span[contains(text(),'Submit')]");
 
 	public void clickCancelOrderBtn(){
 		driver.waitForElementPresent(CANCEL_ORDER_LINK_LOC);
@@ -135,8 +143,90 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 		driver.type(TXT_FIELD_START_ORDER_LOC, accountName);
 		logger.info("start order text field entered by: "+accountName);
 		driver.waitForElementPresent(SUGGESTION_START_ORDER_LOC);
+		driver.click(SUGGESTION_START_ORDER_LOC);
 		driver.click(START_ORDER_BTN_LOC);
 		logger.info("start button is clicked after entered account name");
+	}
+
+	public void clickBrowseOrdersLlink(){
+		driver.waitForElementPresent(BROWSE_ORDERS_LINK_LOC);
+		driver.click(BROWSE_ORDERS_LINK_LOC);
+		logger.info("Browse Orders link is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void selectStatusDD(String Status){
+		Select sel =new Select(driver.findElement(SELECT_STATUS_DD_LOC));
+		sel.selectByVisibleText(Status);
+	}
+
+	public void selectTypeDD(String Type){
+		Select sel =new Select(driver.findElement(SELECT_TYPE_DD_LOC));
+		sel.selectByVisibleText(Type);
+	}
+
+	public void clickGoSearchBtn(){
+		driver.waitForElementPresent(GO_SEARCH_BTN_BROWSE_ORDERS_LOC);
+		driver.click(GO_SEARCH_BTN_BROWSE_ORDERS_LOC);
+		logger.info("'GO' Search Btn is clicked");
+		driver.pauseExecutionFor(3000);
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateOrderStatusRow(){
+		boolean status = true;
+		driver.waitForElementPresent(TOTAL_ROWS_SEARCH_RESULT_LOC);
+		int totalSearchResult = driver.findElements(TOTAL_ROWS_SEARCH_RESULT_LOC).size();
+		//driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		for(int i=2;i<=totalSearchResult;i++){
+			String actualOrderStatus= driver.findElement(By.xpath(String.format(orderStatusLoc,i))).getText();
+			if(actualOrderStatus.equalsIgnoreCase("Pending")){
+				continue;
+			}else{
+				status = false;
+				break;
+			}
+		}
+		return status;
+	}
+
+	public boolean validateOrderTypeRow(){
+		boolean status = true;
+		driver.waitForElementPresent(TOTAL_ROWS_SEARCH_RESULT_LOC);
+		int totalSearchResult = driver.findElements(TOTAL_ROWS_SEARCH_RESULT_LOC).size();
+		//driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		for(int i=2;i<=totalSearchResult;i++){
+			String actualOrderType= driver.findElement(By.xpath(String.format(orderTypeLoc,i))).getText();
+			if(actualOrderType.equalsIgnoreCase("PC")){
+				continue;
+			}else{
+				status = false;
+				break;
+			}
+		}
+		return status;
+	}
+
+	public void clickPaymentApplyLink() {
+		driver.quickWaitForElementPresent(PAYMENT_APPLY_LINK_LOC);
+		driver.click(PAYMENT_APPLY_LINK_LOC);
+		logger.info("payment apply link is clicked");
+	}
+
+	public void clickSubmitOrderBtn() {
+		driver.pauseExecutionFor(3000);
+		driver.quickWaitForElementPresent(SUBMIT_ORDER_BTN_LOC);
+		driver.click(SUBMIT_ORDER_BTN_LOC);
+		logger.info("Submit order button is clicked");
+		driver.waitForPageLoad();
+
+	}
+
+	public boolean validateOrderStatusAfterSubmitOrder(){
+		String status = driver.findElement(ORDER_STATUS_LOC).getText();
+		if(status.equalsIgnoreCase("Submitted")){
+			return true;
+		}return false;
 	}
 
 }

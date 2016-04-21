@@ -6,21 +6,50 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"/>
+			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
 			<methods>
-				<method name="testAccountTerminationPageForConsultant_1975" />
-				<method name="testAccountTerminationPageForConsultant_3720" />
-				<method name="testAccountTerminationPageForPCUser_3719" />
-				<method name="testAccountTerminationPageForRCUser_2228" />
-				<method name="testEnrollAsConsultantUsingExpiredDataCard_1368" />
-				<method name="testEnrollAsConsultantUsingInvalidCardNumbers_1361" />
-				<method name="testEnrollConsultantWithEmptyCardNumber_1367" />
-				<method name="testExpressEnrollmentFieldsValidation_1274" />
-				<method name="testExpressEnrollmentSwitchToStandardEnrollment_1295" />
+				<include name="testAccountTerminationPageForConsultant_1975" />
+				<include name="testAccountTerminationPageForConsultant_3720" />
+				<include name="testAccountTerminationPageForPCUser_3719" />
+				<include name="testAccountTerminationPageForRCUser_2228" />
+				<include name="testEnrollAsConsultantUsingExpiredDataCard_1368" />
+				<include name="testEnrollAsConsultantUsingInvalidCardNumbers_1361" />
+				<include name="testEnrollConsultantWithEmptyCardNumber_1367" />
+				<include name="testExpressEnrollmentFieldsValidation_1274" />
+				<include name="testExpressEnrollmentSwitchToStandardEnrollment_1295" />
 			</methods>
+			</class>
 		    <class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"/>		
-			<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"/>
-			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest" />
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest" >
+				<methods>
+				<include name="testExpressEnrollmentBigBusinessKitSootheRegimen_64"/>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest" >
+				<methods>
+				<include name="testExpressEnrollmentPersonalKitSootheRegimen_68"/>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest" >
+				<methods>
+				<include name="testExpressEnrollmentRFExpressKitSootheRegimen_56"/>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest" >
+				<methods>
+				<include name="testStandardEnrollmentBigBusinessKitReverseRegimen_75"/>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest" >
+				<methods>
+				<include name="testStandardEnrollmentPersonalResultsKitReverseRegimen_79"/>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest" >
+				<methods>
+				<include name="testStandardEnrollmentBusinessKitReverseRegimen_71"/>
+				</methods>
+			</class>			
 	</classes>
 	</test>
 </suite>

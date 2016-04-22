@@ -1,5 +1,9 @@
 package com.rf.pages.website.nscore;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -36,8 +40,29 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 	private static String nscorporateSubLink = "//h3[contains(text(),'nsCorporate')]/following::li[1]//a[contains(text(),'%s')]";
 	private static String nameChkBoxInSiteList = "//a[text()='%s']/preceding::input[1]";
 	private static String resoursceStatus = "//a[text()='%s']/following::td[4]";
+	private static String selectCategoryDDOptionForFilter  = "//select[@id='categoryFilter']//option[contains(text(),'%s')]";
+	private static String selectStatusDDOptionForFilter  = "//select[@id='statusFilter']//option[contains(text(),'%s')]";
+	private static String selectCategoryDDOptionForMove  = "//select[@id='categorySelection']//option[contains(text(),'%s')]";
+	private static String resoursceCategory = "//a[text()='%s']/following::td[3]/a";
+	private static String categoryNameToAssert = "//a[contains(text(),'%s')]";
+	private static String  selectCategoryDDOptionForUploadResource  = "//select[@id='category']//option[contains(text(),'%s')]";
+	private static String calenderEventMonthValue = "//select[@id='fc-month']/option[text()='%s']";
+	private static String calenderEventYearValue = "//select[@id='fc-year']/option[text()='%s']";
 
 
+	private static final By ADD_RESOURCE_LINK  = By.xpath("//a[text()='Add Resource']");
+	private static final By ADD_CATEGORY_LINK  = By.xpath("//a[contains(text(),'Add Category')]");
+	private static final By CATEGORY_NAME  = By.id("title");
+	private static final By SELECT_CATEGORY_DD_FOR_Filter  = By.id("categoryFilter");
+	private static final By SELECT_STATUS_DD_FOR_Filter  = By.id("statusFilter");
+	private static final By SEARCH_TERMS_TXT_BOX_LOC  = By.id("txtSearchTerms");
+	private static final By GO_BTN_LOC  = By.id("btnSearchResources");
+	private static final By SELECT_CATEGORY_DD_FOR_MOVE  = By.id("categorySelection");
+	private static final By MOVE_SELECTED_TO_CATEGORY_LOC  = By.id("btnMoveToCategory");
+	private static final By MANAGE_RESOURCE_CATEGORIES_LINK  = By.xpath("//div[@class='SectionHeader']//a[contains(text(),'Manage')]");
+	private static final By GO_BTN_FOR_MANAGE_RESOURCE_LOC  = By.id("btnSearchCategories");
+	private static final By DELETE_SELECTED_LINK_FOR_MANAGE_RESOURCE  = By.id("btnDeleteSelected");
+	private static final By GET_MESSAGE_OF_DELETE_SELECTED  = By.xpath("//div[@id='errorCenter']/div");
 	private static final By ADD_NEW_SITE_LINK  = By.id("btnAddLink");
 	private static final By LINK_TEXT_BOX  = By.id("txtLinkText");
 	private static final By PAGES_DD_FOR_SITE_MAP = By.id("sExistingPages");
@@ -97,6 +122,15 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 	private static final By SELECT_CATEGORY_DD_OPTION_FOR_UPLOAD_RESOURCE  = By.xpath("//select[@id='category']/option[3]");
 	private static final By DEACTIVATE_SELECTED_LINK_FOR_UPLOAD_RESOURCE  = By.id("btnDeactivateSelected");
 	private static final By ACTIVATE_SELECTED_LINK_FOR_UPLOAD_RESOURCE  = By.id("btnActivateSelected");
+	private static final By ADD_NEW_EVENT_LINK_ON_CALENDER_LOC  = By.xpath("//div[@class='SectionHeader']/a[contains(text(),'Add a New Event')]");
+	private static final By CALENDER_EVENT_MONTH_DROPDOWN  = By.id("fc-month");
+	private static final By CALENDER_EVENT_YEAR_DROPDOWN  = By.id("fc-year");
+	private static final By NEW_CALENDER_EVENT_START_DATE  = By.id("startDate");
+	private static final By NEW_CALENDER_EVENT_END_DATE  = By.id("endDate");
+	private static final By TODAY_BUTTON_OF_CALENDER  = By.xpath("//table[@class='fc-header']//td[@class='fc-header-right']//span[text()='today']");
+	private static final By PREVIOUS_TAB_BUTTON_ON_CALENDER  = By.xpath("//td[@class='fc-header-right']//div[contains(@class,'fc-button-prev')]//span");
+	private static final By NEXT_TAB_BUTTON_ON_CALENDER  = By.xpath("//td[@class='fc-header-right']//div[contains(@class,'fc-button-next')]//span");
+	private static final By EVENT_NAME_FROM_EDIT_EVENT_DETAILS_PAGE  = By.xpath("//div[@class='SectionHeader']/h2[contains(text(),'Edit Event')]/following::tr/td/input[@id='subject']");
 
 	public void clickPWSContentReviewLinkUnderNSCorporate(){
 		driver.quickWaitForElementPresent(PWS_CONTENT_REVIEW_LINK);
@@ -505,7 +539,7 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 		return driver.isElementPresent(ACTIVATE_LINK_PRESENT);
 	}
 
-	public void enterUploadResourceDetails(String name, String filePath){
+	public void enterUploadResourceDetails(String name, String filePath, String categoryDDValue){
 		driver.waitForElementPresent(NAME_FOR_UPLOAD_RESOURCE);
 		driver.type(NAME_FOR_UPLOAD_RESOURCE, name);
 		logger.info("name entered for upload resource is: "+name);
@@ -513,8 +547,8 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 		logger.info("filepath entered for upload resource is: "+filePath);
 		driver.click(SELECT_CATEGORY_DD_FOR_UPLOAD_RESOURCE);
 		logger.info("Select category dropdown clicked");
-		driver.waitForElementPresent(SELECT_CATEGORY_DD_OPTION_FOR_UPLOAD_RESOURCE);
-		driver.click(SELECT_CATEGORY_DD_OPTION_FOR_UPLOAD_RESOURCE);
+		driver.waitForElementPresent(By.xpath(String.format(selectCategoryDDOptionForUploadResource, categoryDDValue)));
+		driver.click(By.xpath(String.format(selectCategoryDDOptionForUploadResource, categoryDDValue)));
 		logger.info("Select category dropdown option selected");
 	}
 
@@ -553,6 +587,286 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 		String status = driver.findElement(By.xpath(String.format(resoursceStatus, titleName))).getText();
 		logger.info("Resoursce status is: "+status);
 		return status;
+	}
+
+	public void clickAddResourceLink(){
+		driver.waitForElementPresent(ADD_RESOURCE_LINK);
+		driver.click(ADD_RESOURCE_LINK);
+		logger.info("Add resource link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickAddCategoryLink(){
+		driver.waitForElementPresent(ADD_CATEGORY_LINK);
+		driver.click(ADD_CATEGORY_LINK);
+		logger.info("Add Category link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void enterCategoryName(String categoryName){
+		driver.waitForElementPresent(CATEGORY_NAME);
+		driver.type(CATEGORY_NAME, categoryName);
+		logger.info("Category Name entered as: "+categoryName);
+	}
+
+	public void selectCategoryInFilter(String categoryDDValue){
+		driver.click(SELECT_CATEGORY_DD_FOR_Filter);
+		logger.info("Select category dropdown clicked for filter");
+		driver.waitForElementPresent(By.xpath(String.format(selectCategoryDDOptionForFilter, categoryDDValue)));
+		driver.click(By.xpath(String.format(selectCategoryDDOptionForFilter, categoryDDValue)));
+		logger.info("Select category dropdown option selected is: "+categoryDDValue);
+	}
+
+	public void selectStatusInFilter(String status){
+		driver.click(SELECT_STATUS_DD_FOR_Filter);
+		logger.info("Select status dropdown clicked for filter");
+		driver.waitForElementPresent(By.xpath(String.format(selectStatusDDOptionForFilter, status)));
+		driver.click(By.xpath(String.format(selectStatusDDOptionForFilter, status)));
+		logger.info("Select status dropdown option selected is: "+status);
+	}
+
+	public void enterSearchTerms(String name){
+		driver.waitForElementPresent(SEARCH_TERMS_TXT_BOX_LOC);
+		driver.type(SEARCH_TERMS_TXT_BOX_LOC, name);
+		logger.info("Search terms text entered as: "+name);
+	}
+
+	public void clickGoBtn(){
+		driver.waitForElementPresent(GO_BTN_LOC);
+		driver.click(GO_BTN_LOC);
+		logger.info("Go button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void selectCategoryForMoveToResource(String categoryDDValue){
+		driver.click(SELECT_CATEGORY_DD_FOR_MOVE);
+		logger.info("Select category dropdown clicked for move");
+		driver.waitForElementPresent(By.xpath(String.format(selectCategoryDDOptionForMove, categoryDDValue)));
+		driver.click(By.xpath(String.format(selectCategoryDDOptionForMove, categoryDDValue)));
+		logger.info("Select category dropdown option selected is: "+categoryDDValue);
+	}
+
+	public void clickMoveSelectedToCategory(){
+		driver.waitForElementPresent(MOVE_SELECTED_TO_CATEGORY_LOC);
+		driver.click(MOVE_SELECTED_TO_CATEGORY_LOC);
+		logger.info("Move selected to category link clicked");
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public String getResourceCategory(String name){
+		driver.isElementPresent(By.xpath(String.format(resoursceCategory, name)));
+		String category = driver.findElement(By.xpath(String.format(resoursceCategory, name))).getText();
+		logger.info("Resoursce category is: "+category);
+		return category;
+	}
+
+	public void clickManageResourceCategoriesLink(){
+		driver.waitForElementPresent(MANAGE_RESOURCE_CATEGORIES_LINK);
+		driver.click(MANAGE_RESOURCE_CATEGORIES_LINK);
+		logger.info("Manage resource categories link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickGoBtnForManageResource(){
+		driver.waitForElementPresent(GO_BTN_FOR_MANAGE_RESOURCE_LOC);
+		driver.click(GO_BTN_FOR_MANAGE_RESOURCE_LOC);
+		logger.info("Go button clicked for manage resource");
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public void clickDeleteSelectedLinkForManageResource(){
+		driver.click(DELETE_SELECTED_LINK_FOR_MANAGE_RESOURCE);
+		logger.info("Delete selected link clicked for manage resource");
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public String getMessageOfDelete(){
+		driver.waitForElementPresent(GET_MESSAGE_OF_DELETE_SELECTED);
+		String msg = driver.findElement(GET_MESSAGE_OF_DELETE_SELECTED).getText();
+		logger.info("Confirmation msg of delete is: "+msg);
+		driver.waitForNSCore4LoadingImageToDisappear();
+		return msg;
+	}
+
+	public boolean isCategoryNamePresent(String categoryName){
+		return driver.isElementPresent(By.xpath(String.format(categoryNameToAssert, categoryName)));
+	}
+
+	public void clickAddNewEventLink(){
+		driver.waitForElementPresent(ADD_NEW_EVENT_LINK_ON_CALENDER_LOC);
+		driver.click(ADD_NEW_EVENT_LINK_ON_CALENDER_LOC);
+		logger.info("Add new event link clicked on site page");
+		driver.waitForPageLoad();
+	}
+
+	public void selectMonthForCalendarEvent(String month){
+		driver.waitForElementPresent(CALENDER_EVENT_MONTH_DROPDOWN);
+		driver.click(CALENDER_EVENT_MONTH_DROPDOWN);
+		driver.quickWaitForElementPresent(By.xpath(String.format(calenderEventMonthValue, month)));
+		driver.click(By.xpath(String.format(calenderEventMonthValue, month)));
+	}
+
+	public void selectYearForCalendarEvent(String year){
+		driver.waitForElementPresent(CALENDER_EVENT_YEAR_DROPDOWN);
+		driver.click(CALENDER_EVENT_YEAR_DROPDOWN);
+		driver.quickWaitForElementPresent(By.xpath(String.format(calenderEventYearValue, year)));
+		driver.click(By.xpath(String.format(calenderEventYearValue, year)));
+	}
+
+	public void clickCalenderEventStartDate(){
+		driver.waitForElementPresent(NEW_CALENDER_EVENT_START_DATE);
+		driver.click(NEW_CALENDER_EVENT_START_DATE);
+		logger.info("Calender event start date clicked.");
+	}
+
+	public void clickCalenderEventEndDate(){
+		driver.waitForElementPresent(NEW_CALENDER_EVENT_END_DATE);
+		driver.click(NEW_CALENDER_EVENT_END_DATE);
+		logger.info("Calender event End date clicked.");
+	}
+
+
+
+	public void selectStartDateForNewEvent(String month,String year,String date){
+		clickCalenderEventStartDate();
+		selectMonthOnCalenderForNewEvent(month);
+		selectYearOnCalenderForNewEvent(year);
+		clickSpecficDateOfCalendar(date);
+	}
+
+	public void selectEndDateForNewEvent(String month,String year,String date){
+		clickCalenderEventEndDate();
+		selectMonthOnCalenderForNewEvent(month);
+		selectYearOnCalenderForNewEvent(year);
+		clickSpecficDateOfCalendar(date); 
+	}
+
+	public void clickTodayBtn(){
+		driver.waitForElementPresent(TODAY_BUTTON_OF_CALENDER);
+		driver.click(TODAY_BUTTON_OF_CALENDER);
+		logger.info("Today button on calender event page is clicked.");
+	}
+
+	
+	public  String[] getPreviousMonthFullAndShortName(String currentMonthFullName){
+		int a = 0;
+		// int b = 0;
+		String[] previousMonthShortAndFullName =new String[5];
+		String month = currentMonthFullName;
+		if(month.equalsIgnoreCase("January")){
+			a=1;
+		}
+		else if(month.equalsIgnoreCase("February")){
+			a=2;
+		}else if(month.equalsIgnoreCase("March")){
+			a=3;
+		}
+		else if(month.equalsIgnoreCase("April")){
+			a=4;
+		}
+		else if(month.equalsIgnoreCase("May")){
+			a=5;
+		}
+		else if(month.equalsIgnoreCase("June")){
+			a=6;
+		}
+		else if(month.equalsIgnoreCase("July")){
+			a=7;
+		}
+		else if(month.equalsIgnoreCase("August")){
+			a=8;
+		}
+		else if(month.equalsIgnoreCase("September")){
+			a=9;
+		}
+		else if(month.equalsIgnoreCase("October")){
+			a=10;
+		}
+		else if(month.equalsIgnoreCase("November")){
+			a=11;
+		}else if(month.equalsIgnoreCase("December")){
+			a=12;
+		}else{
+			a=0;
+		}
+		//   a=a+1;
+		//   if(a==13){
+		//    a=1;
+		//    b=1;
+		//   }
+		switch (a) {  
+		case 1:
+			previousMonthShortAndFullName[0]="December";
+			previousMonthShortAndFullName[1]="Dec";
+			break;
+		case 2:
+			previousMonthShortAndFullName[0]="January";
+			previousMonthShortAndFullName[1]="Jan";
+			break;
+		case 3:
+			previousMonthShortAndFullName[0]="February";
+			previousMonthShortAndFullName[1]="Feb";
+			break;
+		case 4:
+			previousMonthShortAndFullName[0]="March";
+			previousMonthShortAndFullName[1]="Mar";
+			break;
+		case 5:
+			previousMonthShortAndFullName[0]="April";
+			previousMonthShortAndFullName[1]="Apr";
+			break;
+		case 6:
+			previousMonthShortAndFullName[0]="May";
+			previousMonthShortAndFullName[1]="May";
+			break;
+		case 7:
+			previousMonthShortAndFullName[0]="June";
+			previousMonthShortAndFullName[1]="Jun";
+			break;
+		case 8:
+			previousMonthShortAndFullName[0]="July";
+			previousMonthShortAndFullName[1]="Jul";
+			break;
+		case 9:
+			previousMonthShortAndFullName[0]="August";
+			previousMonthShortAndFullName[1]="Aug";
+			break;
+		case 10:
+			previousMonthShortAndFullName[0]="September";
+			previousMonthShortAndFullName[1]="Sep";
+			break;
+		case 11:
+			previousMonthShortAndFullName[0]="October";
+			previousMonthShortAndFullName[1]="Oct";
+			break;
+		case 12:
+			previousMonthShortAndFullName[0]="November";
+			previousMonthShortAndFullName[1]="Nov";
+			break;  
+		}
+		return previousMonthShortAndFullName;
+	}
+
+	public String getPreviousYear(String currentYear){
+		String prevYear = Integer.toString((Integer.parseInt(currentYear)-1));
+		return prevYear;
+	}
+
+	public void clickPreviousBtn(){
+		driver.waitForElementPresent(PREVIOUS_TAB_BUTTON_ON_CALENDER);
+		driver.click(PREVIOUS_TAB_BUTTON_ON_CALENDER);
+		logger.info("Previous Tab button on calender event page is clicked.");
+	}
+
+	public void clickNextBtn(){
+		driver.waitForElementPresent(NEXT_TAB_BUTTON_ON_CALENDER);
+		driver.click(NEXT_TAB_BUTTON_ON_CALENDER);
+		logger.info("Next Tab Button on calender event page is clicked.");
+	}
+
+	public String getEventNameFromEditEventDetailsPage(){
+		driver.waitForElementPresent(EVENT_NAME_FROM_EDIT_EVENT_DETAILS_PAGE);
+		return driver.findElement(EVENT_NAME_FROM_EDIT_EVENT_DETAILS_PAGE).getAttribute("value");
 	}
 
 }

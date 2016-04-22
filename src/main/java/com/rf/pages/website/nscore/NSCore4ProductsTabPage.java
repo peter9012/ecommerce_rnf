@@ -2,7 +2,10 @@ package com.rf.pages.website.nscore;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 
@@ -31,7 +34,14 @@ public class NSCore4ProductsTabPage extends NSCore4RFWebsiteBasePage{
 	private static final By TREE_NAME_TXT_FIELD_LOC = By.id("treeName");
 	private static final By CREATE_TREE_BTN_LOC = By.id("btnCreateTree");
 	private static final By SAVE_CATEGORY_BTN_LOC = By.xpath("//a[@id='btnSave']");
-	public static final By CREATE_NEW_CATEGORY_TREE_LINK_LOC = By.id("Create a New Category Tree");
+	public static final By CREATE_NEW_CATEGORY_TREE_LINK_LOC = By.xpath("//div[@class='SectionHeader']/a[contains(text(),'Create a New Category Tree')]");
+	private static final By CATEGORY_DETAILS_TXT_BOX_LOC = By.id("txtName");
+	private static final By CATEGORY_DETAILS_SAVE_BTN_LOC = By.xpath("//a[@id='btnSave']");
+	private static final By SUB_CATEGORY_LOC = By.xpath("//div[@id='categoryTree']//li/a");
+	private static final By BROWSE_CATEGORY_TREES_LINK_LOC =  By.xpath("//div[@class='SectionHeader']/a[contains(text(),'Browse Category Trees')]");
+	private static String newlyCreatedTreeLoc = "//a[contains(text(),'%s')]";
+	private static String newTreeCheckBoxLoc = "//a[contains(text(),'%s')]/preceding::input[1]";
+	private static final By DELETE_SELECTED_BTN_LOC = By.xpath("//a[text()='Delete Selected']");
 
 	public NSCore4ProductsTabPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -98,6 +108,7 @@ public class NSCore4ProductsTabPage extends NSCore4RFWebsiteBasePage{
 		driver.quickWaitForElementPresent(CATEGORY_TREES_LINK_LOC);
 		driver.click(CATEGORY_TREES_LINK_LOC);
 		logger.info("Category Trees link is clicked");
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyCurrentPage(String pageName) {
@@ -126,6 +137,50 @@ public class NSCore4ProductsTabPage extends NSCore4RFWebsiteBasePage{
 
 	public boolean verifyConfirmationMessage() {
 		return driver.findElement(CREATE_TREE_CONFIRMATION_MSG_BOX_LOC).isDisplayed();
+	}
+
+	public void enterLanguageNameAndClickSave(String subTreeName) {
+		driver.type(CATEGORY_DETAILS_TXT_BOX_LOC,subTreeName);
+		logger.info("category details text entered by: "+subTreeName);
+		driver.click(CATEGORY_DETAILS_SAVE_BTN_LOC);
+		logger.info("category details save btn clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean isSubTreeCreatedUnderTree() {
+		return driver.isElementPresent(SUB_CATEGORY_LOC);
+	}
+
+	public void clickBrowseCategoryTreesLink() {
+
+		driver.quickWaitForElementPresent(BROWSE_CATEGORY_TREES_LINK_LOC);
+		driver.click(BROWSE_CATEGORY_TREES_LINK_LOC);
+		logger.info("browse category trees link is clickeed");
+	}
+
+	public boolean isNewlyCreatedTreePresent(String treeName) {
+		return driver.isElementPresent(By.xpath(String.format(newlyCreatedTreeLoc,treeName)));
+	}
+
+	public void selectAndDeleteCreatedTree(String treeName) {
+		driver.click(By.xpath(String.format(newTreeCheckBoxLoc,treeName)));
+		logger.info("checkbox checked");
+		driver.click(DELETE_SELECTED_BTN_LOC);
+		logger.info("delete selected link is clicked");
+	}
+
+	public void handleAlertPop(String treeName) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+			logger.info("popup ok button clicked");
+			driver.pauseExecutionFor(5000);
+			driver.waitForPageLoad();
+		} catch (Exception e) {
+			//exception handling
+		}
 	}
 
 

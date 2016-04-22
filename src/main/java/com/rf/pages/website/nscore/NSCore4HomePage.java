@@ -28,6 +28,18 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
 	private static String waitingForApprovalLink = "//ul[@id='stories']/li/a[contains(text(),'%s')]";
 	private static String storyNameOnEditOptionPage = "//p[text()='%s']";
+	private static String selectCategoryOnAddNotePopup = "//select[@id='newNoteCategory']/option[text()='%s']";
+	private static String selectTypeOnAddNotePopup = "//select[@id='newNoteType']/option[text()='%s']";
+	private static String newlyCreatedNoteLoc = "//div[@id='notesPanel']/div[text()='%s']";
+	private static String postFollowUpLinkOfParent = "//div[@id='notesPanel']/div[text()='%s']/span/a[text()='Post Follow-up']";
+	private static String newlyCreatedChildNoteLoc = "//div[@id='notesPanel']/div[text()='%s']/div[@class='ChildNotes']/div[text()='%s']";
+	private static String postFollowUpChildLink = "//div[@id='notesPanel']/div[text()='%s']/div[@class='ChildNotes']/div[text()='%s']/span/a[text()='Post Follow-up']";
+	private static String collapseLinkNextToParentNote = "//div[@id='notesPanel']/div[text()='%s']/span/a[text()='Collapse']";
+	private static String expandLinkNextToParentNote = "//div[@id='notesPanel']/div[text()='%s']/span/a[text()='Expand']";
+	private static String childNoteDetailsOnUI = "//div[@id='notesPanel']/div[text()='%s']/div[@class='ChildNotes' and @style='display: block;']";
+	private static String completedDateOfOrder = "//table[@id='orders']/tbody/tr[%s]/td[4]";
+	private static String shippedDateOfOrder = "//table[@id='orders']/tbody/tr[%s]/td[5]";
+	private static String orderNumber = "//table[@id='orders']/tbody/tr[%s]/td[1]/a";
 
 	private static final By TOTAL_NO_OF_COLUMNS = By.xpath("//tr[@class='GridColHead']//a");
 	private static final By EDIT_MY_STORY_LINK = By.xpath("//a[@class='EditButton' and contains(text(),'Edit My Story')]");
@@ -60,7 +72,30 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By ADMIN_TAB_LOC  = By.xpath("//ul[@id='GlobalNav']//span[text()='Admin']");
 	private static final By RECENT_ORDER_DROP_DOWN_LOC = By.id("orderStatusFilter");
 	private static final By NO_ORDER_FOUND_MSG_LOC = By.xpath("//table[@id='orders']//td[contains(text(),'No orders found')]");
-	private static final By FIRST_PENDING_ORDER_LOC = By.xpath("//table[@id='orders']/tbody/tr[1]/td/a"); 
+	private static final By FIRST_PENDING_ORDER_LOC = By.xpath("//table[@id='orders']/tbody/tr[1]/td/a");
+	private static final By POLICIES_CHANGE_HISTORY_LINK_LOC = By.xpath("//a[contains(text(),'Policies Change History')]");
+	private static final By VERSION_COLUMN_LOC = By.xpath("//th[text()='Version']");
+	private static final By DATERELEASED_COLUMN_LOC = By.xpath("//th[text()='Date Released']");
+	private static final By DATEACCEPTED_COLUMN_LOC = By.xpath("//th[text()='Date Accepted']");
+	private static final By STATUS_HISTORY_LINK_LOC = By.xpath("//a[text()='Status History']");
+	private static final By CHANGED_ON_COLUMN_LOC = By.xpath("//th[text()='Changed On']");
+	private static final By STATUS_COLUMN_LOC = By.xpath("//th[text()='Status']");
+	private static final By REASON_COLUMN_LOC = By.xpath("//th[text()='Reason']");
+	private static final By POST_NEW_NODE_LINK  = By.xpath("//a[text()='Post New Note']");
+	private static final By CATEGORY_DROPDOWN_ON_ADD_NOTE_POPUP  = By.id("newNoteCategory");
+	private static final By TYPE_DROPDOWN_ON_ADD_NOTE_POPUP  = By.id("newNoteType");
+	private static final By ENTER_NOTE_ON_ADD_NOTE_POPUP  = By.id("newNoteText");
+	private static final By SAVE_BTN_ON_ADD_A_NOTE_POPUP  = By.id("btnSaveNote");
+	private static final By PLACE_NEW_ORDER_LINK_LOC = By.xpath("//a[text()='Place New Order']");
+	private static final By STATUS_LINK_LOC = By.xpath("//td[contains(text(),'Status:')]/following-sibling::td/a");
+	private static final By CHANGE_STATUS_DD_LOC = By.xpath("//select[@id='sStatus']");
+	private static final By SAVE_STATUS_BTN_LOC = By.xpath("//a[@id='btnSaveStatus']");
+	private static final By VIEW_ORDER_CONSULTANT_REPLENISHMENT = By.xpath("//li[contains(text(),'Consultant Replenishment')]//a[text()='View Orders']");
+	private static final By VIEW_ORDER_PULSE_MONTHLY_SUBSCRIPTION = By.xpath("//li[contains(text(),'Pulse Monthly Subscription')]//a[text()='View Orders']");
+	private static final By START_DATE_OF_DATE_RANGE = By.id("txtStartDate");
+	private static final By ORDER_SEARCH_RESULTS = By.xpath("//table[@id='orders']/tbody/tr");
+	private static final By ORDER_NUMBER_FROM_ORDER_DETAILS = By.xpath("//div[@class='CustomerLabel']/a");
+
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -307,11 +342,233 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		Select select = new Select(driver.findElement(RECENT_ORDER_DROP_DOWN_LOC));
 		select.selectByVisibleText(value);
 		driver.pauseExecutionFor(2000);
-		
+
 	}
 
 	public boolean isNoOrderFoundMessagePresent() {
 		return driver.isElementPresent(NO_ORDER_FOUND_MSG_LOC);  
+	}
+
+	public void clickPoliciesChangeHistoryLink(){
+		driver.quickWaitForElementPresent(POLICIES_CHANGE_HISTORY_LINK_LOC);
+		driver.click(POLICIES_CHANGE_HISTORY_LINK_LOC);
+		logger.info("Policies Change History link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+	public boolean validatePoliciesChangeHistoryPageDisplayedWithRespectiveColumns(){
+		return driver.getCurrentUrl().contains("PoliciesChangeHistory") &&
+				driver.isElementPresent(VERSION_COLUMN_LOC) &&
+				driver.isElementPresent(DATERELEASED_COLUMN_LOC) &&
+				driver.isElementPresent(DATEACCEPTED_COLUMN_LOC);
+	}
+
+	public void clickStatusHistoryLink(){
+		driver.quickWaitForElementPresent(STATUS_HISTORY_LINK_LOC);
+		driver.click(STATUS_HISTORY_LINK_LOC);
+		logger.info("Status History link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+	public boolean validateStatusHistoryPageDisplayedWithRespectiveColumns(){
+		return driver.getCurrentUrl().contains("StatusHistory") &&
+				driver.isElementPresent(CHANGED_ON_COLUMN_LOC) &&
+				driver.isElementPresent(STATUS_COLUMN_LOC) &&
+				driver.isElementPresent(REASON_COLUMN_LOC);
+	}
+
+	public void clickPostNewNodeLinkInOverviewTab(){
+		driver.waitForElementPresent(POST_NEW_NODE_LINK);
+		driver.click(POST_NEW_NODE_LINK);
+		logger.info("Post new node link clicked");
+	}
+
+	public void selectCategoryOnAddANotePopup(String category){
+		driver.waitForElementPresent(CATEGORY_DROPDOWN_ON_ADD_NOTE_POPUP);
+		driver.click(CATEGORY_DROPDOWN_ON_ADD_NOTE_POPUP);
+		logger.info("Category Dropdown clicked on add note popup");
+		driver.waitForElementPresent(By.xpath(String.format(selectCategoryOnAddNotePopup, category)));
+		driver.click(By.xpath(String.format(selectCategoryOnAddNotePopup, category)));
+		logger.info("Category"+category+" is selected on add new note popup");
+	}
+
+	public void selectTypeOnAddANotePopup(String type){
+		driver.waitForElementPresent(TYPE_DROPDOWN_ON_ADD_NOTE_POPUP);
+		driver.click(TYPE_DROPDOWN_ON_ADD_NOTE_POPUP);
+		logger.info("Type Dropdown clicked on add note popup");
+		driver.waitForElementPresent(By.xpath(String.format(selectTypeOnAddNotePopup, type)));
+		driver.click(By.xpath(String.format(selectTypeOnAddNotePopup, type)));
+		logger.info("Type"+type+" is selected on add new note popup");
+	}
+
+	public void enterNoteOnAddANotePopup(String note){
+		driver.waitForElementPresent(ENTER_NOTE_ON_ADD_NOTE_POPUP);
+		driver.type(ENTER_NOTE_ON_ADD_NOTE_POPUP, note);
+		logger.info("Note"+note+" is entered on enter note txt field");
+	}
+
+	public void selectAndEnterAddANoteDetailsInPopup(String category,String type,String note){
+		selectCategoryOnAddANotePopup(category);
+		selectTypeOnAddANotePopup(type);
+		enterNoteOnAddANotePopup(note);
+	}
+
+	public void clickSaveBtnOnAddANotePopup(){
+		driver.waitForElementPresent(SAVE_BTN_ON_ADD_A_NOTE_POPUP);
+		driver.click(SAVE_BTN_ON_ADD_A_NOTE_POPUP);
+		logger.info("Save btn clicked on add a note popup");
+	}
+
+	public boolean isNewlyCreatedNotePresent(String note){
+		driver.waitForElementPresent(By.xpath(String.format(newlyCreatedNoteLoc, note)));
+		return driver.isElementPresent(By.xpath(String.format(newlyCreatedNoteLoc, note)));
+	}
+
+	public void clickPostFollowUpLinkForParentNote(String note){
+		driver.quickWaitForElementPresent(By.xpath(String.format(postFollowUpLinkOfParent, note)));
+		driver.click(By.xpath(String.format(postFollowUpLinkOfParent, note)));
+		logger.info("Post follow up link is clicked for note"+note);
+	}
+
+	public boolean isNewlyCreatedChildNotePresent(String parentNote,String childNote){
+		driver.waitForElementPresent(By.xpath(String.format(newlyCreatedChildNoteLoc, parentNote,childNote)));
+		return driver.isElementPresent(By.xpath(String.format(newlyCreatedChildNoteLoc,parentNote, childNote)));
+	}
+
+	public boolean isPostFollowUpLinkPresentForChildNote(String parentNote,String childNote){
+		driver.waitForElementPresent(By.xpath(String.format(postFollowUpChildLink, parentNote,childNote)));
+		return driver.isElementPresent(By.xpath(String.format(postFollowUpChildLink,parentNote, childNote)));
+	}
+
+	public void clickCollapseLinkNearToParentNote(String parentNote){
+		driver.quickWaitForElementPresent(By.xpath(String.format(collapseLinkNextToParentNote, parentNote)));
+		driver.click(By.xpath(String.format(collapseLinkNextToParentNote, parentNote)));
+		logger.info("Collapse link next to Parent note"+parentNote+" is clicked");
+
+	}
+
+	public void clickExpandLinkNearToParentNote(String parentNote){
+		driver.quickWaitForElementPresent(By.xpath(String.format(expandLinkNextToParentNote, parentNote)));
+		driver.click(By.xpath(String.format(expandLinkNextToParentNote, parentNote)));
+		logger.info("Expand link next to Parent note"+parentNote+" is clicked");
+	}
+
+	public boolean isChildNoteDetailsAppearsOnUI(String parentNote){
+		return driver.isElementPresent(By.xpath(String.format(childNoteDetailsOnUI, parentNote)));
+	}
+
+	public void clickPlaceNewOrderLink(){
+		driver.quickWaitForElementPresent(PLACE_NEW_ORDER_LINK_LOC);
+		driver.click(PLACE_NEW_ORDER_LINK_LOC);
+		logger.info("'Place-New-Order' link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+	public String getStatus(){
+		driver.quickWaitForElementPresent(STATUS_LINK_LOC);
+		return driver.findElement(STATUS_LINK_LOC).getText();
+	}
+
+	public void clickStatusLink(){
+		driver.quickWaitForElementPresent(STATUS_LINK_LOC);
+		driver.click(STATUS_LINK_LOC);
+		logger.info("Status link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void changeStatusDD(int index){
+		Select sel =new Select(driver.findElement(CHANGE_STATUS_DD_LOC));
+		sel.selectByIndex(index);
+	}
+
+	public void clickSaveStatusBtn(){
+		driver.quickWaitForElementPresent(SAVE_STATUS_BTN_LOC);
+		driver.click(SAVE_STATUS_BTN_LOC);
+		logger.info("Save Status Button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void refreshPage(){
+		driver.navigate().refresh();
+		driver.pauseExecutionFor(2000);
+	}
+
+	public void clickViewOrderLinkUnderConsultantReplenishment(){
+		driver.waitForElementPresent(VIEW_ORDER_CONSULTANT_REPLENISHMENT);
+		driver.click(VIEW_ORDER_CONSULTANT_REPLENISHMENT);
+		logger.info("View order link clicked under consultant replenishment");
+		driver.waitForPageLoad();
+	}
+
+	public void clickViewOrderLinkUnderPulseMonthlySubscription(){
+		driver.waitForElementPresent(VIEW_ORDER_PULSE_MONTHLY_SUBSCRIPTION);
+		driver.click(VIEW_ORDER_PULSE_MONTHLY_SUBSCRIPTION);
+		logger.info("View order link clicked under Pulse Monthly Subscription"); 
+		driver.waitForPageLoad();
+	}
+
+	public void clickCalenderStartDateForFilter(){
+		driver.waitForElementPresent(START_DATE_OF_DATE_RANGE);
+		driver.click(START_DATE_OF_DATE_RANGE);
+		logger.info("Calender event start date clicked.");
+	}
+
+	public int getCountOfSearchResults(){
+		driver.waitForElementPresent(ORDER_SEARCH_RESULTS);
+		int count = driver.findElements(ORDER_SEARCH_RESULTS).size();
+		logger.info("Total search results: "+count);
+		return count;
+	}
+
+	public String getCompletedDateOfOrder(int randomOrderRowNumber){
+		driver.waitForElementPresent(By.xpath(String.format(completedDateOfOrder, randomOrderRowNumber)));
+		String completedDate = driver.findElement(By.xpath(String.format(completedDateOfOrder, randomOrderRowNumber))).getText();
+		logger.info("Completed date is: "+completedDate);
+		return completedDate;
+	}
+
+	public String getShippedDateOfOrder(int randomOrderRowNumber){
+		driver.waitForElementPresent(By.xpath(String.format(shippedDateOfOrder, randomOrderRowNumber)));
+		String shippedDate = driver.findElement(By.xpath(String.format(shippedDateOfOrder, randomOrderRowNumber))).getText();
+		logger.info("Shipped date is: "+shippedDate);
+		return shippedDate;
+	}
+
+	public String clickAndReturnRandomOrderNumber(int randomOrderRowNumber){
+		driver.waitForElementPresent(By.xpath(String.format(orderNumber, randomOrderRowNumber)));
+		String orderNo = driver.findElement(By.xpath(String.format(orderNumber, randomOrderRowNumber))).getText();
+		driver.click(By.xpath(String.format(orderNumber, randomOrderRowNumber)));
+		logger.info("Order Number: "+orderNo+" Clicked");
+		driver.waitForPageLoad();
+		return orderNo;
+	}
+
+	public String getOrderNumberFromOrderDetails(){
+		driver.waitForElementPresent(ORDER_NUMBER_FROM_ORDER_DETAILS);
+		String orderNumber = driver.findElement(ORDER_NUMBER_FROM_ORDER_DETAILS).getText();
+		logger.info("Order Number from order details page is: "+orderNumber);
+		return orderNumber;
+	}
+
+	public String[] getAllCompleteDate(int totalSearchResults){
+		String[] completeDate = new String[totalSearchResults+1];
+		for(int i=1; i<=totalSearchResults; i++){
+			completeDate[i] = driver.findElement(By.xpath(String.format(completedDateOfOrder, i))).getText();
+		}
+		return completeDate;
+	}
+
+	public boolean isAllCompleteDateContainCurrentYear(String[] totalSearchResults){
+		boolean isCurrentYearPresent = false;
+		for(int i=1; i<totalSearchResults.length; i++){
+			if(totalSearchResults[i].contains("2016") || totalSearchResults[i].contains("N/A")){
+				isCurrentYearPresent = true;
+			}else{
+				isCurrentYearPresent = false;
+				break;
+			}
+		}
+		return isCurrentYearPresent;
 	}
 
 }

@@ -30,8 +30,6 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	private NSCore4SitesTabPage nscore4SitesTabPage;
 	private NSCore4AdminPage nscore4AdminPage;
 	private NSCore4ProductsTabPage nscore4ProductsTabPage;
-
-
 	String RFL_DB = null;
 
 	public NSCore4AccountTest() {
@@ -46,6 +44,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertTrue(nscore4HomePage.isLogoutLinkPresent(),"Home Page has not appeared after login");
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();		
 		s_assert.assertTrue(nscore4LoginPage.isLoginButtonPresent(),"Login page has not appeared after logout");
+		login("admin", "skin123!");
 		s_assert.assertAll();
 	}
 
@@ -55,6 +54,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();	
 		login("abcd", "test1234!");
 		s_assert.assertTrue(nscore4LoginPage.isLoginCredentailsErrorMsgPresent(), "Login credentials error msg is not displayed");
+		login("admin", "skin123!");
 		s_assert.assertAll();
 	}
 
@@ -317,6 +317,139 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		nscore4SitesTabPage.clickDeleteBtnForEvent();
 		nscore4SitesTabPage.clickOKBtnOfJavaScriptPopUp();
 		s_assert.assertFalse(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is present at calendar ");
+		s_assert.assertAll();
+	}
+
+	//&--
+	//NSC4_OrdersTab_NewOrder
+	@Test
+	public void testOrdersTab_NewOrder(){
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		nscore4OrdersTabPage = nscore4HomePage.clickOrdersTab();
+		nscore4OrdersTabPage.clickStartANewOrderLink();
+		nscore4OrdersTabPage.enterAccountNameAndClickStartOrder("Tracy Sharpe");
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4HomePage.enterSKUValue(SKU);
+		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
+		nscore4HomePage.enterProductQuantityAndAddToOrder("1");
+		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4OrdersTabPage.clickPaymentApplyLink();
+		nscore4OrdersTabPage.clickSubmitOrderBtn();
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Products"),"Product information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Shipments"),"Shipments information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Payment"),"Payment information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.validateOrderStatusAfterSubmitOrder(),"Order is not submitted after submit order");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderDetailPagePresent(),"This is not order details page");
+		s_assert.assertAll();
+	}
+
+	//NSC4_OrdersTab_BrowseOrders
+	@Test
+	public void testOrdersTabBrowseOrders(){
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		nscore4OrdersTabPage = nscore4HomePage.clickOrdersTab();
+		//click Browse Orders link
+		nscore4OrdersTabPage.clickBrowseOrdersLlink();
+		//Select Status as pending in filter
+		nscore4OrdersTabPage.selectStatusDD("Pending");
+		//Select Type as PC in filter
+		nscore4OrdersTabPage.selectTypeDD("PC");
+		//click 'GO' Button
+		nscore4OrdersTabPage.clickGoSearchBtn();
+		//nscore4OrdersTabPage.clickGoSearchBtn();
+		//Verify all the results from the table satisfy the previous filter(s)-1.Order Status
+		s_assert.assertTrue(nscore4OrdersTabPage.validateOrderStatusRow(),"Atleast 1 of the status is not 'Pending'");
+		s_assert.assertTrue(nscore4OrdersTabPage.validateOrderTypeRow(),"Atleast 1 of the type is not 'PC'");
+		s_assert.assertAll();
+	}
+
+	//NSC4_AccountsTab_OverviewPostNewNote
+	@Test
+	public void testNSC4AccountsTabOverviewPostNewNote(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		RFL_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomAccountList =  null;
+		String accountNumber = null;
+		String categoryOfNotePopup = "1a";
+		String categoryOfChildNote = "1k";
+		String typeOfNotePopup="A";
+		String typeOfChildNote="E";
+		String noteTxt = "AutomationNote"+randomNum;
+		String noteTxtOfChildNote = "AutomationChildNote"+randomNumber;
+
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(); 
+		nscore4HomePage.clickPostNewNodeLinkInOverviewTab();
+		nscore4HomePage.selectAndEnterAddANoteDetailsInPopup(categoryOfNotePopup,typeOfNotePopup,noteTxt);
+		nscore4HomePage.clickSaveBtnOnAddANotePopup();
+		s_assert.assertTrue(nscore4HomePage.isNewlyCreatedNotePresent(noteTxt), "Newly created note"+noteTxt+" is not present ON UI");
+		nscore4HomePage.clickPostFollowUpLinkForParentNote(noteTxt);
+		nscore4HomePage.selectAndEnterAddANoteDetailsInPopup(categoryOfChildNote,typeOfChildNote,noteTxtOfChildNote);
+		nscore4HomePage.clickSaveBtnOnAddANotePopup();
+		s_assert.assertTrue(nscore4HomePage.isNewlyCreatedChildNotePresent(noteTxt,noteTxtOfChildNote), "Newly created Child note"+noteTxtOfChildNote+" is not present ON UI under parent note"+noteTxt);
+		s_assert.assertTrue(nscore4HomePage.isPostFollowUpLinkPresentForChildNote(noteTxt,noteTxtOfChildNote), "Newly created Child note"+noteTxtOfChildNote+" post follow up link is not present ON UI under parent note"+noteTxt);
+		nscore4HomePage.clickCollapseLinkNearToParentNote(noteTxt);
+		s_assert.assertFalse(nscore4HomePage.isChildNoteDetailsAppearsOnUI(noteTxt), "Newly created Child note"+noteTxtOfChildNote+" details are present ON UI under parent note"+noteTxt);
+		nscore4HomePage.clickExpandLinkNearToParentNote(noteTxt);
+		s_assert.assertTrue(nscore4HomePage.isChildNoteDetailsAppearsOnUI(noteTxt), "Newly created Child note"+noteTxtOfChildNote+" details are not present ON UI under parent note"+noteTxt);
+		s_assert.assertAll();
+	}
+
+	//NSC4_AccountsTab_OverviewPlaceNew Order
+	@Test
+	public void testAccountsTab_OverviewPlaceNewOrder(){
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		nscore4OrdersTabPage =new NSCore4OrdersTabPage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		//click 'Place-New-Order' link
+		nscore4HomePage.clickPlaceNewOrderLink();
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4HomePage.enterSKUValue(SKU);
+		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
+		nscore4HomePage.enterProductQuantityAndAddToOrder("1");
+		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4OrdersTabPage.clickPaymentApplyLink();
+		nscore4OrdersTabPage.clickSubmitOrderBtn();
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Products"),"Product information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Shipments"),"Shipments information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Payment"),"Payment information not present as expected");
+		s_assert.assertTrue(nscore4OrdersTabPage.validateOrderStatusAfterSubmitOrder(),"Order is not submitted after submit order");
+		s_assert.assertTrue(nscore4OrdersTabPage.isOrderDetailPagePresent(),"This is not order details page");
 		s_assert.assertAll();
 	}
 	

@@ -60,6 +60,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickEnrollmentNextBtn();
 /*		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox not selected");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox not selected");*/
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.addQuantityOfProduct("5");

@@ -452,5 +452,144 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertTrue(nscore4OrdersTabPage.isOrderDetailPagePresent(),"This is not order details page");
 		s_assert.assertAll();
 	}
-	
+
+	//NSC4_AccountsTab_OverviewStatusChange
+	@Test
+	public void testAccountsTab_OverviewStatusChange(){
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		//get the status before change
+		String beforeStatus=nscore4HomePage.getStatus();
+		//click the status link and change the status-
+		nscore4HomePage.clickStatusLink();
+		//change the status and save 
+		nscore4HomePage.changeStatusDD(1);
+		nscore4HomePage.clickSaveStatusBtn();
+		nscore4HomePage.refreshPage();
+		//get the status after change
+		String afterStatus=nscore4HomePage.getStatus();
+		//verify the status got changed successfully?
+		s_assert.assertNotEquals(beforeStatus, afterStatus);
+		//Revert the Changes-
+		nscore4HomePage.clickStatusLink();
+		nscore4HomePage.changeStatusDD(0);
+		nscore4HomePage.clickSaveStatusBtn();
+		nscore4HomePage.refreshPage();
+		String finalStatus=nscore4HomePage.getStatus();
+		s_assert.assertEquals(beforeStatus, finalStatus);
+		s_assert.assertAll();
+	}
+
+	//NSC4_AccountsTab_OverviewAutoshipsViewOrders
+	@Test
+	public void testNSC4AccountTabOverviewAutoshipsViewOrders(){
+		String accountNumber = null;
+		String accounts = "Accounts";
+		List<Map<String, Object>> randomAccountList =  null;
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		String year = nscore4HomePage.getCurrentDateAndMonthAndYearAndMonthShortNameFromPstDate(nscore4HomePage.getPSTDate())[2];
+		String currentYear = "%"+year+"%";
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_CONSULTANT_ACCOUNT_NUMBER_HAVING_AUTOSHIP_ORDER_WITH_CURRENT_YEAR_RFL, currentYear),RFL_DB);
+		accountNumber =(String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		nscore4HomePage.clickViewOrderLinkUnderConsultantReplenishment();
+		nscore4HomePage.clickCalenderStartDateForFilter();
+		nscore4HomePage.selectMonthOnCalenderForNewEvent("Jan");
+		nscore4HomePage.selectYearOnCalenderForNewEvent("2016");
+		nscore4HomePage.clickSpecficDateOfCalendar("1");
+		int totalSearchResults = nscore4HomePage.getCountOfSearchResults();
+		String[] allCompleteDate = nscore4HomePage.getAllCompleteDate(totalSearchResults);
+		s_assert.assertTrue(nscore4HomePage.isAllCompleteDateContainCurrentYear(allCompleteDate), "All complete date on UI are not in the range of filter for consultant autoship");;
+		nscore4HomePage.navigateToBackPage();
+		nscore4HomePage.clickTab(accounts);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_CONSULTANT_ACCOUNT_NUMBER_HAVING_PULSE_AUTOSHIP_ORDER_WITH_CURRENT_YEAR_RFL, currentYear, currentYear),RFL_DB);
+		accountNumber =(String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		nscore4HomePage.clickViewOrderLinkUnderPulseMonthlySubscription();
+		nscore4HomePage.clickCalenderStartDateForFilter();
+		nscore4HomePage.selectMonthOnCalenderForNewEvent("Jan");
+		nscore4HomePage.selectYearOnCalenderForNewEvent("2016");
+		nscore4HomePage.clickSpecficDateOfCalendar("1");
+		totalSearchResults = nscore4HomePage.getCountOfSearchResults();
+		int randomSearchResult = CommonUtils.getRandomNum(1, totalSearchResults);
+		allCompleteDate = nscore4HomePage.getAllCompleteDate(totalSearchResults);
+		s_assert.assertTrue(nscore4HomePage.isAllCompleteDateContainCurrentYear(allCompleteDate), "All complete date on UI are not in the range of filter for consultant pulse autoship");;
+		nscore4HomePage.clickAndReturnRandomOrderNumber(randomSearchResult);
+		s_assert.assertTrue(nscore4HomePage.getOrderNumberFromOrderDetails().contains(accountNumber), "Expected OrderNumber on order details page is: "+accountNumber+" Actual on UI is: "+nscore4HomePage.getOrderNumberFromOrderDetails());
+		s_assert.assertAll();
+	}
+
+
+	//NSC4_SitesTab_nsCorporate_CorporateAddEditDeleteNews
+	@Test
+	public void testNSC4SitesTabNSCorporateAddEditDeleteNews(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String sites = "Sites";
+		String title = "For Automation"+randomNum;
+		String newTitle = "For Automation"+randomNum2;
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickCorporateLink();
+		nscore4SitesTabPage.clickAddNewsLink();
+		nscore4SitesTabPage.enterTitleForAddNews(title);
+		nscore4SitesTabPage.checkIsActiveChkBoxForNewsTitle();
+		nscore4SitesTabPage.clickSaveBtn();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("News saved successfully"), "Expected saved message is: News saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
+		int noOfOptionsInSizePageDD = nscore4SitesTabPage.getSizeOfOptinsFromPageSizeDD();
+		nscore4SitesTabPage.clickAndSelectOptionInPageSizeDD(noOfOptionsInSizePageDD);
+		s_assert.assertTrue(nscore4SitesTabPage.isTitleNamePresentInAnnouncementsList(title), "Title name is not present in announcement list");
+		nscore4SitesTabPage.clickTitleNamePresentInAnnouncementsList(title);
+		nscore4SitesTabPage.enterTitleForAddNews(newTitle);
+		nscore4SitesTabPage.clickSaveBtn();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("News saved successfully"), "Expected saved message is: News saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
+		noOfOptionsInSizePageDD = nscore4SitesTabPage.getSizeOfOptinsFromPageSizeDD();
+		nscore4SitesTabPage.clickAndSelectOptionInPageSizeDD(noOfOptionsInSizePageDD);
+		s_assert.assertTrue(nscore4SitesTabPage.isTitleNamePresentInAnnouncementsList(newTitle), "Title name is not present in announcement list");
+		nscore4SitesTabPage.checkTitleNameChkBoxInAnnouncementsList(newTitle);
+		nscore4SitesTabPage.clickDeactivateSelectedLink();
+		s_assert.assertTrue(nscore4SitesTabPage.getTitleStatus(newTitle).contains("Inactive"), "Expected title status is: Inactive but actual on UI: "+nscore4SitesTabPage.getTitleStatus(newTitle));
+		nscore4SitesTabPage.checkTitleNameChkBoxInAnnouncementsList(newTitle);
+		nscore4SitesTabPage.clickActivateSelectedLink();
+		s_assert.assertTrue(nscore4SitesTabPage.getTitleStatus(newTitle).contains("Active"), "Expected title status is: Active but actual on UI is: "+nscore4SitesTabPage.getTitleStatus(newTitle));
+		nscore4SitesTabPage.checkTitleNameChkBoxInAnnouncementsList(newTitle);
+		nscore4SitesTabPage.clickDeleteSelectedLink();
+		s_assert.assertFalse(nscore4SitesTabPage.isTitleNamePresentInAnnouncementsList(title), "Title name is present in announcement list after delete");
+		s_assert.assertAll();
+	}
+
+	//NSC4_SitesTab_nsCorporate_CorporateSiteDetailsEditSite
+	@Test
+	public void testNSC4SitesTabNSCorporateSiteDetailEditSite(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String sites = "Sites";
+		String siteDetails = "Site Details";
+		String newSiteName = "Auto"+randomNum;
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfCorporate(siteDetails);
+		nscore4SitesTabPage.enterSiteNameForSiteDetails(newSiteName);
+		nscore4SitesTabPage.checkActiveChkBoxForSiteDetails();
+		nscore4SitesTabPage.clickSaveBtnOnSiteDetails();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxtForSite().contains("Site saved successfully"), "Expected saved message is: Site saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxtForSite());
+		nscore4SitesTabPage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfCorporate(siteDetails);
+		nscore4SitesTabPage.enterSiteNameForSiteDetails("Corporate");
+		nscore4SitesTabPage.uncheckActiveChkBoxForSiteDetails();
+		nscore4SitesTabPage.clickSaveBtnOnSiteDetails();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxtForSite().contains("Site saved successfully"), "Expected saved message is: Site saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxtForSite());
+		s_assert.assertAll();
+	}
+
+
 }

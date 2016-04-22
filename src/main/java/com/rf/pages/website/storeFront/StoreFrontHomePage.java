@@ -217,8 +217,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.id("corp-opp")); 
-		WebElement shopSkinCare = driver.findElement(By.id("corp-opp"));
+		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
+		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='Enroll Now']"));
 		actions.moveToElement(allProducts).pause(1000).build().perform();
@@ -456,6 +456,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 		logger.info("Yes,enroll me in CRP checkbox is unchecked");
+	}
+	
+	
+	public void checkPulseAndCRPEnrollment() throws InterruptedException{
+		
+		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
+		{
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
+			driver.pauseExecutionFor(3000);
+			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
+			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
+		}
+		else
+			;
+
 	}
 
 

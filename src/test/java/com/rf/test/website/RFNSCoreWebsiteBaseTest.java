@@ -48,7 +48,9 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 		logger.info("In the Before suite..");
 		driver.loadApplication();		
 		logger.info("Application loaded");				
-		driver.setDBConnectionString();		
+		driver.setDBConnectionString();
+		driver.get(driver.getURL());
+		login("admin", "skin123!");
 		logger.info("out of Before suite..");
 	}
 
@@ -56,8 +58,7 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		logger.info("In Before method..");
 		s_assert = new SoftAssert();
-		driver.get(driver.getURL());
-		login("admin", "skin123!");
+		driver.get(driver.getURL());		
 		logger.info("Out of Before method..");
 	}
 
@@ -74,6 +75,14 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
+
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	@AfterSuite(alwaysRun = true)
+	public void tearDown() throws Exception {
 		try{
 			driver.quickWaitForElementPresent(LOGOUT_LINK);
 			driver.click(LOGOUT_LINK);
@@ -82,15 +91,8 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 		}catch(Exception e){
 
 		}
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@AfterSuite(alwaysRun = true)
-	public void tearDown() throws Exception {
 		new HtmlLogger().createHtmlLogFile();		
-		driver.quit();
+		driver.quit();		
 	}
 
 	public void setStoreFrontPassword(String pass){

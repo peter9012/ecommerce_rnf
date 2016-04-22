@@ -1999,6 +1999,95 @@ STEP #1
 			"FROM dbo.Orders AS o "+
 			"WHERE o.OrderID = '%s'";
 
+	public static String GET_CONSULTANT_ACCOUNT_NUMBER_HAVING_AUTOSHIP_ORDER_WITH_CURRENT_YEAR_RFL = "USE RodanFieldsLive "+ 
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED  "+ 
+			"BEGIN TRANSACTION  "+
+			"SELECT TOP 1 "+ 
+			"a.AccountID, "+  
+			"[as].UserName, "+ 
+			"a.AccountNumber "+ 
+			"FROM    dbo.Accounts AS a "+ 
+			"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+ 
+			"WHERE   a.AccountTypeID = 1 "+ /* Consultant*/
+			/*Active Account*/
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Accounts AS a3 "+ 
+			"WHERE  a3.Active = 1  "+
+			"AND a3.StatusID = 1  "+
+			"AND a3.AccountID = a.AccountID ) "+  
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Orders AS o  "+
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 3  "+/*Consultant*/
+			"AND o.OrderStatusID IN ( 1, 4 ) )   "+
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Orders AS o  "+
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"JOIN   dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID "+ 
+			"AND oc.AccountID = ao.AccountID  "+
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 5 "+ /*Consultant Auto-ship Template*/ 
+			"AND ao.AutoshipScheduleID = 1 "+ /*Consultant Replenishment*/
+			"AND o.OrderStatusID = 7 "+
+			"AND o.CompleteDate like '%s' "+
+			") "+ /*Submitted Template*/
+			/*Pending autoship orders*/ 
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Orders AS o  "+
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 7 "+ /*Consultant Auto-ship*/
+			"AND o.OrderStatusID = 1 )  "+
+			"ORDER BY NEWID()";
+
+	public static String GET_CONSULTANT_ACCOUNT_NUMBER_HAVING_PULSE_AUTOSHIP_ORDER_WITH_CURRENT_YEAR_RFL = "USE RodanFieldsLive "+ 
+			"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED "+ 
+			"BEGIN TRANSACTION "+
+			"SELECT TOP 1 "+
+			"a.AccountID , "+
+			"[as].UserName , "+
+			"a.AccountNumber  "+
+			"FROM    dbo.Accounts AS a "+ 
+			"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+ 
+			"WHERE   a.AccountTypeID = 1 "+ /* Consultant*/
+			/*Active Account*/
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Accounts AS a3 "+ 
+			"WHERE  a3.Active = 1  "+
+			"AND a3.StatusID = 1  "+
+			"AND a3.AccountID = a.AccountID ) "+  
+			/*Pending/Submitted Orders */
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Orders AS o  "+
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 3 "+ /*Consultant*/
+			"AND o.OrderStatusID IN ( 1, 4 ) ) "+  
+			/*Active Template*/
+			"AND EXISTS ( SELECT 1  "+
+			"FROM   dbo.Orders AS o  "+
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"JOIN   dbo.AutoshipOrders ao ON ao.TemplateOrderID = o.OrderID  "+
+			"AND oc.AccountID = ao.AccountID  "+
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 5 "+ /*Consultant Auto-ship Template*/ 
+			"AND ao.AutoshipScheduleID = 3 "+ /*Consultant Replenishment*/         
+			"AND ao.startDate like '%s' "+
+			"AND o.OrderStatusID = 7 "+
+			"AND o.CompleteDate like '%s' "+
+			") "+ /*Submitted Template*/
+			/*Pending autoship orders*/
+			"AND EXISTS ( SELECT 1 "+ 
+			"FROM   dbo.Orders AS o "+ 
+			"JOIN   dbo.OrderCustomers AS oc ON oc.OrderID = o.OrderID "+ 
+			"WHERE  oc.AccountID = a.AccountID  "+
+			"AND o.OrderTypeID = 7 "+ /*Consultant Auto-ship*/
+			"AND o.OrderStatusID = 1 ) "+ 
+			"ORDER BY NEWID()";
+
 
 	/**
 	 * 
@@ -2009,6 +2098,10 @@ STEP #1
 
 	public static String callQueryWithArguement(String query,String value){
 		return String.format(query, value);
+	}
+
+	public static String callQueryWithArguement(String query,String value, String value1){
+		return String.format(query, value, value1);
 	}
 }
 

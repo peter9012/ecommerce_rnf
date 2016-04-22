@@ -60,10 +60,11 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickEnrollmentNextBtn();
 /*		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox not selected");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox not selected");*/
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		/*storeFrontHomePage.selectProductAndProceedToAddToCRP();
+		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.addQuantityOfProduct("5");
-		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();*/
+		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
@@ -72,7 +73,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-/*		storeFrontHomePage.clickOnConfirmAutomaticPayment();*/
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		s_assert.assertAll();
 	}

@@ -217,8 +217,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.id("corp-opp")); 
-		WebElement shopSkinCare = driver.findElement(By.id("corp-opp"));
+		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
+		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='Enroll Now']"));
 		actions.moveToElement(allProducts).pause(1000).build().perform();

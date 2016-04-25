@@ -1,6 +1,7 @@
 package com.rf.pages.website.crm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +105,24 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 
 		return UIMonth+" "+date+", "+year;
 	}
-
+		
+	
+	public String CanadaProvinceCode(String province){
+		Map<String, String> CA_PROVINCE_CODE = new HashMap<String, String>();
+		CA_PROVINCE_CODE.put("Alberta","AB");
+		CA_PROVINCE_CODE.put("British Columbia","BC");
+		CA_PROVINCE_CODE.put("Manitoba","MB");
+		CA_PROVINCE_CODE.put("New Brunswick","NB");
+		CA_PROVINCE_CODE.put("Northwest Territories","NT");
+		CA_PROVINCE_CODE.put("Nova Scotia","NS");
+		CA_PROVINCE_CODE.put("Nunavut","NU");
+		CA_PROVINCE_CODE.put("Ontario","ON");
+		CA_PROVINCE_CODE.put("Prince Edward Island","PE");
+		CA_PROVINCE_CODE.put("Quebec","QC");
+		CA_PROVINCE_CODE.put("Saskatchewan","SK");
+		
+		return CA_PROVINCE_CODE.get(province);
+	}
 	//	public void clickOnShopLink(){
 	//		driver.waitForElementPresent(By.id("our-products"));
 	//		driver.click(By.id("our-products"));

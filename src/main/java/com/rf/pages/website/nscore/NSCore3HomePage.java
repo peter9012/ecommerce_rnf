@@ -22,6 +22,12 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 	private static String cellValueLoc = "//td[@id='ContentCol']/table[contains(@id,'dgOrders')]//tr[%s]/td[%s]";
 	private static String customerColumnHeaderLoc = "//td[@id='ContentCol']/table[contains(@id,'dgOrders')]//tr[1]/td[%s]/a";
 	private static String detailsBtn = "//td[@id='ContentCol']/table[contains(@id,'dgOrders')]//tr[%s]//input[contains(@id,'btnDetails')]";
+	private static String loginPageTabsLoc  = "//ul[@class='GlobalNav']//span[text()='%s']";
+	private static String selectDDValue= "//select[contains(@id,'uxSearchFieldList')]//option[contains(text(),'%s')]";
+	private static String customerColumnHeaderOnDistributorPageLoc = "//td[@id='ContentCol']//tr[@class='grid-header']/td[%s]/a";
+	private static String firstRowValueAsPerColumnNameOnDistributorPage = "//td[@id='ContentCol']//tr[contains(@class,'GridView')]/td[%s]/a";
+	private static String cellValueOnDistributorPage  = "//td[@id='ContentCol']//tr[%s]/td[%s]/a";
+	private static String userTypeInConsultantDropdownOnDistributorPage = "//select[contains(@id,'_uxAccountTypes')]/option[text()='%s']";
 
 	private static final By ORDERS_LINK = By.xpath("//a[text()='Orders']") ;
 	private static final By SEARCH_BY_DD = By.xpath("//select[contains(@id,'OrderSearchField')]") ;
@@ -36,6 +42,11 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 	private static final By SUBTOTAL_LOC = By.xpath("//span[contains(@id,'uxCustomerSubtotal')]");
 	private static final By GRAND_TOTAL_LOC = By.xpath("//span[contains(@id,'uxCustomerGrandTotal')]");
 	private static final By ACCOUNT_NUMBER_LOC = By.xpath("//span[contains(@id,'uxCustomerAccount')]");
+	private static final By SEARCH_BY_NAME_DD = By.xpath("//select[contains(@id,'uxSearchFieldList')]") ;
+	private static final By SEARCH_FOR_TXT_BOX = By.xpath("//input[contains(@id,'_uxSearchValue')][@type='text']") ;
+	private static final By SEARCH_BTN = By.xpath("//input[contains(@id,'_uxSearch')][@type='button']");
+	private static final By TOTAL_NO_OF_ROWS_DISTRIBUTOR_PAGE = By.xpath("//td[@id='ContentCol']//tr[contains(@class,'GridView')]");
+	private static final By CONSULTANT_DROPDOWN = By.xpath("//select[contains(@id,'_uxAccountTypes')]");
 
 	public void clickOrdersLink(){
 		driver.waitForElementPresent(ORDERS_LINK);
@@ -110,6 +121,20 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		return i;
 	}
 
+	public boolean isExpectedValuePresentInColumn(String name, int columnNumber){
+		int i=0;
+		int rows = driver.findElements(TOTAL_NO_OF_ROWS).size();
+		for(i=2;i<=rows+1;i++){
+			String nameFromUI= driver.findElement(By.xpath(String.format(cellValueLoc,i,columnNumber))).getText();
+			if(nameFromUI.equals(name)){
+				logger.info(name+" FOUND in search result");
+				return true;
+			}
+		} 
+		logger.info(name+" NOT found in search result");
+		return false;
+	}
+
 	public int getColumnNumberHavingExpectedColumnName(String columnName){
 		int noOfColumns = driver.findElements(TOTAL_NO_OF_COLUMNS).size();
 		int i =1;
@@ -122,7 +147,7 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		} 
 		logger.info("return column number with no match is: "+i);
 		return i;
-	}
+	}	
 
 	public String getCellValue(int rowNumber, int columnNumber){
 		String cellValue= driver.findElement(By.xpath(String.format(cellValueLoc,rowNumber,columnNumber))).getText();
@@ -188,6 +213,106 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		String accountNumber = driver.findElement(ACCOUNT_NUMBER_LOC).getText();
 		logger.info("Account number at order details: "+accountNumber);
 		return accountNumber;
+	}
+
+	public void clickTab(String tabName){
+		driver.waitForElementPresent(By.xpath(String.format(loginPageTabsLoc, tabName)));
+		driver.click(By.xpath(String.format(loginPageTabsLoc, tabName)));
+		logger.info("Tab: "+tabName+" is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void selectValueFromNameDDOnDistributorTab(String value){
+		driver.waitForElementPresent(SEARCH_BY_NAME_DD);
+		driver.click(SEARCH_BY_NAME_DD);
+		logger.info("Name dropdown is clicked");
+		driver.waitForElementPresent(By.xpath(String.format(selectDDValue, value)));
+		driver.click(By.xpath(String.format(selectDDValue, value)));
+		logger.info("Dropdown value selected as: "+value);
+		driver.waitForPageLoad();
+	}
+
+	public void enterSearchForFieldOnDistributorTab(String inputTxt){
+		driver.waitForElementPresent(SEARCH_FOR_TXT_BOX);
+		driver.type(SEARCH_FOR_TXT_BOX, inputTxt);
+		logger.info("Search for text entered as: "+inputTxt);
+		driver.waitForPageLoad();
+	}
+
+	public void clickSearchOnDistributorTab(){
+		driver.waitForElementPresent(SEARCH_BTN);
+		driver.click(SEARCH_BTN);
+		logger.info("Search button clicked");
+		driver.waitForPageLoad();
+	}
+
+	public int getColumnNumberHavingExpectedColumnNameOnDistributorPage(String columnName){
+		int noOfColumns = driver.findElements(TOTAL_NO_OF_COLUMNS).size();
+		int i =1;
+		for(i=1; i<=noOfColumns; i++){
+			String nameFromUI= driver.findElement(By.xpath(String.format(customerColumnHeaderOnDistributorPageLoc,i))).getText();
+			if(nameFromUI.equals(columnName)){
+				logger.info("return column number is: "+(i));
+				return i;
+			}
+		} 
+		logger.info("return column number with no match is: "+i);
+		return i;
+	}
+
+	public String getFirstRowCellValueAsPerColumnName(int columnNumber){
+		String cellValue= driver.findElement(By.xpath(String.format(firstRowValueAsPerColumnNameOnDistributorPage,columnNumber))).getText();
+		logger.info("Cell value is: "+cellValue);
+		return cellValue;
+	}
+
+	public boolean isAllRowsContainsTheCompleteName(String completeName){
+		int i=0;
+		boolean flag =false;
+		int rows = driver.findElements(TOTAL_NO_OF_ROWS_DISTRIBUTOR_PAGE).size();
+		int firstNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("First Name");
+		int lastNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("Last Name");
+		for(i=3;i<rows+3;i++){
+			String firstName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,firstNameColNum))).getText();
+			String lastName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,lastNameColNum))).getText();
+			String completeNameString = firstName+" "+lastName;
+			if(completeName.trim().equalsIgnoreCase(completeNameString.trim())){
+				flag =true;
+			}else{
+				logger.info("complete name on UI is different from database expected:"+completeName+" Actual: "+completeNameString);
+				flag=false;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	public void selectUserTypeFromDDOnDistributorTab(String UserType){
+		driver.waitForElementPresent(CONSULTANT_DROPDOWN);
+		driver.click(CONSULTANT_DROPDOWN);
+		logger.info("Consultant dropdown is clicked");
+		driver.waitForElementPresent(By.xpath(String.format(userTypeInConsultantDropdownOnDistributorPage, UserType)));
+		driver.click(By.xpath(String.format(userTypeInConsultantDropdownOnDistributorPage, UserType)));
+		logger.info("Dropdown value selected User as: "+UserType);
+		driver.waitForPageLoad();
+	}
+
+	public boolean isAllRowsContainsTheAccountType(String accountType){
+		int i=0;
+		boolean flag =false;
+		int rows = driver.findElements(TOTAL_NO_OF_ROWS_DISTRIBUTOR_PAGE).size();
+		int accountTypeColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("Account Type");
+		for(i=3;i<rows+3;i++){
+			String accountTypeValue = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,accountTypeColNum))).getText();
+			if(accountType.trim().equalsIgnoreCase(accountTypeValue.trim())){
+				flag =true;
+			}else{
+				logger.info("Account type on UI is different from database expected:"+accountType+" Actual: "+accountTypeValue);
+				flag=false;
+				break;
+			}
+		}
+		return flag;
 	}
 
 }

@@ -220,11 +220,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
 		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='Enroll Now']"));
+		WebElement allProducts = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']"));
 		actions.moveToElement(allProducts).pause(1000).build().perform();
 		while(true){
 			try{
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='Enroll Now']")));
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']")));
 
 				break;
 			}catch(Exception e){

@@ -168,4 +168,53 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		driver.navigate().back();
 	}
 
+	public String getMonthInWords(String month){
+		String UIMonth = null;
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="Jan";
+			break;
+		case 2:
+			UIMonth="Feb";
+			break;
+		case 3:
+			UIMonth="Mar";
+			break;
+		case 4:
+			UIMonth="Apr";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="Jun";
+			break;
+		case 7:
+			UIMonth="Jul";
+			break;
+		case 8:
+			UIMonth="Aug";
+			break;
+		case 9:
+			UIMonth="Sep";
+			break;
+		case 10:
+			UIMonth="Oct";
+			break;
+		case 11:
+			UIMonth="Nov";
+			break;
+		case 12:
+			UIMonth="Dec";
+			break;		
+		}
+		logger.info("month is: "+UIMonth);
+		return UIMonth;
+	}
+
+	public void reLoadPage(){
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+	}
+
 }

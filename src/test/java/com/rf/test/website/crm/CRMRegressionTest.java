@@ -10,6 +10,7 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.crm.CRMRFWebsiteBasePage;
 import com.rf.pages.website.crm.CRMAccountDetailsPage;
 import com.rf.pages.website.crm.CRMContactDetailsPage;
 import com.rf.pages.website.crm.CRMHomePage;
@@ -27,6 +28,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	private CRMAccountDetailsPage crmAccountDetailsPage; 
 	private CRMContactDetailsPage crmContactDetailsPage;
 	private StoreFrontHomePage storeFrontHomePage;
+	private CRMRFWebsiteBasePage crmRFWebsiteBasePage;
 	private String RFO_DB = null;
 
 	public CRMRegressionTest(){
@@ -286,6 +288,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		}
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		crmRFWebsiteBasePage = new CRMRFWebsiteBasePage(driver);
 		String consultantEmailID = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
@@ -304,13 +307,11 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
 		s_assert.assertTrue(crmAccountDetailsPage.isProfileNameValueOfDefaultShippingProfilesPresent(fullName), "Profile Name Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(addressLine), "Address Line Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city), "Locale Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(province), "Region Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city.toUpperCase()), "Locale Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(crmRFWebsiteBasePage.CanadaProvinceCode(province)), "Region Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(postal), "Postal Not Matched");
 		s_assert.assertAll();
 	}
@@ -341,6 +342,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		}
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		crmRFWebsiteBasePage = new CRMRFWebsiteBasePage(driver);
 		String pcEmailID = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
@@ -359,13 +361,11 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
 		s_assert.assertTrue(crmAccountDetailsPage.isProfileNameValueOfDefaultShippingProfilesPresent(fullName), "Profile Name Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(addressLine), "Address Line Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city), "Locale Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(province), "Region Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city.toUpperCase()), "Locale Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(crmRFWebsiteBasePage.CanadaProvinceCode(province)), "Region Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(postal), "Postal Not Matched");
 		s_assert.assertAll();
 	}
@@ -396,6 +396,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		}
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
+		crmRFWebsiteBasePage = new CRMRFWebsiteBasePage(driver);
 		String rcEmailID = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
@@ -414,13 +415,11 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
 		s_assert.assertTrue(crmAccountDetailsPage.isProfileNameValueOfDefaultShippingProfilesPresent(fullName), "Profile Name Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(addressLine), "Address Line Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city), "Locale Not Matched");
-		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(province), "Region Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(city.toUpperCase()), "Locale Not Matched");
+		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(crmRFWebsiteBasePage.CanadaProvinceCode(province)), "Region Not Matched");
 		s_assert.assertTrue(crmAccountDetailsPage.isAddressLocaleRegionPostalCodeValueOfDefaultShippingProfilesPresent(postal), "Postal Not Matched");
 		s_assert.assertAll();
 	}

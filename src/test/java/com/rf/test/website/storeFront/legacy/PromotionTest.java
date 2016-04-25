@@ -48,7 +48,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
 		storeFrontLegacyHomePage.selectPromotionRegimen();
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("promotions"), "Expected regimen name is: promotions Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		storeFrontLegacyHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
+		storeFrontLegacyHomePage.clickAddToCartBtn();
 		storeFrontLegacyHomePage.clickCheckoutBtn();
 		storeFrontLegacyHomePage.clickContinueBtn();
 		storeFrontLegacyHomePage.clickChangeBillingInformationBtn();

@@ -591,5 +591,193 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//NSC4_AccountsTab_FullAccountRecordUpdate
+	@Test
+	public void testNSC4AccountTabFullAccountRecordUpdate(){
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		nscore4HomePage.clickFullAccountRecordLink();
+		//get all values before update
+		String startDate = nscore4HomePage.getCRPStartDate();
+		String userName = nscore4HomePage.getUserName();
+		String firstName = nscore4HomePage.getFirstName();
+		String homePhone = nscore4HomePage.getLastFourDgitOfHomePhoneNumber();
+		String emailID = nscore4HomePage.getEmailAddress();
+		String taxExemptValue = nscore4HomePage.getTaxExemptValue();
+		String nameOnSSNCard = nscore4HomePage.getNameOnSSNCard();
+		String dob = nscore4HomePage.getDOBValue();
+		String gender = nscore4HomePage.getSelectedGender();
+		String attentionName = nscore4HomePage.getAttentionName();
+		String zipCode = nscore4HomePage.getZIPCode();
+		String phoneNumber = nscore4HomePage.getLastFourDgitOfPhoneNumber();
+		String startDay = nscore4HomePage.getDayFromDate(startDate);
+		String startMonth = nscore4HomePage.getMonthFromDate(startDate);
+		String startYear = nscore4HomePage.getYearFromDate(startDate);
+		String dobDay = nscore4HomePage.getDayFromDate(dob);
+		//update the values
+		String startDayForUpdate = nscore4HomePage.getUpdatedDayFromDate(startDay);
+		String monthForUpdate = nscore4HomePage.getMonthInWords(startMonth);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum3 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum4 = CommonUtils.getRandomNum(10000, 1000000);
+		String userNameForUpdate = "Automation"+randomNum+"@gmail.com";
+		String nameForUpdate = "Autoname"+randomNum1;
+		String homePhoneForUpdate =  String.valueOf(CommonUtils.getRandomNum(1000, 9999));
+		String emailIDForUpdate = "auto"+randomNum2+"@gmail.com";
+		String taxExemptValueForUpdate =nscore4HomePage.getTaxExemptValueForUpdate(taxExemptValue);
+		String nameOnSSNCardForUpdate = "Auto"+randomNum3;
+		String dobDayForUpdate = nscore4HomePage.getUpdatedDayFromDate(dobDay);
+		String genderForUpdate = nscore4HomePage.getGenderValueForUpdate(gender);
+		String attentionNameForUpdate = "Auto"+randomNum4;
+		String ZIPCodeForUpdate = "78130-3397";
+		String phoneNumberForUpdate =  String.valueOf(CommonUtils.getRandomNum(1000, 9999));
+		//For Account Details Section
+		nscore4HomePage.clickCRPStartDate();
+		nscore4HomePage.selectMonthOnCalenderForNewEvent(monthForUpdate);
+		nscore4HomePage.selectYearOnCalenderForNewEvent(startYear);
+		nscore4HomePage.clickSpecficDateOfCalendar(startDayForUpdate);
+		nscore4HomePage.clickSaveBtnForAccountRecord();
+		nscore4HomePage.clickUseAsEnteredbtn();
+		s_assert.assertTrue(nscore4HomePage.getUpdationMessage().contains("Account saved successfully"), "Expected message is: Account saved successfully but actual on UI is: "+nscore4HomePage.getUpdationMessage());
+		s_assert.assertTrue(nscore4HomePage.getCRPStartDate().contains(startDayForUpdate), "Expected day is: "+startDayForUpdate+" But actual on UI is "+nscore4HomePage.getDayFromDate(nscore4HomePage.getCRPStartDate()));
+		//For Account Access Section
+		nscore4HomePage.enterUserName(userNameForUpdate);
+		nscore4HomePage.clickSaveBtnForAccountRecord();
+		nscore4HomePage.clickUseAsEnteredbtn();
+		s_assert.assertTrue(nscore4HomePage.getUpdationMessage().contains("Account saved successfully"), "Expected message is: Account saved successfully but actual on UI is: "+nscore4HomePage.getUpdationMessage());
+		s_assert.assertTrue(nscore4HomePage.getUserName().contains(userNameForUpdate), "Expected username is: "+userNameForUpdate+" But actual on UI is "+nscore4HomePage.getUserName());
+		// For Personal Info Section
+		nscore4HomePage.enterFirstName(nameForUpdate);
+		nscore4HomePage.enterLastFourDigitOfHomePhoneNumber(homePhoneForUpdate);
+		nscore4HomePage.enterEmailAddress(emailIDForUpdate);
+		nscore4HomePage.selectTaxExemptValue(taxExemptValueForUpdate);
+		nscore4HomePage.enterNameOnSSNCard(nameOnSSNCardForUpdate);
+		nscore4HomePage.clickDOBDate();
+		nscore4HomePage.clickSpecficDateOfCalendar(dobDayForUpdate);
+		//driver.pauseExecutionFor(3000);
+		nscore4HomePage.selectGender(genderForUpdate);
+		nscore4HomePage.clickSaveBtnForAccountRecord();
+		nscore4HomePage.clickUseAsEnteredbtn();
+		s_assert.assertTrue(nscore4HomePage.getUpdationMessage().contains("Account saved successfully"), "Expected message is: Account saved successfully but actual on UI is: "+nscore4HomePage.getUpdationMessage());
+		s_assert.assertTrue(nscore4HomePage.getFirstName().contains(nameForUpdate), "Expected first name is: "+nameForUpdate+" But actual on UI is "+nscore4HomePage.getFirstName());
+		s_assert.assertTrue(nscore4HomePage.getLastFourDgitOfHomePhoneNumber().contains(homePhoneForUpdate), "Expected home phone number is: "+homePhoneForUpdate+" But actual on UI is "+nscore4HomePage.getLastFourDgitOfHomePhoneNumber());
+		s_assert.assertTrue(nscore4HomePage.getEmailAddress().contains(emailIDForUpdate), "Expected email ID is: "+emailIDForUpdate+" But actual on UI is "+nscore4HomePage.getEmailAddress());
+		s_assert.assertTrue(nscore4HomePage.getTaxExemptValue().contains(taxExemptValueForUpdate), "Expected tax exempt value is: "+taxExemptValueForUpdate+" But actual on UI is "+nscore4HomePage.getTaxExemptValue());
+		s_assert.assertTrue(nscore4HomePage.getNameOnSSNCard().contains(nameOnSSNCardForUpdate), "Expected name on SSN Card is: "+nameOnSSNCardForUpdate+" But actual on UI is "+nscore4HomePage.getNameOnSSNCard());
+		s_assert.assertTrue(nscore4HomePage.getDOBValue().contains(dobDayForUpdate), "Expected day for DOB is: "+dobDayForUpdate+" But actual on UI is "+nscore4HomePage.getDayFromDate(nscore4HomePage.getDOBValue()));
+		s_assert.assertTrue(nscore4HomePage.getSelectedGender().contains(genderForUpdate), "Expected gender is: "+genderForUpdate+" But actual on UI is "+nscore4HomePage.getSelectedGender());
+		// Assert for Address of Record
+		nscore4HomePage.enterAttentionName(attentionNameForUpdate);
+		nscore4HomePage.enterZIPCode(ZIPCodeForUpdate);
+		nscore4HomePage.enterLastFourDigitOfPhoneNumber(phoneNumberForUpdate);
+		nscore4HomePage.clickSaveBtnForAccountRecord();
+		nscore4HomePage.clickUseAsEnteredbtn();
+		s_assert.assertTrue(nscore4HomePage.getUpdationMessage().contains("Account saved successfully"), "Expected message is: Account saved successfully but actual on UI is: "+nscore4HomePage.getUpdationMessage());
+		s_assert.assertTrue(nscore4HomePage.getAttentionName().contains(attentionNameForUpdate), "Expected attention name is: "+attentionNameForUpdate+" But actual on UI is "+nscore4HomePage.getAttentionName());
+		s_assert.assertTrue(nscore4HomePage.getZIPCode().contains(ZIPCodeForUpdate), "Expected ZIP code is: "+ZIPCodeForUpdate+" But actual on UI is "+nscore4HomePage.getZIPCode());
+		s_assert.assertTrue(nscore4HomePage.getLastFourDgitOfPhoneNumber().contains(phoneNumberForUpdate), "Expected phone number is: "+phoneNumberForUpdate+" But actual on UI is "+nscore4HomePage.getLastFourDgitOfPhoneNumber());
+		nscore4HomePage.clickCRPStartDate();
+		nscore4HomePage.clickSpecficDateOfCalendar(startDay);
+		nscore4HomePage.enterUserName(userName);
+		nscore4HomePage.enterFirstName(firstName);
+		nscore4HomePage.enterLastFourDigitOfHomePhoneNumber(homePhone);
+		nscore4HomePage.enterEmailAddress(emailID);
+		nscore4HomePage.selectTaxExemptValue(taxExemptValue);
+		nscore4HomePage.enterNameOnSSNCard(nameOnSSNCard);
+		nscore4HomePage.clickDOBDate();
+		nscore4HomePage.clickSpecficDateOfCalendar(dobDay);
+		nscore4HomePage.selectGender(gender);
+		nscore4HomePage.enterAttentionName(attentionName);
+		nscore4HomePage.enterZIPCode(zipCode);
+		nscore4HomePage.enterLastFourDigitOfPhoneNumber(phoneNumber);
+		nscore4HomePage.clickSaveBtnForAccountRecord();
+		nscore4HomePage.clickUseAsEnteredbtn();
+		s_assert.assertTrue(nscore4HomePage.getUpdationMessage().contains("Account saved successfully"), "Expected message is: Account saved successfully but actual on UI is: "+nscore4HomePage.getUpdationMessage());
+		s_assert.assertAll();
+	}
+
+	//NSC4_AccountsTab_ ShippingProfilesAddEditDefaultDelete
+	@Test
+	public void testAccountsTab_ShippingProfilesAddEditDefaultDelete(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newShippingProfileName = "newSP"+randomNum;
+		String attentionCO ="SP";
+		String addressLine1 ="123 J street";
+		String zipCode= "28214-5037";
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		nscore4OrdersTabPage =new NSCore4OrdersTabPage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		//NAavigate to Billing & Shipping Profile section
+		nscore4HomePage.clickBillingAndShippingProfileLink();
+		//click 'Add' for the Shipping profile section
+		nscore4HomePage.clickShippingProfileAddLink();
+		//Enter all Information regarding new Shipping Profile-
+		nscore4HomePage.addANewShippingProfile(newShippingProfileName, attentionCO, addressLine1, zipCode);
+		//click 'SAVE ADDRESS BTN'
+		nscore4HomePage.clickSaveAddressBtn();
+		nscore4HomePage.refreshPage();
+		//verify newly created shipping profile created?
+		s_assert.assertTrue(nscore4HomePage.isNewlyCreatedShippingProfilePresent(newShippingProfileName),"Newly created Shipping Profile is not Present");
+		//click on 'Set As Default Address' on the newly created profile
+		nscore4HomePage.clickSetAsDefaultAddressForNewlyCreatedProfile(newShippingProfileName);
+		//Verify profile is now default?
+		s_assert.assertTrue(nscore4HomePage.validateNewlyCreatedShippingProfileIsDefault(newShippingProfileName),"Newly created Shipping Profile is Not Marked-DEFAULT");
+		//Delete the newly created profile-
+		nscore4HomePage.deleteAddressNewlyCreatedProfile(newShippingProfileName);
+		s_assert.assertAll();	   
+	}
+
+	//NSC4_AccountsTab_ BillingProfilesAddEditDefaultDelete
+	@Test
+	public void testAccountsTab_BillingProfilesAddEditDefaultDelete(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = "RFAutoNSCore4"+randomNum;
+		String lastName = "lN";
+		String nameOnCard = "rfTestUser";
+		String cardNumber =  "4747474747474747";
+		String accountNumber = null;
+		List<Map<String, Object>> randomAccountList =  null;
+		nscore4OrdersTabPage =new NSCore4OrdersTabPage(driver);
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+		//NAavigate to Billing & Shipping Profile section
+		nscore4HomePage.clickBillingAndShippingProfileLink();
+		//click 'Add' for the billing profile section
+		nscore4HomePage.clickBillingProfileAddLink();
+		//Enter all the Information regarding New Billing Profile
+		nscore4HomePage.addANewBillingProfile(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		//click 'SAVE PAYMENT METHOD'
+		nscore4HomePage.clickSavePaymentMethodBtn();
+		//Verify that the new profile got created?
+		s_assert.assertTrue(nscore4HomePage.isNewlyCreatedBilingProfilePresent(),"Newly created Billing Profile is not Present");
+		//click on 'Set As Default Payment Method' on the newly created profile
+		nscore4HomePage.clickSetAsDefaultPaymentMethodForNewlyCreatedProfile();
+		//Verify profile is now default?
+		s_assert.assertTrue(nscore4HomePage.validateNewlyCreatedBillingProfileIsDefault(),"Newly created Billing Profile is Not Marked-DEFAULT");
+		//Delete the newly created profile-
+		nscore4HomePage.deletePaymentMethodNewlyCreatedProfile();
+		s_assert.assertAll();
+	}
 
 }

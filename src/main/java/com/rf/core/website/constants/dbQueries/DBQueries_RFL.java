@@ -6,7 +6,8 @@ public class DBQueries_RFL {
 	//RFL Queries
 	public static String GET_EMAILID_FROM_ACCOUNTID = "select top 1 * from dbo.Accounts where accountID='%s'";
 	public static String GET_RANDOM_ACTIVE_SKU = "select top 1 * from Products where active='1' ORDER BY NEWID()";
-	public static String GET_RANDOM_ACCOUNT_DETAILS = "select top 1 * from Accounts ORDER BY NEWID()";
+	public static String GET_RANDOM_ACCOUNT_DETAILS = "select top 1 * from Accounts where Active='1' ORDER BY NEWID()";
+	public static String GET_RANDOM_ORDER_DETAILS = "select  top 1 * from dbo.Orders ORDER BY NEWID()";
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
 	public static String GET_ORDER_DETAILS = "select * from dbo.Orders where OrderNumber = '%s'";
 	public static String GET_RANDOM_EXISTING_CONSULTANT_SITE_URL = 
@@ -36,6 +37,14 @@ public class DBQueries_RFL {
 			" join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
 			" join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID"+
 			" where dbo.Orders.OrderTypeID=7 and dbo.Orders.OrderNumber='%s'";
+
+	public static String GET_ORDER_ACCOUNT_DETAILS_ACTIVE_USER_RFL ="select top 1 dbo.Accounts.FirstName,dbo.Accounts.LastName from dbo.Orders"+
+			" join dbo.OrderCustomers ON dbo.OrderCustomers.OrderID = dbo.Orders.OrderID"+
+			" join dbo.OrderShipments ON dbo.OrderShipments.OrderID = dbo.Orders.OrderID"+
+			" join dbo.OrderPayments ON dbo.OrderPayments.OrderID = dbo.Orders.OrderID"+
+			" join dbo.Accounts ON dbo.Accounts.AccountID = dbo.OrderCustomers.AccountID"+
+			" where dbo.Orders.OrderNumber='%s'";
+
 	public static String GET_SHIPPING_METHOD_QUERY_RFL="select * from dbo.ShippingMethods where ShippingMethodID = '%S'";
 	public static String GET_ACCOUNT_NAME_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select * from dbo.Accounts where AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_FOR_ACCOUNT_INFO_QUERY_RFL = "select top 1 * from dbo.AccountAddresses where AddressTypeId='1' and AccountID IN (select AccountID from dbo.Accounts where emailAddress = '%s')";

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -19,7 +20,6 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-
 
 	private static String productOnOrderTableOnOrderPage = "//table[@id='products']//td[contains(text(),'%s')]";
 	private static String productOnOrderTableOnOrderDetailPage = "//table[@class='DataGrid']//td[contains(text(),'%s')]";
@@ -40,6 +40,11 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static String completedDateOfOrder = "//table[@id='orders']/tbody/tr[%s]/td[4]";
 	private static String shippedDateOfOrder = "//table[@id='orders']/tbody/tr[%s]/td[5]";
 	private static String orderNumber = "//table[@id='orders']/tbody/tr[%s]/td[1]/a";
+	private static String genderDDValue ="//select[@id='gender']/option[contains(text(),'%s')]";
+	private static String newlyCeatedShippingProfile = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]";
+	private static String newlyCeatedShippingProfileSetDefault = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]//a[contains(text(),'Set As Default Address')]";
+	private static String newlyCeatedShippingProfileIsDefault = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]//span[contains(text(),'default')]";
+	private static String deleteAddressnewlyCeatedShippingProfile = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]/preceding-sibling::span[1]/a[2]";
 
 	private static final By TOTAL_NO_OF_COLUMNS = By.xpath("//tr[@class='GridColHead']//a");
 	private static final By EDIT_MY_STORY_LINK = By.xpath("//a[@class='EditButton' and contains(text(),'Edit My Story')]");
@@ -95,7 +100,51 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By START_DATE_OF_DATE_RANGE = By.id("txtStartDate");
 	private static final By ORDER_SEARCH_RESULTS = By.xpath("//table[@id='orders']/tbody/tr");
 	private static final By ORDER_NUMBER_FROM_ORDER_DETAILS = By.xpath("//div[@class='CustomerLabel']/a");
-
+	private static final By FULL_ACCOUNT_RECORD_LINK = By.xpath("//span[contains(text(),'Full Account Record')]");
+	private static final By APPLICATION_ON_FILE_CHKBOX = By.id("chkApplicationOnFile");
+	private static final By CRP_START_DATE = By.id("crpStartDate");
+	private static final By USERNAME_LOC = By.id("txtUsername");
+	private static final By FIRST_NAME = By.id("txtFirstName");
+	private static final By LAST_FOUR_DIGIT_OF_HOME_PHONE_NUMBER = By.id("txtHomePhoneLastFour");
+	private static final By EMAIL_ADDRESS_LOC = By.id("txtEmail");
+	private static final By TAX_EXEMPT_VALUE = By.xpath("//select[@id='isTaxExempt']/option[@selected='selected']");
+	private static final By TAX_EXEMPT_DD = By.id("isTaxExempt");
+	private static final By TAX_EXEMPT_DD_YES_VALUE = By.xpath("//select[@id='isTaxExempt']/option[contains(text(),'Yes')]");
+	private static final By TAX_EXEMPT_DD_NO_VALUE = By.xpath("//select[@id='isTaxExempt']/option[contains(text(),'No')]");
+	private static final By DOB_LOC = By.id("txtDOB");
+	private static final By NAME_ON_SSN_CARD = By.id("txtLegalName");
+	private static final By GENDER_DD = By.id("gender");
+	private static final By GENDER_DD_SELECTED_VALUE = By.xpath("//select[@id='gender']/option[@selected='selected']");
+	private static final By ATTENTION_NAME = By.id("txtAttention");
+	private static final By ZIP_CODE = By.id("txtPostalCode");
+	private static final By LAST_FOUR_DIGIT_OF_PHONE_NUMBER = By.id("txtLastFour");
+	private static final By SAVE_ACCOUNT_BTN = By.id("btnSaveAccount");
+	private static final By USE_AS_ENTERED_BTN = By.xpath("//span[contains(text(),'Use as entered')]/..[@aria-disabled='false']");
+	private static final By ACCEPT_BTN = By.xpath("//span[contains(text(),'Accept')]");
+	private static final By GET_UPDATION_MSG = By.xpath("//div[@id='messageCenter']/div[contains(@id,'message')]");
+	private static final By USE_ADDRESS_AS_ENTERED = By.id("QAS_AcceptOriginal");
+	private static final By BILLING_AND_SHIPPING_PROFILE_LINK_LOC = By.xpath("//span[text()='Billing & Shipping Profiles']");
+	private static final By SHIPPING_PROFILE_ADD_LINK_LOC = By.xpath("//a[@id='btnAddShippingAddress']");
+	private static final By ADD_SHIPPING_ADDRESS_PROFILE_NAME_LOC = By.xpath("//input[@id='profileName']");
+	private static final By ADD_SHIPPING_ADDRESS_ATTENTION_LOC = By.xpath("//input[@id='attention']");
+	private static final By ADD_SHIPPING_ADDRESS_LINE1_LOC = By.xpath("//input[@id='addressLine1']");
+	private static final By ADD_SHIPPING_ADDRESS_ZIPCODE_LOC = By.xpath("//input[@id='zip']");
+	private static final By SAVE_ADDRESS_BTN_LOC = By.xpath("//a[@id='btnSaveAddress']");
+	private static final By USE_ADDRESS_AS_ENTERED_BTN_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
+	private static final By BILLING_PROFILE_ADD_LINK_LOC = By.xpath("//a[@id='btnAddBillingAddress']");
+	private static final By ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC = By.id("existingAddress");
+	private static final By ADD_PAYMENT_METHOD_FIRST_NAME_LOC = By.xpath("//input[@id='uxAttentionFirstName']");
+	private static final By ADD_PAYMENT_METHOD_LAST_NAME_LOC = By.xpath("//input[@id='uxAttentionLastName']");
+	private static final By ADD_PAYMENT_METHOD_NAME_ON_CARD_LOC = By.xpath("//input[@id='nameOnCard']");
+	private static final By ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC = By.xpath("//input[@id='accountNumber']");
+	private static final By ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC = By.id("expYear");
+	private static final By SAVE_PAYMENT_METHOD_BTN_LOC = By.xpath("//a[@id='btnSavePaymentMethod']");
+	private static final By USE_AS_ENTERED_BTN_LOC = By.xpath("//button/span[contains(text(),'Use as entered')]");
+	private static final By ACCEPT_BTN_LOC = By.xpath("//button/span[text()='Accept']");
+	private static final By NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]");
+	private static final By SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]/preceding-sibling::span[1]/a[1]");
+	private static final By NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]//span[contains(text(),'default')]");
+	private static final By DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]/preceding-sibling::span[1]/a[2]");
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -571,4 +620,417 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		return isCurrentYearPresent;
 	}
 
+	public void clickFullAccountRecordLink(){
+		driver.waitForElementPresent(FULL_ACCOUNT_RECORD_LINK);
+		driver.click(FULL_ACCOUNT_RECORD_LINK);
+		logger.info("Full account record link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void checkApplicationOnFileChkBox(){
+		driver.waitForElementPresent(APPLICATION_ON_FILE_CHKBOX);
+		driver.click(APPLICATION_ON_FILE_CHKBOX);
+		logger.info("Application on file check box clicked");
+		driver.waitForPageLoad();
+	}
+
+	public String getCRPStartDate(){
+		driver.waitForElementPresent(CRP_START_DATE);
+		String startDate = driver.findElement(CRP_START_DATE).getAttribute("value");
+		logger.info("CRP start date is: "+startDate);
+		return startDate;
+	}
+
+	public void clickCRPStartDate(){
+		driver.waitForElementPresent(CRP_START_DATE);
+		driver.click(CRP_START_DATE);
+		logger.info("CRP Start date clicked");
+		driver.waitForPageLoad();
+	}
+
+	public String getUserName(){
+		driver.waitForElementPresent(USERNAME_LOC);
+		String userName = driver.findElement(USERNAME_LOC).getAttribute("value");
+		logger.info("Username is: "+userName);
+		return userName;
+	}
+
+	public void enterUserName(String name){
+		driver.waitForElementPresent(USERNAME_LOC);
+		driver.type(USERNAME_LOC, name);
+		logger.info("User Name text entered as: "+name);
+	}
+
+	public String getFirstName(){
+		driver.waitForElementPresent(FIRST_NAME);
+		String userName = driver.findElement(FIRST_NAME).getAttribute("value");
+		logger.info("Firstname is: "+userName);
+		return userName;
+	}
+
+	public void enterFirstName(String name){
+		driver.waitForElementPresent(FIRST_NAME);
+		driver.type(FIRST_NAME, name);
+		logger.info("First Name text entered as: "+name);
+	}
+
+	public String getLastFourDgitOfHomePhoneNumber(){
+		driver.waitForElementPresent(LAST_FOUR_DIGIT_OF_HOME_PHONE_NUMBER);
+		String homePhoneNumber = driver.findElement(LAST_FOUR_DIGIT_OF_HOME_PHONE_NUMBER).getAttribute("value");
+		logger.info("last four digit of home phone number is: "+homePhoneNumber);
+		return homePhoneNumber;
+	}
+
+	public void enterLastFourDigitOfHomePhoneNumber(String number){
+		driver.waitForElementPresent(LAST_FOUR_DIGIT_OF_HOME_PHONE_NUMBER);
+		driver.type(LAST_FOUR_DIGIT_OF_HOME_PHONE_NUMBER, number);
+		logger.info("last four digit of home phone number is: "+number);
+	}
+
+	public String getEmailAddress(){
+		driver.waitForElementPresent(EMAIL_ADDRESS_LOC);
+		String email = driver.findElement(EMAIL_ADDRESS_LOC).getAttribute("value");
+		logger.info("Email address is: "+email);
+		return email;
+	}
+
+	public void enterEmailAddress(String email){
+		driver.waitForElementPresent(EMAIL_ADDRESS_LOC);
+		driver.type(EMAIL_ADDRESS_LOC, email);
+		logger.info("Email address entered as: "+email);
+	}
+
+	public String getTaxExemptValue(){
+		reLoadPage();
+		driver.waitForElementPresent(TAX_EXEMPT_VALUE);
+		String taxExemptValue = driver.findElement(TAX_EXEMPT_VALUE).getText().trim();
+		logger.info("Tax exempt value is: "+taxExemptValue);
+		return taxExemptValue;
+	}
+
+	public String getTaxExemptValueForUpdate(String taxExemptValue){
+		if(taxExemptValue.contains("No")){
+			taxExemptValue = "Yes";
+		}else{
+			taxExemptValue = "No";
+		}
+		logger.info("Tax exempt value for update is: "+taxExemptValue);
+		return taxExemptValue;
+	}
+
+	public void selectTaxExemptValue(String taxExemptValue){
+		driver.click(TAX_EXEMPT_DD);
+		logger.info("Tax exempt DD clicked");
+		if(taxExemptValue.equalsIgnoreCase("Yes")){
+			driver.click(TAX_EXEMPT_DD_YES_VALUE);
+			logger.info("Yes value selected from DD for tax exempt");
+		}else{
+			driver.click(TAX_EXEMPT_DD_NO_VALUE);
+			logger.info("No value selected from DD for tax exempt");
+		}
+	}
+
+	public String getNameOnSSNCard(){
+		driver.waitForElementPresent(NAME_ON_SSN_CARD);
+		String email = driver.findElement(NAME_ON_SSN_CARD).getAttribute("value");
+		logger.info("Name on SSN card is: "+email);
+		return email;
+	}
+
+	public void enterNameOnSSNCard(String name){
+		if(name.equalsIgnoreCase("null")){
+			logger.info("Before updation name on SSN card is null ");
+		}else{
+			driver.waitForElementPresent(NAME_ON_SSN_CARD);
+			driver.type(NAME_ON_SSN_CARD, name);
+			logger.info("SSN Card name entered as: "+name);
+		}
+	}
+
+	public String getDOBValue(){
+		driver.waitForElementPresent(DOB_LOC);
+		String dob = driver.findElement(DOB_LOC).getAttribute("value");
+		logger.info("Date of birth is: "+dob);
+		return dob;
+	}
+
+	public String getSelectedGender(){
+		reLoadPage();
+		String gender = driver.findElement(GENDER_DD_SELECTED_VALUE).getText().trim();
+		logger.info("gender is: "+gender);
+		return gender;
+	}
+
+	public void selectGender(String gender){
+		driver.waitForElementPresent(GENDER_DD);
+		driver.click(GENDER_DD);
+		logger.info("Gender DD clicked");
+		driver.click(By.xpath(String.format(genderDDValue, gender)));
+		logger.info("Gender selected as: "+gender);
+	}
+
+	public String getAttentionName(){
+		driver.waitForElementPresent(ATTENTION_NAME);
+		String attentionName = driver.findElement(ATTENTION_NAME).getAttribute("value");
+		logger.info("Attention name is: "+attentionName);
+		return attentionName;
+	}
+
+	public void enterAttentionName(String attentionName){
+		driver.waitForElementPresent(ATTENTION_NAME);
+		driver.type(ATTENTION_NAME, attentionName);
+		logger.info("Attention name entered as: "+attentionName);
+	}
+
+	public String getZIPCode(){
+		driver.waitForElementPresent(ZIP_CODE);
+		String zipCode = driver.findElement(ZIP_CODE).getAttribute("value");
+		logger.info("ZIP code is: "+zipCode);
+		return zipCode;
+	}
+
+	public void enterZIPCode(String zipCode){
+		driver.waitForElementPresent(ZIP_CODE);
+		driver.type(ZIP_CODE, zipCode);
+		logger.info("ZIP Code entered as: "+zipCode);
+	}
+
+
+	public String getLastFourDgitOfPhoneNumber(){
+		driver.waitForElementPresent(LAST_FOUR_DIGIT_OF_PHONE_NUMBER);
+		String phoneNumber = driver.findElement(LAST_FOUR_DIGIT_OF_PHONE_NUMBER).getAttribute("value");
+		logger.info("Phone Number is: "+phoneNumber);
+		return phoneNumber;
+	}
+
+	public void enterLastFourDigitOfPhoneNumber(String number){
+		driver.waitForElementPresent(LAST_FOUR_DIGIT_OF_PHONE_NUMBER);
+		driver.type(LAST_FOUR_DIGIT_OF_PHONE_NUMBER, number);
+		logger.info("Phone number entered as: "+number);
+	}
+
+	public void clickSaveBtnForAccountRecord(){
+		driver.waitForElementPresent(SAVE_ACCOUNT_BTN);
+		driver.click(SAVE_ACCOUNT_BTN);
+		logger.info("Save button clicked for Account record");
+		driver.waitForPageLoad();
+	}
+
+	public String getDayFromDate(String date){
+		String day = date.split("\\/")[1];
+		logger.info("The day is: "+day);
+		return day;
+	}
+
+	public String getUpdatedDayFromDate(String day){
+		if(day.contains("30")|| day.contains("31")){
+			day = "1";
+		}else{
+			//int updatedDay = Integer.parseInt(day) 
+			day = String.valueOf(Integer.parseInt(day)+1);
+		}
+		logger.info("Updated day is: "+day);
+		return day;
+	}
+
+	public String getMonthFromDate(String date){
+		String month = date.split("\\/")[0];
+		logger.info("The month is: "+month);
+		return month;
+	}
+
+	public String getYearFromDate(String date){
+		String year = date.split("\\/")[2];
+		logger.info("The Year is: "+year);
+		return year;
+	}
+
+	public void clickUseAsEnteredbtn(){
+		try{if(driver.isElementPresent(USE_AS_ENTERED_BTN)==true){
+			driver.waitForElementPresent(USE_AS_ENTERED_BTN);
+			driver.click(USE_AS_ENTERED_BTN);
+			logger.info("Use as entered button clicked for Account record");
+		}else{
+			driver.click(ACCEPT_BTN);
+			logger.info("Accept button clicked for Account record");
+		}
+		}catch(Exception e){
+			driver.click(USE_ADDRESS_AS_ENTERED);
+			logger.info("Usee address as entered button clicked for Account record");
+		}
+	}
+
+	public String getUpdationMessage(){
+		String msg = driver.findElement(GET_UPDATION_MSG).getText();
+		logger.info("Updation mesage is: "+msg);
+		return msg;
+	}
+
+	public void clickDOBDate(){
+		driver.waitForElementPresent(DOB_LOC);
+		driver.click(DOB_LOC);
+		logger.info("DOB date clicked");
+		driver.waitForPageLoad();
+	}
+
+	public String getGenderValueForUpdate(String gender){
+		if(gender.contains("None")){
+			gender = "Male";
+		}else{
+			if(gender.contains("Male")){
+				gender = "Female";
+			}else{
+				gender = "Male";
+			}
+
+		}
+		logger.info("Gender for update is: "+gender);
+		return gender;
+	}
+
+	public void clickBillingAndShippingProfileLink(){
+		driver.quickWaitForElementPresent(BILLING_AND_SHIPPING_PROFILE_LINK_LOC);
+		driver.click(BILLING_AND_SHIPPING_PROFILE_LINK_LOC);
+		logger.info("Billing & Shipping Profile link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+
+	public void clickShippingProfileAddLink(){
+		driver.quickWaitForElementPresent(SHIPPING_PROFILE_ADD_LINK_LOC);
+		driver.click(SHIPPING_PROFILE_ADD_LINK_LOC);
+		logger.info("Shipping Profile -Add link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+	public void addANewShippingProfile(String profileName,String attention,String addressLine1,String zipCode){
+		driver.type(ADD_SHIPPING_ADDRESS_PROFILE_NAME_LOC, profileName);
+		driver.type(ADD_SHIPPING_ADDRESS_ATTENTION_LOC, attention);
+		driver.type(ADD_SHIPPING_ADDRESS_LINE1_LOC, addressLine1);
+		driver.type(ADD_SHIPPING_ADDRESS_ZIPCODE_LOC, zipCode);
+		driver.pauseExecutionFor(3500);
+	}
+
+	public void clickSaveAddressBtn(){
+		driver.quickWaitForElementPresent(SAVE_ADDRESS_BTN_LOC);
+		driver.click(SAVE_ADDRESS_BTN_LOC);
+		driver.pauseExecutionFor(5000);
+		try{
+			driver.quickWaitForElementPresent(USE_ADDRESS_AS_ENTERED_BTN_LOC);
+			driver.click(USE_ADDRESS_AS_ENTERED_BTN_LOC);
+			logger.info("Use Address as Entered Btn clicked");
+			driver.pauseExecutionFor(2000);
+		}catch(Exception e){
+			e.getMessage();
+			logger.info("'Use Address Ad Entered' PopUp not displayed");
+		}
+		driver.waitForPageLoad();
+	}
+
+	public boolean isNewlyCreatedShippingProfilePresent(String shippingProfileName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(newlyCeatedShippingProfile, shippingProfileName)));
+		return driver.isElementPresent(By.xpath(String.format(newlyCeatedShippingProfile, shippingProfileName)));
+	}
+
+	public void clickSetAsDefaultAddressForNewlyCreatedProfile(String shippingProfileName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(newlyCeatedShippingProfileSetDefault, shippingProfileName)));
+		driver.click(By.xpath(String.format(newlyCeatedShippingProfileSetDefault, shippingProfileName)));
+		driver.pauseExecutionFor(3000);
+	}
+
+	public boolean validateNewlyCreatedShippingProfileIsDefault(String shippingProfileName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(newlyCeatedShippingProfileIsDefault, shippingProfileName)));
+		return driver.isElementPresent(By.xpath(String.format(newlyCeatedShippingProfileIsDefault, shippingProfileName)));
+	}
+
+	public void deleteAddressNewlyCreatedProfile(String shippingProfileName){
+		driver.quickWaitForElementPresent(By.xpath(String.format(deleteAddressnewlyCeatedShippingProfile, shippingProfileName)));
+		driver.click(By.xpath(String.format(deleteAddressnewlyCeatedShippingProfile, shippingProfileName)));
+		//switch to Alert to delete payment method-
+		try{
+			Alert alt =driver.switchTo().alert();
+			alt.accept();
+		}catch(Exception e){
+			logger.info("");
+		}
+		driver.pauseExecutionFor(2000);
+	}
+
+	public void clickBillingProfileAddLink(){
+		driver.quickWaitForElementPresent(BILLING_PROFILE_ADD_LINK_LOC);
+		driver.click(BILLING_PROFILE_ADD_LINK_LOC);
+		logger.info("Billing Profile -Add link clicked");
+		driver.waitForPageLoad(); 
+	}
+
+	public void addANewBillingProfile(String firstName,String lastName,String nameOnCard,String cardNumber){
+		//select 'Main-Billing' as billing address-
+		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
+		select.selectByIndex(1);
+		driver.pauseExecutionFor(4500);
+		//Add 'Payment-Method'
+		driver.type(ADD_PAYMENT_METHOD_FIRST_NAME_LOC, firstName);
+		driver.type(ADD_PAYMENT_METHOD_LAST_NAME_LOC, lastName);
+		driver.type(ADD_PAYMENT_METHOD_NAME_ON_CARD_LOC, nameOnCard);
+		driver.type(ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC, cardNumber);
+		//select 'Expiration' Date(change year)
+		Select sel = new Select(driver.findElement(ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC));
+		sel.selectByIndex(7);
+	}
+
+	public void clickSavePaymentMethodBtn(){
+		driver.quickWaitForElementPresent(SAVE_PAYMENT_METHOD_BTN_LOC);
+		driver.click(SAVE_PAYMENT_METHOD_BTN_LOC);
+		logger.info("Save Payment Method Btn clicked");
+		driver.pauseExecutionFor(3000);
+		try{
+			driver.quickWaitForElementPresent(USE_AS_ENTERED_BTN_LOC);
+			driver.click(USE_AS_ENTERED_BTN_LOC);
+			logger.info("Use as Entered Btn clicked");
+			driver.pauseExecutionFor(2000);
+		}catch(Exception e){
+			try{
+				driver.quickWaitForElementPresent(ACCEPT_BTN_LOC);
+				driver.click(ACCEPT_BTN_LOC);
+				logger.info("Accept Btn clicked");
+				driver.pauseExecutionFor(2000);
+			}catch(Exception e1){
+				e.getMessage();
+				logger.info("No PopUp found for 'Use As Entered'/'Accept' button");
+			}
+		}
+		driver.waitForPageLoad();
+	}
+
+	public boolean isNewlyCreatedBilingProfilePresent(){
+		driver.quickWaitForElementPresent(NEWLY_CREATED_BILLING_PROFILE_LOC);
+		return driver.isElementPresent(NEWLY_CREATED_BILLING_PROFILE_LOC);
+	}
+
+
+	public void clickSetAsDefaultPaymentMethodForNewlyCreatedProfile(){
+		driver.pauseExecutionFor(5000);
+		driver.quickWaitForElementPresent(SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		driver.click(SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
+	}
+
+	public boolean validateNewlyCreatedBillingProfileIsDefault(){
+		driver.quickWaitForElementPresent(NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC);
+		return driver.isElementPresent(NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC);
+	}
+
+	public void deletePaymentMethodNewlyCreatedProfile(){
+		driver.quickWaitForElementPresent(DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		driver.click(DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		//switch to Alert to delete payment method-
+		try{
+			Alert alt =driver.switchTo().alert();
+			alt.accept();
+		}catch(Exception e){
+
+		}
+		driver.pauseExecutionFor(2000);
+	}
 }

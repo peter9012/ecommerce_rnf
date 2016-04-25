@@ -30,8 +30,10 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	protected String password = null;
 	protected String countryId = null;
 	private static final By LOGIN_BTN = By.id("btnLogin");
-	private static final By USERNAME_TXT_FIELD = By.id("username");
-	private static final By PASSWORD_TXT_FIELD = By.id("password");
+	private static final By USERNAME_TXT_FIELD_NSCORE4 = By.id("username");
+	private static final By PASSWORD_TXT_FIELD_NSCORE4 = By.id("password");
+	private static final By USERNAME_TXT_FIELD_NSCORE3 = By.id("txtUsername");
+	private static final By PASSWORD_TXT_FIELD_NSCORE3 = By.id("txtPassword");
 	private static final By LOGOUT_LINK = By.xpath("//a[contains(text(),'Logout')]") ;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
@@ -58,16 +60,28 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		logger.info("In Before method..");
 		s_assert = new SoftAssert();
-		driver.get(driver.getURL());		
+		if(driver.getURL().contains("nsc4"))
+			driver.get(driver.getURL());	
+		else{
+			driver.get(driver.getURL()+"/Home.aspx");	
+		}
 		logger.info("Out of Before method..");
 	}
 
-	public void login(String userName,String password){
-		driver.waitForElementPresent(USERNAME_TXT_FIELD);
-		driver.type(USERNAME_TXT_FIELD, userName+"\t");
+	public void login(String userName,String password){		
+		driver.quickWaitForElementPresent(USERNAME_TXT_FIELD_NSCORE4);
+		try{
+			driver.type(USERNAME_TXT_FIELD_NSCORE4, userName+"\t");
+		}catch(Exception e){
+			driver.type(USERNAME_TXT_FIELD_NSCORE3, userName+"\t");	
+		}
 		logger.info("username is "+userName);
-		driver.waitForElementPresent(PASSWORD_TXT_FIELD);
-		driver.type(PASSWORD_TXT_FIELD, password);
+		driver.quickWaitForElementPresent(PASSWORD_TXT_FIELD_NSCORE4);
+		try{
+			driver.type(PASSWORD_TXT_FIELD_NSCORE4, password);
+		}catch(Exception e){
+			driver.type(PASSWORD_TXT_FIELD_NSCORE3, password);
+		}
 		logger.info("password is "+password);
 		driver.click(LOGIN_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();		

@@ -780,4 +780,131 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//**-------------
+	//NSC4_AdminTab_ Users_AddEditRoles
+	@Test
+	public void testAdminTabUsersAddEditRoles(){
+		int randomNum = CommonUtils.getRandomNum(10, 100);
+		String roleName ="SampleRole";
+		nscore4AdminPage=nscore4HomePage.clickAdminTab();
+		//click Role->Add new role
+		nscore4AdminPage.clickRolesLink();
+		nscore4AdminPage.clickAddNewRoleLink();
+		//Enter New Role Name and Save
+		nscore4AdminPage.enterRoleName(roleName+randomNum);
+		nscore4AdminPage.clickSaveBtn();
+		//Verify that the new role got created and displayed as a link in Roles list?
+		s_assert.assertTrue(nscore4AdminPage.validateNewRoleListedInRolesList(roleName+randomNum),"NEW Role Name is not listed in the roles list");
+		s_assert.assertAll();
+	}
+
+	//NSC4_SitesTab_nsDistributor_BasePWSSitePagesAddEditNewSite
+	@Test
+	public void testBasePWSPagesAddEditNewSite(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNumb = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+		String sublinkName = "Site Pages";
+		String pageName = "AutomationPage"+randomNumb;
+		String pageTitle = "AutoTitle"+randomNumber;
+		String pageDescription = "AutoDesc"+randomNumbers;
+		String pageURL = "/Pages/About/"+pageName;
+		String pageKeyword = "Unique"+randomNumb;
+		String templateView = "Two Piece View";
+
+		logger.info("DB is "+RFL_DB);
+		nscore4HomePage.clickTab("Sites");
+		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(sublinkName);
+		nscore4SitesTabPage.clickAddNewPageLink();
+		nscore4SitesTabPage.enterNewPageDetails(pageName,pageTitle,pageDescription,pageURL,pageKeyword,templateView);
+		nscore4SitesTabPage.clickSaveButtonForNewCreatedPage();
+		s_assert.assertTrue(nscore4SitesTabPage.getPageSavedSuccessfullyTxtForSite().contains("Page saved successfully!"), "Expected saved message is: Site saved successfully but actual on UI is: "+nscore4SitesTabPage.getPageSavedSuccessfullyTxtForSite());
+		int noOfOptionsInSizePageDD = nscore4SitesTabPage.getSizeOfOptinsFromPageSizeDD();
+		nscore4SitesTabPage.clickAndSelectOptionInPageSizeDD(noOfOptionsInSizePageDD);
+		s_assert.assertTrue(nscore4SitesTabPage.verifyPageNameOnSitePageList(pageName),"Newly created page name is not present on site page list");
+		nscore4SitesTabPage.clickPageNameOnSitePageList(pageName);
+		nscore4SitesTabPage.checkActiveCheckboxOnSitePage();
+		nscore4SitesTabPage.clickSaveButtonForNewCreatedPage();
+		s_assert.assertTrue(nscore4SitesTabPage.getPageSavedSuccessfullyTxtForSite().contains("Page saved successfully!"), "Expected Active checkbox unchecked message is: Site saved successfully but actual on UI is: "+nscore4SitesTabPage.getPageSavedSuccessfullyTxtForSite());
+		s_assert.assertAll();
+	}
+
+	//NSC4_SitesTab_nsDistributor_BasePWSSiteMap
+	@Test
+	public void testNSC4SitesTabBasePWSSiteMap(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String sites = "Sites";
+		String siteMap = "Site Map";
+		String linkText = "AutoRF"+randomNum;
+		String pageOption = "MeetDrFields";
+		String clearNavigationCache = "Clear Navigation Cache";
+		String reloadProductCache  = "Reload Product Cache";
+
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
+		nscore4SitesTabPage.clickAddLinkForSiteMap();
+		nscore4SitesTabPage.enterLinkTextForSiteMap(linkText);
+		nscore4SitesTabPage.selectPagesForSiteMap(pageOption);
+		nscore4SitesTabPage.clickSaveBtnOnSiteMap();
+		s_assert.assertTrue(nscore4SitesTabPage.isLinkTextNamePresentInTreeMap(linkText), "Link text name is not prsent in site map tree");
+		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
+		nscore4SitesTabPage.moveToSiteMapLinkUnderDrFieldsForAddLinkOfBasePWS(linkText);
+		nscore4SitesTabPage.clickActivateLinkOnSiteMap();
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfNSCorporate(clearNavigationCache);
+		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The navigation cache has been cleared"), "Expected confirmation message is: The navigation cache has been cleared but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
+		nscore4SitesTabPage.clickSubLinkOfNSCorporate(reloadProductCache);
+		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The product cache has been reloaded"), "Expected confirmation message is: The product cache has been reloaded but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
+		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
+		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
+		nscore4SitesTabPage.clickLinkTextNamePresentInTreeMap(linkText);
+		nscore4SitesTabPage.clickDeactivateLinkOnSiteMap();
+		s_assert.assertTrue(nscore4SitesTabPage.isActivateLinkPresentOnSiteMap(), "Activate link is not present after clicked on Deactivate link");
+		s_assert.assertAll();
+	}
+
+	// NSC4_ProductsTab_ NewUpdateCatalog
+	@Test
+	public void testProductsTab_NewUpdateCatalog(){
+		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum =  CommonUtils.getRandomNum(1000, 100000);
+		String catalogName = "Test"+randomNumber;
+		String updatedCatalogInfo = "Test"+randomNum;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		RFL_DB = driver.getDBNameRFL();
+		nscore4HomePage.clickTab("Products");
+		nscore4ProductsTabPage.clickCreateANewCatalogLink();
+		nscore4ProductsTabPage.enterCatalogInfo(catalogName);
+		nscore4ProductsTabPage.clickSaveCatalogBtn();
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4ProductsTabPage.enterSkuQuickProductAddField(SKU);
+		nscore4ProductsTabPage.clickSaveCatalogBtn();
+		s_assert.assertTrue(nscore4ProductsTabPage.isSuccessMessagePresent(),"Success message is not displayed");
+		nscore4ProductsTabPage.clickCatalogManagementLink();
+		s_assert.assertTrue(nscore4ProductsTabPage.isNewCatalogPresentInList(catalogName),"new catalog is not present in the catalog list");
+		nscore4ProductsTabPage.clicknewlyCreatedCatalogName(catalogName);
+		nscore4ProductsTabPage.enterCatalogInfo(updatedCatalogInfo);
+		nscore4ProductsTabPage.clickSaveCatalogBtn();
+		s_assert.assertTrue(nscore4ProductsTabPage.isSuccessMessagePresent(),"Success message is not displayed");
+		nscore4ProductsTabPage.clickCatalogManagementLink();
+		s_assert.assertTrue(nscore4ProductsTabPage.isNewCatalogPresentInList(updatedCatalogInfo),"catalog info is not updated in the catalog list");
+		s_assert.assertAll();
+	}
+
+	//NSC4_SitesTab_nsCorporate_CorporateReplicateSites
+	@Test
+	public void testNSC4SitesTabNSCorporateReplicateSites(){
+		String sites = "Sites";
+		String replicatedSites = "Replicated Sites";
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfCorporate(replicatedSites);
+		s_assert.assertTrue(nscore4SitesTabPage.isReplicatedSitesHeaderPresent(), "Replicated Sites is not present");
+		s_assert.assertAll();
+	}
+
+
 }

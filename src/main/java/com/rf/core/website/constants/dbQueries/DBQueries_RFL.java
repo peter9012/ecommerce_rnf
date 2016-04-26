@@ -10,6 +10,8 @@ public class DBQueries_RFL {
 	public static String GET_RANDOM_ORDER_DETAILS = "select  top 1 * from dbo.Orders ORDER BY NEWID()";
 	public static String GET_RANDOM_ACTIVE_CONSULTANT_EMAILID = "select top 1 * from dbo.Accounts where AccountTypeID='1' AND Active='1' order by NEWID()";
 	public static String GET_ORDER_DETAILS = "select * from dbo.Orders where OrderNumber = '%s'";
+	public static String GET_SPONSER_ACCOUNT_NUMBER_FROM_SPONSER_ID = "select top 1 * from dbo.Accounts where AccountID='%s'";
+	public static String GET_SPONSER_DETAILS_FROM_SPONSER_ACCOUNT_NUMBER = "select * from dbo.Accounts where AccountNumber='%s'";
 	public static String GET_RANDOM_EXISTING_CONSULTANT_SITE_URL = 
 			"SELECT TOP 1 "+
 					"SUL.URL "+

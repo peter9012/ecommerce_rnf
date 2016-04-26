@@ -4024,6 +4024,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckCRPCheckBox();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
@@ -4087,6 +4088,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckCRPCheckBox();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
@@ -7314,6 +7316,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.applyPriceFilterHighToLow();
@@ -7396,6 +7399,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.applyPriceFilterHighToLow();
@@ -8261,6 +8265,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//Only Enroll in CRP but not pulse
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox selected");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
@@ -8322,6 +8327,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//Only Enroll in CRP but not pulse
+		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox selected");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");

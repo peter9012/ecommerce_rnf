@@ -47,6 +47,7 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 	private static final By SEARCH_BTN = By.xpath("//input[contains(@id,'_uxSearch')][@type='button']");
 	private static final By TOTAL_NO_OF_ROWS_DISTRIBUTOR_PAGE = By.xpath("//td[@id='ContentCol']//tr[contains(@class,'GridView')]");
 	private static final By CONSULTANT_DROPDOWN = By.xpath("//select[contains(@id,'_uxAccountTypes')]");
+	private static final By NEXT_PAGE_LINK_ON_DISTRIBUTOR_PAGE = By.xpath("//table[contains(@id,'uxDistributorGrid')]//tr[1]//a[contains(text(),'Next')]");
 
 	public void clickOrdersLink(){
 		driver.waitForElementPresent(ORDERS_LINK);
@@ -313,6 +314,48 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 			}
 		}
 		return flag;
+	}
+
+	public String getCellValueOnDistributorPage(int rowNumber, int columnNumber){
+		String cellValue= driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,rowNumber,columnNumber))).getText();
+		logger.info("Cell value is: "+cellValue);
+		return cellValue;
+	}
+
+	public String getRowNumberHavingTheCompleteName(String completeName){
+		int i=0;
+		boolean flag =false;
+		while(true){
+			int rows = driver.findElements(TOTAL_NO_OF_ROWS_DISTRIBUTOR_PAGE).size();
+			int firstNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("First Name");
+			int lastNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("Last Name");
+			for(i=3;i<rows+3;i++){
+				flag= false;
+				String firstName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,firstNameColNum))).getText();
+				String lastName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,lastNameColNum))).getText();
+				String completeNameString = firstName+" "+lastName;
+				if(completeName.equalsIgnoreCase(completeNameString)){
+					logger.info("complete name from UI and db match for row "+(i-2));
+					break;
+				}else{
+					flag=true;
+				}
+			}if(flag == false){
+				break;
+			}else{
+				if(driver.isElementPresent(NEXT_PAGE_LINK_ON_DISTRIBUTOR_PAGE)==true){
+					driver.click(NEXT_PAGE_LINK_ON_DISTRIBUTOR_PAGE);
+					driver.waitForNSCore4LoadingImageToDisappear();
+					logger.info("Next button clicked");
+				}else{
+					logger.info("None of rows on all pages contains the complete name string.");
+					break;
+				}
+			}
+		}
+		logger.info("Row number is: "+(i-2));
+		logger.info("return value of i is: "+i);
+		return ""+i;
 	}
 
 }

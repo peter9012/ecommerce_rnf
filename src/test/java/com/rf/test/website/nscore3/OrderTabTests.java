@@ -329,6 +329,133 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Distributors-search by account No
+	@Test
+	public void testDistributorsbyAccountNo(){
+		RFL_DB = driver.getDBNameRFL();
+		String distributors = "Distributors";
+		String searchByFieldOndistributorTab = "Account No";
+		String firstName = null;
+		String lastName = null;
+		String accountType = null;
+		nscore3LoginPage = new NSCore3LoginPage(driver);
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> sponsorAccountNumberList =  null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		String accountNumber = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
+		firstName = String.valueOf(getValueFromQueryResult(randomConsultantList, "FirstName"));
+		lastName = String.valueOf(getValueFromQueryResult(randomConsultantList, "LastName"));
+		String accountTypeID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountTypeID"));
+		if(accountTypeID.contains("1")){
+			accountType = "Consultant";
+		}
+		String emailID = String.valueOf(getValueFromQueryResult(randomConsultantList, "EmailAddress"));
+		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "SponsorID"));
+		sponsorAccountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_SPONSER_ACCOUNT_NUMBER_FROM_SPONSER_ID, sponsorID), RFL_DB);
+		String sponsorAccountNo = String.valueOf(getValueFromQueryResult(sponsorAccountNumberList, "AccountNumber"));
+		//Login to application
+		nscore3HomePage = new NSCore3HomePage(driver);
+		nscore3HomePage.clickTab(distributors);
+		nscore3HomePage.selectValueFromNameDDOnDistributorTab(searchByFieldOndistributorTab);
+		nscore3HomePage.enterSearchForFieldOnDistributorTab(accountNumber);
+		nscore3HomePage.clickSearchOnDistributorTab();
+		//assert account number
+		int columnNoForAccountNo = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("Account No.");
+		String accountNoFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForAccountNo);
+		s_assert.assertTrue(accountNumber.contains(accountNoFromUI), "Expected account number is: "+accountNumber+" Actual on UI: "+accountNoFromUI);
+		//assert fisrt name
+		int columnNoForFirstName = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("First Name");
+		String firstNameFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForFirstName);
+		s_assert.assertTrue(firstName.toLowerCase().trim().contains(firstNameFromUI.toLowerCase().trim()), "Expected first name is: "+firstName+" Actual on UI: "+firstNameFromUI);
+		//assert last name
+		int columnNoForlastName = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("Last Name");
+		String lastNameFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForlastName);
+		s_assert.assertTrue(lastNameFromUI.toLowerCase().trim().contains(lastName.toLowerCase().trim()), "Expected last name is: "+lastName+" Actual on UI: "+lastName);
+		//assert account type
+		int columnNoForAccountType = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("Account Type");
+		String accountTypeFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForAccountType);
+		s_assert.assertTrue(accountType.contains(accountTypeFromUI), "Expected account type is: "+accountType+" Actual on UI: "+accountTypeFromUI);
+		//assert email ID
+		int columnNoForEmail = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("E-Mail");
+		String emailIDFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForEmail);
+		s_assert.assertTrue(emailID.contains(emailIDFromUI), "Expected email id is: "+emailID+" Actual on UI: "+emailIDFromUI);
+		//assert sponsor ID
+		int columnNoForSponsor = nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage("Sponsor");
+		String sponsorFromUI = nscore3HomePage.getFirstRowCellValueAsPerColumnName(columnNoForSponsor);
+		s_assert.assertTrue(sponsorFromUI.contains(sponsorAccountNo), "Expected sponsor id is: "+sponsorAccountNo+" Actual on UI: "+sponsorFromUI);
+		s_assert.assertAll();
+	}
+
+	//Distributors-Search by sponsor name
+	@Test
+	public void testSearchBySponserName() throws InterruptedException{
+		RFL_DB = driver.getDBNameRFL();
+		String distributorTab = "Distributors";
+		String searchByFieldOndistributorTab = "Sponsor Name";
+		String accountNumber = null;
+		String firstName = null;
+		String lastName = null;
+		String emailAddress = null;
+		String sponserId = null;
+		String sponserAccountNumber = null;
+		String sponserFirstName = null;
+		String sponserLastName = null;
+		String sponserCompleteName = null;
+		String firstNameColumnNumberFromName ="First Name";
+		String LastNameColumnNumberFromName ="Last Name";
+		String accountNumberColumnNumberFromName ="Account No.";
+		String emailIdColumnNumberFromName = "E-Mail";
+		String cellValue =null;
+		String completeName=null;
+		nscore3LoginPage = new NSCore3LoginPage(driver);
+		nscore3HomePage = new NSCore3HomePage(driver);
+
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomSponserAccountNumberList =  null;
+		List<Map<String, Object>> randomSponserList =  null;
+
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		emailAddress = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		accountNumber = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
+		firstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
+		lastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
+		sponserId = String.valueOf(getValueFromQueryResult(randomConsultantList, "SponsorID"));
+		completeName = firstName+" "+lastName;
+		randomSponserAccountNumberList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_SPONSER_ACCOUNT_NUMBER_FROM_SPONSER_ID, sponserId),RFL_DB);
+		sponserAccountNumber = (String) getValueFromQueryResult(randomSponserAccountNumberList, "AccountNumber");
+		randomSponserList =DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_SPONSER_DETAILS_FROM_SPONSER_ACCOUNT_NUMBER, sponserAccountNumber),RFL_DB);
+		sponserFirstName =(String) getValueFromQueryResult(randomSponserList, "FirstName");
+		sponserLastName =(String) getValueFromQueryResult(randomSponserList, "LastName");
+		sponserCompleteName =sponserFirstName+" "+sponserLastName;
+		logger.info("sponser complete name is: "+sponserCompleteName);
+
+		nscore3HomePage.clickTab(distributorTab);
+		nscore3HomePage.selectValueFromNameDDOnDistributorTab(searchByFieldOndistributorTab);
+		nscore3HomePage.enterSearchForFieldOnDistributorTab(sponserCompleteName);
+		nscore3HomePage.clickSearchOnDistributorTab();
+		//Get Row number having complete name.
+		String rowNumber=nscore3HomePage.getRowNumberHavingTheCompleteName(completeName);
+		int rowToProcess = Integer.parseInt(rowNumber);
+
+		//Verify First name
+		int firstNameColumnNumber=nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage(firstNameColumnNumberFromName);
+		cellValue=nscore3HomePage.getCellValueOnDistributorPage(rowToProcess, firstNameColumnNumber);
+		s_assert.assertTrue(cellValue.equalsIgnoreCase(firstName)," Expected Customer first name"+firstName+" is not present in row and column"+firstNameColumnNumber+" While actual on UI is: "+cellValue);
+		//Verify Last name
+		int lastNameColumnNumber=nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage(LastNameColumnNumberFromName);
+		cellValue=nscore3HomePage.getCellValueOnDistributorPage(rowToProcess, lastNameColumnNumber);
+		s_assert.assertTrue(cellValue.equalsIgnoreCase(lastName)," Expected Customer last name"+lastName+" is not present in row and column"+lastNameColumnNumber+" While actual on UI is: "+cellValue);
+		//Verify account number column.
+		int accountNumberColumnNumber=nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage(accountNumberColumnNumberFromName);
+		cellValue=nscore3HomePage.getCellValueOnDistributorPage(rowToProcess, accountNumberColumnNumber);
+		s_assert.assertTrue(cellValue.equalsIgnoreCase(accountNumber)," Expected Customer account number"+accountNumber+" is not present in row and column"+accountNumberColumnNumber+" While actual on UI is: "+cellValue);
+		//Verify Email address.
+		int emailIdColumnNumber=nscore3HomePage.getColumnNumberHavingExpectedColumnNameOnDistributorPage(emailIdColumnNumberFromName);
+		cellValue=nscore3HomePage.getCellValueOnDistributorPage(rowToProcess, emailIdColumnNumber);
+		s_assert.assertTrue(cellValue.equalsIgnoreCase(emailAddress)," Expected Customer email address "+emailAddress+" is not present in row and column"+emailIdColumnNumber+" While actual on UI is: "+cellValue);
+		s_assert.assertAll();
+	}
+
 	//Orders - User is able to search for orders by consultant name
 	//	@Test
 	//	public void testOrdersUserIsAbleToSearchForOrdersByConsultant(){

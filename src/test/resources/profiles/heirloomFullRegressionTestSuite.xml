@@ -12,9 +12,9 @@
 			<class name="com.rf.test.website.storeFront.legacy.ComPWSTest" />
 			<class name="com.rf.test.website.storeFront.legacy.BizPWSTest" />
 			<class name="com.rf.test.website.storeFront.legacy.UINavigationTest" />
-			<class name="com.rf.test.website.nscore3.OrderTabTests" />
+		<!--  	<class name="com.rf.test.website.nscore3.OrderTabTests" />
 			<class name="com.rf.test.website.nscore4.NSCore4AccountTest" />
-		</classes>
+-->		</classes>
 	</test>
 </suite>
 		

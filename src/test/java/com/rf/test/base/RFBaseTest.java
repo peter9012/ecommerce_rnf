@@ -84,6 +84,14 @@ public class RFBaseTest{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 		}
+				//just do it - no try
+				File fDir2 = new File(System.getProperty("user.dir")
+						+ "\\test-output");
+						if (!fDir2.exists()) {
+							fDir2.mkdirs();
+							
+						
+						}
 	}
 
 	@AfterSuite(alwaysRun=true)

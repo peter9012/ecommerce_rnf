@@ -86,10 +86,10 @@ public class RFBaseTest{
 			e.printStackTrace();
 		}
 		try {
-			File fDir = new File(System.getProperty("user.dir")
+			File fDir2 = new File(System.getProperty("user.dir")
 					+ "\\test-output");
-					if (!fDir.exists()) {
-						fDir.mkdirs();
+					if (!fDir2.exists()) {
+						fDir2.mkdirs();
 						
 					
 					}

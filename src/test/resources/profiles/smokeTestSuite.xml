@@ -49,7 +49,51 @@
 				<methods>
 				<include name="testStandardEnrollmentBusinessKitReverseRegimen_71"/>
 				</methods>
-			</class>			
-	</classes>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
+			<methods>
+				<include name="testPCAutoshipTemplateDetails_HP2_4300" />
+				<include name="testChangeShippingMethodOnPCAutoship_1300" />
+			</methods>
+			</class>	
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
+			<methods>
+				<include name="testMakeDefaultBillingProfile_2108" />
+				<include name="testAddBillingProfileDuringCheckout_2042" />
+				<include name="testAddBillingAutoshipCartFutureCheckboxSeelcted_2043"/>
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
+			<methods>
+				<include name="testChangeDefaultShippingProfile_2094" />
+				<include name="testAddNewShippingAddressOnShippingProfilePage_2029" />
+				<include name="testSeelectOtherShippingInfoBySelectingRadioButton_4463"/>
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
+			<methods>
+				<include name="testEditBillingAdhocCheckoutFutureChecboxSelected_2048" />
+				<include name="testEditBillingProfileInAutoshipTemplate_2049" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
+			<methods>
+				<include name="testEditShippingAddressOnShippingProfilePage_2035" />
+				<include name="testShippingAddressOnShippingProfile_HP2_4326" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest">
+			<methods>
+				<include name="testAccountInformationForUpdate_2235" />
+				<include name="testOrdersPageUIForRCUser_HP2_1981" />
+			</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
+			<methods>
+				<include name="testAcountDetailsForAccountInfo" />
+				<include name="testEnrolledConsultantHasCRPHasPulseFailedOrdersACTIVE_4189" />
+			</methods>
+			</class>
+		</classes>
 	</test>
 </suite>

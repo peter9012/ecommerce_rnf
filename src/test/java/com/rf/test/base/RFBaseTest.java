@@ -70,12 +70,22 @@ public class RFBaseTest{
 		}
 		// clear screenshots folder
 		try {
+			File fDir = new File(System.getProperty("user.dir")
+					+ "\\output\\ScreenShots");
+					if (!fDir.exists()) {
+						fDir.mkdirs();
+						
+					
+					}
+					
+		
 			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
 					+ "\\output\\ScreenShots"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
 		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");

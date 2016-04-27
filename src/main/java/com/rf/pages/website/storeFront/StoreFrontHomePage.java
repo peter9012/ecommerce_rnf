@@ -449,19 +449,43 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+		if(verifySubsribeToPulseCheckBoxIsSelected())
+		{
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			logger.info("Yes,Subscribe me to pulse checkbox is unchecked");			
+		}
+		if(verifyEnrollToCRPCheckBoxIsSelected())
+		{
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
+			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
+			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
+		}		
+/*		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
 		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
-		logger.info("Yes,enroll me in CRP checkbox is unchecked");
+		logger.info("Yes,enroll me in CRP checkbox is unchecked");*/
 	}
 	
 	
 	public void checkPulseAndCRPEnrollment() throws InterruptedException{
 		
-		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
+		if(verifySubsribeToPulseCheckBoxIsNotSelected())
+		{
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+			logger.info("Yes,Subscribe me to pulse checkbox is unchecked");			
+		}
+		if(verifyEnrollToCRPCheckBoxIsNotSelected())
+		{
+			driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
+			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
+			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
+		}
+/*		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
 		{
 			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
@@ -472,7 +496,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
 		}
 		else
-			;
+			;*/
 
 	}
 

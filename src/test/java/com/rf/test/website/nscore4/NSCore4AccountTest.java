@@ -906,5 +906,129 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//NSC4 Full Return 
+	@Test
+	public void NSC4FullReturn(){
+		String accountNumber = null;
+		String accounts = "Accounts";
+		List<Map<String, Object>> randomAccountList =  null;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		String placeNewOrder = "Place New Order";
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickSublinkOfOverview(placeNewOrder);
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4HomePage.enterSKUValue(SKU);
+		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
+		nscore4HomePage.enterProductQuantityAndAddToOrder("5");
+		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4HomePage.clickApplyPaymentButton();
+		nscore4HomePage.clickSubmitOrderBtn();
+		String orderID = nscore4HomePage.getOrderID().split("\\#")[1];
+		nscore4HomePage.clickTab(accounts);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickOrderId(orderID);
+		nscore4OrdersTabPage.clickReturnOrderLink();
+		nscore4OrdersTabPage.enableReturnedChkBox();
+		nscore4OrdersTabPage.clickUpdateLink();
+		nscore4OrdersTabPage.clickSubmitReturnBtn();
+		s_assert.assertTrue(nscore4OrdersTabPage.getOrderType().contains("Return"), "Order type does not contain return");
+		s_assert.assertAll();
+	}
+
+	//NSC4 Partial  Return 
+	@Test
+	public void NSC4PartialReturn(){
+		String accountNumber = null;
+		String accounts = "Accounts";
+		String quantity = "5";
+		String partialQuantity = "2";
+		List<Map<String, Object>> randomAccountList =  null;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		String placeNewOrder = "Place New Order";
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickSublinkOfOverview(placeNewOrder);
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4HomePage.enterSKUValue(SKU);
+		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
+		nscore4HomePage.enterProductQuantityAndAddToOrder(quantity);
+		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4HomePage.clickApplyPaymentButton();
+		nscore4HomePage.clickSubmitOrderBtn();
+		String orderID = nscore4HomePage.getOrderID().split("\\#")[1];
+		nscore4HomePage.clickTab(accounts);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickOrderId(orderID);
+		nscore4OrdersTabPage.clickReturnOrderLink();
+		nscore4OrdersTabPage.enableReturnedChkBox();
+		nscore4OrdersTabPage.enterReturnQuantity(partialQuantity);
+		nscore4OrdersTabPage.clickUpdateLink();
+		nscore4OrdersTabPage.clickSubmitReturnBtn();
+		s_assert.assertTrue(nscore4OrdersTabPage.getOrderType().contains("Return"), "Order type does not contain return");
+		s_assert.assertTrue(nscore4OrdersTabPage.getReturnQuantityOfProduct().contains(partialQuantity), "Expected partial quantity is: "+partialQuantity+"Actual on UI is: "+nscore4OrdersTabPage.getReturnQuantityOfProduct());
+		s_assert.assertAll();
+	}
+
+	//Return with Restocking fee
+	@Test
+	public void NSC4ReturnWithRestockingFee(){
+		String accountNumber = null;
+		String accounts = "Accounts";
+		List<Map<String, Object>> randomAccountList =  null;
+		List<Map<String, Object>> randomSKUList =  null;
+		String SKU = null;
+		String restockingFee = "10.00";
+		String placeNewOrder = "Place New Order";
+		RFL_DB = driver.getDBNameRFL();
+		logger.info("DB is "+RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
+		logger.info("Account number from DB is "+accountNumber);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickSublinkOfOverview(placeNewOrder);
+		randomSKUList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_SKU,RFL_DB);
+		SKU = (String) getValueFromQueryResult(randomSKUList, "SKU");
+		logger.info("SKUfrom DB is "+SKU);
+		nscore4HomePage.enterSKUValue(SKU);
+		nscore4HomePage.clickFirstSKUSearchResultOfAutoSuggestion();
+		nscore4HomePage.enterProductQuantityAndAddToOrder("5");
+		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4HomePage.clickApplyPaymentButton();
+		nscore4HomePage.clickSubmitOrderBtn();
+		String orderID = nscore4HomePage.getOrderID().split("\\#")[1];
+		nscore4HomePage.clickTab(accounts);
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickOrderId(orderID);
+		nscore4OrdersTabPage.clickReturnOrderLink();
+		nscore4OrdersTabPage.enableReturnedChkBox();
+		nscore4OrdersTabPage.enterRestockingFeeInPercent(restockingFee);
+		nscore4OrdersTabPage.clickUpdateLink();
+		nscore4OrdersTabPage.clickSubmitReturnBtn();
+		s_assert.assertTrue(nscore4OrdersTabPage.getOrderType().contains("Return"), "Order type does not contain return");
+		s_assert.assertTrue(nscore4OrdersTabPage.isRestockingFeeTxtPresent(), "Restocking fee is not present after return order with restocking fee");
+		s_assert.assertAll();
+	}
+
 
 }

@@ -41,7 +41,16 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 	private final static By SELECT_TYPE_DD_LOC = By.xpath("//select[@id='typeFilter']");
 	private static final By GO_SEARCH_BTN_BROWSE_ORDERS_LOC = By.xpath("//a[@id='btnSearchAccounts']/img");
 	private static final By PAYMENT_APPLY_LINK_LOC = By.xpath("//a[text()='Apply']");
-	private static final By SUBMIT_ORDER_BTN_LOC = By.xpath("//a[@id='btnSubmitOrder']/span[contains(text(),'Submit')]");
+	private static final By RETURN_ORDER_LOC  = By.id("returnOrder");
+	private static final By UPDATE_LINK_LOC  = By.id("btnUpdate");
+	private static final By SUBMIT_RETURN_BTN_LOC  = By.id("btnSubmit");
+	private static final By GET_ORDER_TYPE  = By.xpath("//p[contains(text(),'Order Type')]");
+	private static final By RETURNED_ORDER_CHKBOX_LOC = By.xpath("//input[@class='returned']");
+	private static final By RETURN_QUANTITY_INPUT_TXT_LOC = By.xpath("//input[contains(@class,'returnQuantity')]");
+	private static final By RETURN_QUANTITY_LOC = By.xpath("//td[contains(text(),'Products')]/following::td[1]//tr[@class='GridRow']/td[4]");
+	private static final By RESTOCKING_FEE_TEXT_LOC = By.xpath("//td[contains(text(),'Products')]/following::td[1]//td[contains(text(),'Restocking Fee')]");
+	private static final By RESTOCKING_FEE_PERCENT_TXT_BOX_LOC  = By.id("restockingPercent");
+
 
 	public void clickCancelOrderBtn(){
 		driver.waitForElementPresent(CANCEL_ORDER_LINK_LOC);
@@ -213,20 +222,69 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 		logger.info("payment apply link is clicked");
 	}
 
-	public void clickSubmitOrderBtn() {
-		driver.pauseExecutionFor(3000);
-		driver.quickWaitForElementPresent(SUBMIT_ORDER_BTN_LOC);
-		driver.click(SUBMIT_ORDER_BTN_LOC);
-		logger.info("Submit order button is clicked");
-		driver.waitForPageLoad();
-
-	}
-
 	public boolean validateOrderStatusAfterSubmitOrder(){
 		String status = driver.findElement(ORDER_STATUS_LOC).getText();
 		if(status.equalsIgnoreCase("Submitted")){
 			return true;
 		}return false;
+	}
+
+	public void clickReturnOrderLink(){
+		driver.waitForElementPresent(RETURN_ORDER_LOC);
+		driver.click(RETURN_ORDER_LOC);
+		logger.info("Return order link clicked");
+		driver.waitForPageLoad();
+	}
+
+	public void clickUpdateLink(){
+		driver.waitForElementPresent(UPDATE_LINK_LOC);
+		driver.click(UPDATE_LINK_LOC);
+		logger.info("Update link clicked");
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public void clickSubmitReturnBtn(){
+		driver.waitForElementPresent(SUBMIT_RETURN_BTN_LOC);
+		driver.click(SUBMIT_RETURN_BTN_LOC);
+		logger.info("submit return btn clicked");
+		driver.waitForNSCore4ProcessImageToDisappear();
+	}
+
+	public String getOrderType(){
+		driver.waitForElementPresent(GET_ORDER_TYPE);
+		String orderType = driver.findElement(GET_ORDER_TYPE).getText();
+		logger.info("Order type is "+orderType);
+		return orderType;
+	}
+
+	public void enableReturnedChkBox(){
+		driver.quickWaitForElementPresent(RETURNED_ORDER_CHKBOX_LOC);
+		driver.click(RETURNED_ORDER_CHKBOX_LOC);
+		logger.info("Returned Order CheckBox is Enabled");
+	}
+
+	public void enterReturnQuantity(String quantity){
+		driver.waitForElementPresent(RETURN_QUANTITY_INPUT_TXT_LOC);
+		driver.type(RETURN_QUANTITY_INPUT_TXT_LOC, quantity);
+		logger.info("Return quantity entered as: "+quantity);
+	}
+
+	public String getReturnQuantityOfProduct(){
+		driver.waitForElementPresent(RETURN_QUANTITY_LOC);
+		String quantity = driver.findElement(RETURN_QUANTITY_LOC).getText();
+		logger.info("Return quantity of product is: "+quantity);
+		return quantity;
+	}
+
+	public boolean isRestockingFeeTxtPresent(){
+		driver.isElementPresent(RESTOCKING_FEE_TEXT_LOC);
+		return driver.isElementPresent(RESTOCKING_FEE_TEXT_LOC);
+	}
+
+	public void enterRestockingFeeInPercent(String fee){
+		driver.waitForElementPresent(RESTOCKING_FEE_PERCENT_TXT_BOX_LOC);
+		driver.type(RESTOCKING_FEE_PERCENT_TXT_BOX_LOC, fee);
+		logger.info("Restocking fee in % entered as: "+fee);
 	}
 
 }

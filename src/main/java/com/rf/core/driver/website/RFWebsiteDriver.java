@@ -391,6 +391,27 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	}
 
+	public void waitForNSCore4ProcessImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@class='HModalOverlay']");
+		logger.info("Waiting for NSCore4 process loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("NSCore4 process loading image disappears");
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+
 	public void waitForElementTobeEnabled(By locator){
 		for(int time=1;time<=30;time++){
 			if(driver.findElement(locator).isEnabled()==true){

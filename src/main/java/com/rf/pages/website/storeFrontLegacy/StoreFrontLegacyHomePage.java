@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.utils.CommonUtils;
 
 public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
@@ -38,6 +39,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String retailPriceOfItem = "//div[@class='FloatCol']/div[%s]//tr[2]//div[1]/span[1]";
 	private static String addToCartBtnLoc = "//div[@class='FloatCol']/div[%s]//a[text()='Add to Cart']";
 	private static String sectionUnderReplenishmentOrderManagementLoc = "//a[text()='%s']";
+	private static String linkUnderMyAccount = "//div[@id='RFContent']//span[contains(text(),'%s')]";
+	private static String viewDetailsOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]//a[contains(text(),'View Details')]";
+	private static String orderNumberOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]/td[1]";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -250,6 +254,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By EMAIL_VERIFICATION_TEXT = By.xpath("//div[@class='SubmittedMessage'][@style='']");
 	private static final By CANCEL_ENROLLMENT_BTN = By.xpath("//a[@id='BtnCancelEnrollment']");
 	private static final By SEND_EMAIL_TO_RESET_MY_PASSWORD_BTN = By.xpath("//a[@id='BtnResetPassword']");
+	private static final By TOTAL_ROWS_ON_ORDER_HISTORY_PAGE = By.xpath("//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr");
+	private static final By ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']//cufontext[contains(text(),'Order')]/../following-sibling::cufon/cufontext[text()='Details']");
+	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']/following::cufontext[text()='X']/..");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -1808,4 +1815,39 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return driver.isElementPresent(EMAIL_VERIFICATION_TEXT);
 	}
 
+	public boolean verifyLinkPresentUnderMyAccount(String linkName) {
+		return driver.isElementPresent(By.xpath(String.format(linkUnderMyAccount, linkName)));
+	}
+
+	public void clickViewDetailsForOrderAndReturnOrderNumber() {
+		driver.waitForElementPresent(TOTAL_ROWS_ON_ORDER_HISTORY_PAGE);
+		int totalRowsSize=driver.findElements(TOTAL_ROWS_ON_ORDER_HISTORY_PAGE).size();
+		logger.info("Total rows on order history page: "+totalRowsSize);
+		int randomOrderFromSearchResult = CommonUtils.getRandomNum(1, totalRowsSize);
+		logger.info("Random Number created is: "+randomOrderFromSearchResult);
+		String orderNumber = driver.findElement(By.xpath(String.format(orderNumberOnOrderHistoryPage, randomOrderFromSearchResult))).getText();
+		driver.click(By.xpath(String.format(viewDetailsOnOrderHistoryPage, randomOrderFromSearchResult)));
+		logger.info("View Order details link is clicked for order :"+orderNumber);
+	}
+
+	public boolean isOrderDetailsPopupPresent(){
+		driver.waitForElementPresent(ORDER_DETAILS_POPUP);
+		return driver.isElementPresent(ORDER_DETAILS_POPUP);
+	}
+
+	public void  clickCloseOfOrderDetailsPopup(){
+		driver.waitForElementPresent(CLOSE_OF_ORDER_DETAILS_POPUP);
+		driver.click(CLOSE_OF_ORDER_DETAILS_POPUP);
+		logger.info("Order details popup closed.");
+	}
+
+	public String clickAndReturnPWSFromFindConsultantPage(){
+		driver.quickWaitForElementPresent(PWS_TXT_ON_FIND_CONSULTANT_PAGE);
+		String fetchPWS=driver.findElement(PWS_TXT_ON_FIND_CONSULTANT_PAGE).getText();
+		logger.info("Fetched PWS from find a consultant page is"+fetchPWS);
+		driver.click(PWS_TXT_ON_FIND_CONSULTANT_PAGE);
+		logger.info("PWS "+fetchPWS+" is clicked.");
+		driver.waitForPageLoad();
+		return fetchPWS;
+	}
 }

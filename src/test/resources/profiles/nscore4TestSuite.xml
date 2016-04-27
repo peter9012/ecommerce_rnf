@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="jenkinssmoke">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="NSCore4Tests">
+		<classes>
+			<class name="com.rf.test.website.nscore4.NSCore4AccountTest" />			
+		</classes>
+	</test>
+</suite>
+		

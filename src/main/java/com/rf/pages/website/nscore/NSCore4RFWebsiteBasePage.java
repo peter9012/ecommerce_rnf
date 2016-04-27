@@ -28,6 +28,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 
 	private static final By MONTH_DROPDOWN_OF_CALENDER  = By.xpath("//select[@class='ui-datepicker-month']");
 	private static final By YEAR_DROPDOWN_OF_CALENDER  = By.xpath("//select[@class='ui-datepicker-year']");
+	private static final By SUBMIT_ORDER_BTN_LOC = By.xpath("//a[@id='btnSubmitOrder']/span[contains(text(),'Submit')]");
 
 	public void clickTab(String tabName){
 		driver.quickWaitForElementPresent(By.xpath(String.format(tabLoc, tabName)));
@@ -216,5 +217,16 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
 	}
+
+	public void clickSubmitOrderBtn() {
+		driver.pauseExecutionFor(3000);
+		driver.quickWaitForElementPresent(SUBMIT_ORDER_BTN_LOC);
+		driver.click(SUBMIT_ORDER_BTN_LOC);
+		logger.info("Submit order button is clicked");
+		driver.waitForNSCore4ProcessImageToDisappear();
+		driver.waitForPageLoad();
+
+	}
+
 
 }

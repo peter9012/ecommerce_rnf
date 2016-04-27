@@ -1033,4 +1033,38 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		}
 		driver.pauseExecutionFor(2000);
 	}
+
+	private static String overViewSublinkLoc = "//div[@class='Overview']//a[contains(text(),'%s')]";
+	private static String orderIdLinkLoc = "//table[@id='orders']//a[text()='%s']";
+
+	private static final By APPLY_PAYMENT_BTN  = By.id("btnApplyPayment");
+	private static final By PLACED_ORDER_NUMBER  = By.xpath("//div[@class='Content']//a[contains(text(),'Order #')]");
+
+
+	public void clickSublinkOfOverview(String linkname){
+		driver.waitForElementPresent(By.xpath(String.format(overViewSublinkLoc, linkname)));
+		driver.click(By.xpath(String.format(overViewSublinkLoc, linkname)));
+		logger.info(linkname+"clicked on overview page");
+		driver.waitForPageLoad();
+	}
+
+	public void clickApplyPaymentButton(){
+		driver.waitForElementPresent(APPLY_PAYMENT_BTN);
+		driver.click(APPLY_PAYMENT_BTN);
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public String getOrderID(){
+		driver.waitForElementPresent(PLACED_ORDER_NUMBER);
+		String orderID = driver.findElement(PLACED_ORDER_NUMBER).getText();
+		logger.info("Order number is: "+orderID);
+		return orderID;
+	}
+
+	public void clickOrderId(String orderID){
+		driver.waitForElementPresent(By.xpath(String.format(orderIdLinkLoc, orderID)));
+		driver.click(By.xpath(String.format(orderIdLinkLoc, orderID)));
+		logger.info(orderID+"clicked on overview page");
+		driver.waitForPageLoad();
+	}
 }

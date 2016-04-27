@@ -46,7 +46,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By ORDER_PLACED_CONFIRMATION_TEXT = By.xpath("//div[@id='RFContent']//b");
 	private static final By CONSULTANTS_ONLY_PRODUCTS_REGIMEN = By.xpath("//cufontext[contains(text(),'Consultant-Only ')]/following::a[1]/img");
 	private static final By FORGOT_PASSWORD_LINK = By.xpath("//a[@id='uxForgotPasswordLink']");
-	//private static final By PRODUCT_LOC = By.xpath("//span[text()='Products']");
+	private static final By MY_ACCOUNT_LINK = By.xpath("//a[text()='My Account']");
 	private static final By SHOP_SKINCARE_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 	private static final By CHANGE_BILLING_INFO = By.xpath("//a[contains(@id,'uxBillingInfo_uxChange')]");
@@ -367,5 +367,13 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		String pwsUnderPulse = driver.findElement(EMAIL_ADDRESS_CONSULTANT_ENROLLMENT).getText();
 		return pwsUnderPulse;
 	}
+
+	public void clickMyAccountLink(){
+		driver.waitForElementPresent(MY_ACCOUNT_LINK);
+		driver.click(MY_ACCOUNT_LINK);
+		logger.info("My Account link clicked");
+		driver.waitForPageLoad();
+	}
+
 
 }

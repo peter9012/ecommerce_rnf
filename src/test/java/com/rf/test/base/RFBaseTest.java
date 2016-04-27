@@ -85,7 +85,7 @@ public class RFBaseTest{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
+		//just do it - no try
 			File fDir2 = new File(System.getProperty("user.dir")
 					+ "\\test-output");
 					if (!fDir2.exists()) {
@@ -95,10 +95,7 @@ public class RFBaseTest{
 					}
 					
 		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
 		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");
 		

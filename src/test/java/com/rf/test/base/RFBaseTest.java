@@ -85,7 +85,19 @@ public class RFBaseTest{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			File fDir = new File(System.getProperty("user.dir")
+					+ "\\test-output");
+					if (!fDir.exists()) {
+						fDir.mkdirs();
+						
+					
+					}
+					
 		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
 		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");

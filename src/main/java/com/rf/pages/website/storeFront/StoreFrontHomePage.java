@@ -251,17 +251,17 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
 		//logger.info("EnrollmentTest Kit is selected as "+kitPrice);
-		driver.pauseExecutionFor(500);
+	//	driver.pauseExecutionFor(500);
 		System.out.println(kitName);
 		//driver.click(By.xpath("//div[@class='imageCLass' and contains(text(),'"+kitPrice+"')]"));
 		driver.click(By.xpath("//img[@title='"+kitName+"']"));
 		regimenName = regimenName.toUpperCase();
-		driver.pauseExecutionFor(500);
+		//driver.pauseExecutionFor(500);
 		//****next line span = div for old UI****
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"))).click();
 		/*driver.click(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"));*/
-		driver.pauseExecutionFor(500);
+		//driver.pauseExecutionFor(500);
 		logger.info("Regimen is selected as "+regimenName);
 		driver.click (By.id("next-button")); // - old UI (By.cssSelector("input[value='Next']"));
 		logger.info("Next button clicked after selected Kit and regimen");
@@ -273,7 +273,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
 		//logger.info("EnrollmentTest Kit is selected as "+kitPrice);
-		driver.pauseExecutionFor(500);
+		//driver.pauseExecutionFor(500);
 		System.out.println(kitName);
 		//driver.click(By.xpath("//div[@class='imageCLass' and contains(text(),'"+kitPrice+"')]"));
 		driver.click(By.xpath("//img[@title='"+kitName+"']"));

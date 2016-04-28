@@ -1761,7 +1761,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String consultantFirstName = null;
 		String consultantlastName = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_WITH_PWS_RFO,countryId),RFO_DB);
 		consultantFirstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
 		consultantlastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
 		storeFrontHomePage.clickOnSponsorName();

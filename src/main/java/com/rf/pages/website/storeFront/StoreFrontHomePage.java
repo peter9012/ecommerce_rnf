@@ -3819,7 +3819,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifySponsorPWSComSitePresent(){
-		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[5]"));
+		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[4]"));
 	}
 
 	public boolean verifyNotFoundMsgPresent() {

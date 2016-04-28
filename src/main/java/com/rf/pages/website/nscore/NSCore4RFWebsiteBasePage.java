@@ -225,7 +225,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		logger.info("Submit order button is clicked");
 		driver.waitForNSCore4ProcessImageToDisappear();
 		driver.waitForPageLoad();
-
+		driver.pauseExecutionFor(3000);
 	}
 
 

@@ -162,6 +162,10 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By CLOSE_LINK_LOC  = By.xpath("//div[@id='bulkAddModal']//a[text()='Close']");
 	private static final By TOTAL_BILLING_PROFILES = By.xpath("//div[@id='paymentMethods']/div[contains(@class,'Profile')]");
 	private static final By SHIPPING_PROFILES_LOC  = By.xpath("//div[@id='addresses']/div");
+	private static final By PRODUCT_SKU_VALUE_CATALOG  = By.xpath("//table[@id='productBulkAddGrid']//tr[3]/td[2]");
+	private static final By PRODUCT_SKU_CHK_BOX_CATALOG  = By.xpath("//table[@id='productBulkAddGrid']//tr[3]/td[2]");
+	private static final By ADD_TO_CATALOG  = By.id("btnBulkAddProducts");
+	private static final By CLOSE_LINK_CATALOG_LOC  = By.xpath("//div[@id='productBulkAdd']//a[text()='Close']");
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -876,6 +880,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 			driver.click(USE_ADDRESS_AS_ENTERED);
 			logger.info("Usee address as entered button clicked for Account record");
 		}
+		driver.waitForPageLoad();
 	}
 
 	public String getUpdationMessage(){
@@ -911,6 +916,12 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(BILLING_AND_SHIPPING_PROFILE_LINK_LOC);
 		logger.info("Billing & Shipping Profile link clicked");
 		driver.waitForPageLoad(); 
+	}
+
+	public int getTotalBillingProfiles(){
+		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
+		logger.info("total Billing profiles are "+allBillingProfiles);
+		return allBillingProfiles.size();
 	}
 
 
@@ -1026,27 +1037,20 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 
 	public void clickSetAsDefaultPaymentMethodForNewlyCreatedProfile(){
-		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
-		logger.info("total Billing profiles are "+allBillingProfiles);
-		driver.quickWaitForElementPresent(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, allBillingProfiles.size())));
-		driver.click(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, allBillingProfiles.size())));
+		driver.quickWaitForElementPresent(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		driver.click(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}
 
 	public boolean validateNewlyCreatedBillingProfileIsDefault(){
-		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
-		logger.info("total Billing profiles are "+allBillingProfiles);
-		driver.quickWaitForElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, allBillingProfiles.size())));
-		return driver.isElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, allBillingProfiles.size())));
+		driver.quickWaitForElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		return driver.isElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 	}
 
 	public void deletePaymentMethodNewlyCreatedProfile(){
-		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
-		allBillingProfilesSize = allBillingProfiles.size();
-		logger.info("total Billing profiles are "+allBillingProfiles);
-		driver.quickWaitForElementPresent(By.xpath(String.format(deleteNewlyCreatedBillingProfile, allBillingProfiles.size())));
-		driver.click(By.xpath(String.format(deleteNewlyCreatedBillingProfile, allBillingProfiles.size())));
+		driver.quickWaitForElementPresent(By.xpath(String.format(deleteNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		driver.click(By.xpath(String.format(deleteNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 		logger.info("Delete button clicked");
 		driver.pauseExecutionFor(2000);
 		//switch to Alert to delete payment method-
@@ -1118,5 +1122,21 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		int noOfShippingProfile = driver.findElements(SHIPPING_PROFILES_LOC).size();
 		logger.info("Total no of shipping profiles is: "+noOfShippingProfile);
 		return noOfShippingProfile;
+	}
+
+	public String addAndGetProductSKUForCatalog(){
+		driver.waitForElementPresent(OPEN_BULK_ADD_LOC);
+		driver.click(OPEN_BULK_ADD_LOC);
+		driver.waitForNSCore4LoadingImageToDisappear();
+		logger.info("Open bulk add link clicked");
+		driver.waitForElementPresent(PRODUCT_SKU_VALUE_CATALOG);
+		String SKU = driver.findElement(PRODUCT_SKU_VALUE_CATALOG).getText();
+		driver.click(PRODUCT_SKU_CHK_BOX_CATALOG);
+		logger.info("Checkbox checked for add product");
+		driver.click(ADD_TO_CATALOG);
+		logger.info("Add to catalog button clicked");
+		driver.click(CLOSE_LINK_CATALOG_LOC);
+		logger.info("Close link clicked on bulk catalog popup");
+		return SKU;
 	}
 }

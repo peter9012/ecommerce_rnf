@@ -135,7 +135,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
@@ -182,7 +182,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void addQuantityOfProduct(String qty) throws InterruptedException{
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("quantity0"));
 			driver.clear(By.id("quantity0"));
@@ -198,7 +198,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//div[@id='left-shopping']/div//a[@class='updateLink']"));
 			logger.info("Update button clicked after adding quantity");
 		}
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}
 
@@ -219,7 +219,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/p/a[contains(text(),'Continue shopping')]"));
 			driver.click(By.xpath("//div[@id='left-shopping']/p/a[contains(text(),'Continue shopping')]"));
 			logger.info("Continue shopping link clicked");
-			driver.pauseExecutionFor(2000);
+			//driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();
 		}catch(Exception e){
 			Actions action = new Actions(RFWebsiteDriver.driver);
@@ -227,7 +227,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			action.moveToElement(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).doubleClick(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).build().perform();
 			//driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 			logger.info("Continue shopping link clicked");
-			driver.pauseExecutionFor(2000);
+			//driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();
 		}
 
@@ -272,7 +272,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("email-account"));
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForSpinImageToDisappear();
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
@@ -293,7 +293,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("email-account"));
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForSpinImageToDisappear();
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
@@ -315,7 +315,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("email-account"));
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForSpinImageToDisappear();
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
@@ -335,7 +335,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("email-account"));
 		driver.type(By.id("email-account"),emailID+"\t");
 		logger.info("email entered as "+emailID);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForSpinImageToDisappear();
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
@@ -449,7 +449,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -501,7 +501,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
@@ -530,11 +530,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.switchTo().window(tabs.get(1));
 		driver.close();
 		driver.switchTo().window(tabs.get(0));
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
@@ -583,7 +583,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
-		driver.pauseExecutionFor(3000);
+		//driver.pauseExecutionFor(3000);
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//div[@class='content']/li[2]//input/.."));
 			driver.click(By.xpath("//div[@class='content']/li[1]//input/.."));
@@ -673,7 +673,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOKOnSponsorInformationPopup(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			//   driver.waitForElementToBeVisible(By.xpath("//div[@id='sponsorMessage']//div[@id='popup-sponsorMessage']//input[contains(@value,'OK')]"), 15);
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//div[@id='popup']//input[@value ='OK ']"));
@@ -726,7 +726,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
 		driver.type(By.id("the-password-again"),password);
@@ -749,7 +749,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("last name entered as "+lastName);
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.type(By.id("password"),password);
 		logger.info("password entered as "+password);
 		driver.type(By.id("the-password-again"),password);
@@ -770,7 +770,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("email-account"));
 		driver.type(By.id("email-account"),emailAddress+"\t");
 		logger.info("email entered as "+emailAddress);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public StoreFrontCartAutoShipPage clickEditCrpLinkPresentOnWelcomeDropDown() throws InterruptedException{
@@ -812,9 +812,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid+"\t");
 			logger.info("email entered as "+consultantmailid);
 		}
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
 	}
 
@@ -823,18 +823,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]"));
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]")));
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
 	}
 
 	public boolean validateCancelEnrollmentFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.click(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'cancelEnrollment')]"));
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
 	}
@@ -850,7 +850,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean validateCancelEnrollmentFunctionality(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activeRetailPopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.click(By.xpath("//div[@id='activeRetailPopup']//input[contains(@class,'cancelEnrollment')]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']")); 
 	}
@@ -861,9 +861,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]")));
 		//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']")); 
 
 	}
@@ -871,7 +871,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'cancelEnrollment')]"));
 		driver.click(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'cancelEnrollment')]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 		return driver.isElementPresent(By.xpath("//div[@id='header']//a[@title='BECOME A CONSULTANT']"));
 	}
@@ -970,7 +970,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		while(true){
 			driver.get(getBizPWS(country, env));
 			driver.waitForPageLoad();
-			driver.pauseExecutionFor(2000);
+			//driver.pauseExecutionFor(2000);
 			if(driver.getCurrentUrl().contains("sitenotfound")){
 				logger.info("SITE NOT FOUND error,try new PWS");
 				continue;
@@ -994,7 +994,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void switchToChildWindow(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.switchToSecondWindow();
 		driver.waitForPageLoad();
 	}
@@ -1058,7 +1058,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("clicked on welcome drop down");		
 	}
@@ -1071,7 +1071,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnYourAccountDropdown(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
 		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
 		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
@@ -1102,7 +1102,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnLoginToTerminateToMyPCAccount(){
-		//driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
 		driver.click(By.xpath("//h3[contains(text(),'Log In to Terminate My PC Account')]/following::a[2]/input"));
 		driver.waitForLoadingImageToDisappear();
@@ -1206,7 +1206,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}	
 
 	public boolean verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		if(driver.isElementPresent(By.xpath("//a[text()='Edit PC Perks']"))){
 			return true;
 		}else
@@ -1427,7 +1427,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name+"\t");
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public boolean verifySpecialCharNotAcceptInPrefixName(){
@@ -1609,7 +1609,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnLoginToTerminateToMyRCAccount(){
-		//driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
 		driver.click(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
 		driver.waitForPageLoad();
@@ -1693,7 +1693,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.id("credit-cards"));  
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
 		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);  
@@ -1701,7 +1701,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void selectNewShippingAddressState(){
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
@@ -1722,7 +1722,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.type(By.id("quantity1"),qty);
 		logger.info("quantity added is "+qty);
 		driver.click(By.xpath("//a[@class='updateLink']"));
-		driver.pauseExecutionFor(5500);
+		//driver.pauseExecutionFor(2000);
 		logger.info("Update button clicked after adding quantity");
 		driver.waitForPageLoad();
 	}
@@ -1750,14 +1750,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 		logger.info("Add New Billing Profile link clicked");
 	}
 
 	public boolean verifyAddNewBillingProfileLinkIsPresent(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 	}
 

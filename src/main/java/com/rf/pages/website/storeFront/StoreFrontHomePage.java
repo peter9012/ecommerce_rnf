@@ -62,7 +62,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickRenewLater()  {
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
-			driver.pauseExecutionFor(2000);
+			//driver.pauseExecutionFor(2000);
 			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
 			logger.info("Renew later button clicked");
 			driver.waitForLoadingImageToDisappear();
@@ -133,7 +133,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void searchCID() throws InterruptedException{
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.type(By.id("sponsor-name-id"),"test");
@@ -152,7 +152,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void searchCID(String cid) throws InterruptedException{
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.type(By.id("sponsor-name-id"),cid);
@@ -160,7 +160,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.type(By.id("sponserparam"),cid);
 		}
 		try{
-			driver.pauseExecutionFor(2000);
+			//driver.pauseExecutionFor(2000);
 			driver.click(By.xpath("//input[@value='Search']"));			
 		}catch(NoSuchElementException e){
 			driver.click(By.id("search-sponsor-button"));
@@ -320,7 +320,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterEmailAddress(String emailAddress){	
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
@@ -328,7 +328,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void closePopUp(){
 		driver.click(By.cssSelector("a[title='Close']"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
@@ -392,11 +392,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollmentNextBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
 			driver.click(By.id("QAS_AcceptOriginal"));
@@ -409,11 +409,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickNextButton(){
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
@@ -908,7 +908,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
 		driver.click(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnSwitchToExpressEnrollmentLink(){
@@ -920,7 +920,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//a[contains(text(),'Switch to Express Enrollment')]"));
 		}
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public boolean verifyPopUpForExistingActivePC() throws InterruptedException{
@@ -1000,7 +1000,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void enterSponsorIdDuringCreationOfPC(String sponsorID){
@@ -1043,7 +1043,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void cancelPulseSubscription(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
 		try{
@@ -1091,7 +1091,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnNotYourSponsorLink(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//a[@id='not-your-sponsor']"));
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='not-your-sponsor']")));
 		//driver.click(By.xpath("//a[@id='not-your-sponsor']"));
@@ -1119,9 +1119,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2']/.."));
 		driver.click(By.xpath("//input[@id='pc-customer2']/.."));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void searchCIDForPCAndRC() throws InterruptedException{
@@ -1147,11 +1147,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollmentNextButtonWithoutPopupHandled() throws InterruptedException{
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public boolean validateSetUpAccountPageIsDisplayed(){
@@ -1602,7 +1602,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnLoginToReactiveMyAccount(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//input[@value='Log In to Reactivate My Account']"));
 		driver.click(By.xpath("//input[@value='Log In to Reactivate My Account']"));
 	}
@@ -1610,7 +1610,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnCnacelEnrollmentForPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 		driver.click(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public String fetchingUserName(){
@@ -1672,7 +1672,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnLoginToReactiveMyAccountForConsultant(){
-		//driver.pauseExecutionFor(2000);
+		////driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::a[2]/input"));
 		driver.click(By.xpath("//h3[contains(text(),'Reactivate My Account')]/following::a[2]/input"));
 		driver.waitForPageLoad();
@@ -1746,11 +1746,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollmentNextBtnWithoutClickOnUseAsEnteredAddress() throws InterruptedException{
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnReviewAndConfirmBillingEditBtn(){
@@ -1769,7 +1769,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollmentNextBtnWithoutHandlingPopUP(){
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
 	}
@@ -2170,7 +2170,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
@@ -3668,7 +3668,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickPolicyAndProcedureLink(){
 		driver.waitForElementPresent(POLICY_AND_PROCEDURE_LINK);
 		driver.click(POLICY_AND_PROCEDURE_LINK);
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 	}
 
 	public boolean verifyFollowMeSectionIsPresent(){
@@ -3893,7 +3893,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickAddNewAddressLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new address')]"));
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[contains(text(),'Add new address')]"));
 	}
 

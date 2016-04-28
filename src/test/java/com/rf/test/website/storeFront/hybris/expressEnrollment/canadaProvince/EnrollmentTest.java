@@ -27,8 +27,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 
 	//[Hybris Project-3612,Hybris Project-1670,Hybris Project-1669,Hybris Project-1668,Hybris Project-1667,Hybris Project-1665,Hybris Project-1664,Hybris Project-1663,Hybris Project-1662,Hybris Project-1661]
-	@Test(dataProvider="rfTestData")
-	public void testExpressEnrollmentCanadaProvince(String province) throws InterruptedException{
+	@Test //(dataProvider="rfTestData") //string province
+	public void testExpressEnrollmentCanadaProvince() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -39,6 +39,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			
+			String province = "Alberta";
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
@@ -313,36 +315,18 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			logger.info("Quick shop products are displayed");
 
 			//Select a product with the price less than $80 and proceed to buy it
-			storeFrontHomePage.applyPriceFilterLowToHigh();
+			storeFrontHomePage.applyPriceFilterHighToLow();
 			storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
-			//Cart page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-			logger.info("Cart page is displayed");
-
-			//1 product is in the Shopping Cart?
-			s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-			logger.info("1 product is successfully added to the cart");
-
+	
 			//Click on Check out
+			
 			storeFrontHomePage.clickOnCheckoutButton();
-
-			//Log in or create an account page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-			logger.info("Login or Create Account page is displayed");
 
 			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 			storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
 
-			//Pop for PC threshold validation
-			s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-
-			//In the Cart page add one more product
-			storeFrontHomePage.addAnotherProduct();
-
-			//Click on Check out
-			storeFrontHomePage.clickOnCheckoutButton();
-
+	
 			//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 			storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_QUEBEC, postalCode, phoneNumber);
 			logger.info("Main account details entered");
@@ -359,12 +343,10 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
 			storeFrontHomePage.clickOnBillingNextStepBtn();
-			storeFrontHomePage.clickPlaceOrderBtn();
-			
-			s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-			logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+			
 			storeFrontHomePage.clickPlaceOrderBtn();
+		
 			
 			storeFrontHomePage.clickOnRodanAndFieldsLogo();
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");

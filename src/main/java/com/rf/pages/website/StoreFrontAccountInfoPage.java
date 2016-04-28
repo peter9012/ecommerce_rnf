@@ -67,7 +67,6 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		return driver.isElementPresent(TERMINATE_MY_ACCOUNT);		
 	}
 
-
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
 		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.clear(ACCOUNT_INFO_FIRST_NAME_LOC);
@@ -78,7 +77,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		driver.type(ACCOUNT_INFO_ADDRESS_LINE_1_LOC, addressLine1);
 		driver.clear(ACCOUNT_INFO_CITY_LOC);
 		driver.type(ACCOUNT_INFO_CITY_LOC, city);
-		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
 		driver.clear(ACCOUNT_INFO_POSTAL_CODE_LOC);
 		driver.type(ACCOUNT_INFO_POSTAL_CODE_LOC, postalCode);
 		driver.clear(ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC);
@@ -95,6 +94,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		catch(NoSuchElementException e){
 
 		}
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

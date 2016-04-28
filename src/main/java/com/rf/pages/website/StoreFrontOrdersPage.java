@@ -642,7 +642,7 @@ public class StoreFrontOrdersPage extends RFWebsiteBasePage{
 			break;
 
 		case 7:
-			shippingMethodName="Point of Sale";
+			shippingMethodName="UPS Ground (HD)";
 			break;
 
 		case 8:

@@ -31,75 +31,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private String RFO_DB = null;
 
-	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
-	@Test
-	public void testCreateAdhocOrderConsultant() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
-	//	List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_STG2;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		String lastName = "lN";
-
-//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnShopLink();
-		storeFrontConsultantPage.clickOnAllProductsLink();
-		storeFrontUpdateCartPage.clickOnBuyNowButton();
-		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		storeFrontUpdateCartPage.clickOnConfirmationOK();
-
-		String subtotal = storeFrontUpdateCartPage.getSubtotal();
-		System.out.println("subtotal ="+subtotal);
-		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
-		System.out.println("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		System.out.println("handlingCharges ="+handlingCharges);
-		String tax = storeFrontUpdateCartPage.getTax();
-		System.out.println("tax ="+tax);
-		String total = storeFrontUpdateCartPage.getTotal();
-		System.out.println("total ="+total);
-		String totalSV = storeFrontUpdateCartPage.getTotalSV();
-		System.out.println("totalSV ="+totalSV);
-		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		System.out.println("shippingMethod ="+shippingMethod);
-		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		System.out.println("BillingAddress ="+BillingAddress);
-
-		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.selectNewBillingCardAddress();
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-
-		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
-		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOnFirstAdHocOrder();
-
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"AdHoc Orders Template Total is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"AdHoc Orders Tax is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"AdHoc Orders Template Total SV vakue is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterOrderCreation(shippingMethod),"AdHoc Orders Template Shipping Method is not as expected for this order");
-
-
-		s_assert.assertAll();
-	}
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
@@ -107,13 +38,13 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
-		//List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomPCList =  null;
 		String pcUserEmailID = TestConstants.PC_EMAIL_ID_STG2;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-		//randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-		//pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+		pcUserEmailID = (String) getValueFromQueryResult(randomPCList, "Username");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -176,7 +107,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 	public void testCreateAdhocOrderRC_1879() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
-		//List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> randomRCList =  null;
 
 		String rcUserEmailID = TestConstants.RCUSER_EMAIL_ID;
 		String accountID = null;
@@ -184,10 +115,10 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 
-	//	randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-	//	rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-	//	accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-	//	logger.info("Account ID of the user is "+accountID);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
+		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+		logger.info("Account ID of the user is "+accountID);
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -237,6 +168,92 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"Tax on AdHoc Orders Template is NOT "+tax);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"Total on AdHoc Orders Template is NOT "+total);
 
+		s_assert.assertAll();
+	}
+
+	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
+	@Test
+	public void testCreateAdhocOrderConsultant() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		String accountId = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+	
+	
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+	
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnShopLink();
+		storeFrontConsultantPage.clickOnAllProductsLink();
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+	//	s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		storeFrontUpdateCartPage.clickOnConfirmationOK();
+	
+		String subtotal = storeFrontUpdateCartPage.getSubtotal();
+		logger.info("subtotal ="+subtotal);
+		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
+		logger.info("deliveryCharges ="+deliveryCharges);
+		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("handlingCharges ="+handlingCharges);
+		String tax = storeFrontUpdateCartPage.getTax();
+		logger.info("tax ="+tax);
+		String total = storeFrontUpdateCartPage.getTotal();
+		logger.info("total ="+total);
+		String totalSV = storeFrontUpdateCartPage.getTotalSV();
+		logger.info("totalSV ="+totalSV);
+		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+		logger.info("shippingMethod ="+shippingMethod);
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
+		logger.info("BillingAddress ="+BillingAddress);
+	
+		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+	
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
+	
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+	
+		storeFrontOrdersPage.clickOrderNumber(orderNumber);
+	
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"AdHoc Orders Template Total is not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"AdHoc Orders Tax is not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"AdHoc Orders Template Total SV vakue is not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterOrderCreation(shippingMethod),"AdHoc Orders Template Shipping Method is not as expected for this order");
+	
+	
 		s_assert.assertAll();
 	}
 

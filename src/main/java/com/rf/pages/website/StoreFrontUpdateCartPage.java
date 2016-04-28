@@ -329,7 +329,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		logger.info("checkout button clicked");
 		try {
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-review']//input"));
-			driver.click(By.xpath("//div[@id='popup-review']//input"));
+		//	driver.click(By.xpath("//div[@id='popup-review']//input"));
 		} catch (Exception e) {
 
 		}
@@ -346,6 +346,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnConfirmationOK(){
+		driver.findElement(By.xpath("//div[@id='popup-review']/h2[contains(text(),'Checkout Confirmation')]"));
 		driver.waitForElementPresent(By.xpath("//input[@value='OK']"));
 		driver.click(By.xpath("//input[@value='OK']"));
 		logger.info("Confirmation OK button clicked");

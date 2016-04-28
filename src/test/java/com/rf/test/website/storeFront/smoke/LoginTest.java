@@ -50,7 +50,7 @@ public class LoginTest extends RFWebsiteBaseTest{
 
 	}	
 
-	@Test (invocationCount=10)
+	@Test (enabled=false)
 	public void testLogin() throws InterruptedException {//String accountID,String emailID,String accNumber,String sid,String name, String hasOrder ,String sourceName) throws InterruptedException{
 		String sRandNum = RandomStringUtils.randomNumeric(5);
 		System.out.println(sRandNum);

@@ -10,9 +10,10 @@
 			<!-- <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class> -->
 			
 			<!-- express enrollment biz-->
-			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"></class>
-			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"></class>
+			<class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class>
+		 	<class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class>
+			<!-- <class name="com.rf.test.website.storeFront.miniRegression.AdhocOrdersTest"></class> -->
 			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"></class>
-		</classes>
+	 	</classes>
 	</test>
 </suite>

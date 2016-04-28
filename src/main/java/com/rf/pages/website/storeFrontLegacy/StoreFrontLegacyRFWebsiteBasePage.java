@@ -336,6 +336,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOKBtnOfJavaScriptPopUp(){
+		driver.pauseExecutionFor(2000);
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
 		logger.info("Ok button of java Script popup is clicked.");

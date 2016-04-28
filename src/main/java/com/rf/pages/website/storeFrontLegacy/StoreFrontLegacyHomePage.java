@@ -672,7 +672,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(COMPLETE_ENROLLMENT_BTN);
 		driver.click(COMPLETE_ENROLLMENT_BTN);
 		logger.info("Complete enrollmet button clicked");
-		driver.waitForPageLoad();
+//		driver.waitForPageLoad();
 	}
 
 	public void clickUseAsEnteredBtn(){

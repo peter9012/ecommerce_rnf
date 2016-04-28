@@ -3,6 +3,9 @@ package com.rf.pages.website.nscore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -22,13 +25,18 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 	private static String LastNameLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[3]";
 	private static String orderStatusLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[4]";
 	private static String orderTypeLoc = "//table[@id='orders']//tr[@class='GridColHead']/th[2]//following::tbody/tr[%s]//td[5]";
+	private static String suggestionStartOrderLoc = "//div[contains(@class,'resultItem')]//p[contains(text(),'%s')]";
 
+	private static final By TOTAL_AMT_TO_BE_REFUNDED_LOC = By.xpath("//b[contains(text(),'Total Amount To Be Refunded')]/following-sibling::b");
+	private static final By REFUNDED_SHIPPING_LOC = By.xpath("//input[@id='shippingRefunded']");
+	private static final By REFUNDED_HANDLING_LOC = By.xpath("//input[@id='handlingRefunded']");
 	private final static By CANCEL_ORDER_LINK_LOC = By.xpath("//a[@id='cancelOrder']");
 	private final static By ORDER_STATUS_LOC = By.xpath("//div[@class='Content']//td[contains(text(),'Status')]/following::b[1]");
 	private final static By ORDER_ID_INPUT_FIELD_LOC = By.xpath("//input[@id='txtSearch']");
 	private static final By GO_SEARCH_BTN = By.xpath("//a[@id='btnGo']/img[@alt='Go']");
 	private static final By DROP_DOWN_LOC = By.xpath("//select[@id='cboSearchCol']");
-
+	private static final By FIRST_NAME  = By.xpath("//table[@id='orders']//tr[1]/td[2]/a");
+	private static final By LAST_NAME  = By.xpath("//table[@id='orders']//tr[1]/td[3]/a");	 
 	private static final By ADVANCED_SEARCH_INPUT_FIELD_LOC = By.xpath("//input[@id='txtAdvancedSearch']");
 	private static final By ADVANCED_SEARCH_GO_BTN = By.xpath("//a[@id='btnAdvancedGo']");
 	private static final By TOTAL_ROWS_SEARCH_RESULT_LOC = By.xpath("//table[@id='orders']/tbody/tr");
@@ -285,6 +293,104 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 		driver.waitForElementPresent(RESTOCKING_FEE_PERCENT_TXT_BOX_LOC);
 		driver.type(RESTOCKING_FEE_PERCENT_TXT_BOX_LOC, fee);
 		logger.info("Restocking fee in % entered as: "+fee);
+	}
+
+	public void enterAccountNameAndClickStartOrder(String accountName, String accountNumber) {
+		driver.quickWaitForElementPresent(TXT_FIELD_START_ORDER_LOC);
+		driver.type(TXT_FIELD_START_ORDER_LOC, accountName);
+		logger.info("start order text field entered by: "+accountName);
+		driver.waitForElementPresent(By.xpath(String.format(suggestionStartOrderLoc, accountNumber)));
+		driver.click(By.xpath(String.format(suggestionStartOrderLoc, accountNumber)));
+		driver.click(START_ORDER_BTN_LOC);
+		logger.info("start button is clicked after entered account name");
+	}
+
+	public String getCompleteNameFromFirstRow(){
+		driver.waitForElementPresent(FIRST_NAME);
+		String firstName = driver.findElement(FIRST_NAME).getText();
+		logger.info("First name is: "+firstName);
+		String lastName = driver.findElement(LAST_NAME).getText();
+		String completeName = firstName+" "+lastName;
+		logger.info("Last name is: "+lastName);
+		logger.info("Complete name is: "+completeName);
+		return completeName;
+	}
+
+
+	public boolean isTotalAmountToBeRefundedPresent(){
+		driver.quickWaitForElementPresent(TOTAL_AMT_TO_BE_REFUNDED_LOC);
+		return driver.isElementPresent(TOTAL_AMT_TO_BE_REFUNDED_LOC);
+	}
+
+	public double getRefundedShippingChargesValue(){
+		driver.quickWaitForElementPresent(REFUNDED_SHIPPING_LOC);
+		driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value");
+		double value=Double.parseDouble(driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value"));
+		return value;
+	}
+
+	public double getRefundedHandlingChargesValue(){
+		driver.quickWaitForElementPresent(REFUNDED_HANDLING_LOC);
+		driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value");
+		double value=Double.parseDouble(driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value"));
+		return value;
+	}
+
+	public void updateRefundedShippingChargesLowerValue(String value){
+		driver.waitForElementPresent(REFUNDED_SHIPPING_LOC);
+		while(true){
+			try{
+				driver.clear(REFUNDED_SHIPPING_LOC);
+				driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys(value);
+				driver.pauseExecutionFor(1000);
+				driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys("\t");
+				driver.pauseExecutionFor(1000);
+				logger.info("Refunded_Shipping value updated as"+value);
+				break;
+			}catch(Exception e){
+				System.out.println("Trying..");
+				continue;
+			}
+		}
+	}
+
+	public void updateRefundedHandlingChargesLowerValue(String value){
+		driver.waitForElementPresent(REFUNDED_HANDLING_LOC);
+		JavascriptExecutor myExecutor = ((JavascriptExecutor) RFWebsiteDriver.driver);
+		while(true){
+			try{
+				while(driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value").length() > 0) {
+					driver.findElement(REFUNDED_HANDLING_LOC).sendKeys(Keys.BACK_SPACE);
+				}
+				myExecutor.executeScript("arguments[0].value='00';", driver.findElement(REFUNDED_HANDLING_LOC));
+				driver.pauseExecutionFor(1000);
+				//driver.findElement(REFUNDED_HANDLING_LOC).sendKeys("\t");
+				driver.findElement(By.xpath("//b[contains(text(),'Total Amount To')]")).click();
+				driver.pauseExecutionFor(1000);
+				logger.info("Refunded_Shipping value updated as"+value);
+				break;
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+
+	public void updateRefundedShippingChargesValue(String value){
+		driver.waitForElementPresent(REFUNDED_SHIPPING_LOC);
+		driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys(value);
+		driver.pauseExecutionFor(1000);
+		driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys("\t");
+		driver.pauseExecutionFor(1000);
+		logger.info("Refunded_Shipping value updated as"+value);
+	}
+
+	public void updateRefundedHandlingChargesValue(String value){
+		driver.waitForElementPresent(REFUNDED_HANDLING_LOC);
+		driver.findElement(REFUNDED_HANDLING_LOC).sendKeys(value);
+		driver.pauseExecutionFor(1000);
+		driver.findElement(REFUNDED_HANDLING_LOC).sendKeys("\t");
+		driver.pauseExecutionFor(1000);
+		logger.info("Refunded_Handling value updated as"+value);  
 	}
 
 }

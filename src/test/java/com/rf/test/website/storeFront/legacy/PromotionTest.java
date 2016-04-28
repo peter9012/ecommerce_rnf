@@ -105,7 +105,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 
 	//Consultants Only -buy product promotion 
 	@Test(enabled=true)//needs updation
-	public void consultantsOnlyBuyProductPromotion(){
+	public void testconsultantsOnlyBuyProductPromotion(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;

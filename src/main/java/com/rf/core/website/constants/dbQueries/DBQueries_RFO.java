@@ -488,7 +488,7 @@ public class DBQueries_RFO {
 			   "JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
 			   "JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			   "JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			   "WHERE   ab.CountryID = 236 AND ab.AccountTypeID = 2 "+
+			   "WHERE   ab.CountryID = 40 AND ab.AccountTypeID = 2 "+
 			   /*Active Accounts*/
 			   "AND NOT EXISTS ( SELECT 1 "+
 			   "FROM   RFO_Accounts.AccountRF AS ar "+
@@ -917,7 +917,7 @@ public class DBQueries_RFO {
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189= "SELECT TOP 1 ab.AccountID,[as].Username FROM RFO_Accounts.AccountBase AS ab "+
 			"JOIN RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
-			"WHERE ab.CountryID = 236 AND ab.AccountTypeID = 1 "+ /*Consultant*/
+			"WHERE ab.CountryID = 40 AND ab.AccountTypeID = 1 "+ /*Consultant*/
 			" AND ar.EnrollmentDate IS NOT NULL "+ /*Active Accounts*/
 			" AND NOT EXISTS (SELECT 1 FROM RFO_Accounts.AccountRF AS ar "+
 			" WHERE ar.Active = 0 AND ar.HardTerminationDate IS NOT NULL "+

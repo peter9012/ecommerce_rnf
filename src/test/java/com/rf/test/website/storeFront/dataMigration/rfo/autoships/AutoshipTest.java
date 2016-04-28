@@ -33,29 +33,26 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private String RFO_DB = null;
 
-	// Hybris Phase 2-130:change shipping method on autoship - PC	
+	// Hybris Phase 2-130:change shipping method on autoship - PC 
 	@Test
 	public void testChangeShippingMethodOnPCAutoShip_130() throws InterruptedException{
 
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
-		//------------------------------- Hard coded User part is commented for now-----------------------------------------------	
-		//pcUserEmailID = TestConstants.PC_USER_EMAIL_ID_RFO;	
-		//---------------------------------------------------------------------------------------------------------------------		
-
+		//------------------------------- Hard coded User part is commented for now----------------------------------------------- 
+		//pcUserEmailID = TestConstants.PC_USER_EMAIL_ID_RFO; 
+		//---------------------------------------------------------------------------------------------------------------------  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		while(true){
-
 			randomPCList= DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,RFO_DB);
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+pcEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -63,7 +60,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
-		storeFrontPCUserPage.clickOnShopLink();		
+		storeFrontPCUserPage.clickOnShopLink();  
 		storeFrontPCUserPage.clickOnAllProductsLink();
 		storeFrontCartAutoShipPage = storeFrontPCUserPage.addProductToPCPerk();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -72,7 +69,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		logger.info("Shipping Method selected is: "+selectedShippingMethod);
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
-		storeFrontUpdateCartPage.clickUpdateCartBtn();		
+		storeFrontUpdateCartPage.clickUpdateCartBtn();  
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -82,7 +79,6 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-	
 
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
 	@Test
@@ -185,7 +181,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-	
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();

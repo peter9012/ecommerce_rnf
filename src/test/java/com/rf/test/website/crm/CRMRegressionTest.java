@@ -656,7 +656,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 
 		crmHomePage.clickNameOnFirstRowInSearchResults();
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Activity Section is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Notes Section is not present on Account Details page");
 		//Verify account dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPagePresent(),"Account dropdown is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
@@ -799,8 +799,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		//		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
+		//		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		//		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
@@ -1547,7 +1547,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String siteUrlBeforeEdit = crmAccountDetailsPage.getOldSitePrefixWithCompleteSiteBeforeEdit();
 		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixName);
 		crmAccountDetailsPage.clickCheckAvailabilityButton();
-		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),randomSitePrefixName+" is available.");
+		s_assert.assertTrue(crmAccountDetailsPage.getCheckAvailabilityMessage().trim().contains(randomSitePrefixName.trim()+" is available"), "Random site prefix is not available");
 		crmAccountDetailsPage.clickPWSSaveButton();
 		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
 		String siteUrlAfterEdit = crmAccountDetailsPage.getNewSitePrefixWithCompleteSiteAfterEdit();
@@ -1564,7 +1564,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.openConsultantPWS(afterEditPWSPrefix+afterEditPWSSuffix);
 		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
 		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
-		s_assert.assertTrue(driver.getCurrentUrl().contains("corp"), "Old PWS Site Url is active");
+		s_assert.assertTrue(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is active");
 		s_assert.assertAll();
 	}
 

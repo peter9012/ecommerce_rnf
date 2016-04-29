@@ -299,6 +299,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("password entered as "+password);
 		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
+		driver.pauseExecutionFor(2000);
 		driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -494,14 +495,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("Save billing profile button clicked");
 	}
 
-
-
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
-		//driver.pauseExecutionFor(2000);
 	}
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{

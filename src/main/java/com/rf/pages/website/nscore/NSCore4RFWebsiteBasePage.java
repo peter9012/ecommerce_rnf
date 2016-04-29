@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
@@ -228,5 +230,18 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(3000);
 	}
 
+	public void handleAlertPop() {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+			logger.info("popup ok button clicked");
+			driver.pauseExecutionFor(5000);
+			driver.waitForPageLoad();
+		} catch (Exception e) {
+			//exception handling
+		}
+	}
 
 }

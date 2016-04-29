@@ -249,6 +249,7 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 		driver.click(UPDATE_LINK_LOC);
 		logger.info("Update link clicked");
 		driver.waitForNSCore4LoadingImageToDisappear();
+		driver.pauseExecutionFor(1000);
 	}
 
 	public void clickSubmitReturnBtn(){
@@ -324,31 +325,44 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 
 	public double getRefundedShippingChargesValue(){
 		driver.quickWaitForElementPresent(REFUNDED_SHIPPING_LOC);
-		driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value");
-		double value=Double.parseDouble(driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value"));
+		//double value=Double.parseDouble(driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value"));
+		double value=Double.parseDouble(driver.findElement(REFUNDED_SHIPPING_LOC).getText());
 		return value;
 	}
 
 	public double getRefundedHandlingChargesValue(){
 		driver.quickWaitForElementPresent(REFUNDED_HANDLING_LOC);
-		driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value");
-		double value=Double.parseDouble(driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value"));
+		//double value=Double.parseDouble(driver.findElement(REFUNDED_HANDLING_LOC).getAttribute("value"));
+		double value=Double.parseDouble(driver.findElement(REFUNDED_HANDLING_LOC).getText());
 		return value;
 	}
 
+	//	public void updateRefundedShippingChargesLowerValue(String value){
+	//		driver.waitForElementPresent(REFUNDED_SHIPPING_LOC);
+	//		driver.clear(REFUNDED_SHIPPING_LOC);
+	//		driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys(value);
+	//		driver.pauseExecutionFor(1000);
+	//		driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys("\t");
+	//		driver.pauseExecutionFor(1000);
+	//		logger.info("Refunded_Shipping value updated as"+value);
+	//	}
+
 	public void updateRefundedShippingChargesLowerValue(String value){
 		driver.waitForElementPresent(REFUNDED_SHIPPING_LOC);
+		JavascriptExecutor myExecutor = ((JavascriptExecutor) RFWebsiteDriver.driver);
 		while(true){
 			try{
-				driver.clear(REFUNDED_SHIPPING_LOC);
-				driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys(value);
+				while(driver.findElement(REFUNDED_SHIPPING_LOC).getAttribute("value").length() > 0) {
+					driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys(Keys.BACK_SPACE);
+				}
+				myExecutor.executeScript("arguments[0].value='00';", driver.findElement(REFUNDED_SHIPPING_LOC));
 				driver.pauseExecutionFor(1000);
-				driver.findElement(REFUNDED_SHIPPING_LOC).sendKeys("\t");
+				//driver.findElement(REFUNDED_HANDLING_LOC).sendKeys("\t");
+				driver.findElement(By.xpath("//b[contains(text(),'Total Amount To')]")).click();
 				driver.pauseExecutionFor(1000);
-				logger.info("Refunded_Shipping value updated as"+value);
+				logger.info("Refunded Shipping value updated as"+value);
 				break;
 			}catch(Exception e){
-				System.out.println("Trying..");
 				continue;
 			}
 		}
@@ -367,7 +381,7 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 				//driver.findElement(REFUNDED_HANDLING_LOC).sendKeys("\t");
 				driver.findElement(By.xpath("//b[contains(text(),'Total Amount To')]")).click();
 				driver.pauseExecutionFor(1000);
-				logger.info("Refunded_Shipping value updated as"+value);
+				logger.info("Refunded handling value updated as"+value);
 				break;
 			}catch(Exception e){
 				continue;

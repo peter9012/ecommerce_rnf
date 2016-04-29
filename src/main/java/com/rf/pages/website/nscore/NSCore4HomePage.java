@@ -217,6 +217,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	public String updatePulseProductQuantityAndReturnValue(){
 		int quantity = Integer.valueOf(driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).getAttribute("value"));;
 		quantity = quantity +1;
+		driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).clear();
 		driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).sendKeys(String.valueOf(quantity));
 		driver.click(UPDATE_PULSE_CART_BTN);
 		logger.info("update cart button on pulse clicked");
@@ -251,6 +252,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(SAVE_TEMPLATE_BTN);
 		logger.info("save template button clicked");
 		driver.pauseExecutionFor(2000);
+		driver.waitForNSCore4ProcessImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
@@ -886,7 +888,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	public String getUpdationMessage(){
 		String msg = driver.findElement(GET_UPDATION_MSG).getText();
 		logger.info("Updation mesage is: "+msg);
-		return msg;
+		return msg.trim();
 	}
 
 	public void clickDOBDate(){
@@ -1037,6 +1039,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 
 	public void clickSetAsDefaultPaymentMethodForNewlyCreatedProfile(){
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 		driver.click(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 		driver.pauseExecutionFor(2000);

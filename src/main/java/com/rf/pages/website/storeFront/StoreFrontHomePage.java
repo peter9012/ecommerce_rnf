@@ -251,7 +251,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//kitPrice =  kitPrice.toUpperCase();
 		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
 		//logger.info("EnrollmentTest Kit is selected as "+kitPrice);
-	//	driver.pauseExecutionFor(500);
+		//	driver.pauseExecutionFor(500);
 		System.out.println(kitName);
 		//driver.click(By.xpath("//div[@class='imageCLass' and contains(text(),'"+kitPrice+"')]"));
 		driver.click(By.xpath("//img[@title='"+kitName+"']"));
@@ -461,7 +461,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
 		}		
-/*		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
+		/*		driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 		logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
 		driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
@@ -469,10 +469,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 		logger.info("Yes,enroll me in CRP checkbox is unchecked");*/
 	}
-	
-	
+
+
 	public void checkPulseAndCRPEnrollment() throws InterruptedException{
-		
+
 		if(verifySubsribeToPulseCheckBoxIsNotSelected())
 		{
 			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
@@ -485,7 +485,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
 		}
-/*		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
+		/*		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
 		{
 			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
@@ -757,8 +757,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Add to CRP button clicked");  	
 		}
-		
-/*		try{
+
+		/*		try{
 
 			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
 			driver.waitForLoadingImageToDisappear();
@@ -3326,9 +3326,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifyPresenceOfPopUpForExistingPC() {
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]"));
-		return driver.findElement(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]")).isDisplayed();
+		// return driver.findElement(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]")).isDisplayed();
+		return driver.isElementPresent(By.xpath("//h2[contains(text(),'Existing Preferred Customer')]"));
 	}
-
 	public void selectCountryUsToCan() {
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			driver.waitForElementPresent(By.xpath("//button/img"));

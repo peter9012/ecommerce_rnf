@@ -414,7 +414,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/div/div/div/iframe"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/div/div/div/iframe")));
-		String nodeText= driver.findElement(By.xpath("//h3[text()='Account Activities']/following::tr/th[text()='Notes']/following::td[3]")).getText();
+		String nodeText= driver.findElement(By.xpath("//h3[text()='Account Notes']/following::tr/th[text()='Notes']/following::td[3]")).getText();
 		return nodeText;
 	}
 

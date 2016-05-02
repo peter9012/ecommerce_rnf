@@ -21,7 +21,7 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	private final By TOTAL_SHIPPING_ADDRESSES_LOC = By.xpath("//ul[@id='multiple-billing-profiles']/li");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By NEW_SHIPPING_PROFILE_SAVE_BTN_LOC = By.id("saveShippingAddress");
-	private final By ADD_NEW_SHIPPING_LINK_LOC = By.linkText("Add a new shipping address»");
+	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[contains(text(),'Add a new shipping address')]");
 
 
 	public StoreFrontShippingInfoPage(RFWebsiteDriver driver) {
@@ -86,9 +86,10 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectNewShippingAddressState(){
-		driver.click(By.id("state"));
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//select[@id='state']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
 		logger.info("State/Province selected");
 	}
 
@@ -127,8 +128,12 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
-		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
+		try{
+			driver.quickWaitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
+			driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
+		}catch(Exception e){
+			driver.click(By.id("saveShippingAddreessId"));
+		}
 		logger.info("New Shipping prifile save button clicked");
 		try{
 			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
@@ -177,5 +182,3 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 }
-
-

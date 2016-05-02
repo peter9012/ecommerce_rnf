@@ -56,10 +56,10 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -96,14 +96,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}		
+		}	
 
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
@@ -163,15 +163,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -215,9 +214,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "Username");
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailAddress);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+rcUserEmailAddress);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
@@ -260,47 +259,50 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	//Hybris Phase 2-2235:Verify that user can change the information in 'my account info'.
 	@Test
 	public void testAccountInformationForUpdate_2235() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO(); 
+		int randomNumPhone = CommonUtils.getRandomNum(10000, 99999);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		List<Map<String, Object>> accountNameDetailsList = null;
-		List<Map<String, Object>> accountAddressDetailsList = null;
-		List<Map<String, Object>> mainPhoneNumberList = null;
+		RFO_DB = driver.getDBNameRFO(); 
+
 		List<Map<String, Object>> randomConsultantList =  null;
-
-		String firstNameDB = null;
-		String lastNameDB = null;
-		String genderDB = null;
-		String addressLine1DB= null;
-		String cityDB = null;
-		String provinceDB = null;
-		String postalCodeDB = null;
-		String mainPhoneNumberDB = null;
-		String dobDB = null;
-		//String stateDB = null;
-
+		String country = null;
 		String consultantEmailID = null;
 		String accountID = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String city = null;
+		String postalCode = null;
+		String phoneNumber = null;
+		String addressLine1 = null;
+		country = driver.getCountry();
+		if(country.equalsIgnoreCase("CA")){
+			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
+			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
+			phoneNumber = "99999"+randomNumPhone;
+			addressLine1 =  TestConstants.ADDRESS_LINE_1_CA;
+		}else{
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = "99999"+randomNumPhone;
+			addressLine1 =  TestConstants.ADDRESS_LINE_1_US;
+		}
 
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("Login failed for the user "+consultantEmailID);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+<<<<<<< HEAD
 //		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
 		storeFrontAccountInfoPage.updateAccountInformation(TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION+randomNum, TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_ADDRESS_LINE_1_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION, TestConstants.CONSULTANT_POSTAL_CODE_CA, TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION);
 
@@ -337,33 +339,37 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 	    }*/
 		System.out.println (provinceDB);
 		assertTrue("Province on UI is different from DB", storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(provinceDB));
+=======
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(), "Account Info page has not been displayed");
+		String firstName = TestConstants.CONSULTANT_FIRST_NAME_FOR_ACCOUNT_INFORMATION+randomNum;
+		String lastName = TestConstants.CONSULTANT_LAST_NAME_FOR_ACCOUNT_INFORMATION+randomNum;
+		storeFrontAccountInfoPage.updateFirstName(firstName);
+		storeFrontAccountInfoPage.updateLastName(lastName);
+		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+		String state = storeFrontAccountInfoPage.updateRandomStateAndReturnName();
+		logger.info("State/province selected is "+state);
+		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
+		storeFrontAccountInfoPage.updateDateOfBirthAndGender();
+		storeFrontAccountInfoPage.uncheckSpouseCheckBox();
+		storeFrontAccountInfoPage.clickSaveAccountBtn();
+		//assert First Name with RFO
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstName), "First Name on UI is not updated");
+
+		// assert Last Name with RFO
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastName), "Last Name on UI is not updated");
+
+		// assert City with RFO
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCityFromUIForAccountInfo(city), "City on UI is not updated");
+
+		// assert State with RFO
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProvinceFromUIForAccountInfo(state), "State/Province on UI is not updated");
+>>>>>>> 8cf1b98b83285616fc9c1eb849f249479efbab0c
 
 		//assert Postal Code with RFO
-		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
-		postalCodeDB = (String) getValueFromQueryResult(accountAddressDetailsList, "PostalCode");
-		assertTrue("Postal Code on UI is different from DB", storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCodeDB));
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyPostalCodeFromUIForAccountInfo(postalCode), "Postal Code on UI is not updated");
 
 		// assert Main Phone Number with RFO
-		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-		assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
-
-		// assert Gender Id with RFO
-		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
-		if(genderDB.equals("2")){
-			genderDB = "male";
-		}
-		else{
-			genderDB = "female";
-		}
-		assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
-
-		// assert BirthDay with RFO
-		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
-		assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfo(dobDB));  
-
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(phoneNumber), "Phone Number on UI is not updated");
 		s_assert.assertAll();
 	}
 
@@ -384,14 +390,14 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}			
+		}	
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -402,8 +408,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has not been displayed ");
 		storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_VALID_11_DIGITMAIN_PHONE_NUMBER);
 		s_assert.assertFalse(storeFrontAccountInfoPage.verifyValidationMessageOfPhoneNumber(TestConstants.CONSULTANT_VALIDATION_MESSAGE_OF_MAIN_PHONE_NUMBER),"Validation Message has been displayed");
-
-
 		s_assert.assertAll();
 	}
 

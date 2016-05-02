@@ -51,15 +51,14 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -140,15 +139,15 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -188,7 +187,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		String accountID = null;
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
@@ -197,10 +196,10 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -264,15 +263,15 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-		
+
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -342,15 +341,14 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -409,15 +407,14 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
@@ -484,15 +481,14 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -551,16 +547,14 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			//******USE FOLLOWING FOR MIGRATION DEBUGGING AS SHE NEEDS RENEWAL *****
 			//			consultantEmailID = "maryrob17@gmail.com";
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-		
-		
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -591,9 +585,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+
 		s_assert.assertAll();
-	}	
-
-
+	}
 }

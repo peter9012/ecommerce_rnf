@@ -70,15 +70,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}		
-
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -138,12 +137,8 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-
-
 		s_assert.assertAll();
-
 	}
-
 
 	// phase 2 4287 -> Verify order details of consultant order
 	@Test
@@ -180,7 +175,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 		DecimalFormat df = new DecimalFormat("#.00");
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
@@ -188,15 +182,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -255,8 +248,6 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 
 		// assert for shipping Method with RFO
 		assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"Adhoc Order template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-
-
 		s_assert.assertAll();
 	}
 
@@ -301,14 +292,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 			
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}	
+		}
 
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -418,10 +409,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -535,14 +526,14 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 			
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+rcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}	
+		}
 
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
@@ -648,10 +639,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -760,10 +751,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -874,10 +865,10 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 			rcEmailID= (String) getValueFromQueryResult(randomRCList, "Username");
 
 			storeFrontRCUserPage= storeFrontHomePage.loginAsRCUser(rcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+rcEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -955,4 +946,3 @@ public class ViewOrderDetailsTest extends RFWebsiteBaseTest{
 	}	
 
 }
-

@@ -675,8 +675,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']"));
-		return driver.findElement(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']"));
+		return driver.findElement(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']")).isDisplayed();
+	}
+
+	public String getWrongUsernameErrorMessage() {
+		driver.waitForElementPresent(By.xpath("//div[@class='information_message negative']/p[2]"));
+		String errorMessage=driver.findElement(By.xpath("//div[@class='information_message negative']/p[2]")).getText();
+		return errorMessage;
 	}
 
 	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{

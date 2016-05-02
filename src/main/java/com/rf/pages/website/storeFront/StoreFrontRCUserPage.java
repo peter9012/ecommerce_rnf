@@ -52,8 +52,9 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 	public void enterNewUserNameAndClickSaveButton(String newUserName) {
 		driver.clear(By.id("username-account"));
 		driver.type(By.id("username-account"),newUserName+"\t");
+		logger.info("New username entered is "+newUserName);
 		driver.waitForElementPresent(By.id("saveAccountInfo"));
 		driver.click(By.id("saveAccountInfo"));
+		driver.waitForLoadingImageToDisappear();
 	}
-
 }

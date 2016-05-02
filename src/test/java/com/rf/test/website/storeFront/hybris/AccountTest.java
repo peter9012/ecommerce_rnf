@@ -1798,7 +1798,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryConsultantEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
@@ -1850,7 +1850,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryPCUserEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
@@ -1902,7 +1902,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryRCUserEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");

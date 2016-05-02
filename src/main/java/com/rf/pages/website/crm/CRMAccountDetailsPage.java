@@ -788,6 +788,13 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
 		driver.findElement(By.xpath("//span[text()='"+label+"']")).click();
+		try{
+			driver.pauseExecutionFor(2000);
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+		}catch(Exception e){
+
+		}
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -1110,16 +1117,16 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return false;
 	}
 
-	public boolean isAutoshipStatusActive() {
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
-		if(checkboxStatus.equalsIgnoreCase("Checked")){
-			return true;
-		}
-		return false;
-	}
+//	public boolean isAutoshipStatusActive() {
+//		driver.switchTo().defaultContent();
+//		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+//		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+//		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
+//		if(checkboxStatus.equalsIgnoreCase("Checked")){
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public boolean validateNewUrlWithNewWindow() {
 		String parentWindowID=driver.getWindowHandle();

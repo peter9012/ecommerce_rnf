@@ -68,7 +68,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
-		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+//		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.clear(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
 		driver.clear(ACCOUNT_INFO_LAST_NAME_LOC);
@@ -102,6 +102,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyFirstNameFromUIForAccountInfo(String firstName){
 		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		String firstNameFromUI = driver.findElement(ACCOUNT_INFO_FIRST_NAME_LOC).getAttribute("value");
+		System.out.println("UI FirstName: "+firstNameFromUI);
 		if(firstNameFromUI.equalsIgnoreCase(firstName)){
 			return true;
 		}
@@ -111,6 +112,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyLasttNameFromUIForAccountInfo(String lastName){
 		driver.waitForElementPresent(ACCOUNT_INFO_LAST_NAME_LOC);
 		String lastNameFromUI = driver.findElement(ACCOUNT_INFO_LAST_NAME_LOC).getAttribute("value");
+		System.out.println("UI Lastname: " +lastNameFromUI);
 		if(lastNameFromUI.equalsIgnoreCase(lastName)){
 			return true;
 		}
@@ -120,6 +122,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyAddressLine1FromUIForAccountInfo(String addressLine1){
 		driver.waitForElementPresent(ACCOUNT_INFO_ADDRESS_LINE_1_LOC);
 		String addressLine1FromUI = driver.findElement(ACCOUNT_INFO_ADDRESS_LINE_1_LOC).getAttribute("value");
+		System.out.println("UI Address: "+addressLine1FromUI);
 		if(addressLine1FromUI.equalsIgnoreCase(addressLine1)){
 			return true;
 		}

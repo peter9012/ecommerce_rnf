@@ -6965,7 +6965,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		logout();
+		storeFrontHomePage.logout();
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(rcUserEmailID, password);
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontPCUserPage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "Edit PC Perks Option not present");

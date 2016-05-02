@@ -108,6 +108,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);		
 		logger.info("login link clicked");
+		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
@@ -1506,6 +1507,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void logout(){
+		driver.quickWaitForElementPresent(By.id("account-info-button"));
 		driver.click(By.id("account-info-button"));
 		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.click(By.linkText("Log out"));

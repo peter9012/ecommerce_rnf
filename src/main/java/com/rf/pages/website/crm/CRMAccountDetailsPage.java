@@ -479,11 +479,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	}
 
 	public void clickSaveBtnAfterEditShippingAddress(){
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
-		driver.waitForCRMLoadingImageToDisappear();
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
+			driver.waitForCRMLoadingImageToDisappear();
+		}catch(Exception e){
+			logger.info("No Save Button");
+		}
 	}
 
 	public void closeSubTabOfEditShippingProfile(){
@@ -783,7 +787,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
-		driver.findElement(By.xpath("//span[contains(text(),'"+label+"')]")).click();
+		driver.findElement(By.xpath("//span[text()='"+label+"']")).click();
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -1378,6 +1382,19 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			value = driver.findElement(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::tr[2]/td["+columnNumber+"]")).getText().trim();
 		}
 		return value;
+	}
+
+	public void clickUserEnteredAddressRadioBtn(){
+		driver.pauseExecutionFor(2000);
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.click(By.xpath("//input[@value='User entered']"));
+			driver.waitForCRMLoadingImageToDisappear();
+		}catch (Exception e) {
+			logger.info("NO User entered address btn");
+		}
 	}
 }
 

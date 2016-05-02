@@ -42,8 +42,6 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
@@ -51,9 +49,9 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
@@ -136,15 +134,14 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcUserEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}	
-
+		}
 		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();
@@ -221,14 +218,14 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+rcUserEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		}	
+		}
 
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");

@@ -287,6 +287,9 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
+	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 }
 

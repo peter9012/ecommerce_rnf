@@ -51,15 +51,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -125,10 +124,10 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -188,15 +187,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -271,9 +269,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
@@ -341,15 +339,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		} 
-
+		}
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
 		storeFrontConsultantPage.clickOnAllProductsLink();
@@ -397,15 +394,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		} 
-
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 
@@ -463,15 +459,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		} 
-
+		}
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnShopLink();
 		storeFrontConsultantPage.clickOnAllProductsLink();
@@ -479,9 +474,23 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
-		String newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
-		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
+		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
+		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
+		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
+		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+//		storeFrontShippingInfoPage.selectFirstCardNumber();
+//		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
+//		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
+		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
+		//newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
+		System.out.println("newShippingAddressName is "+newShippingAddressName);
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
@@ -526,14 +535,14 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
-		} 
+		}
 
 		logger.info("login is successful"); 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -577,7 +586,4 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 	}
 
-
 }
-
-

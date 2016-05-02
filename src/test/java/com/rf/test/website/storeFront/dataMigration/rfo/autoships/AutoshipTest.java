@@ -49,16 +49,15 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			pcEmailID= (String) getValueFromQueryResult(randomPCList, "Username");
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnShopLink();  
 		storeFrontPCUserPage.clickOnAllProductsLink();
@@ -76,12 +75,11 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 		assertTrue("shipping method is not as expected", storeFrontOrdersPage.verifyShippingMethod(selectedShippingMethod));
-
 		s_assert.assertAll();
 	}
 
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
-	@Test
+	@Test(enabled=false)
 	public void testChangeShippingMethodOnConsultantAutoShip_131() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
@@ -101,10 +99,10 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -132,7 +130,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-4289 : Verify CRP autoship template details
-	@Test
+	@Test(enabled=false)
 	public void testCRPAutoShipTemplateDetails_HP2_4289() throws InterruptedException, SQLException{
 		RFO_DB = driver.getDBNameRFO();
 
@@ -173,15 +171,14 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
-			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -278,16 +275,16 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontPCUserPage= storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("Login failed for the user "+pcEmailID);
+			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFoundOrErrorPresent){
+				logger.info("error for the user "+pcEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"Consultant Page doesn't contain Welcome User Message");
+		s_assert.assertTrue(storeFrontPCUserPage.verifyPCUserPage(),"PC Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -333,7 +330,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
 
 		//assert shipping Address with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is: "+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is: "+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate());
 
 		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"PC autoship template subTotal is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());

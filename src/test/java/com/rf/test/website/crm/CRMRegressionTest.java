@@ -154,7 +154,6 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	//Hybris Project-4548:Preferred Customer detail view page
 	@Test
 	public void testPreferredCustomerdDetailViewTest_4548() throws InterruptedException{
@@ -1952,8 +1951,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		//		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
+		//		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		//verify the updated shipping address is saved as default
 		updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
@@ -2415,7 +2414,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 
-		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Notes is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
@@ -2429,7 +2428,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
 		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
-		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Notes");
 
 		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
 		s_assert.assertAll();
@@ -2453,7 +2452,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 
-		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Notes is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
@@ -2467,7 +2466,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
 		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
-		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Notes");
 
 		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
 		s_assert.assertAll();
@@ -2491,7 +2490,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 
-		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Activity is not Present");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(), "Log Account Notes is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Channel"), "Channel Dropdown is Empty");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
@@ -2505,7 +2504,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
 		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
-		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Activities");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Account Notes");
 
 		s_assert.assertTrue(crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes").trim().equals(accountActivityNote), "Expected value is "+accountActivityNote+"And Actual Value is "+crmAccountDetailsPage.IsLogInAccountActivityUpdated("Notes"));
 		s_assert.assertAll();

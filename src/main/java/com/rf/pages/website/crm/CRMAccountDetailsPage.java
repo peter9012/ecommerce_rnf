@@ -1037,7 +1037,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]")));
-		return driver.findElement(By.xpath("//h3[contains(text(),'Account Activities')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')][1]/td["+id+"]")).getText();
+		return driver.findElement(By.xpath("//h3[contains(text(),'Account Notes')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')][1]/td["+id+"]")).getText();
 	}
 
 	public boolean isDataValuesInDropDownUnderLogAccountActivityPresent(String label){

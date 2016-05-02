@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -351,9 +352,13 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	public void clickSetUpAccountNextBtn(){
 		driver.click(SETUP_ACCOUNT_NEXT_BTN_LOC);
 		logger.info("set up account next button is clicked");
-		driver.quickWaitForElementPresent(USE_AS_ENTERED_BTN_LOC);
-		driver.findElement(USE_AS_ENTERED_BTN_LOC).click();
-		logger.info("use as entered button clicked");
+		try{
+			driver.quickWaitForElementPresent(USE_AS_ENTERED_BTN_LOC);
+			driver.findElement(USE_AS_ENTERED_BTN_LOC).click();
+			logger.info("use as entered button clicked");
+		}catch(NoSuchElementException e){
+			logger.info("Use as entered popup not present.");
+		}
 		driver.waitForPageLoad();
 	}
 
@@ -672,7 +677,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(COMPLETE_ENROLLMENT_BTN);
 		driver.click(COMPLETE_ENROLLMENT_BTN);
 		logger.info("Complete enrollmet button clicked");
-//		driver.waitForPageLoad();
+		//		driver.waitForPageLoad();
 	}
 
 	public void clickUseAsEnteredBtn(){

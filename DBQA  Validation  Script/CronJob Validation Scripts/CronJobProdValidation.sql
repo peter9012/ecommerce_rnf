@@ -69,9 +69,9 @@ DECLARE @BackupTemplateName NVARCHAR(255) ,
  
 SELECT  @Date = CAST(GETDATE() AS DATE);
     
-SET @BackupTemplateName = CONCAT('Datamigration.dbo.[Templates', '_', @Date,
+SET @BackupTemplateName = CONCAT('RFOperations.dbo.[Templates', '_', @Date,
                                  '_BackUp]'); 
-
+ 
 
 SELECT  @BackupTemplateName;
 EXECUTE
@@ -97,7 +97,7 @@ group By b.InternalCode ');
 
 
 				     
-SET @BackupItemsName = CONCAT('Datamigration.dbo.[TemplateItems', '_', @Date,
+SET @BackupItemsName = CONCAT('RFOperations.dbo.[TemplateItems', '_', @Date,
                               '_BackUp]'); 
 EXECUTE
 ('SELECT   oi.*   INTO ' + @BackupItemsName +
@@ -135,7 +135,7 @@ DECLARE @BackupTemplateName NVARCHAR(255) ,
  
 SELECT  @Date = CAST(GETDATE() AS DATE);
     
-SET @BackupTemplateName = CONCAT('Datamigration.dbo.[Templates', '_', @Date,
+SET @BackupTemplateName = CONCAT('RFOperations.dbo.[Templates', '_', @Date,
                                  '_BackUp]'); 
 
 
@@ -146,29 +146,14 @@ EXECUTE
 join Hybris..users u on u.pk=ho.userpk
 join Hybris..EnumerationValues v on v.pk=u.p_accountstatus AND v.Code=''ACTIVE''
 WHERE ho.p_template=1
- AND ho.currencypk=8796125855777
+ AND ho.currencypk=8796125888545
 AND ho.p_active = 1           
  AND ho.p_ccfailurecount < 3
- AND ho.TypepkString IN( 8796124676178, 8796124741714 )
+ AND ho.TypepkString IN(8796124676178,8796124741714,8796124708946)
 			AND CAST(ISNULL(ho.p_lastprocessingdate,''1900-01-01'') AS DATE)<CAST(DATEADD(DAY,-5,GETDATE()) AS DATE)
             AND CAST(ho.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
                                                               CAST(GETDATE() AS DATE))
-                                                 AND    CAST(GETDATE() AS DATE)
-UNION ALL
-SELECT  ho.*    FROM  Hybris.dbo.orders ho
-join Hybris..users u on u.pk=ho.userpk
-join Hybris..EnumerationValues v on v.pk=u.p_accountstatus AND v.Code=''ACTIVE''
-WHERE ho.p_template=1
- AND ho.currencypk=8796125855777
-AND ho.p_active = 1           
- AND ho.p_ccfailurecount < 4
- AND ho.TypepkString IN( 8796124708946 )
-			AND CAST(ISNULL(ho.p_lastprocessingdate,''1900-01-01'') AS DATE)<CAST(DATEADD(DAY,-5,GETDATE()) AS DATE)
-            AND CAST(ho.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
-                                                              CAST(GETDATE() AS DATE))
-                                                 AND    CAST(GETDATE() AS DATE)
-
-												 '); 
+                                                 AND    CAST(GETDATE() AS DATE) '); 
 
 EXECUTE ('CREATE CLUSTERED INDEX cls ON ' +@BackupTemplateName+'(PK)');
 EXECUTE ('CREATE NONCLUSTERED INDEX cls1 ON ' +@BackupTemplateName+'(code)');
@@ -178,42 +163,28 @@ EXECUTE
 ('SELECT   count(*),b.InternalCode from  ' + @BackupTemplateName +
 'a join   Hybris.dbo.composedtypes b on a.TypepkString=b.pk
 WHERE     p_template = 1
-AND currencypk = 8796125855777
+AND currencypk = 8796125888545
 AND p_active = 1 
 group By b.InternalCode '); 
 
 
 
 				     
-SET @BackupItemsName = CONCAT('Datamigration.dbo.[TemplateItems', '_', @Date,
+SET @BackupItemsName = CONCAT('RFOperations.dbo.[TemplateItems', '_', @Date,
                               '_BackUp]'); 
 EXECUTE
 ('SELECT   oi.*   INTO ' + @BackupItemsName +
 ' FROM '+ @BackupTemplateName + ' ho
 JOIN Hybris..orderentries oi ON ho.pk=oi.orderpk
 WHERE ho.p_template=1
- AND ho.currencypk=8796125855777
+ AND ho.currencypk=8796125888545
 AND ho.p_active = 1           
  AND ho.p_ccfailurecount < 3
- AND ho.TypepkString IN( 8796124676178, 8796124741714 )
+ AND ho.TypepkString IN( 8796124676178, 8796124741714,8796124708946)
 			AND CAST(ISNULL(ho.p_lastprocessingdate,''1900-01-01'') AS DATE)<CAST(DATEADD(DAY,-5,GETDATE()) AS DATE)
             AND CAST(ho.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
                                                               CAST(GETDATE() AS DATE))
-                                                 AND    CAST(GETDATE() AS DATE)
-UNION ALL 
-SELECT   oi.*  
- FROM '+ @BackupTemplateName + ' ho
-JOIN Hybris..orderentries oi ON ho.pk=oi.orderpk
-WHERE ho.p_template=1 AND ho.currencypk=8796125855777
-AND ho.p_active = 1               
-AND CAST(ho.p_schedulingdate AS DATE) <= CAST(GETDATE() AS DATE)
- AND ho.p_ccfailurecount < 4
- AND ho.TypepkString IN(8796124708946)
-			AND CAST(ISNULL(ho.p_lastprocessingdate,''1900-01-01'') AS DATE)<CAST(DATEADD(DAY,-5,GETDATE()) AS DATE)
-            AND CAST(ho.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
-                                                              CAST(GETDATE() AS DATE))
-                                                 AND    CAST(GETDATE() AS DATE)
-												 '); 
+                                                 AND    CAST(GETDATE() AS DATE)'); 
 
 SELECT  @BackupItemsName;
 
@@ -225,7 +196,7 @@ EXECUTE
 'a  join ' + @BackupTemplateName + ' ho on a.orderpk=ho.pk
 join  Hybris.dbo.composedtypes b on ho.TypepkString=b.pk
 WHERE ho.p_template = 1
-AND ho.currencypk = 8796125855777
+AND ho.currencypk = 8796125888545
   '); 
 
 
@@ -268,7 +239,7 @@ WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124708946 )
         AND b.p_active = 1
-        AND b.p_ccfailurecount < 4
+        AND b.p_ccfailurecount < 3
         AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -5, @Date)
         AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
@@ -314,7 +285,7 @@ WHERE   b.p_template = 1
        -- AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124708946 )
         AND b.p_active = 1
-        AND b.p_ccfailurecount < 4
+        AND b.p_ccfailurecount < 3
         AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -5, @Date)
         AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
@@ -367,7 +338,7 @@ WHERE   b.p_template = 1
         AND b.currencypk = 8796125855777
         AND b.TypePkString IN (8796124708946)
         AND b.p_active = 1
-        AND b.p_ccfailurecount < 4
+        AND b.p_ccfailurecount < 3
         AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -7, @Date)
        
@@ -412,7 +383,7 @@ WHERE   b.p_template = 1
        -- AND b.currencypk = 8796125855777
         AND b.TypePkString IN ( 8796124708946 )
         AND b.p_active = 1
-        AND b.p_ccfailurecount < 4
+        AND b.p_ccfailurecount < 3
         AND CAST(ISNULL(b.p_lastprocessingdate, '1900-01-01') AS DATE) < DATEADD(DAY,
                                                               -5, @Date)
         AND CAST(b.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30, @Date)
@@ -463,7 +434,7 @@ WHERE   b.p_template = 1
         AND b.TypePkString IN ( 8796124708946 )
         AND CAST(ho.createdTS AS DATE) = @Date
         AND ( b.p_active = 0
-              OR b.p_ccfailurecount >= 4
+              OR b.p_ccfailurecount >= 3
               OR ho.currencypk <> 8796125855777
               OR CAST(b.p_schedulingdate AS DATE) < DATEADD(DAY, -30, @Date)
               OR v.Code <> 'ACTIVE'
@@ -558,7 +529,7 @@ GROUP BY c.InternalCode;
             AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
                                                               @Date)
                                                  AND     @Date
-            AND a.p_ccfailurecount < 4
+            AND a.p_ccfailurecount < 3
             AND NOT EXISTS ( SELECT 1
                              FROM   Hybris..orders ho
                              WHERE  ho.p_associatedtemplate = a.PK
@@ -661,7 +632,7 @@ GROUP BY c.InternalCode;
             AND CAST(a.p_schedulingdate AS DATE) BETWEEN DATEADD(DAY, -30,
                                                               @Date)
                                                  AND     @Date
-            AND a.p_ccfailurecount < 4
+            AND a.p_ccfailurecount < 3
             AND NOT EXISTS ( SELECT 1
                              FROM   Hybris..orders ho
                              WHERE  ho.p_associatedtemplate = a.PK
@@ -671,7 +642,35 @@ GROUP BY c.InternalCode;
 
 					*/
 
+					--==================================
+					-- MISSING ORDERS FINDING IN RFO
+					--=================================
 					
+DECLARE @Date DATE = CAST(GETDATE() AS DATE);
+SELECT  ho.PK AS OrderPk ,
+        ho.code AS OrderNumber ,
+        ho.p_associatedtemplate AS TemplatePK ,
+        a.code AS Templates ,
+        ho.createdTS AS OrderCreatedTS ,
+        ho.modifiedTS AS OrderModifiedTS ,
+        ho.p_isflowtorfo ,
+        ho.p_rfmodifiedtime ,
+        c.InternalCode AS TemplateTypes ,
+        v.Code AS OrderStatus
+FROM    DataMigration.dbo.BackUPTemplate a --<<<<<<<<<<<<<<<<<<<< BackUpTable.
+        JOIN Hybris..orders ho ON a.PK = ho.p_associatedtemplate
+        JOIN Hybris..composedtypes c ON c.PK = ho.TypePkString
+        JOIN Hybris..enumerationvalues v ON v.PK = ho.statuspk
+                                            AND v.Code <> 'Created'
+WHERE  NOT EXISTS ( SELECT 1
+                 FROM   RFOperations.Hybris.Orders ro
+                 WHERE  ro.OrderID = ho.PK )
+        AND NOT EXISTS ( SELECT 1
+                         FROM   RFOperations.Logging.BoomiError br
+                         WHERE  br.RecordID = ho.PK )
+        AND CAST(ho.createdTS AS DATE) = @Date;
+        
+
 					
 			
 				/* autoshipCRPProcessesJob Analysis: */

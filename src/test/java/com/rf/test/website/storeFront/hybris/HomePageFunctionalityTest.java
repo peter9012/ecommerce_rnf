@@ -2295,7 +2295,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(firstName);
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
@@ -2377,7 +2377,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(firstName);
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");

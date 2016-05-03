@@ -321,7 +321,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterEmailAddress(String emailAddress){	
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();

@@ -772,6 +772,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String oldUserNameOnUI = storeFrontHomePage.fetchingUserName();
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.enterPhoneNumberAndPostalCode();
 		storeFrontAccountInfoPage.enterNewUserNameAndClicKOnSaveButton(newUserName);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Your Profile has not been Updated");
 		logout();
@@ -2119,7 +2120,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			logout();
 			// RC TO Consultant
-			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			while(true){
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
@@ -2183,7 +2184,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnEnrollMeBtn();
 			storeFrontHomePage.clickOnConfirmAutomaticPayment();
 			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			//PC to consultant
 			List<Map<String, Object>> randomPCUserList;
 			String pcUserEmailID = null;

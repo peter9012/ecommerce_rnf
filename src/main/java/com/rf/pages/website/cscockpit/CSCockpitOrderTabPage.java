@@ -714,4 +714,11 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath(String.format(disableReturnOnlyTaxCheckboxInPopup, rowNum)));
 	}
 
+	public String getOrderTypeOnOrderTab() {
+		driver.waitForElementPresent(ORDER_TYPE_LOC);
+		String orderTypeOnUI = driver.findElement(ORDER_TYPE_LOC).getText();
+		logger.info("Order Type on UI is: "+orderTypeOnUI);
+		return orderTypeOnUI;
+	}
+
 }

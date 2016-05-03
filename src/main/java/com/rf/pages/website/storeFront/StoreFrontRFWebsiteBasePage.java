@@ -1749,7 +1749,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 		logger.info("Add New Billing Profile link clicked");
 	}

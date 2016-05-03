@@ -1435,6 +1435,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
 		crmHomePage.clickNameOnFirstRowInSearchResults();
 		//click 'Del' for the default shipping profile under shipping profile section
+		int countofShippingProfileBeforeAdd = crmHomePage.getCountOfShippingProfile();
 		crmHomePage.clickDeleteForTheDefaultShippingProfileSelected();
 		crmHomePage.clickOKOnDeleteDefaultShippingProfilePopUp();
 		//verify 'default' shipping profile can not be deleted
@@ -1455,7 +1456,10 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmHomePage.clickDeleteForNonDefaultShippingProflle();
 		crmHomePage.clickOKOnDeleteDefaultShippingProfilePopUp();
 		//verify 'Non Default' profile is deleted?
-		s_assert.assertTrue(crmHomePage.validateNonDefaultShippingProfileDeleted(),"Non Default shipping profile is not deleted");
+		int countofShippingProfileAfterDelete = crmHomePage.getCountOfShippingProfile();
+		crmHomePage.refreshPage();
+		s_assert.assertTrue(countofShippingProfileAfterDelete == (countofShippingProfileBeforeAdd), "Expected No of Shipping profile After delete is: "+(countofShippingProfileBeforeAdd)+" Actual on UI is: "+countofShippingProfileAfterDelete);
+		//s_assert.assertTrue(crmHomePage.validateNonDefaultShippingProfileDeleted(),"Non Default shipping profile is not deleted");
 		s_assert.assertAll();
 	}
 
@@ -1671,7 +1675,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5161:Save Main address as shipping for RC in Salesforce
-	@Test
+	@Test(enabled=false)//WIP
 	public void testSaveMainAddressAsShippingForRC_5161() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomRCUserList =  null;
@@ -1952,8 +1956,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		//Mark this addrees as default
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		//		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		//		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.clickUserEnteredAddressRadioBtn();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
@@ -1963,8 +1967,8 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		crmAccountDetailsPage.enterShippingAddress(addressLine, city, province, postal, phoneNumber);
 		crmAccountDetailsPage.clickCheckBoxForDefaultShippingProfileIfCheckBoxNotSelected();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
-		//		crmAccountDetailsPage.clickUserEnteredAddress(addressLine);
-		//		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
+		crmAccountDetailsPage.clickUserEnteredAddressRadioBtn();
+		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		//verify the updated shipping address is saved as default
 		updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
@@ -2843,7 +2847,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		String rcEmailID = null;
 		String otherReason = TestConstants.OTHER_REASON;
 		String changedMyMind = TestConstants.CHANGED_MY_MIND;
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 		logger.info("The email address is "+rcEmailID); 
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);

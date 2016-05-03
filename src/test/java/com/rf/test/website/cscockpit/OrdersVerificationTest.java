@@ -1996,7 +1996,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
 		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.validateOrderTypeOnOrderTab(orderTypePCOrder),"Order Type is not PC Order");
+		s_assert.assertTrue(cscockpitOrderTabPage.getOrderTypeOnOrderTab().contains(orderTypePCOrder) || cscockpitOrderTabPage.getOrderTypeOnOrderTab().contains(orderTypePCPerksAutoship),"Order Type is not PC Order");
 		cscockpitOrderTabPage.clickChangeOrderLinkOnLeftNavigation();
 		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(orderTypeRetailOrder);
 		cscockpitOrderSearchTabPage.clickSearchBtn();
@@ -2084,7 +2084,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
 		cscockpitCheckoutTabPage.enterBillingInfo();
 		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.INVALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.VALID_CV2_NUMBER);
 		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
 		cscockpitCheckoutTabPage.clickPerformSooButton();
 		cscockpitCheckoutTabPage.enterPriceValueInSalesOrderOverridePopUp(priceValue);
@@ -2150,7 +2150,10 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.clickOrderNoteEditButton(TestConstants.ORDER_NOTE+randomNum);
 		cscockpitCheckoutTabPage.updateOrderNoteOnCheckOutPage(TestConstants.UPDATED_ORDER_NOTE+randomNum);
-		cscockpitCheckoutTabPage.entervalidCV2OnPaymentInfoSection(TestConstants.VALID_CV2_NUMBER);
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
+		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.VALID_CV2_NUMBER);
 		cscockpitCheckoutTabPage.clickUseThisCardButtonOnCheckoutPage();
 		cscockpitCheckoutTabPage.clickPerformSooButton();
 		cscockpitCheckoutTabPage.enterPriceValueInSalesOrderOverridePopUp(priceValue);

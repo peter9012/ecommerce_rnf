@@ -662,6 +662,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.id("username-account"), newUserName+"\t");
 		driver.click(By.id("saveAccountInfo"));
 		logger.info("save button clicked");
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept as original button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(NoSuchElementException e){
+
+		}  
 	}
 
 	public boolean verifyProfileUpdationMessage(){
@@ -954,6 +962,23 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean verifyThresholdErrorMsgPresent() {
 		return driver.isElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[contains(@class,'error')]"));
+	}
+
+	public void enterPhoneNumberAndPostalCode(){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.id("postal-code"));
+			driver.clear(By.id("postal-code"));
+			driver.type(By.id("postal-code"), TestConstants.POSTAL_CODE_CA);
+			driver.clear(By.id("phonenumber"));
+			driver.type(By.id("phonenumber"), TestConstants.PHONE_NUMBER_CA);
+		}
+		else{
+			driver.waitForElementPresent(By.id("postal-code"));
+			driver.clear(By.id("postal-code"));
+			driver.type(By.id("postal-code"), TestConstants.POSTAL_CODE_US);
+			driver.clear(By.id("phonenumber"));
+			driver.type(By.id("phonenumber"), TestConstants.PHONE_NUMBER_US);
+		}
 	}
 
 }

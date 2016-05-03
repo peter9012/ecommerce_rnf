@@ -68,13 +68,30 @@ public class RFBaseTest{
 			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));						
 		}
 		// clear screenshots folder
-		try {
-			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
-					+ "\\output\\ScreenShots"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				try {
+					File fDir = new File(System.getProperty("user.dir")
+							+ "\\output\\ScreenShots");
+							if (!fDir.exists()) {
+								fDir.mkdirs();
+								
+							
+							}
+							
+				
+					FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
+							+ "\\output\\ScreenShots"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 		}
+				//just do it - no try
+				File fDir2 = new File(System.getProperty("user.dir")
+						+ "\\test-output");
+						if (!fDir2.exists()) {
+							fDir2.mkdirs();
+							
+						
+						}
 	}
 
 	@AfterSuite(alwaysRun=true)

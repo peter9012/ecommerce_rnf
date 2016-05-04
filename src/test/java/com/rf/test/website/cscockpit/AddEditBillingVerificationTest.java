@@ -647,7 +647,6 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickSaveAddNewPaymentProfilePopUP();
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(profileName),"Newly Added credit card is not present in credit card list");
 
-
 		cscockpitCustomerTabPage.clickAddCardButtonInCustomerTab();
 		cscockpitCustomerTabPage.clickAddANewAddressOfAddANewPaymentProfilePopup();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isAddressValuesPresentInPaymentProfilePopup(attention), "Attention field is not present in payment profile popup");

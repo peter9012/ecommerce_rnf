@@ -625,7 +625,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.clickEnrollmentNextBtn();		
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.addQuantityOfProduct("5");
@@ -2110,7 +2110,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//At autoship options page check only the pulse check box and proceed..
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckCRPCheckBox();
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//validate that 'I have read and accepted all Terms and Conditions for the Consultant Application, Pulse and Policies and Procedures' is displayed

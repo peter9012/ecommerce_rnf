@@ -249,8 +249,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}	
-		logout();
-
+		logout();		
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
@@ -391,7 +390,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getStoreFrontURL()+"/us");
 			}
 			else
 				break;
@@ -458,7 +457,7 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getStoreFrontURL()+"/ca");
 			}
 			else
 				break;
@@ -2038,7 +2037,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> emailIdFromAccountIdList =  null;		
 		String accountID = null;
 
-
 		//-------------------FOR US----------------------------------
 		driver.get(driver.getStoreFrontURL()+"/us");
 		while(true){
@@ -3146,3 +3144,4 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 }
+

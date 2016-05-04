@@ -1000,7 +1000,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cidOfInactiveUser=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberOfInactiveUser);
 		cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
 		//verify cancel autoship and edit autoship link are not present for inactive user in autoship template header.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateBtnDisabled(),"Edit autoship link in Autoship template header section is present on Autoship template page for inactive user.");
 		//verify Update and run now  link are not present or disabled for inactive user in order from autoship template section.
 		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyUpdateLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Update link in order from Autoship template section is active  on Autoship template page for inactive user.");

@@ -228,6 +228,7 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 	public void testCreateAPulseAutoship_1716() throws InterruptedException{
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
+		String accountID = null;
 		RFO_DB = driver.getDBNameRFO();
 
 		//-------------------FOR US----------------------------------
@@ -236,6 +237,7 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -252,6 +254,10 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
 		logout();
+
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -284,6 +290,7 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -300,6 +307,9 @@ public class PulseVerificationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
 		logout();
+
+		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		consultantEmailID = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");

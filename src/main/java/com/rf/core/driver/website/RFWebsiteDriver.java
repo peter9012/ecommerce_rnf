@@ -432,6 +432,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void get(String Url) {
+		logger.info("URL hit is "+Url);
 		driver.get(Url);
 	}
 

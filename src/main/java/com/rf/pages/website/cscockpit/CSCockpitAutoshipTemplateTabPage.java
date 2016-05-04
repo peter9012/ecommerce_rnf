@@ -108,7 +108,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By SELECT_VALID_FUTURE_DATE_POPUP = By.xpath("//span[contains(text(),'Please select a valid future date before 18th of month')]");
 	private static final By SHIPPING_METHOD_NAME_FROM_UI = By.xpath("//span[text()='Shipping Method']/following::span[1]");
 	private static final By PAYMENT_INFO_PROFILE_NAME_FROM_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']/span/input");
-
+	private static final By ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK = By.xpath("//div[@class='csCancelAutoship']/a[@style='display:none;']");
+	
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -560,6 +561,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		String[] splittedDate = UIDate.split("\\/");
 		String date = splittedDate[1];
 		String month = splittedDate[0];
+		if(Character.toString(date.charAt(0)).equals("0")){
+			date = date.substring(1);
+		}
 		switch (Integer.parseInt(month)) {  
 		case 1:
 			UIMonth="January";
@@ -1139,6 +1143,11 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public String getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab(){
 		driver.waitForElementPresent(SHIPPING_METHOD_NAME_FROM_UI);
 		return driver.findElement(SHIPPING_METHOD_NAME_FROM_UI).getText().trim();
+	}
+
+	public boolean verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(){
+		driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);
+		return driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);  
 	}
 
 }

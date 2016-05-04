@@ -583,6 +583,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void checkTheIAcknowledgeCheckBox(){
+		driver.waitForElementPresent(By.xpath("//input[@id='acknowledge-check']/.."));
 		driver.click(By.xpath("//input[@id='acknowledge-check']/.."));
 		logger.info("The I Acknowledge CheckBox is checked");
 	}
@@ -1612,7 +1613,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnCnacelEnrollmentForPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
 		driver.click(By.xpath("//div[@id='terminate-log-in']/following::input[1]"));
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public String fetchingUserName(){

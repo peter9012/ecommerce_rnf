@@ -145,7 +145,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Events section Upcoming events is displayed
-	@Test(enabled=false)//needs updation,else test will fail
+	@Test(enabled=false)
 	public void testEventsSectionUpcomingEventsIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -153,7 +153,7 @@ public class PromotionTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
-		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
 		//Navigate to Events Section

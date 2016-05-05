@@ -109,7 +109,8 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	private static final By SHIPPING_METHOD_NAME_FROM_UI = By.xpath("//span[text()='Shipping Method']/following::span[1]");
 	private static final By PAYMENT_INFO_PROFILE_NAME_FROM_DD = By.xpath("//div[@class='csObjectRFCreditCardPaymentInfoContainer']//div[@class='csDeliveryModeContainer']/span/input");
 	private static final By ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK = By.xpath("//div[@class='csCancelAutoship']/a[@style='display:none;']");
-	
+	private static final By TOTAL_SV_VALUE = By.xpath("//span[contains(text(),'Total QV')]/following::span[1]");
+
 	protected RFWebsiteDriver driver;
 	public CSCockpitAutoshipTemplateTabPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -1148,6 +1149,14 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public boolean verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(){
 		driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);
 		return driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);  
+	}
+
+	public int getTotalSVValue(){
+		driver.waitForElementPresent(TOTAL_SV_VALUE);
+		String value = driver.findElement(TOTAL_SV_VALUE).getText();
+		int SVValue = Integer.parseInt(value);
+		logger.info("Total SV Value is: "+SVValue);
+		return SVValue;
 	}
 
 }

@@ -970,6 +970,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getStoreFrontURL()+"/us");
+				continue;
 			}
 			else{
 				storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -985,7 +986,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 				}
 			}
 
-			break;
 		}
 		logger.info("login is successful");	
 		logout();
@@ -1004,6 +1004,12 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		int SVValue = cscockpitAutoshipTemplateTabPage.getTotalSVValue();
+		if(SVValue<=100){
+			cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+			cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct("10");
+			cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
+		}
 		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
 		String confirmationMsgOfRunNow = cscockpitAutoshipTemplateTabPage.getConfirmMessageAfterClickOnRunNowBtn();
 		String orderNumberFromMsg = cscockpitAutoshipTemplateTabPage.getOrderNumberFromConfirmationMsg(confirmationMsgOfRunNow);
@@ -1045,6 +1051,7 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getStoreFrontURL()+"/us");
+				continue;
 			}
 			else{
 				storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -1059,8 +1066,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 					break;
 				}
 			}
-
-			break;
 		}
 		logger.info("login is successful");	
 		logout();
@@ -1078,6 +1083,12 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
+		SVValue = cscockpitAutoshipTemplateTabPage.getTotalSVValue();
+		if(SVValue<=100){
+			cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
+			cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct("10");
+			cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
+		}
 		cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
 		confirmationMsgOfRunNow = cscockpitAutoshipTemplateTabPage.getConfirmMessageAfterClickOnRunNowBtn();
 		orderNumberFromMsg = cscockpitAutoshipTemplateTabPage.getOrderNumberFromConfirmationMsg(confirmationMsgOfRunNow);

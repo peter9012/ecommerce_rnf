@@ -40,22 +40,26 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isAccountTypeFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Type']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Type']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isAccountNumberFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Number']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Number']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isAccountStatusFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Status']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Status']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isCountryFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Country']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Country']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isPlacementSponsorFieldDisplayed(){
@@ -65,19 +69,21 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isEnrollmentDateFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Enrollment Date']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Enrollment Date']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isMainPhoneFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Main Phone']")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Main Phone']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isEmailAddressFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Email Address']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Email Address']/following::td[1]")).getText().isEmpty());
 	}
-
 	public boolean isAccountDetailsSectionPresent(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
@@ -1117,16 +1123,16 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return false;
 	}
 
-//	public boolean isAutoshipStatusActive() {
-//		driver.switchTo().defaultContent();
-//		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
-//		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-//		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
-//		if(checkboxStatus.equalsIgnoreCase("Checked")){
-//			return true;
-//		}
-//		return false;
-//	}
+	//	public boolean isAutoshipStatusActive() {
+	//		driver.switchTo().defaultContent();
+	//		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+	//		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+	//		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
+	//		if(checkboxStatus.equalsIgnoreCase("Checked")){
+	//			return true;
+	//		}
+	//		return false;
+	//	}
 
 	public boolean validateNewUrlWithNewWindow() {
 		String parentWindowID=driver.getWindowHandle();

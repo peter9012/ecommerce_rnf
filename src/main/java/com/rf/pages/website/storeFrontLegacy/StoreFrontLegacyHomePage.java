@@ -43,6 +43,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static String linkUnderMyAccount = "//div[@id='RFContent']//span[contains(text(),'%s')]";
 	private static String viewDetailsOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]//a[contains(text(),'View Details')]";
 	private static String orderNumberOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]/td[1]";
+	private static String regimenImageHeaderLoc = "//div[@id='HeaderCol']//cufon[@alt='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
@@ -780,14 +781,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Regimen selected is: "+regimenHeader);
 	}
 
-	public boolean verifyUserIsRedirectedToProductsPage() {
+	public boolean verifyUserIsRedirectedToProductsPage(String regimenType) {
 		driver.waitForElementPresent(PRODUCTS_LIST_LOC);
-		return driver.isElementPresent(PRODUCTS_LIST_LOC); 
+		return driver.isElementPresent(PRODUCTS_LIST_LOC)&& driver.isElementPresent(By.xpath(String.format(regimenImageHeaderLoc, regimenType.toUpperCase()))); 
 	}
 
-	public boolean verifyUserIsRedirectedToResultsPage() {
+	public boolean verifyUserIsRedirectedToResultsPage(String regimenType) {
 		driver.waitForElementPresent(RESULTS_TEXT_LOC);
-		return driver.isElementPresent(RESULTS_TEXT_LOC); 
+		return driver.isElementPresent(RESULTS_TEXT_LOC)&& driver.isElementPresent(By.xpath(String.format(regimenImageHeaderLoc, regimenType.toUpperCase()))); 
 	}
 
 	public boolean verifyUserIsRedirectedToTestimonialsPage() {
@@ -801,9 +802,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return driver.isElementPresent(NEWS_TEXT_LOC);
 	}
 
-	public boolean verifyUserIsRedirectedToFAQsPage() {
+	public boolean verifyUserIsRedirectedToFAQsPage(String regimenType) {
 		driver.waitForElementPresent(FAQS_TEXT_LOC);
-		return driver.isElementPresent(FAQS_TEXT_LOC);
+		return driver.isElementPresent(FAQS_TEXT_LOC) && driver.isElementPresent(By.xpath(String.format(regimenImageHeaderLoc, regimenType)));
 	}
 
 	public boolean verifyUserIsRedirectedToAdvicePage() {

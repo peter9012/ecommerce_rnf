@@ -626,7 +626,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		//storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
 		storeFrontUpdateCartPage.clickOnEditBillingProfileDuringEnrollInCRP(newBillingProfileName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileNameAfterEdit+" "+lastName);
 		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
@@ -639,7 +639,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontUpdateCartPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName+" "+lastName),"Edited Billing Profile is selected by default on Billing Profile page");
+		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileNameAfterEdit),"Edited Billing Profile is selected by default on Billing Profile page");
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(firstBillingName),"Old Billing Profile is not selected by default on Billing Profile page");
 		//s_assert.assertTrue(storeFrontBillingInfoPage.isAutoshipOrderAddressTextPresent(newBillingProfileNameAfterEdit),"Default selected shipping address does not have autoship text");
 		s_assert.assertAll(); 

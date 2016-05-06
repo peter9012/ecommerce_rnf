@@ -689,7 +689,11 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyTheAbilityToMarkTestOrderAndDoNotShipFunctionality_1926(){
 		String randomCustomerSequenceNumber = null;
 		String randomProductSequenceNumber = null;
+		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String SKUValue = null;
+		String attendentFirstName=TestConstants.FIRST_NAME+randomNumber;
+		String attendeeLastName = TestConstants.LAST_NAME+randomNumber;
+
 
 		//-------------------FOR US----------------------------------
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -707,6 +711,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, TestConstants.ADDRESS_LINE_1_US, TestConstants.CITY_US, TestConstants.POSTAL_CODE_US, TestConstants.COUNTRY_DD_VALUE_US, TestConstants.PROVINCE_ALABAMA_US, TestConstants.PHONE_NUMBER_US);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickTestOrderCheckBoxInCheckoutTab();
@@ -733,9 +744,15 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
+		cscockpitCheckoutTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, TestConstants.ADDRESS_LINE_1_CA, TestConstants.CITY_CA, TestConstants.POSTAL_CODE_CA, TestConstants.COUNTRY_DD_VALUE_CA, TestConstants.PROVINCE_CA, TestConstants.PHONE_NUMBER_CA);
+		cscockpitCheckoutTabPage.clickOnCreateNewAddressButtonInAutoshipTemplateTabPage();
+		cscockpitCheckoutTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
+		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
+		cscockpitCheckoutTabPage.enterBillingInfo();
+		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickTestOrderCheckBoxInCheckoutTab();
+		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();		cscockpitCheckoutTabPage.clickTestOrderCheckBoxInCheckoutTab();
 		cscockpitCheckoutTabPage.clickDoNotShipCheckBoxInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyTestOrderCheckBoxIsSelectedInOrderTab(), "Test order checkbox is not selected after place an order");
@@ -1546,128 +1563,136 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1964:To verify the CV and QV update functionality in the order detail Page
-	@Test
-	public void testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964() throws InterruptedException{
-		String randomCustomerSequenceNumber = null;
-		String consultantEmailID = null;
-		String orderHistoryNumber = null;
-		RFO_DB = driver.getDBNameRFO();
+			@Test
+			public void testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964() throws InterruptedException{
+				String randomCustomerSequenceNumber = null;
+				String consultantEmailID = null;
+				String orderHistoryNumber = null;
+				RFO_DB = driver.getDBNameRFO();
 
-		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
-		List<Map<String, Object>> randomConsultantList =  null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
+				//-------------------FOR US----------------------------------
 				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		orderHistoryNumber= storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		logout();
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent can update the CV and QV value");
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
-		//Login with admin
-		// need admin credentials
-		//login with cscommission admin credentials
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-		s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin can update the CV and QV value");
-		String CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
-		String QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
-		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-		cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cscommission admin "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cscommission admin "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-		cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cscommission admin "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cscommission admin "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
+				List<Map<String, Object>> randomConsultantList =  null;
+				while(true){
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+					boolean isLoginError = driver.getCurrentUrl().contains("error");
+					if(isLoginError){
+						logger.info("Login error for the user "+consultantEmailID);
+						driver.get(driver.getStoreFrontURL()+"/us");
+					}
+					else
+						break;
+				}
+				logger.info("login is successful");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+				orderHistoryNumber= storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+				logout();
+				driver.get(driver.getCSCockpitURL());
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+				cscockpitOrderSearchTabPage.clickSearchBtn();
+				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent can update the CV and QV value");
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
+				//Login with admin
+				// need admin credentials
+				//login with cscommission admin credentials
+				cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+				cscockpitOrderSearchTabPage.clickSearchBtn();
+				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+				s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin can update the CV and QV value");
+				String CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
+				String QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
+				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+				cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
+				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cscommission admin "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cscommission admin "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+				cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
+				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cscommission admin "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cscommission admin "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
 
-		//login with CS SALES SUPERVISORY credentials
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-		s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory can update the CV and QV value");
-		CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
-		QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
-		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-		cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cs sales supervisory "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cs sales supervisory "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-		cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cs sales supervisory "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cs sales supervisory "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
-		//using inactive user
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		String orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent for inactive user can update the CV and QV value");
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
-		//login with cscommission admin credentials
-		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
-		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin for inactive can update the CV and QV value");
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
-		//login with CS SALES SUPERVISORY credentials
-		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
-		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory for inactive can update the CV and QV value");
-		cscockpitOrderTabPage.clickMenuButton();
-		cscockpitOrderTabPage.clickLogoutButton();
-		s_assert.assertAll();
-	}
+				//login with CS SALES SUPERVISORY credentials
+				cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+				cscockpitOrderSearchTabPage.clickSearchBtn();
+				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+				s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory can update the CV and QV value");
+				CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
+				QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
+				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+				cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
+				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cs sales supervisory "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cs sales supervisory "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+				cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
+				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cs sales supervisory "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cs sales supervisory "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
+				//using inactive user
+				driver.get(driver.getCSCockpitURL());
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+				cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+				cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
+				cscockpitCustomerSearchTabPage.clickSearchBtn();
+				for(int i=0; i<=5; i++){
+					randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+					cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+					cscockpitCustomerSearchTabPage.clickCustomerTab();
+					if(cscockpitCustomerTabPage.isShippedOrSubmittedOrderPresentInCustomerOrderSection()==true){
+						break;
+					}else{
+						cscockpitCustomerTabPage.clickCustomerSearchTab();
+					}
+				}
+				String orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
+				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent for inactive user can update the CV and QV value");
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
+				//login with cscommission admin credentials
+				cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
+				cscockpitOrderSearchTabPage.clickSearchBtn();
+				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
+				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin for inactive can update the CV and QV value");
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
+				//login with CS SALES SUPERVISORY credentials
+				cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
+				cscockpitOrderSearchTabPage.clickSearchBtn();
+				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
+				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory for inactive can update the CV and QV value");
+				cscockpitOrderTabPage.clickMenuButton();
+				cscockpitOrderTabPage.clickLogoutButton();
+				s_assert.assertAll();
+			}
 
 	//Hybris Project-1947:Verify the Order Search Criteria functionality
 	@Test

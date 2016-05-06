@@ -943,6 +943,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}catch(Exception e){
 			logger.info("useAsEntered popUp not Present");
 		}
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void addAshippingProfile(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
@@ -1019,6 +1020,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			}
 		}  
 		logger.info("Edit link for "+billingProfileName+"clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyNewlyCreatedShippingAddressIsSelectedByDefault(String name){

@@ -69,10 +69,10 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
-	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "4747";
+	public static final String INVALID_CARD_NUMBER_17DIGITS = "47474747474747474";
 	public static final String SPONSOR_ID_US="1686295";
-	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "411111111111111#";
+	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "474747474747474#";
 
 	public static final String PROVINCE_YUKON = "Yukon Territory";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
@@ -88,8 +88,6 @@ public class TestConstants {
 	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
 	public static final String PROVINCE_QUEBEC = "Quebec";
 	public static final String PROVINCE_US = "Alaska";
-
-
 
 	public static final String CONSULTANT_USERNAME_BELOW_6_DIGITS="smspo";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_DIGITS="smsto 111maiden";
@@ -517,10 +515,3 @@ public class TestConstants {
 	public static final String CRM_NEW_PROFILENAME_CA = "NewProfileCA";
 
 }
-
-
-
-
-
-
-

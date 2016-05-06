@@ -509,6 +509,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//form[@id='placeOrderForm1']//a[contains(text(),'I agree that this agreement shall be accepted electronically.')]/ancestor::strong[1]/preceding::div[1]"));
 		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
 		logger.info("Next button on billing profile clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
@@ -533,7 +534,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
@@ -1057,7 +1058,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("clicked on welcome drop down");		
 	}
@@ -1306,6 +1307,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));
 		driver.click(By.xpath("//*[@id='start-shipping-method']/div[2]/div/input"));
 		logger.info("Next button on clicked"); 
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{

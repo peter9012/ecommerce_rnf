@@ -28,6 +28,8 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String creditCardOwnerName ="//div[contains(text(),'%s')]";
 	private static String crpAutoshipIdWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[text()='crpAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a[contains(text(),'%s')]";
 
+	private static final By FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
+	private static final By FIRST_SUBMITTED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
 	private static final By ORDER_NUMBER_IN_CUSTOMER_ORDER = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Number')][1]/following::a[1]");
 	private static final By FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//div[@class='csSearchResults']/descendant::div[@class='z-listbox-body']//tbody[2]/tr[2]/td[1]//a");
@@ -659,6 +661,12 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);
 		return driver.isElementPresent(FIRST_ORDER_LINK_CUSTOMER_ORDER_SECTION);  
 	}
+
+	public boolean isShippedOrSubmittedOrderPresentInCustomerOrderSection(){
+		driver.waitForElementPresent(FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION);
+		return driver.isElementPresent(FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION )||driver.isElementPresent(FIRST_SUBMITTED_ORDER_LINK_CUSTOMER_ORDER_SECTION);
+	}
+
 
 }
 

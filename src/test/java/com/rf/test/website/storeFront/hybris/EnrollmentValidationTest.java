@@ -4024,9 +4024,9 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
-		storeFrontHomePage.uncheckCRPCheckBox();
-		storeFrontHomePage.uncheckPulseCheckBox();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.uncheckCRPCheckBox();
+		//storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterConfirmPassword(password);
@@ -4088,9 +4088,9 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
-		storeFrontHomePage.uncheckCRPCheckBox();
-		storeFrontHomePage.uncheckPulseCheckBox();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.uncheckCRPCheckBox();
+		//storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterConfirmPassword(password);
@@ -7399,7 +7399,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.applyPriceFilterHighToLow();

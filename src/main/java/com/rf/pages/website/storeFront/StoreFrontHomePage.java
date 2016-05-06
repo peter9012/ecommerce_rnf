@@ -153,7 +153,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void searchCID(String cid) throws InterruptedException{
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
 			driver.type(By.id("sponsor-name-id"),cid);
@@ -1045,7 +1045,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void cancelPulseSubscription(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
 		try{

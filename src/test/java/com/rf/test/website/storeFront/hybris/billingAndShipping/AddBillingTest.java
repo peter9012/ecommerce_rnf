@@ -44,7 +44,6 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	private String country = null;
 	private String RFO_DB = null;	
 
-
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
 	@Test
 	public void testAddNewBillingProfileOnBillingProfilePage_2041() throws InterruptedException, SQLException{

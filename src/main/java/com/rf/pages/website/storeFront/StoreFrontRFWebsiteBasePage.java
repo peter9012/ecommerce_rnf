@@ -450,7 +450,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -549,8 +549,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		finally{
 			driver.turnOnImplicitWaits();
 		}
-		logger.info("Rodan and Fields logo clicked");	
+		logger.info("Rodan and Fields logo clicked");
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isOrderPlacedSuccessfully(){

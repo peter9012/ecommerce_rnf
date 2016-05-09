@@ -82,6 +82,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		logger.info("First Address Edit link clicked");
+		driver.waitForLoadingImageToDisappear();
 
 	}
 
@@ -212,6 +213,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void changeMainAddressToQuebec(){
+		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[@value='QC']"));
 		driver.click(By.xpath("//select[@id='state']/option[@value='QC']"));

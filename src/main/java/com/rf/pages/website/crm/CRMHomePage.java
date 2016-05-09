@@ -52,6 +52,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		super(driver);
 	}
 	public boolean verifyHomePage() throws InterruptedException{
+		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
 		closeAllOpenedTabs();

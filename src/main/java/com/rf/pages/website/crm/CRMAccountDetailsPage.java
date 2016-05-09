@@ -1329,11 +1329,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	}
 
 	public void selectUserEnteredAddress(){
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
-		driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+			driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+		}catch(Exception e){
+			logger.info("No User Entered Address Button Found");
+		}
 	}
 
 	public boolean isProfileNameValueOfDefaultShippingProfilesPresent(String profileName){
@@ -1408,6 +1412,13 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}catch (Exception e) {
 			logger.info("NO User entered address btn");
 		}
+	}
+
+	public boolean isNoRecordToDisplayPresentOnShippingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[1]//th[contains(text(),'No records to display')]"));
 	}
 }
 

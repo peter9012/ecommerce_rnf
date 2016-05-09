@@ -934,10 +934,10 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.type(POSTAL_TEXT_BOX, postalCode);
 		logger.info("Postal code entered is "+postalCode);
 		driver.waitForElementPresent(COUNTRY_TEXT_BOX);
-		driver.type(COUNTRY_TEXT_BOX, Country);
+		driver.type(COUNTRY_TEXT_BOX, Country+"\t");
 		logger.info("Country entered is "+Country);
 		driver.waitForElementPresent(PROVINCE_TEXT_BOX);
-		driver.type(PROVINCE_TEXT_BOX, province);
+		driver.type(PROVINCE_TEXT_BOX, province+"\t");
 		logger.info("Province entered is "+province);
 		driver.waitForElementPresent(PHONE_TEXT_BOX);
 		driver.type(PHONE_TEXT_BOX, phoneNumber);

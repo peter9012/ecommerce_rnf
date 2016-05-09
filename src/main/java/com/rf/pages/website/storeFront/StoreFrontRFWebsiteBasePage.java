@@ -1,10 +1,13 @@
 package com.rf.pages.website.storeFront;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -446,8 +449,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.id("saveShippingInfo"));
-		action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
+			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
+		}catch(Exception e){
+			driver.waitForElementPresent(By.id("saveShippingInfo"));
+			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+		}		
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
@@ -1306,8 +1314,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnBillingNextStepButtonDuringEnrollInCRP() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));
-		driver.click(By.xpath("//*[@id='start-shipping-method']/div[2]/div/input"));
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+			driver.click(By.xpath("//div[@id='payment-next-button']/input"));
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method']/div[2]/div/input"));
+			driver.click(By.xpath("//*[@id='start-shipping-method']/div[2]/div/input"));	
+		}		
 		logger.info("Next button on clicked"); 
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1365,6 +1378,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
 		}
 		catch(Exception e){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
 			driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));   
 		}
 		driver.waitForPageLoad();
@@ -1762,6 +1776,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 		//driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+	}
+
+	public String getPSTDate(){
+		Date startTime = new Date();
+		TimeZone pstTimeZone = TimeZone.getTimeZone("America/Los_Angeles");
+		DateFormat formatter = DateFormat.getDateInstance();
+		formatter.setTimeZone(pstTimeZone);
+		String formattedDate = formatter.format(startTime);
+		return formattedDate;
 	}
 
 }

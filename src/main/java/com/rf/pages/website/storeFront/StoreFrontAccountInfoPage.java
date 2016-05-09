@@ -81,6 +81,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.click(TERMINATE_MY_ACCOUNT);
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(1000);
 		return new StoreFrontAccountTerminationPage(driver);
 
 	}
@@ -598,6 +600,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void changeMainAddressToQuebec(){
+		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[@value='QC']"));
 		driver.click(By.xpath("//select[@id='state']/option[@value='QC']"));

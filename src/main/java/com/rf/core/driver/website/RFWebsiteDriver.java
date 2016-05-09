@@ -43,7 +43,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 50;
+	private static int DEFAULT_TIMEOUT = 10;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -434,6 +434,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void get(String Url) {
 		logger.info("URL hit is "+Url);
 		driver.get(Url);
+		waitForPageLoad();
 	}
 
 	public void click(By locator) {		
@@ -663,6 +664,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			logger.error("Error Occured waiting for Page Load "
 					+ driver.getCurrentUrl());
 		}
+		logger.info("page load complete..");
 		return isLoaded;
 	}
 

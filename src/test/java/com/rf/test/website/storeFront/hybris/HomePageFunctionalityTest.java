@@ -858,28 +858,31 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4030:from .com  Login as a existing PC and access Solution Tool
-	@Test 
+	@Test(enabled=true)
 	public void testLoginAsExstingPCAndAccessSolutionTool_4030()  {
 		RFO_DB = driver.getDBNameRFO();
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontPCUserPage=new StoreFrontPCUserPage(driver);
-		String bizPWS = storeFrontHomePage.getBizPWS(country, env);
-		String comPWS = storeFrontHomePage.convertBizSiteToComSite(bizPWS);
-		storeFrontHomePage.openPWS(comPWS);
+
 
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String accountIdForPCUser = null;
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			String bizPWS = storeFrontHomePage.getBizPWS(country, env);
+			String comPWS = storeFrontHomePage.convertBizSiteToComSite(bizPWS);
+			storeFrontHomePage.openPWS(comPWS);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_PC_WHOSE_SPONSOR_HAS_PWS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForPCUser);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			System.out.println("currentUrl==="+driver.getCurrentUrl());
+			boolean isSiteNotFoundPresent = (driver.getCurrentUrl().contains("error") || driver.getCurrentUrl().contains("corprfo"));
+			System.out.println("isSiteNotFoundPresent=="+isSiteNotFoundPresent);
 			if(isSiteNotFoundPresent){
 				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
@@ -907,7 +910,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountId = null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -1586,7 +1589,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountId = null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);

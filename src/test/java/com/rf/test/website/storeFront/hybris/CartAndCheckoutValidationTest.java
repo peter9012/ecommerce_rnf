@@ -257,8 +257,14 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		int noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();   
 		for(int i=noOfProduct; i>=1; i--){
 			boolean flag = storeFrontUpdateCartPage.getValueOfFlagForPC(i);
+			String subTot = null;
 			if(flag==true){
-				double SVValue = Double.parseDouble(storeFrontUpdateCartPage.getSubtotalFromCart().split("\\$")[1].trim());
+				subTot = storeFrontUpdateCartPage.getSubtotalFromCart().split("\\$")[1].trim();
+				if(subTot.contains(",")){
+					String[] subTotStringArray = subTot.split(",");
+					subTot= subTotStringArray[0]+subTotStringArray[1];
+				}
+				double SVValue = Double.parseDouble(subTot);
 				String SVValueOfRemovedProduct = storeFrontUpdateCartPage.removeProductsFromCartForPC(i);
 
 				double remainingSVValue = storeFrontUpdateCartPage.compareSubtotalValue(SVValueOfRemovedProduct, SVValue);
@@ -2744,15 +2750,15 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String defaultBillingProfile=storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName();
 		logger.info("default billing profile is "+defaultBillingProfile);
 		//storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		//Add new billing profile
-		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.selectNewBillingCardAddress();
-		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
+//		//Add new billing profile
+//		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+//		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+//		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+//		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+//		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+//		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+//		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+//		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
 		//Add new billing address.
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(secondNewBillingProfileName+" "+lastName);
@@ -3745,9 +3751,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountId);
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
 			}
 			else

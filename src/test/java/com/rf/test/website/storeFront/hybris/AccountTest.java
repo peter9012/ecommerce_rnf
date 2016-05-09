@@ -2079,6 +2079,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 				boolean isError = driver.getCurrentUrl().contains("error");
@@ -2125,6 +2127,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 				boolean isError = driver.getCurrentUrl().contains("error");
@@ -2190,7 +2194,10 @@ public class AccountTest extends RFWebsiteBaseTest{
 			String pcUserEmailID = null;
 			while(true){
 				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				pcUserEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 				boolean isLoginError = driver.getCurrentUrl().contains("error");

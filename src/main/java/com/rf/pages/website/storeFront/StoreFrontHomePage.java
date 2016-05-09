@@ -844,8 +844,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterPhoneNumber(phoneNumber);
 	}
 
-
-
 	//Method Overloaded without Kit and Regimen
 	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
 		enterFirstName(firstName);
@@ -2774,6 +2772,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
 		driver.click(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
 		driver.pauseExecutionFor(1000);
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterUserInformationForEnrollmentWithTerminatedEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String postalCode,String phoneNumber){
@@ -3321,6 +3320,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void hitBrowserBackBtn(){
 		driver.pauseExecutionFor(1000);
 		driver.navigate().back();
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyPresenceOfNorthDakotaLink() {

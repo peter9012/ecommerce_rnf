@@ -809,24 +809,24 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 	//Hybris Project-4544:View Shipping Profile for RC
 	@Test
 	public void testViewShippingProfileForRC_4544() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();	
+		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomRCList =  null;
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		String rcEmailID = null;
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
-		logger.info("The email address is "+rcEmailID);	
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		logger.info("The email address is "+rcEmailID); 
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcEmailID.toLowerCase().trim());		
+		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcEmailID.toLowerCase().trim());  
 		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser()==false){
+			if(crmHomePage.isSearchResultHasActiveUser() ==false){
 				logger.info("No active user in the search results..searching new user");
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+				rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 				logger.info("The email address is "+rcEmailID);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 				crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
@@ -835,7 +835,30 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 				break;
 			}
 		}
+
+		//loop,if(no records to display)
 		crmHomePage.clickNameWithActiveStatusInSearchResults();
+		while(true){
+			if(crmAccountDetailsPage.isNoRecordToDisplayPresentOnShippingProfile()==true){
+				//crmHomePage.closeTabViaNumberWise(2);
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+				logger.info("The email address is "+rcEmailID);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+				emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+				if(crmHomePage.isSearchResultHasActiveUser() == false){
+					continue;
+				}
+				crmHomePage.clickNameWithActiveStatusInSearchResults();
+				if(crmAccountDetailsPage.isNoRecordToDisplayPresentOnShippingProfile()==true){
+					continue;
+				}
+			}else{
+				break;
+			}
+
+		}	  
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Action"),"Action label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Name"),"Name label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("ProfileName"),"ProfileName label is not present in Shipping address section");
@@ -1616,6 +1639,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
 		s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
 		s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
+		storeFrontHomePage.switchToPreviousTab();
 		s_assert.assertAll();
 	}
 

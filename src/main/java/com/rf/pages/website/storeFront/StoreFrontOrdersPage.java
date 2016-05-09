@@ -1034,12 +1034,21 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateSameDatePresentForAutoship(String autoshipDate) {
-		Date d = new Date();
-		String date = d.toString();
-		String []requiredDate = date.split("\\ ");
-		if(autoshipDate.contains(requiredDate[2])){
-			return true;
+		String currentDate = getPSTDate();
+		String currentDay = currentDate.split("\\ ")[0];
+		logger.info("Current day is: "+currentDay);
+		String autoshipDay = autoshipDate.split("\\ ")[1];
+		logger.info("Current autoship day is: "+autoshipDay);
+		if(Integer.parseInt(currentDay)<=17){
+			if(autoshipDay.contains(currentDay)){
+				return true;
+			}
+			return false;
+		}else{
+			if(autoshipDay.contains("17")){
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 }

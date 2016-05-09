@@ -126,9 +126,9 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 
 	public void logout(){
 		driver.quickWaitForElementPresent(By.id("account-info-button"));
-		driver.findElement(By.id("account-info-button")).click();
+		driver.click(By.id("account-info-button"));
 		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.findElement(By.linkText("Log out")).click();
+		driver.click(By.linkText("Log out"));
 		logger.info("Logout");                    
 		driver.pauseExecutionFor(3000);
 	}

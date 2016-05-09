@@ -3455,7 +3455,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3925:CORP: Enroll CA/US User, Sponsor without PWS & User Enrolls without Pulse
-	@Test
+	@Test(enabled=false) //test needs update 
 	public void testEnrollCAAndUsUserSponsorWithoutPWSAndUserEnrollsWithoutPulse_3925() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -8463,7 +8463,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test
+	@Test(enabled=false)//test needs to be modified
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;

@@ -345,6 +345,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	public void enterRandomPageNumber(String pageNo){
 		driver.waitForElementPresent(PAGE_INPUT_TXT_LOC);
 		driver.type(PAGE_INPUT_TXT_LOC, pageNo+"\t");
+		logger.info("Page no is "+pageNo);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 

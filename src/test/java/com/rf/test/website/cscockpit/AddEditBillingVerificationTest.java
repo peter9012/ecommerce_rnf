@@ -118,7 +118,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -226,7 +231,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -358,7 +368,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
@@ -447,7 +462,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontPCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -467,7 +487,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
@@ -596,7 +621,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			rcEmailID  = (String) getValueFromQueryResult(randomRCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
@@ -658,7 +688,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(profileName),"Newly Added credit card is not present in credit card list After add a new address");
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(attendentFirstName),"Newly Added credit card with new address is not present in credit card list");
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		try{
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontRCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -678,7 +713,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			rcEmailID  = (String) getValueFromQueryResult(randomRCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
@@ -726,7 +766,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(profileName),"Newly Added credit card is not present in credit card list After add a new address");
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(attendentFirstName),"Newly Added credit card with new address is not present in credit card list");
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		try{
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontRCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -769,7 +814,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -829,7 +879,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -906,7 +961,13 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -921,12 +982,17 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		country = "Canada";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/ca");
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}			
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -964,7 +1030,6 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickCloseOfCreateNewAddressPopUpInCustomerTab();
 		cscockpitCustomerTabPage.clickMenuButton();
 		cscockpitCustomerTabPage.clickLogoutButton();
-
 
 		//For Active user
 		driver.get(driver.getStoreFrontURL()+"/ca");
@@ -1050,7 +1115,13 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}		
+
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -1065,7 +1136,7 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
 		String pcEmailID;
-	String accountID;
+		String accountID;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum3 = CommonUtils.getRandomNum(10000, 1000000);
@@ -1109,7 +1180,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}		
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
@@ -1187,7 +1263,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}	
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontPCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -1209,7 +1290,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
@@ -1287,7 +1373,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(profileName.toLowerCase().trim()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}	
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontPCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -1344,7 +1435,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,"236"),RFO_DB);
 			rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
@@ -1389,7 +1485,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(profileName),"Newly Added credit card is not present in credit card list After add a new address");
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(attendentFirstName),"Newly Added credit card with new address is not present in credit card list");
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		try{
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}	
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontRCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);
@@ -1411,7 +1512,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,"40"),RFO_DB);
 			rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
@@ -1457,7 +1563,12 @@ public class AddEditBillingVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.isNewlyAddedCreditCardPresent(attendentFirstName),"Newly Added credit card with new address is not present in credit card list");
 
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		try{
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
+		}	
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontRCUserPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(profileName);

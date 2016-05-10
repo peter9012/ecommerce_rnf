@@ -270,6 +270,7 @@ public class NSCore4OrdersTabPage extends NSCore4RFWebsiteBasePage{
 		driver.quickWaitForElementPresent(RETURNED_ORDER_CHKBOX_LOC);
 		driver.click(RETURNED_ORDER_CHKBOX_LOC);
 		logger.info("Returned Order CheckBox is Enabled");
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void enterReturnQuantity(String quantity){

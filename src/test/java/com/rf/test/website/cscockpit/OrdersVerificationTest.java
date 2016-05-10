@@ -166,6 +166,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of user "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -210,7 +216,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()));
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -241,7 +253,13 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+pcUserEmailID);
@@ -310,10 +328,15 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
-				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
+				logger.info("login error for the user "+pcUserEmailID);
 				driver.get(driver.getStoreFrontURL()+"/ca");
 			}
 			else
@@ -363,7 +386,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()).contains("PC Order"),"CSCockpit Customer tab Order type expected = PC Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumber.split("\\-")[0].trim()));
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		}
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -394,8 +422,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
@@ -465,7 +497,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			try{
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
@@ -784,8 +821,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			customerEmailID = (String) getValueFromQueryResult(randomCustomerList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomCustomerList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login Error for the user "+customerEmailID);
@@ -824,7 +865,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountId = String.valueOf(getValueFromQueryResult(randomCustomerList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login Error for the user "+customerEmailID);
@@ -868,7 +914,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountId = String.valueOf(getValueFromQueryResult(randomCustomerList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(customerEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login Error for the user "+customerEmailID);
@@ -977,7 +1028,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -1023,7 +1079,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTab = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
@@ -1036,7 +1097,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");   
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -1082,7 +1148,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.getOrderStatusAfterPlaceOrderInOrderTab().contains("SUBMITTED"),"order is not submitted successfully");
 		String getOrderNumberFromCsCockpitUIOnOrderTabOnCA = cscockpitOrderTabPage.getOrderNumberFromCsCockpitUIOnOrderTab();
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(getOrderNumberFromCsCockpitUIOnOrderTabOnCA.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of CA");
@@ -1563,136 +1634,141 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1964:To verify the CV and QV update functionality in the order detail Page
-			@Test
-			public void testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964() throws InterruptedException{
-				String randomCustomerSequenceNumber = null;
-				String consultantEmailID = null;
-				String orderHistoryNumber = null;
-				RFO_DB = driver.getDBNameRFO();
+	@Test
+	public void testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		String consultantEmailID = null;
+		String orderHistoryNumber = null;
+		RFO_DB = driver.getDBNameRFO();
 
-				//-------------------FOR US----------------------------------
+		//-------------------FOR US----------------------------------
+		driver.get(driver.getStoreFrontURL()+"/us");
+		List<Map<String, Object>> randomConsultantList =  null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
 				driver.get(driver.getStoreFrontURL()+"/us");
-				List<Map<String, Object>> randomConsultantList =  null;
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isLoginError = driver.getCurrentUrl().contains("error");
-					if(isLoginError){
-						logger.info("Login error for the user "+consultantEmailID);
-						driver.get(driver.getStoreFrontURL()+"/us");
-					}
-					else
-						break;
-				}
-				logger.info("login is successful");
-				storeFrontConsultantPage.clickOnWelcomeDropDown();
-				storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-				orderHistoryNumber= storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-				logout();
-				driver.get(driver.getCSCockpitURL());
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-				cscockpitOrderSearchTabPage.clickSearchBtn();
-				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent can update the CV and QV value");
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-				//Login with admin
-				// need admin credentials
-				//login with cscommission admin credentials
-				cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-				cscockpitOrderSearchTabPage.clickSearchBtn();
-				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-				s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin can update the CV and QV value");
-				String CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
-				String QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
-				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-				cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
-				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cscommission admin "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cscommission admin "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-				cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
-				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cscommission admin "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cscommission admin "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-
-				//login with CS SALES SUPERVISORY credentials
-				cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
-				cscockpitOrderSearchTabPage.clickSearchBtn();
-				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
-				s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory can update the CV and QV value");
-				CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
-				QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
-				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-				cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
-				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cs sales supervisory "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cs sales supervisory "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-				cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
-				cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
-				cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
-				cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
-				s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cs sales supervisory "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
-				s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cs sales supervisory "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-				//using inactive user
-				driver.get(driver.getCSCockpitURL());
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-				cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-				cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-				cscockpitCustomerSearchTabPage.clickSearchBtn();
-				for(int i=0; i<=5; i++){
-					randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-					cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-					cscockpitCustomerSearchTabPage.clickCustomerTab();
-					if(cscockpitCustomerTabPage.isShippedOrSubmittedOrderPresentInCustomerOrderSection()==true){
-						break;
-					}else{
-						cscockpitCustomerTabPage.clickCustomerSearchTab();
-					}
-				}
-				String orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
-				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent for inactive user can update the CV and QV value");
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-				//login with cscommission admin credentials
-				cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
-				cscockpitOrderSearchTabPage.clickSearchBtn();
-				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
-				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin for inactive can update the CV and QV value");
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-				//login with CS SALES SUPERVISORY credentials
-				cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
-				cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-				cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
-				cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
-				cscockpitOrderSearchTabPage.clickSearchBtn();
-				cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
-				s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory for inactive can update the CV and QV value");
-				cscockpitOrderTabPage.clickMenuButton();
-				cscockpitOrderTabPage.clickLogoutButton();
-				s_assert.assertAll();
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getStoreFrontURL()+"/us");
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		orderHistoryNumber= storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		logout();
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent can update the CV and QV value");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//Login with admin
+		// need admin credentials
+		//login with cscommission admin credentials
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+		s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin can update the CV and QV value");
+		String CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
+		String QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
+		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+		cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cscommission admin "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cscommission admin "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+		cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cscommission admin "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cscommission admin "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+
+		//login with CS SALES SUPERVISORY credentials
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderHistoryNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderHistoryNumber);
+		s_assert.assertFalse(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory can update the CV and QV value");
+		CVValueBeforeUpdate = cscockpitOrderTabPage.getCVValueInOrderTab();
+		QVValueBeforeUpdate = cscockpitOrderTabPage.getQVValueInOrderTab();
+		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+		cscockpitOrderTabPage.clickCancelBtnAfterUpdateCVAndQVInOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(CVValueBeforeUpdate),"CV value before update for cs sales supervisory "+CVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(QVValueBeforeUpdate),"QV value before update for cs sales supervisory "+QVValueBeforeUpdate+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+		cscockpitOrderTabPage.enterCVValueInOrderTab(TestConstants.CV_VALUE);
+		cscockpitOrderTabPage.enterQVValueInOrderTab(TestConstants.QV_VALUE);
+		cscockpitOrderTabPage.clickupdateButtonForCVAndQVInOrderTab();
+		cscockpitOrderTabPage.clickOKBtnAfterUpdateCVAndQVInOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.getCVValueInOrderTab().equalsIgnoreCase(TestConstants.CV_VALUE.trim()),"CV value before update for cs sales supervisory "+TestConstants.CV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getCVValueInOrderTab());
+		s_assert.assertTrue(cscockpitOrderTabPage.getQVValueInOrderTab().equalsIgnoreCase(TestConstants.QV_VALUE.trim()),"QV value before update for cs sales supervisory "+TestConstants.QV_VALUE.trim()+"and on UI is"+cscockpitOrderTabPage.getQVValueInOrderTab());
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//using inactive user
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		for(int i=0; i<=5; i++){
+			randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+			cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+			cscockpitCustomerSearchTabPage.clickCustomerTab();
+			if(cscockpitCustomerTabPage.isShippedOrSubmittedOrderPresentInCustomerOrderSection()==true){
+				break;
+			}else{
+				cscockpitCustomerTabPage.clickCustomerSearchTab();
+			}
+		}
+		String orderNumber=cscockpitCustomerTabPage.clickAndGetOrderNumberInCustomerTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username Csagent for inactive user can update the CV and QV value");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//login with cscommission admin credentials
+		cscockpitLoginPage.enterUsername(TestConstants.CS_COMMISION_ADMIN_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
+		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cscommission admin for inactive can update the CV and QV value");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		//login with CS SALES SUPERVISORY credentials
+		cscockpitLoginPage.enterUsername(TestConstants.CS_SALES_SUPERVISORY_USERNAME);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOnFindOrderInCustomerSearchTab();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber.split("\\-")[0].trim());
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber.split("\\-")[0].trim());
+		s_assert.assertTrue(cscockpitOrderTabPage.isQVandCVUpdateBtnDisabledOnOrderTab(), "Username cs sales supervisory for inactive can update the CV and QV value");
+		cscockpitOrderTabPage.clickMenuButton();
+		cscockpitOrderTabPage.clickLogoutButton();
+		s_assert.assertAll();
+	}
 
 	//Hybris Project-1947:Verify the Order Search Criteria functionality
 	@Test
@@ -1718,11 +1794,16 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountId= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/ca");
 			}
 			else
 				break;
@@ -2088,7 +2169,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -2144,7 +2230,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(orderNumber).contains("Override Order"),"This is not Override Order");
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
@@ -2158,7 +2249,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/ca");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -2212,7 +2308,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeOnCustomerTab(orderNumberForCA).contains("Override Order"),"This is not Override Order on CA");
 		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/ca");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(orderNumberForCA.contains(storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory()),"This Order is not present on the StoreFront of CA");
@@ -2304,7 +2405,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 			accountID=String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress");
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/us");
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
@@ -2364,7 +2470,12 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		driver.get(driver.getStoreFrontURL()+"/us");
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");

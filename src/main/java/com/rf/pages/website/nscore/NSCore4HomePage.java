@@ -166,6 +166,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By PRODUCT_SKU_CHK_BOX_CATALOG  = By.xpath("//table[@id='productBulkAddGrid']//tr[3]/td[2]");
 	private static final By ADD_TO_CATALOG  = By.id("btnBulkAddProducts");
 	private static final By CLOSE_LINK_CATALOG_LOC  = By.xpath("//div[@id='productBulkAdd']//a[text()='Close']");
+	private static final By ADD_NEW_PAYMENT_METHOD_LINK  = By.xpath("//a[contains(text(),'Add New Payment Method')]");
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -1102,6 +1103,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(By.xpath(String.format(orderIdLinkLoc, orderID)));
 		logger.info(orderID+"clicked on overview page");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public String addAndGetProductSKU(String quantity){
@@ -1141,5 +1143,40 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(CLOSE_LINK_CATALOG_LOC);
 		logger.info("Close link clicked on bulk catalog popup");
 		return SKU;
+	}
+
+	public void addPaymentMethod(String firstName,String lastName,String nameOnCard,String cardNumber){
+		driver.waitForElementPresent(ADD_NEW_PAYMENT_METHOD_LINK);
+		driver.click(ADD_NEW_PAYMENT_METHOD_LINK);
+		logger.info("Add new payment method link clicked");
+		driver.pauseExecutionFor(3000);
+		//enter billing info
+		//select 'Main-Billing' as billing address-
+		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
+		select.selectByIndex(1);
+		driver.pauseExecutionFor(4500);
+		//Add 'Payment-Method'
+		driver.type(ADD_PAYMENT_METHOD_FIRST_NAME_LOC, firstName);
+		logger.info("First name entered for billing profile is: "+firstName);
+		driver.type(ADD_PAYMENT_METHOD_LAST_NAME_LOC, lastName);
+		logger.info("last name entered for billing profile is: "+lastName);
+		driver.type(ADD_PAYMENT_METHOD_NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("name on card entered for billing profile is: "+nameOnCard);
+		driver.type(ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC, cardNumber);
+		logger.info("card number entered for billing profile is: "+cardNumber);
+		//select 'Expiration' Date(change year)
+		Select sel = new Select(driver.findElement(ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC));
+		sel.selectByIndex(7);
+		logger.info("Credit card expire year selected");
+	}
+
+	public boolean isEditPresentForConsultantReplenishmentPresent(){
+		driver.waitForElementPresent(CONSULTANT_REPLENISHMENT_EDIT);
+		return driver.isElementPresent(CONSULTANT_REPLENISHMENT_EDIT);
+	}
+
+	public boolean isEditPresentForPulseMonthlySubscriptionPresent(){
+		driver.waitForElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
+		return driver.isElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 	}
 }

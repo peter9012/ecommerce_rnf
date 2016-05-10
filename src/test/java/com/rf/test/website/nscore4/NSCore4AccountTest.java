@@ -92,35 +92,43 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	//NSC4_AccountsTab_OverviewAutoshipsEdit
 	@Test
 	public void testAccountsTabOverviewAutoshipsEdit(){
-		String accountNumber = null;		
-		List<Map<String, Object>> randomSKUList =  null;
+		String accountNumber = null;  
 		String SKU = null;
-		logger.info("DB is "+RFL_DB);	
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = "RFAutoNSCore4"+randomNum;
+		String lastName = "lN";
+		String nameOnCard = "rfTestUser";
+		String cardNumber =  "4747474747474747";
+		logger.info("DB is "+RFL_DB); 
 		do{
-			try{
-				accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
-				logger.info("Account number from DB is "+accountNumber);
-				nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-				nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
-				nscore4HomePage.clickConsultantReplenishmentEdit();				
+			accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+			logger.info("Account number from DB is "+accountNumber);
+			nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+			nscore4HomePage.clickGoBtnOfSearch(accountNumber);  
+			if(nscore4HomePage.isEditPresentForConsultantReplenishmentPresent() && nscore4HomePage.isEditPresentForPulseMonthlySubscriptionPresent()==true){
 				break;
-			}catch(Exception e){
+			}else{
 				randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+				nscore4HomePage.clickTab("Accounts");
 			}
 		}while(true);
+		nscore4HomePage.clickConsultantReplenishmentEdit();
 		SKU= nscore4HomePage.addAndGetProductSKU("10");
 		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		nscore4HomePage.clickSavePaymentMethodBtn();
 		nscore4HomePage.clickSaveAutoshipTemplate();
 		s_assert.assertTrue(nscore4HomePage.isAddedProductPresentInOrderDetailPage(SKU), "SKU = "+SKU+" is not present in the Order detail page");
 		nscore4HomePage.clickCustomerlabelOnOrderDetailPage();
 		nscore4HomePage.clickPulseMonthlySubscriptionEdit();
 		String updatedQuantity = nscore4HomePage.updatePulseProductQuantityAndReturnValue();
 		logger.info("updated pulse product quantity = "+updatedQuantity);
+		nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		nscore4HomePage.clickSavePaymentMethodBtn();
 		nscore4HomePage.clickSaveAutoshipTemplate();
 		s_assert.assertTrue(nscore4HomePage.getQuantityOfPulseProductFromOrderDetailPage().contains(updatedQuantity), "updated pulse product qunatity is not present in the Order detail page");
 		s_assert.assertAll();
 	}
-
 	//NSC4_MobileTab_ HeadlineNews
 	@Test
 	public void testMobileTabHeadLineNews(){
@@ -860,7 +868,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 	//NSC4 Full Return 
 	@Test
-	public void NSC4FullReturn(){
+	public void testNSC4FullReturn(){
 		String accountNumber = null;
 		String accounts = "Accounts";
 		List<Map<String, Object>> randomSKUList =  null;
@@ -891,7 +899,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 	//NSC4 Partial  Return 
 	@Test
-	public void NSC4PartialReturn(){
+	public void testNSC4PartialReturn(){
 		String accountNumber = null;
 		String accounts = "Accounts";
 		String quantity = "5";
@@ -927,27 +935,33 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 	//Return with Restocking fee
 	@Test
-	public void NSC4ReturnWithRestockingFee(){
+	public void testNSC4ReturnWithRestockingFee(){
 		String accountNumber = null;
 		String accounts = "Accounts";
-		List<Map<String, Object>> randomSKUList =  null;
 		String SKU = null;
 		String restockingFee = "10.00";
 		String placeNewOrder = "Place New Order";
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = "RFAutoNSCore4"+randomNum;
+		String lastName = "lN";
+		String nameOnCard = "rfTestUser";
+		String cardNumber =  "4747474747474747";
 		logger.info("DB is "+RFL_DB);
-		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber");	
+		accountNumber =(String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
 		logger.info("Account number from DB is "+accountNumber);
 		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);  
 		nscore4HomePage.clickSublinkOfOverview(placeNewOrder);
 		SKU= nscore4HomePage.addAndGetProductSKU("10");
 		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+		nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		nscore4HomePage.clickSavePaymentMethodBtn();
 		nscore4HomePage.clickApplyPaymentButton();
 		nscore4HomePage.clickSubmitOrderBtn();
 		String orderID = nscore4HomePage.getOrderID().split("\\#")[1];
 		nscore4HomePage.clickTab(accounts);
 		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-		nscore4HomePage.clickGoBtnOfSearch(accountNumber);		
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber);  
 		nscore4HomePage.clickOrderId(orderID);
 		nscore4OrdersTabPage.clickReturnOrderLink();
 		nscore4OrdersTabPage.enableReturnedChkBox();
@@ -958,7 +972,6 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertTrue(nscore4OrdersTabPage.isRestockingFeeTxtPresent(), "Restocking fee is not present after return order with restocking fee");
 		s_assert.assertAll();
 	}
-
 
 	// NSC4_AdminTab_ Users_AddEditUsers
 	@Test

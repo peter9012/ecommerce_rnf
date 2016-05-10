@@ -1041,6 +1041,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		logger.info("All products link clicked "); 
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	@SuppressWarnings("deprecation")

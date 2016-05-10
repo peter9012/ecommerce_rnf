@@ -119,6 +119,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));		
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//input[@value='"+buttonName+"']"));
 		driver.waitForLoadingImageToDisappear();
 	}

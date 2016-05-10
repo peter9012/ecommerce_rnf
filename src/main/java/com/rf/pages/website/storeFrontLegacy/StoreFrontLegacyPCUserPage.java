@@ -146,7 +146,7 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 			String childWindowID=it.next();
 			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
 				driver.switchTo().window(childWindowID);
-				status = driver.getCurrentUrl().contains("PC-Perks-FAQs.pdf");
+				status = driver.getCurrentUrl().toLowerCase().contains("pc-perks-faqs.pdf");
 				driver.close();
 				driver.switchTo().window(parentWindowID);
 				return status;

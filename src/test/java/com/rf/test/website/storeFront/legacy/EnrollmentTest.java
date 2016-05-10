@@ -111,8 +111,8 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickClickHereLinkForRC();
 		storeFrontLegacyHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
 		storeFrontLegacyHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
-		s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
-		storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
+		//s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
+		//storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
 		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
 		storeFrontLegacyHomePage.clickBeginSearchBtn();
 		storeFrontLegacyHomePage.selectSponsorRadioBtn();
@@ -236,9 +236,11 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickMyAccountLink();
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
 		storeFrontLegacyHomePage.clickOrderManagementSublink("Order History");
-		storeFrontLegacyHomePage.clickViewDetailsForOrderAndReturnOrderNumber();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isOrderDetailsPopupPresent(),"Order details popup not present after clicking view order details link.");
-		storeFrontLegacyHomePage.clickCloseOfOrderDetailsPopup();
+		int orderNumber =storeFrontLegacyHomePage.clickViewDetailsForOrderAndReturnOrderNumber();
+		if(orderNumber!=0){
+			s_assert.assertTrue(storeFrontLegacyHomePage.isOrderDetailsPopupPresent(),"Order details popup not present after clicking view order details link.");
+			storeFrontLegacyHomePage.clickCloseOfOrderDetailsPopup();
+		}
 		s_assert.assertAll();
 	}
 
@@ -293,7 +295,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
 		storeFrontLegacyPCUserPage.clickMyAccountLink();
 		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
-/*		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");*/
+		/*		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");*/
 		s_assert.assertTrue(storeFrontLegacyPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");
 		storeFrontLegacyHomePage.clickBackToMyAccountBtn();
 		storeFrontLegacyPCUserPage.clickOrderManagementSublink("PC Perks FAQs");

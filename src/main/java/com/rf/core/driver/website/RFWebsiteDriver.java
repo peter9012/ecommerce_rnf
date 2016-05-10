@@ -43,7 +43,8 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 10;
+	private static int DEFAULT_TIMEOUT = 30;
+	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 50;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -240,8 +241,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForCSCockpitLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
-		logger.info("Waiting for loading image to get disappear");
-		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+		logger.info("Waiting for cscockpit loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT_CSCOCKPIT;i++){			
 			try{
 				if(driver.findElements(locator).size()==1){
 					pauseExecutionFor(1000);
@@ -249,7 +250,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 					continue;
 				}else{
 					turnOnImplicitWaits();
-					logger.info("loading image disappears");
+					logger.info("cscockpit loading image disappears");
 					break;
 				}			
 			}catch(Exception e){
@@ -262,16 +263,16 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForCSCockpitLoadingImageToDisappear(int time){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
-		logger.info("Waiting for loading image to get disappear");
-		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+		logger.info("Waiting for cscockpit loading image to get disappear");
+		for(int i=1;i<=time;i++){			
 			try{
 				if(driver.findElements(locator).size()==1){
-					pauseExecutionFor(time);
+					pauseExecutionFor(1000);
 					logger.info("waiting..");
 					continue;
 				}else{
 					turnOnImplicitWaits();
-					logger.info("loading image disappears");
+					logger.info("cscockpit loading image disappears");
 					break;
 				}			
 			}catch(Exception e){
@@ -284,7 +285,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForCRMLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[contains(text(),'Loading')]");
-		logger.info("Waiting for loading image to get disappear");
+		logger.info("Waiting for crm loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
 			try{
 				if(driver.findElements(locator).size()==1){
@@ -293,7 +294,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 					continue;
 				}else{
 					turnOnImplicitWaits();
-					logger.info("loading image disappears");
+					logger.info(" crm loading image disappears");
 					break;
 				}			
 			}catch(Exception e){
@@ -329,7 +330,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForSpinImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: inline;')]");
-		logger.info("Waiting for sping image to get disappear");
+		logger.info("Waiting for spin image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
 			try{
 				if(driver.findElements(locator).size()==1){

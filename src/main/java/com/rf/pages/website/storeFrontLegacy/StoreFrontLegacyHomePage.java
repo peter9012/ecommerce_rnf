@@ -729,6 +729,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		logger.info("Create my account button clicked");
+		try{
+			clickOKBtnOfJavaScriptPopUp();
+		}catch(Exception e){
+			logger.info("No alert present");
+		}
 		driver.waitForPageLoad();
 	}
 
@@ -1825,15 +1830,20 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath(String.format(linkUnderMyAccount, linkName)));
 	}
 
-	public void clickViewDetailsForOrderAndReturnOrderNumber() {
+	public int clickViewDetailsForOrderAndReturnOrderNumber() {
 		driver.waitForElementPresent(TOTAL_ROWS_ON_ORDER_HISTORY_PAGE);
 		int totalRowsSize=driver.findElements(TOTAL_ROWS_ON_ORDER_HISTORY_PAGE).size();
 		logger.info("Total rows on order history page: "+totalRowsSize);
-		int randomOrderFromSearchResult = CommonUtils.getRandomNum(1, totalRowsSize);
-		logger.info("Random Number created is: "+randomOrderFromSearchResult);
-		String orderNumber = driver.findElement(By.xpath(String.format(orderNumberOnOrderHistoryPage, randomOrderFromSearchResult))).getText();
-		driver.click(By.xpath(String.format(viewDetailsOnOrderHistoryPage, randomOrderFromSearchResult)));
-		logger.info("View Order details link is clicked for order :"+orderNumber);
+		if(totalRowsSize<1){
+			return 0;
+		}else{
+			int randomOrderFromSearchResult = CommonUtils.getRandomNum(1, totalRowsSize);
+			logger.info("Random Number created is: "+randomOrderFromSearchResult);
+			String orderNumber = driver.findElement(By.xpath(String.format(orderNumberOnOrderHistoryPage, randomOrderFromSearchResult))).getText();
+			driver.click(By.xpath(String.format(viewDetailsOnOrderHistoryPage, randomOrderFromSearchResult)));
+			logger.info("View Order details link is clicked for order :"+orderNumber);
+			return Integer.parseInt(orderNumber);
+		}
 	}
 
 	public boolean isOrderDetailsPopupPresent(){

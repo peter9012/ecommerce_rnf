@@ -28,6 +28,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
+	private final By WELCOME_DD_ORDERS_LINK_LOC = By.linkText("Orders");
 
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -1084,6 +1085,21 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		if(totalAfterUpdate == (subTotalOfAfterUpdate)){
 			return true;}
 		else{return false;}
+	}
+
+	public boolean verifyRCUserLoggedIn() {
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'Next PC Perks')]"));
+	}
+
+	public boolean verifyOrdersLinkPresent() throws InterruptedException {
+		clickOnWelcomeDropDown();
+		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
+		if(driver.isElementPresent(WELCOME_DD_ORDERS_LINK_LOC)){
+			clickOnWelcomeDropDown();
+			return false;
+		}
+		else
+			return true;
 	}
 }
 

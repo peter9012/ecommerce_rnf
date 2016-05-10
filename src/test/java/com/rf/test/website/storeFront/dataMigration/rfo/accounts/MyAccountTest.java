@@ -214,9 +214,20 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			rcUserEmailAddress = (String) getValueFromQueryResult(randomRCList, "Username");
 
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailAddress, password);
+
 			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundOrErrorPresent){
 				logger.info("error for the user "+rcUserEmailAddress);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}else if(storeFrontHomePage.verifyRCUserLoggedIn()){
+				logger.info(rcUserEmailAddress+" : is not an RC User");
+				logout();
+				driver.waitForPageLoad();
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}else if(storeFrontHomePage.verifyOrdersLinkPresent()){
+				logger.info("Orders link is present in welcome dropDown");
+				logout();
+				driver.waitForPageLoad();
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
@@ -224,6 +235,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		}
 		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailAddress),"RC User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
+
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");

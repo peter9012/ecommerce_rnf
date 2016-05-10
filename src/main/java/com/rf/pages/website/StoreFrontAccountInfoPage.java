@@ -139,7 +139,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 
 	public boolean verifyProvinceFromUIForAccountInfo(String province){
 		driver.waitForElementPresent(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC);
-		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getAttribute("value");
+		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getText();
+		logger.info(provinceFromUI+"====provinceFromUI");
 		if(provinceFromUI.equalsIgnoreCase(province)){
 			return true;
 		}

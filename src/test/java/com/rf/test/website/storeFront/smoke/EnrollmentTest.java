@@ -193,7 +193,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1877 :: Version : 1 :: Create Adhoc Order For The Preferred Customer 
 	@Test
-	public void testCreateAdhocOrderPC() throws InterruptedException{
+	public void testCreateAdhocOrderPC_1877() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 
@@ -268,8 +268,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateSubtotal(subtotal),"AdHoc Orders Template Subtotal is not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateHandlingCharges(handlingCharges),"AdHoc Orders Template Handling charges are not as expected for this order");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotal(total),"AdHoc Orders Template Total is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"AdHoc Orders Tax is not as expected for this order");
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTotalSV(totalSV),"AdHoc Orders Template Total SV vakue is not as expected for this order");
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderTemplateTax(tax),"AdHoc Orders Tax is not as expected for this order");		
 		s_assert.assertTrue(storeFrontOrdersPage.verifyShippingMethodOnTemplateAfterOrderCreation(shippingMethod),"AdHoc Orders Template Shipping Method is not as expected for this order");
 
 		s_assert.assertAll();

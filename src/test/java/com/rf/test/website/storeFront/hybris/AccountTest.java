@@ -878,6 +878,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		String city = null;
+		String stateName = null;
 		String postalCode = null;
 		String phoneNumber = null;
 		String addressLine1 = null;
@@ -886,12 +887,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
 			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
 			phoneNumber = "99999"+randomNumPhone;
-			addressLine1 =  TestConstants.ADDRESS_LINE_1_CA;
+			addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
+			stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA;
 		}else{
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
+			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_US;
+			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_US;
 			phoneNumber = "99999"+randomNumPhone;
-			addressLine1 =  TestConstants.ADDRESS_LINE_1_US;
+			addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_US;
+			stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_US;
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -918,7 +921,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.updateFirstName(firstName);
 		storeFrontAccountInfoPage.updateLastName(lastName);
 		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
-		String state = storeFrontAccountInfoPage.updateRandomStateAndReturnName();
+		String state = storeFrontAccountInfoPage.updateStateAndReturnName(stateName);
 		logger.info("State/province selected is "+state);
 		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
 		storeFrontAccountInfoPage.updateDateOfBirthAndGender();

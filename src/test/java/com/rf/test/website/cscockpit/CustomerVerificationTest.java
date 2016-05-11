@@ -1,17 +1,10 @@
 package com.rf.test.website.cscockpit;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.Test;
 
-import com.rf.core.utils.CommonUtils;
-import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
@@ -28,7 +21,6 @@ import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
-
 
 public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
@@ -110,10 +102,17 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String country = "Country";
 		String stateOrProvince = "State/Province";
 		String addressType = "Address Type";
+		String Country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			Country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			Country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(Country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -216,10 +215,17 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String country = "Country";
 		String stateOrProvince = "State/Province";
 		String addressType = "Address Type";
+		String Country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			Country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			Country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(Country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -319,10 +325,26 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String randomProductSequenceNumber = null;
 		String SKUValue = null;
 		String csCockpitCountry = null;
-		if(driver.getCountry().equalsIgnoreCase("Us")){
-			csCockpitCountry = "United States";
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String addressLine = null;
+		String Country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			csCockpitCountry= TestConstants.COUNTRY_DD_VALUE_CA;
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
-			csCockpitCountry = "Canada";
+			csCockpitCountry= TestConstants.COUNTRY_DD_VALUE_US;
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
@@ -342,31 +364,11 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
 		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
 		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		String addressLine = null;
+
 		String attendentFirstName = TestConstants.FIRST_NAME;
 		String attendeeLastName = TestConstants.LAST_NAME;
-		String city = null;
-		String postal = null;
-		String province = null;
-		String phoneNumber = null;
-		String contry = null;
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			addressLine = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postal = TestConstants.POSTAL_CODE_CA;
-			province = TestConstants.PROVINCE_ALBERTA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			contry = "Canada";
 
-		}else{
-			addressLine = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postal = TestConstants.POSTAL_CODE_US;
-			province = TestConstants.PROVINCE_ALABAMA_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			contry = "United States";
-		}
-		cscockpitCheckoutTabPage.addDeliveryAddressIfNonSelected(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCheckoutTabPage.addDeliveryAddressIfNonSelected(attendentFirstName, attendeeLastName, addressLine, city, postal, csCockpitCountry, province, phoneNumber);
 		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
 		cscockpitCheckoutTabPage.enterBillingInfo();
 		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
@@ -426,3 +428,4 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	}
 
 }
+

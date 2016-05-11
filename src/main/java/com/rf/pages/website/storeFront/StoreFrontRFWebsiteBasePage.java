@@ -452,7 +452,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				logger.info("Accept the suggested address button clicked");
 				driver.waitForLoadingImageToDisappear();
 			}
-			
+
 		}catch(NoSuchElementException e){
 
 		}		
@@ -1796,6 +1796,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		DateFormat formatter = DateFormat.getDateInstance();
 		formatter.setTimeZone(pstTimeZone);
 		String formattedDate = formatter.format(startTime);
+		logger.info("PST Date is "+formattedDate);
 		return formattedDate;
 	}
 

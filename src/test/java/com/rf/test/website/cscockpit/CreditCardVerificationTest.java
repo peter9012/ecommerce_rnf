@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -29,7 +28,6 @@ import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
-
 
 public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
@@ -91,7 +89,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		String postal = null;
 		String province = null;
 		String phoneNumber = null;
-		String contry = null;
+		String country = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 
 		if(driver.getCountry().equalsIgnoreCase("ca")){
@@ -100,7 +98,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			postal = TestConstants.POSTAL_CODE_CA;
 			province = TestConstants.PROVINCE_ALBERTA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			contry = "Canada";
+			country=TestConstants.COUNTRY_DD_VALUE_CA;
 
 		}else{
 			addressLine = TestConstants.ADDRESS_LINE_1_US;
@@ -108,10 +106,10 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			postal = TestConstants.POSTAL_CODE_US;
 			province = TestConstants.PROVINCE_ALABAMA_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			contry = "United States";
+			country=TestConstants.COUNTRY_DD_VALUE_US;
 		}
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -119,7 +117,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			try{
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -148,11 +146,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -171,11 +165,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -186,14 +176,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 
 		// For Active consultant save address without check checkBox
 		//find a user from store front
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			try{
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -220,11 +210,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -234,7 +220,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAndClickShiipngAddressErrorPopupAndClickOkBtn(),"Clicked on create new address without entered any data error popup is not displayed");
 
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
@@ -242,7 +228,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		//assert with check autoship checkbox
 		attendentFirstName = TestConstants.FIRST_NAME+randomNum2;
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickSetAsAutoshipChkBoxInCreateNewAddressPopup();
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
@@ -267,7 +253,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		String postal = null;
 		String province = null;
 		String phoneNumber = null;
-		String contry = null;
+		String country = null;
 		List<Map<String, Object>> randomPCList =  null;
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			addressLine = TestConstants.ADDRESS_LINE_1_CA;
@@ -275,7 +261,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			postal = TestConstants.POSTAL_CODE_CA;
 			province = TestConstants.PROVINCE_ALBERTA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			contry = "Canada";
+			country = TestConstants.COUNTRY_DD_VALUE_CA;
 
 		}else{
 			addressLine = TestConstants.ADDRESS_LINE_1_US;
@@ -283,18 +269,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			postal = TestConstants.POSTAL_CODE_US;
 			province = TestConstants.PROVINCE_ALABAMA_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			contry = "United States";
+			country = TestConstants.COUNTRY_DD_VALUE_US;
 		}
 		//-------------------FOR US----------------------------------
 		//For Inactive users
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -303,7 +285,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(),"Address can not be added for inactive user popup is not present");
 		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
 		//get user
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");  
@@ -311,13 +293,13 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 			try{
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -327,11 +309,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -344,14 +322,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAndClickShiipngAddressErrorPopupAndClickOkBtn(),"Clicked on create new address without entered any data error popup is not displayed");
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		//assert with check autoship checkbox
 		attendentFirstName = TestConstants.FIRST_NAME+randomNum2;
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickSetAsAutoshipChkBoxInCreateNewAddressPopup();
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
@@ -375,18 +353,28 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		String postal = null;
 		String province = null;
 		String phoneNumber = null;
-		String contry = null;
-		addressLine = TestConstants.ADDRESS_LINE_1_US;
-		city = TestConstants.CITY_US;
-		postal = TestConstants.POSTAL_CODE_US;
-		province = TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber = TestConstants.PHONE_NUMBER_US;
-		contry = "United States";
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			country = TestConstants.COUNTRY_DD_VALUE_US;
+		}else{
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			country = TestConstants.COUNTRY_DD_VALUE_CA;
+
+		}
 		//For Inactive users
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -397,14 +385,14 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		String noOfPages = cscockpitCustomerSearchTabPage.getTotalNumberOfPages();
 		int randomPageNum = CommonUtils.getRandomNum(1, Integer.parseInt(noOfPages));
 		cscockpitCustomerSearchTabPage.enterRandomPageNumber(""+randomPageNum);
 		String[] emailIDList = cscockpitCustomerSearchTabPage.getEmailIDInCustomerSearchTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
 			for(int i=1; i<=emailIDList.length;i++){
 				rcEmailID = emailIDList[i];  
@@ -412,13 +400,13 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 				try{
 					storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
 				}catch(Exception e){
-					driver.get(driver.getStoreFrontURL()+"/us");
+					driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 					storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
 				}	
 				boolean isLoginError = driver.getCurrentUrl().contains("error");
 				if(isLoginError){
 					logger.info("Login error for the user "+rcEmailID);
-					driver.get(driver.getStoreFrontURL()+"/us");
+					driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 					continue;
 				}
 				else{
@@ -431,7 +419,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -443,7 +431,7 @@ public class CreditCardVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAndClickShiipngAddressErrorPopupAndClickOkBtn(),"Clicked on create new address without entered any data error popup is not displayed");
-		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, contry, province, phoneNumber);
+		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());

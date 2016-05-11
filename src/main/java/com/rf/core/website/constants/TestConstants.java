@@ -349,8 +349,14 @@ public class TestConstants {
 	public static final String NEW_ADDRESS_LINE_PHONE_NUMBER_CA = "8067736418";
 	public static final String NEW_ADDRESS_LINE_1_CITY_CA = "Bonnyville";
 
-	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
-	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
+	public static final String CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA="18 Brandon Cres";
+	public static final String CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_US="255 W Alameda St";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="THOMPSON";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_US = "Tucson";
+	public static final String CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA="Manitoba";
+	public static final String CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_US="Arizona";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="R8N 1V7";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_US="85701-1362";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";

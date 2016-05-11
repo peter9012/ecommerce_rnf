@@ -75,6 +75,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		DateFormat formatter = DateFormat.getDateInstance();
 		formatter.setTimeZone(pstTimeZone);
 		String formattedDate = formatter.format(startTime);
+		logger.info("PST Date is "+formattedDate);
 		return formattedDate;
 	}
 
@@ -157,7 +158,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 			UIMonth[1]="November";
 			UIMonth[2]=year;
 			UIMonth[3]=month;
-		}else if(month.equalsIgnoreCase("December")){
+		}else if(month.equalsIgnoreCase("Dec")){
 			UIMonth[0]=date;
 			UIMonth[1]="December";
 			UIMonth[2]=year;

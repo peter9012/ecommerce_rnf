@@ -984,4 +984,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		}
 	}
 
+	public String updateStateAndReturnName(String state){
+		Select stateDD = new Select(driver.findElement(By.xpath("//select[@id='state']")));
+		stateDD.selectByVisibleText(state);
+		return state;
+	}
+
 }

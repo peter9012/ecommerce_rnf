@@ -1193,4 +1193,16 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(ADD_NEW_CUSTOMER_ADDRESS);  
 	}
 
+	public boolean isRandomCustomerSearchResultPresent(){
+		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
+		int totalCustomersFromResultsSearchFirstPage =  driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
+		logger.info("total customers in the customer search result is "+totalCustomersFromResultsSearchFirstPage);
+		if(totalCustomersFromResultsSearchFirstPage>0){
+			return true;
+		}else{
+			logger.info("No search result is present");
+		}
+		return false;
+	}
+
 }

@@ -438,10 +438,21 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("Next button after selecting sponsor is clicked");
 		driver.waitForLoadingImageToDisappear();
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
-			logger.info("Accept as original button clicked");
-			driver.waitForLoadingImageToDisappear();
+			if(driver.isElementPresent(By.id("QAS_AcceptOriginal")))
+			{
+				driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+				driver.click(By.id("QAS_AcceptOriginal"));
+				logger.info("Accept the original button clicked");
+				driver.waitForLoadingImageToDisappear();
+			}
+			else
+			{
+				driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+				driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+				logger.info("Accept the suggested address button clicked");
+				driver.waitForLoadingImageToDisappear();
+			}
+			
 		}catch(NoSuchElementException e){
 
 		}		

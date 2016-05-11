@@ -405,7 +405,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			}
 		}
 		driver.turnOnImplicitWaits();
-		return tax.trim().substring(1);
+		return tax.trim().substring(0);
 	}
 
 	public boolean verifyAutoShipTemplateTax(String taxDB){

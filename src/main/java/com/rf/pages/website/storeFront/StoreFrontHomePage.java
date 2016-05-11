@@ -392,16 +392,32 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEnrollmentNextBtn() throws InterruptedException{
-		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		////driver.pauseExecutionFor(2000);
-		driver.click(By.id("enrollment-next-button"));
-		logger.info("EnrollmentTest Next Button clicked");
-		driver.waitForLoadingImageToDisappear();
-		////driver.pauseExecutionFor(2000);
+		if(driver.isElementPresent(By.id("enrollment-next-button")))
+		{
+			driver.waitForElementPresent(By.id("enrollment-next-button"));
+			////driver.pauseExecutionFor(2000);
+			driver.click(By.id("enrollment-next-button"));
+			logger.info("EnrollmentTest Next Button clicked");
+			driver.waitForLoadingImageToDisappear();
+			////driver.pauseExecutionFor(2000);
+			
+		}
+
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
-			logger.info("Accept the original button clicked");
+			if(driver.isElementPresent(By.id("QAS_AcceptOriginal")))
+			{
+				driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+				driver.click(By.id("QAS_AcceptOriginal"));
+				logger.info("Accept the original button clicked");
+			}
+			else
+			{
+				driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+				driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+				logger.info("Accept the suggested address button clicked");
+			}
+				
+
 		}
 		catch(Exception e){
 			logger.info("Accept the original pop up was NOT present");

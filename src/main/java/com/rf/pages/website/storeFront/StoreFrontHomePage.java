@@ -118,6 +118,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		clickRenewLater();
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontPCUserPage(driver);
 	}
 

@@ -422,7 +422,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		driver.waitForElementPresent(CURRENT_CRP_AUTOSHIP_DATE);
 		WebElement inputField = driver.findElement(CURRENT_CRP_AUTOSHIP_DATE);
 		inputField.clear();
-		inputField.sendKeys(date);
+		inputField.sendKeys(date+"\t");
 	}
 
 	public boolean IsUpdateBtnDisabledForPulseSubscription(){

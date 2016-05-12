@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="smokeTestSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="SmokeTest">
+		<classes>
+			<class
+				name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
+				
+			</class>
+			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest" />
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest">
+				
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
+				
+			</class>
+		</classes>
+	</test>
+</suite>

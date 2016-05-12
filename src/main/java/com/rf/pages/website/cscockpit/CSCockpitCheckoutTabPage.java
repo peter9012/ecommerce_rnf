@@ -187,13 +187,13 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyAddressTextBoxInPopUpInCheckoutTab(){
-		driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
+		driver.quickWaitForElementPresent(ADDRESS_LINE_TEXT_BOX);
 		return driver.isElementPresent(ADDRESS_LINE_TEXT_BOX);
 	}
 
 
 	public boolean verifyPostalCodeTextBoxInPopUpInCheckoutTab(){
-		driver.isElementPresent(POSTAL_CODE_TEXT_BOX);
+		driver.quickWaitForElementPresent(POSTAL_CODE_TEXT_BOX);
 		return driver.isElementPresent(POSTAL_CODE_TEXT_BOX);
 	}
 
@@ -261,6 +261,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		logger.info("Save button clicked after entering billing and shipping address. ");
 		driver.pauseExecutionFor(4000);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public String getErrorMessageOfDeliveryAddressPopupWithoutFillingDataInCheckoutTab(){

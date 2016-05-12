@@ -1621,7 +1621,7 @@ public class CRMRegressionTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.openConsultantPWS(afterEditPWSPrefix+afterEditPWSSuffix);
 		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
 		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
-		s_assert.assertTrue(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is not active");
+		s_assert.assertFalse(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is active");
 		s_assert.assertAll();
 	}
 	//Hybris Project-4498:Verify the Proxy to my account for a Consultant

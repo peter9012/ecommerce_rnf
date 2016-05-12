@@ -127,22 +127,22 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyAutoshipTemplateHeaderSectionInAutoshipTemplateTab(){
-		driver.isElementPresent(AUTOSHIP_TEMPLATE_HEADER);
+		driver.quickWaitForElementPresent(AUTOSHIP_TEMPLATE_HEADER);
 		return driver.isElementPresent(AUTOSHIP_TEMPLATE_HEADER);  
 	}
 
 	public boolean verifyShippingAddressSectionInAutoshipTemplateTab(){
-		driver.isElementPresent(SHIPPING_ADDRESS);
+		driver.quickWaitForElementPresent(SHIPPING_ADDRESS);
 		return driver.isElementPresent(SHIPPING_ADDRESS);  
 	}
 
 	public boolean verifyPaymentInfoSectionInAutoshipTemplateTab(){
-		driver.isElementPresent(PAYMENT_INFO);
+		driver.quickWaitForElementPresent(PAYMENT_INFO);
 		return driver.isElementPresent(PAYMENT_INFO);  
 	}
 
 	public boolean verifyOrderFromThisAutoshipTemplateSectionInAutoshipTemplateTab(){
-		driver.isElementPresent(ORDER_FROM_THIS_AUTOSHIP_TEMPLATE);
+		driver.quickWaitForElementPresent(ORDER_FROM_THIS_AUTOSHIP_TEMPLATE);
 		return driver.isElementPresent(ORDER_FROM_THIS_AUTOSHIP_TEMPLATE);  
 	}
 
@@ -153,17 +153,17 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(){
-		driver.isElementPresent(CANCEL_AUTOSHIP_DISABLE_LINK);
+		driver.quickWaitForElementPresent(CANCEL_AUTOSHIP_DISABLE_LINK);
 		return driver.isElementPresent(CANCEL_AUTOSHIP_DISABLE_LINK);  
 	}
 
 	public boolean verifyEditAutoshipTemplateLinkInAutoshipTemplateTab(){
-		driver.isElementPresent(EDIT_AUTOSHIP_LINK);
+		driver.quickWaitForElementPresent(EDIT_AUTOSHIP_LINK);
 		return driver.isElementPresent(EDIT_AUTOSHIP_LINK);  
 	}
 
 	public boolean verifyAppliedPromotionSectionInAutoshipTemplateTab(){
-		driver.isElementPresent(APPLIED_PROMOTION_SECTION);
+		driver.quickWaitForElementPresent(APPLIED_PROMOTION_SECTION);
 		return driver.isElementPresent(APPLIED_PROMOTION_SECTION);  
 	}
 
@@ -252,6 +252,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 
 	}
 	public boolean verifyConfirmMessagePopUpIsAppearing() {
+		driver.quickWaitForElementPresent(CONFIRM_MESSAGE_OK_LOC);
 		return driver.isElementPresent(CONFIRM_MESSAGE_OK_LOC);
 	}
 
@@ -261,10 +262,12 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyUpdateLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(UPDATE_BUTTON_AUTOSHIP_TEMPLATE_TAB);
 		return driver.isElementPresent(UPDATE_BUTTON_AUTOSHIP_TEMPLATE_TAB);		    
 	}
 
 	public boolean verifyRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB_ANOTHER);
 		return driver.isElementPresent(RUN_NOW_BUTTON_AUTOSHIP_TEMPLATE_TAB_ANOTHER);		   
 	}
 
@@ -275,10 +278,12 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyCancelEditLinkInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(CANCEL_EDIT_LINK);
 		return driver.isElementPresent(CANCEL_EDIT_LINK);		    
 	}
 
 	public boolean verifyThresholdPopupInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(THRESHOLD_POPUP);
 		return driver.isElementPresent(THRESHOLD_POPUP);
 	}
 
@@ -536,6 +541,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 
 	public boolean verifyThresholdPopupForUS(){
 		try{
+			driver.quickWaitForElementPresent(THRESHOLD_POPUP_FOR_US);
 			return driver.isElementPresent(THRESHOLD_POPUP_FOR_US);
 		}catch(Exception e){
 			logger.info("There is no product having SV value less than 100/80");
@@ -545,6 +551,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 
 	public boolean verifyThresholdPopupForCA(){
 		try{
+			driver.quickWaitForElementPresent(THRESHOLD_POPUP_FOR_CA);
 			return driver.isElementPresent(THRESHOLD_POPUP_FOR_CA);
 		}catch(Exception e){
 			logger.info("There is no product having SV value less than 100/80");
@@ -943,6 +950,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyThresholdPopupForOrderTotal(){
+		driver.quickWaitForElementPresent(THRESHOLD_POPUP_FOR_ORDER_TOTAL);
 		return driver.isElementPresent(THRESHOLD_POPUP_FOR_ORDER_TOTAL);
 	}
 
@@ -983,6 +991,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyNextCRPCartInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(NEXT_CRP_CART_LINK);
 		return driver.isElementPresent(NEXT_CRP_CART_LINK);      
 	}
 
@@ -1086,6 +1095,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyNextPCPerksCartInAutoshipTemplateTab(){
+		driver.quickWaitForElementPresent(NEXT_PC_PERKS_CART);
 		return driver.isElementPresent(NEXT_PC_PERKS_CART);      
 	}
 
@@ -1147,7 +1157,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	}
 
 	public boolean verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(){
-		driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);
+		driver.quickWaitForElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);
 		return driver.isElementPresent(ALREADY_CANCEL_AUTOSHIP_DISABLE_LINK);  
 	}
 
@@ -1157,6 +1167,52 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		int SVValue = Integer.parseInt(value);
 		logger.info("Total SV Value is: "+SVValue);
 		return SVValue;
+	}
+
+	public void addProductInAutoShipCartTillHaveRequiredProductToBeAdded(int reqProduct,String profileName){
+		boolean addBillingProfile=true;
+		boolean autoshipProductList=true;
+		String currentPageNo = "0";
+		do{
+			if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=reqProduct){
+				logger.info("Product count is equal to requirement");
+				break;
+			}else{
+
+				int pageNo =1+Integer.parseInt(currentPageNo);
+				logger.info("Entered Page no "+pageNo);
+				clickAddMoreLinesLinkInAutoShipTemplateTab();
+				logger.info("Add more lines button clicked");
+				clearCatalogSearchFieldAndClickSearchBtn();
+				logger.info("Catalog search field cleared");
+				selectValueFromSortByDDInCartTab("Price: High to Low");
+				logger.info("Price filter selected is: Higt to low");
+				selectCatalogFromDropDownInCartTab();
+				enterRandomPageNumber(""+pageNo);
+				logger.info("Enter random page number for first product of page");
+				String newRandomProductSequenceNumber = String.valueOf(getRandomProductWithSKUFromSearchResult()); 
+				String SKUValues = getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
+				logger.info("SKU value is: "+SKUValues);
+				searchSKUValueInCartTab(SKUValues);
+				currentPageNo = clickAddToCartBtnInCartTabAndReturnCurrentPageNo(""+pageNo);
+				logger.info("Current Page no "+currentPageNo);
+				//clickAddToCartBtnTillProductAddedInCartTab();
+				clickCheckoutBtnInCartTab();
+				if(addBillingProfile){
+					clickAddNewPaymentAddressInCheckoutTab();
+					enterBillingInfo(TestConstants.CARD_NUMBER,profileName,TestConstants.SECURITY_CODE);
+					clickSaveAddNewPaymentProfilePopUP();
+					addBillingProfile=false;
+				}
+				enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+				clickUseThisCardBtnInCheckoutTab();
+				clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
+				if(driver.findElements(REMOVE_LINK_OF_ORDER_DETAIL).size()>=reqProduct){
+					autoshipProductList=false; 
+					break;
+				}
+			}
+		}while(autoshipProductList);
 	}
 
 }

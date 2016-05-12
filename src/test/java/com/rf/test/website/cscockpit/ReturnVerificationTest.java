@@ -1448,5 +1448,35 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+	//Hybris Project-2019:To verify that Failed orders cannot be Returned
+	@Test
+	public void testVerifyFailedOrderCannotBeReturned_2019() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.ORDER_STATUS_DD_SECOND_VALUE);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertFalse(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is present for failed orders");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2022:To verify that shipped orders can be returned
+	@Test
+	public void testVerifyShippedOrderCanBeReturned_2022() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.ORDER_STATUS_DD_FOURTH_VALUE);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is not present for Shipped orders");
+		s_assert.assertAll();
+	}
+
+
 }

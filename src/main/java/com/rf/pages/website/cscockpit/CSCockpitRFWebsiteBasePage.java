@@ -111,6 +111,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By PAGE_INPUT_TXT_LOC = By.xpath("//div[@class='csToolbar']//input");
 	private static final By PRODUCT_COUNT_ON_CART = By.xpath("//div[@class='csToolbarLeftButtons']//td[contains(@class,'csMasterContentCell')]");
 	private static final By ADD_NEW_CUSTOMER_ADDRESS = By.xpath("//div[contains(text(),'Create New Address')]");
+	private static final By USE_ENTERED_ADDRESS_DISABLED_BTN_IN_QAS_POPUP = By.xpath("//table[@class='z-button z-button-disd']//td[contains(text(),'Use Entered Address')]");
+	private static final By USE_THIS_ADDRESS_BTN_IN_POPUP = By.xpath("//td[contains(text(),'Use this Address')]");
 
 	protected RFWebsiteDriver driver;
 	public CSCockpitRFWebsiteBasePage(RFWebsiteDriver driver) {
@@ -894,7 +896,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean isAddNewPaymentProfilePopupPresentInCustomerTab(){
-		driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);
+		driver.quickWaitForElementPresent(ADD_NEW_PAYMENT_PROFILE);
 		return driver.isElementPresent(ADD_NEW_PAYMENT_PROFILE);  
 	}
 
@@ -1003,8 +1005,14 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickUseEnteredAddressbtnInEditAddressPopup(){
-		driver.waitForElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
-		driver.click(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		driver.quickWaitForElementPresent(USE_ENTERED_ADDRESS_DISABLED_BTN_IN_QAS_POPUP);
+		if(driver.isElementPresent(USE_ENTERED_ADDRESS_DISABLED_BTN_IN_QAS_POPUP)){
+			driver.waitForElementPresent(USE_THIS_ADDRESS_BTN_IN_POPUP);
+			driver.click(USE_THIS_ADDRESS_BTN_IN_POPUP);
+		}else{
+			driver.waitForElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+			driver.click(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		}
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
@@ -1052,8 +1060,14 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup(){
-		driver.waitForElementPresent(USE_ENTERED_ADDRESS_BUTTON);
-		driver.click(USE_ENTERED_ADDRESS_BUTTON);
+		driver.quickWaitForElementPresent(USE_ENTERED_ADDRESS_DISABLED_BTN_IN_QAS_POPUP);
+		if(driver.isElementPresent(USE_ENTERED_ADDRESS_DISABLED_BTN_IN_QAS_POPUP)){
+			driver.waitForElementPresent(USE_THIS_ADDRESS_BTN_IN_POPUP);
+			driver.click(USE_THIS_ADDRESS_BTN_IN_POPUP);
+		}else{
+			driver.waitForElementPresent(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+			driver.click(USE_ENTERED_ADDRESS_BTN_IN_QAS_POPUP);
+		}
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
@@ -1188,13 +1202,12 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean isAddNewAddressProfilePopupPresentInCustomerTab(){
-		driver.waitForElementPresent(ADD_NEW_CUSTOMER_ADDRESS);
-		driver.isElementPresent(ADD_NEW_CUSTOMER_ADDRESS);
+		driver.quickWaitForElementPresent(ADD_NEW_CUSTOMER_ADDRESS);
 		return driver.isElementPresent(ADD_NEW_CUSTOMER_ADDRESS);  
 	}
 
 	public boolean isRandomCustomerSearchResultPresent(){
-		driver.waitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
+		driver.quickWaitForElementPresent(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE);
 		int totalCustomersFromResultsSearchFirstPage =  driver.findElements(TOTAL_CUSTOMERS_FROM_RESULT_FIRST_PAGE).size();
 		logger.info("total customers in the customer search result is "+totalCustomersFromResultsSearchFirstPage);
 		if(totalCustomersFromResultsSearchFirstPage>0){
@@ -1203,6 +1216,52 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			logger.info("No search result is present");
 		}
 		return false;
+	}
+
+	public String clickAddToCartBtnInCartTabAndReturnCurrentPageNo(String currentPageNo){
+		int i = Integer.parseInt(currentPageNo);
+		driver.waitForElementPresent(ADD_TO_CART_BTN);
+		driver.click(ADD_TO_CART_BTN);
+		logger.info("Add to cart button clicked for first product");
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+		boolean isProductFound = false;
+		if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+			logger.info("Product not available popup is present for first product");
+			driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+			logger.info("Ok button clicked for product not available for first product");
+			clearCatalogSearchFieldAndClickSearchBtn();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+			String totalNoOfPage = driver.findElement(TOTAL_NUMBER_OF_PAGE).getText().replaceAll("/", "").trim();
+			logger.info("Total count of page is: "+totalNoOfPage);
+			int noOfPagesInSearchResult = Integer.parseInt(totalNoOfPage);
+			for(i=Integer.parseInt(currentPageNo);i<=noOfPagesInSearchResult; i++){
+				enterRandomPageNumber(currentPageNo);
+				System.out.println("Random page no is:"+currentPageNo);
+				int noOfProducts = driver.findElements(TOTAL_PRODUCTS_WITH_SKU).size();
+				String[] SKUValues = getCustomerSKUValueInCartTab(noOfProducts);
+				for(int j=1; j<SKUValues.length; j++){
+					searchSKUValueInCartTab(SKUValues[j]);
+					driver.click(ADD_TO_CART_BTN);
+					if(driver.isElementPresent(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN)==true){
+						driver.click(PRODUCT_NOT_AVAILABLE_POPUP_OK_BTN);
+						clearCatalogSearchFieldAndClickSearchBtn();
+						driver.waitForCSCockpitLoadingImageToDisappear();
+						continue;
+					}else{
+						isProductFound = true;
+						break;
+					}
+				}
+				if(isProductFound == false){
+					continue;
+				}else{
+					break;
+				}
+			}
+		}
+		logger.info("Value of i is:+"+i);
+		return ""+i;
 	}
 
 }

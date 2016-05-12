@@ -2913,6 +2913,5 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		logout();
 		s_assert.assertAll();
 	}
-
-
+	
 }

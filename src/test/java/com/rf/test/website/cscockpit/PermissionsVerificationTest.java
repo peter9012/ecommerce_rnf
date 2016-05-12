@@ -137,7 +137,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyNextCRPCartInAutoshipTemplateTab(),"Next crp cart link is not on Autoship template Tab Page");
 		//Update quantity of product in autoship template and verify it.
-		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProduct(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProductToBeAdded(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
 		String count=cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("2");
 		String qty=Integer.toString(Integer.parseInt(count)+9);
 		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct(qty);
@@ -225,7 +225,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyNextCRPCartInAutoshipTemplateTab(),"Next crp cart link is not on Autoship template Tab Page");
 		//Update quantity of product in autoship template and verify it.
-		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProduct(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProductToBeAdded(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
 		String count=cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("2");
 		String qty=Integer.toString(Integer.parseInt(count)+9);
 		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct(qty);
@@ -434,7 +434,7 @@ public class PermissionsVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyNextPCPerksCartInAutoshipTemplateTab(),"Next PC Perks cart link is not on Autoship template Tab Page");
 		//Update quantity of product in autoship template and verify it.
-		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProduct(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
+		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveRequiredProductToBeAdded(3,TestConstants.NEW_BILLING_PROFILE_NAME+randomNum);
 		String count=cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("2");
 		String qty=Integer.toString(Integer.parseInt(count)+9);
 		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct(qty);

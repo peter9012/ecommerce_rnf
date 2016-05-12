@@ -11,25 +11,13 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipCartTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateUpdateTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
-import com.rf.pages.website.storeFront.StoreFrontBillingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
-import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
-import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
@@ -38,45 +26,22 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 
 	//-------------------------------------------------Pages---------------------------------------------------------
 	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitAutoshipSearchTabPage cscockpitAutoshipSearchTabPage;
-	private CSCockpitCheckoutTabPage cscockpitCheckoutTabPage;
 	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
 	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
-	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
-	private CSCockpitOrderTabPage cscockpitOrderTabPage;
-	private CSCockpitCartTabPage cscockpitCartTabPage;
 	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
-	private CSCockpitAutoshipCartTabPage cscockpitAutoshipCartTabPage;
-	private CSCockpitAutoshipTemplateUpdateTabPage cscockpitAutoshipTemplateUpdateTabPage;
 	private StoreFrontHomePage storeFrontHomePage; 
 	private StoreFrontConsultantPage storeFrontConsultantPage;
-	private StoreFrontOrdersPage storeFrontOrdersPage;
-	private StoreFrontPCUserPage storeFrontPCUserPage;
-	private StoreFrontRCUserPage storeFrontRCUserPage;	
-	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
-	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 
 	//-----------------------------------------------------------------------------------------------------------------
 
 	public AddEditShippingVerificationTest() {
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitAutoshipSearchTabPage = new CSCockpitAutoshipSearchTabPage(driver);
-		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
 		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
 		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
 		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);
-		cscockpitAutoshipCartTabPage = new CSCockpitAutoshipCartTabPage(driver);
-		cscockpitAutoshipTemplateUpdateTabPage = new CSCockpitAutoshipTemplateUpdateTabPage(driver);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
-		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
-		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 	}
 
@@ -120,7 +85,6 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			try{
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}catch(Exception e){
@@ -163,50 +127,23 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.isSetAsAutoshipShippingProfileTxtPresentInAddNewShippingProfilePopup(), "Set as autoship shipping address present in add new shipping address popup  customer tab");
 		cscockpitCustomerTabPage.clickCloseOfCreateNewAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickMenuButton();
-		cscockpitCustomerTabPage.clickLogoutButton();
-
-		//For Inactive Users
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab("");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(), "Address can be added for Inactive user");
 		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
-		cscockpitCustomerTabPage.clickMenuButton();
-		cscockpitCustomerTabPage.clickLogoutButton();
-
-		//For Active user
-		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			try{
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			}	
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-			}
-			else{
-				break;
-			}
-		}
-		logout();
 		//get emailId of username
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+
+		cscockpitCustomerTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
@@ -214,13 +151,6 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		cscockpitCustomerTabPage.clickUpdateAddressbtnInEditAddressPopup();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isQASpopupPresent(), "QAS popup is not present after clicked on update address without editing data");
-		cscockpitCustomerTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
 		//without select set as autoship shipping profile check box
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
@@ -237,9 +167,9 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickUpdateAddressbtnInEditAddressPopup();
 		cscockpitCustomerTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
 		cscockpitCustomerTabPage.clickOnYesOnUpdateAutoshipAddressPopup();
-		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().toLowerCase().trim().contains(attendentFirstName.toLowerCase()), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
+		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().toLowerCase().trim().contains(attendentFirstName.toLowerCase()), "shipping profile name for autoship expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(attendentFirstName.toLowerCase()),"Shipping Address Name Expected is "+attendentFirstName.toLowerCase()+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab());
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab().toLowerCase().trim().contains(attendentFirstName.toLowerCase()),"Shipping Address Name for autoship Expected is "+attendentFirstName.toLowerCase()+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab());
 		s_assert.assertAll();
 	}
 
@@ -289,32 +219,11 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(), "Address can be added for Inactive user");
 		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
-		cscockpitCustomerTabPage.clickMenuButton();
-		cscockpitCustomerTabPage.clickLogoutButton();
-
-		//For Active user
-		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
-			try{
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			}	
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-			}
-			else{
-				break;
-			}
-		}
-		logout();
+		cscockpitCustomerTabPage.clickCustomerSearchTab();
 		//get emailId of username
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
 		List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
 		driver.get(driver.getCSCockpitURL());
@@ -326,13 +235,6 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
-		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		cscockpitCustomerTabPage.clickUpdateAddressbtnInEditAddressPopup();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isQASpopupPresent(), "QAS popup is not present after clicked on update address without editing data");
-		cscockpitCustomerTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
 		//without select set as autoship shipping profile check box
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
@@ -396,13 +298,30 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
+		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(), "Address can be added for Inactive user");
+		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
+		cscockpitCustomerTabPage.clickCustomerSearchTab();
+		//get emailId of username
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+		List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		rcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		if(cscockpitCustomerSearchTabPage.isRandomCustomerSearchResultPresent()==false){
 			while(true){
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
 				accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 				//get emailId of username
-				List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-				rcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress")); 
+				List<Map<String, Object>> randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+				rcEmailID = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress")); 
 				cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 				cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 				cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
@@ -418,53 +337,9 @@ public class AddEditShippingVerificationTest extends RFWebsiteBaseTest{
 			}}
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickAddButtonOfCustomerAddressInCustomerTab();
-		s_assert.assertTrue(cscockpitCustomerTabPage.addressCanNotBeAddedForInactiveUserInCustomerTab(), "Address can be added for Inactive user");
-		cscockpitCustomerTabPage.clickOkBtnOfAddressCanNotBeAddedForInactiveUserInCustomerTab();
-		cscockpitCustomerTabPage.clickMenuButton();
-		cscockpitCustomerTabPage.clickLogoutButton();
-
-		//For Active user
-		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
-			rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			try{
-				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
-			}catch(Exception e){
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID, password);
-			}	
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+rcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-			}
-			else{
-				break;
-			}
-		}
-		logout();
-		//get emailId of username
-		List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		rcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.isEditAddressPopupPresentInCustomerTab(), "Edit Address popup is not present in billing section of customer tab");
 		cscockpitCustomerTabPage.clickCloseOfEditAddressPopUpInCustomerTab();
-		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		cscockpitCustomerTabPage.clickUpdateAddressbtnInEditAddressPopup();
-		s_assert.assertTrue(cscockpitCustomerTabPage.isQASpopupPresent(), "QAS popup is not present after clicked on update address without editing data");
-		cscockpitCustomerTabPage.clickUseEnteredAddressbtnInEditAddressPopup();
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
 		cscockpitCustomerTabPage.clickUpdateAddressbtnInEditAddressPopup();

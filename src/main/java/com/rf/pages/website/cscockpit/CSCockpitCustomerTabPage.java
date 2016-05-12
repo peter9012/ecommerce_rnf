@@ -38,7 +38,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By ADD_CARD_BTN = By.xpath("//span[contains(text(),'Billing Information')]/following::td[text()='ADD CARD']");
 	private static final By CREDIT_CARD_EDIT_BTN = By.xpath("//span[contains(text(),'Billing Information')]/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/tr[1]//td[text()='EDIT']");
 	private static final By EDIT_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]");
-	private static final By SHIPPING_ADDRESS_EDIT_BUTTON = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/tr[1]//td[text()='Edit']");
+	private static final By SHIPPING_ADDRESS_EDIT_BUTTON = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/following::td[text()='Edit'][1]");
 	private static final By EDIT_ADDRESS = By.xpath("//div[contains(text(),'Edit Address')]");
 	private static final By CLOSE_POPUP_OF_EDIT_ADDRESS = By.xpath("//div[contains(text(),'Edit Address')]/div[contains(@id,'close')]");
 	private static final By ADD_NEW_SHIPPING_ADDRESS = By.xpath("//span[contains(text(),'Customer Address')]/following::td[text()='Add']");
@@ -58,7 +58,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/ancestor::td[contains(@style,'display:none;')]");
 	private static final By SHIPPING_PROFILE_ERROR_POPUP_OK_BTN = By.xpath("//div[@class='z-window-modal']//td[text()='OK']");
 	private static final By USE_THIS_ADDRESS = By.xpath("//td[contains(text(),'Use this Address')]");
-	private static final By SHIPPING_ADDRESS_PROFILE_FIRST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[@class='z-listbox-body']//tbody[2]//tr[1]//td[1]/div");
+	private static final By SHIPPING_ADDRESS_PROFILE_FIRST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/ancestor::tr[1]/td[1]/div");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX= By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/preceding::span[@class='z-checkbox'][1]/input");
 	private static final By YES_BTN_OF_UPDATE_AUTOSHIP_ADDRESS_POPUP = By.xpath("//td[text()='Yes']");
 	private static final By CREATE_NEW_ADDRESS_IN_SHIPPING_ADDRESS_POPUP = By.xpath("//td[contains(text(),'Create new address')]");
@@ -171,7 +171,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isAddCardButtonPresentInCustomerTab(){
-		driver.isElementPresent(ADD_CARD_BTN);
+		driver.quickWaitForElementPresent(ADD_CARD_BTN);
 		return driver.isElementPresent(ADD_CARD_BTN);  
 	}
 
@@ -191,35 +191,35 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public void clickAddCardButtonInCustomerTab(){
-		driver.isElementPresent(ADD_CARD_BTN);
+		driver.waitForElementPresent(ADD_CARD_BTN);
 		driver.click(ADD_CARD_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public boolean isEditButtonForCreditCardPresentInCustomerTab(){
-		driver.isElementPresent(CREDIT_CARD_EDIT_BTN);
+		driver.waitForElementPresent(CREDIT_CARD_EDIT_BTN);
 		return driver.isElementPresent(CREDIT_CARD_EDIT_BTN);  
 	}
 
 	public void clickEditButtonForCreditCardInCustomerTab(){
-		driver.isElementPresent(CREDIT_CARD_EDIT_BTN);
+		driver.waitForElementPresent(CREDIT_CARD_EDIT_BTN);
 		driver.click(CREDIT_CARD_EDIT_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public boolean isEditPaymentProfilePopupPresentInCustomerTab(){
-		driver.isElementPresent(EDIT_PAYMENT_PROFILE);
+		driver.waitForElementPresent(EDIT_PAYMENT_PROFILE);
 		return driver.isElementPresent(EDIT_PAYMENT_PROFILE);  
 	}
 
 	public void clickEditButtonOfShippingAddressInCustomerTab(){
-		driver.isElementPresent(SHIPPING_ADDRESS_EDIT_BUTTON);
+		driver.waitForElementPresent(SHIPPING_ADDRESS_EDIT_BUTTON);
 		driver.click(SHIPPING_ADDRESS_EDIT_BUTTON);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public boolean isEditAddressPopupPresentInCustomerTab(){
-		driver.isElementPresent(EDIT_ADDRESS);
+		driver.waitForElementPresent(EDIT_ADDRESS);
 		return driver.isElementPresent(EDIT_ADDRESS);  
 	}
 
@@ -260,22 +260,22 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyAutoshipTemplateSectionInCustomerTab(){
-		driver.isElementPresent(AUTOSHIP_TEMPLATE);
+		driver.waitForElementPresent(AUTOSHIP_TEMPLATE);
 		return driver.isElementPresent(AUTOSHIP_TEMPLATE);  
 	}
 
 	public boolean verifyCustomerOrderSectionInCustomerTab(){
-		driver.isElementPresent(CUSTOMER_ORDER_SECTION);
+		driver.quickWaitForElementPresent(CUSTOMER_ORDER_SECTION);
 		return driver.isElementPresent(CUSTOMER_ORDER_SECTION);  
 	}
 
 	public boolean verifyCustomerBillingInfoSectionInCustomerTab(){
-		driver.isElementPresent(CUSTOMER_BILLING_INFO);
+		driver.quickWaitForElementPresent(CUSTOMER_BILLING_INFO);
 		return driver.isElementPresent(CUSTOMER_BILLING_INFO);  
 	}
 
 	public boolean verifyCustomerAddressSectionInCustomerTab(){
-		driver.isElementPresent(CUSTOMER_ADDRESS);
+		driver.quickWaitForElementPresent(CUSTOMER_ADDRESS);
 		return driver.isElementPresent(CUSTOMER_ADDRESS);  
 	}
 
@@ -363,7 +363,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isSetAsAutoshipShippingProfileTxtPresentInAddNewShippingProfilePopup(){
-		driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT);
+		driver.quickWaitForElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT);
 		return driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT);  
 	}
 
@@ -424,7 +424,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isSetAsAutoshipShippingProfileTxtPresentInAddNewShippingProfilePopupForPendingAutoship(){
-		driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP);
+		driver.quickWaitForElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP);
 		return driver.isElementPresent(SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT_FOR_PENDING_AUTOSHIP);  
 	}
 
@@ -461,12 +461,22 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public String getAndClickPulseTemplateAutoshipIDHavingStatusIsPending(){
+		if(isCreatePulseTemplateBtnPresent() == true){
+			clickCreatePulseTemplateBtn();
+			clickCreatePulseTemplateBtnOnPopup();
+			driver.waitForCSCockpitLoadingImageToDisappear();
+		}
 		driver.waitForElementPresent(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
 		String autoshipID = driver.findElement(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING).getText();
 		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
 		driver.click(PULSE_TEMPLATE_AUTOSHIP_ID_STATUS_AS_PENDING);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		return autoshipID;
+	}
+
+	public boolean isCreatePulseTemplateBtnPresent(){
+		driver.waitForElementPresent(CREATE_PULSE_TEMPLATE_BTN);
+		return driver.isElementPresent(CREATE_PULSE_TEMPLATE_BTN);
 	}
 
 	public String getNextDueDateOfPulseAutoshipSubscriptionAndStatusIsPending(){
@@ -606,7 +616,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	public void clickUpdateAddressbtnInEditAddressPopup(){
 		driver.waitForElementPresent(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
 		driver.click(UPDATE_ADDRESS_IN_EDIT_PAYMENT_PROFILE_POPUP);
-		driver.waitForCSCockpitLoadingImageToDisappear();
+		//driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public String getPopupMessage(){

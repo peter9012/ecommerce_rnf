@@ -11,21 +11,15 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
 import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
-import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class CheckoutVerificationTest extends RFWebsiteBaseTest{
@@ -34,39 +28,27 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 
 	//-------------------------------------------------Pages---------------------------------------------------------
 	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitAutoshipSearchTabPage cscockpitAutoshipSearchTabPage;
 	private CSCockpitCheckoutTabPage cscockpitCheckoutTabPage;
 	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
 	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
-	private CSCockpitOrderSearchTabPage cscockpitOrderSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
 	private CSCockpitCartTabPage cscockpitCartTabPage;
-	private CSCockpitAutoshipTemplateTabPage cscockpitAutoshipTemplateTabPage;
 	private StoreFrontHomePage storeFrontHomePage; 
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
-	private StoreFrontPCUserPage storeFrontPCUserPage;
-	private StoreFrontRCUserPage storeFrontRCUserPage;	
-	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 
 	//-----------------------------------------------------------------------------------------------------------------
 
 	public CheckoutVerificationTest() {
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitAutoshipSearchTabPage = new CSCockpitAutoshipSearchTabPage(driver);
 		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
 		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
 		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
 		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
 		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
-		cscockpitAutoshipTemplateTabPage = new CSCockpitAutoshipTemplateTabPage(driver);	
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
-		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
-		storeFrontRCUserPage = new StoreFrontRCUserPage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);		
 	}
 
 	private String RFO_DB = null;
@@ -80,7 +62,6 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String SKUValue = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
 		String attendeeLastName="IN";
 		String orderNumber=null;
 		String orderNumberOfOrderTab=null;
@@ -176,7 +157,12 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		cscockpitOrderTabPage.clickCustomerTab();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()).contains("Consultant Order"),"CSCockpit Customer tab Order type expected = Consultant Order and on UI = " +cscockpitCustomerTabPage.getOrderTypeInCustomerTab(orderNumberOfOrderTab.split("\\-")[0].trim()));
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}	
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -362,7 +348,6 @@ public class CheckoutVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDiscountTxtIsPresentInTotalsSectionInCheckoutTab(), "Discount is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyDeliverCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Delivery Costs is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyHandlingCostsTxtIsPresentInTotalsSectionInCheckoutTab(), "Handling Costs is not present in totals section of checkeout tab");
-		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTaxesTxtIsPresentInTotalsSectionInCheckoutTab(), "taxes is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalPriceTxtIsPresentInTotalsSectionInCheckoutTab(), "Total price is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalCVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total CV is not present in totals section of checkeout tab");
 		s_assert.assertTrue(cscockpitCheckoutTabPage.verifyTotalQVTxtIsPresentInTotalsSectionInCheckoutTab(), "Total QV is not present in totals section of checkeout tab");

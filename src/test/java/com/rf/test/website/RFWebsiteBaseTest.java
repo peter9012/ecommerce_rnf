@@ -60,7 +60,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.get(driver.getURL()+"/"+country);
 		}
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
-			
+
 		}else{
 			try{
 				logout();
@@ -76,14 +76,14 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
-//		if(driver.getURL().contains("salesforce")==true){
-//			try{
-//				crmLogoutFromHome();
-//				driver.get(driver.getURL());
-//			}catch(Exception e){
-//
-//			}
-//		}
+		//		if(driver.getURL().contains("salesforce")==true){
+		//			try{
+		//				crmLogoutFromHome();
+		//				driver.get(driver.getURL());
+		//			}catch(Exception e){
+		//
+		//			}
+		//		}
 	}
 
 	@AfterMethod
@@ -131,14 +131,14 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
-			StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontHomePage.clickOnRodanAndFieldsLogo();
-			driver.click(By.id("account-info-button"));
-			logger.info("Your account info has been clicked");
-			driver.waitForElementPresent(By.linkText("Log out"));
-			driver.click(By.linkText("Log out"));
-			logger.info("Logout");                    
-			driver.pauseExecutionFor(3000);
+		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		driver.click(By.id("account-info-button"));
+		logger.info("Your account info has been clicked");
+		driver.waitForElementPresent(By.linkText("Log out"));
+		driver.click(By.linkText("Log out"));
+		logger.info("Logout");                    
+		driver.pauseExecutionFor(3000);
 	}
 
 	// This assertion for the UI Texts

@@ -301,7 +301,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
@@ -364,7 +364,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcUserEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
@@ -398,7 +398,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
-
+			//rcUserEmailID ="melanie@chrisfix.com";
 			try{
 				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 			}catch(Exception e){
@@ -410,18 +410,25 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 				logger.info("Login error for the user "+rcUserEmailID);
 				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
-			else
+			else{
 				storeFrontRCUserPage.clickOnWelcomeDropDown();
-			storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-			storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
-			storeFrontAccountTerminationPage.selectTerminationReason();
-			storeFrontAccountTerminationPage.enterTerminationComments();
-			storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
-			storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-			storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-			break;
+				if(storeFrontRCUserPage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade()){
+					logout();
+					continue;
+				}else{
+					break;
+				}
+			}
 		}
+		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();		
+
 		logger.info("emaild of consultant username "+rcUserEmailID);
 		logger.info("login is successful");
 		driver.get(driver.getCSCockpitURL());
@@ -429,7 +436,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("RETAIL");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
@@ -544,7 +551,7 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -623,5 +630,5 @@ public class UINavigationVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+
 }

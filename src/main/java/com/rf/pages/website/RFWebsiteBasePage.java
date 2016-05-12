@@ -313,8 +313,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 		logger.info("Next button after selecting sponsor is clicked");
 		driver.waitForLoadingImageToDisappear();
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept as original button clicked");
 			driver.waitForLoadingImageToDisappear();
 		}catch(NoSuchElementException e){

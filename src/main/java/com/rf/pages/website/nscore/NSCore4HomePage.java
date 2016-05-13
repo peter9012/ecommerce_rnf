@@ -150,7 +150,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC = By.xpath("//input[@id='accountNumber']");
 	private static final By ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC = By.id("expYear");
 	private static final By SAVE_PAYMENT_METHOD_BTN_LOC = By.xpath("//a[@id='btnSavePaymentMethod']");
-	private static final By USE_AS_ENTERED_BTN_LOC = By.xpath("//button/span[contains(text(),'Use as entered')]");
+	private static final By USE_AS_ENTERED_BTN_LOC = By.xpath("//*[@id='QAS_AcceptOriginal']");
 	private static final By ACCEPT_BTN_LOC = By.xpath("//button/span[text()='Accept']");
 	private static final By NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]");
 	private static final By APPLY_PAYMENT_BTN  = By.id("btnApplyPayment");
@@ -213,6 +213,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 		logger.info("pulse monthly subscription edit clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public String updatePulseProductQuantityAndReturnValue(){
@@ -264,6 +265,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 	public String getQuantityOfPulseProductFromOrderDetailPage(){
 		driver.waitForElementPresent(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE);
+		logger.info("pulse quantity on UI is "+driver.findElement(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE).getText().trim());
 		return driver.findElement(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE).getText().trim();
 	}
 
@@ -994,11 +996,11 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.waitForPageLoad(); 
 	}
 
-	public void addANewBillingProfile(String firstName,String lastName,String nameOnCard,String cardNumber){
+	public void addANewBillingProfile(String firstName,String lastName,String nameOnCard,String cardNumber,String addressLine1,String zipCode){
 		//select 'Main-Billing' as billing address-
-		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
-		select.selectByIndex(1);
-		driver.pauseExecutionFor(4500);
+		//		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
+		//		select.selectByIndex(1);
+		driver.pauseExecutionFor(3000);
 		//Add 'Payment-Method'
 		driver.type(ADD_PAYMENT_METHOD_FIRST_NAME_LOC, firstName);
 		driver.type(ADD_PAYMENT_METHOD_LAST_NAME_LOC, lastName);
@@ -1007,6 +1009,10 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		//select 'Expiration' Date(change year)
 		Select sel = new Select(driver.findElement(ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC));
 		sel.selectByIndex(7);
+		driver.type(By.id("profileName"), firstName+" "+lastName);
+		driver.type(By.id("addressLine1"), addressLine1);
+		driver.type(By.id("zip"), zipCode+"\t");
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void clickSavePaymentMethodBtn(){

@@ -157,11 +157,13 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyCSRPlaceOrderThroughCartPageFindCustomer_1945() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantUsernameList =  null;
 		String consultantEmailID = null;
 		String randomProductSequenceNumber = null;
 		String randomCustomerSequenceNumber = null;
 		String SKUValue = null;
 		String country = null;
+		String accountID = null;
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			country= TestConstants.COUNTRY_DD_VALUE_CA;
 		}else{
@@ -171,7 +173,9 @@ public class SecurityVerificationTest extends RFWebsiteBaseTest{
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 			try{
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			}catch(Exception e){

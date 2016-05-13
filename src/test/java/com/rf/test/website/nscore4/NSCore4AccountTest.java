@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
+import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.pages.website.nscore.NSCore4AdminPage;
 import com.rf.pages.website.nscore.NSCore4HomePage;
@@ -115,20 +116,21 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		nscore4HomePage.clickConsultantReplenishmentEdit();
 		SKU= nscore4HomePage.addAndGetProductSKU("10");
 		s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
-		nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
-		nscore4HomePage.clickSavePaymentMethodBtn();
+		//nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		//nscore4HomePage.clickSavePaymentMethodBtn();
 		nscore4HomePage.clickSaveAutoshipTemplate();
 		s_assert.assertTrue(nscore4HomePage.isAddedProductPresentInOrderDetailPage(SKU), "SKU = "+SKU+" is not present in the Order detail page");
 		nscore4HomePage.clickCustomerlabelOnOrderDetailPage();
 		nscore4HomePage.clickPulseMonthlySubscriptionEdit();
 		String updatedQuantity = nscore4HomePage.updatePulseProductQuantityAndReturnValue();
 		logger.info("updated pulse product quantity = "+updatedQuantity);
-		nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
-		nscore4HomePage.clickSavePaymentMethodBtn();
+		//nscore4HomePage.addPaymentMethod(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		//nscore4HomePage.clickSavePaymentMethodBtn();
 		nscore4HomePage.clickSaveAutoshipTemplate();
 		s_assert.assertTrue(nscore4HomePage.getQuantityOfPulseProductFromOrderDetailPage().contains(updatedQuantity), "updated pulse product qunatity is not present in the Order detail page");
 		s_assert.assertAll();
 	}
+	
 	//NSC4_MobileTab_ HeadlineNews
 	@Test
 	public void testMobileTabHeadLineNews(){
@@ -720,6 +722,8 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		String lastName = "lN";
 		String nameOnCard = "rfTestUser";
 		String cardNumber =  "4747474747474747";
+		String addressLine1 = TestConstantsRFL.ADDRESS_LINE1;
+		String zipCode = TestConstantsRFL.POSTAL_CODE;
 		String accountNumber = null;
 		logger.info("DB is "+RFL_DB);
 		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
@@ -732,7 +736,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		//click 'Add' for the billing profile section
 		nscore4HomePage.clickBillingProfileAddLink();
 		//Enter all the Information regarding New Billing Profile
-		nscore4HomePage.addANewBillingProfile(newBillingProfileName, lastName, nameOnCard, cardNumber);
+		nscore4HomePage.addANewBillingProfile(newBillingProfileName, lastName, nameOnCard, cardNumber,addressLine1,zipCode);
 		//click 'SAVE PAYMENT METHOD'
 		nscore4HomePage.clickSavePaymentMethodBtn();
 		//Verify that the new profile got created?

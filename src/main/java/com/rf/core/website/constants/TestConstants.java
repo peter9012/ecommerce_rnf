@@ -101,7 +101,7 @@ public class TestConstants {
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
 
-	public static final String CONSULTANT_PASSWORD_STG2 = "11Maiden$";
+	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
 	public static final String CONSULTANT_NEW_PASSWORD_STG2 = "11maiden5";
 
 	public static final String CONSULTANT_USERNAME = "rfTestUser730240";
@@ -119,7 +119,7 @@ public class TestConstants {
 	//	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "test1234";
 
 	public static final String CONSULTANT_RETURN_ORDER_EMAIL_ID = "rfTestUser444726@xyz.com";
-	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "11Maiden$";
+	public static final String CONSULTANT_RETURN_ORDER_PASSWORD = "111Maiden$";
 
 
 	public static final String PC_EMAIL_ID_STG2="pcuser02@abc.com";
@@ -157,14 +157,14 @@ public class TestConstants {
 
 	//PWS STAGING
 	public static final String CONSULTANT1_WITH_PWS_EMAIL_ID = "rfTestUser730240@xyz.com";
-	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "11Maiden$";
+	public static final String CONSULTANT1_WITH_PWS_PASSWORD = "111Maiden$";
 	public static final String CONSULTANT1_PWS_URL_CA = "http://rrftestuser1.myrfostg2.biz/ca/";
 	public static final String CONSULATNT1_PWS_URL_US = "http://tautous.myrfotst4.biz/us/";
 	public static final String CONSULTANT1_PWS_COM_URL = "http://rrftestuser1.myrfostg2.com/ca/";
 	public static final String CONSULTANT2_PWS_URL = "http://trfo.myrfostg2.biz/ca";
 
 	public static final String CONSULTANT1_WITHOUT_PWS_EMAIL_ID = "rftest1212310@test.com";
-	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "11Maiden$";
+	public static final String CONSULTANT1_WITHOUT_PWS_PASSWORD = "111Maiden$";
 
 	public static final String CORPORATE_SITE = "http://www.corprfo.stg2.rodanandfields.com/ca/";
 
@@ -210,7 +210,7 @@ public class TestConstants {
 	public static final String PCUSER_SPONSOR_NO_PWS_PASSWORD = "111Maiden$";
 
 	public static final String PCUSER_SPONSOR_PWS_EMAIL_ID = "pcusersponserpws@stg2.com";
-	public static final String PCUSER_SPONSOR_PWS_PASSWORD = "11MAiden$";
+	public static final String PCUSER_SPONSOR_PWS_PASSWORD = "111Maiden$";
 
 
 	/**

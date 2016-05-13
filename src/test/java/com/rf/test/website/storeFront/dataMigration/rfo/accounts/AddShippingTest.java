@@ -476,7 +476,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 		storeFrontShippingInfoPage = new StoreFrontShippingInfoPage(driver);
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME_US+randomNum;
+		String newShippingAddressName = TestConstants.ADDRESS_NAME_CA+randomNum;
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_CA);

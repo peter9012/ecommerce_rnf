@@ -47,8 +47,8 @@ public class TestConstants {
 
 	public static final String PASSWORD = "111Maiden$";
 
-	public static final String ADDRESS_LINE_1_CA = "5502 - 54th Street";
-	public static final String NEW_ADDRESS_LINE_1_CA = "5503 - 54th Street";
+	public static final String ADDRESS_LINE_1_CA = "5502 - 54th St";
+	public static final String NEW_ADDRESS_LINE_1_CA = "5503 - 54th St";
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2H4";
@@ -270,10 +270,10 @@ public class TestConstants {
 
 
 	/*
-	 * New Shipping Address US
-	 * 
+	 * New Shipping Address 	 * 
 	 */
 	public static final String ADDRESS_NAME_US = "newSAName";
+	public static final String ADDRESS_NAME_CA = "newSAName";
 	public static final String ADDRESS_LINE_1_US = "10 Hemlock Way";
 	public static final String NEW_ADDRESS_LINE_1_US = "11 Hemlock Way";
 	public static final String CITY_US = "Cohasset";

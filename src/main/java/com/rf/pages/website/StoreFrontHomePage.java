@@ -300,14 +300,14 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
-		//		try{
-		//			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-		//			driver.click(By.id("QAS_AcceptOriginal"));
-		//			logger.info("Accept the original button clicked");
-		//		}
-		//		catch(Exception e){
-		//			logger.info("Accept the original pop up was NOT present");
-		//		}
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept the original button clicked");
+		}
+		catch(Exception e){
+			logger.info("Accept the original pop up was NOT present");
+		}
 	}
 
 	public void clickNextButton(){
@@ -318,8 +318,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
@@ -358,15 +358,15 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 
 	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
-		driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
-		driver.click(By.id("QAS_AcceptOriginal"));
+		driver.waitForElementPresent(By.id("QAS_RefineBtn"));
+		driver.click(By.id("QAS_RefineBtn"));
 		logger.info("accept the original button clicked");
 	}
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){
 		try{
-			driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			return true;
 		}catch(NoSuchElementException e){
 			return false;

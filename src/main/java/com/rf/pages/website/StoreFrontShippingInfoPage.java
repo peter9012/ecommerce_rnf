@@ -124,7 +124,12 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
-		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
+		try{
+			driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
+		}catch(Exception e){
+
+		}
+
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
@@ -136,13 +141,14 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 		}
 		logger.info("New Shipping prifile save button clicked");
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.pauseExecutionFor(1000);
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));			
 		}catch(NoSuchElementException e){
 
 		}
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void makeShippingProfileAsDefault(String firstName) throws InterruptedException{

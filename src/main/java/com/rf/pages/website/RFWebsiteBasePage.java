@@ -331,8 +331,8 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-//		driver.waitForElementPresent(By.id("card-nr-masked"));
-//		driver.click(By.id("card-nr-masked"));
+		//		driver.waitForElementPresent(By.id("card-nr-masked"));
+		//		driver.click(By.id("card-nr-masked"));
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
 		logger.info("Billing card number entered is "+cardNumber);
@@ -614,9 +614,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-
-		//		String firstName="RCUser";
-		//		String lastName = "Test";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
@@ -624,7 +621,6 @@ public class RFWebsiteBasePage extends RFBasePage{
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
-
 			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
 			logger.info("email entered as "+pcmailid);
 		}else if(userid.equalsIgnoreCase("rc")){
@@ -669,7 +665,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
 		boolean status=driver.isElementPresent(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
-		driver.click(By.xpath("//a[@class='fancybox-item fancybox-close']"));
+		driver.click(By.xpath("//div[@id='activePCPopup']//input[@class='resetPasswordEmail']"));
 		return status;
 	}
 
@@ -699,13 +695,16 @@ public class RFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateCancelEnrollmentFunctionalityConsultant(){
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
-		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));
+		driver.click(By.xpath("//div[@id='notavailablePopup']//input[@class='cancelEnrollment']"));		
 		return validateHomePage();
 	}
 
 	public boolean validateHomePage(){
+		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 		String url = driver.getURL();
+		logger.info("Current URL is "+driver.getCurrentUrl());
+		logger.info("base URL is "+url);
 		return driver.getCurrentUrl().contains(url);
 	}
 

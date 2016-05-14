@@ -329,7 +329,7 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		logger.info("checkout button clicked");
 		try {
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='popup-review']//input"));
-		//	driver.click(By.xpath("//div[@id='popup-review']//input"));
+			//	driver.click(By.xpath("//div[@id='popup-review']//input"));
 		} catch (Exception e) {
 
 		}
@@ -387,7 +387,8 @@ public class StoreFrontUpdateCartPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
-		driver.waitForLoadingImageToDisappear();		
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public String getSelectedBillingAddress(){

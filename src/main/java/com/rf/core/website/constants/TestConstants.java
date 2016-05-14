@@ -287,8 +287,10 @@ public class TestConstants {
 	 */
 	public static final String NEW_BILLING_PROFILE_NAME_US = "newBPName";
 	public static final String NEW_BILLING_PROFILE_NAME = "newBPName";
-	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
-	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
+	public static final String CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA="18 Brandon Cres";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="THOMPSON";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="R8N 1V7";
+	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION_CA="Manitoba";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 }

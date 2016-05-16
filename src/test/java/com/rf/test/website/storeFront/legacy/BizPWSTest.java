@@ -670,8 +670,6 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	///-----
-
 	//Registering the consultant using preffered customer's email id 
 	@Test
 	public void RegisterConsultantUsingExistingPrefferedCustomerEmailId(){
@@ -945,6 +943,53 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickHeaderLinkAfterLogin(editMyPWS);
 		storeFrontLegacyHomePage.clickEditMyPhotoLink();
 		s_assert.assertTrue(storeFrontLegacyHomePage.isUploadANewPhotoButtonPresent(),"Upload a new photo button is not present");
+		s_assert.assertAll();
+	}
+
+	//Registering the consultant using existing CA consultant email id (Cross County Sponsor)
+	@Test
+	public void RegisterConsultantUsingExistingCrossCountryConsultantEmailId(){
+		RFO_DB = driver.getDBNameRFO();
+		RFL_DB = driver.getDBNameRFL();
+		String kitName = "Big Business Launch Kit";
+		String regimen = "Redefine";
+		String enrollemntType = "Express";
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		List<Map<String, Object>> randomPWSList =  null;
+		String PWS = null;
+		String countryID ="40";
+		String country = "ca";
+
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomEmailIdList =  null;
+		String consultantEmailID = null;
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+
+		//Fetch cross country Email address from database.
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		String accountID= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//Get email id from account id
+		randomEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID), RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomEmailIdList, "EmailAddress");
+		while(true){
+			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+			driver.get(PWS);
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+			if(isSiteNotFoundPresent){
+				continue;
+			}else{
+				break;
+			}
+		}
+		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
+		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
+		//Enter SetUp Account Information and validate existing consultant?
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateExistingConsultantPopUp(consultantEmailID),"Existing Consultant Pop Up is not displayed!!");
 		s_assert.assertAll();
 	}
 }

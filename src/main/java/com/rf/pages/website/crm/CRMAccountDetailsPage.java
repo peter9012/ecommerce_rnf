@@ -40,22 +40,26 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isAccountTypeFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Type']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Type']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isAccountNumberFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Number']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Number']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isAccountStatusFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Account Status']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Account Status']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isCountryFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Country']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Country']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isPlacementSponsorFieldDisplayed(){
@@ -65,19 +69,21 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 	public boolean isEnrollmentDateFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Enrollment Date']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Enrollment Date']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isMainPhoneFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Main Phone']")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Main Phone']/following::td[1]")).getText().isEmpty());
 	}
 
 	public boolean isEmailAddressFieldDisplayedAndNonEmpty(){
 		driver.switchTo().defaultContent();
-		return !(driver.findElement(By.xpath("//div[text()='Email Address']/following::div[2]")).getText().isEmpty());
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !(driver.findElement(By.xpath("//td[text()='Email Address']/following::td[1]")).getText().isEmpty());
 	}
-
 	public boolean isAccountDetailsSectionPresent(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
@@ -113,6 +119,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));		
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//input[@value='"+buttonName+"']"));
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -284,7 +291,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
-		return driver.findElement(By.xpath("//div[@id='accountNoteId:noteFrm:pnlPage']/div[@class='header']")).getText().contains("Log Account Activity");  
+		return driver.findElement(By.xpath("//div[@id='accountNoteId:noteFrm:pnlPage']/div[@class='header']")).getText().contains("Log Account Notes");  
 	}
 
 	public boolean isAccountDropdownOnAccountDetailPagePresent(){
@@ -414,7 +421,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/div/div/div/iframe"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/div/div/div/iframe")));
-		String nodeText= driver.findElement(By.xpath("//h3[text()='Account Activities']/following::tr/th[text()='Notes']/following::td[3]")).getText();
+		String nodeText= driver.findElement(By.xpath("//h3[text()='Account Notes']/following::tr/th[text()='Notes']/following::td[3]")).getText();
 		return nodeText;
 	}
 
@@ -479,11 +486,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	}
 
 	public void clickSaveBtnAfterEditShippingAddress(){
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
-		driver.waitForCRMLoadingImageToDisappear();
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.click(By.xpath("//a[contains(text(),'Save Address')]"));
+			driver.waitForCRMLoadingImageToDisappear();
+		}catch(Exception e){
+			logger.info("No Save Button");
+		}
 	}
 
 	public void closeSubTabOfEditShippingProfile(){
@@ -783,7 +794,14 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+label+"')]"));
-		driver.findElement(By.xpath("//span[contains(text(),'"+label+"')]")).click();
+		driver.findElement(By.xpath("//span[text()='"+label+"']")).click();
+		try{
+			driver.pauseExecutionFor(2000);
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+		}catch(Exception e){
+
+		}
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
@@ -1037,7 +1055,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/descendant::iframe[1]")));
-		return driver.findElement(By.xpath("//h3[contains(text(),'Account Activities')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')][1]/td["+id+"]")).getText();
+		return driver.findElement(By.xpath("//h3[contains(text(),'Account Notes')]/following::table[@class='list'][1]//tr[contains(@class,'dataRow')][1]/td["+id+"]")).getText();
 	}
 
 	public boolean isDataValuesInDropDownUnderLogAccountActivityPresent(String label){
@@ -1106,16 +1124,16 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return false;
 	}
 
-	public boolean isAutoshipStatusActive() {
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
-		if(checkboxStatus.equalsIgnoreCase("Checked")){
-			return true;
-		}
-		return false;
-	}
+	//	public boolean isAutoshipStatusActive() {
+	//		driver.switchTo().defaultContent();
+	//		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+	//		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+	//		String checkboxStatus = driver.findElement(By.xpath("//h3[contains(text(),'Autoships')]/following::table[@class='list'][1]//tr[2]/td[4]/img")).getAttribute("title");
+	//		if(checkboxStatus.equalsIgnoreCase("Checked")){
+	//			return true;
+	//		}
+	//		return false;
+	//	}
 
 	public boolean validateNewUrlWithNewWindow() {
 		String parentWindowID=driver.getWindowHandle();
@@ -1312,11 +1330,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	}
 
 	public void selectUserEnteredAddress(){
-		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
-		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
-		driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
-		driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+			driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+		}catch(Exception e){
+			logger.info("No User Entered Address Button Found");
+		}
 	}
 
 	public boolean isProfileNameValueOfDefaultShippingProfilesPresent(String profileName){
@@ -1378,6 +1400,26 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			value = driver.findElement(By.xpath("//h3[contains(text(),'"+accountMainMenuOption+"')]/following::tr[2]/td["+columnNumber+"]")).getText().trim();
 		}
 		return value;
+	}
+
+	public void clickUserEnteredAddressRadioBtn(){
+		driver.pauseExecutionFor(2000);
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.click(By.xpath("//input[@value='User entered']"));
+			driver.waitForCRMLoadingImageToDisappear();
+		}catch (Exception e) {
+			logger.info("NO User entered address btn");
+		}
+	}
+
+	public boolean isNoRecordToDisplayPresentOnShippingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[1]//th[contains(text(),'No records to display')]"));
 	}
 }
 

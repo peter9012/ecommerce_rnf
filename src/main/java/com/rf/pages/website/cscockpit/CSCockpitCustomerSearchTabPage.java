@@ -51,13 +51,13 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void selectCustomerTypeFromDropDownInCustomerSearchTab(String customerType){
 		driver.waitForElementPresent(By.xpath(String.format(customerTypeDDLoc, customerType)));
 		driver.click(By.xpath(String.format(customerTypeDDLoc, customerType.toUpperCase())));
-		driver.waitForCSCockpitLoadingImageToDisappear();
+//		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void selectCountryFromDropDownInCustomerSearchTab(String country){
 		driver.waitForElementPresent(By.xpath(String.format(countryDDLoc, country)));
 		driver.click(By.xpath(String.format(countryDDLoc, country)));
-		driver.waitForCSCockpitLoadingImageToDisappear();
+//		driver.waitForCSCockpitLoadingImageToDisappear();
 		logger.info("************************************************************************************************************");
 		logger.info("COUNTRY SELECTED = "+country);
 		logger.info("************************************************************************************************************");
@@ -66,7 +66,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void selectAccountStatusFromDropDownInCustomerSearchTab(String accountStatus){
 		driver.waitForElementPresent(By.xpath(String.format(accountStatusDDLoc, accountStatus)));
 		driver.click(By.xpath(String.format(accountStatusDDLoc, accountStatus)));
-		driver.waitForCSCockpitLoadingImageToDisappear();
+//		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void clickSearchBtn(){
@@ -119,24 +119,30 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyCustomerTypePresenceOnPage() {
+		driver.quickWaitForElementPresent(CUSTOMER_TYPE_LOC);
 		return driver.isElementPresent(CUSTOMER_TYPE_LOC);
 	}
 
 	public boolean verifyCustomerCountryPresenceOnPage(){ 
+		driver.quickWaitForElementPresent(CUSTOMER_COUNTRY_LOC);
 		return driver.isElementPresent(CUSTOMER_COUNTRY_LOC);
 	}
 	public boolean verifyAccountStatusPresenceOnPage(){
+		driver.quickWaitForElementPresent(CUSTOMER_ACCOUNT_STATUS);
 		return driver.isElementPresent(CUSTOMER_ACCOUNT_STATUS);
 	}
 
 	public boolean verifyCustomerNameFieldPresenceOnPage() {
+		driver.quickWaitForElementPresent(CUSOMER_NAME_CID_FIELD_LOC);
 		return driver.isElementPresent(CUSOMER_NAME_CID_FIELD_LOC);
 	}
 	public boolean verifyPostcodeFieldPresenceOnPage(){
+		driver.quickWaitForElementPresent(POST_CODE_FIELD_LOC);
 		return driver.isElementPresent(POST_CODE_FIELD_LOC);
 	}
 
 	public boolean verifyEmailAddressFieldPresenceOnPage() {
+		driver.quickWaitForElementPresent(EMAIL_ADD_FIELD_LOC);
 		return driver.isElementPresent(EMAIL_ADD_FIELD_LOC);
 	}	
 

@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
@@ -28,6 +30,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 
 	private static final By MONTH_DROPDOWN_OF_CALENDER  = By.xpath("//select[@class='ui-datepicker-month']");
 	private static final By YEAR_DROPDOWN_OF_CALENDER  = By.xpath("//select[@class='ui-datepicker-year']");
+	private static final By SUBMIT_ORDER_BTN_LOC = By.xpath("//a[@id='btnSubmitOrder']/span[contains(text(),'Submit')]");
 
 	public void clickTab(String tabName){
 		driver.quickWaitForElementPresent(By.xpath(String.format(tabLoc, tabName)));
@@ -72,6 +75,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		DateFormat formatter = DateFormat.getDateInstance();
 		formatter.setTimeZone(pstTimeZone);
 		String formattedDate = formatter.format(startTime);
+		logger.info("PST Date is "+formattedDate);
 		return formattedDate;
 	}
 
@@ -154,7 +158,7 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 			UIMonth[1]="November";
 			UIMonth[2]=year;
 			UIMonth[3]=month;
-		}else if(month.equalsIgnoreCase("December")){
+		}else if(month.equalsIgnoreCase("Dec")){
 			UIMonth[0]=date;
 			UIMonth[1]="December";
 			UIMonth[2]=year;
@@ -215,6 +219,30 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 	public void reLoadPage(){
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
+	}
+
+	public void clickSubmitOrderBtn() {
+		driver.pauseExecutionFor(3000);
+		driver.quickWaitForElementPresent(SUBMIT_ORDER_BTN_LOC);
+		driver.click(SUBMIT_ORDER_BTN_LOC);
+		logger.info("Submit order button is clicked");
+		driver.waitForNSCore4ProcessImageToDisappear();
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+	}
+
+	public void handleAlertPop() {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 2);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+			logger.info("popup ok button clicked");
+			driver.pauseExecutionFor(5000);
+			driver.waitForPageLoad();
+		} catch (Exception e) {
+			//exception handling
+		}
 	}
 
 }

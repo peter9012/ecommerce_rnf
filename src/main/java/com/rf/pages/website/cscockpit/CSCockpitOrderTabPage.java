@@ -135,7 +135,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyTestOrderCheckBoxIsSelectedInOrderTab(){
-		driver.isElementPresent(TEST_ORDER_CHKBOX);
+		driver.quickWaitForElementPresent(TEST_ORDER_CHKBOX);
 		return driver.findElement(TEST_ORDER_CHKBOX).isSelected();
 	}
 
@@ -147,7 +147,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 
 
 	public boolean verifyDoNotShipCheckBoxIsSelectedInOrderTab(){
-		driver.isElementPresent(DO_NOT_SHIP_CHKBOX);
+		driver.quickWaitForElementPresent(DO_NOT_SHIP_CHKBOX);
 		return driver.findElement(DO_NOT_SHIP_CHKBOX).isSelected();
 	}
 
@@ -225,7 +225,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isOrderTemplateDisplayedInOrderTab(){
-		driver.isElementPresent(ORDER_TEMPLATE);
+		driver.quickWaitForElementPresent(ORDER_TEMPLATE);
 		return driver.isElementPresent(ORDER_TEMPLATE);  
 	}
 
@@ -470,6 +470,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyRefundTypeDDPresent() {
+		driver.quickWaitForElementPresent(REFUND_TYPE_DD_ON_POPUP_LOC);
 		return driver.isElementPresent(REFUND_TYPE_DD_ON_POPUP_LOC);
 	}
 
@@ -621,7 +622,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public void checkReturnOnlyTaxChkBoxOnRefundPopUp(){
-		driver.isElementPresent(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
+		driver.quickWaitForElementPresent(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
 		driver.click(RETURN_ONLY_TAX_CHKBOX_REFUND_POPUP);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
@@ -712,6 +713,13 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean verifyReturnTaxOnlyCheckboxIsDisabled(String rowNum){
 		driver.waitForElementPresent(By.xpath(String.format(disableReturnOnlyTaxCheckboxInPopup, rowNum)));
 		return driver.isElementPresent(By.xpath(String.format(disableReturnOnlyTaxCheckboxInPopup, rowNum)));
+	}
+
+	public String getOrderTypeOnOrderTab() {
+		driver.waitForElementPresent(ORDER_TYPE_LOC);
+		String orderTypeOnUI = driver.findElement(ORDER_TYPE_LOC).getText();
+		logger.info("Order Type on UI is: "+orderTypeOnUI);
+		return orderTypeOnUI;
 	}
 
 }

@@ -52,6 +52,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		super(driver);
 	}
 	public boolean verifyHomePage() throws InterruptedException{
+		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
 		closeAllOpenedTabs();
@@ -347,5 +348,16 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
+	public int getCountOfShippingProfile(){
+		//refreshPage();
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles')]/span[contains(text(),'[1]')]"));
+		String count = driver.findElement(By.xpath("//span[contains(text(),'Shipping Profiles')]/span")).getText().split("\\[")[1].split("\\]")[0];
+		logger.info("Count of Shipping Profile "+count);
+		driver.switchTo().defaultContent();
+		return Integer.parseInt(count);
+	}
 
 }

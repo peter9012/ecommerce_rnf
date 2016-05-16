@@ -39,7 +39,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US_STG1="06371149";
 
 
-	public static final String FIRST_NAME = "RFAutoCS";
+	public static final String FIRST_NAME = "AutoCS";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 
@@ -69,10 +69,10 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	public static final String INVALID_CARD_NUMBER_15DIGITS = "411111111111111";
-	public static final String INVALID_CARD_NUMBER_17DIGITS = "41111111111111111";
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "4747";
+	public static final String INVALID_CARD_NUMBER_17DIGITS = "47474747474747474";
 	public static final String SPONSOR_ID_US="1686295";
-	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "411111111111111#";
+	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "474747474747474#";
 
 	public static final String PROVINCE_YUKON = "Yukon Territory";
 	public static final String PROVINCE_NEW_FOUNDLAND = "Newfoundland";
@@ -88,8 +88,6 @@ public class TestConstants {
 	public static final String PROVINCE_NORTHWEST_TERRITORIES = "Northwest Territories";
 	public static final String PROVINCE_QUEBEC = "Quebec";
 	public static final String PROVINCE_US = "Alaska";
-
-
 
 	public static final String CONSULTANT_USERNAME_BELOW_6_DIGITS="smspo";
 	public static final String CONSULTANT_USERNAME_MORE_THAN_6_DIGITS="smsto 111maiden";
@@ -126,7 +124,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
 	public static final String CONSULTANT_NEW_PASSWORD = "111maiden$";
 	public static final String SOCIAL_INSURANCE_NUMBER = "223334444";
-	public static final String SOCIAL_INSURANCE_NUMBER_INVALID = "000000000";
+	public static final String SOCIAL_INSURANCE_NUMBER_INVALID = "111111111";
 
 	public static final String CONSULTANT_USERNAME = "consultantuserstg@xyz.com";
 
@@ -351,8 +349,14 @@ public class TestConstants {
 	public static final String NEW_ADDRESS_LINE_PHONE_NUMBER_CA = "8067736418";
 	public static final String NEW_ADDRESS_LINE_1_CITY_CA = "Bonnyville";
 
-	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="TAHOKA";
-	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="T9N 2H4";
+	public static final String CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA="18 Brandon Cres";
+	public static final String CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_US="255 W Alameda St";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA="THOMPSON";
+	public static final String CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_US = "Tucson";
+	public static final String CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA="Manitoba";
+	public static final String CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_US="Arizona";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA="R8N 1V7";
+	public static final String CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_US="85701-1362";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
 	public static final String AUTOSHIP_TEMPLATE_EMPTY_SHOPPING_CART_MSG="0 item";
@@ -517,10 +521,3 @@ public class TestConstants {
 	public static final String CRM_NEW_PROFILENAME_CA = "NewProfileCA";
 
 }
-
-
-
-
-
-
-

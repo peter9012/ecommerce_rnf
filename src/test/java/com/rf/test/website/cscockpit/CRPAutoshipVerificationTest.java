@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -33,7 +32,6 @@ import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
-
 
 public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
@@ -83,6 +81,9 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
+		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
+
+
 	}
 
 	private String RFO_DB = null;
@@ -96,6 +97,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String SKUValue = null;
 		String accountID = null;
+		String addressLine= null;
+		String city= null;
+		String postalCode= null;
+		String Country= null;
+		String Province= null;
+		String phoneNumber= null;
 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String attendeeLastName="IN";
@@ -103,31 +110,39 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String securityCode=TestConstants.SECURITY_CODE;
 		String cardNumber=TestConstants.CARD_NUMBER;
 		String attendeeFirstName=TestConstants.FIRST_NAME+randomNum;
-		String addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
-		String city=TestConstants.NEW_ADDRESS_CITY_US;
-		String postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-		String Country=TestConstants.COUNTRY_DD_VALUE_US;
-		String Province=TestConstants.PROVINCE_ALABAMA_US;
-		String phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		cscockpitCartTabPage = new CSCockpitCartTabPage(driver);
-		cscockpitCheckoutTabPage = new CSCockpitCheckoutTabPage(driver);
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
+			city=TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			Country=TestConstants.COUNTRY_DD_VALUE_US;
+			Province=TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}else{
+			addressLine=TestConstants.ADDRESS_LINE_1_CA;
+			city=TestConstants.CITY_CA;
+			postalCode=TestConstants.POSTAL_CODE_CA;
+			Country=TestConstants.COUNTRY_DD_VALUE_CA;
+			Province=TestConstants.PROVINCE_CA;
+			phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		}
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}	
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -142,7 +157,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(Country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -168,73 +183,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
 		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab());
 
-		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
-		s_assert.assertTrue(cscockpitOrderTabPage.validateNewAddressOnOrderTabPage(newBillingProfileName),"newly added address is not saved successfully");
-		//---------------------FOR CA-----------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-
-		int randomNumber=CommonUtils.getRandomNum(10000, 1000000);
-		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
-		securityCode=TestConstants.SECURITY_CODE;
-		cardNumber=TestConstants.CARD_NUMBER;
-		attendeeFirstName=TestConstants.FIRST_NAME+randomNumber;
-		addressLine=TestConstants.ADDRESS_LINE_1_CA;
-		city=TestConstants.CITY_CA;
-		postalCode=TestConstants.POSTAL_CODE_CA;
-		Country=TestConstants.COUNTRY_DD_VALUE_CA;
-		Province=TestConstants.PROVINCE_CA;
-		phoneNumber=TestConstants.PHONE_NUMBER_CA;
-
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		//get emailId of username
-		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+consultantEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		cscockpitOrderTabPage.clickPlaceAnOrderButtonInOrderTab();
-		cscockpitCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitCartTabPage.selectCatalogFromDropDownInCartTab();
-		randomProductSequenceNumber = String.valueOf(cscockpitCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickCloseAddNewPaymentProfilePopUp();
-		cscockpitCheckoutTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitCheckoutTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
-		cscockpitCheckoutTabPage.enterPaymentDetailsInPopUpInCheckoutTab(cardNumber, newBillingProfileName,securityCode,"09","2023","VISA");
-		cscockpitCheckoutTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		cscockpitCheckoutTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitCheckoutTabPage.enterSecurityCodeInPaymentPopUpInCheckOutTab(securityCode);
-		cscockpitCheckoutTabPage.clickSaveOfShippingAddressPopUpInCheckoutTab();
-		s_assert.assertTrue(cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitCheckoutTabPage.getNewBillingAddressNameInCheckoutTab());
 		cscockpitCheckoutTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitCheckoutTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitCheckoutTabPage.clickPlaceOrderButtonInCheckoutTab();
@@ -294,7 +242,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_CANCELLED),"template status DD option "+templateStatusDDValue_CANCELLED+" is not present on UI");
 		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.isTemplateStatusDropDownValuePresent(templateStatusDDValue_FAILED),"template status DD option "+templateStatusDDValue_FAILED+" is not present on UI");
 
-		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyCustomerNameCidFieldPresentOnAutoshipPage(),"cusotmer name and cid field not present on the page");
+		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyCustomerNameCidFieldPresentOnAutoshipPage(),"customer name and cid field not present on the page");
 		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifySponsorNameCidFieldPresentOnAutoshipPage(),"SponsorName field not present on the page");
 		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyTemplateNumberCidFieldPresentOnAutoshipPage(),"TemplateNumber field not present on the page");
 		s_assert.assertTrue(cscockpitAutoshipSearchTabPage.verifyRunSelectedButtonPresent(),"Run selected button is not present on the page");
@@ -317,17 +265,29 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String orderNote="test"+randomNum;
 		String beforeProductCountInAutoshipCart=null;
 		String afterProductCountInAutoshipCart=null;
+		String country = null;
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		//-------------------FOR US----------------------------------
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -339,7 +299,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -392,83 +352,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
 		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
 		logout(); 
-		//-------------------FOR CA----------------------------------
-		randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		storeFrontHomePage.clickOnAutoshipCart();
-		beforeProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
-		logout();
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String newRandomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		//randomCustomerSequenceNumber="15";
-		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(newRandomCustomerSequenceNumber);
-		//Verify Autoship template Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		autoshipNumber=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
-		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailInAutoShipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupInAutoshipTemplateTab(),"Threshold popup does not appear");
-		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();	
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		String newRandomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(newRandomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		cscockpitAutoshipTemplateTabPage.addProductInAutoShipCartTillHaveTwoProduct();
-
-		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("3");
-		subtotalAfterUpdateIncrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterUpdateIncrement), "Quantity of second product has not been increased updated in ca");
-		cscockpitAutoshipTemplateTabPage.updateQuantityOfSecondProduct("2");
-		subtotalAfterUpdateDecrement=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertFalse(subtotalAfterUpdateIncrement.equalsIgnoreCase(subtotalAfterUpdateDecrement), "Quantity of second product has not been decreased updated in ca");
-		cscockpitAutoshipTemplateTabPage.enterOrderNotesInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		orderNotevalueFromUI = cscockpitAutoshipTemplateTabPage.getAddedNoteValueInCheckoutTab(TestConstants.ORDER_NOTE+randomNum);
-		pstDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
-		orderDate = cscockpitAutoshipTemplateTabPage.converPSTDateToUIFormat(pstDate);
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
-		s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditButtonIsPresentForOrderNoteInCheckoutTab(TestConstants.ORDER_NOTE+randomNum), "Added order note does not have Edit button");
-		subtotal=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.removeProductInOrderDetailInAutoshipTemplateTab();
-		subtotalAfterProductRemoval=cscockpitAutoshipTemplateTabPage.getSubtotalInAutoshipTemplateTab();
-		s_assert.assertFalse(subtotal.equalsIgnoreCase(subtotalAfterProductRemoval),"product has not been removed successfully");
-		cscockpitAutoshipTemplateTabPage.clickMenuButton();
-		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
-		//Login to storefront and check the added item in mini cart page.
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontHomePage.clickOnAutoshipCart();
-		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
-		s_assert.assertFalse(beforeProductCountInAutoshipCart.equalsIgnoreCase(afterProductCountInAutoshipCart), "Product has not been successfully in storefront cart page.");
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -599,18 +482,30 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID=null;
+		String country = null;
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 		//-------------------FOR US----------------------------------
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -620,7 +515,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -635,56 +530,17 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String day = modifiedDate.split("\\ ")[1];
 		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
 		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/us");
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
-		logout();
-
-		//-------------------FOR CA----------------------------------
-		randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logout();
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
-		nextDueDate = cscockpitAutoshipTemplateTabPage.getCRPAutoshipDateFromCalendar();
-		modifiedDate = cscockpitAutoshipTemplateTabPage.addOneMoreDayInCRPAutoshipDate(nextDueDate);
-		cscockpitAutoshipTemplateTabPage.enterCRPAutoshipDate(modifiedDate);
-		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
-		day = modifiedDate.split("\\ ")[1];
-		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
 		s_assert.assertTrue(crpDate.trim().split("\\ ")[1].contains(day.split("\\,")[0]), "Expected next day of CRP is "+day.split("\\,")[0]+"Actual on UI in storeFront "+crpDate);
 		logout();
 		s_assert.assertAll();
@@ -697,17 +553,29 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String randomCustomerSequenceNumber = null;
 		String SKUValue = null;
 		String consultantEmailID=null;
+		String country = null;
+
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		//-------------------FOR US----------------------------------
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -726,7 +594,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -772,99 +640,18 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDateAfter17(PSTDate);
 		}
 		s_assert.assertTrue(oneMonthExtendedDate.trim().contains(nextDueDate), "Expected next due date of CRP is "+nextDueDate+"Actual on UI in Cscockpit "+oneMonthExtendedDate.trim());
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(crpDate.trim().contains(oneMonthExtendedDate.trim()), "Expected next due date of CRP is "+oneMonthExtendedDate+"Actual on UI in storeFront "+crpDate);
-		logout();
-
-		//-------------------FOR CA----------------------------------
-		randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		//cancel CRP
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		storeFrontAccountInfoPage.clickOnCancelMyCRP();
-		//validate CRP has been cancelled..
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
-		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
-		logout();
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.clickCreateAutoshipTemplateBtn();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: Low to High");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab("1");
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		isProductPresent = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTabForThreeProducts();
-		if(isProductPresent==true){
-			System.out.println("Found true");
-			cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-			//assert SV value less than 100 popup
-			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupForCA(),"Threshold popup does not appear");
-			cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
-		}
-		//add to cart product SV value >100
-		cscockpitAutoshipCartTabPage.clearCatalogSearchFieldAndClickSearchBtn();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		//add new billing profile
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickCreateAutoshipTemplateBtn();
-		dueDate = cscockpitAutoshipTemplateTabPage.getNextDueDateOfCRPAutoship();
-		currentPSTDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
-		PSTDate = cscockpitAutoshipTemplateTabPage.convertPSTDateToNextDueDateFormat(currentPSTDate);
-		nextDueDate = cscockpitAutoshipTemplateTabPage.convertCRPDateToFormat(dueDate);
-		day = Integer.parseInt(currentPSTDate.split("\\ ")[0]);
-		oneMonthExtendedDate = null;
-		if(day<=17){
-			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDate(PSTDate);
-		}else{
-			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDateAfter17(PSTDate);
-		}
-		s_assert.assertTrue(oneMonthExtendedDate.trim().contains(nextDueDate), "Expected next due date of CRP is "+nextDueDate+"Actual on UI in Cscockpit "+oneMonthExtendedDate.trim());
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
 		s_assert.assertTrue(crpDate.trim().contains(oneMonthExtendedDate.trim()), "Expected next due date of CRP is "+oneMonthExtendedDate+"Actual on UI in storeFront "+crpDate);
 		logout();
 		s_assert.assertAll();
@@ -893,9 +680,17 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String orderTotalOfOrderFromAutoshipTemplate="Order Total";
 		String failedReasonOfOrderFromAutoshipTemplate="Failed Reason";
 		boolean isAutoshipIdPresent = false;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -957,13 +752,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String postalCode = (String) getValueFromQueryResult(shippingAddressList, "PostalCode");
 		String locale = (String) getValueFromQueryResult(shippingAddressList, "Locale");
 		String region = (String) getValueFromQueryResult(shippingAddressList, "Region");
-		String country = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
-		if(country.equals("40")){
-			country = "canada"; 
-		}else if(country.equals("236")){
-			country = "United States";
+		String countryID = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
+		if(countryID.equals("40")){
+			countryID = "canada"; 
+		}else if(countryID.equals("236")){
+			countryID = "United States";
 		}
-		String shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		String shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+countryID.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		logger.info("created Shipping Address is "+shippingAddressFromDB);
 		//Assert Shipping address details.
@@ -972,7 +767,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(locale),"Shipping Address Locale Expected is "+locale+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(region),"Shipping Address Region Expected is "+region+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(postalCode),"Shipping Address PostCode Expected is "+postalCode+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().contains(country),"Shipping Address Country Expected is "+country+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().contains(countryID),"Shipping Address Country Expected is "+countryID+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
 		//Assert Billing address details.
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().length()>0,"Payment Address Name Expected but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 		//verify components of order from AutoShip Template section
@@ -1000,7 +795,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cidOfInactiveUser=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberOfInactiveUser);
 		cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
 		//verify cancel autoship and edit autoship link are not present for inactive user in autoship template header.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateBtnDisabled(),"Edit autoship link in Autoship template header section is present on Autoship template page for inactive user.");
 		//verify Update and run now  link are not present or disabled for inactive user in order from autoship template section.
 		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyUpdateLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Update link in order from Autoship template section is active  on Autoship template page for inactive user.");
@@ -1011,23 +806,35 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	//Hybris Project-4722:Verify that ' Pulse fee' product not available to add into CRP cart.
 	@Test
 	public void testVerifyPulseFeeProductNotAvailableToAddIntoCrpCart_4722() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID = null;
 		String accountID = null;
-		RFO_DB = driver.getDBNameRFO();
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomConsultantList =  null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 				continue;
 			}
 			else{
@@ -1037,7 +844,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 				storeFrontAccountInfoPage.clickOnAutoShipStatus();
 				if(storeFrontAccountInfoPage.verifyCRPCancelled()==true){
 					logout();
-					driver.get(driver.getStoreFrontURL()+"/us");
+					driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 					continue;
 				}else{
 					break;
@@ -1054,7 +861,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1077,18 +884,30 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String pcEmailID = null;
 		String accountID = null;
 		RFO_DB = driver.getDBNameRFO();
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomPCList =  null;
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1103,7 +922,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1162,18 +981,29 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String autoshipNumber=null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		String consultantEmailID;
 		String accountID;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else{
 				break;
@@ -1189,7 +1019,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1240,8 +1070,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(cscockpitAutoshipTemplateTabPage.getPSTDate()) || cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim().contains(orderDate),"CSCockpit added order note date in checkout tab expected"+cscockpitAutoshipTemplateTabPage.getPSTDate()+"and on UI" +cscockpitAutoshipTemplateTabPage.convertUIDateFormatToPSTFormat(orderNotevalueFromUI.split("\\ ")[0]).trim());
 			s_assert.assertTrue(orderNotevalueFromUI.contains("PM")||orderNotevalueFromUI.contains("AM"), "Added order note does not contain time zone");
 		}
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
 		logout();
@@ -1256,17 +1091,28 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID;
 		String accountID;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else{
 				break;
@@ -1282,7 +1128,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1316,66 +1162,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
 		logout();
-
-		//------------------CA---------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else{
-				break;
-			}
-		}
-		logout();
-		//get emailId of username
-		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+consultantEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Different Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerOrderSectionInCustomerTab(),"Customer Order section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerBillingInfoSectionInCustomerTab(),"Customer Billing Info section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerAddressSectionInCustomerTab(),"Customer Address section is not on Customer Tab Page");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
-		qtyOfProduct =  cscockpitAutoshipCartTabPage.getQtyOfProductAddedInToCart(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnAutoshipCart();
-		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
-		logout();
 		s_assert.assertAll();
 	}
 
@@ -1389,17 +1175,28 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String accountID;
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1414,7 +1211,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1434,68 +1231,18 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		System.out.println("Complete date "+dueDateWithCompleteYear);
 		s_assert.assertTrue(dueDateWithCompleteYear.trim().contains(delayAutoshipDate), "Expected delayed autoship date is "+delayAutoshipDate+" Actual On UI "+dueDateWithCompleteYear);
 
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		}
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnPcPerksStatus();
 		String dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
-		logout();
-
-		//------------------CA----------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful"); 
-		logout();
-		//get emailId of username
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID); 
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
-		noOfDays = "30";
-		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
-		delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
-		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
-		delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
-
-		cscockpitCustomerTabPage.clickCustomerTab();
-		nextDueDate = cscockpitCustomerTabPage.getNextDueDateOfAutoshipTemplate();
-		dueDateWithCompleteYear = nextDueDate.split("\\/")[0]+"/"+nextDueDate.split("\\/")[1]+"/20"+nextDueDate.split("\\/")[2];
-		System.out.println("Complete date "+dueDateWithCompleteYear);
-		s_assert.assertTrue(dueDateWithCompleteYear.trim().contains(delayAutoshipDate), "Expected delayed autoship date is "+delayAutoshipDate+" Actual On UI "+dueDateWithCompleteYear);
-
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnPcPerksStatus();
-		dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
 		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
 		logout();
 		s_assert.assertAll();
@@ -1513,21 +1260,32 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String orderSectionTotalCVPrice="Total CV";
 		String orderSectionTotalQVPrice="Total QV";
 		String orderSectionQuantity="Qty";
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		List<Map<String, Object>> randomPCList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String pcEmailID = null;
 		String accountID = null;
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1542,7 +1300,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		//cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1593,13 +1351,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String postalCode = (String) getValueFromQueryResult(shippingAddressList, "PostalCode");
 		String locale = (String) getValueFromQueryResult(shippingAddressList, "Locale");
 		String region = (String) getValueFromQueryResult(shippingAddressList, "Region");
-		String country = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
-		if(country.equals("40")){
-			country = "canada"; 
-		}else if(country.equals("236")){
-			country = "United States";
+		String countryID = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
+		if(countryID.equals("40")){
+			countryID = "canada"; 
+		}else if(countryID.equals("236")){
+			countryID = "United States";
 		}
-		String shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+country.toUpperCase();
+		String shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+countryID.toUpperCase();
 		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
 		logger.info("created Shipping Address is "+shippingAddressFromDB);
 		//Assert Shipping address details.
@@ -1608,7 +1366,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(locale),"Shipping Address Locale Expected is "+locale+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(region),"Shipping Address Region Expected is "+region+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(postalCode),"Shipping Address PostCode Expected is "+postalCode+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().contains(country),"Shipping Address Country Expected is "+country+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().contains(countryID),"Shipping Address Country Expected is "+countryID+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
 		//Assert Billing address details.
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().length()>0,"Payment Address Name Expected but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 		//verify components of order from AutoShip Template section
@@ -1618,6 +1376,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		String randomCustomerSequenceNumberOfInactiveUser = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
@@ -1643,17 +1402,28 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String pcEmailID = null;
 		String accountID = null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1668,7 +1438,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1698,69 +1468,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnAutoshipCart();
-		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
-		logout();
-
-		//--------CA-----------
-		driver.get(driver.getStoreFrontURL()+"/CA");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		}
-		logout();
-		//get emailId of username
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
-		cscockpitAutoshipTemplateTabPage.clickRemoveLinkOfOrderDetailForOrderTotal();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupForOrderTotal(),"Threshold popup does not appear");
-		cscockpitAutoshipTemplateTabPage.clickOKOfThresholdPopupInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct("10");
-		cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
-		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyThresholdPopupForOrderTotal(),"Threshold popup is present when quantity update");
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Consultant Price: Low to High");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnTillProductAddedInCartTab(SKUValue);
-		qtyOfProduct = cscockpitAutoshipCartTabPage.getQtyOfProductAddedInToCart(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		storeFrontPCUserPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
 		logout();
@@ -1778,20 +1492,31 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> emailIdFromAccountIdList =  null;
 		String pcUserEmailID=null;
 		String accountId=null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
 			pcUserEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
 			logger.info("Account Id of the user is "+accountId);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1802,7 +1527,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcUserEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1833,71 +1558,16 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		}
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front for US is "+qtyOfProduct+" Actual on UI for US is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
-		logout();
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
-			pcUserEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
-			logger.info("Account Id of the user is "+accountId);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}	
-		logout();
-		logger.info("emaild of PC user "+pcUserEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Different Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerOrderSectionInCustomerTab(),"Customer Order section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerBillingInfoSectionInCustomerTab(),"Customer Billing Info section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerAddressSectionInCustomerTab(),"Customer Address section is not on Customer Tab Page for CA");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
-		qtyOfProduct =  cscockpitAutoshipCartTabPage.getQtyOfProductAddedInToCart(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(TestConstants.CARD_NUMBER,TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber,TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
-		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front for CA is "+qtyOfProduct+" Actual on UI for CA is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
 		logout();
 		s_assert.assertAll();
 	}
@@ -1913,20 +1583,31 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> emailIdFromAccountIdList =  null;
 		String pcUserEmailID=null;
 		String accountId=null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
 			pcUserEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
 			logger.info("Account Id of the user is "+accountId);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1937,7 +1618,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcUserEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -1961,59 +1642,14 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link is present after cancelling Autoship");
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcUserEmailID, password);
-		s_assert.assertTrue(driver.getCurrentUrl().contains("error"), "Login is successful with autoship cancelled PC user for US");
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
-			pcUserEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
-			logger.info("Account Id of the user is "+accountId);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}	
-		logout();
-		logger.info("emaild of PC user "+pcUserEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Different Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerOrderSectionInCustomerTab(),"Customer Order section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerBillingInfoSectionInCustomerTab(),"Customer Billing Info section is not on Customer Tab Page for CA");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerAddressSectionInCustomerTab(),"Customer Address section is not on Customer Tab Page for CA");
-		autoshipId=cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
-		cscockpitAutoshipTemplateTabPage.selectPCPerksCancellationReasonFromDropDownInAutoShipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.selectPCPerksRequestSourceFromDropDownInAutoShipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.enterPCPerksCancellationMessage("Automation termination"+randomNumber);
-		cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
-		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
-		statusAfterAutoshipCancelled=cscockpitCustomerTabPage.getStatusOfAutoShipIdFromAutoshipTemplate(autoshipId);
-		s_assert.assertTrue(statusAfterAutoshipCancelled.equals("Cancelled"),"Autoship status after cancelled autoship is not cancelled for CA");
-		cscockpitCustomerTabPage.clickAutoshipIDHavingTypeAsPCAutoshipAndStatusAsCancelled(autoshipId);
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link is present after cancelling Autoship");
-		cscockpitAutoshipTemplateTabPage.clickMenuButton();
-		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcUserEmailID, password);
-		s_assert.assertTrue(driver.getCurrentUrl().contains("error"), "Login is successful with autoship cancelled PC user for CA");
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+		}
+		s_assert.assertTrue(driver.getCurrentUrl().contains("error"), "Login is successful with autoship cancelled PC user for US");
 		s_assert.assertAll();
 	}
 
@@ -2043,14 +1679,14 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			postal = TestConstants.POSTAL_CODE_US;
 			province = TestConstants.PROVINCE_ALABAMA_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			country = "United States";
+			country =  TestConstants.COUNTRY_DD_VALUE_US;
 		}else if(driver.getCountry().equalsIgnoreCase("ca")){
 			addressLine = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postal = TestConstants.POSTAL_CODE_CA;
 			province = TestConstants.PROVINCE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			country = "Canada";
+			country =  TestConstants.COUNTRY_DD_VALUE_CA;
 		}
 		//-----------------------------------------------------
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
@@ -2060,7 +1696,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
@@ -2124,17 +1765,28 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String pcEmailID = null;
 		String accountID = null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2149,7 +1801,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2173,62 +1825,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnAutoshipCart();
-		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
-		logout();
-
-		//--------CA-----------
-		driver.get(driver.getStoreFrontURL()+"/CA");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		}
-		logout();
-		//get emailId of username
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		SKUValue = cscockpitAutoshipCartTabPage.clickAddToCartBtnTillProductAddedInCartTab(SKUValue);
-		qtyOfProduct = cscockpitAutoshipCartTabPage.getQtyOfProductAddedInToCart(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		storeFrontPCUserPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));
 		logout();
@@ -2242,22 +1845,34 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String consultantEmailID = null;
 		String accountID = null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomConsultantUsernameList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2269,7 +1884,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2284,54 +1899,13 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickAutoshipTemplateIdViaUsingId(clickedAutoshipTemplateId);
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(), "Cancel Autoship Button is Present/Visible and not Disabled");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateInAutoshipTemplateTabPresent(), "Edit Template Button is Present/Visible and not Disabled");
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "Enroll In CRP Button is not Present/Cancelled");
-		//---------------------FOR CA-----------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		}
-		logout();
-
-		logger.info("emaild of consultant username "+consultantEmailID);
-		logger.info("login is successful");
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		clickedAutoshipTemplateId = cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
-		cscockpitAutoshipTemplateTabPage.clickCancelButtonOfCancelAutoshipTemplatePopup();
-		cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
-		cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
-		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
-		cscockpitCustomerTabPage.clickAutoshipTemplateIdViaUsingId(clickedAutoshipTemplateId);
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(), "Cancel Autoship Button is Present/Visible and not Disabled");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateInAutoshipTemplateTabPresent(), "Edit Template Button is Present/Visible and not Disabled");
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
@@ -2347,22 +1921,33 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String consultantEmailID = null;
 		String accountID = null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomConsultantUsernameList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2374,7 +1959,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2423,38 +2008,50 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyCreatePaymentAddressFunctionalityInCRPCheckoutPage_1736() throws InterruptedException{
 		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
 		String attendentFirstName = TestConstants.FIRST_NAME+randomNum1;
 		String attendeeLastName = TestConstants.LAST_NAME;
 		String city = null;
 		String postal = null;
 		String province = null;
 		String phoneNumber = null;
-		String country = null;
 		String addressLine = null;
-		addressLine = TestConstants.ADDRESS_LINE_1_US;
-		city = TestConstants.CITY_US;
-		postal = TestConstants.POSTAL_CODE_US;
-		province = TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber = TestConstants.PHONE_NUMBER_US;
-		country = "United States";
-		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String consultantEmailID;
 		String accountID;
-
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomConsultantList = null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else{
 				break;
@@ -2470,7 +2067,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2504,82 +2101,15 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		StoreFrontBillingInfoPage storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(profileName),"Newly added billing profile is not present");
-		logout();
-
-		//------------CA-----------
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else{
-				break;
-			}
-		}
-		logout();
-		//get emailId of username
-		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+consultantEmailID);
-		logger.info("login is successful");
-		addressLine = TestConstants.ADDRESS_LINE_1_CA;
-		city = TestConstants.CITY_CA;
-		postal = TestConstants.POSTAL_CODE_CA;
-		province = TestConstants.PROVINCE_ALBERTA;
-		phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		country = "Canada";
-
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditAutoshiptemplate();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab();	
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
-		profileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutEnterCreditCardAndAddress(profileName);
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddANewAddressOfAddANewPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.enterCreditCardNumberInPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVNumberInPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(profileName),"Newly added billing profile is not present");
 		logout();
 		s_assert.assertAll();
@@ -2591,21 +2121,50 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyAddCardFunctionalityInCRPEditAutoshipTemplate_1741(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
+		String attendeeLastName = TestConstants.LAST_NAME;
 		String accountID = null;
 		String consultantEmailID;
+		String city = null;
+		String postal = null;
+		String province = null;
+		String phoneNumber = null;
+		String country = null;
+		String addressLine = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomConsultantList = null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else{
 				break;
@@ -2617,26 +2176,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));  
 		logger.info("emaild of consultant username "+consultantEmailID);
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
-		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
-		String attendeeLastName = TestConstants.LAST_NAME;
-		String city = null;
-		String postal = null;
-		String province = null;
-		String phoneNumber = null;
-		String country = null;
-		String addressLine = null;
-		addressLine = TestConstants.ADDRESS_LINE_1_US;
-		city = TestConstants.CITY_US;
-		postal = TestConstants.POSTAL_CODE_US;
-		province = TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber = TestConstants.PHONE_NUMBER_US;
-		country = "United States";
+
+
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2688,6 +2233,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String consultantEmailID=null;
 		String accountId=null;
 		String autoshipId=null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 
 
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
@@ -2697,7 +2248,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"); 
 			logger.info("Account Id of the user is "+accountId);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+consultantEmailID);
@@ -2712,6 +2268,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2742,7 +2299,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontConsultantPage.clickOnYourAccountDropdown();
@@ -2757,7 +2319,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyEditCardFunctionalityInPCPerksEditAutoshipTemplatePage_1744(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String accountID = null;
 		String pcEmailID;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2772,25 +2333,40 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String addressLine = null;
 		String attention = "Attention";
 		String line1 = "Line 1";
-		addressLine = TestConstants.ADDRESS_LINE_1_US;
-		city = TestConstants.CITY_US;
-		postal = TestConstants.POSTAL_CODE_US;
-		province = TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber = TestConstants.PHONE_NUMBER_US;
-		country = "United States";
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomPCList = null;
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2805,7 +2381,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2845,7 +2421,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	public void testVerifyEditCardFunctionalityInCRPEditAutoshipTemplatePage_1743(){
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String accountID = null;
 		String pcEmailID;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2860,24 +2435,39 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String addressLine = null;
 		String attention = "Attention";
 		String line1 = "Line 1";
-		addressLine = TestConstants.ADDRESS_LINE_1_US;
-		city = TestConstants.CITY_US;
-		postal = TestConstants.POSTAL_CODE_US;
-		province = TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber = TestConstants.PHONE_NUMBER_US;
-		country = "United States";
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+			addressLine = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postal = TestConstants.POSTAL_CODE_CA;
+			province = TestConstants.PROVINCE_ALBERTA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+			addressLine = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postal = TestConstants.POSTAL_CODE_US;
+			province = TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		List<Map<String, Object>> randomConsultantList = null;
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else{
 				break;
@@ -2893,7 +2483,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -2948,7 +2538,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String addressLine=null;
 		String city=null;
 		String postalCode=null;
-		String Country=null;
+		String country=null;
 		String Province=null;
 		String phoneNumber=null;
 		String profileName=null;
@@ -2961,27 +2551,41 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		securityCode=TestConstants.SECURITY_CODE;
 		cardNumber=TestConstants.CARD_NUMBER;
 		attendeeFirstName=TestConstants.FIRST_NAME+randomNumbers;
-		addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
-		city=TestConstants.NEW_ADDRESS_CITY_US;
-		postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-		Country=TestConstants.COUNTRY_DD_VALUE_US;
-		Province=TestConstants.PROVINCE_ALABAMA_US;
-		phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			addressLine=TestConstants.NEW_ADDRESS_LINE1_US;
+			city=TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode=TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			country=TestConstants.COUNTRY_DD_VALUE_US;
+			Province=TestConstants.PROVINCE_ALABAMA_US;
+			phoneNumber=TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}else{
+			addressLine=TestConstants.ADDRESS_LINE_1_CA;
+			city=TestConstants.CITY_CA;
+			postalCode=TestConstants.POSTAL_CODE_CA;
+			country=TestConstants.COUNTRY_DD_VALUE_CA;
+			Province=TestConstants.PROVINCE_CA;
+			phoneNumber=TestConstants.PHONE_NUMBER_CA;
+		}
 
 		//-------------------FOR US----------------------------------
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> emailIdFromAccountIdList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
 			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2991,6 +2595,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -3032,7 +2637,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
 		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
 		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutEnterCreditCardAndAddress(newBillingProfileName);
-		cscockpitAutoshipTemplateUpdateTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
+		cscockpitAutoshipTemplateUpdateTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,country,Province,phoneNumber);
 		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
 		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
 		cscockpitAutoshipTemplateUpdateTabPage.enterCreditCardNumberInPaymentProfilePopup();
@@ -3049,114 +2654,17 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
 		//Check the billing address on storefront.
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+		try{
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}catch(Exception e){
+			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(secondProfileName),"billing profile is not present on storefront UI");
 		logout();
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		randomNumb = CommonUtils.getRandomNum(10000, 1000000);
-		randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-		randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
-		profileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		secondProfileName=TestConstants.NEW_BILLING_PROFILE_NAME+randomNumb;
-		attendeeLastName="IN";
-		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
-		securityCode=TestConstants.SECURITY_CODE;
-		cardNumber=TestConstants.CARD_NUMBER;
-		attendeeFirstName=TestConstants.FIRST_NAME+randomNumbers;
-		addressLine=TestConstants.ADDRESS_LINE_1_CA;
-		city=TestConstants.CITY_CA;
-		postalCode=TestConstants.POSTAL_CODE_CA;
-		Country=TestConstants.COUNTRY_DD_VALUE_CA;
-		Province=TestConstants.PROVINCE_CA;
-		phoneNumber=TestConstants.PHONE_NUMBER_CA;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
-			consultantEmailID=(String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-		logout(); 
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Autoship template Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelEditLinkInAutoshipTemplateTab(),"Cancel Edit link is not on Autoship template Tab Page");
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
-		randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		SKUValue=cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		//Add new payment profile.
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
-		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutSelectAddress(profileName);
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isSelectBillingAddressMsgPresent(), "select billing address error popup msg is not present");
-		cscockpitAutoshipTemplateTabPage.selectBillingAddressInPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().contains(profileName.toLowerCase()),"Payment Address Name Expected"+profileName+" but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
-		//Add new payment profile with payment address.
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickCloseOfAddANewPaymentProfilePopup();
-		s_assert.assertFalse(cscockpitAutoshipTemplateUpdateTabPage.isAddNewPaymentProfilePopup(), "Add a new payment profile popup is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab().contains("Please review credit card information entered"),"CSCockpit checkout tab popup error message expected = Please review credit card information entered and on UI = " +cscockpitCheckoutTabPage.getErrorMessageOfPopupWithoutFillingDataInCheckoutTab());
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfoWithoutEnterCreditCardAndAddress(newBillingProfileName);
-		cscockpitAutoshipTemplateUpdateTabPage.enterShippingDetailsInPopUpInCheckoutTab(attendeeFirstName,attendeeLastName,addressLine,city,postalCode,Country,Province,phoneNumber);
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.isReviewCreditCardDetailsErrorMsgPresent(), "Review credit card error msg is not present");
-		cscockpitAutoshipTemplateUpdateTabPage.enterCreditCardNumberInPaymentProfilePopup();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		s_assert.assertTrue(cscockpitAutoshipTemplateUpdateTabPage.getNewBillingAddressNameInCheckoutTab().contains(attendeeFirstName),"CSCockpit checkout tab newly created billing address name expected ="+ attendeeFirstName+ "and on UI = " +cscockpitAutoshipTemplateUpdateTabPage.getNewBillingAddressNameInCheckoutTab());
-		//Add new payment profile by selecting newly created billing address.
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressLinkInPopUpInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo(cardNumber, secondProfileName, securityCode,attendeeFirstName);
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickMenuButton();
-		cscockpitAutoshipTemplateUpdateTabPage.clickLogoutButton();
-		//Check the billing address on storefront.
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage=storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(secondProfileName),"billing profile is not present on storefront UI");
-		logout(); 
 		s_assert.assertAll();
 	}
 
@@ -3205,20 +2713,24 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 			phoneNumber=TestConstants.PHONE_NUMBER_CA;
 		}
 
-
 		//----------------------FOR US------------------------------------
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 			pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3229,6 +2741,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -3262,21 +2775,27 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingAddressLine1UnderShippingAddress();
 		s_assert.assertTrue(getNewShippingAddressLineFromUI.equalsIgnoreCase(addressLine2),"Newly created shipping address is not selected from dropdown");
 		s_assert.assertAll();
-	}
+	}	
 
 	//Hybris Project-4723:Verify that CRP scheduling date has to be between 1st and 17th (including).
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCRPSchedulingDateHasToBeBetween1stTo17th_4723(){
 		RFO_DB = driver.getDBNameRFO();
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		//Get Email from database.
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		List<Map<String, Object>> randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		String consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -3293,17 +2812,23 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4782:CSCockpit _Change date for PC perks autoship template
-	@Test(enabled=false)//WIP
+	@Test
 	public void testChangeDateForPCPerksAutoshipTemplate_4782(){
 		RFO_DB = driver.getDBNameRFO();
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
 		//Get Email from database.
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		List<Map<String, Object>> randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		String consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -3320,7 +2845,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4783:CSCockpit _Delay teh PC perks autoship template by 30 days
-	@Test(enabled=false)//WIP
+	@Test
 	public void testDelayPCPerksAutoshipTemplateBy30Days_4783() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String randomCustomerSequenceNumber = null;
@@ -3328,17 +2853,28 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String accountID;
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
 			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			try{
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3353,7 +2889,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		driver.get(driver.getCSCockpitURL());  
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
 		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
@@ -3366,7 +2902,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
 		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
 		String delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -3375,405 +2911,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
 		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
 		logout();
-		//------------------CA----------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful"); 
-		logout();
-		//get emailId of username
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID); 
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
-		noOfDays = "30";
-		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
-		delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
-		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
-		delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
-
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnPcPerksStatus();
-		dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
-		logout();
 		s_assert.assertAll();
 	}
-
-	//--
-	//Hybris Project-4784:CSCockpit _Delay the PC perks autoship template by 60 days
-	@Test(enabled=false)//WIP
-	public void testDelayPCPerksAutoshipTemplateBy60Days_4784() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String accountID;
-		List<Map<String, Object>> randomPCList =  null;
-		String pcEmailID = null;
-		driver.get(driver.getStoreFrontURL()+"/us");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful"); 
-		logout();
-		//get emailId of username
-		List<Map<String, Object>> randomPCUsernameList =  null;
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID); 
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
-		String noOfDays = "60";
-		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
-		String delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
-		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
-		String delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
-		driver.get(driver.getStoreFrontURL()+"/us");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnPcPerksStatus();
-		String dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
-		logout();
-		//------------------CA----------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful"); 
-		logout();
-		//get emailId of username
-		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of consultant username "+pcEmailID); 
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickDelayAutoshipLink();
-		noOfDays = "60";
-		cscockpitAutoshipTemplateTabPage.selectNextDelayAutoshipDateInPopup(noOfDays);
-		delayAutoshipDate = cscockpitAutoshipTemplateTabPage.getNextDelayAutoshipDateFromPopup(noOfDays).split("\\(")[0].trim();
-		cscockpitAutoshipTemplateTabPage.clickSaveBtnInPopUP();
-		delayAutoshipDateInMonthForm = cscockpitAutoshipTemplateTabPage.convertCartDateToFormat(delayAutoshipDate);
-
-
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnPcPerksStatus();
-		dueDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
-		s_assert.assertTrue(dueDate.trim().contains(delayAutoshipDateInMonthForm), "Expected delayed autoship date is "+delayAutoshipDateInMonthForm+" Actual On store front "+dueDate);
-		logout();
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-4790:To verify Add New Shipping address functionality on PCPerk Autoship Checkout Page
-	@Test(enabled=false)//WIP
-	public void testAddNewShippingAddressFunctionalityOnPCPerksAutoshipCheckoutPage_4790() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String attendentFirstName = TestConstants.FIRST_NAME+randomNum;
-		String attendeeLastName = TestConstants.LAST_NAME;
-		String city = null;
-		String postal = null;
-		String province = null;
-		String phoneNumber = null;
-		String country = null;
-		String addressLine = null;
-		String randomCustomerSequenceNumber = null;
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			addressLine = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postal = TestConstants.POSTAL_CODE_US;
-			province = TestConstants.PROVINCE_ALABAMA_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-			country=TestConstants.COUNTRY_DD_VALUE_US;
-
-		}else if(driver.getCountry().equalsIgnoreCase("ca")){
-			addressLine=TestConstants.ADDRESS_LINE_1_CA;
-			city=TestConstants.CITY_CA;
-			postal=TestConstants.POSTAL_CODE_CA;
-			country=TestConstants.COUNTRY_DD_VALUE_CA;
-			province=TestConstants.PROVINCE_CA;
-			phoneNumber=TestConstants.PHONE_NUMBER_CA;
-		}
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Autoship template Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
-		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		cscockpitAutoshipCartTabPage.clickAddToCartBtnInCartTab();
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewAddressUnderDeliveryAddressInCheckoutTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyDeliveryAndShippingAddressPopupPresent("Create Delivery Address"),"Create Delivery Address Popup is not Present");
-		cscockpitAutoshipTemplateUpdateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, attendeeLastName, addressLine, city, postal, country, province, phoneNumber);
-		cscockpitAutoshipTemplateUpdateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseEnteredAddressOfCreateNewAddressShippingAddressPopup();
-		cscockpitAutoshipTemplateUpdateTabPage.clickAddNewPaymentAddressInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.enterBillingInfo();
-		cscockpitAutoshipTemplateUpdateTabPage.clickSaveAddNewPaymentProfilePopUP();
-		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
-		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		String getNewShippingAddressNameFromUI=cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab();
-		s_assert.assertTrue(getNewShippingAddressNameFromUI.contains(attendentFirstName), "Expected address name is "+attendentFirstName+" Actual on UI "+getNewShippingAddressNameFromUI);
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-4794:Verify if only US product is displayed on PCPerk Cart page
-	@Test(enabled=false)//WIP
-	public void testVerifyOnlyUSProductIsDisplayedOnPCPerkCartPage_4794(){
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Autoship template Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipCartTabPage.getCountOfOptionsInCatalogFromDropDownInCartTab()==1,"Expect no of options is 1 but actual on UI "+cscockpitAutoshipCartTabPage.getCountOfOptionsInCatalogFromDropDownInCartTab());
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			s_assert.assertTrue(cscockpitAutoshipCartTabPage.getSelectProductCatalogValue().contains("US Product Catalog"),"Expect name of options is US Product Catalog but actual on UI "+cscockpitAutoshipCartTabPage.getSelectProductCatalogValue());
-		}else{
-			s_assert.assertTrue(cscockpitAutoshipCartTabPage.getSelectProductCatalogValue().contains("Canada Product Catalog"),"Expect name of options is Candada Product Catalog but actual on UI "+cscockpitAutoshipCartTabPage.getSelectProductCatalogValue());
-		}
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-5285:Expired Credit Card: To verify that shipped orders can be returned
-	@Test(enabled=false)//WIP
-	public void testVerifyShippedOrdersCanBeReturned_5285(){
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab("Shipped");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(), "Refund Order button is not present for shipped order");
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-2678:CSCockpit _Edit PC perks autoship template
-	@Test(enabled=false)//WIP
-	public void testVerifyEditPCPerksAutoshipTemplate_2678(){
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Autoship template Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		cscockpitAutoshipTemplateTabPage.clickEditTemplateLinkInAutoshipTemplateTab();
-		String quantityOfProduct = cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1");
-		int updateQuantity = Integer.parseInt(quantityOfProduct)+1;
-		String updatedQuantity = ""+updateQuantity;
-		cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct(updatedQuantity);
-		cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1").contains(updatedQuantity), "Expected quantity of product after updation "+updatedQuantity+"Actual On UI "+cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1"));
-		//decrease the qty
-		cscockpitAutoshipTemplateTabPage.enterQtyOfFirstProduct(quantityOfProduct);
-		cscockpitAutoshipTemplateTabPage.clickUpdateLinkOfOrderDetail();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1").contains(quantityOfProduct), "Expected quantity of product after updation "+quantityOfProduct+"Actual On UI "+cscockpitAutoshipTemplateTabPage.getQuantityOfProductInAutoshipTemplateTabPage("1"));
-		cscockpitAutoshipTemplateTabPage.clickAddMoreLinesLinkInAutoShipTemplateTab();
-		cscockpitAutoshipCartTabPage.selectValueFromSortByDDInCartTab("Price: High to Low");
-		cscockpitAutoshipCartTabPage.selectCatalogFromDropDownInCartTab(); 
-		String randomProductSequenceNumber = String.valueOf(cscockpitAutoshipCartTabPage.getRandomProductWithSKUFromSearchResult()); 
-		String SKUValue = cscockpitAutoshipCartTabPage.getCustomerSKUValueInCartTab(randomProductSequenceNumber);
-		cscockpitAutoshipCartTabPage.searchSKUValueInCartTab(SKUValue);
-		String noOfProductTobeAdded = "2";
-		cscockpitAutoshipCartTabPage.addProductToCartPageTillRequiredDistinctProducts(noOfProductTobeAdded);
-		cscockpitAutoshipCartTabPage.clickCheckoutBtnInCartTab();
-		String totalNoOfProductInCart = ""+cscockpitAutoshipTemplateUpdateTabPage.getCountOfProduct();
-		s_assert.assertTrue(totalNoOfProductInCart.contains(noOfProductTobeAdded), "Expected count of product is "+noOfProductTobeAdded+" Actual on UI is "+totalNoOfProductInCart);
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-130:change shipping method on autoship - PC
-	@Test(enabled=false)//WIP
-	public void testVerifyChangeShippingMethodOnAutoshipPC_130() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomPCList =  null;
-		String pcEmailID = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		driver.get(driver.getStoreFrontURL()+"/us");
-		String accountID;
-		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			pcEmailID  = (String) getValueFromQueryResult(randomPCList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID")); 
-			logger.info("Account Id of user "+accountID);
-			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+pcEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful"); 
-
-		//get emailId of username
-		List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-		pcEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));  
-		logger.info("emaild of username "+pcEmailID); 
-		storeFrontPCUserPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-		storeFrontHomePage.clickOnAddToPcPerksButton();
-		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
-		storeFrontUpdateCartPage.clickOnEditShipping();
-		String selectedShippingMethod = storeFrontUpdateCartPage.selectAndGetShippingMethodName();
-		logger.info("Shipping Method selected is: "+selectedShippingMethod);
-		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
-		storeFrontUpdateCartPage.clickOnNextStepBtn();
-		storeFrontUpdateCartPage.clickUpdateCartBtn();  
-		//assert in CSCockpit
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("United States");
-		}else{
-			cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab("Canada");
-		}
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab().contains(selectedShippingMethod), "Expected shipping method name on cscockpit is "+selectedShippingMethod+" Actual on UI is "+cscockpitAutoshipTemplateTabPage.getShippingMethodNameFromUIUnderShippingAddressInAutoshipTemplateTab());
-		s_assert.assertAll();
-	}
-
-
-	//Hybris Project-1939:To Verify that PC account status is Inactive when Pcperks Autoship cancelled
-	@Test(enabled=false)//WIP
-	public void testVerifyPCAccountStatusIsInactiveWhenPCPerksAutoshipCancelled_1939() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String randomCustomerSequenceNumber = null;
-
-		//Login to cscockpit.	
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String PCEmailID = cscockpitCustomerSearchTabPage.getEmailIdOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
-		String cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		if(cscockpitCustomerTabPage.isPCAutoshipIDHavingStatusIsPendingPresent()){
-			cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
-			cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
-			cscockpitAutoshipTemplateTabPage.selectPCPerksCancellationReasonFromDropDownInAutoShipTemplateTab();
-			cscockpitAutoshipTemplateTabPage.selectPCPerksRequestSourceFromDropDownInAutoShipTemplateTab();
-			cscockpitAutoshipTemplateTabPage.enterPCPerksCancellationMessage("Automation termination"+randomNum);
-			cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
-		}
-		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-		cscockpitCustomerSearchTabPage.enterCIDInOrderSearchTab(cid);
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(PCEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getAccountStatusOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber).contains("INACTIVE"),"Account status of pc user is not Inactive after cancelling pc perks autoship.");
-		s_assert.assertAll();  
-	}
-
+	
 }

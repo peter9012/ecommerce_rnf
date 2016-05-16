@@ -208,6 +208,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	public String getGrandTotalFromAutoshipTemplate(){
 		driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
 		String autoshipGrandTotalPrice = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText();
+		if(autoshipGrandTotalPrice.contains(",")){
+			String[] total = autoshipGrandTotalPrice.split("\\,");
+			autoshipGrandTotalPrice = total[0]+total[1];
+		}
 		return autoshipGrandTotalPrice;
 	}
 
@@ -355,10 +359,13 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	public String getSubTotalFromAutoshipTemplate(){
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']//div[contains(text(),'Subtotal')]/following::div[1]"));
 		String subTotal = driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Subtotal')]/following::div[1]")).getText();
+		if(subTotal.contains(",")){
+			String[] total = subTotal.split("\\,");
+			subTotal = total[0]+total[1];
+		}
 		System.out.println("Subtotal is "+subTotal);
 		return subTotal;  
 	}
-
 
 	public boolean verifyAutoShipTemplateShipping(String shippingDB){
 		String shippingAmount = driver.findElement(By.xpath("//div[@class='order-summary-left']/ul[1]/li[2]/span")).getText();
@@ -398,7 +405,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			}
 		}
 		driver.turnOnImplicitWaits();
-		return tax.trim().substring(1);
+		return tax.trim().substring(0);
 	}
 
 	public boolean verifyAutoShipTemplateTax(String taxDB){
@@ -419,12 +426,12 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			return tax.trim();
 		}
 		else {
-			if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span"))&&(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='PST']/following::div[1]/span")))){
-				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span")).getText();
+			if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span"))&&(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='PST:']/following::div[1]/span")))){
+				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span")).getText();
 				String gstTaxValue[] = gstTax.split("\\ ");
 				System.out.println("gstTax==="+gstTaxValue[1]);
 				double gstTaxIntegerValue = Double.parseDouble(gstTaxValue[1]);
-				String pstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='PST']/following::div[1]/span")).getText();
+				String pstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='PST:']/following::div[1]/span")).getText();
 				String pstTaxValue[] = pstTax.split("\\ ");
 				System.out.println("pstTax==="+pstTaxValue[1]);
 				double pstTaxIntegerValue = Double.parseDouble(pstTaxValue[1]);
@@ -432,8 +439,8 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 				System.out.println("totalTax==="+totalTax);
 				String taxFinal = Double.toString(totalTax);
 				return taxFinal;
-			}else if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span"))){
-				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST']/following::div[1]/span")).getText();
+			}else if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span"))){
+				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span")).getText();
 				return gstTax;
 			}
 			else if(driver.isElementPresent(By.id("totalTax"))){
@@ -1034,12 +1041,21 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateSameDatePresentForAutoship(String autoshipDate) {
-		Date d = new Date();
-		String date = d.toString();
-		String []requiredDate = date.split("\\ ");
-		if(autoshipDate.contains(requiredDate[2])){
-			return true;
+		String currentDate = getPSTDate();
+		String currentDay = currentDate.split("\\ ")[0];
+		logger.info("Current day is: "+currentDay);
+		String autoshipDay = autoshipDate.split("\\ ")[1];
+		logger.info("Current autoship day is: "+autoshipDay);
+		if(Integer.parseInt(currentDay)<=17){
+			if(autoshipDay.contains(currentDay)){
+				return true;
+			}
+			return false;
+		}else{
+			if(autoshipDay.contains("17")){
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 }

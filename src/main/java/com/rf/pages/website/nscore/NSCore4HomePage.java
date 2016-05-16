@@ -1,12 +1,14 @@
 package com.rf.pages.website.nscore;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -15,6 +17,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 	private static final Logger logger = LogManager
 			.getLogger(NSCore4HomePage.class.getName());
+	int allBillingProfilesSize = 0;
 
 	public NSCore4HomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -44,7 +47,13 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static String newlyCeatedShippingProfile = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]";
 	private static String newlyCeatedShippingProfileSetDefault = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]//a[contains(text(),'Set As Default Address')]";
 	private static String newlyCeatedShippingProfileIsDefault = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]//span[contains(text(),'default')]";
-	private static String deleteAddressnewlyCeatedShippingProfile = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/ancestor::div[1]/preceding-sibling::span[1]/a[2]";
+	private static String deleteAddressnewlyCeatedShippingProfile = "//div[@id='ContentWrap']//table//a[contains(text(),'%s')]/preceding::a[contains(text(),'Delete Address')][1]";
+	private static String overViewSublinkLoc = "//div[@class='Overview']//a[contains(text(),'%s')]";
+	private static String orderIdLinkLoc = "//table[@id='orders']//a[text()='%s']";
+	private static String setAsDefaultForNewlyCreatedBillingProfile = "//div[@id='paymentMethods']/descendant::div[contains(@class,'Profile')][%s]//a[contains(text(),'Set As Default Payment Method')]";
+	private static String isDefaultPresentForNewlyCreatedBillingProfile = "//div[@id='paymentMethods']/descendant::div[contains(@class,'Profile')][%s]//span[contains(text(),'default')]";
+	private static String deleteNewlyCreatedBillingProfile = "//div[@id='paymentMethods']/descendant::div[contains(@class,'Profile')][%s]//a[contains(text(),'Delete Payment Method')]";
+
 
 	private static final By TOTAL_NO_OF_COLUMNS = By.xpath("//tr[@class='GridColHead']//a");
 	private static final By EDIT_MY_STORY_LINK = By.xpath("//a[@class='EditButton' and contains(text(),'Edit My Story')]");
@@ -129,6 +138,8 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By ADD_SHIPPING_ADDRESS_ATTENTION_LOC = By.xpath("//input[@id='attention']");
 	private static final By ADD_SHIPPING_ADDRESS_LINE1_LOC = By.xpath("//input[@id='addressLine1']");
 	private static final By ADD_SHIPPING_ADDRESS_ZIPCODE_LOC = By.xpath("//input[@id='zip']");
+	private static final By STATE_DD_LOC  = By.id("state");
+	private static final By STATE_DD_OPTION_LOC  = By.xpath("//select[@id='state']/option[2]");
 	private static final By SAVE_ADDRESS_BTN_LOC = By.xpath("//a[@id='btnSaveAddress']");
 	private static final By USE_ADDRESS_AS_ENTERED_BTN_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
 	private static final By BILLING_PROFILE_ADD_LINK_LOC = By.xpath("//a[@id='btnAddBillingAddress']");
@@ -139,12 +150,23 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC = By.xpath("//input[@id='accountNumber']");
 	private static final By ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC = By.id("expYear");
 	private static final By SAVE_PAYMENT_METHOD_BTN_LOC = By.xpath("//a[@id='btnSavePaymentMethod']");
-	private static final By USE_AS_ENTERED_BTN_LOC = By.xpath("//button/span[contains(text(),'Use as entered')]");
+	private static final By USE_AS_ENTERED_BTN_LOC = By.xpath("//*[@id='QAS_AcceptOriginal']");
 	private static final By ACCEPT_BTN_LOC = By.xpath("//button/span[text()='Accept']");
 	private static final By NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]");
-	private static final By SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]/preceding-sibling::span[1]/a[1]");
-	private static final By NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]//span[contains(text(),'default')]");
-	private static final By DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC = By.xpath("//div[@id='ContentWrap']//table//a[contains(text(),'Main Billing')]/ancestor::div[1]/preceding-sibling::span[1]/a[2]");
+	private static final By APPLY_PAYMENT_BTN  = By.id("btnApplyPayment");
+	private static final By PLACED_ORDER_NUMBER  = By.xpath("//div[@class='Content']//a[contains(text(),'Order #')]");
+	private static final By OPEN_BULK_ADD_LOC  = By.id("btnOpenBulkAdd");
+	private static final By PRODUCT_QUANTITY_LOC  = By.xpath("//table[@id='bulkProductCatalog']//tr[1]//input[@class='quantity']");
+	private static final By PRODUCT_SKU_VALUE  = By.xpath("//table[@id='bulkProductCatalog']/tbody//tr[1]/td[1]");
+	private static final By ADD_TO_ORDER_BTN  = By.id("btnBulkAdd");
+	private static final By CLOSE_LINK_LOC  = By.xpath("//div[@id='bulkAddModal']//a[text()='Close']");
+	private static final By TOTAL_BILLING_PROFILES = By.xpath("//div[@id='paymentMethods']/div[contains(@class,'Profile')]");
+	private static final By SHIPPING_PROFILES_LOC  = By.xpath("//div[@id='addresses']/div");
+	private static final By PRODUCT_SKU_VALUE_CATALOG  = By.xpath("//table[@id='productBulkAddGrid']//tr[3]/td[2]");
+	private static final By PRODUCT_SKU_CHK_BOX_CATALOG  = By.xpath("//table[@id='productBulkAddGrid']//tr[3]/td[2]");
+	private static final By ADD_TO_CATALOG  = By.id("btnBulkAddProducts");
+	private static final By CLOSE_LINK_CATALOG_LOC  = By.xpath("//div[@id='productBulkAdd']//a[text()='Close']");
+	private static final By ADD_NEW_PAYMENT_METHOD_LINK  = By.xpath("//a[contains(text(),'Add New Payment Method')]");
 
 	public boolean isLogoutLinkPresent(){
 		driver.waitForElementPresent(LOGOUT_LINK);
@@ -170,7 +192,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(GO_SEARCH_BTN);
 		logger.info("Search Go button clicked");
 		try {
-			driver.waitForElementPresent(By.linkText(accountNumber));
+			driver.quickWaitForElementPresent(By.linkText(accountNumber));
 			driver.click(By.linkText(accountNumber));
 			logger.info("Account Number clicked on Browse Account Page");
 			driver.waitForPageLoad();
@@ -191,11 +213,13 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 		logger.info("pulse monthly subscription edit clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public String updatePulseProductQuantityAndReturnValue(){
 		int quantity = Integer.valueOf(driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).getAttribute("value"));;
 		quantity = quantity +1;
+		driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).clear();
 		driver.findElement(PULSE_PRODUCT_QUANTITY_TXT_FIELD).sendKeys(String.valueOf(quantity));
 		driver.click(UPDATE_PULSE_CART_BTN);
 		logger.info("update cart button on pulse clicked");
@@ -230,6 +254,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.click(SAVE_TEMPLATE_BTN);
 		logger.info("save template button clicked");
 		driver.pauseExecutionFor(2000);
+		driver.waitForNSCore4ProcessImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
@@ -240,6 +265,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 	public String getQuantityOfPulseProductFromOrderDetailPage(){
 		driver.waitForElementPresent(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE);
+		logger.info("pulse quantity on UI is "+driver.findElement(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE).getText().trim());
 		return driver.findElement(QUANTITY_OF_PULSE_PRODUCT_ON_ORDER_DETAIL_PAGE).getText().trim();
 	}
 
@@ -284,6 +310,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.waitForPageLoad();
 		logger.info("Search Go button clicked");
 	}
+
 	public int getCountOfSearchResultRows(){
 		driver.waitForElementPresent(ROWS_COUNT_OF_SEARCH_RESULT);
 		int count= driver.findElements(ROWS_COUNT_OF_SEARCH_RESULT).size();
@@ -858,12 +885,13 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 			driver.click(USE_ADDRESS_AS_ENTERED);
 			logger.info("Usee address as entered button clicked for Account record");
 		}
+		driver.waitForPageLoad();
 	}
 
 	public String getUpdationMessage(){
 		String msg = driver.findElement(GET_UPDATION_MSG).getText();
 		logger.info("Updation mesage is: "+msg);
-		return msg;
+		return msg.trim();
 	}
 
 	public void clickDOBDate(){
@@ -895,6 +923,12 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.waitForPageLoad(); 
 	}
 
+	public int getTotalBillingProfiles(){
+		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
+		logger.info("total Billing profiles are "+allBillingProfiles);
+		return allBillingProfiles.size();
+	}
+
 
 	public void clickShippingProfileAddLink(){
 		driver.quickWaitForElementPresent(SHIPPING_PROFILE_ADD_LINK_LOC);
@@ -907,7 +941,10 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.type(ADD_SHIPPING_ADDRESS_PROFILE_NAME_LOC, profileName);
 		driver.type(ADD_SHIPPING_ADDRESS_ATTENTION_LOC, attention);
 		driver.type(ADD_SHIPPING_ADDRESS_LINE1_LOC, addressLine1);
-		driver.type(ADD_SHIPPING_ADDRESS_ZIPCODE_LOC, zipCode);
+		driver.type(ADD_SHIPPING_ADDRESS_ZIPCODE_LOC, zipCode+"\t");
+		driver.waitForNSCore4LoadingImageToDisappear();
+		driver.click(STATE_DD_LOC);
+		driver.click(STATE_DD_OPTION_LOC);
 		driver.pauseExecutionFor(3500);
 	}
 
@@ -946,13 +983,9 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	public void deleteAddressNewlyCreatedProfile(String shippingProfileName){
 		driver.quickWaitForElementPresent(By.xpath(String.format(deleteAddressnewlyCeatedShippingProfile, shippingProfileName)));
 		driver.click(By.xpath(String.format(deleteAddressnewlyCeatedShippingProfile, shippingProfileName)));
+		driver.pauseExecutionFor(2000);
 		//switch to Alert to delete payment method-
-		try{
-			Alert alt =driver.switchTo().alert();
-			alt.accept();
-		}catch(Exception e){
-			logger.info("");
-		}
+		clickOKBtnOfJavaScriptPopUp();
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -963,11 +996,11 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.waitForPageLoad(); 
 	}
 
-	public void addANewBillingProfile(String firstName,String lastName,String nameOnCard,String cardNumber){
+	public void addANewBillingProfile(String firstName,String lastName,String nameOnCard,String cardNumber,String addressLine1,String zipCode){
 		//select 'Main-Billing' as billing address-
-		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
-		select.selectByIndex(1);
-		driver.pauseExecutionFor(4500);
+		//		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
+		//		select.selectByIndex(1);
+		driver.pauseExecutionFor(3000);
 		//Add 'Payment-Method'
 		driver.type(ADD_PAYMENT_METHOD_FIRST_NAME_LOC, firstName);
 		driver.type(ADD_PAYMENT_METHOD_LAST_NAME_LOC, lastName);
@@ -976,6 +1009,10 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		//select 'Expiration' Date(change year)
 		Select sel = new Select(driver.findElement(ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC));
 		sel.selectByIndex(7);
+		driver.type(By.id("profileName"), firstName+" "+lastName);
+		driver.type(By.id("addressLine1"), addressLine1);
+		driver.type(By.id("zip"), zipCode+"\t");
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void clickSavePaymentMethodBtn(){
@@ -1009,28 +1046,143 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 
 
 	public void clickSetAsDefaultPaymentMethodForNewlyCreatedProfile(){
-		driver.pauseExecutionFor(5000);
-		driver.quickWaitForElementPresent(SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC);
-		driver.click(SET_AS_DEFAULT_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		driver.click(By.xpath(String.format(setAsDefaultForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}
 
 	public boolean validateNewlyCreatedBillingProfileIsDefault(){
-		driver.quickWaitForElementPresent(NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC);
-		return driver.isElementPresent(NEWLY_CREATED_BILLING_PROFILE_DEFAULT_LOC);
+		driver.quickWaitForElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		return driver.isElementPresent(By.xpath(String.format(isDefaultPresentForNewlyCreatedBillingProfile, getTotalBillingProfiles())));
 	}
 
 	public void deletePaymentMethodNewlyCreatedProfile(){
-		driver.quickWaitForElementPresent(DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC);
-		driver.click(DELETE_PAYMENT_METHOD_NEWLY_CREATED_BILLING_PROFILE_LOC);
+		driver.quickWaitForElementPresent(By.xpath(String.format(deleteNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		driver.click(By.xpath(String.format(deleteNewlyCreatedBillingProfile, getTotalBillingProfiles())));
+		logger.info("Delete button clicked");
+		driver.pauseExecutionFor(2000);
 		//switch to Alert to delete payment method-
 		try{
 			Alert alt =driver.switchTo().alert();
 			alt.accept();
+			logger.info("Alert handled");
 		}catch(Exception e){
 
 		}
 		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
+	}
+
+	public boolean isBillingProfileDeleted(){
+		List<WebElement> allBillingProfiles = driver.findElements(TOTAL_BILLING_PROFILES);
+		if(allBillingProfilesSize!=allBillingProfiles.size()){
+			return true;
+		}
+		return false;
+	}
+
+	public void clickSublinkOfOverview(String linkname){
+		driver.waitForElementPresent(By.xpath(String.format(overViewSublinkLoc, linkname)));
+		driver.click(By.xpath(String.format(overViewSublinkLoc, linkname)));
+		logger.info(linkname+"clicked on overview page");
+		driver.waitForPageLoad();
+	}
+
+	public void clickApplyPaymentButton(){
+		driver.waitForElementPresent(APPLY_PAYMENT_BTN);
+		driver.click(APPLY_PAYMENT_BTN);
+		logger.info("Apply Payment button clicked");
+		driver.waitForNSCore4LoadingImageToDisappear();
+	}
+
+	public String getOrderID(){
+		driver.waitForElementPresent(PLACED_ORDER_NUMBER);
+		String orderID = driver.findElement(PLACED_ORDER_NUMBER).getText();
+		logger.info("Order number is: "+orderID);
+		return orderID;
+	}
+
+	public void clickOrderId(String orderID){
+		driver.waitForElementPresent(By.xpath(String.format(orderIdLinkLoc, orderID)));
+		driver.click(By.xpath(String.format(orderIdLinkLoc, orderID)));
+		logger.info(orderID+"clicked on overview page");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+	}
+
+	public String addAndGetProductSKU(String quantity){
+		driver.waitForElementPresent(OPEN_BULK_ADD_LOC);
+		driver.click(OPEN_BULK_ADD_LOC);
+		driver.waitForNSCore4LoadingImageToDisappear();
+		logger.info("Open bulk add link clicked");
+		driver.waitForElementPresent(PRODUCT_SKU_VALUE);
+		String SKU = driver.findElement(PRODUCT_SKU_VALUE).getText();
+		driver.type(PRODUCT_QUANTITY_LOC, quantity);
+		logger.info("quantity added is: "+quantity);
+		driver.click(ADD_TO_ORDER_BTN);
+		logger.info("Add to order button clicked");
+		driver.click(CLOSE_LINK_LOC);
+		logger.info("Close link clicked on bulk add popup");
+		return SKU;
+	}
+
+	public int getTotalNoOfShippingProfiles(){
+		driver.waitForElementPresent(SHIPPING_PROFILES_LOC);
+		int noOfShippingProfile = driver.findElements(SHIPPING_PROFILES_LOC).size();
+		logger.info("Total no of shipping profiles is: "+noOfShippingProfile);
+		return noOfShippingProfile;
+	}
+
+	public String addAndGetProductSKUForCatalog(){
+		driver.waitForElementPresent(OPEN_BULK_ADD_LOC);
+		driver.click(OPEN_BULK_ADD_LOC);
+		driver.waitForNSCore4LoadingImageToDisappear();
+		logger.info("Open bulk add link clicked");
+		driver.waitForElementPresent(PRODUCT_SKU_VALUE_CATALOG);
+		String SKU = driver.findElement(PRODUCT_SKU_VALUE_CATALOG).getText();
+		driver.click(PRODUCT_SKU_CHK_BOX_CATALOG);
+		logger.info("Checkbox checked for add product");
+		driver.click(ADD_TO_CATALOG);
+		logger.info("Add to catalog button clicked");
+		driver.click(CLOSE_LINK_CATALOG_LOC);
+		logger.info("Close link clicked on bulk catalog popup");
+		return SKU;
+	}
+
+	public void addPaymentMethod(String firstName,String lastName,String nameOnCard,String cardNumber){
+		driver.waitForElementPresent(ADD_NEW_PAYMENT_METHOD_LINK);
+		driver.click(ADD_NEW_PAYMENT_METHOD_LINK);
+		logger.info("Add new payment method link clicked");
+		driver.pauseExecutionFor(3000);
+		//enter billing info
+		//select 'Main-Billing' as billing address-
+		Select select = new Select(driver.findElement(ADD_NEW_BILLING_ADDRESS_DROP_DOWN_LOC));
+		select.selectByIndex(1);
+		driver.pauseExecutionFor(4500);
+		//Add 'Payment-Method'
+		driver.type(ADD_PAYMENT_METHOD_FIRST_NAME_LOC, firstName);
+		logger.info("First name entered for billing profile is: "+firstName);
+		driver.type(ADD_PAYMENT_METHOD_LAST_NAME_LOC, lastName);
+		logger.info("last name entered for billing profile is: "+lastName);
+		driver.type(ADD_PAYMENT_METHOD_NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("name on card entered for billing profile is: "+nameOnCard);
+		driver.type(ADD_PAYMENT_METHOD_CREDIT_CARD_NO_LOC, cardNumber);
+		logger.info("card number entered for billing profile is: "+cardNumber);
+		//select 'Expiration' Date(change year)
+		Select sel = new Select(driver.findElement(ADD_NEW_PAYMENT_EXPIRATION_YEAR_DROP_DOWN_LOC));
+		sel.selectByIndex(7);
+		logger.info("Credit card expire year selected");
+	}
+
+	public boolean isEditPresentForConsultantReplenishmentPresent(){
+		driver.waitForElementPresent(CONSULTANT_REPLENISHMENT_EDIT);
+		return driver.isElementPresent(CONSULTANT_REPLENISHMENT_EDIT);
+	}
+
+	public boolean isEditPresentForPulseMonthlySubscriptionPresent(){
+		driver.waitForElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
+		return driver.isElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 	}
 }

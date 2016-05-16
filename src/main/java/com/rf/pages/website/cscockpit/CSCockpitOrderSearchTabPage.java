@@ -214,7 +214,7 @@ public class CSCockpitOrderSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean verifyNoResultFoundForInvalidCID(){
-		driver.isElementPresent(INVALID_CID_SEARCH_RESULT);
+		driver.quickWaitForElementPresent(INVALID_CID_SEARCH_RESULT);
 		return driver.isElementPresent(INVALID_CID_SEARCH_RESULT);  
 	}
 

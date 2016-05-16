@@ -22,16 +22,16 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	private String RFL_DB = null;
 
 	//Products-Redefine-Regimen-Links should be redirecting to the appropriate page
-	@Test(enabled=true)//mini
+	@Test
 	public void testProductsRedefineRegimenLinksRedirectingToTheAppropriatePage(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subLinkProducts = "Products";
 		String subLinkResults = "Results";
-		String subLinkTestimonials = "Testimonials";
-		String subLinkInTheNews = "In the News";
+		//String subLinkTestimonials = "Testimonials";
+		//String subLinkInTheNews = "In the News";
 		String subLinkFAQ = "FAQs";
-		String subLinkAdvice = "Advice";
-		String subLinkGlossary = "Glossary";
+		//String subLinkAdvice = "Advice";
+		//String subLinkGlossary = "Glossary";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -40,56 +40,52 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkProducts);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(),"user is not on products page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(subLinkRegimen),"user is not on products page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkResults);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkResults.toLowerCase()), "Expected sublink in url is "+subLinkResults.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(),"user is not on results page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(subLinkRegimen),"user is not on results page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkFAQ);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("CommonQuestions".toLowerCase()), "Expected sublink in url is "+"CommonQuestions".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(),"user is not on FAQs page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(subLinkRegimen),"user is not on FAQs page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickIngredientsAndUsageLink();
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyIngredientsAndUsageInfoVisible(),"Ingredients and usage link is not present under regimen sublink.");
-
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 		s_assert.assertAll();
-
 	}
 
 	//Reverse Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testReverseProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		String subLinkProducts = "Products";
-		String subLinkTestimonials = "Testimonials";
-		String subLinkInTheNews = "In the News";
+		//String subLinkTestimonials = "Testimonials";
+		//String subLinkInTheNews = "In the News";
 		String subLinkFAQ = "FAQs";
-		String subLinkAdvice = "Advice";
-		String subLinkGlossary = "Glossary";
+		//String subLinkAdvice = "Advice";
+		//String subLinkGlossary = "Glossary";
+		String subLinkResults = "Results";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -98,47 +94,53 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkProducts);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(),"user is not on products page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(subLinkRegimen),"user is not on products page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkFAQ);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("CommonQuestions".toLowerCase()), "Expected sublink in url is "+"CommonQuestions".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(),"user is not on FAQs page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(subLinkRegimen),"user is not on FAQs page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkResults);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkResults.toLowerCase()), "Expected sublink in url is "+subLinkResults.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(subLinkRegimen),"user is not on results page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		s_assert.assertAll();
 	}
 
 	//Unblemish Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testUnblemishProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
 		String subLinkProducts = "Products";
-		String subLinkTestimonials = "Testimonials";
-		String subLinkInTheNews = "In the News";
+		//String subLinkTestimonials = "Testimonials";
+		//String subLinkInTheNews = "In the News";
 		String subLinkFAQ = "FAQs";
-		String subLinkAdvice = "Advice";
-		String subLinkGlossary = "Glossary";
+		String subLinkResults = "Results";
+		//String subLinkAdvice = "Advice";
+		//String subLinkGlossary = "Glossary";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -147,47 +149,53 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkProducts);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(),"user is not on products page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(subLinkRegimen),"user is not on products page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkFAQ);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("CommonQuestions".toLowerCase()), "Expected sublink in url is "+"CommonQuestions".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(),"user is not on FAQs page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(subLinkRegimen),"user is not on FAQs page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkResults);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkResults.toLowerCase()), "Expected sublink in url is "+subLinkResults.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(subLinkRegimen),"user is not on results page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		s_assert.assertAll();
 	}
 
 	//Soothe Products-links should be working properly (products, testimonials, in the news, FAQ's, advice, glossary)
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testSootheProductsLinksWorkingProperly(){
 		String subLinkRegimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
 		String subLinkProducts = "Products";
-		String subLinkTestimonials = "Testimonials";
-		String subLinkInTheNews = "In the News";
+		//String subLinkTestimonials = "Testimonials";
+		//String subLinkInTheNews = "In the News";
 		String subLinkFAQ = "FAQs";
-		String subLinkAdvice = "Advice";
-		String subLinkGlossary = "Glossary";
+		//String subLinkAdvice = "Advice";
+		//String subLinkGlossary = "Glossary";
+		String subLinkResults = "Results";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -196,33 +204,38 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkProducts);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(),"user is not on products page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(subLinkRegimen),"user is not on products page");
 		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkTestimonials);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkTestimonials.toLowerCase()), "Expected sublink in url is "+subLinkTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkInTheNews);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected sublink in url is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkFAQ);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("CommonQuestions".toLowerCase()), "Expected sublink in url is "+"CommonQuestions".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(),"user is not on FAQs page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(subLinkRegimen),"user is not on FAQs page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkResults);
+		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkResults.toLowerCase()), "Expected sublink in url is "+subLinkResults.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(subLinkRegimen),"user is not on results page");
 		storeFrontLegacyHomePage.navigateToBackPage();
 
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
-		storeFrontLegacyHomePage.navigateToBackPage();
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkAdvice);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkAdvice.toLowerCase()), "Expected sublink in url is "+subLinkAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
+		//
+		//		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subLinkGlossary);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subLinkGlossary.toLowerCase()), "Expected sublink in url is "+subLinkGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
+		//		storeFrontLegacyHomePage.navigateToBackPage();
 
 		s_assert.assertAll();
 	}
@@ -267,7 +280,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer- Privacy Policy link should be redirecting to the appropriate page
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testFooterPrivacyPolicyLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickPrivacyPolicyLink();
@@ -277,7 +290,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Footer-Terms & Conditions link should redirecting to the appropriate page
-	@Test(enabled=true)//mini
+	@Test
 	public void testFooterTermsAndConditionLinkShouldRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickTermsAndConditionsLink();
@@ -286,7 +299,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Satisfaction Guarantee-link should be redirecting properly 
-	@Test(enabled=true)//mini
+	@Test
 	public void testSatisfactionGuaranteeLinkShouldBeRedirectionProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickSatisfactionGuaranteeLink();
@@ -296,7 +309,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Real results products- links should be redirecting to the appropriate page
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//For REDEFINE
@@ -345,7 +358,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as an existen consultant
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testLoginAsExistingConsultant(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -359,7 +372,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in as valid PC customer
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testLoginAsExistingPC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList =  null;
@@ -373,7 +386,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Log in with a valid RC customer
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testLoginAsExistingRC(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
@@ -387,7 +400,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Solution Tool-Find a Rodan  + Fields consultant should be working properly
-	@Test(enabled=true)//mini
+	@Test
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String fetchedPWS = null;
@@ -406,17 +419,17 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Redefine-Sub links should be displayed properly(regimen, products, results, testimonials, in the news, FAQs, Advice, Glossary)
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testVerifyRedefineRegimenLinksDisplayedProperly(){
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String subSectionRegimen = "Regimen";
 		String subSectionProducts = "Products";
 		String subSectionResults = "Results";
-		String subSectionTestimonials = "Testimonials";
-		String subSectionInTheNews = "In the News";
+		//String subSectionTestimonials = "Testimonials";
+		//String subSectionInTheNews = "In the News";
 		String subSectionFAQ = "FAQs";
-		String subSectionAdvice = "Advice";
-		String subSectionGlossary = "Glossary";
+		//String subSectionAdvice = "Advice";
+		//String subSectionGlossary = "Glossary";
 
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickShopSkinCareBtn();
@@ -426,81 +439,28 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionRegimen),"Redefine regimen section regimen is not displayed");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionProducts),"Redefine regimen section Products is not displayed");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionResults),"Redefine regimen section Results is not displayed");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionTestimonials),"Redefine regimen section testimonials is not displayed");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionInTheNews),"Redefine regimen section In the news is not displayed");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionTestimonials),"Redefine regimen section testimonials is not displayed");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionInTheNews),"Redefine regimen section In the news is not displayed");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionFAQ),"Redefine regimen section FAQ is not displayed");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionAdvice),"Redefine regimen section Advice is not displayed");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionGlossary),"Redefine regimen section Glossary is not displayed");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionAdvice),"Redefine regimen section Advice is not displayed");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifyRedefineRegimenSections(subSectionGlossary),"Redefine regimen section Glossary is not displayed");
 
-		//Verify Visibility of Redefine Regimen regimen subSections.
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyAddToCartButton(),"Add to cart button not present under regimen sublink.");
-		storeFrontLegacyHomePage.clickIngredientsAndUsageLink();
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyIngredientsAndUsageInfoVisible(),"Ingredients and usage link is not present under regimen sublink.");
-		storeFrontLegacyHomePage.clickAddToCartBtn();
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyCheckoutBtnOnMyShoppingCart(),"Checkout button is not present on my shopping cart page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen Products subSections.	
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionProducts);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subSectionProducts.toLowerCase()), "Expected regimen name is "+subSectionProducts.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());		
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToProductsPage(),"user is not on product page");
-		storeFrontLegacyHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyCheckoutBtnOnMyShoppingCart(),"Checkout button is not present on my shopping cart page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen results subSections.	
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionResults);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subSectionResults.toLowerCase()), "Expected regimen name is "+subSectionResults.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToResultsPage(),"user is not on results page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen testimonials subSections.
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionTestimonials);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subSectionTestimonials.toLowerCase()), "Expected regimen name is "+subSectionTestimonials.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToTestimonialsPage(),"user is not on testimonials page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen In the news subSections.
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionInTheNews);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("News".toLowerCase()), "Expected regimen name is "+"News".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToNewsPage(),"user is not on News page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen Faq's subSections.
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionFAQ);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("CommonQuestions".toLowerCase()), "Expected regimen name is "+"CommonQuestions".toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToFAQsPage(),"user is not on FAQs page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen Advice subSections.
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionAdvice);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subSectionAdvice.toLowerCase()), "Expected regimen name is "+subSectionAdvice.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToAdvicePage(),"user is not on advice page");
-		storeFrontLegacyHomePage.navigateToBackPage();
-
-		//Verify Visibility of Redefine Regimen Glossary subSections.
-		storeFrontLegacyHomePage.clickSubSectionUnderRegimen(subSectionGlossary);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains(subSectionGlossary.toLowerCase()), "Expected regimen name is "+subSectionGlossary.toLowerCase()+" Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserIsRedirectedToGlossaryPage(),"user is not on glossary page");
-		storeFrontLegacyHomePage.navigateToBackPage();
 		s_assert.assertAll();
 	}
 
 	//log out with a valid user
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testLogoutWithAValidUser(){
 		RFL_DB = driver.getDBNameRFL();
 		String whyRF = "Why R+F";
-		String programsAndIncentives = "Programs and Incentives";
-		String incomeIllustrator = "Income Illustrator";
-		String events = "Events";
-		String meetOurCommunity = "Meet Our Community";
-		String enrollNow = "Enroll Now";
-		String gettingStarted = "Getting Started";
-		String businessKits = "Business Kits";
-		String redefineYourFuture = "Redefine Your Future";
+		//		String programsAndIncentives = "Programs and Incentives";
+		//		String incomeIllustrator = "Income Illustrator";
+		//		String events = "Events";
+		//		String meetOurCommunity = "Meet Our Community";
+		//		String enrollNow = "Enroll Now";
+		//		String gettingStarted = "Getting Started";
+		//		String businessKits = "Business Kits";
+		//		String redefineYourFuture = "Redefine Your Future";
 		String consultantEmailID = null;
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -511,31 +471,31 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		logout();
 		s_assert.assertTrue(storeFrontLegacyHomePage.isForgotPasswordLinkPresent(),"User is not logout successfully");
-		driver.getURL();
-		storeFrontLegacyHomePage.clickBeAConsultantBtn();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(whyRF), "Why R+F link is not present under business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(programsAndIncentives), "Programs And Incentives link is not present under business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(incomeIllustrator), "Income Illustrator link is not present under business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(events), "Events link is not present under business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(meetOurCommunity), "Meet Our Community link is not present under business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "enroll Now link is not present under business system");
-		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(whyRF);
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(businessKits), "Business Kits link is not present under Why R+F for business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(redefineYourFuture), "Redefine Your Future link is not present under Why R+F for business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "Enroll Now link is not present under Why R+F for business system");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(gettingStarted), "Expected selected and highlight link name is: "+gettingStarted+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
-		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(businessKits);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(businessKits), "Expected selected and highlight link name is: "+businessKits+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("business/kits"), "Expected url contains is: business/kits but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
-		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(gettingStarted);
-		storeFrontLegacyHomePage.clickClickhereLink();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
+		//		driver.getURL();
+		//		storeFrontLegacyHomePage.clickBeAConsultantBtn();
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(whyRF), "Why R+F link is not present under business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(programsAndIncentives), "Programs And Incentives link is not present under business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(incomeIllustrator), "Income Illustrator link is not present under business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(events), "Events link is not present under business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(meetOurCommunity), "Meet Our Community link is not present under business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "enroll Now link is not present under business system");
+		//		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(whyRF);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(businessKits), "Business Kits link is not present under Why R+F for business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(redefineYourFuture), "Redefine Your Future link is not present under Why R+F for business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "Enroll Now link is not present under Why R+F for business system");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(gettingStarted), "Expected selected and highlight link name is: "+gettingStarted+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		//		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(businessKits);
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains(businessKits), "Expected selected and highlight link name is: "+businessKits+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("business/kits"), "Expected url contains is: business/kits but Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
+		//		storeFrontLegacyHomePage.clickSublinkOfBusinessSystem(gettingStarted);
+		//		storeFrontLegacyHomePage.clickClickhereLink();
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
 		s_assert.assertAll();
 	}
 
 	//Corporate_BUsinessSystem_ Direct Selling
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testCorporateBusinessSystemDirectSelling(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
@@ -599,7 +559,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ SuccessStories
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testCorporateBusinessSystemSuccessStories(){
 		String meetOurCommunity = "Meet Our Community";
 		String rfxCircleAG = "RFx Circle: A-G";
@@ -639,11 +599,11 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Compensation Plan is displayed
-	@Test(enabled=false)//needs updation
+	@Test//(enabled=false)//needs updation
 	public void testCompensationPlanSectionIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
-		String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
+		//String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
 		String fourthSubSectionUnderBusinessSystem = "Events";
 		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
@@ -657,13 +617,13 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(secondSubSectionUnderBusinessSystem),""+secondSubSectionUnderBusinessSystem+" subTitle not present under business system page");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+fourthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fifthSubSectionUnderBusinessSystem),""+fifthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(sixthSubSectionUnderBusinessSystem),""+sixthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
-		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Compensation Plan"), "Expected selected and highlight link name is: "+"Compensation Plan"+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Programs and Incentives"), "Expected selected and highlight link name is: "+"Programs and Incentives but Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(secondSubSectionUnderProgramsAndIncentives),""+secondSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(thirdSubSectionUnderProgramsAndIncentives),""+thirdSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		storeFrontLegacyHomePage.clickToReadIncomeDisclosure();
@@ -672,16 +632,16 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Compensation Plan section Programs and Incentives is displayed
-	@Test(enabled=false)//needs updation
+	@Test//(enabled=false)//needs updation
 	public void testCompensationPlanProgramsAndIncentivesIsDisplayed(){
 		String firstSubSectionUnderBusinessSystem = "Why R+F";
 		String secondSubSectionUnderBusinessSystem = "Programs and Incentives";
-		String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
+		//String thirdSubSectionUnderBusinessSystem = "Income Illustrator";
 		String fourthSubSectionUnderBusinessSystem = "Events";
 		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
 
-		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
+		//String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
 		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
@@ -690,28 +650,28 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontLegacyHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(secondSubSectionUnderBusinessSystem),""+secondSubSectionUnderBusinessSystem+" subTitle not present under business system page");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(thirdSubSectionUnderBusinessSystem),""+thirdSubSectionUnderBusinessSystem+" subTitle not present under business system page");
+		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fourthSubSectionUnderBusinessSystem),""+fourthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(fifthSubSectionUnderBusinessSystem),""+fifthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtBusinessSystemPage(sixthSubSectionUnderBusinessSystem),""+sixthSubSectionUnderBusinessSystem+" subTitle not present under business system page");
 		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(firstSubSectionUnderProgramsAndIncentives),""+firstSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(secondSubSectionUnderProgramsAndIncentives),""+secondSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		s_assert.assertTrue(storeFrontLegacyHomePage.verifySubSectionPresentAtProgramsAndIncentives(thirdSubSectionUnderProgramsAndIncentives),""+thirdSubSectionUnderProgramsAndIncentives+" subTitle not present under Programs and Incentives page");
 		storeFrontLegacyHomePage.clickSubSectionUnderBusinessSystem(secondSubSectionUnderBusinessSystem);
 		s_assert.assertTrue(storeFrontLegacyHomePage.getSelectedHighlightLinkName().contains("Programs and Incentives"), "Expected selected and highlight link name is: "+"Programs and Incentives"+" Actual on UI: "+storeFrontLegacyHomePage.getSelectedHighlightLinkName());
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Fast Start Program");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Fast_Start_Flyer_2013_Secured.pdf"),"current url is not a valid and Expected url");
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("2016_RFx_Circle_TCs.pdf"),"current url is not a valid and Expected url");
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Elite V Program");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Elite_V_Flyer_Hawaii_2016.pdf"),"current url is not a valid and Expected url");
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Road to RF");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Road-to-RFx-Car-Incentive-Program-Flyer-09.24.11.pdf"),"current url is not a valid and Expected url");
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF Center for Leadership");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("RFCL_Spring2016_Flyer.pdf"),"current url is not a valid and Expected url");
-		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Premier V Trip");
-		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("PremierV_Flyer_F16_USA.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Fast Start Program");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Fast_Start_Flyer_2013_Secured.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("2016_RFx_Circle_TCs.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Elite V Program");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Elite_V_Flyer_Hawaii_2016.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Road to RF");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("Road-to-RFx-Car-Incentive-Program-Flyer-09.24.11.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("RF Center for Leadership");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("RFCL_Spring2016_Flyer.pdf"),"current url is not a valid and Expected url");
+		//		storeFrontLegacyHomePage.clickDetailsLinkUnderProgramsIncentivePage("Premier V Trip");
+		//		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentUrlOpenedWindow().contains("PremierV_Flyer_F16_USA.pdf"),"current url is not a valid and Expected url");
 		s_assert.assertAll();
 	}
 
@@ -748,7 +708,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Contact us-link should be redirecting properly
-	@Test(enabled=false)//needs updation
+	@Test
 	public void testContactUsLinkShouldBeRedirectingProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickContactUsAtFooter();
@@ -942,15 +902,15 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Getting Started section Redefine Your Future is displayed
-	@Test(enabled=false)//needs updation
+	@Test(enabled=false)
 	public void testGettingStartedSectionRedefineYourFutureIsDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		//verify the sub-menu title under the title business system?
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
-		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Community is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
-		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
 		//Navigate to Redefine Your Future section-
@@ -962,15 +922,15 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//The Getting Started Section Business Kit is displayed
-	@Test(enabled=true)//mini
+	@Test(enabled=false)
 	public void testGettingStartedSectionBusinessKitDisplayed(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickBeAConsultantBtn();
 		//verify the sub-menu title under the title business system?
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");
-		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Link is not present");
+		s_assert.assertTrue(storeFrontLegacyHomePage.validateMeetOurCommunityLinkPresent(),"Meet Our Community is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateEventsLinkPresent(),"Events Link is not present");
-		s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
+		//s_assert.assertTrue(storeFrontLegacyHomePage.validateIncomeIllustratorLinkPresent(),"Income Illustrator Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateProgramsAndIncentivesLinkPresent(),"ProgramIncentives Link is not present");
 		s_assert.assertTrue(storeFrontLegacyHomePage.validateWhyRFLinkPresent(),"Why RF Link is not present");
 		//Navigate to business kit section-
@@ -982,7 +942,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Contact us Link should be displayed properly
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCompanyContactUsLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -992,7 +952,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Press Room Link should be displayed properly
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCompanyPressRoomLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1002,7 +962,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Careers Link should be displayed properly
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCompanyCareersLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1012,7 +972,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Our Story Link should be displayed properly
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCompanyOurStoryLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1022,7 +982,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Company Execute Link should be displayed properly
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCompanyExecuteTeamLink(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickAboutRFBtn();
@@ -1052,7 +1012,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Disclaimer-link should be redirecting properly
-	@Test(enabled=true)//mini
+	@Test
 	public void testDisclaimerLinkShouldBeRedirectedProperly(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		//verify Disclaimer in footer should redirect properly?

@@ -772,6 +772,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String oldUserNameOnUI = storeFrontHomePage.fetchingUserName();
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.enterPhoneNumberAndPostalCode();
 		storeFrontAccountInfoPage.enterNewUserNameAndClicKOnSaveButton(newUserName);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Your Profile has not been Updated");
 		logout();
@@ -877,6 +878,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		String city = null;
+		String stateName = null;
 		String postalCode = null;
 		String phoneNumber = null;
 		String addressLine1 = null;
@@ -885,12 +887,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
 			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
 			phoneNumber = "99999"+randomNumPhone;
-			addressLine1 =  TestConstants.ADDRESS_LINE_1_CA;
+			addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
+			stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA;
 		}else{
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
+			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_US;
+			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_US;
 			phoneNumber = "99999"+randomNumPhone;
-			addressLine1 =  TestConstants.ADDRESS_LINE_1_US;
+			addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_US;
+			stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_US;
 		}
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -917,7 +921,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.updateFirstName(firstName);
 		storeFrontAccountInfoPage.updateLastName(lastName);
 		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
-		String state = storeFrontAccountInfoPage.updateRandomStateAndReturnName();
+		String state = storeFrontAccountInfoPage.updateStateAndReturnName(stateName);
 		logger.info("State/province selected is "+state);
 		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
 		storeFrontAccountInfoPage.updateDateOfBirthAndGender();
@@ -1798,7 +1802,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryConsultantEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
@@ -1850,7 +1854,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryPCUserEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
@@ -1902,7 +1906,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
 		storeFrontAccountInfoPage.enterUserName(crossCountryRCUserEmailID);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("This User Name is already registered with R+F, please try another User Name "),"Invalid username is accepted");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getWrongUsernameErrorMessage().contains("Your Username already exist,Please Enter the Different Username"),"Invalid username is accepted");
 		storeFrontAccountInfoPage.enterUserName(twoWords);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Invalid username is accepted");
@@ -2078,6 +2082,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 				boolean isError = driver.getCurrentUrl().contains("error");
@@ -2119,11 +2125,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 			logout();
 			// RC TO Consultant
-			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			while(true){
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
 				boolean isError = driver.getCurrentUrl().contains("error");
@@ -2183,13 +2191,16 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnEnrollMeBtn();
 			storeFrontHomePage.clickOnConfirmAutomaticPayment();
 			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			//PC to consultant
 			List<Map<String, Object>> randomPCUserList;
 			String pcUserEmailID = null;
 			while(true){
 				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
+				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+				pcUserEmailID = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountId);
 				storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 				boolean isLoginError = driver.getCurrentUrl().contains("error");

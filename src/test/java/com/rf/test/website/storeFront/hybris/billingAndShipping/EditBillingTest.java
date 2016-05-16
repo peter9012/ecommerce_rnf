@@ -626,7 +626,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		//storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
 		storeFrontUpdateCartPage.clickOnEditBillingProfileDuringEnrollInCRP(newBillingProfileName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileNameAfterEdit+" "+lastName);
 		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();

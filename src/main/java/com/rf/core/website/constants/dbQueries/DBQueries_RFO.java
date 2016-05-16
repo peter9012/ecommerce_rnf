@@ -608,13 +608,10 @@ public class DBQueries_RFO {
 			"(select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN "+ 
 			"(select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))))";
 
-
-
 	public static String GET_ORDER_NUMBER_QUERY = "select TOP 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc";
 	public static String GET_ORDER_STATUS_QUERY = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ORDER_GRAND_TOTAL_QUERY = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_DATE_QUERY = "select CompletionDate from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc)";
-
 
 	public static String GET_ACTIVE_CONSULTANT_HAVING_FAILED_CRP_ORDER_4294_RFO = 
 			"USE RFOperations "+
@@ -1793,9 +1790,22 @@ public class DBQueries_RFO {
 			"WHERE ab.CountryID = '%s' and ar.Active = 1 and ab.AccountTypeID = 1  "+
 			"ORDER BY NEWID()";
 
+	public static String GET_CONSULTANT_DETAILS_WITH_PWS_RFO = 
+			"Use RFOperations "+
+					"SELECT top 1 ab.AccountID , AC.FirstName, AC.LastName,AT.Name AS AccountType,[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+					"JOIN    RFO_Accounts.ConsultantPWSInfo AS CPI ON CPI.AccountId = ab.AccountId "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN   RFO_Accounts.AccountContacts AS AC ON AC.AccountId = ab.AccountID "+
+					"WHERE ab.CountryID = '%s' and ar.Active = 1 and ab.AccountTypeID = 1  "+
+					"ORDER BY NEWID()";
+
 	public static String GET_USER_DETAILS_FROM_ACCOUNTID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId='%s'";
 	public static String GET_ACCOUNT_ID_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountNumber='%s'";
-	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressID IN (select top 1 EmailAddressID from RFO_Accounts.AccountEmails where AccountContactId IN (select top 1 AccountContactId from RFO_Accounts.AccountContacts where AccountId = '%s'))";
+	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select EmailAddress from RFO_Accounts.AccountContacts acTB INNER JOIN RFO_Accounts.AccountEmails aeTB  "+
+			"on acTB.AccountContactId=aeTB.AccountContactId INNER JOIN RFO_Accounts.EmailAddresses aEMTB on aeTB.EmailAddressID=aEMTB.EmailAddressID WHERE acTB.AccountID='%s' and aEMTB.EmailAddressTypeID=1 ";
 	public static String GET_RETURN_ORDER_DETAILS_FROM_RMA_NUMBER ="select top 1 * from Hybris.ReturnOrder where returnordernumber='%s'";
 	public static String GET_ACTIVE_US_CONSULTANT_WITHOUT_PWS_AND_PULSE="SELECT TOP 1 HYBRIS.dbo.USERS.P_CUSTOMEREMAIL ,HYBRIS.dbo.USERS.P_RFACCOUNTID, RFO_Accounts.AccountRF.Active, "+
 			"HYBRIS.dbo.users.p_rfaccountnumber, RFO_Accounts.AccountBase.AccountNumber "+

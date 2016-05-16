@@ -8,14 +8,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -27,6 +31,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	private Actions actions;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -55,7 +60,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.get(driver.getURL()+"/"+country);
 		}
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
-			
+
 		}else{
 			try{
 				logout();
@@ -71,18 +76,19 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.selectCountry(country);
 		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());
-//		if(driver.getURL().contains("salesforce")==true){
-//			try{
-//				crmLogoutFromHome();
-//				driver.get(driver.getURL());
-//			}catch(Exception e){
-//
-//			}
-//		}
+		//		if(driver.getURL().contains("salesforce")==true){
+		//			try{
+		//				crmLogoutFromHome();
+		//				driver.get(driver.getURL());
+		//			}catch(Exception e){
+		//
+		//			}
+		//		}
 	}
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
+		driver.manage().deleteAllCookies();
 		if(driver.getURL().contains("salesforce")==true){
 			try{
 				crmLogout();
@@ -125,10 +131,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void logout(){
-		driver.quickWaitForElementPresent(By.id("account-info-button"));
-		driver.findElement(By.id("account-info-button")).click();
+		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		driver.click(By.id("account-info-button"));
+		logger.info("Your account info has been clicked");
 		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.findElement(By.linkText("Log out")).click();
+		driver.click(By.linkText("Log out"));
 		logger.info("Logout");                    
 		driver.pauseExecutionFor(3000);
 	}

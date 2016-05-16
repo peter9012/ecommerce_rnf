@@ -672,7 +672,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
 			String value= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
 			String[] totalValue= value.split("\\s");
-			double  subtotal = Double.parseDouble(totalValue[1]);
+			String totValue = totalValue[1];
+			if (totValue.contains(",")){
+				String[] totalValueArray = totalValue[1].split(",");
+				totValue = totalValueArray[0]+totalValueArray[1];
+			}			
+			double  subtotal = Double.parseDouble(totValue);
 			logger.info("Subtotal Value fetched is "+subtotal);
 			return subtotal;
 		}else{
@@ -943,6 +948,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}catch(Exception e){
 			logger.info("useAsEntered popUp not Present");
 		}
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void addAshippingProfile(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
@@ -971,7 +977,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}else{
 			driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[2]//a[contains(text(),'Edit')]"));
 		}
-		driver.pauseExecutionFor(5000);
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);		
 	}
 
 	public void clickOnSaveShippingProfileOnUpdateCrpPage() throws InterruptedException{
@@ -1019,6 +1026,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			}
 		}  
 		logger.info("Edit link for "+billingProfileName+"clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyNewlyCreatedShippingAddressIsSelectedByDefault(String name){
@@ -1192,7 +1200,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("save address button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.click(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+profileName+"')]/following::a[@class='editShippingAddress'][1]"));
-		logger.info("Edit clicked of newly added shipping profile");		
+		logger.info("Edit clicked of newly added shipping profile");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isOnlyOneShippingProfilePresentOnAdhocCart(){

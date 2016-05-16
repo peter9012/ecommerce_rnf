@@ -53,55 +53,67 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isAutoshipTemplateDisplayedInAutoshipTemplateTab(){
-		driver.isElementPresent(AUTOSHIP_TEMPLATE);
+		driver.quickWaitForElementPresent(AUTOSHIP_TEMPLATE);
 		return driver.isElementPresent(AUTOSHIP_TEMPLATE);  
 	}
 
 	public boolean verifySearchByFieldPresentOnAutoshipSearch() {
+		driver.quickWaitForElementPresent(SEARCH_BY_FIELD_LOC);
 		return driver.isElementPresent(SEARCH_BY_FIELD_LOC);
 	}
 
 	public boolean verifyTemplateTypeFieldPresentOnAutoshipSearch() {
+		driver.quickWaitForElementPresent(TEMPLATE_TYPE_FIELD_LOC);
 		return driver.isElementPresent(TEMPLATE_TYPE_FIELD_LOC);
 	}
 
 	public boolean verifyLastOrderStatusFieldPresentOnAutoshipSearch() {
+		driver.quickWaitForElementPresent(ORDER_STATUS_FIELD_LOC);
 		return driver.isElementPresent(ORDER_STATUS_FIELD_LOC);
 	}
 
 	public boolean verifyCustomerNameCidFieldPresentOnAutoshipPage() {
+		driver.quickWaitForElementPresent(CUSTOMER_NAME_FIELD_LOC);
 		return driver.isElementPresent(CUSTOMER_NAME_FIELD_LOC);
 	}
 
 	public boolean verifySponsorNameCidFieldPresentOnAutoshipPage() {
+		driver.quickWaitForElementPresent(SPONSOR_NAME_FIELD_LOC);
 		return driver.isElementPresent(SPONSOR_NAME_FIELD_LOC);
 	}
 
 	public boolean verifyTemplateNumberCidFieldPresentOnAutoshipPage() {
+		driver.quickWaitForElementPresent(TEMPLATE_NAME_FIELD_LOC);
 		return driver.isElementPresent(TEMPLATE_NAME_FIELD_LOC);
 	}
 
 	public boolean verifyRunSelectedButtonPresent() {
+		driver.quickWaitForElementPresent(RUN_SELECTED_BUTTON_LOC);
 		return driver.isElementPresent(RUN_SELECTED_BUTTON_LOC);
 	}
 
 	public boolean verifySearchAutoshipButtonPresent() {
+		driver.quickWaitForElementPresent(SEARCH_AUTOSHIP_BUTTON_LOC);
 		return driver.isElementPresent(SEARCH_AUTOSHIP_BUTTON_LOC);
 	}
 
 	public void clickSearchByDropDown(){
+		driver.quickWaitForElementPresent(SEARCH_BY_DD_IMG_LOC);
 		driver.click(SEARCH_BY_DD_IMG_LOC);
 	}
 
 	public void clickTemplateTypeDropDown(){
+		driver.quickWaitForElementPresent(TEMPLATE_TYPE_DD_IMG_LOC);
 		driver.click(TEMPLATE_TYPE_DD_IMG_LOC);
 	}
 
 	public void clickLastOrderStatusDropDown(){
+		driver.quickWaitForElementPresent(LAST_ORDER_STATUS_DD_IMG_LOC);
 		driver.click(LAST_ORDER_STATUS_DD_IMG_LOC);
 	}
 
 	public void clickTemplateStatusDropDown(){
+		driver.quickWaitForElementPresent(TEMPLATE_STATUS_DD_IMG_LOC);
 		driver.click(TEMPLATE_STATUS_DD_IMG_LOC);
 	}
 
@@ -126,12 +138,14 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isCalenderIconPresent(){
+		driver.quickWaitForElementPresent(CALENDER_ICON);
 		return driver.isElementPresent(CALENDER_ICON);
 	}
 
 	public void clickSearchAutoshipButton() {
+		driver.quickWaitForElementPresent(SEARCH_AUTOSHIP_BUTTON_LOC);
 		driver.click(SEARCH_AUTOSHIP_BUTTON_LOC);
-		driver.waitForCSCockpitLoadingImageToDisappear(30000);		
+		driver.waitForCSCockpitLoadingImageToDisappear(30);		
 	}
 
 	public boolean isSearchResultsColumnNamePresent(String value){
@@ -141,6 +155,7 @@ public class CSCockpitAutoshipSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public boolean isSelectAllColumnPresent(){
+		driver.quickWaitForElementPresent(SEARCH_RESULT_SELECT_ALL_COLUMN);
 		return driver.isElementPresent(SEARCH_RESULT_SELECT_ALL_COLUMN);
 	}
 

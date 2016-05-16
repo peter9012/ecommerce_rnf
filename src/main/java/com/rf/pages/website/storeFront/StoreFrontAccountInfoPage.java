@@ -81,6 +81,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	public StoreFrontAccountTerminationPage clickTerminateMyAccount() throws InterruptedException{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.click(TERMINATE_MY_ACCOUNT);
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(1000);
 		return new StoreFrontAccountTerminationPage(driver);
 
 	}
@@ -598,6 +600,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void changeMainAddressToQuebec(){
+		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[@value='QC']"));
 		driver.click(By.xpath("//select[@id='state']/option[@value='QC']"));
@@ -662,6 +665,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.id("username-account"), newUserName+"\t");
 		driver.click(By.id("saveAccountInfo"));
 		logger.info("save button clicked");
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept as original button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(NoSuchElementException e){
+
+		}  
 	}
 
 	public boolean verifyProfileUpdationMessage(){
@@ -675,8 +686,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']"));
-		return driver.findElement(By.xpath("//label[text()='This User Name is already registered with R+F, please try another User Name .']")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']"));
+		return driver.findElement(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']")).isDisplayed();
+	}
+
+	public String getWrongUsernameErrorMessage() {
+		driver.waitForElementPresent(By.xpath("//div[@class='information_message negative']/p[2]"));
+		String errorMessage=driver.findElement(By.xpath("//div[@class='information_message negative']/p[2]")).getText();
+		return errorMessage;
 	}
 
 	public boolean enterUserNameWithSpclChar(String prefix) throws InterruptedException{
@@ -948,6 +965,29 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean verifyThresholdErrorMsgPresent() {
 		return driver.isElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[contains(@class,'error')]"));
+	}
+
+	public void enterPhoneNumberAndPostalCode(){
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			driver.waitForElementPresent(By.id("postal-code"));
+			driver.clear(By.id("postal-code"));
+			driver.type(By.id("postal-code"), TestConstants.POSTAL_CODE_CA);
+			driver.clear(By.id("phonenumber"));
+			driver.type(By.id("phonenumber"), TestConstants.PHONE_NUMBER_CA);
+		}
+		else{
+			driver.waitForElementPresent(By.id("postal-code"));
+			driver.clear(By.id("postal-code"));
+			driver.type(By.id("postal-code"), TestConstants.POSTAL_CODE_US);
+			driver.clear(By.id("phonenumber"));
+			driver.type(By.id("phonenumber"), TestConstants.PHONE_NUMBER_US);
+		}
+	}
+
+	public String updateStateAndReturnName(String state){
+		Select stateDD = new Select(driver.findElement(By.xpath("//select[@id='state']")));
+		stateDD.selectByVisibleText(state);
+		return state;
 	}
 
 }

@@ -94,15 +94,20 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		String accountId = null;
 
 		//-------------------FOR US----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			try{
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}catch(Exception e){
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			}
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -138,50 +143,6 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitOrderTabPage.verifyTaxCommittedEntryInOrderTab(orderNumber),"Tax committed entry is not present in order");
 		cscockpitOrderSearchTabPage.clickMenuButton();
 		cscockpitOrderSearchTabPage.clickLogoutButton();
-
-		//-------------------FOR CA----------------------------------
-		driver.get(driver.getStoreFrontURL()+"/ca");
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,"40"),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/ca");
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-		//Place an Adhoc Order
-		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-		storeFrontUpdateCartPage.clickAddToBagButtonWithoutFilter();
-		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
-		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-		orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
-		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		firstAdhocOrder=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		s_assert.assertTrue(firstAdhocOrder.equalsIgnoreCase(orderNumber), "Placed Adhoc order is not present in order history");
-		logout();
-		driver.get(driver.getCSCockpitURL()); 
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickCommitTaxTab();
-		cscockpitCommitTaxTabPage.enterOrderNumberInCommitTaxTab(orderNumber);
-		s_assert.assertTrue(cscockpitCommitTaxTabPage.verifyConfirmationPopup(), "Confirmation Popup For tax on this order number is not present.");
-		cscockpitCommitTaxTabPage.clickConfirmationPopupOkayInCommitTaxTab();
-		commitTaxId=cscockpitCommitTaxTabPage.getCommitTaxIdOfOrderInCommitTaxTab();
-		cscockpitCommitTaxTabPage.clickSuccessfulCommittedTaxPopupOkay();
-		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		cscockpitOrderSearchTabPage.clickOrderLinkOnOrderSearchTabAndVerifyOrderDetailsPage(orderNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyTaxCommittedEntryInOrderTab(orderNumber),"Tax committed entry is not present in order");
 		s_assert.assertAll();
 	}
 
@@ -3893,7 +3854,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1572:To verify the Canada tax for Alberta for Create CRP Autoship
-	@Test
+	@Test(enabled=false)//test needs updation
 	public void testVerifyCanadaTaxForAlbertaForCreateCRPAutoship_1572() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4055,7 +4016,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1574:To verify the Canada tax for Manitoba for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForManitobaForCreateCRPAutoship_1574() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4136,7 +4097,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1575:To verify the Canada tax for ontario for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForOntarioForCreateCRPAutoship_1575() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4217,7 +4178,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1577:To verify the Canada tax for New Foundland for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNewFoundlandForCreateCRPAutoship_1577() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4298,7 +4259,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1578:To verify the Canada tax for Yukon for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForYukonForCreateCRPAutoship_1578() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4379,7 +4340,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1579:To verify the Canada tax for Northwest Territories for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNorthwestTerritoriesForCreateCRPAutoship_1579() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4460,7 +4421,7 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1580:To verify the Canada tax for Nunavat for Create CRP Autoship
-	@Test(enabled=false)//WIP
+	@Test
 	public void testVerifyCanadaTaxForNunavatForCreateCRPAutoship_1580() throws InterruptedException{
 		String randomProductSequenceNumber = null;
 		RFO_DB = driver.getDBNameRFO();
@@ -4539,4 +4500,6 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 		}
 		s_assert.assertAll();
 	}
+
+
 }

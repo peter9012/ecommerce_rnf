@@ -73,5 +73,5 @@ public class CommisionsVerificationTest extends RFWebsiteBaseTest{
 
 	private String RFO_DB = null;
 
-	
+
 }

@@ -12,16 +12,17 @@ import org.openqa.selenium.support.ui.Select;
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePage{
-
-	private static String consultantOnlyProduct= "//p[contains(text(),'%s')]/preceding::a[1]/img";
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontLegacyPCUserPage.class.getName());
 
 	public StoreFrontLegacyPCUserPage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final Logger logger = LogManager
-			.getLogger(StoreFrontLegacyPCUserPage.class.getName());
+	private static String consultantOnlyProduct= "//p[contains(text(),'%s')]/preceding::a[1]/img";
+	private static String linkUnderMyAccount = "//div[@id='RFContent']//span[contains(text(),'%s')]";
+
 	private static final By DELAY_OR_CANCEL_PC_PERKS = By.xpath("//a[@id='PcCancellLink']");
 	private static final By PC_CANCELLATION_POPUP = By.xpath("//div[@id='PcCancellationDialog']");
 	private static final By CANCEL_MY_PC_PERKS_ACCOUNT_BTN = By.xpath("//a[@id='BtnCancelPCPerks']");
@@ -33,7 +34,9 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 	private static final By EMAIL_CONFIRMATION_MSG = By.xpath("//div[@id='RFContent']/p");
 	private static final By INVALID_LOGIN = By.xpath("//p[@id='loginError']");
 	private static final By UPDATE_ORDER_BTN = By.xpath("//div[@id='TotalBar']/following::input[@value='Update Order']");
-	private static final By MY_ACCOUNT_LINK = By.xpath("//a[text()='My Account']");
+	private static final By DELAY_OR_CANCEL_PC_PERKS_LINK = By.xpath("//a[@id='PcCancellLink']/span[text()=' Delay or Cancel PC Perks']");
+	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//p[@class='FormButtons']//a[text()='Edit Order']");
+	private static final By VIEW_DETAILS_LINK_LOC = By.xpath("//a[text()='View Details']");
 
 	public boolean isDelayOrCancelPCPerksLinkPresent(){
 		driver.waitForElementPresent(DELAY_OR_CANCEL_PC_PERKS);
@@ -120,11 +123,44 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 		logger.info("Update order button clicked");
 	}
 
-	public void clickMyAccountLink(){
-		driver.waitForElementPresent(MY_ACCOUNT_LINK);
-		driver.click(MY_ACCOUNT_LINK);
-		logger.info("My Account link clicked");
-		driver.waitForPageLoad();
+	public boolean verifyOrderHistoryPresent(String string) {
+		return driver.isElementPresent(VIEW_DETAILS_LINK_LOC);
+	}
+
+	public boolean isEditOrderPagePresent() {
+		return driver.isElementPresent(EDIT_ORDER_BTN_LOC);
+	}
+
+	public boolean isPcPerksStatusLinkPresent() {
+		return driver.isElementPresent(DELAY_OR_CANCEL_PC_PERKS_LINK);
+	}
+
+
+	public boolean verifyFaqPagePresent() {
+
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				status = driver.getCurrentUrl().toLowerCase().contains("pc-perks-faqs.pdf");
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+				return status;
+			}
+		}
+		return status;
+	}
+
+	public boolean verifyCurrentPage(String content) {
+		return driver.getCurrentUrl().contains(content);
+	}
+
+	public boolean verifyLinkPresentUnderMyAccount(String linkName) {
+		return driver.isElementPresent(By.xpath(String.format(linkUnderMyAccount, linkName)));
 	}
 
 }

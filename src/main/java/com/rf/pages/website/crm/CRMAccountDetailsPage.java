@@ -1226,13 +1226,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 				driver.switchTo().window(childWindowID);
 				if(driver.getCurrentUrl().contains("corprfo") && verifyWelcomeDropdownToCheckUserRegistered()){
 					String username  = getUserNameFromStoreFrontAccountDetails();
+					System.out.println("username ="+username);
+					driver.close();
+					driver.switchTo().window(parentWindowID);
 					return username;
 				}
 
 			}
 		}
-		driver.close();
-		driver.switchTo().window(parentWindowID);
+		
 		return null;
 	}
 

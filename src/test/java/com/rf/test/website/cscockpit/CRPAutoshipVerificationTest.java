@@ -2913,5 +2913,59 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		logout();
 		s_assert.assertAll();
 	}
-	
+
+	//Hybris Project-5285:Expired Credit Card: To verify that shipped orders can be returned
+	@Test
+	public void testVerifyShippedOrdersCanBeReturned_5285(){
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab("Shipped");
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(), "Refund Order button is not present for shipped order");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-1939:To Verify that PC account status is Inactive when Pcperks Autoship cancelled
+	@Test
+	public void testVerifyPCAccountStatusIsInactiveWhenPCPerksAutoshipCancelled_1939() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomCustomerSequenceNumber = null;
+		String country = null;
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+
+		//Login to cscockpit.	
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String PCEmailID = cscockpitCustomerSearchTabPage.getEmailIdOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber);
+		String cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		if(cscockpitCustomerTabPage.isPCAutoshipIDHavingStatusIsPendingPresent()){
+			cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsPCAutoshipAndStatusIsPending();
+			cscockpitAutoshipTemplateTabPage.clickCancelAutoship();
+			cscockpitAutoshipTemplateTabPage.selectPCPerksCancellationReasonFromDropDownInAutoShipTemplateTab();
+			cscockpitAutoshipTemplateTabPage.selectPCPerksRequestSourceFromDropDownInAutoShipTemplateTab();
+			cscockpitAutoshipTemplateTabPage.enterPCPerksCancellationMessage("Automation termination"+randomNum);
+			cscockpitAutoshipTemplateTabPage.clickConfirmCancelAutoshipTemplatePopup();
+		}
+		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
+		cscockpitCustomerSearchTabPage.enterCIDInOrderSearchTab(cid);
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(PCEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		s_assert.assertTrue(cscockpitCustomerSearchTabPage.getAccountStatusOfTheCustomerInCustomerSearchTab(randomCustomerSequenceNumber).contains("INACTIVE"),"Account status of pc user is not Inactive after cancelling pc perks autoship.");
+		s_assert.assertAll();  
+	}
+
 }

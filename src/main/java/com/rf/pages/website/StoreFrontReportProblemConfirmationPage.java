@@ -1,10 +1,15 @@
 package com.rf.pages.website;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest;
 
 public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  {
+	private static final Logger logger = LogManager
+			.getLogger(StoreFrontReportProblemConfirmationPage.class.getName());
 
 	private final By REPORT_CONFIRMATION_HEADER_LOC = By.xpath("//div[@class='gray-container-info-top']");
 	private final By REPORT_CONFIRMATION_EMAIL_ADD_LOC = By.xpath("//li[text()='E-mail Address:']/following::li[1]");
@@ -40,7 +45,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 		String emailAddress = EmailAdd.toLowerCase();
 		driver.waitForElementPresent(REPORT_CONFIRMATION_EMAIL_ADD_LOC);
 		String emailAdd = driver.findElement(REPORT_CONFIRMATION_EMAIL_ADD_LOC).getText();
-
+		logger.info("Email from UI is "+emailAdd +" and expected email address is "+emailAddress);
 		if(emailAdd.equals(emailAddress)){
 			return true;
 		}

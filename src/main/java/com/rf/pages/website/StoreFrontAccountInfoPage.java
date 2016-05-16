@@ -32,7 +32,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private final By ACCOUNT_INFO_POSTAL_CODE_LOC = By.xpath("//input[@id='postal-code']");
 	private final By ACCOUNT_INFO_MAIN_PHONE_NUMBER_LOC = By.xpath("//input[@id='phonenumber']");
 	private final By ACCOUNT_SAVE_BUTTON_LOC = By.xpath("//input[@id='saveAccountInfo']");
-	private final By ACCOUNT_INFO_VERIFY_ADDRESS_LOC = By.xpath("//input[@id='QAS_AcceptOriginal']");
+	private final By ACCOUNT_INFO_VERIFY_ADDRESS_LOC = By.xpath("//input[@id='QAS_RefineBtn']");
 	private String ACCOUNT_INFO_DAY_OF_BIRTH_LOC = "//select[@id='dayOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_GENDER_LOC = "//label[@for='%s']";
 	private String ACCOUNT_INFO_MONTH_OF_BIRTH_LOC = "//select[@id='monthOfBirth']//option[@value='%s']";
@@ -67,6 +67,12 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 	public boolean verifyAccountTerminationLink(){
 		return driver.isElementPresent(TERMINATE_MY_ACCOUNT);		
+	}
+	
+	public void selectState(String state){
+		driver.click(By.xpath("//select[@id='state']"));
+		driver.quickWaitForElementPresent(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
 	}
 
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
@@ -143,7 +149,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyProvinceFromUIForAccountInfo(String province){
 		driver.waitForElementPresent(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC);
 		String provinceFromUI =driver.findElement(ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC).getText();
-		logger.info(provinceFromUI+"====provinceFromUI");
+		logger.info(provinceFromUI+"====provinceFrom UI");
+		logger.info(province+"====provinceFrom DB");
 		if(provinceFromUI.equalsIgnoreCase(province)){
 			return true;
 		}

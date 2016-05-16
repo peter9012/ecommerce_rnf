@@ -280,6 +280,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		String city = null;
+		String state = null;
 		String postalCode = null;
 		String phoneNumber = null;
 		String addressLine1 = null;
@@ -287,8 +288,9 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		if(country.equalsIgnoreCase("CA")){
 			city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
 			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
+			state = TestConstants.CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION_CA;
 			phoneNumber = "99999"+randomNumPhone;
-			addressLine1 =  TestConstants.ADDRESS_LINE_1_CA;
+			addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
 		}else{
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
@@ -320,7 +322,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.updateFirstName(firstName);
 		storeFrontAccountInfoPage.updateLastName(lastName);
 		storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
-		String state = storeFrontAccountInfoPage.updateRandomStateAndReturnName();
+		storeFrontAccountInfoPage.selectState(state);
 		logger.info("State/province selected is "+state);
 		storeFrontAccountInfoPage.updateMainPhnNumber(phoneNumber);
 		storeFrontAccountInfoPage.updateDateOfBirthAndGender();

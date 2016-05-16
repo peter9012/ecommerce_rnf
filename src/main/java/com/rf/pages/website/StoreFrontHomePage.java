@@ -301,8 +301,8 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
@@ -358,9 +358,13 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 
 
 	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
-		driver.waitForElementPresent(By.id("QAS_RefineBtn"));
-		driver.click(By.id("QAS_RefineBtn"));
-		logger.info("accept the original button clicked");
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+			logger.info("accept the original button clicked");
+		}catch(Exception e){
+
+		}
 	}
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){

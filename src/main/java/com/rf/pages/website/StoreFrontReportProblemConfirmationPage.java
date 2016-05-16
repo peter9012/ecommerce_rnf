@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest;
 
 public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  {
 	private static final Logger logger = LogManager

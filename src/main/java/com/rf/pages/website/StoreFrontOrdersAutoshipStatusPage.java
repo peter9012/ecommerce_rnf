@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
-import com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest;
+//import com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest;
 
 public class StoreFrontOrdersAutoshipStatusPage extends RFWebsiteBasePage {
 	private static final Logger logger = LogManager

@@ -30,7 +30,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	private CRMAccountDetailsPage crmAccountDetailsPage; 
 	private CRMContactDetailsPage crmContactDetailsPage;
 	private StoreFrontHomePage storeFrontHomePage;
-//	private CRMRFWebsiteBasePage crmRFWebsiteBasePage;
+	//	private CRMRFWebsiteBasePage crmRFWebsiteBasePage;
 	private String RFO_DB = null;
 	String consultantEmailID = null;
 	String pcUserName = null;
@@ -47,7 +47,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmLoginpage = new CRMLoginPage(driver);
 		crmHomePage = new CRMHomePage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
-
+		crmContactDetailsPage = new CRMContactDetailsPage(driver);
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -172,6 +172,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
@@ -401,7 +402,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-//		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()) || pcUserName.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
+		//		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()) || pcUserName.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
 
 		crmHomePage.clickNameOnFirstRowInSearchResults();
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
@@ -506,19 +507,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser()==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-				logger.info("The email address is "+consultantEmailID);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-				emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-			}else{
-				break;
-			}
-		}
 		crmHomePage.clickNameWithActiveStatusInSearchResults();
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Action"),"Action label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Name"),"Name label is not present in Shipping address section");
@@ -678,6 +666,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//Hybris Project-4544:View Shipping Profile for RC
 	@Test(priority=16)
 	public void testViewShippingProfileForRC_4544() throws InterruptedException{
+		String rcUserName = null;
+		List<Map<String, Object>> randomRCUserList =  null;
 		logger.info("The email address is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
@@ -732,19 +722,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser()==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
-				logger.info("The email address is "+consultantEmailID);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-				emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-			}else{
-				break;
-			}
-		}
 		crmHomePage.clickNameWithActiveStatusInSearchResults();
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnBillingAddressSectionPresent("Action"),"Action label is not present in Billing profiles section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnBillingAddressSectionPresent("Name"),"Name label is not present in Billing profiles section");
@@ -1128,6 +1105,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	@Test(priority=25)
 	public void testDeleteShippingProfileForPCUser_4501() throws InterruptedException {
 		String pcUserName = null;
+		List<Map<String, Object>> randomPCUserList =  null;
 		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		logger.info("The username is "+pcUserName); 
@@ -1214,61 +1192,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-4505:View and Edit PWS Domain for a Consultant
-	@Test(priority=27)
-	public void testViewAndEditPWSDomainForConsultant_4505() throws InterruptedException{
-		List<Map<String, Object>> randomConsultantSitePrefix =  null;
-		String consultantConsumedSitePrefix = null;
-		String specialCharacter = "%%$#";
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String randomString = CommonUtils.getRandomWord(4);
-		String randomSitePrefixName = randomString+randomNum;
-		String randomSitePrefixNameWithSpecialCharacter = randomString+randomNum+specialCharacter;
-		for(int i=0; i<=4; i++){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
-			String PWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
-			System.out.println("URL is: "+PWS);
-			driver.get(PWS);
-			if(driver.getCurrentUrl().contains("sitenotfound")){
-				continue;
-			}else{
-				break;
-			}
-		}
-		driver.get(driver.getURL());
-		randomConsultantSitePrefix = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
-		consultantConsumedSitePrefix = (String) getValueFromQueryResult(randomConsultantSitePrefix, "SitePrefix");
-		logger.info("The email address is "+consultantEmailID);
-		logger.info("Already used consultant site prefix is "+consultantConsumedSitePrefix);
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		crmHomePage.clickConsultantCustomerNameInSearchResult();
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
-		String siteUrlBeforeEdit = crmAccountDetailsPage.getOldSitePrefixWithCompleteSiteBeforeEdit();
-		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixName);
-		crmAccountDetailsPage.clickCheckAvailabilityButton();
-		s_assert.assertTrue(crmAccountDetailsPage.getCheckAvailabilityMessage().trim().contains(randomSitePrefixName.trim()+" is available"), "Random site prefix is not available");
-		crmAccountDetailsPage.clickPWSSaveButton();
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
-		String siteUrlAfterEdit = crmAccountDetailsPage.getNewSitePrefixWithCompleteSiteAfterEdit();
-		String[] afterEditPWSUrl = siteUrlAfterEdit.split("-");
-		String afterEditPWSPrefix = afterEditPWSUrl[0];
-		String afterEditPWSSuffix = afterEditPWSUrl[1];
-		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixNameWithSpecialCharacter);
-		crmAccountDetailsPage.clickCheckAvailabilityButton();
-		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Invalid characters entered. PWS Prefix can only contain letters and numbers. Please try again.");
-		crmAccountDetailsPage.enterRandomSitePrefixName(consultantConsumedSitePrefix);
-		crmAccountDetailsPage.clickCheckAvailabilityButton();
-		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Sorry "+consultantConsumedSitePrefix+" is not available, please try another one.");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openConsultantPWS(afterEditPWSPrefix+afterEditPWSSuffix);
-		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
-		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
-		s_assert.assertFalse(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is active");
-		s_assert.assertAll();
-	}
 
 	//Hybris Project-5159:Save Main address as shipping for consultant in Salesforce
 	@Test(priority=28)
@@ -1304,7 +1227,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.getValueOfLabelInAccountMainMenuOptionsPresent("Shipping Profiles",9).equals(postalCode),"Actual Postal Code is "+crmAccountDetailsPage.getValueOfLabelInAccountMainMenuOptionsPresent("Shipping Profiles",9)+" & Expected is "+postalCode+".");
 		s_assert.assertAll();
 	}
-
 
 	// Hybris Project-4487:Verify Adding shipping profiles with different country for a Consultant
 	@Test(priority=30)
@@ -1386,10 +1308,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = TestConstants.LAST_NAME;
-		String rcEmailID = null;
-		logger.info("The username is "+rcEmailID); 
+		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
 		crmHomePage.clickNameOnFirstRowInSearchResults();
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
 		String noOfShippingProfile = crmAccountDetailsPage.getShippingProfilesCount();
@@ -1445,8 +1366,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String shippingProfileFirstNameWithSpecialChar = TestConstants.FIRST_NAME+randomNum+"%%";
 		String lastName = TestConstants.LAST_NAME;
 		String shippingProfileFirstName = TestConstants.FIRST_NAME+randomNum;
-		List<Map<String, Object>> randomPCUserList =  null;
-		String pcUserName = null;
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
@@ -2158,7 +2077,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("The email address is "+consultantEmailID); 
-		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_INVALID_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);  
+		crmHomePage.openBaseURL();
+		crmLoginpage.loginUser(TestConstants.CRM_INVALID_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);  
 		s_assert.assertTrue(crmLoginpage.getErrorMessageOnLoginPage().contains("Please check your username and password"),"Salesforce didn't throw the required message for Invalid login");
 		//Enter correct login credentials and verify user should be able to login
 		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
@@ -2247,80 +2167,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4485:Add a new contact - spouse to a RC
-	@Test(priority=56)
-	public void testAddNewContactSpouseToRC_4485() throws InterruptedException{
-		List<Map<String, Object>> randomRCList =  null;
-		List<Map<String, Object>> randomRCListToVerify =  null;
-		String rcEmailID = null;
-		String rcEmailIDToVerifiy = null;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String randomWrongPhoneNumber = String.valueOf(randomNum);
-		String mainPhoneNumber = TestConstants.PHONE_NUMBER; 
-		String firstName = TestConstants.FIRST_NAME+randomNum;
-		String dob = null;
-		String lastName = firstName;
-		String combineFullName = firstName+" "+lastName;
-		String emailId = firstName+"@gmail.com";
-		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-		randomRCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-		rcEmailIDToVerifiy = (String) getValueFromQueryResult(randomRCListToVerify, "UserName");
-		logger.info("The email address is "+rcEmailID);
-		logger.info("The another email address to verify is "+rcEmailIDToVerifiy);	
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
-		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
-		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
-		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
-			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
-			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
-			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
-			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
-			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
-			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
-		}else{
-			logger.info("Spouse is already present");
-			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
-			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
-			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
-			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
-			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
-			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
-			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
-			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
-			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
-			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
-		}		
-		s_assert.assertAll();
-	}
 
 	//Hybris Project-4495:View Account Status History for Consultant
 	@Test(priority=57) 
@@ -2999,4 +2845,138 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		driver.pauseExecutionFor(5000);
 		s_assert.assertAll();
 	}
+
+	// Hybris Project-4505:View and Edit PWS Domain for a Consultant
+	@Test(enabled=false)//WIP
+	public void testViewAndEditPWSDomainForConsultant_4505() throws InterruptedException{
+		List<Map<String, Object>> randomConsultantSitePrefix =  null;
+		String consultantConsumedSitePrefix = null;
+		String specialCharacter = "%%$#";
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomString = CommonUtils.getRandomWord(4);
+		String randomSitePrefixName = randomString+randomNum;
+		String randomSitePrefixNameWithSpecialCharacter = randomString+randomNum+specialCharacter;
+		for(int i=0; i<=4; i++){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			String PWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
+			System.out.println("URL is: "+PWS);
+			driver.get(PWS);
+			if(driver.getCurrentUrl().contains("sitenotfound")){
+				continue;
+			}else{
+				break;
+			}
+		}
+		driver.get(driver.getURL());
+		randomConsultantSitePrefix = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
+		consultantConsumedSitePrefix = (String) getValueFromQueryResult(randomConsultantSitePrefix, "SitePrefix");
+		logger.info("The email address is "+consultantEmailID);
+		logger.info("Already used consultant site prefix is "+consultantConsumedSitePrefix);
+
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickConsultantCustomerNameInSearchResult();
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
+		String siteUrlBeforeEdit = crmAccountDetailsPage.getOldSitePrefixWithCompleteSiteBeforeEdit();
+		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixName);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertTrue(crmAccountDetailsPage.getCheckAvailabilityMessage().trim().contains(randomSitePrefixName.trim()+" is available"), "Random site prefix is not available");
+		crmAccountDetailsPage.clickPWSSaveButton();
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit PWS Domain");
+		String siteUrlAfterEdit = crmAccountDetailsPage.getNewSitePrefixWithCompleteSiteAfterEdit();
+		String[] afterEditPWSUrl = siteUrlAfterEdit.split("-");
+		String afterEditPWSPrefix = afterEditPWSUrl[0];
+		String afterEditPWSSuffix = afterEditPWSUrl[1];
+		crmAccountDetailsPage.enterRandomSitePrefixName(randomSitePrefixNameWithSpecialCharacter);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Invalid characters entered. PWS Prefix can only contain letters and numbers. Please try again.");
+		crmAccountDetailsPage.enterRandomSitePrefixName(consultantConsumedSitePrefix);
+		crmAccountDetailsPage.clickCheckAvailabilityButton();
+		s_assert.assertEquals(crmAccountDetailsPage.getCheckAvailabilityMessage(),"Sorry "+consultantConsumedSitePrefix+" is not available, please try another one.");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openConsultantPWS(afterEditPWSPrefix+afterEditPWSSuffix);
+		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
+		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
+		s_assert.assertFalse(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is active");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4485:Add a new contact - spouse to a RC
+	@Test(enabled=false)//WIP
+	public void testAddNewContactSpouseToRC_4485() throws InterruptedException{
+		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> randomRCListToVerify =  null;
+		String rcEmailID = null;
+		String rcEmailIDToVerifiy = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String randomWrongPhoneNumber = String.valueOf(randomNum);
+		String mainPhoneNumber = TestConstants.PHONE_NUMBER; 
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String dob = null;
+		String lastName = firstName;
+		String combineFullName = firstName+" "+lastName;
+		String emailId = firstName+"@gmail.com";
+		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
+		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		randomRCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
+		rcEmailIDToVerifiy = (String) getValueFromQueryResult(randomRCListToVerify, "UserName");
+		logger.info("The email address is "+rcEmailID);
+		logger.info("The another email address to verify is "+rcEmailIDToVerifiy);	
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
+		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
+			crmAccountDetailsPage.clickNewContactButtonUnderContactSection();
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}else{
+			logger.info("Spouse is already present");
+			crmAccountDetailsPage.clickOnEditUnderContactSection("Spouse");
+			crmAccountDetailsPage.enterFirstAndLastNameInCreatingNewContactForSpouse(firstName, lastName);
+			dob = crmAccountDetailsPage.enterBirthdateInCreatingNewContactForSpouse();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(mainPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Name").equals(combineFullName), "Name of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Birthdate").equals(dob), "Birthdate of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Main Phone").replaceAll("\\D", "").equals(mainPhoneNumber), "Main Phone of the spouse not Matched");
+			s_assert.assertTrue(crmAccountDetailsPage.verifyDataAfterSavingInNewContactForSpouse("Email Address").equals(emailId), "Email Address of the spouse not Matched");
+			crmAccountDetailsPage.clickEditButtonForNewContactSpouseInContactDetailsPage();
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(rcEmailIDToVerifiy);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("This email address already exists in our system, email must be unique."), "No Error Message Displayed");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailIDContainsSpecialCharacter);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Invalid Email Address."), "Email Address with Special Character Saved.");
+			crmAccountDetailsPage.enterEmailIdInNewContactForSpouse(emailId);
+			crmAccountDetailsPage.enterMainPhoneInNewContactForSpouse(randomWrongPhoneNumber);
+			crmAccountDetailsPage.clickSaveButtonForNewContactSpouse();
+			s_assert.assertTrue(crmAccountDetailsPage.isErrorMessageOnSavingExistingEmailIdOrWrongPhoneNumberPresent().contains("Phone number should be in (999) 999-9999 format"), "No Error Message Displayed for Mobile less than 9 digits");
+		}		
+		s_assert.assertAll();
+	}
+
+
 }

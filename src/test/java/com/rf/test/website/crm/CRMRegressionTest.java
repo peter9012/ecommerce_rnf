@@ -666,8 +666,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//Hybris Project-4544:View Shipping Profile for RC
 	@Test(priority=16)
 	public void testViewShippingProfileForRC_4544() throws InterruptedException{
-		String rcUserName = null;
-		List<Map<String, Object>> randomRCUserList =  null;
 		logger.info("The email address is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
@@ -676,6 +674,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.clickNameWithActiveStatusInSearchResults();
 		while(true){
 			if(crmAccountDetailsPage.isNoRecordToDisplayPresentOnShippingProfile()==true){
+				String rcUserName = null;
+				List<Map<String, Object>> randomRCUserList =  null;
 				//crmHomePage.closeTabViaNumberWise(2);
 				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 				rcUserName = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
@@ -908,7 +908,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.getCountAutoships().equals(crmAccountDetailsPage.getCountAutoshipNumber()), "Autoships Numbers are not equal");
 		crmAccountDetailsPage.clickFirstAutoshipID();
 
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderAutoshipNumberPresent("Autoship Number"),"Autoship Number is not Present");
+		//s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderAutoshipNumberPresent("Autoship Number"),"Autoship Number is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderAutoshipNumberPresent("Autoship Type"),"Autoship Type is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderAutoshipNumberPresent("Autoship Status"),"Autoship Status is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderAutoshipNumberPresent("Do Not Ship"),"Autoship Do not ship is not Present");
@@ -2900,6 +2900,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(driver.getCurrentUrl().contains(afterEditPWSPrefix), "New PWS Site Url is not active");
 		storeFrontHomePage.openConsultantPWS(siteUrlBeforeEdit);
 		s_assert.assertFalse(driver.getCurrentUrl().contains(siteUrlBeforeEdit), "Old PWS Site Url is active");
+		driver.get(driver.getURL());
+		crmHomePage = crmLoginpage.loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
 		s_assert.assertAll();
 	}
 

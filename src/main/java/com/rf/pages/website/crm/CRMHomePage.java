@@ -16,6 +16,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public CRMHomePage(RFWebsiteDriver driver) {
 		super(driver);
 	}
+	
 	public boolean verifyHomePage() throws InterruptedException{
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();

@@ -184,7 +184,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	public void enterAccountNumberInAccountSearchField(String accountinfo){
 		driver.quickWaitForElementPresent(By.id("txtSearch"));
 		driver.type(ACCOUNT_SEARCH_TXTFIELD, accountinfo);
-		driver.waitForElementPresent(ACCOUNT_SEARCH_RESULTS);
+		driver.pauseExecutionFor(2000);
 		logger.info("account info entered in search field is "+accountinfo);
 	}
 

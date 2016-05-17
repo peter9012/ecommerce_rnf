@@ -83,16 +83,28 @@ public class NSCore4RFWebsiteBasePage extends RFBasePage{
 		String[] UIMonth= new String[5];
 		String[] splittedDate = pstdate.split(" ");
 		String date =splittedDate[0];
-		if(Integer.parseInt(date)>30){
-			date ="30";
+		String month =null;		
+		try{
+			if(Integer.parseInt(date)>30){
+				date ="30";
+			}
+			logger.info("modified date is "+date);
+			month=splittedDate[1].split("\\,")[0];
+			logger.info("modified month is "+month);
+		}catch(NumberFormatException nfe){
+			date =splittedDate[1].split(",")[0];			
+			if(Integer.parseInt(date)>30){
+				date ="30";
+			}
+			logger.info("modified date is "+date);
+			month =splittedDate[0];
+			logger.info("modified month is "+month);
 		}
 		String firstDigitOfDate = String.valueOf(date.charAt(0));
 		if(firstDigitOfDate.contains("0")){
 			date = String.valueOf(date.charAt(1));
 		}
-		logger.info("modified date is "+date);
-		String month =splittedDate[1].split("\\,")[0];
-		logger.info("modified month is "+month);
+
 		String year = splittedDate[2];
 		logger.info("modified year is "+year); 
 		if(month.equalsIgnoreCase("Jan")){

@@ -1233,7 +1233,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	}
 
 	//Hybris Project-5160:Save Main address as shipping for PC in Salesforce
-	@Test(priority=29)
+	@Test(enabled=false)//(priority=29)//test needs to be modified
 	public void testSaveMainAddressAsShippingForPC_5160() throws InterruptedException{
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -2067,7 +2067,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	}
 
 	//Hybris Project-5161:Save Main address as shipping for RC in Salesforce
-	@Test(priority=53)
+	@Test(enabled=false)//(priority=53)//test needs to be modified
 	public void testSaveMainAddressAsShippingForRC_5161() throws InterruptedException{
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -2113,7 +2113,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	}
 
 	//Hybris Project-4506:Edit Spouse Contact details for Consultant
-	@Test(priority=55)
+	@Test(enabled=false)//(priority=55)//test needs to be modified
 	public void testEditSpouseContactDetailsForConsultant_4506() throws InterruptedException{
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomConsultantListToVerify =  null;

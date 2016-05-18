@@ -55,11 +55,12 @@ public class TestConstants {
 	public static final String CITY_CA = "Bonnyville";
 	public static final String PROVINCE_CA = "Alberta";
 	public static final String POSTAL_CODE_CA = "T9N 2N8";
-	public static final String POSTAL_CODE_QUEBEC = "G1R 4S9";
 	public static final String PHONE_NUMBER = "8067736419";
 	public static final String PHONE_NUMBER_CA = "8067736419";
-	public static final String ADDRESS_LINE_1_QUEBEC = "2 Rue des Jardins";
-	public static final String CITY_QUEBEC = "Quebec";
+	public static final String POSTAL_CODE_QUEBEC = "J5R 6H3";
+	public static final String ADDRESS_LINE_1_QUEBEC = "2 rue Desjardins";
+	public static final String CITY_QUEBEC = "CANDIAC";
+
 	public static final String CARD_NUMBER = "4747474747474747";
 	public static final String CARD_NUMBER_SECOND = "4747474747474747";
 	public static final String CARD_EXP_MONTH = "12";
@@ -117,6 +118,7 @@ public class TestConstants {
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
+
 
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";

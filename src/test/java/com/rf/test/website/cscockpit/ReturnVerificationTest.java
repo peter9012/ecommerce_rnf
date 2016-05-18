@@ -1500,5 +1500,43 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-2020:To verify REturn on CANCELLED Order
+	@Test
+	public void testVerifyCancelledOrderCanBeReturned_2020() throws InterruptedException{
+		String randomCustomerSequenceNumber = null;
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderSearchTabPage.selectOrderTypeInOrderSearchTab(TestConstants.ORDER_TYPE_DD_VALUE);
+		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab(TestConstants.ORDER_STATUS_DD_VALUE);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomCustomerFromSearchResult());
+		String orderNumber=cscockpitOrderSearchTabPage.getAndclickOrderNumberInOrderSearchResultsInOrderSearchTab(randomCustomerSequenceNumber);
+		logger.info("clicked order number is "+orderNumber);
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundOrderButtonPresentOnOrderTab(),"Refund order button is not present for Submitted orders");
+		//Return the complete order.
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		boolean isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
+		if(isReturnCompleteOrderChecked==true){
+			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
+		}
+		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
+		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
+		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
+		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
+		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
+		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
+		String RMANumber=cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
+		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
+		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
+		s_assert.assertTrue(cscockpitOrderTabPage.verifyReturnOrderRMANumberInOrderTab(RMANumber), "Rma number in popup and in return request section are not same hence order not returned successfully");
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRMATreeBtnUnderReturnRequestOnOrderTab();
+		cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab();
+		s_assert.assertTrue(cscockpitOrderTabPage.isNoRefundableItemsTxtPresent(), "Order Number = "+orderNumber+" has NOT refund Successfully");
+		cscockpitOrderTabPage.clickCloseRefundRequestPopUP();
+		s_assert.assertAll();
+	}
+
+
 
 }

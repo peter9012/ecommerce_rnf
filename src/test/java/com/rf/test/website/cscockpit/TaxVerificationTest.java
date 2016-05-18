@@ -4499,7 +4499,5 @@ public class TaxVerificationTest extends RFWebsiteBaseTest{
 			logger.info("PST NOT PRESENT FOR THIS ORDER");
 		}
 		s_assert.assertAll();
-	}
-
-
+	}		
 }

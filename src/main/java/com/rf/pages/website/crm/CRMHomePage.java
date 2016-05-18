@@ -16,7 +16,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public CRMHomePage(RFWebsiteDriver driver) {
 		super(driver);
 	}
-	
+
 	public boolean verifyHomePage() throws InterruptedException{
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
@@ -33,7 +33,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.switchTo().defaultContent();	
 	}	
-	
+
 	public void enterTextInSearchFieldAndHitEnter(String text){
 		driver.type(SEARCH_TEXT_BOX_LOC,text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
@@ -80,12 +80,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
-		try{
-			driver.isElementPresent(By.xpath("//img[@class='checkImg'][@title='Checked']/ancestor::tr[1]/th/a"));
-			return true;
-		}catch(Exception e){
-			return false;
-		}
+		return driver.isElementPresent(By.xpath("//img[@class='checkImg'][@title='Checked']/ancestor::tr[1]/th/a"));
 	}
 
 	public boolean isAccountLinkPresentInLeftNaviagation(){

@@ -137,7 +137,6 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 
 
 	public boolean verifyFaqPagePresent() {
-
 		String parentWindowID=driver.getWindowHandle();
 		Set<String> set=driver.getWindowHandles();
 		Iterator<String> it=set.iterator();
@@ -146,6 +145,7 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 			String childWindowID=it.next();
 			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
 				driver.switchTo().window(childWindowID);
+				System.out.println("FAQ page url on UI is "+driver.getCurrentUrl().toLowerCase());
 				status = driver.getCurrentUrl().toLowerCase().contains("pc-perks-faqs.pdf");
 				driver.close();
 				driver.switchTo().window(parentWindowID);

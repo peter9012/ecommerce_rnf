@@ -795,4 +795,12 @@ public class RFWebsiteBasePage extends RFBasePage{
 		return driver.getCurrentUrl().equalsIgnoreCase(pulseHomePageURL);
 	}
 
+	public boolean isEditCrpLinkPresentOnWelcomeDropdown(){
+		if(driver.isElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

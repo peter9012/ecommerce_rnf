@@ -30,7 +30,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_USER_LOC);
 		return driver.isElementPresent(WELCOME_USER_LOC);		
 	}
-	
+
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.pauseExecutionFor(2000);
@@ -136,7 +136,7 @@ public class StoreFrontConsultantPage extends RFWebsiteBasePage{
 	public boolean validatePulsePrefixSuggestionsAvailable(){
 		driver.pauseExecutionFor(1000);
 		return driver.findElement(By.xpath("//p[@id='prefix-validation']")).isDisplayed();
-	}
+	}	
 
 }
 

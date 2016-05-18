@@ -398,12 +398,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 	}
 
 	public boolean validateEmptyCreditCardMessage(){
-		if(driver.findElement(By.xpath("//div[contains(text(),'This field is required')]")).isDisplayed()){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'This field is required')]"));
 	}
 
 	public void clearCreditCardNumber(){

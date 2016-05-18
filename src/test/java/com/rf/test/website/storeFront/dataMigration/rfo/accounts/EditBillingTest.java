@@ -141,14 +141,17 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					logout();
+					continue;
+				}
+			}
 		}
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();

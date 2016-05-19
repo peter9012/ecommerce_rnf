@@ -64,7 +64,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -73,7 +73,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -105,7 +104,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);		
 
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
 				driver.get(driver.getURL());
@@ -139,7 +138,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -148,7 +147,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
@@ -187,7 +185,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -196,7 +194,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
@@ -226,7 +223,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -235,7 +232,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
@@ -258,7 +254,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			logger.info("Account Id of the user is "+accountID);
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());
@@ -267,7 +263,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 
@@ -1071,7 +1066,6 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();

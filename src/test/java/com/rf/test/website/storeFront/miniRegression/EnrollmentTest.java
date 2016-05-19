@@ -602,7 +602,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL());

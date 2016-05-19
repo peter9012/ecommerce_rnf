@@ -1837,6 +1837,26 @@ public class DBQueries_RFO {
 			"AND HYBRIS.dbo.USERS.P_CUSTOMURLPREFIX IS NULL AND RFO_Accounts.AccountRF.Active=1 "+ 
 			"AND RFO_Accounts.AccountBase.AccountTypeID = 1 order by newid()";
 
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO = "Select top 1 EA.EmailAddress, AB.AccountNumber "+ 
+			"from RFO_Accounts.AccountBase as AB "+
+			"join RFO_Accounts.AccountRF as ARF ON ARF.AccountID = AB.AccountID "+
+			"join RFO_Accounts.AccountContacts as AC ON AC.AccountId = AB.AccountID "+
+			"join RFO_Accounts.AccountEmails as AE ON AE.AccountContactId = AC.AccountContactId "+
+			"join RFO_Accounts.EmailAddresses as EA ON EA.EmailAddressID = AE.EmailAddressId "+
+			"where ARF.EnrollmentDate < dateadd(day, -30, getdate()) "+ 
+			"AND AB.CountryID = %s "+ 
+			"AND AB.AccountStatusID = 1 "+ 
+			"AND AB.AccountTypeID = 1 "+
+			"AND AB.AccountID in "+ 
+			"(Select accountid from Hybris.autoship "+ 
+			"where accountid not in "+
+			"(select accountid from hybris.autoship "+ 
+			"where AutoshipTypeID = 3 and active = 1) "+ 
+			"group by AccountID "+
+			") AND AB.AccountID in "+
+			"(select accountid from hybris.sites where EndDate<getdate() "+
+			")order by newid()";
+
 	public static String GET_ACCOUNT_ID_FOR_PENDING_USER="select tOP 1 * from RFO_Accounts.AccountBase where AccountStatusID = 4 ORDER BY newid()";
 
 

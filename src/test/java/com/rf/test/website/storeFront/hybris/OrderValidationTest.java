@@ -2416,8 +2416,5 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-
-
-
+	
 }
-

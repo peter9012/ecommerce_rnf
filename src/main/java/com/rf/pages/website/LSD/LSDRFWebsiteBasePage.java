@@ -9,5 +9,9 @@ public class LSDRFWebsiteBasePage extends RFBasePage{
 		super(driver);
 		this.driver = driver;
 	}	
+	
+	public String getCurrentURL(){
+		return driver.getCurrentUrl();
+	}
 
 }

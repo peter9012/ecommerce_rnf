@@ -834,10 +834,9 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 		driver.click(By.id("con7"));
-		actions.moveToElement(driver.findElement(By.xpath("//td[@class='weekday todayDate']"))).click().build().perform();
+		actions.moveToElement(driver.findElement(By.xpath("//td[contains(@class,'weekday todayDate')]"))).click().build().perform();
 		return driver.findElement(By.id("con7")).getAttribute("value");
 	}
-
 
 	public void clickSaveButtonForNewContactSpouse(){
 		driver.switchTo().defaultContent();
@@ -1234,7 +1233,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 
 			}
 		}
-		
+
 		return null;
 	}
 

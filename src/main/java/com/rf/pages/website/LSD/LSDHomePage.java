@@ -18,4 +18,6 @@ public class LSDHomePage extends LSDRFWebsiteBasePage{
 
 	private static String selectDDValuesInSearchByDD= "//select[contains(@id,'OrderSearchField')]//option[contains(text(),'%s')]"; 
 	private static final By ORDERS_LINK = By.xpath("//a[text()='Orders']") ;
+	
+	
 }

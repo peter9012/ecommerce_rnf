@@ -401,7 +401,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("EnrollmentTest Next Button clicked");
 			driver.waitForLoadingImageToDisappear();
 			////driver.pauseExecutionFor(2000);
-			
+
 		}
 
 		try{
@@ -417,7 +417,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 				logger.info("Accept the suggested address button clicked");
 			}
-				
+
 
 		}
 		catch(Exception e){
@@ -4043,6 +4043,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String convertCABizPWSToUS(String PWS){
 		return PWS.replaceAll("ca","us");
+	}
+
+	public String getpreferredCustomerStoreFrontInfo(String label){
+		driver.waitForElementPresent(By.id(label));
+		return driver.findElement(By.id(label)).getAttribute("value");
 	}
 
 }

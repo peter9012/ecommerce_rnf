@@ -465,7 +465,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	//		String subTotal = "Subtotal";
 	//		String grandTotal = "Grand Total";
 	//		String consultant = "Consultant";
-	//		nscore3LoginPage = new NSCore3LoginPage(driver);
+	//		nscore3LoginPage = new LSDLoginPage(driver);
 	//		nscore3LoginPage.enterUsername("admin");
 	//		nscore3LoginPage.enterPassword("skin123!");
 	//		nscore3HomePage = nscore3LoginPage.clickLoginBtn();

@@ -7,13 +7,6 @@
 	<test name="SmokeTest">
 		<classes>
 			<class
-				name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
-				<methods>
-					<include name="testExpressEnrollmentFieldsValidation_1274" />
-					<include name="testExpressEnrollmentSwitchToStandardEnrollment_1295" />
-				</methods>
-			</class>
-			<class
 				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest">
 				<methods>
 					<include name="testExpressEnrollmentBigBusinessKitSootheRegimen_64" />

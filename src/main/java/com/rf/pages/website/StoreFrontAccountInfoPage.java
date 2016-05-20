@@ -72,7 +72,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public void selectState(String state){
 		driver.click(By.xpath("//select[@id='state']"));
 		driver.quickWaitForElementPresent(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
-		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
+		driver.click(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, state)));
 	}
 
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{

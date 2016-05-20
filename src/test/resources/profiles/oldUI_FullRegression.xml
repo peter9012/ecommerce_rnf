@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="smokeTestSuite">
+<suite name="oldUIFullRegressionTestSuite">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 	</listeners>
-	<test name="SmokeTest">
+	<test name="oldUIFullRegressionTest">
 		<classes>
 			<class
 				name="com.rf.test.website.storeFront.regression.account.MyAccountTest">

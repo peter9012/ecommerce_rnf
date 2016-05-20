@@ -123,18 +123,22 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 
 		return CA_PROVINCE_CODE.get(province);
 	}
-	
+
 	public void openBaseURL(){
 		driver.get(driver.getURL());
 		driver.waitForPageLoad();
 	}
-	
+
 	public void switchToPreviousTab(){
-		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(1));
-		driver.close();
-		driver.switchTo().window(tabs.get(0));
-		driver.pauseExecutionFor(1000);
+		try{
+			ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+			driver.switchTo().window(tabs.get(1));
+			driver.close();
+			driver.switchTo().window(tabs.get(0));
+			driver.pauseExecutionFor(1000);
+		}catch(Exception e){
+			logger.info("No previous tab");
+		}
 	}
 
 

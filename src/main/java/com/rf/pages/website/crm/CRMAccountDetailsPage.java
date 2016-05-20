@@ -121,6 +121,14 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));		
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//input[@value='"+buttonName+"']"));
+		try{
+			driver.pauseExecutionFor(2000);
+			Alert alert = driver.switchTo().alert();
+			alert.accept();
+			logger.info("Ok button of java Script popup is clicked.");
+		}catch(Exception e){
+			logger.info("No Alert.");
+		}
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -748,6 +756,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		int beforeCount=getCountOfAccountMainMenuOptions("Shipping Profiles");
 		clickSaveAsShippingLinkUnderMainAddress();
+		driver.pauseExecutionFor(2000);
 		int afterCount=getCountOfAccountMainMenuOptions("Shipping Profiles");
 		if(beforeCount<afterCount){
 			return true;
@@ -1102,6 +1111,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
 		String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
+		driver.pauseExecutionFor(2000);
 		return strCurrentDay;
 	}
 
@@ -1211,30 +1221,6 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 	public boolean verifyWelcomeDropdownToCheckUserRegistered(){  
 		driver.waitForElementPresent(By.id("account-info-button"));
 		return driver.isElementPresent(By.id("account-info-button"));
-	}
-
-	public String verifyWelcomeDropDownPresent() {
-		String parentWindowID=driver.getWindowHandle();
-		clickAccountDetailsButton("My Account");
-		driver.pauseExecutionFor(8000);
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
-		while(it.hasNext()){
-			String childWindowID = it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("corprfo") && verifyWelcomeDropdownToCheckUserRegistered()){
-					String username  = getUserNameFromStoreFrontAccountDetails();
-					System.out.println("username ="+username);
-					driver.close();
-					driver.switchTo().window(parentWindowID);
-					return username;
-				}
-
-			}
-		}
-
-		return null;
 	}
 
 	public String getUserNameFromStoreFrontAccountDetails(){
@@ -1422,5 +1408,28 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[1]//th[contains(text(),'No records to display')]"));
 	}
+	public boolean clickMyAccountAndVerifyWelcomeDropDownPresent() {
+		String parentWindowID=driver.getWindowHandle();
+		clickAccountDetailsButton("My Account");
+		driver.waitForPageLoad();
+		//driver.pauseExecutionFor(8000);
+		boolean isWelcomeDrpdownPresent = false;
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID = it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("corprfo") && verifyWelcomeDropdownToCheckUserRegistered()){
+					isWelcomeDrpdownPresent = true;
+				}
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+			}
+		}
+
+		return isWelcomeDrpdownPresent;
+	}
+
 }
 

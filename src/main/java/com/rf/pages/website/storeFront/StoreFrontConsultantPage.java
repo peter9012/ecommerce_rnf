@@ -247,4 +247,8 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 		return driver.isElementPresent(By.xpath("//input[@id='homeTown' and @value='']"));
 	}
 
+	public boolean isAutoshipLinkPresentOnThePage() {
+		return driver.isElementPresent(By.xpath("//div[@id='bag-special']"));
+	}
+
 }

@@ -2956,4 +2956,45 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	// Hybris Project-4053:Check the Meet your consultant Banner on the home page of PWS(Both .Biz and .com)
+	@Test
+	public void testCheckTheMeetYourConsultantBannerOnTheHomePageOfPWS_4053() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String consultantPWS = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
+		consultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL");
+		driver.get(consultantPWS);
+		storeFrontHomePage.clickOnUserName();
+		s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"contact box is not present");
+		s_assert.assertTrue(storeFrontHomePage.isPwsOwnerNamePresent(),"consultant name is not present");
+		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(),"emailId is not present in contact box");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4061:Login to US Con's PWS(.BIZ, .COM) as Another US Consultant W/O Pulse
+	@Test
+	public void testLoginToUsConsPWSAsAnotherUsConsultantWithoutPulse_4061() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String usConsultantPWS = null;
+		String consultantEmailID = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryID),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
+		driver.get(usConsultantPWS);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
+		s_assert.assertAll();
+	}
+
 }

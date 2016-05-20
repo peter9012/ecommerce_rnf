@@ -20,12 +20,16 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.LSD.LSDHomePage;
+import com.rf.pages.website.LSD.LSDLoginPage;
+import com.rf.pages.website.LSD.LSDOrderPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
 import com.rf.test.base.RFBaseTest;
@@ -39,11 +43,23 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
-	private Actions actions;
+	protected LSDLoginPage lsdLoginPage;
+	protected LSDHomePage lsdHomePage;
+	protected LSDOrderPage lsdOrderPage;
+
+	public String whiteListedUserName = "Kohollaren3@gmail.com";
+	public String nonwhiteListedUserName = "kohollaten3@gmail.com";
+	protected Actions actions;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
 			.getLogger(RFLSDWebsiteBaseTest.class.getName());
+
+	public RFLSDWebsiteBaseTest() {
+		lsdLoginPage = new LSDLoginPage(driver);
+		lsdHomePage = new LSDHomePage(driver);
+		lsdOrderPage = new LSDOrderPage(driver);
+	}
 
 	/**
 	 * @throws Exception
@@ -57,8 +73,8 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 		driver.setDBConnectionString();                
 	}
 
-	@BeforeMethod(alwaysRun=true)
-	public void beforeMethod() throws AWTException{
+	@BeforeClass(alwaysRun=true)
+	public void beforeClass() throws AWTException{
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
 		driver.get(driver.getURL());
@@ -68,8 +84,11 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 			countryId = "236";            
 		setStoreFrontPassword(driver.getStoreFrontPassword());
 		enterCredentialsInHTTPAuthentication("r+f-qa", "4llH41l7h3Gl0wCl0ud");
+		lsdLoginPage.enterUsername(whiteListedUserName);
+		lsdLoginPage.enterPassword(password);
+		lsdLoginPage.clickLoginBtn();
 	}
-	
+
 	public void enterCredentialsInHTTPAuthentication(String username,String password) throws AWTException{
 		driver.pauseExecutionFor(1000);
 		StringSelection selec= new StringSelection(username);

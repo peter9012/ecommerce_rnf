@@ -4050,4 +4050,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.findElement(By.id(label)).getAttribute("value");
 	}
 
+	public String convertPhoneNumber(String number){
+		String phoneNumberFromUI = null;
+		if(number.contains(".")){
+			String[] phoneNumber = number.split("\\.");
+			phoneNumberFromUI = phoneNumber[0]+phoneNumber[1]+phoneNumber[2];
+		}else if(number.contains(".")){
+			String[] phoneNumber = number.split("\\ ");
+			phoneNumberFromUI = phoneNumber[0]+phoneNumber[1]+phoneNumber[2];
+		}else{
+			phoneNumberFromUI = number;
+		}
+		logger.info("Converted phone number is: "+number);
+		return phoneNumberFromUI;
+	}
+
+
 }

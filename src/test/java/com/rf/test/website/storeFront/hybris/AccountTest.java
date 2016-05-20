@@ -2550,4 +2550,53 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyPulseOrderCreatedMsg(), "Pulse order created msg is NOT present,Pulse might NOT be subscribed successfully");
 		s_assert.assertAll();
 	}
+
+	// Hybris Project-4064:Access US Con's Canadian PWS as a Canadian Consultant W/O Pulse
+	@Test
+	public void testAccessUSConsCanadianPWSAsACanadianConsultantWithoutPulse_4064() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String usConsultantPWS = null;
+		String consultantEmailID = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
+		driver.get(usConsultantPWS);
+		storeFrontHomePage.selectCountryUsToCan();
+		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4065:Login on US Con's Canadian PWS as a Canadian Consultant W/O Pulse
+	@Test
+	public void testLoginOnUsConsCanadianPWSAsACanadianConsultantWithoutPulse_4065() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String usConsultantPWS = null;
+		String consultantEmailID = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
+		driver.get(usConsultantPWS);
+		storeFrontHomePage.selectCountryUsToCan();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
+		s_assert.assertTrue(storeFrontConsultantPage.isAutoshipLinkPresentOnThePage(),"Autoship link is not present");
+		s_assert.assertAll();
+	}
+	
+	
 }

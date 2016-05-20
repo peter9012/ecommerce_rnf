@@ -11,6 +11,15 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
 import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
@@ -37,6 +46,10 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
+	private CSCockpitLoginPage cscockpitLoginPage;	
+	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
+	private CSCockpitOrderTabPage cscockpitOrderTabPage;
+
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;
@@ -8641,6 +8654,124 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3855:Register as RC with Same CA Sponsor WITH Pulse
+	@Test
+	public void testRegisterAsRCWithSameCASponsorWithPulse_3855() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String caConsultantPWS = null;
+		String countryID ="40";
+		String country = "ca";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String billinglastName = "lN";
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = TestConstants.LAST_NAME+randomNum;
+
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
+		caConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL");
+		driver.get(caConsultantPWS);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
+		storeFrontHomePage.clickOnPlaceOrderButton();
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(),"login or create account page is not displayed");
+		storeFrontHomePage.enterNewRCDetails(firstName, lastName, password);
+		storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_CA, postalCode, phoneNumber);
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"connect with a consultant block is not displayed");
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		s_assert.assertFalse(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"connect with a consultant block is displayed");
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+billinglastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		String orderNumber = storeFrontHomePage.getOrderNumberAfterPlacingOrder();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-3927:CORP:Enroll CA/US User, Sponsor without PWS
+	@Test
+	public void testEnrollCA_USUserSponsorWithoutPWS_3927() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String accountNumber = null;
+		String kitName = null;
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
+		String phoneNumber = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
+		String enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		String regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;   
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,"40"),RFO_DB);
+		accountNumber = (String) getValueFromQueryResult(randomConsultantList, "AccountNumber");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(accountNumber);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("biz/ca"),"url is not a biz url");
 		s_assert.assertAll();
 	}
 }

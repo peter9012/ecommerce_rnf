@@ -13,5 +13,11 @@ public class LSDRFWebsiteBasePage extends RFBasePage{
 	public String getCurrentURL(){
 		return driver.getCurrentUrl();
 	}
+	
+	public void navigaeToHomePage(){
+		if(driver.getCurrentUrl().contains("home")==false){
+			driver.get(driver.getURL()+"/#/home");
+		}
+	}
 
 }

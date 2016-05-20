@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="smokeTestSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+	<test name="SmokeTest">
+		<classes>
+			<class
+				name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
+				<methods>
+					<include name="testExpressEnrollmentFieldsValidation_1274" />
+					<include name="testExpressEnrollmentSwitchToStandardEnrollment_1295" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest">
+				<methods>
+					<include name="testExpressEnrollmentBigBusinessKitSootheRegimen_64" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest">
+				<methods>
+					<include name="testStandardEnrollmentBigBusinessKitReverseRegimen_75" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
+				<methods>
+					<include name="testPCAutoshipTemplateDetails_HP2_4300" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
+				<methods>
+					<include name="testAddBillingProfileDuringCheckout_2042" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
+				<methods>
+					<include name="testChangeDefaultShippingProfile_2094" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
+				<methods>
+					<include name="testEditBillingAdhocCheckoutFutureChecboxSelected_2048" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
+				<methods>
+					<include name="testEditShippingAddressOnShippingProfilePage_2035" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
+				<methods>
+					<include name="testAcountDetailsForAccountInfo" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

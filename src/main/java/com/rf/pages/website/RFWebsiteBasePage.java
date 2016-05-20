@@ -575,10 +575,7 @@ public class RFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String createNewRC(String firstName,String lastName,String password){	
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		//		String firstName="RCUser";
-		//		String lastName = "Test";
-		String emailAddress = firstName+randomNum+"@xyz.com";
+		String emailAddress = firstName+"@xyz.com";
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);

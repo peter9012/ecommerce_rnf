@@ -1,11 +1,9 @@
 package com.rf.test.website.LSD;
 
-import org.jsoup.select.Evaluator.ContainsOwnText;
 import org.testng.annotations.Test;
 import com.rf.test.website.RFLSDWebsiteBaseTest;
 
 public class LSDTests extends RFLSDWebsiteBaseTest{
-	
 
 	//Welcome page to login page TC-259
 	@Test(priority=1)

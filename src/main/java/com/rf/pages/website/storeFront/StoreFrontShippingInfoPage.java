@@ -113,12 +113,12 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("New Shipping City is "+city);
 	}
 
-	public void selectNewShippingAddressState(){
+	public void selectNewShippingAddressState(String state){
 		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
 		driver.pauseExecutionFor(1000);
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//select[@id='state']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
+		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		logger.info("State/Province selected");
 	}
 

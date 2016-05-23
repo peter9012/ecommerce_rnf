@@ -362,13 +362,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("City entered is "+city);
 	}
 
-	public void selectProvince(){		
-		driver.click(By.xpath("//select[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//select[@id='state']/option[2]"));
-		logger.info("state selected");
-	}
-
 	public void selectProvince(String province){		
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
@@ -814,7 +807,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.findElement(By.xpath("//a[contains(text(),'Switch to Express')]")).click();
 	}
 
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+//	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
+//		selectEnrollmentKitPage(kitName, regimenName);		
+//		chooseEnrollmentOption(enrollmentType);
+//		enterFirstName(firstName);
+//		enterLastName(lastName);
+//		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+//		enterPassword(password);
+//		enterConfirmPassword(password);
+//		enterAddressLine1(addressLine1);
+//		enterCity(city);
+//		selectProvince(state);
+//		enterPostalCode(postalCode);
+//		enterPhoneNumber(phoneNumber);
+//
+//	}
+
+	// method overloaded, parameter for province is there
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
@@ -824,10 +834,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(province);
 		enterPostalCode(postalCode);
-		enterPhoneNumber(phoneNumber);
-
+		enterPhoneNumber(phoneNumber);		
 	}
 
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
@@ -846,7 +855,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterEmailAddress(emailaddress);
 	}
 
-	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);  
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
@@ -856,27 +865,27 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 	}
 
 	//Method Overloaded without Kit and Regimen
-	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		enterFirstName(firstName);
 		enterLastName(lastName);
 		enterPassword(password);
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
 	//method overloaded,no need for enrollment type if kit is portfolio
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		enterFirstName(firstName);
 		enterLastName(lastName);
@@ -884,13 +893,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
-	public void enterUserInformationForEnrollment(String kitName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String kitName,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName);  
 		enterFirstName(firstName);
 		enterLastName(lastName);
@@ -899,27 +908,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 
 	}
 
-	// method overloaded, parameter for province is there
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
-		selectEnrollmentKitPage(kitName, regimenName);		
-		chooseEnrollmentOption(enrollmentType);
-		enterFirstName(firstName);
-		enterLastName(lastName);
-		enterPassword(password);
-		enterConfirmPassword(password);
-		enterAddressLine1(addressLine1);
-		enterCity(city);
-		selectProvince(province);
-		enterPostalCode(postalCode);
-		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
-	}
+
 
 	public void clickOnSwitchToStandardEnrollmentLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
@@ -3245,12 +3240,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("City entered is "+TestConstants.CITY_CA);
 			try{
 				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
-				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 			}catch(Exception e){
 				driver.click(By.id("state"));
-				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//select[@id='state']/option[2]")); 
+				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]")); 
 			} 
 			logger.info("state selected");
 			driver.clear(By.id("address.postcode"));

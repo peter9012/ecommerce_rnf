@@ -41,6 +41,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 	private String addressLine1 = null;
 	private String country = null;
 	private String RFO_DB = null;
+	private String state = null;
 
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
 	@Test
@@ -156,6 +157,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -168,7 +170,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, consultantEmailID,password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, consultantEmailID,password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -647,6 +649,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -659,7 +662,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

@@ -18,7 +18,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private String postalCode = null;
 	private String phoneNumber = null;
 	private String country = null;
-
+	private String state = null;
 
 	//Hybris Project-50 :: Version : 1 :: CORP:Standard Enroll USD 395 Personal Results Kit, Personal Regimen REVERSE REGIMEN
 	@Test
@@ -36,6 +36,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -48,7 +49,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -58,7 +59,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-/*		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox not selected");
+		/*		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox not selected");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox not selected");*/
 		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.clickEnrollmentNextBtn();

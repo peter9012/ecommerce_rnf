@@ -2070,6 +2070,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 			String firstName=TestConstants.FIRST_NAME+randomNum;
 			String lastName = "lN";
+			String state = null;
 			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 			regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
@@ -2077,6 +2078,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			while(true){
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
@@ -2172,7 +2174,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(password);
 			storeFrontHomePage.enterAddressLine1(addressLine1);
 			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.selectProvince(state);
 			storeFrontHomePage.enterPostalCode(postalCode);
 			storeFrontHomePage.enterPhoneNumber(phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
@@ -2251,7 +2253,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(password);
 			storeFrontHomePage.enterAddressLine1(addressLine1);
 			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.selectProvince(state);
 			storeFrontHomePage.enterPostalCode(postalCode);
 			storeFrontHomePage.enterPhoneNumber(phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
@@ -2417,7 +2419,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		env = driver.getEnvironment();		
+		env = driver.getEnvironment();	
+		String state = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 
@@ -2428,6 +2431,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_EXPRESS;
@@ -2440,7 +2444,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		/*storeFrontHomePage.clickOnOurBusinessLink();
 				storeFrontHomePage.clickOnOurEnrollNowLink();*/
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2495,13 +2499,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
-
+		String state = null;
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -2514,7 +2519,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -2597,6 +2602,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.isAutoshipLinkPresentOnThePage(),"Autoship link is not present");
 		s_assert.assertAll();
 	}
-	
-	
+
+
 }

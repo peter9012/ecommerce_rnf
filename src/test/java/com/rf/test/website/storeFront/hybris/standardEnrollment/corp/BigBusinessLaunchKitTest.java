@@ -18,6 +18,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 	private String postalCode = null;
 	private String phoneNumber = null;
 	private String country = null;
+	private String state = null;
 
 	//Hybris Project-45 :: Version : 1 :: BIZ:Standard Enroll USD 695 Big Business Launch Kit, Personal Regimen UNBLEMISH
 	@Test
@@ -35,6 +36,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -47,7 +49,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

@@ -378,12 +378,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.waitForLoadingImageToDisappear();
 			try{
 				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
-				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 			}catch(Exception e){
 				driver.click(By.id("state"));
-				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//select[@id='state']/option[2]"));	
+				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));	
 			}	
 			logger.info("state selected");
 			driver.type(By.id("address.postcode"),TestConstants.POSTAL_CODE_CA);
@@ -1728,11 +1728,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("New Billing card number enterd as "+cardNumber);  
 	}
 
-	public void selectNewShippingAddressState(){
+	public void selectNewShippingAddressState(String state){
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
 		//driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		logger.info("State/Province selected");
 	}
 

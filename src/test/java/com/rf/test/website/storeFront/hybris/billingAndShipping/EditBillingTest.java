@@ -44,6 +44,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 	private String addressLine1 = null;
 	private String country = null;
 	private String env = null;
+	private String state = null;
 
 	// Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
 	@Test
@@ -490,6 +491,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
@@ -498,7 +500,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -553,6 +555,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -565,7 +568,7 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		String firstBillingName = TestConstants.FIRST_NAME+randomNum;

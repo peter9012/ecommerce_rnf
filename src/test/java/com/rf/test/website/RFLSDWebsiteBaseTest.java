@@ -48,7 +48,7 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 	protected LSDOrderPage lsdOrderPage;
 
 	public String whiteListedUserName = "Kohollaren3@gmail.com";
-	public String nonwhiteListedUserName = "kohollaten3@gmail.com";
+	public String nonwhiteListedUserName = "renee.corker@gmail.com";
 	protected Actions actions;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);

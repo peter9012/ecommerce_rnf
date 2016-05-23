@@ -243,11 +243,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.id("townCity"),city);
 	}
 
-	public void selectNewShippingAddressState(){
+	public void selectNewShippingAddressState(String state){
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
 		driver.pauseExecutionFor(1000);
-		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[2]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
+		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		logger.info("State/Province selected");
 	}
 
@@ -951,7 +951,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	public void addAshippingProfile(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
+	public void addAshippingProfile(String city,String state,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
 		List<WebElement> totalShipingAddress = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div"));
 		if(totalShipingAddress.size() <= 1){
 			driver.waitForElementPresent(By.xpath("//a[@class='add-new-shipping-address font-sizer spacer-mobile']"));
@@ -960,7 +960,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			enterNewShippingAddressName(profileName);
 			enterNewShippingAddressLine1(addressLine);
 			enterNewShippingAddressCity(city);
-			super.selectNewShippingAddressState();
+			super.selectNewShippingAddressState(state);
 			enterNewShippingAddressPhoneNumber(phoneNumber);
 			enterNewShippingAddressPostalCode(postalCode);
 			clickOnSaveShippingProfile();
@@ -1186,7 +1186,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']//input[@checked='checked']/ancestor::div[2]//div[contains(@class,'user-name')]")).getText();
 	}
 
-	public void addAshippingProfileAndClickOnItsEdit(String city,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
+	public void addAshippingProfileAndClickOnItsEdit(String city,String state,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
 		driver.click(By.xpath("//a[text()='Add new shipping address »']"));
 		logger.info("add new shipping address clicked");

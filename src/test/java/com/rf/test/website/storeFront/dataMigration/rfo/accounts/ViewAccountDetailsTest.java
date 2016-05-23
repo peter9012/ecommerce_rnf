@@ -35,7 +35,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 
 	private String RFO_DB = null;
-	
+
 	// Hybris Phase 2-4178:View Account Information with active templates
 	@Test
 	public void testAccountDetailsForAccountInfo_4178() throws InterruptedException{
@@ -248,15 +248,25 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-4191 :: Version : 1 :: Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders, No Downlines, Active 
-	@Test
+	@Test(enabled=true)
 	public void testEnrolledConsultantHasCRPHasPulseSubmittedOrdersACTIVE_4191() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
+
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -302,15 +312,26 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 
 	// Hybris Phase 2-4193 :: Version : 1 :: Enrolled Consultant, Has CRP/ Has Pulse, Has Failed Order, Has Downlines, Active 
-	@Test
+	@Test(enabled=true)
 	public void testEnrolledConsultantHasCRPHasPulseFailedOrdersOrdersACTIVE_4193() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFO_4193,RFO_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
+
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_ACTIVE_RFO_4193,RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
+
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -365,25 +386,38 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Phase 2-4223 :: Version : 1 :: Account with multiple payment profiles
-	@Test
+	@Test(enabled=true)
 	public void testBillingInfoPageDetails_4223() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomEmailList =  null;
 		List<Map<String, Object>> billingAddressCountList =  null;
 		int totalBillingAddressesFromDB = 0;
 		String userEmailId = null;
-		randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_USER_MULTIPLE_PAYMENTS_RFO_4223,RFO_DB);
-		userEmailId =  (String) getValueFromQueryResult(randomEmailList, "Username");
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailId, password);
+		String accountId = null;
+
+		while(true){
+			randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,RFO_DB);
+			userEmailId =  (String) getValueFromQueryResult(randomEmailList, "Username");
+			accountId = String.valueOf(getValueFromQueryResult(randomEmailList, "AccountID"));
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userEmailId, password);
+
+			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+			if(isSiteNotFoundPresent){
+				logger.info("SITE NOT FOUND for the user "+userEmailId);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 		//assert with RFO
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,userEmailId),RFO_DB);
-		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");			
-		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");			
+		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");   
+		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is different from DB");   
 
 		s_assert.assertAll();
 	}
@@ -442,7 +476,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-4200:Enrolled RC , Failed Order
-	@Test
+	@Test(enabled=false)//Test no longer available
 	public void testEnrolledRCHasFailedOrders_HP2_4200() throws InterruptedException, SQLException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;

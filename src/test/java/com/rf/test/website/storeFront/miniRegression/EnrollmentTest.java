@@ -544,15 +544,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -605,7 +610,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -813,7 +818,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-2130:To verify Change date functionality for PC shouldnt be present on the storefront
 	@Test//ok
-	public void testVerifyChangeDateFunctionalityForPCUser_2130() throws InterruptedException	  {
+	public void testVerifyChangeDateFunctionalityForPCUser_2130() throws InterruptedException   {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
@@ -830,11 +835,19 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 				logger.info("Login error for the user "+pcUserEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				storeFrontPCUserPage.clickOnWelcomeDropDown();
+				if(storeFrontPCUserPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontPCUserPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-		logger.info("login is successful");
-		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage=storeFrontPCUserPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage=storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
@@ -880,7 +893,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -932,7 +945,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -994,7 +1007,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1038,7 +1051,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantWithPWSEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

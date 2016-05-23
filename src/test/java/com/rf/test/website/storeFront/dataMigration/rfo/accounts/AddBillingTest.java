@@ -463,7 +463,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4467 ADD/edit a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
 	@Test
-	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{		
+	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{  
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
@@ -475,7 +475,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -486,13 +486,20 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -513,20 +520,18 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+		//------------------ Verify that autoship template doesn't contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
 		s_assert.assertFalse(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method contains the newly added billing profile");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		s_assert.assertAll();
-	}	
-
-
+	}
 
 	//Hybris Phase 2-2043:Add billing profile in autoship template
 	@Test
-	public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{		
+	public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{  
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 
 		RFO_DB = driver.getDBNameRFO();
@@ -534,31 +539,36 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-
 		String accountID = null;
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			//******USE FOLLOWING FOR MIGRATION DEBUGGING AS SHE NEEDS RENEWAL *****
-			//			consultantEmailID = "maryrob17@gmail.com";
+			//   consultantEmailID = "maryrob17@gmail.com";
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundOrErrorPresent = driver.getCurrentUrl().contains("error")||driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundOrErrorPresent){
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -580,7 +590,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------	---------------------------------------------	
+		//------------------ Verify that autoship template contains the newly added billing profile------------------------------------------------------------ --------------------------------------------- 
 
 		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the newly added billing profile");
 

@@ -221,7 +221,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username"); 
 
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);

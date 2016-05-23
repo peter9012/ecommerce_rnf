@@ -67,7 +67,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -107,7 +107,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -141,7 +141,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -188,7 +188,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -226,7 +226,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -257,7 +257,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

@@ -518,7 +518,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//select any other shipping info by selecting radio button 'ship to this address' via Next CRP
-	@Test
+	@Test(enabled=false)//tests needs updation ; try with user auto353442@xyz.com
 	public void testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFL();

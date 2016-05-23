@@ -186,7 +186,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANT_HAS_CRP_HAS_PULSE_FAILED_ORDERS_INACTIVE_RFO_4189,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "Username");
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");

@@ -147,7 +147,10 @@ public class EditBillingTest extends RFWebsiteBaseTest{
 				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
 					break;
 				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
 					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 					continue;
 				}
 			}

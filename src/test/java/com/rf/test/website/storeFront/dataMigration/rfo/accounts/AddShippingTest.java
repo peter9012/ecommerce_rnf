@@ -118,7 +118,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -129,14 +129,20 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
@@ -483,9 +489,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.selectNewShippingAddressState();
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
-//		storeFrontShippingInfoPage.selectFirstCardNumber();
-//		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
-//		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
+		//		storeFrontShippingInfoPage.selectFirstCardNumber();
+		//		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER_US);
+		//		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
 		//newShippingAddressName = storeFrontUpdateCartPage.clickOnNewShipToThisAddressRadioButtonAndReturnProfileName();
@@ -529,7 +535,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");	
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName"); 
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 
@@ -540,12 +546,20 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-
-		logger.info("login is successful"); 
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();
@@ -566,7 +580,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();
 
-		//------------------ Verify that autoship template contains the default shipping profile address by verifying by name------------------------------------------------------------		
+		//------------------ Verify that autoship template contains the default shipping profile address by verifying by name------------------------------------------------------------  
 
 		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingAddressName),"Autoship Template Shipping Address doesn't contains the default shipping address");
 
@@ -585,5 +599,4 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-
 }

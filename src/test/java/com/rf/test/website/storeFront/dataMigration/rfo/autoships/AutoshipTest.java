@@ -79,16 +79,16 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-131:change shipping method on autoship - Consultant
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testChangeShippingMethodOnConsultantAutoShip_131() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 
-		//------------------------------- Hard coded User part is commented for now-----------------------------------------------	
-		//consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_RFO;	
-		//---------------------------------------------------------------------------------------------------------------------		
+		//------------------------------- Hard coded User part is commented for now----------------------------------------------- 
+		//consultantEmailID = TestConstants.CONSULTANT_EMAIL_ID_RFO; 
+		//---------------------------------------------------------------------------------------------------------------------  
 
 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -104,13 +104,20 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditShipping();

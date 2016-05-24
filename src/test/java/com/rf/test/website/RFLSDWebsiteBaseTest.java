@@ -27,6 +27,8 @@ import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.LSD.LSDCustomerPage;
+import com.rf.pages.website.LSD.LSDFeedbackPage;
 import com.rf.pages.website.LSD.LSDHomePage;
 import com.rf.pages.website.LSD.LSDLoginPage;
 import com.rf.pages.website.LSD.LSDOrderPage;
@@ -46,6 +48,8 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 	protected LSDLoginPage lsdLoginPage;
 	protected LSDHomePage lsdHomePage;
 	protected LSDOrderPage lsdOrderPage;
+	protected LSDCustomerPage lsdCustomerPage;
+	protected LSDFeedbackPage lsdFeedbackPage;
 
 	public String whiteListedUserName = "Kohollaren3@gmail.com";
 	public String nonwhiteListedUserName = "renee.corker@gmail.com";
@@ -59,6 +63,8 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 		lsdLoginPage = new LSDLoginPage(driver);
 		lsdHomePage = new LSDHomePage(driver);
 		lsdOrderPage = new LSDOrderPage(driver);
+		lsdCustomerPage = new LSDCustomerPage(driver);
+		lsdFeedbackPage = new LSDFeedbackPage(driver) ;
 	}
 
 	/**

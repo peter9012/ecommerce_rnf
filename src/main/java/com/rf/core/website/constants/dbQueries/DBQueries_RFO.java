@@ -118,10 +118,10 @@ public class DBQueries_RFO {
 			"AND ab.AccountTypeID = 3 "+/*Retail Customer*/
 			"AND ab.AccountStatusID = 1" +
 			/*Active Accounts*/
-			"AND NOT EXISTS ( SELECT 1 "+
+			"AND EXISTS ( SELECT 1 "+
 			"FROM   RFO_Accounts.AccountRF AS ar "+
-			"WHERE  ar.Active = 0 "+
-			"AND ar.HardTerminationDate IS NOT NULL "+
+			"WHERE  ar.Active = 1 "+
+			"AND ar.HardTerminationDate IS NULL "+
 			"AND ar.AccountID = ab.AccountID ) "+
 			"ORDER BY NEWID()";
 
@@ -1364,10 +1364,10 @@ public class DBQueries_RFO {
 			   "WHERE   ab.CountryID = %s "+
 			   "AND ab.AccountTypeID = 3 "+ /*Retail Customer*/
 			   /*Active Accounts*/
-			   "AND NOT EXISTS ( SELECT 1 "+
+			   "AND EXISTS ( SELECT 1 "+
 			   "FROM   RFO_Accounts.AccountRF AS ar "+
-			   "WHERE  ar.Active = 0 "+
-			   "AND ar.HardTerminationDate IS NOT NULL "+
+			   "WHERE  ar.Active = 1 "+
+			   "AND ar.HardTerminationDate IS NULL "+
 			   "AND ar.AccountID = ab.AccountID ) "+
 			   "ORDER BY NEWID()";
 

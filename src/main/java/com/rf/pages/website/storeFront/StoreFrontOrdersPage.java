@@ -438,10 +438,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 				double totalTax = (gstTaxIntegerValue+pstTaxIntegerValue);
 				System.out.println("totalTax==="+totalTax);
 				String taxFinal = Double.toString(totalTax);
-				return taxFinal;
+				return taxFinal.trim();
 			}else if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span"))){
 				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span")).getText();
-				return gstTax;
+				return gstTax.trim();
 			}
 			else if(driver.isElementPresent(By.id("totalTax"))){
 				tax = driver.findElement(By.id("totalTax")).getText();

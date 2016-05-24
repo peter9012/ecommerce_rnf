@@ -24,7 +24,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdHomePage.getCurrentURL().toLowerCase().contains("home"), "user is not on home page after login,the current url is expected to have 'home',but the current URL is "+lsdHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
-	
+
 	//TC-1156 Order Summary - Design and data fields layout
 	@Test(priority=2)
 	public void testOrderSummary(){
@@ -38,6 +38,29 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdOrderPage.getOrderStatus().toLowerCase().contains("processed"), "Order status expected is processed but getting "+lsdOrderPage.getOrderStatus());
 		s_assert.assertFalse(lsdOrderPage.getOrderItems()==null, "Order Items are not present");
 		s_assert.assertTrue(lsdOrderPage.getFootNote().contains("Although you receive 0 PSQV"), "PSQV foot note is not present");
+		s_assert.assertAll();
+	}
+
+	//Main Menu TC-1151
+	@Test(priority=3)
+	public void testMainMenu_1151(){
+		lsdCustomerPage = lsdHomePage.clickCustomersLink();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("customers"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
+		s_assert.assertTrue(lsdCustomerPage.isCustomerPagePresent(), "Customer page is not present");
+		lsdOrderPage = lsdHomePage.clickOrdersLink();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("orders"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
+		s_assert.assertTrue(lsdOrderPage.isOrdersPagePresent(), "Orders page is not present");
+		lsdHomePage.navigaeToHomePage();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("home"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
+		s_assert.assertAll();
+	}
+
+	//Feedback Option TC-272
+	@Test(priority=4)
+	public void testFeedbackoption_272(){
+		String parentWindowHandle = driver.getWindowHandle();
+		lsdFeedbackPage = lsdHomePage.clickFeedbackLink();
+		s_assert.assertTrue(lsdFeedbackPage.isFeedbackPagePresent(parentWindowHandle), "Feedback page is not present");
 		s_assert.assertAll();
 	}
 }

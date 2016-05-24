@@ -1370,8 +1370,12 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
 		driver.click(By.xpath("//a[text()='Save Address']"));
 		driver.waitForCRMLoadingImageToDisappear();
-		driver.click(By.xpath(String.format(userEnteredAddress,addressLine)));
-		driver.waitForCRMLoadingImageToDisappear();
+		try{
+			driver.click(By.xpath(String.format(userEnteredAddress,addressLine)));
+			driver.waitForCRMLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}		
 		driver.click(By.xpath("//a[text()='Save Address']"));
 		driver.waitForCRMLoadingImageToDisappear();
 	}

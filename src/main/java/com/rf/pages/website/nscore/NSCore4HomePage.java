@@ -355,7 +355,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	}
 
 	public void clickHeaderLinkAfterLogin(String linkName) {
-		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+		driver.waitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		logger.info("my account link is clicked");
 	}
@@ -368,7 +368,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	}
 
 	public void clickIWantToWriteMyOwnStory(){
-		driver.quickWaitForElementPresent(I_WANT_TO_WRITE_OWN_STORY);
+		driver.waitForElementPresent(I_WANT_TO_WRITE_OWN_STORY);
 		driver.click(I_WANT_TO_WRITE_OWN_STORY);
 		logger.info("I want to write my own story is clicked");
 		driver.waitForPageLoad();

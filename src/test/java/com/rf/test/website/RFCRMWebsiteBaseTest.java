@@ -71,10 +71,9 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 
 	}
 
-	@BeforeMethod(alwaysRun=true)
-	public void beforeMethod(){
+	@BeforeMethod
+	public void initiateSoftAssertObject(){
 		s_assert = new SoftAssert();
-
 	}
 
 	public void loginUser(String username, String password){
@@ -89,17 +88,17 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 		logger.info("login button clicked");		
 	}
 
-//	@AfterMethod
-//	public void tearDownAfterMethod(){
-//		driver.manage().deleteAllCookies();
-//		if(driver.getURL().contains("salesforce")==true){
-//			try{
-//				crmLogout();
-//			}catch(Exception e){
-//
-//			}
-//		}
-//	}
+	//	@AfterMethod
+	//	public void tearDownAfterMethod(){
+	//		driver.manage().deleteAllCookies();
+	//		if(driver.getURL().contains("salesforce")==true){
+	//			try{
+	//				crmLogout();
+	//			}catch(Exception e){
+	//
+	//			}
+	//		}
+	//	}
 
 	/**
 	 * @throws Exception

@@ -3,23 +3,26 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="CscockpitRegressionTestSuite.xml">
 		<classes>
 			<class name="com.rf.test.website.cscockpit.AddEditBillingVerificationTest"></class>
-			<class name="com.rf.test.website.cscockpit.AddEditShippingVerificationTest"></class>
+			<class
+				name="com.rf.test.website.cscockpit.AddEditShippingVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.CheckoutVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.CreditCardVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.CRPAutoshipVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.CustomerVerificationTest"></class>
-		    <class name="com.rf.test.website.cscockpit.OrdersVerificationTest"></class>
-		    <class name="com.rf.test.website.cscockpit.PermissionsVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.OrdersVerificationTest"></class>
+			<class name="com.rf.test.website.cscockpit.PermissionsVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.PulseVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.ReturnVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.SearchVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.SecurityVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.TaxVerificationTest"></class>
 			<class name="com.rf.test.website.cscockpit.UINavigationVerificationTest"></class>
-		</classes>		
+		</classes>
 	</test>
 </suite>

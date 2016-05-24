@@ -73,16 +73,21 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 		driver.setDBConnectionString();                
 	}
 
+	@BeforeMethod
+	public void initiateSoftAssertObject(){
+		s_assert = new SoftAssert();
+	}
+
 	@BeforeClass(alwaysRun=true)
 	public void beforeClass() throws AWTException{
-		s_assert = new SoftAssert();
 		String country = driver.getCountry();
 		driver.get(driver.getURL());
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";            
-		setStoreFrontPassword(driver.getStoreFrontPassword());
+		//		setStoreFrontPassword(driver.getStoreFrontPassword());
+		setStoreFrontPassword("111maiden");
 		enterCredentialsInHTTPAuthentication("r+f-qa", "4llH41l7h3Gl0wCl0ud");
 		lsdLoginPage.enterUsername(whiteListedUserName);
 		lsdLoginPage.enterPassword(password);

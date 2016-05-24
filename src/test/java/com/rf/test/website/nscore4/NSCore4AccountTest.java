@@ -406,7 +406,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
 		logger.info("Account number from DB is "+accountNumber);
 		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
-		nscore4HomePage.clickGoBtnOfSearch(); 
+		nscore4HomePage.clickGoBtnOfSearch(accountNumber); 
 		nscore4HomePage.clickPostNewNodeLinkInOverviewTab();
 		nscore4HomePage.selectAndEnterAddANoteDetailsInPopup(categoryOfNotePopup,typeOfNotePopup,noteTxt);
 		nscore4HomePage.clickSaveBtnOnAddANotePopup();

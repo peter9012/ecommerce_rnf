@@ -74,6 +74,10 @@ public class HtmlLogger
 					sb.append("<font color='#DF7401'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}
+				else if (line.contains("RETRYING TEST")){
+					sb.append("<font color='#43BFC7'>" + "<" + "br" + "/><b>"
+							+ line + "</b></font><br/>");
+				}				
 
 				else {
 					if (count == 1)

@@ -108,7 +108,7 @@ public class TestConstants {
 	public static final String CONSULTANT_LASTNAME = "rfTestUser";
 	public static final String CONSULTANT_ADDRESS_LINE_1_CA = "5502 54 St";
 	public static final String CONSULTANT_CITY_CA = "Bonnyville";
-	public static final String CONSULTANT_POSTAL_CODE_CA = "T9N 2N8";
+	public static final String CONSULTANT_POSTAL_CODE_CA = "T9N 2H4";
 	public static final String CONSULTANT_COUNTRY_CA = "CANADA";
 	public static final String CONSULTANT_AUTOSHIP_ORDER_NUMBER = "2100018261";
 	public static final String ACCOUNT_PAGE_SUFFIX_URL = "my-account";

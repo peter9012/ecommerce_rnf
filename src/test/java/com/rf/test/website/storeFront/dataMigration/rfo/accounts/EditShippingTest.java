@@ -76,13 +76,13 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//		if(totalShippingAddressesFromDB > 1){
-//
-//			//---------------------------------Radio button is checked for the default shipping address on Front end as per RFO--------------------------------------------------------------------------------------------
-//			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
-//			shippingAddressName = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
-//			assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(shippingAddressName));
-//		}
+		//		if(totalShippingAddressesFromDB > 1){
+		//
+		//			//---------------------------------Radio button is checked for the default shipping address on Front end as per RFO--------------------------------------------------------------------------------------------
+		//			defaultShippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_DEFAULT_BILLING_ADDRESS_QUERY,consultantEmailID),RFO_DB);
+		//			shippingAddressName = (String) getValueFromQueryResult(defaultShippingAddressList, "AddressLine1");
+		//			assertTrue("Default radio button in Shipping page is not selected", storeFrontShippingInfoPage.isDefaultShippingAddressSelected(shippingAddressName));
+		//		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		s_assert.assertAll();
@@ -110,13 +110,20 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 				logger.info("error for the user "+consultantEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
+			else{
+				s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontConsultantPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					break;
+				}else{
+					storeFrontConsultantPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}
+			}
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickOnEditForFirstAddress();
@@ -160,7 +167,6 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-
 	//Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship" check box NOT CHECKED:
 	//Hybris Project-4465:Edit a shipping profile from MY ACCOUNT, having "Use this billing profile for your future auto-ship"
 	@Test

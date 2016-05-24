@@ -138,7 +138,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-	//	s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//	s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
@@ -224,7 +224,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickOnAllProductsLink();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-//		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
+		//		s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
 
 		String subtotal = storeFrontUpdateCartPage.getSubtotal();
@@ -274,21 +274,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1879 :: Version : 1 :: Create Adhoc Order For The Retail Customer
 	@Test
-	public void testCreateAdhocOrderRC() throws InterruptedException {
+	public void testCreateAdhocOrderRC_1879() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
 
 		String rcUserEmailID = null;
 		String accountId = null;
-
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
 			accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
 
@@ -298,11 +297,20 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
 				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
-			else
-				break;
-		}	
-
-		s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
+			else{
+				s_assert.assertTrue(storeFrontRCUserPage.verifyRCUserPage(rcUserEmailID),"RC User Page doesn't contain Welcome User Message");
+				storeFrontRCUserPage.clickOnWelcomeDropDown();
+				if(storeFrontRCUserPage.isEditCrpLinkPresentOnWelcomeDropdown()){
+					storeFrontRCUserPage.clickOnWelcomeDropDown();
+					driver.pauseExecutionFor(2000);
+					logout();
+					driver.get(driver.getURL()+"/"+driver.getCountry());
+					continue;
+				}else{
+					break;
+				}
+			}
+		}
 		logger.info("login is successful");
 
 		storeFrontRCUserPage.clickOnShopLink();
@@ -351,6 +359,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
 	@Test
@@ -543,70 +552,70 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
-//	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
-//	@Test(enabled=true)
-//	public void testPCEnrollment2() throws InterruptedException{
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-//		String lastName = "lN";
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		// Click on our product link that is located at the top of the page and then click in on quick shop
-//		storeFrontHomePage.clickOnShopLink();
-//		storeFrontHomePage.clickOnAllProductsLink();
-//	
-//		// Products are displayed?
-//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-//		logger.info("Quick shop products are displayed");
-//	
-//		//Select a product with the price less than $80 and proceed to buy it
-//		//storeFrontHomePage.applyPriceFilterLowToHigh();
-//		storeFrontHomePage.selectProductAndProceedToBuy();
-//	//	storeFrontHomePage.addAnotherProduct();
-//		
-//	
-//		//Cart page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-//		logger.info("Cart page is displayed");
-//	
-//		//1 product is in the Shopping Cart?
-//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-//		logger.info("1 product is successfully added to the cart");
-//	
-//		//Click on Check out
-//		storeFrontHomePage.clickOnCheckoutButton();
-//	
-//		//Log in or create an account page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-//		logger.info("Login or Create Account page is displayed");
-//	
-//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-//		storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
-//	
-//		//Click on Check out
-//	
-//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
-//		storeFrontHomePage.enterMainAccountInfo();
-//		logger.info("Main account details entered");
-//	
-//		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-//	
-//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-//		//Enter Billing Profile
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnSaveBillingProfile();
-//		storeFrontHomePage.clickOnBillingNextStepBtn();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
-//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		s_assert.assertAll();	
-//	}
+	//	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
+	//	@Test(enabled=true)
+	//	public void testPCEnrollment2() throws InterruptedException{
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String lastName = "lN";
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		// Click on our product link that is located at the top of the page and then click in on quick shop
+	//		storeFrontHomePage.clickOnShopLink();
+	//		storeFrontHomePage.clickOnAllProductsLink();
+	//	
+	//		// Products are displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+	//		logger.info("Quick shop products are displayed");
+	//	
+	//		//Select a product with the price less than $80 and proceed to buy it
+	//		//storeFrontHomePage.applyPriceFilterLowToHigh();
+	//		storeFrontHomePage.selectProductAndProceedToBuy();
+	//	//	storeFrontHomePage.addAnotherProduct();
+	//		
+	//	
+	//		//Cart page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+	//		logger.info("Cart page is displayed");
+	//	
+	//		//1 product is in the Shopping Cart?
+	//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+	//		logger.info("1 product is successfully added to the cart");
+	//	
+	//		//Click on Check out
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//	
+	//		//Log in or create an account page is displayed?
+	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+	//		logger.info("Login or Create Account page is displayed");
+	//	
+	//		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+	//		storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+	//	
+	//		//Click on Check out
+	//	
+	//		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		logger.info("Main account details entered");
+	//	
+	//		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//	
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//		//Enter Billing Profile
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
+	//		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
+	//		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+	//		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+	//		s_assert.assertAll();	
+	//	}
 }

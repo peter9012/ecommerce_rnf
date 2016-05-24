@@ -3,107 +3,95 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
 			<class
 				name="com.rf.test.website.storeFront.regression.account.MyAccountTest">
 				<methods>
-				<include name="testExistingConsultantPopupDuringRCRegistration_2201"/>
-				<include name="testExistingPCPopUpDuringRCRegistration_2199"/>
-				<include name="testExistingRetailCustomerPopupDuringRCRegistration_2200"/>
-				<include name="testVerifySpecialCharactersAreNotAllowed_4155"/>
+					<include name="testExistingConsultantPopupDuringRCRegistration_2201" />
+					<include name="testExistingPCPopUpDuringRCRegistration_2199" />
+					<include name="testExistingRetailCustomerPopupDuringRCRegistration_2200" />
+					<include name="testVerifySpecialCharactersAreNotAllowed_4155" />
 				</methods>
-				
+
 			</class>
-			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest" >
-			<methods>
-				<include name="testCreateAdhocOrderPC_1877"/>
-			</methods>
+			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest">
+				<methods>
+					<include name="testCreateAdhocOrderPC_1877" />
+				</methods>
 			</class>
-		<!--  	<class
-				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest">
-				
-			</class>
+			<!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"> 
+				</class> <class name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest"> 
+				</class> -->
 			<class
-				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest">
-				
-			</class>
-			<class
-				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest">
-				
-			</class>
-			<class
-				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.BigBusinessLaunchKitTest">
-				
-			</class>
-			<class
-				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest">
-				
-			</class>
-			<class
-				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest">
-				
-			</class>
-			<class
-				name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
-				
-			</class>
-	-->		<class
 				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
 				<methods>
-				<include name="testAddBillingAutoshipCartFutureCheckboxNotSelected_4467"/>
+					<include name="testAddBillingAutoshipCartFutureCheckboxNotSelected_4467" />
 				</methods>
 			</class>
 			<class
 				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
 				<methods>
-				<include name="testAddShippingAddressInAutoshipTemplate_2031"/>
-				<include name="testAddShippingProfileMyAccountFutureAutoshipNotSelected_4461"/>
-				<include name="testChangeDefaultShippingProfile_2094"/>
-				<include name="testEditCheckoutBillingProfileAndAddNewBillingAddressNotCard_4464"/>
-				<include name="testEditShippingProfileAdhocCheckoutNoCheckbox_4462"/>
-				<include name="testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp"/>
-				<include name="testSelectOtherShippingInfoBySelectingRadioButton_4463"/>
+					<include name="testAddShippingAddressInAutoshipTemplate_2031" />
+					<include
+						name="testAddShippingProfileMyAccountFutureAutoshipNotSelected_4461" />
+					<include name="testChangeDefaultShippingProfile_2094" />
+					<include
+						name="testEditCheckoutBillingProfileAndAddNewBillingAddressNotCard_4464" />
+					<include name="testEditShippingProfileAdhocCheckoutNoCheckbox_4462" />
+					<include
+						name="testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp" />
+					<include name="testSelectOtherShippingInfoBySelectingRadioButton_4463" />
 				</methods>
 			</class>
-		<!-- 	<class
-				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
-				
-			</class>
-		 -->	<class
+			<!-- <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest"> 
+				</class> -->
+			<class
 				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
 				<methods>
-				<include name="testEditShippingProfileMyAccountFutureAutoshipNotSelected_4465"/>
-				<include name="testShippingAddressOnShippingProfile_HP2_4326"/>
-				
+					<include
+						name="testEditShippingProfileMyAccountFutureAutoshipNotSelected_4465" />
+					<include name="testShippingAddressOnShippingProfile_HP2_4326" />
+
 				</methods>
 			</class>
 			<class
 				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest">
 				<methods>
-				<include name="testAccountInformationForUpdate_2235" />
-				<include name="testAccountTerminationPageForConsultant_3720	" />
-				<include name="testAccountTerminationPageForPCUser_3719" />
-				<include name="testOrdersPageUIForRCUser_HP2_1981" />
-				<include name="testOrdersReportProblems_1980" />
-				<include name="testPhoneNumberFieldValidationForConsultant_2241" />
-				
+					<include name="testAccountInformationForUpdate_2235" />
+					<include name="testAccountTerminationPageForConsultant_3720	" />
+					<include name="testAccountTerminationPageForPCUser_3719" />
+					<include name="testOrdersPageUIForRCUser_HP2_1981" />
+					<include name="testOrdersReportProblems_1980" />
+					<include name="testPhoneNumberFieldValidationForConsultant_2241" />
+
 				</methods>
 			</class>
 			<class
 				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
 				<methods>
-				<include name="testAccountDetailsForAccountInfo"/>
-				<include name="testBillingInfoPageDetails_4223"/>
-				<include name="testEnrolledConsultantHasCRPHasPulseFailedOrdersACTIVE_4189"/>
-				<include name="testEnrolledConsultantHasCRPHasPulseFailedOrdersOrdersACTIVE_4193"/>
-				<include name="testEnrolledConsultantHasCRPHasPulseSubmittedOrdersACTIVE_4191"/>
-				<include name="testEnrolledConsultantHasCRPPULSESubmittedOrders_HP2_4195"/>
-				<include name="testEnrolledConsultantNoCRPNoFailedOrdersINACTIVE_4181"/>
-				<include name="testEnrolledConsultantNoCRPNoPulseNoOrdersINACTIVE_4179"/>
-				<include name="testEnrolledRCHasFailedOrders_HP2_4200"/>
-				<include name="testNoAutoshipTemplateForInactiveAccount_4182"/>
+					<include name="testAccountDetailsForAccountInfo" />
+					<include name="testBillingInfoPageDetails_4223" />
+					<include
+						name="testEnrolledConsultantHasCRPHasPulseFailedOrdersACTIVE_4189" />
+					<include
+						name="testEnrolledConsultantHasCRPHasPulseFailedOrdersOrdersACTIVE_4193" />
+					<include
+						name="testEnrolledConsultantHasCRPHasPulseSubmittedOrdersACTIVE_4191" />
+					<include
+						name="testEnrolledConsultantHasCRPPULSESubmittedOrders_HP2_4195" />
+					<include name="testEnrolledConsultantNoCRPNoFailedOrdersINACTIVE_4181" />
+					<include name="testEnrolledConsultantNoCRPNoPulseNoOrdersINACTIVE_4179" />
+					<include name="testEnrolledRCHasFailedOrders_HP2_4200" />
+					<include name="testNoAutoshipTemplateForInactiveAccount_4182" />
 				</methods>
 			</class>
 		</classes>

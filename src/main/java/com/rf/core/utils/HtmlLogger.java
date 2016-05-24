@@ -75,7 +75,7 @@ public class HtmlLogger
 							+ line + "</b></font><br/>");
 				}
 				else if (line.contains("RETRYING TEST")){
-					sb.append("<font color='#F75D59'>" + "<" + "br" + "/><b>"
+					sb.append("<font color='#43BFC7'>" + "<" + "br" + "/><b>"
 							+ line + "</b></font><br/>");
 				}				
 

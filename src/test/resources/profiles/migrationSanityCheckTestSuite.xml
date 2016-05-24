@@ -3,76 +3,89 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="MigrationSanityCheck">
 		<classes>
 			<class name="com.rf.test.website.storeFront.smoke.LoginTest">
-			<methods>
- 					<include name="testLogin"/>
- 				</methods> 
- 			</class>
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
 				<methods>
-					<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043"/>
-					<include name="testAddNewBillingProfileOnBillingProfilePage_2041"/>
+					<include name="testLogin" />
 				</methods>
 			</class>
-						
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest">
 				<methods>
-					<include name="testAddNewShippingAddressOnShippingProfilePage_2029"/>					
+					<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043" />
+					<include name="testAddNewBillingProfileOnBillingProfilePage_2041" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddShippingTest">
 				<methods>
-					<include name="testEditBillingProfileInAutoshipTemplate_2049"/>					
+					<include name="testAddNewShippingAddressOnShippingProfilePage_2029" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditBillingTest">
 				<methods>
-					<include name="testEditShippingAddressOnShippingProfilePage_2035"/>					
+					<include name="testEditBillingProfileInAutoshipTemplate_2049" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.EditShippingTest">
 				<methods>
-					<include name="testAccountTerminationPageForConsultant_3720"/>
-					<include name="testAccountTerminationPageForPCUser_3719"/>											
+					<include name="testEditShippingAddressOnShippingProfilePage_2035" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.MyAccountTest">
 				<methods>
-					<include name="testEnrolledConsultantHasCRPHasPulseSubmittedOrdersACTIVE_4191"/>															
+					<include name="testAccountTerminationPageForConsultant_3720" />
+					<include name="testAccountTerminationPageForPCUser_3719" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.ViewAccountDetailsTest">
 				<methods>
-					<include name="testChangeShippingMethodOnConsultantAutoShip_131"/>															
-					<include name="testChangeShippingMethodOnPCAutoShip_130"/>
+					<include
+						name="testEnrolledConsultantHasCRPHasPulseSubmittedOrdersACTIVE_4191" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.order.AdhocOrdersTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest">
 				<methods>
-					<include name="testCreateAdhocOrderConsultant_1878"/>															
-					<include name="testCreateAdhocOrderPC_1877"/>
-					<include name="testCreateAdhocOrderRC_1879"/>
+					<include name="testChangeShippingMethodOnConsultantAutoShip_131" />
+					<include name="testChangeShippingMethodOnPCAutoShip_130" />
 				</methods>
 			</class>
-			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.order.ViewOrderDetailsTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.order.AdhocOrdersTest">
 				<methods>
-					<include name="testOrderDetailsForAutoshipOrdersForPC_4291"/>															
-					<include name="testOrdersDetailsOfConsultant_HP2_4287"/>					
+					<include name="testCreateAdhocOrderConsultant_1878" />
+					<include name="testCreateAdhocOrderPC_1877" />
+					<include name="testCreateAdhocOrderRC_1879" />
 				</methods>
 			</class>
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.pws.RFPWSLoginTest">
+
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.order.ViewOrderDetailsTest">
 				<methods>
-					<include name="testConsultantWithPWSLoginFromOthersPWS_4395"/>
+					<include name="testOrderDetailsForAutoshipOrdersForPC_4291" />
+					<include name="testOrdersDetailsOfConsultant_HP2_4287" />
+				</methods>
+			</class>
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.pws.RFPWSLoginTest">
+				<methods>
+					<include name="testConsultantWithPWSLoginFromOthersPWS_4395" />
 				</methods>
 			</class>
 		</classes>

@@ -3,19 +3,20 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="Regression_Suite">
 		<classes>
 			<!-- ACCOUNTS -->
 			<!-- <class name="com.rf.test.website.storeFront.regression.account.MyAccountTest"></class> -->
-<!-- -->
-			<!-- express enrollment biz-->
-			
+			<!-- -->
+			<!-- express enrollment biz -->
+
 			<class
 				name="com.rf.test.website.storeFront.regression.expressEnrollment.corp.BigBusinessLaunchKitTest" />
 			<methods>
-				<include
-					name="testExpressEnrollmentBigBusinessKitSootheRegimen_23" />
+				<include name="testExpressEnrollmentBigBusinessKitSootheRegimen_23" />
 			</methods>
 			<class
 				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.PersonalResultsKitTest" />
@@ -28,32 +29,35 @@
 			<methods>
 				<include name="testCreateAdhocOrderPC" />
 			</methods>
-			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest"/>
+			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest" />
 			<methods>
 				<include name="testPCEnrollment_1308" />
 				<include name="testRCEnrollment_1307" />
 				<include name="testEnrollmentTermsAndConditions_1288" />
 				<include name="testSubscribingPulseMyAccount_3921" />
-			</methods>		
-		   	<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"/>
-      		<methods>
-      			<include name="testExpressEnrollmentRFExpressKitRedefineRegimen_53" />
-      		</methods>
-      		<class name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest"/>
- 			<methods>
- 				<include name="testStandardEnrollmentBusinessKitReverseRegimen_71" />
- 			</methods>>
- 			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest"/>
+			</methods>
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest" />
+			<methods>
+				<include name="testExpressEnrollmentRFExpressKitRedefineRegimen_53" />
+			</methods>
+			<class
+				name="com.rf.test.website.storeFront.regression.standardEnrollment.biz.RFExpressBusinessKitTest" />
+			<methods>
+				<include name="testStandardEnrollmentBusinessKitReverseRegimen_71" />
+			</methods>
+			>
+			<class
+				name="com.rf.test.website.storeFront.regression.expressEnrollment.canadaProvince.EnrollmentTest" />
 			<methods>
 				<include name="testCustomerLivingInQuebecCannotEnroll_1292" />
 				<include name="testExpressEnrollmentNorthWestPRovice_1698" />
 			</methods>
 		</classes>
-			<!-- <class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class> -->
-	
-			<!--  <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"></class>
-			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"></class>
-			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"></class>
-		-->
+		<!-- <class name="com.rf.test.website.storeFront.miniRegression.EnrollmentTest"></class> -->
+
+		<!-- <class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.BigBusinessLaunchKitTest"></class> 
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.PersonalResultsKitTest"></class> 
+			<class name="com.rf.test.website.storeFront.regression.expressEnrollment.biz.RFExpressBusinessKitTest"></class> -->
 	</test>
 </suite>

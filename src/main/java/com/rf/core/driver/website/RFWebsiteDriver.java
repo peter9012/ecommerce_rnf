@@ -434,6 +434,27 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 	}
 
+	public void waitForLSDLoaderAnimationImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[contains(@class,'loader-animation')][(@style='')]");
+		logger.info("Waiting for LSD loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("LSD Animation image disappears");
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+
 	public void waitForElementTobeEnabled(By locator){
 		for(int time=1;time<=30;time++){
 			if(driver.findElement(locator).isEnabled()==true){

@@ -28,7 +28,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	//TC-1156 Order Summary - Design and data fields layout
 	@Test(priority=2)
 	public void testOrderSummary(){
-		lsdHomePage.navigaeToHomePage();
+		lsdHomePage.navigateToHomePage();
 		lsdHomePage.clickViewMyOrdersLink();
 		lsdOrderPage.clickFirstProcessedOrder();
 		s_assert.assertFalse(lsdOrderPage.getOrderDate()==null, "Order date is blank");
@@ -44,13 +44,14 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	//Main Menu TC-1151
 	@Test(priority=3)
 	public void testMainMenu_1151(){
+		lsdHomePage.navigateToHomePage();
 		lsdCustomerPage = lsdHomePage.clickCustomersLink();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("customers"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
 		s_assert.assertTrue(lsdCustomerPage.isCustomerPagePresent(), "Customer page is not present");
 		lsdOrderPage = lsdHomePage.clickOrdersLink();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("orders"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
 		s_assert.assertTrue(lsdOrderPage.isOrdersPagePresent(), "Orders page is not present");
-		lsdHomePage.navigaeToHomePage();
+		lsdHomePage.navigateToHomePage();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("home"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
 		s_assert.assertAll();
 	}
@@ -58,9 +59,41 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	//Feedback Option TC-272
 	@Test(priority=4)
 	public void testFeedbackoption_272(){
+		lsdHomePage.navigateToHomePage();
 		String parentWindowHandle = driver.getWindowHandle();
 		lsdFeedbackPage = lsdHomePage.clickFeedbackLink();
 		s_assert.assertTrue(lsdFeedbackPage.isFeedbackPagePresent(parentWindowHandle), "Feedback page is not present");
+		s_assert.assertAll();
+	}
+
+	//Contact Card - Design and Navigation TC-270
+	@Test(priority=5)
+	public void testContactCardDesignAndNavigation_270(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickViewMyOrdersLink();
+		lsdOrderPage.clickFirstProcessedOrder();
+		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for any processed order");
+		lsdOrderPage.clickCloseIconOfOrder();
+		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for PC autoship processed order");
+		lsdOrderPage.clickCloseIconOfOrder();
+		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for RC processed order");
+		lsdOrderPage.clickContactButtonAtFooter();
+		s_assert.assertTrue(lsdOrderPage.isContactDetailsPresent(),"Contact details is not present after clicked on contact button");
+		s_assert.assertAll();
+	}
+
+	//Contact Card button interactions TC-271
+	@Test(priority=6)
+	public void testContactCardButtonInteractions_271(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickViewMyOrdersLink();
+		lsdOrderPage.clickFirstProcessedOrder();
+		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for any processed order");
+		lsdOrderPage.clickContactButtonAtFooter();
+		s_assert.assertTrue(lsdOrderPage.isPhoneIconPresent(),"Phone icon is not present after clicked on contact button");
+		s_assert.assertTrue(lsdOrderPage.isPhoneIconPresent(),"Email icon is not present after clicked on contact button");
 		s_assert.assertAll();
 	}
 }

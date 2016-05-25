@@ -807,21 +807,21 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.findElement(By.xpath("//a[contains(text(),'Switch to Express')]")).click();
 	}
 
-//	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
-//		selectEnrollmentKitPage(kitName, regimenName);		
-//		chooseEnrollmentOption(enrollmentType);
-//		enterFirstName(firstName);
-//		enterLastName(lastName);
-//		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
-//		enterPassword(password);
-//		enterConfirmPassword(password);
-//		enterAddressLine1(addressLine1);
-//		enterCity(city);
-//		selectProvince(state);
-//		enterPostalCode(postalCode);
-//		enterPhoneNumber(phoneNumber);
-//
-//	}
+	//	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
+	//		selectEnrollmentKitPage(kitName, regimenName);		
+	//		chooseEnrollmentOption(enrollmentType);
+	//		enterFirstName(firstName);
+	//		enterLastName(lastName);
+	//		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	//		enterPassword(password);
+	//		enterConfirmPassword(password);
+	//		enterAddressLine1(addressLine1);
+	//		enterCity(city);
+	//		selectProvince(state);
+	//		enterPostalCode(postalCode);
+	//		enterPhoneNumber(phoneNumber);
+	//
+	//	}
 
 	// method overloaded, parameter for province is there
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
@@ -2574,9 +2574,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/h2")).getText();
 	}
 
-	public int getSizeOfProductFilter(){
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
-		driver.click(By.xpath("//input[@class='refine-products-button']"));
+	public int getSizeOfProductFilter(){  
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
 		driver.pauseExecutionFor(4000);
 		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li")).size();
 		driver.click(By.xpath("//input[@class='refine-products-button']"));

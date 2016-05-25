@@ -1372,7 +1372,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 		try{
 			driver.click(By.xpath(String.format(userEnteredAddress,addressLine)));
-			driver.waitForCRMLoadingImageToDisappear();
+//			driver.waitForCRMLoadingImageToDisappear();
 		}catch(Exception e){
 
 		}		
@@ -1435,5 +1435,35 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		return isWelcomeDrpdownPresent;
 	}
 
+	public void clickSendForgotPasswordEmailLink(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='last dataCol']//iframe")));
+		driver.click(By.xpath("//a[contains(text(),'Send Forgot Password Email')]"));
+		driver.pauseExecutionFor(2500);
+	}
+
+
+	public boolean isEmailForNewPasswordSent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='last dataCol']//iframe")));
+		//driver.waitForCRMLoadingProcessImageToDisappear();
+		driver.waitForElementPresent(By.xpath(".//*[contains(text(),'A new password was sent successfully')]"));
+		boolean status=driver.isElementPresent(By.xpath(".//*[contains(text(),'A new password was sent successfully')]"));
+		return status;
+	}
+
+	public void clickMyAccountButton(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));  
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//input[@value='My Account']"));
+		driver.waitForLoadingImageToDisappear();
+	}
 }
 

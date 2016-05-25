@@ -264,4 +264,10 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 		actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+number+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
 		driver.pauseExecutionFor(1000);
 	}
+
+	public void acceptAlert(){
+		Alert alt=driver.switchTo().alert();
+		alt.accept();
+		driver.pauseExecutionFor(2000);
+	}
 }

@@ -24,7 +24,15 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By ORDER_STATUS_LOC = By.xpath("//div[@class='order-summary-content']/div[@class='shadow-card'][2]//li/span") ;
 	private static final By ORDER_ITEMS_LOC = By.xpath("//div[@class='order-summary-content']/div[@class='shadow-card'][2]//div[@class='items-container']//li[1]/span") ;
 	private static final By FOOT_NOTE_LOC = By.xpath("//section[contains(@class,'footnote')]/p") ;
-	private static final By ORDERS_PAGE = By.xpath("//section[@id='order-summary-header']");	
+	private static final By ORDERS_PAGE = By.xpath("//section[@id='order-summary-header']");
+	private static final By CONTACT_BUTTON_AT_FOOTER = By.xpath("//section[@class='order-nav']//div[@class='shadow-card-button-container']");
+	private static final By CLOSE_ICON_OF_ORDER_SECTION = By.xpath("//section[@id='order-summary-modal']//div[@class='icon-close pointer']");
+	private static final By FIRST_PROCESSED_PC_AUTOSHIP_ORDER_LOC = By.xpath("//div[@id='sub-stage']//section[4]/descendant::span[text()='Processed'][1]/following::span[text()='PC Perks'][1]");
+	private static final By FIRST_PROCESSED_RC_ORDER_LOC = By.xpath("//div[@id='sub-stage']//section[4]/descendant::span[text()='Processed'][1]/following::span[text()='Retail Order'][1]");
+	private static final By CONTACT_DETAILS_SECTION = By.xpath("//div[@class='contact-profile-content']//div[@class='shadow-card']");
+	private static final By PHONE_ICON = By.xpath("//div[@class='icon']//span[@class='icon-phone']");
+	private static final By EMAIL_ICON = By.xpath("//div[@class='icon']//span[@class='icon-email']");
+
 
 	public void clickFirstProcessedOrder(){
 		driver.waitForElementPresent(FIRST_PROCESSED_ORDER_LOC);
@@ -84,4 +92,52 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 		driver.waitForElementPresent(ORDERS_PAGE);
 		return driver.isElementPresent(ORDERS_PAGE);
 	}
+
+	public boolean isContactButtonPresentAtFooter(){
+		driver.waitForElementPresent(CONTACT_BUTTON_AT_FOOTER);
+		return driver.isElementPresent(CONTACT_BUTTON_AT_FOOTER);
+	}
+
+	public void clickCloseIconOfOrder(){
+		driver.waitForElementPresent(CLOSE_ICON_OF_ORDER_SECTION);
+		driver.click(CLOSE_ICON_OF_ORDER_SECTION);
+		logger.info("close icon clicked of an order");
+	}
+
+	public void clickFirstProcessedPCAutishipOrder(){
+		driver.waitForElementPresent(FIRST_PROCESSED_PC_AUTOSHIP_ORDER_LOC);
+		driver.click(FIRST_PROCESSED_PC_AUTOSHIP_ORDER_LOC);
+		logger.info("First processed pc autoship order clicked");
+		driver.waitForLSDLoaderAnimationImageToDisappear();
+	}
+
+	public void clickFirstProcessedRCOrder(){
+		driver.waitForElementPresent(FIRST_PROCESSED_RC_ORDER_LOC);
+		driver.click(FIRST_PROCESSED_RC_ORDER_LOC);
+		logger.info("First processed rc order clicked");
+		driver.waitForLSDLoaderAnimationImageToDisappear();
+	}
+
+	public void clickContactButtonAtFooter(){
+		driver.waitForElementPresent(CONTACT_BUTTON_AT_FOOTER);
+		driver.click(CONTACT_BUTTON_AT_FOOTER);
+		logger.info("Contact button clicked at footer");
+	}
+
+	public boolean isContactDetailsPresent(){
+		driver.waitForElementPresent(CONTACT_DETAILS_SECTION);
+		return driver.isElementPresent(CONTACT_DETAILS_SECTION);
+	}
+
+	public boolean isPhoneIconPresent(){
+		driver.waitForElementPresent(PHONE_ICON);
+		return driver.isElementPresent(PHONE_ICON);
+	}
+
+	public boolean isEmailIconPresent(){
+		driver.waitForElementPresent(EMAIL_ICON);
+		return driver.isElementPresent(EMAIL_ICON);
+	}
+
+
 }

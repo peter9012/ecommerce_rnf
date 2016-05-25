@@ -31,20 +31,24 @@ public class LSDHomePage extends LSDRFWebsiteBasePage{
 	public void clickViewMyOrdersLink(){
 		driver.quickWaitForElementPresent(VIEW_MY_ORDERS_LINK);
 		driver.click(VIEW_MY_ORDERS_LINK);
+		driver.waitForLSDLoaderAnimationImageToDisappear();
 	}
 
 	public LSDCustomerPage clickCustomersLink(){
+		driver.waitForElementPresent(CUSTOMERS_LINK);
 		driver.click(CUSTOMERS_LINK);
 		logger.info("Customers link clicked from main menu");
+		driver.waitForLSDLoaderAnimationImageToDisappear();
 		return new LSDCustomerPage(driver);
 	}
 
 	public LSDOrderPage clickOrdersLink(){
+		driver.waitForElementPresent(ORDERS_LINK);
 		driver.click(ORDERS_LINK);
 		logger.info("Orders link clicked from main menu");
+		driver.waitForLSDLoaderAnimationImageToDisappear();
 		return new LSDOrderPage(driver);
 	}
-
 	public LSDFeedbackPage clickFeedbackLink(){
 		driver.click(FEEDBACK_LINK);
 		logger.info("Feedback link clicked from main menu");

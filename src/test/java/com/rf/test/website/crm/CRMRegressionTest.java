@@ -34,6 +34,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	String pcUserName = null;
 	String accountID = null;
 	String rcUserName = null;
+	String pcAccountID = null;
+	String rcAccountID = null;
 	List<Map<String, Object>> randomConsultantList =  null;
 	List<Map<String, Object>> randomConsultantUsernameList =  null;
 	List<Map<String, Object>> randomPCUserList =  null;
@@ -56,9 +58,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 
 		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+		pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
 		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 		rcUserName = (String) getValueFromQueryResult(randomRCUserList, "UserName");
+		rcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 	}	
 
 	//Hybris Project-4527:Search for account by email address
@@ -230,7 +234,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//Hybris Project-4545:View Consultant Account details
 	@Test(priority=5)
 	public void testViewConsultantAccountDetailsTest_4545() throws InterruptedException{
-		logger.info("The username is "+consultantEmailID);	
+		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
@@ -243,7 +247,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isMainAddressSectionPresent(),"Main Address Section is not present");
 
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Edit Account"),"Edit Account button is not Enabled in account detail section");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Edit PWS Domain"),"Edit PWS Domain button is not Enabled in account detail section");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("PWS Domain"),"Edit PWS Domain button is not Enabled in account detail section");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Change Account Status"),"Change Account Status button is not Enabled in account detail section");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("Pulse"),"Pulse button is not Enabled in account detail section");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsButtonEnabled("New Pulse"),"New Pulse button is not Enabled in account detail section");
@@ -281,7 +285,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-
 
 	//Hybris Project-4491:Add Shipping Profile for Consultant
 	@Test(priority=6)
@@ -450,7 +453,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
+		//s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Special Communications (Price Increase)"),"Reason dropdown Special Communications (Price Increase) option is not present on Account Details page");
@@ -483,7 +486,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcUserName.toLowerCase().trim()) || rcUserName.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcUserName.toLowerCase().trim());
-
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
 		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Activity Section is not present on Account Details page");
@@ -503,7 +505,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
+		//s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Special Communications (Price Increase)"),"Reason dropdown Special Communications (Price Increase) option is not present on Account Details page");
@@ -584,7 +586,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
+		//		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Special Communications (Price Increase)"),"Reason dropdown Special Communications (Price Increase) option is not present on Account Details page");
@@ -829,12 +831,28 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	}
 
 	// Hybris Project-4508:Edit PC contact details
-	@Test(enabled=false)//tests needs to have some update
+	@Test(priority=19)
 	public void testEditPreferredCustomerContactDetails_4508() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		List<Map<String, Object>> randomPCFirstNameList =  null;
+		List<Map<String, Object>> randomPCList =  null;
+		String pcFirstName = null;
+		while(true){
+			randomPCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+			pcFirstName = String.valueOf(getValueFromQueryResult(randomPCFirstNameList, "FirstName"));
+			if((pcFirstName.length()>2) &&(!pcFirstName.equalsIgnoreCase("null"))){
+				logger.info("PCFirst name is not null");
+				break;
+			}else{
+				logger.info("PCFirst name is equal to null for account ID: "+pcAccountID);
+				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+				continue;
+			}
+		}
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcFirstName);
 		crmHomePage.clickContactOnFirstRowInSearchResults();
 		//verify for number of contacts present in the contact details
 
@@ -1751,7 +1769,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.selectReasonToChangeAccountStatusFromDropDown("Other");
 		crmAccountDetailsPage.clickSaveButtonToChangeAccountStatus();
 		s_assert.assertFalse(crmAccountDetailsPage.isAccountStatusActive(),"Account status is active");
-		crmAccountDetailsPage.clickAccountDetailsButton("My Account");
+		crmAccountDetailsPage.clickMyAccountButton();
 		s_assert.assertTrue(crmAccountDetailsPage.handleAlertPopUpForMyAccountProxy(),"account is active and proxy of my account is allowed");
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Autoships");
 		//s_assert.assertFalse(crmAccountDetailsPage.isAutoshipStatusActive(),"Autoship Status is active");
@@ -2663,14 +2681,18 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 
 	//Hybris Project-4498:Verify the Proxy to my account for a Consultant
 	@Test(priority=66) 
-	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{
+	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{ 
+		String consultantEmailID = null;
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The email address is "+consultantEmailID); 
+		logger.info("The email address is "+consultantEmailID);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		String accountName = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Account Name");
 		String emailId = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Email Address");
-		String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone");
+		//String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone");
 		String addressLine1 = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Address Line 1");
 		String locale = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Locale");
 		logger.info("Url Print before switching = "+ driver.getCurrentUrl());
@@ -2683,7 +2705,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(accountName.contains(storeFrontHomePage.getConsultantStoreFrontInfo("first-name")), "First Name Not Matched, Expected is "+ accountName +"But Actual Contain is " +storeFrontHomePage.getConsultantStoreFrontInfo("first-name"));
 		s_assert.assertTrue(addressLine1.contains(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
 		s_assert.assertTrue(locale.contains(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
-		s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
+		//s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
 		s_assert.assertTrue(emailId.contains(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
 		storeFrontHomePage.switchToPreviousTab();
 		s_assert.assertAll();
@@ -2795,7 +2817,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		String accountName = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Account Name").trim();
 		String emailId = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Email Address").trim();
-		String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone").trim();
+		//String mainPhoneNo = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Main Phone").trim();
 		String addressLine1 = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Address Line 1").trim();
 		String locale = crmAccountDetailsPage.getInfoUnderAccountDetailSection("Locale").trim();
 		logger.info("Url Print before switching = "+ driver.getCurrentUrl());
@@ -2807,8 +2829,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(accountName.contains(storeFrontHomePage.getConsultantStoreFrontInfo("first-name")), "First Name Not Matched, Expected is "+ accountName +"But Actual Contain is " +storeFrontHomePage.getConsultantStoreFrontInfo("first-name"));
 		s_assert.assertTrue(addressLine1.equals(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
 		s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
-		String phoneNumberFromUI = storeFrontHomePage.convertPhoneNumber(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
-		s_assert.assertTrue(mainPhoneNo.equals(phoneNumberFromUI), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +phoneNumberFromUI);
+		/*String phoneNumberFromUI = storeFrontHomePage.convertPhoneNumber(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
+	  s_assert.assertTrue(mainPhoneNo.equals(phoneNumberFromUI), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +phoneNumberFromUI);*/
 		s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
 		crmAccountDetailsPage.switchToPreviousTab();
 		s_assert.assertAll();
@@ -2973,12 +2995,31 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	}
 
 	//Hybris Project-4511:Edit Retail Customer contact details
-	@Test(enabled=false)//Tests needs to have some update
+	@Test(priority=71)
 	public void testEditRetailCustomerContactDetails_4511() throws InterruptedException {
+
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+
+		List<Map<String, Object>> randomRCFirstNameList =  null;
+		List<Map<String, Object>> randomRCList =  null;
+		String rcFirstName = null;
+		while(true){
+			randomRCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+			rcFirstName = String.valueOf(getValueFromQueryResult(randomRCFirstNameList, "FirstName"));
+			if((rcFirstName.length()>2) &&(!rcFirstName.equalsIgnoreCase("null"))){
+				logger.info("RCFirst name is not null");
+				break;
+			}else{
+				logger.info("RCFirst name is equal to null for account ID: "+rcAccountID);
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				rcAccountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+				continue;
+			}
+		}
+
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcFirstName);
 		crmHomePage.clickContactOnFirstRowInSearchResults();
 		//verify contact type should be 'primary'
 		s_assert.assertTrue(crmContactDetailsPage.getContactType().trim().equalsIgnoreCase("Primary".trim()),"Contact type is not primary");
@@ -3313,4 +3354,5 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	
 }

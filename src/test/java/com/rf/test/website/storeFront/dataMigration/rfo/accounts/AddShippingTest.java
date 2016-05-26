@@ -70,10 +70,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 				}
 			}
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();

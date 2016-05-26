@@ -359,10 +359,7 @@ public class AddBillingTest extends RFWebsiteBaseTest{
 				}
 			}
 		}
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 

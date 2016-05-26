@@ -93,11 +93,12 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";            
 		//		setStoreFrontPassword(driver.getStoreFrontPassword());
-		setStoreFrontPassword("111maiden");
+		setStoreFrontPassword("111Maiden$");
 		enterCredentialsInHTTPAuthentication("r+f-qa", "4llH41l7h3Gl0wCl0ud");
 		lsdLoginPage.enterUsername(whiteListedUserName);
 		lsdLoginPage.enterPassword(password);
 		lsdLoginPage.clickLoginBtn();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void enterCredentialsInHTTPAuthentication(String username,String password) throws AWTException{
@@ -127,7 +128,7 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
-		driver.manage().deleteAllCookies();
+//		driver.manage().deleteAllCookies();
 	}
 
 	/**

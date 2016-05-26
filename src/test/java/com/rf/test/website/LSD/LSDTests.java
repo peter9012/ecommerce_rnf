@@ -38,13 +38,13 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdOrderPage.getOrderStatus().toLowerCase().contains("processed"), "Order status expected is processed but getting "+lsdOrderPage.getOrderStatus());
 		s_assert.assertFalse(lsdOrderPage.getOrderItems()==null, "Order Items are not present");
 		s_assert.assertTrue(lsdOrderPage.getFootNote().contains("Although you receive 0 PSQV"), "PSQV foot note is not present");
+		lsdOrderPage.clickCloseIconOfOrder();
 		s_assert.assertAll();
 	}
 
 	//Main Menu TC-1151
 	@Test(priority=3)
 	public void testMainMenu_1151(){
-		lsdHomePage.navigateToHomePage();
 		lsdCustomerPage = lsdHomePage.clickCustomersLink();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("customers"), "Expected Url should contains customers but actual on UI is: "+driver.getCurrentUrl());
 		s_assert.assertTrue(lsdCustomerPage.isCustomerPagePresent(), "Customer page is not present");
@@ -59,7 +59,6 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	//Feedback Option TC-272
 	@Test(priority=4)
 	public void testFeedbackoption_272(){
-		lsdHomePage.navigateToHomePage();
 		String parentWindowHandle = driver.getWindowHandle();
 		lsdFeedbackPage = lsdHomePage.clickFeedbackLink();
 		s_assert.assertTrue(lsdFeedbackPage.isFeedbackPagePresent(parentWindowHandle), "Feedback page is not present");
@@ -81,6 +80,8 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for RC processed order");
 		lsdOrderPage.clickContactButtonAtFooter();
 		s_assert.assertTrue(lsdOrderPage.isContactDetailsPresent(),"Contact details is not present after clicked on contact button");
+		lsdOrderPage.clickCloseIconOfContact();
+		lsdOrderPage.clickCloseIconOfOrder();
 		s_assert.assertAll();
 	}
 
@@ -94,6 +95,8 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		lsdOrderPage.clickContactButtonAtFooter();
 		s_assert.assertTrue(lsdOrderPage.isPhoneIconPresent(),"Phone icon is not present after clicked on contact button");
 		s_assert.assertTrue(lsdOrderPage.isPhoneIconPresent(),"Email icon is not present after clicked on contact button");
+		lsdOrderPage.clickCloseIconOfContact();
+		lsdOrderPage.clickCloseIconOfOrder();
 		s_assert.assertAll();
 	}
 }

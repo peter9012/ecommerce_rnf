@@ -32,7 +32,7 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By CONTACT_DETAILS_SECTION = By.xpath("//div[@class='contact-profile-content']//div[@class='shadow-card']");
 	private static final By PHONE_ICON = By.xpath("//div[@class='icon']//span[@class='icon-phone']");
 	private static final By EMAIL_ICON = By.xpath("//div[@class='icon']//span[@class='icon-email']");
-
+	private static final By CLOSE_ICON_OF_CONTACT_SECTION = By.xpath("//section[@id='contact-profile-modal']//div[@class='icon-close pointer']");
 
 	public void clickFirstProcessedOrder(){
 		driver.waitForElementPresent(FIRST_PROCESSED_ORDER_LOC);
@@ -139,5 +139,10 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 		return driver.isElementPresent(EMAIL_ICON);
 	}
 
+	public void clickCloseIconOfContact(){
+		driver.waitForElementPresent(CLOSE_ICON_OF_CONTACT_SECTION);
+		driver.click(CLOSE_ICON_OF_CONTACT_SECTION);
+		logger.info("close icon clicked of contact section");
+	}
 
 }

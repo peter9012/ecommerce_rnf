@@ -9,17 +9,19 @@ public class LSDRFWebsiteBasePage extends RFBasePage{
 		super(driver);
 		this.driver = driver;
 	}	
-	
+
 	public String getCurrentURL(){
 		return driver.getCurrentUrl();
 	}
-	
+
 	public void navigateToHomePage(){
 		if(driver.getCurrentUrl().contains("home")==false){
 			driver.get(driver.getURL()+"/#/home");
 			driver.waitForLSDLoaderAnimationImageToDisappear();
-		}
-		
+			driver.pauseExecutionFor(2000);
+		}	
+
+
 	}
 
 }

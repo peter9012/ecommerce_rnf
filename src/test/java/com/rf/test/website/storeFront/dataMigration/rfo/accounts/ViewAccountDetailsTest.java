@@ -396,7 +396,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		String accountId = null;
 
 		while(true){
-			randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,RFO_DB);
+			randomEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 			userEmailId =  (String) getValueFromQueryResult(randomEmailList, "Username");
 			accountId = String.valueOf(getValueFromQueryResult(randomEmailList, "AccountID"));
 			storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -421,6 +421,7 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+
 
 	// Hybris Phase 2-4195 : Enrolled Consultant, Has CRP/ Has Pulse, Has Submitted Orders
 	@Test(enabled=false)//Query Not giving correct results

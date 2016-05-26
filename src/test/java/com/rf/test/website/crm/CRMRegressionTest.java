@@ -3354,5 +3354,48 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+	//Hybris Project-4529:Search for account by mobile phone number
+	@Test(priority=77)
+	public void testSearchForAccountByMobilePhoneNumber_4529() throws InterruptedException{
+		String mainPhoneNumberDB = null;
+		List<Map<String, Object>> mainPhoneNumberList =  null;
+		//get main phone number
+		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		//search for account by Main Phone no.
+		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB.split("(?<=\\G...)")[0]);
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5004:Verify the forgot password for Consultant from Salesforce
+	@Test(priority=78)
+	public void testForgotPasswordForConsultant_5004() throws InterruptedException{
+		logger.info("The email address is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//verify account detail page present?
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//click 'send forgot password email' link
+		crmAccountDetailsPage.clickSendForgotPasswordEmailLink();
+		crmAccountDetailsPage.acceptAlert();
+		String pageSource=driver.getPageSource();
+		//verify an email for new password has been sent?
+		//s_assert.assertTrue(crmAccountDetailsPage.isEmailForNewPasswordSent(),"Email for new password has not been sent");
+		s_assert.assertTrue(pageSource.contains("A new password was sent successfully"),"Email for new password has not been sent");
+		s_assert.assertAll();
+	}
+
 }

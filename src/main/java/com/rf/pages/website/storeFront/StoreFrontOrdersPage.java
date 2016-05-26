@@ -6,6 +6,8 @@ import java.util.TimeZone;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.Select;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -1057,5 +1059,41 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			}
 			return false;
 		}
+	}
+
+	public void clickReportProblemsUnderActionsForFirstOrderUnderOrderHistory() {
+		String firstOrderNumber=getFirstOrderNumberFromOrderHistory();
+		driver.waitForElementPresent(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.click(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.click(By.linkText("Report Problems"));
+		logger.info("Report problems under actions is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyReportAProblemSectionPresent() {
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'Report a problem')]"));
+	}
+
+	public void selectItemsAndReportAProblem() {
+		if(driver.isElementPresent(By.xpath("//input[@id='problemCheckBox']"))){
+			driver.click(By.xpath("//input[@id='problemCheckBox']/ancestor::div[1]"));
+			logger.info("item checkbox is checked");
+			Select select = new Select(driver.findElement(By.xpath("//select[@id='problemType']")));
+			select.selectByVisibleText("Order is incorrect");
+			driver.type(By.xpath("//textarea[@id='problemText']"), "Problem");
+			logger.info("problem type selected is::  Order is incorrect");
+			driver.click(By.id("submitButton"));
+			logger.info("problem submit button clicked");
+			driver.waitForPageLoad();
+		}
+	}
+
+	public boolean verifyReportAProblemConfirmationMessage() {
+		boolean presenceThankyouMessage = driver.isElementPresent(By.xpath("//div[@id='main-content']//h3[text()='Thank you']"));
+		boolean presenceSendMessage = driver.isElementPresent(By.xpath("//div[@id='main-content']//p[contains(text(),'We have sent your problem')]"));
+		if(presenceThankyouMessage && presenceSendMessage ){
+			return true;}
+		else
+			return false;
 	}
 }

@@ -874,6 +874,9 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 		String UIMonth=null;
 		String[] splittedDate = UIDate.split("\\/");
 		String date = splittedDate[1];
+		if(Character.toString(date.charAt(0)).equals("0")){
+			date = date.substring(1);
+		}
 		String month = splittedDate[0];
 		String year  = splittedDate[2];
 		switch (Integer.parseInt(month)) {  

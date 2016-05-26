@@ -2602,6 +2602,4 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.isAutoshipLinkPresentOnThePage(),"Autoship link is not present");
 		s_assert.assertAll();
 	}
-
-
 }

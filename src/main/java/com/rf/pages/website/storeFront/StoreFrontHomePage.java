@@ -4061,5 +4061,22 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return phoneNumberFromUI;
 	}
 
+	public boolean isSolutionToolContentBlockPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+		return driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+	}
+
+
+	public boolean isAccessSolutionToolPresent() {
+		boolean status = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.waitForPageLoad();
+		if(driver.getCurrentUrl().contains("solutiontool") && driver.isElementPresent(By.id("mirror"))){
+			status = true;
+		}
+		return status;
+	}
+
 
 }

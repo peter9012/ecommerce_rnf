@@ -128,7 +128,7 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 
 	@AfterMethod
 	public void tearDownAfterMethod(){
-//		driver.manage().deleteAllCookies();
+		//		driver.manage().deleteAllCookies();
 	}
 
 	/**

@@ -2584,8 +2584,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyProductFilterIsApply(int i){
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
-		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
 		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li[1]"));
 		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
 		driver.click(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[@class='pull-right']//input/.."));
@@ -2593,6 +2593,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String productNameFromUI = driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim();
 		driver.click(By.xpath("//a[contains(text(),'Clear All')]"));
 		driver.waitForPageLoad();
+		System.out.println(productNameFromUI+"  "+productNameFromfilter+"  "+i);
 		return productNameFromUI.contains(productNameFromfilter);
 	}
 

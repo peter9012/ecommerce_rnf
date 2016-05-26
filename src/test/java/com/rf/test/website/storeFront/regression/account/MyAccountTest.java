@@ -1316,8 +1316,8 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontConsultantPage.clickOnAutoshipStatusLink();
-		storeFrontConsultantPage.subscribeToPulse();
-		s_assert.assertTrue(storeFrontConsultantPage.validateErrorMessageWithSpclCharsOnPulseSubscription(), "Error/Warning message is not displayed ");
+		/*storeFrontConsultantPage.subscribeToPulse();
+		s_assert.assertTrue(storeFrontConsultantPage.validateErrorMessageWithSpclCharsOnPulseSubscription(), "Error/Warning message is not displayed ");*/
 
 		s_assert.assertAll(); 
 	}

@@ -87,6 +87,7 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		logger.info("login link clicked");
 		logger.info("login username is: "+username);
 		logger.info("login password is: "+password);
+		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);			
 		driver.click(LOGIN_BTN_LOC);	

@@ -24,6 +24,8 @@ public class DBQueries_RFO {
 	public static String GET_ORDER_GRAND_TOTAL_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select AmountTobeAuthorized from Hybris.OrderPayment where OrderID IN(select OrderId from Hybris.Orders where OrderNumber IN (select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc))";
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
+	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select EmailAddress from RFO_Accounts.AccountContacts acTB INNER JOIN RFO_Accounts.AccountEmails aeTB  "+
+			"on acTB.AccountContactId=aeTB.AccountContactId INNER JOIN RFO_Accounts.EmailAddresses aEMTB on aeTB.EmailAddressID=aEMTB.EmailAddressID WHERE acTB.AccountID='%s' and aEMTB.EmailAddressTypeID=1 ";
 	public static String GET_AUTOSHIP_ID_FOR_RFO = "SELECT * "+
 			"FROM Hybris.Autoship AS A "+
 			"WHERE A.AutoshipNumber='%s'";
@@ -1202,7 +1204,7 @@ public class DBQueries_RFO {
 			 "HAVING COUNT(*) > 1 ) "+
 			 "ORDER BY NEWID() ";
 
-	
+
 	public static String GET_RANDOM_CONSULTANT_HAS_CRP_HAS_ORDERS_RFO_4195 = 
 
 			"USE RFOperations "+

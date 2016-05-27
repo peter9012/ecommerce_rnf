@@ -48,7 +48,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 		String firstNameDB = null;
 		String lastNameDB = null;
-		String genderDB = null;
+		String genderIdDB = null;
+		String gender =null;
 		String addressLine1DB= null;
 		String cityDB = null;
 		String provinceDB = null;
@@ -59,12 +60,11 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 		String consultantEmailID = null;
 		String accountID = null;
-
+		//
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("Account Id of the user is "+accountID);
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID,password);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
@@ -73,15 +73,15 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 
-		//	    //assert First Name with RFO
-		//	    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		//	    firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
-		//	    assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
-		//	   
-		//	    // assert Last Name with RFO
-		//	    accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		//	    lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
-		//	    assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
+		//     //assert First Name with RFO
+		//     accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+		//     firstNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "FirstName");
+		//     assertTrue("First Name on UI is different from DB", storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstNameDB));
+		//    
+		//     // assert Last Name with RFO
+		//     accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
+		//     lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
+		//     assertTrue("Last Name on UI is different from DB", storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB) );
 
 		// assert Address Line 1 with RFO
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
@@ -96,8 +96,8 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
 		provinceDB = (String) getValueFromQueryResult(accountAddressDetailsList, "Region");
 		/*if(provinceFromDB.equalsIgnoreCase("TX")){
-	     provinceDB = "Texas"; 
-	    }*/
+	      provinceDB = "Texas"; 
+	     }*/
 
 		//assert Postal Code eith RFO
 		accountAddressDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO, consultantEmailID), RFO_DB);
@@ -111,20 +111,23 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 
 		// assert Gender Id with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
-		genderDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
-		if(genderDB.equals("2")){
-			genderDB = "male";
-		}
-		else{
-			genderDB = "female";
-		}
-		assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfo(genderDB));
+		genderIdDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "GenderId"));
 
+		//Get gender based on gender Id.
+		gender=storeFrontAccountInfoPage.getGenderFromGenderId(genderIdDB);
+		if(gender.equalsIgnoreCase("male")||gender.equalsIgnoreCase("female")){
+			assertTrue("Gender on UI is different from DB", storeFrontAccountInfoPage.verifyGenderFromUIAccountInfos(gender));
+		}else{
+			logger.info("Gender is other than male or female");
+		}
 		// assert BirthDay with RFO
 		accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, consultantEmailID), RFO_DB);
 		dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "BirthDay"));
-		assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB));
-
+		if(dobDB=="null"){
+			logger.info("DOB from db is not present");
+		}else{
+			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyBirthDateFromUIAccountInfoForCheckAccountInfo(dobDB));
+		}
 		s_assert.assertAll();
 	}
 

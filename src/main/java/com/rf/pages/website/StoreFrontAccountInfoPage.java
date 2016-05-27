@@ -38,6 +38,8 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	private String ACCOUNT_INFO_MONTH_OF_BIRTH_LOC = "//select[@id='monthOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_YEAR_OF_BIRTH_LOC = "//select[@id='yearOfBirth']//option[@value='%s']";
 	private String ACCOUNT_INFO_RADIO_BUTTON_LOC = "//input[@id='%s']";
+	private String genderRadioBtnLoc = "//input[@id='%s' and @checked='checked']";
+
 	private final By ACCOUNT_AUTOSHIP_STATUS_LOC = By.xpath("//div[@id='left-menu']//a[text()='Autoship Status']");
 	private final By VALIDATION_MESSAGE_FOR_MAIN_PHONE_NUMBER_LOC = By.xpath("//div[@class='tipsy-inner']");
 	private final By ACCOUNT_INFO_PROVINCE_VERIFY_ACCOUNT_INFO_LOC = By.xpath("//select[@id='state']//option[@selected='selected']");
@@ -68,7 +70,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	public boolean verifyAccountTerminationLink(){
 		return driver.isElementPresent(TERMINATE_MY_ACCOUNT);		
 	}
-	
+
 	public void selectState(String state){
 		driver.click(By.xpath("//select[@id='state']"));
 		driver.quickWaitForElementPresent(By.xpath(String.format(ACCOUNT_INFO_PROVINCE_LOC, TestConstants.PROVINCE_CA)));
@@ -76,7 +78,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public StoreFrontAccountInfoPage updateAccountInformation(String firstName,String lastName,String addressLine1,String city,String postalCode, String mainPhoneNumber) throws InterruptedException{
-//		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
+		//		driver.waitForElementPresent(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.clear(ACCOUNT_INFO_FIRST_NAME_LOC);
 		driver.type(ACCOUNT_INFO_FIRST_NAME_LOC, firstName);
 		driver.clear(ACCOUNT_INFO_LAST_NAME_LOC);
@@ -247,7 +249,7 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean verifyBirthDateFromUIAccountInfoForCheckAccountInfo(String dob){
-		if(dob == null){
+		if(dob == "null"){
 			return false;
 		}else{
 			logger.info("Asserting Date of Birth");
@@ -551,6 +553,39 @@ public class StoreFrontAccountInfoPage extends RFWebsiteBasePage{
 		}
 
 		driver.waitForPageLoad();
+	}
+
+	public String getGenderFromGenderId(String genderId){
+		String gender = null;
+		switch (Integer.parseInt(genderId)) {  
+		case 1:
+			gender="female";
+			break;
+		case 2:
+			gender="male";
+			break;
+		case 3:
+			gender="unknown";
+			break;
+		case 4:
+			gender="undisclosed";
+			break;
+		case 5:
+			gender="withheld";
+			break;
+		}
+		logger.info("gender from Gender id "+gender);
+		return gender;
+	}
+
+	public boolean verifyGenderFromUIAccountInfos(String gender){
+		boolean genderValue = driver.findElement(By.xpath(String.format(genderRadioBtnLoc, gender))).isSelected();
+		if(genderValue == true){
+			return true;
+		}else{
+			logger.info("No gender is selected on UI in male and female option");
+		}
+		return false;
 	}
 }
 

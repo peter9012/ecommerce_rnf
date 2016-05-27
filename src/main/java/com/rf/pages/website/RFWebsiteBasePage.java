@@ -607,29 +607,41 @@ public class RFWebsiteBasePage extends RFBasePage{
 		String pcmailid=null;
 		String rcmailid=null;
 		String consultantmailid=null;
+		String consultantAccountId = null;
+		String pcAccountid = null;
+		String rcAccountid = null;
 
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
+		List<Map<String, Object>> randomPCUserDetailList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
+		List<Map<String, Object>> randomRCUserDetailList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
+		List<Map<String, Object>> randomConsultantDetailList =  null;
 		driver.findElement(By.id("first-Name")).sendKeys(firstName);
 		logger.info("first name entered as "+firstName);
 		driver.findElement(By.id("last-name")).sendKeys(lastName);
 		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
+			pcAccountid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "AccountID"));
+			randomPCUserDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountid),RFO_DB);
+			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserDetailList, "EmailAddress"));
 			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
 			logger.info("email entered as "+pcmailid);
 		}else if(userid.equalsIgnoreCase("rc")){
 			randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,RFO_DB);
-			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "Username"));
+			rcAccountid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "AccountID"));
+			randomRCUserDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountid),RFO_DB);
+			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserDetailList, "EmailAddress"));
 
 			driver.findElement(By.id("email-account")).sendKeys(rcmailid);
 			logger.info("email entered as "+rcmailid);
 		}else{
 
 			randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,RFO_DB);
-			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "Username"));
+			consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "AccountID"));
+			randomConsultantDetailList =DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,consultantAccountId),RFO_DB);
+			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantDetailList, "EmailAddress"));
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 			logger.info("email entered as "+consultantmailid);
 		}

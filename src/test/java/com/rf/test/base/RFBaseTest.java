@@ -82,24 +82,14 @@ public class RFBaseTest{
 			e.printStackTrace();
 		}
 
-
-		try{
-			File fDir2 = new File(System.getProperty("user.dir")
-					+ "\\test-output");
-			if (!fDir2.exists()) {
-				fDir2.mkdirs();
-			}
-			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
-					+ "\\test-output"));
-			System.out.println("test-output cleaned");
-		} catch (IOException e) {
-			System.out.println("test-output NOT cleaned");
-			e.printStackTrace();
+		File fDir2 = new File(System.getProperty("user.dir")
+				+ "\\test-output");
+		if (!fDir2.exists()) {
+			fDir2.mkdirs();
 		}
-
+		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
 		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");
-
 	}
 
 	@AfterSuite(alwaysRun=true)

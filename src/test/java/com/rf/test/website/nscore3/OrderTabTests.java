@@ -306,7 +306,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 		nscore3HomePage.enterSearchForFieldOnDistributorTab(completeName);
 		nscore3HomePage.clickSearchOnDistributorTab();
 		//verify all rows contains the searched complete name.
-		s_assert.assertTrue(nscore3HomePage.isAllRowsContainsTheCompleteName(completeName),"Expected complete name for all rows are: "+completeName+" but Actual on UI is not present for all rows");
+		s_assert.assertTrue(nscore3HomePage.isRowsContainsTheCompleteName(completeName),"Expected complete name for all rows are: "+completeName+" but Actual on UI is not present for all rows");
 		s_assert.assertAll();
 	}
 

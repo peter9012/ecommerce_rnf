@@ -60,11 +60,11 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		logger.info("In Before method..");
 		s_assert = new SoftAssert();
-/*		if(driver.getURL().contains("nsc4"))
+		if(driver.getURL().contains("nsc4"))
 			driver.get(driver.getURL());	
 		else{
 			driver.get(driver.getURL()+"/Home.aspx");	
-		}*/
+		}
 		logger.info("Out of Before method..");
 	}
 
@@ -87,16 +87,6 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 		driver.waitForCSCockpitLoadingImageToDisappear();		
 	}
 
-	@AfterMethod
-	public void tearDownAfterMethod(){
-		if(driver.getURL().contains("nsc4"))
-			driver.get(driver.getURL());	
-		else{
-			driver.get(driver.getURL()+"/Home.aspx");	
-		}
-		login("admin", "skin123!");
-
-	}
 
 	/**
 	 * @throws Exception

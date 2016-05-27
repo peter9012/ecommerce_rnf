@@ -221,7 +221,7 @@ public class NSCore4SitesTabPage extends NSCore4RFWebsiteBasePage{
 		driver.waitForElementPresent(EVENT_DELETE_BUTTON);
 		driver.click(EVENT_DELETE_BUTTON);
 		logger.info("Delete button clicked for an event");
-		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickAddNewsLink(){

@@ -288,6 +288,23 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 		return flag;
 	}
 
+	public boolean isRowsContainsTheCompleteName(String completeName){
+		int i=3;
+		boolean flag =false;
+		int firstNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("First Name");
+		int lastNameColNum = getColumnNumberHavingExpectedColumnNameOnDistributorPage("Last Name");
+		String firstName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,firstNameColNum))).getText();
+		String lastName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,lastNameColNum))).getText();
+		String completeNameString = firstName+" "+lastName;
+		if(completeName.trim().equalsIgnoreCase(completeNameString.trim())){
+			flag =true;
+		}else{
+			logger.info("complete name on UI is different from database expected:"+completeName+" Actual: "+completeNameString);
+			flag=false;
+		}
+		return flag;
+	}
+
 	public void selectUserTypeFromDDOnDistributorTab(String UserType){
 		driver.waitForElementPresent(CONSULTANT_DROPDOWN);
 		driver.click(CONSULTANT_DROPDOWN);
@@ -334,7 +351,7 @@ public class NSCore3HomePage extends NSCore3RFWebsiteBasePage{
 				String firstName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,firstNameColNum))).getText();
 				String lastName = driver.findElement(By.xpath(String.format(cellValueOnDistributorPage,i,lastNameColNum))).getText();
 				String completeNameString = firstName+" "+lastName;
-				if(completeName.equalsIgnoreCase(completeNameString)){
+				if(completeName.trim().equalsIgnoreCase(completeNameString.trim())){
 					logger.info("complete name from UI and db match for row "+(i-2));
 					break;
 				}else{

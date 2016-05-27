@@ -50,7 +50,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AdministratorLogin_LogingLogout
-	@Test
+	@Test(priority=1)
 	public void testAdministrationLoginLogout(){
 		s_assert.assertTrue(nscore4HomePage.isLogoutLinkPresent(),"Home Page has not appeared after login");
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();		
@@ -60,7 +60,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AdministratorLogin_InvalidLoging
-	@Test
+	@Test(priority=2)
 	public void testAdministratorLoginInvalidLogin(){
 		nscore4LoginPage = nscore4HomePage.clickLogoutLink();	
 		login("abcd", "test1234!");
@@ -70,7 +70,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_AccountLookup
-	@Test
+	@Test(priority=3)
 	public void testAccountsTabAccountLookup(){
 		String accountNumber = null;
 		String firstName = null;
@@ -91,7 +91,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewAutoshipsEdit
-	@Test
+	@Test(priority=4)
 	public void testAccountsTabOverviewAutoshipsEdit(){
 		String accountNumber = null;  
 		String SKU = null;
@@ -130,9 +130,9 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertTrue(nscore4HomePage.getQuantityOfPulseProductFromOrderDetailPage().contains(updatedQuantity), "updated pulse product qunatity is not present in the Order detail page");
 		s_assert.assertAll();
 	}
-	
+
 	//NSC4_MobileTab_ HeadlineNews
-	@Test
+	@Test(priority=5)
 	public void testMobileTabHeadLineNews(){
 		nscore4MobilePage=nscore4HomePage.clickMobileTab();
 		//click headlines news link
@@ -143,7 +143,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_MobileTab_ R+FInTheNews
-	@Test
+	@Test(priority=6)
 	public void testMobileTabRFInNews(){
 		nscore4MobilePage=nscore4HomePage.clickMobileTab();
 		//click R+F In the news link
@@ -154,7 +154,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OrdersEditCancelOrder
-	@Test
+	@Test(priority=7)
 	public void testAccountsTab_OrdersEditCancelOrder(){
 		String accountNumber = null;
 		List<Map<String, Object>> randomAccountList =  null;
@@ -178,7 +178,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_OrdersTab_OrderIdSearch
-	@Test
+	@Test(priority=8)
 	public void testOrdersTab_OrderIdSearch(){
 		String accountNumber = null;
 		logger.info("DB is "+RFL_DB);
@@ -197,7 +197,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_OrdersTab_OrderAdvancedSearch
-	@Test
+	@Test(priority=9)
 	public void testOrdersTab_OrderAdvancedSearch(){
 		String accountNumber = null;
 		List<Map<String, Object>> completeNameList =  null;
@@ -220,7 +220,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_SitesTab_nsCorporate_CorporatePWSContentReviewApprove
-	@Test
+	@Test(priority=10)
 	public void testCorporatePWSContentReviewApprove() {
 		int randomNumb = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -262,7 +262,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_SitesTab_nsCorporate_CorporatePWSContentReviewDenied
-	@Test
+	@Test(priority=11)
 	public void testCorporatePWSContentReviewDenied(){
 		int randomNumb = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -307,35 +307,8 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//NSC4_SitesTab_nsCorporate_CorporateNewEditDeleteEvent
-	@Test
-	public void testNSC4SitesTabNSCorporateNewEditDeleteEvent(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
-		String sites = "Sites";
-		String subject = "For Automation"+randomNum;
-		nscore4HomePage.clickTab(sites);
-		nscore4SitesTabPage.clickCorporateLink();
-		nscore4SitesTabPage.clickAddEventLink();
-		nscore4SitesTabPage.enterSubjectForEvent(subject);
-		nscore4SitesTabPage.clickSaveBtn();
-		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("Event saved successfully"), "Expected saved message is: Event saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
-		s_assert.assertTrue(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is not present at calendar ");
-		nscore4SitesTabPage.clickEventNamePresentAtCalendar(subject);
-		subject = "For Automation"+randomNum2;
-		nscore4SitesTabPage.enterSubjectForEvent(subject);
-		nscore4SitesTabPage.clickSaveBtn();
-		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("Event saved successfully"), "Expected saved message is: Event saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
-		s_assert.assertTrue(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is not present at calendar ");
-		nscore4SitesTabPage.clickEventNamePresentAtCalendar(subject);
-		nscore4SitesTabPage.clickDeleteBtnForEvent();
-		nscore4SitesTabPage.clickOKBtnOfJavaScriptPopUp();
-		s_assert.assertFalse(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is present at calendar ");
-		s_assert.assertAll();
-	}
-
 	//NSC4_OrdersTab_NewOrder
-	@Test
+	@Test(priority=12)
 	public void testOrdersTab_NewOrder(){
 		String accountNumber = null;
 		List<Map<String, Object>> completeNameList =  null;
@@ -366,7 +339,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_OrdersTab_BrowseOrders
-	@Test
+	@Test(priority=13)
 	public void testOrdersTabBrowseOrders(){
 		String accountNumber = null;
 		logger.info("DB is "+RFL_DB);
@@ -391,7 +364,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewPostNewNote
-	@Test
+	@Test(priority=14)
 	public void testNSC4AccountsTabOverviewPostNewNote(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -424,7 +397,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewPlaceNew Order
-	@Test
+	@Test(priority=15)
 	public void testAccountsTab_OverviewPlaceNewOrder(){
 		String accountNumber = null;
 		List<Map<String, Object>> randomSKUList =  null;
@@ -450,7 +423,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewStatusChange
-	@Test
+	@Test(priority=16)
 	public void testAccountsTab_OverviewStatusChange(){
 		String accountNumber = null;
 		logger.info("DB is "+RFL_DB);
@@ -481,7 +454,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewAutoshipsViewOrders
-	@Test
+	@Test(priority=17)
 	public void testNSC4AccountTabOverviewAutoshipsViewOrders(){
 		String accountNumber = null;
 		String accounts = "Accounts";
@@ -524,7 +497,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 
 	//NSC4_SitesTab_nsCorporate_CorporateAddEditDeleteNews
-	@Test
+	@Test(priority=18)
 	public void testNSC4SitesTabNSCorporateAddEditDeleteNews(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
@@ -561,7 +534,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_SitesTab_nsCorporate_CorporateSiteDetailsEditSite
-	@Test
+	@Test(priority=19)
 	public void testNSC4SitesTabNSCorporateSiteDetailEditSite(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String sites = "Sites";
@@ -583,7 +556,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_FullAccountRecordUpdate
-	@Test
+	@Test(priority=20)
 	public void testNSC4AccountTabFullAccountRecordUpdate(){
 		String accountNumber = null;
 		logger.info("DB is "+RFL_DB);
@@ -677,7 +650,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_ ShippingProfilesAddEditDefaultDelete
-	@Test
+	@Test(priority=21)
 	public void testAccountsTab_ShippingProfilesAddEditDefaultDelete(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newShippingProfileName = "newSP"+randomNum;
@@ -715,7 +688,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_ BillingProfilesAddEditDefaultDelete
-	@Test
+	@Test(priority=22)
 	public void testAccountsTab_BillingProfilesAddEditDefaultDelete(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = "RFAutoNSCore4"+randomNum;
@@ -752,7 +725,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AdminTab_ Users_AddEditRoles
-	@Test
+	@Test(priority=23)
 	public void testAdminTabUsersAddEditRoles(){
 		int randomNum = CommonUtils.getRandomNum(10, 100);
 		String roleName ="SampleRole";
@@ -769,7 +742,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_SitesTab_nsDistributor_BasePWSSitePagesAddEditNewSite
-	@Test
+	@Test(priority=24)
 	public void testBasePWSPagesAddEditNewSite(){
 		int randomNumb = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -799,42 +772,8 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//NSC4_SitesTab_nsDistributor_BasePWSSiteMap
-	@Test
-	public void testNSC4SitesTabBasePWSSiteMap(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String sites = "Sites";
-		String siteMap = "Site Map";
-		String linkText = "AutoRF"+randomNum;
-		String pageOption = "MeetDrFields";
-		String clearNavigationCache = "Clear Navigation Cache";
-		String reloadProductCache  = "Reload Product Cache";
-
-		nscore4HomePage.clickTab(sites);
-		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
-		nscore4SitesTabPage.clickAddLinkForSiteMap();
-		nscore4SitesTabPage.enterLinkTextForSiteMap(linkText);
-		nscore4SitesTabPage.selectPagesForSiteMap(pageOption);
-		nscore4SitesTabPage.clickSaveBtnOnSiteMap();
-		s_assert.assertTrue(nscore4SitesTabPage.isLinkTextNamePresentInTreeMap(linkText), "Link text name is not prsent in site map tree");
-		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
-		nscore4SitesTabPage.moveToSiteMapLinkUnderDrFieldsForAddLinkOfBasePWS(linkText);
-		nscore4SitesTabPage.clickActivateLinkOnSiteMap();
-		nscore4HomePage.clickTab(sites);
-		nscore4SitesTabPage.clickSubLinkOfNSCorporate(clearNavigationCache);
-		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The navigation cache has been cleared"), "Expected confirmation message is: The navigation cache has been cleared but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
-		nscore4SitesTabPage.clickSubLinkOfNSCorporate(reloadProductCache);
-		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The product cache has been reloaded"), "Expected confirmation message is: The product cache has been reloaded but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
-		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
-		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
-		nscore4SitesTabPage.clickLinkTextNamePresentInTreeMap(linkText);
-		nscore4SitesTabPage.clickDeactivateLinkOnSiteMap();
-		s_assert.assertTrue(nscore4SitesTabPage.isActivateLinkPresentOnSiteMap(), "Activate link is not present after clicked on Deactivate link");
-		s_assert.assertAll();
-	}
-
 	// NSC4_ProductsTab_ NewUpdateCatalog
-	@Test
+	@Test(priority=25)
 	public void testProductsTab_NewUpdateCatalog(){
 		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum =  CommonUtils.getRandomNum(1000, 100000);
@@ -859,7 +798,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_SitesTab_nsCorporate_CorporateReplicateSites
-	@Test
+	@Test(priority=26)
 	public void testNSC4SitesTabNSCorporateReplicateSites(){
 		String sites = "Sites";
 		String replicatedSites = "Replicated Sites";
@@ -871,7 +810,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 
 	//NSC4 Full Return 
-	@Test
+	@Test(priority=27)
 	public void testNSC4FullReturn(){
 		String accountNumber = null;
 		String accounts = "Accounts";
@@ -902,7 +841,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4 Partial  Return 
-	@Test
+	@Test(priority=28)
 	public void testNSC4PartialReturn(){
 		String accountNumber = null;
 		String accounts = "Accounts";
@@ -938,7 +877,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Return with Restocking fee
-	@Test
+	@Test(priority=29)
 	public void testNSC4ReturnWithRestockingFee(){
 		String accountNumber = null;
 		String accounts = "Accounts";
@@ -978,7 +917,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	// NSC4_AdminTab_ Users_AddEditUsers
-	@Test
+	@Test(priority=30)
 	public void testAdminTab_Users_AddEditUsers(){
 		int randomNum = CommonUtils.getRandomNum(100, 10000);
 		String firstName = "firstName"+randomNum;
@@ -1002,7 +941,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	// NSC4_AdminTab_ LystTypes
-	@Test
+	@Test(priority=31)
 	public void testAdminTab_LystTypes(){
 		int randomNum = CommonUtils.getRandomNum(100, 1000);
 		String newAddedListValue = "test"+randomNum;
@@ -1020,7 +959,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//NSC4_AccountsTab_OverviewChangeAndStatusHistory
-	@Test
+	@Test(priority=32)
 	public void testAccountsTab_OverviewChangeAndStatusHistory(){
 		String accountNumber = null;
 		List<Map<String, Object>> randomAccountList =  null;
@@ -1041,6 +980,70 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertTrue(nscore4HomePage.validateStatusHistoryPageDisplayedWithRespectiveColumns(),"'Status History' Page Is Not displayed with the respective columns");
 		s_assert.assertAll();
 	}
+
+	//NSC4_SitesTab_nsCorporate_CorporateNewEditDeleteEvent
+	@Test(priority=33)
+	public void testNSC4SitesTabNSCorporateNewEditDeleteEvent(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String sites = "Sites";
+		String subject = "For Automation"+randomNum;
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickCorporateLink();
+		nscore4SitesTabPage.clickAddEventLink();
+		nscore4SitesTabPage.enterSubjectForEvent(subject);
+		nscore4SitesTabPage.clickSaveBtn();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("Event saved successfully"), "Expected saved message is: Event saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
+		s_assert.assertTrue(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is not present at calendar ");
+		nscore4SitesTabPage.clickEventNamePresentAtCalendar(subject);
+		subject = "For Automation"+randomNum2;
+		nscore4SitesTabPage.enterSubjectForEvent(subject);
+		nscore4SitesTabPage.clickSaveBtn();
+		s_assert.assertTrue(nscore4SitesTabPage.getSavedSuccessfullyTxt().contains("Event saved successfully"), "Expected saved message is: Event saved successfully but actual on UI is: "+nscore4SitesTabPage.getSavedSuccessfullyTxt());
+		s_assert.assertTrue(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is not present at calendar ");
+		nscore4SitesTabPage.clickEventNamePresentAtCalendar(subject);
+		nscore4SitesTabPage.clickDeleteBtnForEvent();
+		nscore4SitesTabPage.clickOKBtnOfJavaScriptPopUp();
+		s_assert.assertFalse(nscore4SitesTabPage.isEventPresentAtCalendar(subject), "Event is present at calendar ");
+		s_assert.assertAll();
+	}
+
+
+	//NSC4_SitesTab_nsDistributor_BasePWSSiteMap
+	@Test(priority=34)
+	public void testNSC4SitesTabBasePWSSiteMap(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String sites = "Sites";
+		String siteMap = "Site Map";
+		String linkText = "AutoRF"+randomNum;
+		String pageOption = "MeetDrFields";
+		String clearNavigationCache = "Clear Navigation Cache";
+		String reloadProductCache  = "Reload Product Cache";
+
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
+		nscore4SitesTabPage.clickAddLinkForSiteMap();
+		nscore4SitesTabPage.enterLinkTextForSiteMap(linkText);
+		nscore4SitesTabPage.selectPagesForSiteMap(pageOption);
+		nscore4SitesTabPage.clickSaveBtnOnSiteMap();
+		s_assert.assertTrue(nscore4SitesTabPage.isLinkTextNamePresentInTreeMap(linkText), "Link text name is not prsent in site map tree");
+		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
+		nscore4SitesTabPage.moveToSiteMapLinkUnderDrFieldsForAddLinkOfBasePWS(linkText);
+		nscore4SitesTabPage.clickActivateLinkOnSiteMap();
+		nscore4HomePage.clickTab(sites);
+		nscore4SitesTabPage.clickSubLinkOfNSCorporate(clearNavigationCache);
+		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The navigation cache has been cleared"), "Expected confirmation message is: The navigation cache has been cleared but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
+		nscore4SitesTabPage.clickSubLinkOfNSCorporate(reloadProductCache);
+		s_assert.assertTrue(nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage().contains("The product cache has been reloaded"), "Expected confirmation message is: The product cache has been reloaded but actual on UI is: "+nscore4SitesTabPage.getProductClearAndReloadConfirmationMessage());
+		nscore4SitesTabPage.clickSubLinkOfDistributorOnSitePage(siteMap);
+		nscore4SitesTabPage.expandTheTreeOfSiteMapOfBasePWS();
+		nscore4SitesTabPage.clickLinkTextNamePresentInTreeMap(linkText);
+		nscore4SitesTabPage.clickDeactivateLinkOnSiteMap();
+		s_assert.assertTrue(nscore4SitesTabPage.isActivateLinkPresentOnSiteMap(), "Activate link is not present after clicked on Deactivate link");
+		s_assert.assertAll();
+	}
+
+
 
 	//	//Override Shipping and handling with a higher value
 	//	@Test

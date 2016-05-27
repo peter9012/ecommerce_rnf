@@ -19,7 +19,6 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFCRMWebsiteBaseTest;
 
 public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
-
 	private static final Logger logger = LogManager
 			.getLogger(CRMRegressionTest.class.getName());
 
@@ -28,7 +27,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	private CRMAccountDetailsPage crmAccountDetailsPage; 
 	private CRMContactDetailsPage crmContactDetailsPage;
 	private StoreFrontHomePage storeFrontHomePage;
-	//	private CRMRFWebsiteBasePage crmRFWebsiteBasePage;
+
 	private String RFO_DB = null;
 	String consultantEmailID = null;
 	String pcUserName = null;
@@ -40,6 +39,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	List<Map<String, Object>> randomConsultantUsernameList =  null;
 	List<Map<String, Object>> randomPCUserList =  null;
 	List<Map<String, Object>> randomRCUserList =  null;
+	List<Map<String, Object>> randomPCUsernameList =  null;
+	List<Map<String, Object>> randomRCUsernameList =  null;
 
 	@BeforeClass
 	public void BeforeCRM(){
@@ -60,9 +61,15 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 		pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
+		randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+		pcUserName = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
+
 		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 		rcUserName = (String) getValueFromQueryResult(randomRCUserList, "UserName");
-		rcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+		rcAccountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+
+		randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountID),RFO_DB);
+		rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
 	}	
 
 	//Hybris Project-4527:Search for account by email address
@@ -73,10 +80,13 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
 				logger.info("No active user in the search results..searching new user");
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+
 				logger.info("The email address is "+consultantEmailID);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
@@ -101,10 +111,13 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
 
 		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+			if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
 				logger.info("No active user in the search results..searching new user");
 				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");
+				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+
+				randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+				pcUserName = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
 				logger.info("The email address is "+pcUserName);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
@@ -161,13 +174,16 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
 
 		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+			if(crmHomePage.isSearchResultHasActiveUser("Retail Customer") ==false){
 				logger.info("No active user in the search results..searching new user");
 				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-				rcUserName = (String) getValueFromQueryResult(randomRCUserList, "UserName");
+				rcAccountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+
+				randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountID),RFO_DB);
+				rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
 				logger.info("The email address is "+rcUserName);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+				crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
 			}else{
 				break;
 			}
@@ -562,6 +578,21 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String orderNote="This is automation note"+randomNum;
 		logger.info("The username is "+consultantEmailID); 
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+
+				logger.info("The email address is "+consultantEmailID);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+			}else{
+				break;
+			}
+		}
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
@@ -615,6 +646,21 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+
+				randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+				pcUserName = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
+				logger.info("The email address is "+pcUserName);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+			}else{
+				break;
+			}
+		}
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
 		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
@@ -636,6 +682,21 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser("Retail Customer") ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+				rcAccountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+
+				randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountID),RFO_DB);
+				rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
+				logger.info("The email address is "+rcUserName);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+			}else{
+				break;
+			}
+		}
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
 		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
@@ -2720,7 +2781,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmLoginpage = new CRMLoginPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String pcEmailID = null;
 		String pcEmailIDToVerifiy = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String randomFirstName = CommonUtils.getRandomWord(4);
@@ -2734,13 +2794,21 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String emailId = firstName+"@gmail.com";
 		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		String accountId = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+		List<Map<String, Object>> emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+		String pcEmail = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));  
+		logger.info("emaild of username "+pcEmail); 
+
+
 		randomPCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCList, "UserName");
-		pcEmailIDToVerifiy = (String) getValueFromQueryResult(randomPCListToVerify, "UserName");
-		logger.info("The email address is "+pcEmailID);
+		String accountIdToVerify = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountIdToVerify),RFO_DB);
+		pcEmailIDToVerifiy = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));  
+
+		logger.info("The email address is "+pcEmail);
 		logger.info("The another email address to verify is "+pcEmailIDToVerifiy);	
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmailID);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcEmail);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 		crmAccountDetailsPage.clickAccountMainMenuOptions("Contacts");
 		if(crmAccountDetailsPage.verifyIsSpouseContactTypePresentNew(crmAccountDetailsPage.getCountOfAccountMainMenuOptions("Contacts"))==false){
@@ -3391,6 +3459,26 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//click 'send forgot password email' link
 		crmAccountDetailsPage.clickSendForgotPasswordEmailLink();
 		crmAccountDetailsPage.acceptAlert();
+		String pageSource=driver.getPageSource();
+		//verify an email for new password has been sent?
+		//s_assert.assertTrue(crmAccountDetailsPage.isEmailForNewPasswordSent(),"Email for new password has not been sent");
+		s_assert.assertTrue(pageSource.contains("A new password was sent successfully"),"Email for new password has not been sent");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5005:Verify the forgot password for Preferred Customer from Salesforce
+	@Test(priority=79)
+	public void testForgotPasswordForPreferredCustomer_5005() throws InterruptedException{
+		logger.info("The username is "+pcUserName);  
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickNameOnFirstRowInSearchResults();
+		//verify account detail page present?
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		//click 'send forgot password email' link
+		crmAccountDetailsPage.clickSendForgotPasswordEmailLink();
+		crmAccountDetailsPage.acceptAlert();
+		s_assert.assertTrue(crmAccountDetailsPage.isEmailForNewPasswordSent(),"Email for new password has not been sent");
 		String pageSource=driver.getPageSource();
 		//verify an email for new password has been sent?
 		//s_assert.assertTrue(crmAccountDetailsPage.isEmailForNewPasswordSent(),"Email for new password has not been sent");

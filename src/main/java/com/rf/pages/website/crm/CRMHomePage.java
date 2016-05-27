@@ -83,6 +83,14 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//img[@class='checkImg'][@title='Checked']/ancestor::tr[1]/th/a"));
 	}
 
+	public boolean isSearchResultHasActiveUser(String customer){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		return driver.isElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+	}
+
 	public boolean isAccountLinkPresentInLeftNaviagation(){
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));

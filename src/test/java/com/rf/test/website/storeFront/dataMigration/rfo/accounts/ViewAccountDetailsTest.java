@@ -57,7 +57,6 @@ public class ViewAccountDetailsTest extends RFWebsiteBaseTest{
 		String mainPhoneNumberDB = null;
 		String dobDB = null;
 
-
 		String consultantEmailID = null;
 		String accountID = null;
 		//

@@ -3486,4 +3486,106 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-5269:Update Username with Inactive Consultant more than 180 days
+	@Test(priority=80)
+	public void testUpdateUserNameWithInactiveConsultantMoreThan180Days_5269() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantListMoreThan180days =  null;
+		List<Map<String, Object>> randomAccountDetails =  null;
+		String inActiveconsultantEmailID = null;
+		String firstNameInActiveConsultant = null;
+		String lastNameInActiveConsultant = null;
+		String firstNameActiveConsultant = null;
+		String lastNameActiveConsultant = null;
+		String editedName = null;
+
+		randomConsultantListMoreThan180days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS,countryId),RFO_DB);
+		inActiveconsultantEmailID = (String) getValueFromQueryResult(randomConsultantListMoreThan180days, "EmailAddress");
+
+		randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,inActiveconsultantEmailID),RFO_DB);
+		firstNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "FirstName");
+		lastNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
+		editedName = firstNameInActiveConsultant+" "+lastNameInActiveConsultant;
+		logger.info("The email address is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				logger.info("The email address is "+consultantEmailID);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+			}else{
+				break;
+			}
+		}
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+		crmAccountDetailsPage.updateAccountNameField(editedName);
+		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
+
+		randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,consultantEmailID),RFO_DB);
+		firstNameActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "FirstName");
+		lastNameActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
+		s_assert.assertTrue(firstNameActiveConsultant.equalsIgnoreCase(firstNameInActiveConsultant),"first name is not updated");
+		s_assert.assertTrue(lastNameActiveConsultant.equalsIgnoreCase(lastNameInActiveConsultant),"last name is not updated");
+
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5270:Update Username with Inactive consultant more than 90 days
+	@Test(priority=81)
+	public void testUpdateUserNameWithInactiveConsultantMoreThan90Days_5270() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantListMoreThan180days =  null;
+		List<Map<String, Object>> randomAccountDetails =  null;
+		String inActiveconsultantEmailID = null;
+		String firstNameInActiveConsultant = null;
+		String lastNameInActiveConsultant = null;
+		String firstNameActiveConsultant = null;
+		String lastNameActiveConsultant = null;
+		String editedName = null;
+		randomConsultantListMoreThan180days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_INACTIVE_CONSULTANT_EMAILID_MORE_THAN_90_DAYS,countryId),RFO_DB);
+		inActiveconsultantEmailID = (String) getValueFromQueryResult(randomConsultantListMoreThan180days, "EmailAddress");
+		randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,inActiveconsultantEmailID),RFO_DB);
+		firstNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "FirstName");
+		lastNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
+		editedName = firstNameInActiveConsultant+" "+lastNameInActiveConsultant;
+		logger.info("The email address is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				logger.info("The email address is "+consultantEmailID);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+			}else{
+				break;
+			}
+		}
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+		crmAccountDetailsPage.updateAccountNameField(editedName);
+		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
+		randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,consultantEmailID),RFO_DB);
+		firstNameActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "FirstName");
+		lastNameActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
+		s_assert.assertTrue(firstNameActiveConsultant.equalsIgnoreCase(firstNameInActiveConsultant),"first name is not updated");
+		s_assert.assertTrue(lastNameActiveConsultant.equalsIgnoreCase(lastNameInActiveConsultant),"last name is not updated");
+
+		s_assert.assertAll();
+	}
+
+
 }

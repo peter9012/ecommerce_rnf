@@ -49,6 +49,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private CSCockpitLoginPage cscockpitLoginPage;	
 	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
 	private CSCockpitOrderTabPage cscockpitOrderTabPage;
+	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
 
 	private String kitName = null;
 	private String regimenName = null;
@@ -7177,7 +7178,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			
+
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -8529,11 +8530,13 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test(enabled=false)//test needs to be modified
+	@Test(enabled=true)//test needs to be modified
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;
 		List<Map<String, Object>> randomConsultantList =  null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String billingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNum;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -8549,6 +8552,10 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}  
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+		String consultantEmailID = (String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
+		logger.info("emaild of consultant username "+consultantEmailID);	
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -8568,14 +8575,44 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyConfirmationMessagePresentOnUI(),"Your next autoship cart has been updated message not present");
 		storeFrontAccountInfoPage.clickOnCRPCheckout();
 		storeFrontAccountInfoPage.clickOnShippingAddressNextStepBtn();
+		storeFrontAccountInfoPage.clickAddNewBillingProfileLink();
+		storeFrontAccountInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontAccountInfoPage.enterNewBillingNameOnCard(billingProfileName);
+		storeFrontAccountInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontAccountInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontAccountInfoPage.selectNewBillingCardAddress();
+		storeFrontAccountInfoPage.clickOnSaveBillingProfile();
 		storeFrontAccountInfoPage.clickOnBillingNextStepButtonDuringEnrollInCRP();
 		storeFrontAccountInfoPage.clickOnSetupCRPAccountBtn();
 		s_assert.assertTrue(storeFrontAccountInfoPage.isOrderPlacedSuccessfully(), "Order is not placed successfully");
 		storeFrontAccountInfoPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontAccountInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//Verify Status of CRP autoship template
+		s_assert.assertTrue(storeFrontOrdersPage.getStatusOfFirstAutoshipTemplateID().toLowerCase().contains("pending"), "Expected status of first autoship id is: pending and actual on UI is: "+storeFrontOrdersPage.getStatusOfFirstAutoshipTemplateID().toLowerCase());
+		String CRPAutoshipID = storeFrontOrdersPage.getAutoshipOrderNumber();
 		String autoshipDate = storeFrontOrdersPage.getAutoshipOrderDate();
 		System.out.println(autoshipDate+"===autoshipDate");
 		s_assert.assertTrue(storeFrontOrdersPage.validateSameDatePresentForAutoship(autoshipDate),"Same date is not present");
+		logout();
+		//verify on CSCockpit
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getStatusOfAutoshipID(CRPAutoshipID).toLowerCase().contains("pending"), "Expected status of autoship id in CSCockpit is: pending and actual on UI is: "+cscockpitCustomerTabPage.getStatusOfAutoshipID(CRPAutoshipID).toLowerCase());
 		s_assert.assertAll();
 	}
 
@@ -8729,7 +8766,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		String city = TestConstants.CITY_CA;
 		String postalCode = TestConstants.POSTAL_CODE_CA;
 		String phoneNumber = TestConstants.PHONE_NUMBER_CA;
-		
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
 		caConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL");
@@ -8829,4 +8866,65 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(driver.getCurrentUrl().contains("biz/ca"),"url is not a biz url");
 		s_assert.assertAll();
 	}
+
+	//**
+
+	// Hybris Project-3966:Use email id of existing inactive consultant (more than 180 days) during consultant enrollment under different sponsor's .biz site.
+	@Test
+	public void testUseEmailIdOfExistingInactiveConsultantDuringEnrollmentUnderDifferentBizSite_3966() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomInactiveConsultantList =  null;
+		String consultantPWS = null;
+		String consultantEmailID = null;
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		randomConsultantList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryId), RFO_DB);
+		consultantPWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		randomInactiveConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS,countryId), RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomInactiveConsultantList, "EmailAddress");
+		driver.get(consultantPWS);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, consultantEmailID, password, addressLine1, city,state, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll(); 
+	}
+	
+	
+
 }

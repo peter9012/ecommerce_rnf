@@ -1800,4 +1800,109 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		return formattedDate;
 	}
 
+	public void selectShippingAddress(String shippingProfileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+shippingProfileName+"')]/ancestor::div[1]//span[@class='radio-button shiptothis']/input"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+shippingProfileName+"')]/ancestor::div[1]//span[@class='radio-button shiptothis']/input"));
+		logger.info("Shipping profile selected as: "+shippingProfileName);
+	}
+
+	public void selectBillingAddress(String billingProfileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+billingProfileName+"')]/ancestor::div[1]//span[@class='radio-button billtothis']/input"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+billingProfileName+"')]/ancestor::div[1]//span[@class='radio-button billtothis']/input"));
+		logger.info("Billing profile selected as: "+billingProfileName);
+	}
+
+	public void enterNewShippingAddressName(String name){
+		driver.waitForElementPresent(By.id("new-attention"));
+		driver.clear(By.id("new-attention"));
+		driver.type(By.id("new-attention"),name);
+		logger.info("New Shipping Address name is "+name);
+	}
+
+	public void enterNewShippingAddressCity(String city){
+		driver.clear(By.id("townCity"));
+		driver.type(By.id("townCity"),city);
+	}
+
+	public void clickOnSaveShippingProfile() throws InterruptedException{
+		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
+		try{
+			driver.click(By.id("saveCrpShippingAddress"));
+		}catch(NoSuchElementException e){
+			try{
+				driver.click(By.id("saveCrpShippingAddress"));
+			}catch(Exception e1){
+				driver.click(By.id("saveShippingAddreessId"));
+			}
+
+		}
+		driver.waitForLoadingImageToDisappear();
+		logger.info("Save shipping profile button clicked");
+		try{
+			driver.click(By.id("QAS_AcceptOriginal"));
+			logger.info("Accept New shipping address button clicked");
+		}catch(NoSuchElementException e){
+			try{
+				driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+				driver.click(By.id("QAS_RefineBtn"));
+				logger.info("Accept New shipping address button clicked");
+			}catch(NoSuchElementException e1){
+
+			}
+		}
+
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean isNewlyCreatedShippingProfileIsSelectedByDefault(String profileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+profileName+"')]/../following-sibling::p//input[@checked='checked']"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']//span[contains(text(),'"+profileName+"')]/../following-sibling::p//input[@checked='checked']"));
+	}
+
+	public void enterNewShippingAddressLine1DuringEnrollment(String addressLine1){
+		driver.clear(By.id("address-1"));
+		driver.type(By.id("address-1"),addressLine1);
+		logger.info("New Shipping Address is "+addressLine1);
+	}
+
+	public String getDefaultSelectedBillingAddressName(){
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]")).getText();
+	}
+
+	public void enterNewShippingAddressLine1(String addressLine1){
+		driver.waitForElementPresent(By.id("new-address-1"));
+		driver.clear(By.id("new-address-1"));
+		driver.type(By.id("new-address-1"),addressLine1);
+		logger.info("New Shipping Address is "+addressLine1);
+	}
+
+	public void clickOnEditForDefaultShippingAddress() throws InterruptedException{
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
+		clickOnEditShipping();
+		driver.waitForElementPresent(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
+		driver.click(By.xpath("//input[contains(@name,'shipping')][@checked='checked']/ancestor::div[contains(@class,'address-section')]//a[text()='Edit']"));
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnEditShipping() throws InterruptedException{
+		//driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a/ancestor::div[@style='display: block;']"));		
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")));
+		logger.info("Edit Shipping link clicked");			
+	}
+
+	public void clickOnDefaultBillingProfileEdit() throws InterruptedException{
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		driver.click(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String getDefaultSelectedShippingAddress(){
+		driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
+		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
+	}
+
 }

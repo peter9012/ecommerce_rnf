@@ -1900,12 +1900,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("New Shipping Address name is "+name);
 	}
 
-	public void enterNewShippingAddressLine1DuringEnrollment(String addressLine1){
-		driver.clear(By.id("address-1"));
-		driver.type(By.id("address-1"),addressLine1);
-		logger.info("New Shipping Address is "+addressLine1);
-	}
-
 	public void enterNewShippingAddressCityDuringEnrollment(String city){
 		driver.clear(By.id("city"));
 		driver.type(By.id("city"),city);
@@ -1985,13 +1979,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.clear(By.id("first-name"));
 		driver.type(By.id("first-name"), firstName);
 		logger.info("first name entered as "+firstName);
-	}
-
-	public void enterNewShippingAddressName(String name){
-		driver.waitForElementPresent(By.id("new-attention"));
-		driver.clear(By.id("new-attention"));
-		driver.type(By.id("new-attention"),name);
-		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{

@@ -27,7 +27,8 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String autoshipIdStatusForCustomerLoc = "//span[text()='Autoship Templates']/following::a[contains(text(),'%s')]/following::span[contains(text(),'crpAutoship')]/following::span[1]";
 	private static String creditCardOwnerName ="//div[contains(text(),'%s')]";
 	private static String crpAutoshipIdWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[text()='crpAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a[contains(text(),'%s')]";
-
+	private static String statusOfAutoshipTemplateID ="//a[text()='%s']/ancestor::tr[1]/td[3]//span";
+	
 	private static final By FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
 	private static final By FIRST_SUBMITTED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
@@ -88,6 +89,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CLOSE_POPUP_OF_EDIT_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div[contains(@id,'close')]");
 	private static final By CLOSE_POPUP_OF_ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
 
+	
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerTabPage(RFWebsiteDriver driver) {
@@ -675,6 +677,13 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	public boolean isShippedOrSubmittedOrderPresentInCustomerOrderSection(){
 		driver.waitForElementPresent(FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION);
 		return driver.isElementPresent(FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION )||driver.isElementPresent(FIRST_SUBMITTED_ORDER_LINK_CUSTOMER_ORDER_SECTION);
+	}
+
+	public String getStatusOfAutoshipID(String autoshipId){
+		driver.waitForElementPresent(By.xpath(String.format(statusOfAutoshipTemplateID, autoshipId)));
+		String status = driver.findElement(By.xpath(String.format(statusOfAutoshipTemplateID, autoshipId))).getText();
+		logger.info("Status of Autoship id from CS cockpit UI Is"+status);
+		return status;
 	}
 
 

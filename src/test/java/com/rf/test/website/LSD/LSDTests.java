@@ -141,7 +141,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	}
 
 	//PC Profile TC-1150
-	@Test(enabled=false)
+	@Test
 	public void testPCProfile_1150(){
 		String orderStatus = "Order Status";
 		String orderType = "Order Type";
@@ -170,6 +170,87 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdCustomerPage.isOrderDetailsPresentInOrderHistorySectionOfFirstOrder(QV), "Order status is not present in order history section");
 		s_assert.assertTrue(lsdCustomerPage.isOrderItemsPresentInOrderHistorySectionOfFirstOrder(), "Order items are not present in order history section of first order");
 		lsdCustomerPage.clickBackArrowIcon();
+		s_assert.assertAll();
+	}
+
+	//Filters Functionality TC-264 
+	@Test
+	public void testFiltersFunctionality_LSD_TC_264(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickOrdersLink();
+		lsdOrderPage.clickAddFilters();
+		lsdOrderPage.clickConsultantOrderChkBoxInAllOrderTypes();
+		lsdOrderPage.clickProcessedOrderChkBoxInOrderStatus();
+		lsdOrderPage.clickSetFiltersBtn();
+		s_assert.assertTrue(lsdOrderPage.isFilterAppliedSuccessfully("Consultant Orders"), "Consultant order filter is not applied successfully");
+		s_assert.assertTrue(lsdOrderPage.isFilterAppliedSuccessfully("Processed Orders"), "Processed Orders filter is not applied successfully");
+		int totalNoOfOrders = lsdOrderPage.getCountOfTotalOrders();
+		for(int i=1; i<=totalNoOfOrders; i++){
+			s_assert.assertTrue(lsdOrderPage.getOrderStatus(i).toLowerCase().contains("processed"), "Expected order Status is 'Processed' but actual on UI for order number:"+i+" is: "+lsdOrderPage.getOrderStatus(i));
+			s_assert.assertTrue(lsdOrderPage.getOrderType(i).toLowerCase().contains("crp")|| lsdOrderPage.getOrderType(i).toLowerCase().contains("pulse subscription") || lsdOrderPage.getOrderType(i).toLowerCase().contains("consultant order") , "Expected order type is 'CRP' or 'Pulse Subscription' or 'consultant order' but actual on UI for order number:"+i+" is: "+lsdOrderPage.getOrderType(i));
+		}
+		lsdOrderPage.clickAddFilters();
+		s_assert.assertTrue(lsdOrderPage.isConsultantOrdersCheckBoxIsChecked(), "Consultant order filter is not checked");
+		s_assert.assertTrue(lsdOrderPage.isProcessedOrdersCheckBoxIsChecked(), "Processed order filter is not checked");
+		lsdOrderPage.clickCloseIconOfFilter();
+		lsdOrderPage.clickCloseIconOfFilter("Consultant Orders");
+		lsdOrderPage.clickCloseIconOfFilter("Processed Orders");
+		s_assert.assertFalse(lsdOrderPage.isFilterAppliedSuccessfully("Consultant Orders"), "Consultant order filter is not removed successfully");
+		s_assert.assertFalse(lsdOrderPage.isFilterAppliedSuccessfully("Processed Orders"), "Processed Orders filter is not removed successfully");
+		s_assert.assertTrue(lsdOrderPage.isOrderTypePresentInOrders("Failed"), "Filters are removed successfully");
+		s_assert.assertAll();
+	}
+
+	//Navigation of tracking link (Order Summary/Details) TC-1117
+	@Test
+	public void testNavigationOfTrackingLink_LSD_TC_1117(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickOrdersLink();
+		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		String parentWindowHandle = driver.getWindowHandle();
+		String trackingNumber = lsdOrderPage.clickAndGetTrackingNumberLink();
+		s_assert.assertTrue(lsdOrderPage.isTrackingWebsitePagePresent(parentWindowHandle, trackingNumber), "Tracking number link is not working");
+		s_assert.assertAll();
+	}
+
+	//Order Details - Design and data fields layout TC-1157 
+	@Test
+	public void testOrderDetailsDesignAndDataFieldsLayout_LSD_TC_1157(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickOrdersLink();
+		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		lsdOrderPage.clickViewDetailsBtn();
+		s_assert.assertTrue(lsdOrderPage.isOrderDetailsHeaderPresent("Order details"), "Order details header is not present");
+		s_assert.assertFalse(lsdOrderPage.getOrderNamePresentInViewOrderDetails()==null, "Order name is blank");
+		s_assert.assertFalse(lsdOrderPage.getOrderTypePresentInViewOrderDetails()==null, "Order type is blank");
+		s_assert.assertFalse(lsdOrderPage.getEnrolledDatePresentInViewOrderDetails()==null, "Enrolled date is blank");
+
+		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Overview"), "Overview header is not present");
+		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Order Date"), "Order Date is not present in overview section");
+		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Commission Date"), "Commission Date is not present in overview section");
+		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Order Number"), "Order number is not present in overview section");
+		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("PSQV"), "PSQV is not present in overview section");
+		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Total"), "total is not present in overview section");
+
+		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Shipment details"), "Shipment details header is not present");
+		s_assert.assertTrue(lsdOrderPage.isShipmentDetailsPresent("Order Status"), "Order Status is not present in shipment details section");
+		s_assert.assertTrue(lsdOrderPage.isShipmentDetailsPresent("Tracking"), "Tracking link is not present in shipment details section");
+
+		s_assert.assertTrue(lsdOrderPage.isOrderItemsPresent(), "Order is not contain any item");
+		s_assert.assertTrue(lsdOrderPage.isSKUValuePresentUnderOrderItems(), "SKU value is not present under item");
+		s_assert.assertTrue(lsdOrderPage.isTotalPricePresentUnderOrderItems(), "Total price is not present under item");
+		s_assert.assertTrue(lsdOrderPage.isQuantityPresentUnderOrderItems(), "Quantity is not present under item");
+
+		s_assert.assertTrue(lsdOrderPage.isTrackOrderBtnPresent(), "Track order btn is not present under item");
+
+		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Shipping details"), "Shipping details header is not present");
+		s_assert.assertTrue(lsdOrderPage.isShippingDetailsSubHeadingPresent(), "Shipping details subheading is not present");
+		s_assert.assertFalse(lsdOrderPage.getShippingAddressName()==null, "Shipping address is blank");
+		s_assert.assertTrue(lsdOrderPage.isShippingMethodPresent(), "Shipping details subheading is not present");
+
+		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Billing details"), "Billing details header is not present");
+		s_assert.assertTrue(lsdOrderPage.isBillingDetailsSubHeadingPresent(), "Billing details subheading is not present");
+		s_assert.assertFalse(lsdOrderPage.getBillingProfileName()==null, "Billing address is blank");
 		s_assert.assertAll();
 	}
 }

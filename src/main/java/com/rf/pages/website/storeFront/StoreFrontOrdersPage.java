@@ -1096,4 +1096,33 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		else
 			return false;
 	}
+
+	public String getStatusOfFirstAutoshipTemplateID(){
+		driver.isElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[4]"));
+		String status = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[4]")).getText().trim();
+		logger.info("Status of first autoship template id is: "+status);
+		return status;
+	}
+
+	public String getStatusOfSecondAutoshipTemplateID(){
+		driver.isElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[4]"));
+		String status = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[4]")).getText().trim();
+		logger.info("Status of second autoship template id is: "+status);
+		return status;
+	}
+
+	public String getPulseAutoshipOrderDate(){
+		String autoShipOrderDate = null;
+		driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[2]"));
+		autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[2]")).getText();
+		logger.info("Return autoship order date is: "+autoShipOrderDate);
+		return  autoShipOrderDate;
+	}
+
+	public String getPulseAutoshipOrderNumber(){
+		driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]//a"));
+		autoShipOrderNumber = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]//a")).getText();
+		logger.info("Pulse autoship order number is "+autoShipOrderNumber);
+		return  autoShipOrderNumber;
+	}
 }

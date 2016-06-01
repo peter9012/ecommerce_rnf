@@ -1802,6 +1802,43 @@ public class DBQueries_RFO {
 					"WHERE ab.CountryID = '%s' and ar.Active = 1 and ab.AccountTypeID = 1  "+
 					"ORDER BY NEWID()";
 
+	public static String GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS =       
+			"SELECT TOP 1 "+
+					"rf.AccountID  , "+
+					"rf.HardTerminationDate , "+
+					"rf.Active , "+
+					"ab.AccountTypeID,ead.* "+
+					"FROM    RFOperations.RFO_Accounts.AccountRF rf "+
+					"JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = rf.AccountID "+
+					"JOIN RFOperations.RFO_Accounts.AccountContacts ac ON ac.AccountId = ab.AccountID "+
+					"JOIN RFOperations.RFO_Accounts.AccountContactAddresses ad ON ad.AccountContactId = ac.AccountContactId "+   
+					"JOIN RFOperations.RFO_Accounts.AccountEmails ae ON ae.AccountContactId = ac.AccountContactId "+ 
+					"JOIN RFOperations.RFO_Accounts.EmailAddresses ead ON ead.EmailAddressID=ae.EmailAddressId "+
+					"WHERE   ab.CountryID = %s "+
+					"AND ab.AccountTypeID = 1 "+
+					"AND rf.Active = 0 "+
+					"AND rf.HardTerminationDate < DATEADD(DAY, -180, GETDATE()) "+
+					"AND ab.AccountStatusID IN ( 2 ,10) "+
+					"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_INACTIVE_CONSULTANT_EMAILID_MORE_THAN_90_DAYS="SELECT TOP 1 "+
+			"rf.AccountID , "+
+			"rf.HardTerminationDate , "+
+			"rf.Active , "+
+			"ab.AccountTypeID,ead.* "+
+			"FROM    RFOperations.RFO_Accounts.AccountRF rf "+
+			"JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = rf.AccountID "+
+			"JOIN RFOperations.RFO_Accounts.AccountContacts ac ON ac.AccountId = ab.AccountID "+
+			"JOIN RFOperations.RFO_Accounts.AccountContactAddresses ad ON ad.AccountContactId = ac.AccountContactId "+   
+			"JOIN RFOperations.RFO_Accounts.AccountEmails ae ON ae.AccountContactId = ac.AccountContactId "+ 
+			"JOIN RFOperations.RFO_Accounts.EmailAddresses ead ON ead.EmailAddressID=ae.EmailAddressId "+
+			"WHERE   ab.CountryID = %s "+
+			"AND ab.AccountTypeID = 1 "+ 
+			"AND rf.Active = 0 "+
+			"AND rf.HardTerminationDate < DATEADD(DAY, -90, GETDATE()) "+
+			"AND ab.AccountStatusID IN ( 2 ,10) "+
+			" ORDER BY NEWID()";
+
 	public static String GET_USER_DETAILS_FROM_ACCOUNTID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId='%s'";
 	public static String GET_ACCOUNT_ID_FOR_PWS = "select top 1 * from RFO_Accounts.AccountBase where AccountNumber='%s'";
 	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select EmailAddress from RFO_Accounts.AccountContacts acTB INNER JOIN RFO_Accounts.AccountEmails aeTB  "+

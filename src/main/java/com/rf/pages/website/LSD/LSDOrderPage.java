@@ -1,5 +1,8 @@
 package com.rf.pages.website.LSD;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -33,6 +36,44 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By PHONE_ICON = By.xpath("//div[@class='icon']//span[@class='icon-phone']");
 	private static final By EMAIL_ICON = By.xpath("//div[@class='icon']//span[@class='icon-email']");
 	private static final By CLOSE_ICON_OF_CONTACT_SECTION = By.xpath("//section[@id='contact-profile-modal']//div[@class='icon-close pointer']");
+
+	private static String presentFilterName= "//div[@class='filter-list-tag']//span[text()='%s']";
+	private static String getOrderStatus= "//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][%s]//ul[contains(@class,'data-point-list')]/li[1]/span";
+	private static String getOrderType = "//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][%s]//ul[contains(@class,'data-point-list')]/li[2]/span";
+	private static String cancelIconOfFilter= "//div[@class='filter-list-tag']//span[text()='%s']/following::div[1]";
+	private static String presentorderType = "//div[@id='sub-stage']//section[4]/descendant::span[text()='%s'][1]";
+
+	private String  orderDetailsHeader = "//h1[text()='%s']";
+	private String  orderHeader = "//h2[text()='%s']";
+	private String  overviewDetails = "//div[@class='order-detail-overview']//li[contains(text(),'%s')]";
+	private String  shipmentDetails = "//div[@class='order-detail-shipment']//li[contains(text(),'%s')]";
+
+
+	private static final By ADD_FILTERS = By.xpath("//span[text()='Add filters']");
+	private static final By CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE = By.id("ORDER_TYPE_FILTER_CONSULTANT");
+	private static final By PROCESSED_ORDERS_CHK_BOX_IN_ORDER_STATUS = By.id("ORDER_STATUS_FILTER_PROCESSED");
+	private static final By SET_FILTERS_BTN = By.id("set-filter");
+	private static final By ALL_ORDERS = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target']");
+	private static final By CHECKED_CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE = By.xpath("//span[@id='ORDER_TYPE_FILTER_CONSULTANT'][@checked='checked']");
+	private static final By CHECKED_PROCESSED_ORDER_CHK_BOX_IN_ORDER_STATUS = By.xpath("//span[@id='ORDER_STATUS_FILTER_PROCESSED'][@checked='checked']");
+	private static final By CLOSE_ICON_OF_FILTER = By.xpath("//section[@id='filter-modal']/div[@class='icon-close pointer au-target']");
+
+	private static final By TRACKING_NUMBER_LINK = By.xpath("//div[@class='tracking-container']//a");
+	private static final By TRACKING_NUMBER = By.xpath("//div[@class='shipmentTitleBar_track_nick_section']/div");
+	private static final By VIEW_DETAILS_BTN = By.xpath("//span[text()='View details']");
+	private static final By ORDER_NAME = By.xpath("//div[@class='order-detail-header']/p[1]");
+	private static final By ORDER_TYPE = By.xpath("//div[@class='order-detail-header']/p[2]");
+	private static final By ENROLLED_DATE = By.xpath("//div[@class='order-detail-header']/p[3]");
+	private static final By ORDER_ITEMS = By.xpath("//div[@class='order-detail-shipment']//div[@class='items-container']/div");
+	private static final By SKU_VALUE_UNDER_ORDER_ITEMS = By.xpath("//div[@class='order-detail-shipment']//div[@class='items-container']/div//div[contains(text(),'SKU')]");
+	private static final By PRICE_UNDER_ORDER_ITEMS = By.xpath("//div[@class='order-detail-shipment']//div[@class='items-container']/div//div[@class='price']");
+	private static final By QUANTITY_UNDER_ORDER_ITEMS = By.xpath("//div[@class='order-detail-shipment']//div[@class='items-container']/div//div[contains(text(),'Quantity')]");
+	private static final By TRACK_ORDER_BTN = By.xpath("//span[text()='Track order']");
+	private static final By SHIPPING_DETAILS_SUBHEADING = By.xpath("//div[@class='order-detail-shipping']//h3[text()='Address']");
+	private static final By SHIPPING_PROFILE_NAME = By.xpath("//div[@class='order-detail-shipping']/div/div[1]/div/span");
+	private static final By SHIPPING_METHOD = By.xpath("//div[@class='order-detail-shipping']//h3[text()='Method']");
+	private static final By BILLING_DETAILS_SUBHEADING = By.xpath("//div[@class='order-detail-billing']//h3[text()='Address']");
+	private static final By BILLING_PROFILE_NAME = By.xpath("//div[@class='order-detail-shipping']/div/div[1]/div/span");
 
 	public void clickFirstProcessedOrder(){
 		driver.waitForElementPresent(FIRST_PROCESSED_ORDER_LOC);
@@ -143,6 +184,216 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 		driver.waitForElementPresent(CLOSE_ICON_OF_CONTACT_SECTION);
 		driver.click(CLOSE_ICON_OF_CONTACT_SECTION);
 		logger.info("close icon clicked of contact section");
+	}
+
+
+	public void clickAddFilters(){
+		driver.waitForElementPresent(ADD_FILTERS);
+		driver.click(ADD_FILTERS);
+		logger.info("Add filter button clicked");
+	}
+
+	public void clickConsultantOrderChkBoxInAllOrderTypes(){
+		driver.waitForElementPresent(CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE);
+		driver.click(CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE);
+		logger.info("Consultant order checkbox checked as filter");
+	}
+
+	public void clickProcessedOrderChkBoxInOrderStatus(){
+		driver.waitForElementPresent(PROCESSED_ORDERS_CHK_BOX_IN_ORDER_STATUS);
+		driver.click(PROCESSED_ORDERS_CHK_BOX_IN_ORDER_STATUS);
+		logger.info("Processed orders checkbox checked as filter");
+	}
+
+	public void clickSetFiltersBtn(){
+		driver.waitForElementPresent(SET_FILTERS_BTN);
+		driver.click(SET_FILTERS_BTN);
+		logger.info("Set filter filter button clicked");
+	}
+
+	public boolean isFilterAppliedSuccessfully(String filterName){
+		driver.waitForElementPresent(By.xpath(String.format(presentFilterName, filterName)));
+		return driver.isElementPresent(By.xpath(String.format(presentFilterName, filterName)));
+	}
+
+	public int getCountOfTotalOrders(){
+		driver.waitForElementPresent(ALL_ORDERS);
+		int countOfOrders = driver.findElements(ALL_ORDERS).size();
+		logger.info("Count of Orders: "+countOfOrders);
+		return countOfOrders;
+	}
+
+	public String getOrderStatus(int orderNumber){
+		driver.waitForElementPresent(By.xpath(String.format(getOrderStatus, orderNumber)));
+		String orderStatus = driver.findElement(By.xpath(String.format(getOrderStatus, orderNumber))).getText();
+		logger.info("Order status for order number"+orderNumber+"th is: "+orderStatus);
+		return orderStatus;
+	}
+
+	public String getOrderType(int orderNumber){
+		driver.waitForElementPresent(By.xpath(String.format(getOrderType, orderNumber)));
+		String orderType = driver.findElement(By.xpath(String.format(getOrderType, orderNumber))).getText();
+		logger.info("Order type for order number"+orderNumber+"th is: "+orderType);
+		return orderType;
+	}
+
+	public void clickCloseIconOfFilter(String filterName){
+		driver.waitForElementPresent(By.xpath(String.format(cancelIconOfFilter, filterName)));
+		driver.click(By.xpath(String.format(cancelIconOfFilter, filterName)));
+		logger.info("cross icon clicked of"+filterName+" filter");
+	}
+
+	public boolean isOrderTypePresentInOrders(String orderType){
+		driver.waitForElementPresent(By.xpath(String.format(presentorderType, orderType)));
+		return driver.isElementPresent(By.xpath(String.format(presentorderType, orderType)));
+	}
+
+	public boolean isConsultantOrdersCheckBoxIsChecked(){
+		driver.waitForElementPresent(CHECKED_CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE);
+		return driver.isElementPresent(CHECKED_CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE);
+	}
+
+	public boolean isProcessedOrdersCheckBoxIsChecked(){
+		driver.waitForElementPresent(CHECKED_PROCESSED_ORDER_CHK_BOX_IN_ORDER_STATUS);
+		return driver.isElementPresent(CHECKED_PROCESSED_ORDER_CHK_BOX_IN_ORDER_STATUS);
+	}
+
+	public void clickCloseIconOfFilter(){
+		driver.waitForElementPresent(CLOSE_ICON_OF_FILTER);
+		driver.click(CLOSE_ICON_OF_FILTER);
+		logger.info("Close Icon clicked of Filter");
+	}
+
+	public String clickAndGetTrackingNumberLink(){
+		driver.waitForElementPresent(TRACKING_NUMBER_LINK);
+		String trackingNumber = driver.findElement(TRACKING_NUMBER_LINK).getText();
+		driver.click(TRACKING_NUMBER_LINK);
+		logger.info("Tracking number "+trackingNumber+" clicked");
+		driver.waitForPageLoad();
+		return trackingNumber;
+	}
+
+	public boolean isTrackingWebsitePagePresent(String parentWindowID, String trackingNumber){
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				logger.info("navigate to feedback tab");
+				if(driver.getCurrentUrl().contains("track") && driver.findElement(TRACKING_NUMBER).getText().contains(trackingNumber)){
+					status=true;
+				}
+			}
+		}
+		driver.close();
+		logger.info("Child window closed");
+		driver.switchTo().window(parentWindowID);
+		logger.info("navigate to parent window");
+		return status;
+	}
+
+
+	public void clickViewDetailsBtn(){
+		driver.waitForElementPresent(VIEW_DETAILS_BTN);
+		driver.click(VIEW_DETAILS_BTN);
+		logger.info("View Details button clicked");
+	}
+
+	public boolean isOrderDetailsHeaderPresent(String headerName){
+		driver.waitForElementPresent(By.xpath(String.format(orderDetailsHeader, headerName)));
+		return driver.isElementPresent(By.xpath(String.format(orderDetailsHeader, headerName)));
+	}
+
+	public boolean isOrderHeaderPresent(String headerName){
+		driver.waitForElementPresent(By.xpath(String.format(orderHeader, headerName)));
+		return driver.isElementPresent(By.xpath(String.format(orderHeader, headerName)));
+	}
+
+	public String getOrderNamePresentInViewOrderDetails(){
+		driver.waitForElementPresent(ORDER_NAME);
+		String orderName = driver.findElement(ORDER_NAME).getText();
+		logger.info("Order name is: "+orderName);
+		return orderName;
+	}
+
+	public String getOrderTypePresentInViewOrderDetails(){
+		driver.waitForElementPresent(ORDER_TYPE);
+		String orderType = driver.findElement(ORDER_TYPE).getText();
+		logger.info("Order type is: "+orderType);
+		return orderType;
+	}
+
+	public String getEnrolledDatePresentInViewOrderDetails(){
+		driver.waitForElementPresent(ENROLLED_DATE);
+		String enrolledDate = driver.findElement(ENROLLED_DATE).getText();
+		logger.info("Enrolled Date is: "+enrolledDate);
+		return enrolledDate;
+	}
+
+	public boolean isOverviewDetailsPresent(String label){
+		driver.waitForElementPresent(By.xpath(String.format(overviewDetails, label)));
+		return driver.isElementPresent(By.xpath(String.format(overviewDetails, label)));
+	}
+
+	public boolean isShipmentDetailsPresent(String label){
+		driver.waitForElementPresent(By.xpath(String.format(shipmentDetails, label)));
+		return driver.isElementPresent(By.xpath(String.format(shipmentDetails, label)));
+	}
+
+	public boolean isOrderItemsPresent(){
+		driver.waitForElementPresent(ORDER_ITEMS);
+		return driver.isElementPresent(ORDER_ITEMS);
+	}
+
+	public boolean isSKUValuePresentUnderOrderItems(){
+		driver.waitForElementPresent(SKU_VALUE_UNDER_ORDER_ITEMS);
+		return driver.isElementPresent(SKU_VALUE_UNDER_ORDER_ITEMS);
+	}
+
+	public boolean isTotalPricePresentUnderOrderItems(){
+		driver.waitForElementPresent(PRICE_UNDER_ORDER_ITEMS);
+		return driver.isElementPresent(PRICE_UNDER_ORDER_ITEMS);
+	}
+
+	public boolean isQuantityPresentUnderOrderItems(){
+		driver.waitForElementPresent(QUANTITY_UNDER_ORDER_ITEMS);
+		return driver.isElementPresent(QUANTITY_UNDER_ORDER_ITEMS);
+	}
+
+	public boolean isTrackOrderBtnPresent(){
+		driver.waitForElementPresent(TRACK_ORDER_BTN);
+		return driver.isElementPresent(TRACK_ORDER_BTN);
+	}
+
+	public boolean isShippingDetailsSubHeadingPresent(){
+		driver.waitForElementPresent(SHIPPING_DETAILS_SUBHEADING);
+		return driver.isElementPresent(SHIPPING_DETAILS_SUBHEADING);
+	}
+
+	public String getShippingAddressName(){
+		driver.waitForElementPresent(SHIPPING_PROFILE_NAME);
+		String name = driver.findElement(SHIPPING_PROFILE_NAME).getText();
+		logger.info("Shipping address name is: "+name);
+		return name;
+	}
+
+	public boolean isShippingMethodPresent(){
+		driver.waitForElementPresent(SHIPPING_METHOD);
+		return driver.isElementPresent(SHIPPING_METHOD);
+	}
+
+	public boolean isBillingDetailsSubHeadingPresent(){
+		driver.waitForElementPresent(BILLING_DETAILS_SUBHEADING);
+		return driver.isElementPresent(BILLING_DETAILS_SUBHEADING);
+	}
+
+	public String getBillingProfileName(){
+		driver.waitForElementPresent(BILLING_PROFILE_NAME);
+		String name = driver.findElement(BILLING_PROFILE_NAME).getText();
+		logger.info("Billing address name is: "+name);
+		return name;
 	}
 
 }

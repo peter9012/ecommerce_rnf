@@ -166,4 +166,31 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		return Integer.parseInt(count);
 	}
 
+	public String getEmailOnFirstRowInSearchResultsOfMainPhoneNumber(){
+		String emailOnfirstRow = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/td[4]/a")).getText();  
+		return emailOnfirstRow;
+	}
+
+	public String getAccountNameOnFirstRowInSearchResultsOfMainPhoneNumber(){
+		String nameOnfirstRow = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		nameOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/td[2]/a")).getText();  
+		return nameOnfirstRow;
+	}
+
+	public String getNameOnFirstRowInSearchResultsOfMainPhoneNumber(){
+		String nameOnfirstRow = null;
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		nameOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/th/a")).getText();  
+		return nameOnfirstRow;
+	}
+
 }

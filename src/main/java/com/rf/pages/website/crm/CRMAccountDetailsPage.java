@@ -1465,5 +1465,70 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.click(By.xpath("//input[@value='My Account']"));
 		driver.waitForLoadingImageToDisappear();
 	}
+
+	public void clickEditButtonForPrimaryContactInContactDetailsPage(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe")));
+		driver.waitForElementPresent(By.xpath("//td[text()='Primary']/preceding::td/a[text()='Edit']"));
+		driver.findElement(By.xpath("//td[text()='Primary']/preceding::td/a[text()='Edit']")).click();
+	}
+
+	public void updateEmailAddressFieldForPrimaryContact(String emailAddress){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]")));
+		driver.findElement(By.xpath("//label[text()='Email Address']/../following-sibling::td[@class='dataCol']/input[1]")).clear();
+		driver.type(By.xpath("//label[text()='Email Address']/../following-sibling::td[@class='dataCol']/input[1]"), emailAddress);
+	}
+
+	public void clickSaveBtnUnderContactInformation(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]")));
+		driver.click(By.xpath("//td[@id='bottomButtonRow']/input[@title='Save']"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean isAccountDetailsPagePresentRC(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe")));
+		return driver.findElement(By.xpath("//h2[contains(@class,'mainTitle')]")).getText().contains("Account Detail");  
+	}
+
+	public void clickSendForgotPasswordEmailLinkRC(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe")));
+		System.out.println("Switched to outer frame");
+		driver.waitForElementPresent(By.xpath("//td[@class='dataCol']//iframe"));
+		//driver.pauseExecutionFor(2000);
+		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='dataCol']//iframe")));
+		System.out.println("Switched to inner frame");
+		driver.click(By.xpath("//a[contains(text(),'Send Forgot Password Email')]"));
+		System.out.println("element located");
+		driver.pauseExecutionFor(2500);
+	}
+
+	public boolean isEmailForNewPasswordSentForRC(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe")));
+		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='dataCol']//iframe")));
+		//driver.waitForCRMLoadingProcessImageToDisappear();
+		driver.waitForElementPresent(By.xpath(".//*[contains(text(),'A new password was sent successfully')]"));
+		boolean status=driver.isElementPresent(By.xpath(".//*[contains(text(),'A new password was sent successfully')]"));
+		return status;
+	}
+
+	public String getEmailAddressOfUserAfterUpdation(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[2]/div[2]/descendant::iframe[2]")));
+		String emailAddress=driver.findElement(By.xpath("//td[text()='Email Address']/following-sibling::td[@class='dataCol']/a")).getText();
+		logger.info("Address after updation is "+emailAddress);
+		return emailAddress;
+	}
 }
 

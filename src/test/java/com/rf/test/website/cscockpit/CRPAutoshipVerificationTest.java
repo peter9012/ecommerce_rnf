@@ -632,7 +632,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String nextDueDate = cscockpitAutoshipTemplateTabPage.convertCRPDateToFormat(dueDate);
 		String currentPSTDate = cscockpitAutoshipTemplateTabPage.getPSTDate();
 		String PSTDate = cscockpitAutoshipTemplateTabPage.convertPSTDateToNextDueDateFormat(currentPSTDate);
-		int day = Integer.parseInt(currentPSTDate.split("\\ ")[0]);
+		int day = cscockpitAutoshipTemplateTabPage.getDayFromDate(currentPSTDate);
 		String oneMonthExtendedDate = null;
 		if(day<=17){
 			oneMonthExtendedDate = cscockpitAutoshipTemplateTabPage.getOneMonthOutDate(PSTDate);

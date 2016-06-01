@@ -3428,20 +3428,21 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String mainPhoneNumberDB = null;
 		List<Map<String, Object>> mainPhoneNumberList =  null;
 		//get main phone number
-		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_MOBILE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "Number");
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		//search for account by Main Phone no.
-		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB.split("(?<=\\G...)")[0]);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB/*.split("(?<=\\G...)")[0]*/);
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
-		crmHomePage.clickNameOnFirstRowInSearchResults();
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
+		String email = crmHomePage.getEmailOnFirstRowInSearchResultsOfMainPhoneNumber();
+		String accountName = crmHomePage.getAccountNameOnFirstRowInSearchResultsOfMainPhoneNumber();
+		String name = crmHomePage.getNameOnFirstRowInSearchResultsOfMainPhoneNumber();
+		crmHomePage.clickContactOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmContactDetailsPage.getName().contains(name), "Expected name on contact details page: "+name+" But actual on UI is: "+crmContactDetailsPage.getName());
+		s_assert.assertTrue(crmContactDetailsPage.getEmailID().contains(email), "Expected name on contact details page: "+email+" But actual on UI is: "+crmContactDetailsPage.getEmailID());
+		s_assert.assertTrue(crmContactDetailsPage.getAccountName().contains(accountName), "Expected name on contact details page: "+accountName+" But actual on UI is: "+crmContactDetailsPage.getAccountName());
+		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
 		s_assert.assertAll();
@@ -3587,5 +3588,134 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-4528:Search for account by Main phone number
+	@Test(priority=82)
+	public void testSearchForAccountByMainPhoneNumber_4528() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String mainPhoneNumberDB = null;
+		List<Map<String, Object>> mainPhoneNumberList =  null;
+		//get main phone number
+		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "Number");
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		//search for account by Main Phone no.
+		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB);
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		String email = crmHomePage.getEmailOnFirstRowInSearchResultsOfMainPhoneNumber();
+		String accountName = crmHomePage.getAccountNameOnFirstRowInSearchResultsOfMainPhoneNumber();
+		String name = crmHomePage.getNameOnFirstRowInSearchResultsOfMainPhoneNumber();
+		crmHomePage.clickContactOnFirstRowInSearchResults();
+		s_assert.assertTrue(crmContactDetailsPage.getName().contains(name), "Expected name on contact details page: "+name+" But actual on UI is: "+crmContactDetailsPage.getName());
+		s_assert.assertTrue(crmContactDetailsPage.getEmailID().contains(email), "Expected name on contact details page: "+email+" But actual on UI is: "+crmContactDetailsPage.getEmailID());
+		s_assert.assertTrue(crmContactDetailsPage.getAccountName().contains(accountName), "Expected name on contact details page: "+accountName+" But actual on UI is: "+crmContactDetailsPage.getAccountName());
+		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
+		s_assert.assertAll();
+	}
 
+	//Hybris Project-5006:Verify the forgot password for Retail Customer from Salesforce
+	@Test(priority=83)
+	public void testForgotPasswordForRetailCustomer_5006() throws InterruptedException{
+		logger.info("The username is "+rcUserName);  
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+		//verify account detail page present?
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresentRC(),"Account Details page has not displayed");
+		//click 'send forgot password email' link
+		crmAccountDetailsPage.clickSendForgotPasswordEmailLinkRC();
+		crmAccountDetailsPage.acceptAlert();
+		s_assert.assertTrue(crmAccountDetailsPage.isEmailForNewPasswordSentForRC(),"Email for new password has not been sent");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5265:Update Email address with Inactive Consultant more than 180 days
+	@Test(priority=84)
+	public void testUpdateEmailAddressWithInactiveConsultantMoreThan180Days_5265() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantListMoreThan180days =  null;
+		List<Map<String, Object>> randomAccountDetails =  null;
+		String inActiveconsultantEmailID = null;
+		String inActiveconsultantAccountId = null;
+		String modifiedEmailId = null;
+		String consultantEmailId = consultantEmailID;
+		String consultantAccountId = accountID;
+
+		randomConsultantListMoreThan180days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS,countryId),RFO_DB);
+		inActiveconsultantEmailID = (String) getValueFromQueryResult(randomConsultantListMoreThan180days, "EmailAddress");
+		inActiveconsultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantListMoreThan180days, "AccountID"));
+
+		logger.info("The email address of active consultant is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailId);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("The email address is "+consultantEmailId);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailId);
+			}else{
+				break;
+			}
+		}
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickEditButtonForPrimaryContactInContactDetailsPage();
+		crmAccountDetailsPage.updateEmailAddressFieldForPrimaryContact(inActiveconsultantEmailID);
+		crmAccountDetailsPage.clickSaveBtnUnderContactInformation();
+		s_assert.assertTrue(crmAccountDetailsPage.getEmailAddressOfUserAfterUpdation().equalsIgnoreCase(inActiveconsultantEmailID),"Email address of consultant User is not updated");
+		//randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,consultantAccountId),RFO_DB);		
+		//modifiedEmailId = (String) getValueFromQueryResult(randomAccountDetails, "EmailAddress"); 
+		//s_assert.assertTrue(inActiveconsultantEmailID.equalsIgnoreCase(modifiedEmailId),"Email address of consultant User is not updated");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5266:Update Email address with Inactive PC more than 90 days
+	@Test(enabled=false)//query not working 
+	public void testUpdateEmailAddressWithInactivePCMoreThan90Days_5266() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCListMoreThan90days =  null;
+		List<Map<String, Object>> randomAccountDetails =  null;
+		String inActivePCEmailID = null;
+		String inActivePCAccountId = null;
+		String modifiedEmailId = null;
+		String pcUserNamed = pcUserName;
+		String pcAccountId = pcAccountID;
+		randomPCListMoreThan90days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_INACTIVE_PC_EMAILID_MORE_THAN_90_DAYS,countryId),RFO_DB);
+		inActivePCEmailID = (String) getValueFromQueryResult(randomPCListMoreThan90days, "EmailAddress");
+		inActivePCAccountId = String.valueOf(getValueFromQueryResult(randomPCListMoreThan90days, "AccountID"));
+
+		logger.info("The email address of active PC is "+pcUserName); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserNamed);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser() ==false){
+				logger.info("No active user in the search results..searching new user");
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				pcUserNamed = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+				pcAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+				logger.info("The email address is "+pcUserName);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserNamed);
+			}else{
+				break;
+			}
+		}
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickEditButtonForPrimaryContactInContactDetailsPage();
+		crmAccountDetailsPage.updateEmailAddressFieldForPrimaryContact(inActivePCEmailID);
+		crmAccountDetailsPage.clickSaveBtnUnderContactInformation();
+		//randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountId),RFO_DB);
+		//modifiedEmailId = (String) getValueFromQueryResult(randomAccountDetails, "EmailAddress"); 
+		//s_assert.assertTrue(inActivePCEmailID.equalsIgnoreCase(modifiedEmailId),"Email address of PC User is not updated");
+		s_assert.assertAll();
+	}
 }

@@ -17,6 +17,7 @@ public class DBQueries_RFO {
 	public static String GET_ACCOUNT_NAME_DETAILS_QUERY = "select top 1 * from RFO_Accounts.AccountContacts where LegalName='%s'";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY = "select top 3 * from RFO_Accounts.Addresses where addressTypeID ='1' and addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
 	public static String GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO = "select top 1 PhoneNumberRaw from RFO_Accounts.Phones where PhoneTypeID='1' and PhoneID IN (select PhoneId from RFO_Accounts.AccountContactPhones where AccountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
+	public static String GET_ACCOUNT_MOBILE_NUMBER_QUERY_RFO = "select top 1 * from RFO_Accounts.Phones where PhoneTypeID='1' and PhoneID IN (select PhoneId from RFO_Accounts.AccountContactPhones where AccountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
 	public static String GET_RETURN_ORDER_DETAILS_QUERY = "select Top 1 ReturnOrderNumber,total from Hybris.ReturnOrder where AccountID IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s')))";
 	public static String GET_RETURN_ORDER_STATUS_QUERY = "select Name from RFO_Reference.ReturnStatus where ReturnStatusId IN (select Top 1 ReturnStatusId from Hybris.ReturnOrder where AccountID IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))))";
 	public static String GET_ORDER_NUMBER_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Top 1 OrderNumber from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress= '%s'))) order by CompletionDate desc";
@@ -25,6 +26,23 @@ public class DBQueries_RFO {
 	public static String GET_ORDER_STATUS_FOR_CRP_ORDER_HISTORY_QUERY_RFO = "select Name from RFO_Reference.OrderStatus where orderStatusId IN (select Top 1 OrderStatusID from Hybris.Orders where accountId IN (select Top 1 AccountId from RFO_Accounts.AccountContacts where AccountContactId IN (select Top 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressId IN (select Top 1 EmailAddressId from RFO_Accounts.EmailAddresses where EmailAddress='%s')))order by CompletionDate desc)";
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO = "select top 1 * from RFO_Accounts.Addresses where addressId IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
 	public static String GET_ACCOUNT_ADDRESS_RFO = "select top 1 * from RFO_Accounts.Addresses where AddressProfileName='%s'";
+	public static String GET_RANDOM_INACTIVE_PC_EMAILID_MORE_THAN_90_DAYS="SELECT TOP 1 "+
+			"rf.AccountID , "+
+			" rf.HardTerminationDate , "+
+			"rf.Active , "+
+			" ab.AccountTypeID,ead.* "+
+			" FROM    RFOperations.RFO_Accounts.AccountRF rf "+
+			"JOIN RFOperations.RFO_Accounts.AccountBase ab ON ab.AccountID = rf.AccountID "+
+			"JOIN RFOperations.RFO_Accounts.AccountContacts ac ON ac.AccountId = ab.AccountID "+
+			" JOIN RFOperations.RFO_Accounts.AccountContactAddresses ad ON ad.AccountContactId = ac.AccountContactId "+   
+			"JOIN RFOperations.RFO_Accounts.AccountEmails ae ON ae.AccountContactId = ac.AccountContactId "+ 
+			"JOIN RFOperations.RFO_Accounts.EmailAddresses ead ON ead.EmailAddressID=ae.EmailAddressId "+
+			"WHERE   ab.CountryID = %s "+
+			" AND ab.AccountTypeID = 2 "+
+			"AND rf.Active = 0 "+
+			" AND rf.HardTerminationDate < DATEADD(DAY, -90, GETDATE()) "+
+			" AND ab.AccountStatusID IN ( 2 ,10) "+
+			" ORDER BY 1 DESC ";
 	public static String GET_AUTOSHIP_ID_FOR_RFO = "SELECT * "+
 			"FROM Hybris.Autoship AS A "+
 			"WHERE A.AutoshipNumber='%s'";

@@ -47,7 +47,7 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private String  orderHeader = "//h2[text()='%s']";
 	private String  overviewDetails = "//div[@class='order-detail-overview']//li[contains(text(),'%s')]";
 	private String  shipmentDetails = "//div[@class='order-detail-shipment']//li[contains(text(),'%s')]";
-
+	private String  orderMetrics = "//section[@id='order-summary-header']/ul[1]//span[text()='%s']";
 
 	private static final By ADD_FILTERS = By.xpath("//span[text()='Add filters']");
 	private static final By CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE = By.id("ORDER_TYPE_FILTER_CONSULTANT");
@@ -57,7 +57,6 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By CHECKED_CONSULTANT_ORDER_CHK_BOX_IN_ALL_ORDER_TYPE = By.xpath("//span[@id='ORDER_TYPE_FILTER_CONSULTANT'][@checked='checked']");
 	private static final By CHECKED_PROCESSED_ORDER_CHK_BOX_IN_ORDER_STATUS = By.xpath("//span[@id='ORDER_STATUS_FILTER_PROCESSED'][@checked='checked']");
 	private static final By CLOSE_ICON_OF_FILTER = By.xpath("//section[@id='filter-modal']/div[@class='icon-close pointer au-target']");
-
 	private static final By TRACKING_NUMBER_LINK = By.xpath("//div[@class='tracking-container']//a");
 	private static final By TRACKING_NUMBER = By.xpath("//div[@class='shipmentTitleBar_track_nick_section']/div");
 	private static final By VIEW_DETAILS_BTN = By.xpath("//span[text()='View details']");
@@ -74,6 +73,14 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By SHIPPING_METHOD = By.xpath("//div[@class='order-detail-shipping']//h3[text()='Method']");
 	private static final By BILLING_DETAILS_SUBHEADING = By.xpath("//div[@class='order-detail-billing']//h3[text()='Address']");
 	private static final By BILLING_PROFILE_NAME = By.xpath("//div[@class='order-detail-shipping']/div/div[1]/div/span");
+	private static final By FIRST_RETURNED_ORDER_LOC = By.xpath("//div[@id='sub-stage']//section[4]/descendant::span[text()='Returned'][1]");
+	private static final By THIS_WEEK_TEXT_LOC= By.xpath("//span[contains(text(),'this week:')]");
+	private static final By UPCOMING_TEXT_LOC= By.xpath("//span[text()='upcoming']");
+	private static final By EARLIER_THIS_MONTH_TEXT_LOC= By.xpath("//span[text()='earlier this month']");
+	private static final By FIRST_ORDER_USERNAME_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']/div[1]");
+	private static final By FIRST_ORDER_STATUS_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[1]/span");
+	private static final By FIRST_ORDER_TYPE_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[2]/span");
+	private static final By FIRST_ORDER_PSQV_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[3]/span");
 
 	public void clickFirstProcessedOrder(){
 		driver.waitForElementPresent(FIRST_PROCESSED_ORDER_LOC);
@@ -394,6 +401,64 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 		String name = driver.findElement(BILLING_PROFILE_NAME).getText();
 		logger.info("Billing address name is: "+name);
 		return name;
+	}
+
+	public boolean isReturnedOrderPresent(){
+		driver.waitForElementPresent(FIRST_RETURNED_ORDER_LOC);
+		return driver.isElementPresent(FIRST_RETURNED_ORDER_LOC);
+	}
+
+	public boolean isOrderMetricsPresent(String name){
+		driver.waitForElementPresent(By.xpath(String.format(orderMetrics, name)));
+		return driver.isElementPresent(By.xpath(String.format(orderMetrics, name)));
+	}
+
+	public boolean isAddFilterBtnPresent(){
+		driver.waitForElementPresent(ADD_FILTERS);
+		return driver.isElementPresent(ADD_FILTERS);
+	}
+
+	public boolean isThisWeekTextPresentForOrders(){
+		driver.waitForElementPresent(THIS_WEEK_TEXT_LOC);
+		return driver.isElementPresent(THIS_WEEK_TEXT_LOC);
+	}
+
+	public boolean isUpcomingTextPresentForOrders(){
+		driver.waitForElementPresent(UPCOMING_TEXT_LOC);
+		return driver.isElementPresent(UPCOMING_TEXT_LOC);
+	}
+
+	public boolean isEarlierThisMonthTextPresentForOrders(){
+		driver.waitForElementPresent(EARLIER_THIS_MONTH_TEXT_LOC);
+		return driver.isElementPresent(EARLIER_THIS_MONTH_TEXT_LOC);
+	}
+
+	public String getFirstOrderUserName(){
+		driver.waitForElementPresent(FIRST_ORDER_USERNAME_LOC);
+		String name = driver.findElement(FIRST_ORDER_USERNAME_LOC).getText();
+		logger.info("First order's username is: "+name);
+		return name;
+	}
+
+	public String getFirstOrderStatus(){
+		driver.waitForElementPresent(FIRST_ORDER_STATUS_LOC);
+		String status = driver.findElement(FIRST_ORDER_STATUS_LOC).getText();
+		logger.info("First order's status is: "+status);
+		return status;
+	}
+
+	public String getFirstOrderType(){
+		driver.waitForElementPresent(FIRST_ORDER_TYPE_LOC);
+		String orderType = driver.findElement(FIRST_ORDER_TYPE_LOC).getText();
+		logger.info("First order's type is: "+orderType);
+		return orderType;
+	}
+
+	public String getFirstOrderPSQVValue(){
+		driver.waitForElementPresent(FIRST_ORDER_PSQV_LOC);
+		String PSQV = driver.findElement(FIRST_ORDER_PSQV_LOC).getText();
+		logger.info("First order's status is: "+PSQV);
+		return PSQV;
 	}
 
 }

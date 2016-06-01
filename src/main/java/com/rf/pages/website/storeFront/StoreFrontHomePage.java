@@ -37,7 +37,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
-
+	
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}

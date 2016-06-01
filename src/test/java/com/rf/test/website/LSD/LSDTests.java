@@ -253,4 +253,24 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertFalse(lsdOrderPage.getBillingProfileName()==null, "Billing address is blank");
 		s_assert.assertAll();
 	}
+
+	//Orders View - Design and data fields layout TC-1155
+	@Test(enabled=false)
+	public void testOrdersViewDesignAndDataFieldsLayout_LSD_TC_1155(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickOrdersLink();
+		s_assert.assertTrue(lsdOrderPage.isReturnedOrderPresent(), "Returned order is not present");
+		s_assert.assertTrue(lsdOrderPage.isOrderMetricsPresent("Pending"), "Pending order is not present in order metrics");
+		s_assert.assertTrue(lsdOrderPage.isOrderMetricsPresent("Processed"), "Processed order is not present in order metrics");
+		s_assert.assertTrue(lsdOrderPage.isOrderMetricsPresent("Failed"), "Failed order is not present in order metrics");
+		s_assert.assertTrue(lsdOrderPage.isAddFilterBtnPresent(), "Add filter button is not present");
+		s_assert.assertTrue(lsdOrderPage.isThisWeekTextPresentForOrders(), "This week orders are not present");
+		s_assert.assertTrue(lsdOrderPage.isUpcomingTextPresentForOrders(), "Upcoming orders are not present");
+		s_assert.assertTrue(lsdOrderPage.isEarlierThisMonthTextPresentForOrders(), "Earlier this month orders are not present");
+		s_assert.assertFalse(lsdOrderPage.getFirstOrderUserName()==null, "Order Username is blank");
+		s_assert.assertFalse(lsdOrderPage.getFirstOrderStatus()==null, "Order status is blank");
+		s_assert.assertFalse(lsdOrderPage.getFirstOrderType()==null, "Order type is blank");
+		s_assert.assertFalse(lsdOrderPage.getFirstOrderPSQVValue()==null, "Order PSQV value is blank");
+		s_assert.assertAll();
+	}
 }

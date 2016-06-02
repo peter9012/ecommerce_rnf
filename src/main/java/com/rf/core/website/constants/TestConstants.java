@@ -113,8 +113,8 @@ public class TestConstants {
 	public static final String AUTOSHIP_TEMPLATE_ERROR_MSG_PC="greater than the threshold CAD $90";
 	public static final String AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY="quantity has been updated";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG_CA_FOR_PC= "greater than the threshold CAD $90";
-	public static final String  DISCOUNT_TEXT_FOR_PC_USER = "Yes, I want to join PC Perks and receive up to 10% off all orders plus free shipping";
-	public static final String  PC_PERKS_TERMS_CONDITION_POPUP_TEXT = "To enjoy up to 10% off and free shipping";
+	public static final String DISCOUNT_TEXT_FOR_PC_USER = "Yes, I want to join PC Perks and receive up to 10% off all orders plus free shipping";
+	public static final String PC_PERKS_TERMS_CONDITION_POPUP_TEXT = "To enjoy up to 10% off and free shipping";
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";

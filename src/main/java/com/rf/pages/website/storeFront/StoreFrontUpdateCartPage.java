@@ -20,7 +20,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	private final By PAYMENT_BILLING_EDIT_BTN_LOC = By.xpath("//a[@class='editPayment']");
 	private final By PAYMENT_PROFILE_NAME_LOC = By.xpath("//div[@id='multiple-billing-profiles']/descendant::span[1]");
-	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC = By.xpath("//div[@id='use-for-autoship']/div");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 
@@ -46,13 +45,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public String getNameOnPaymentProfile(){
 		return driver.findElement(PAYMENT_PROFILE_NAME_LOC).getText();
-	}
-
-	public StoreFrontConsultantPage clickRodanAndFieldsLogo(){
-		driver.waitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-		driver.click(RODAN_AND_FIELDS_IMG_LOC);
-		logger.info("Rodan and Fields logo clicked");
-		return new StoreFrontConsultantPage(driver);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -1443,7 +1435,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateQASValidationPopUpIsDisplayed(){
-		driver.waitForElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
 		return driver.isElementPresent(By.xpath("//div[@id='QAS_Dialog']"));
 	}
 

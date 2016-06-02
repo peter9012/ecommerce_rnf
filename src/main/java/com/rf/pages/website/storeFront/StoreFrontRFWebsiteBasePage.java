@@ -33,6 +33,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			.getLogger(StoreFrontRFWebsiteBasePage.class.getName());
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
+	private final By RODAN_AND_FIELDS_LOGO_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
@@ -51,6 +52,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		this.driver = driver;
 	}
 
+	public StoreFrontConsultantPage clickRodanAndFieldsLogo(){
+		driver.waitForElementPresent(RODAN_AND_FIELDS_LOGO_IMG_LOC);
+		driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
+		logger.info("Rodan and Fields logo clicked");
+		return new StoreFrontConsultantPage(driver);
+	}
+	
 	//contains the common methods useful for all the pages inherited
 
 	public static String convertDBDateFormatToUIFormat(String DBDate){
@@ -809,6 +817,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return new StoreFrontCartAutoShipPage(driver);
 	}
+	
+	public boolean isEditCRPLinkPresent(){
+		try{
+			driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
+			driver.findElement(WELCOME_DD_EDIT_CRP_LINK_LOC);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 
 	public boolean validateExistingUserPopUp(String userid,String firstName,String lastName,String password,String countryId){
 		RFO_DB = driver.getDBNameRFO();
@@ -1424,7 +1442,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div/div"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
 		for(int i=1;i<=allBillingProfiles.size();i++){   
 			try{
@@ -1876,6 +1894,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public String getDefaultSelectedBillingAddressName(){
 		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]"));
 		return driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/../../preceding::p[3]/span[1]")).getText();
+	}
+	
+	public String getFirstBillingProfileName(){
+		return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//p[1]/span[1]")).getText();
 	}
 
 	public void enterNewShippingAddressLine1(String addressLine1){

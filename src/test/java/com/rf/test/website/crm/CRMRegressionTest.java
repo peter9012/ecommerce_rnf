@@ -72,11 +72,12 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
 	}	
 
-	//Hybris Project-4527:Search for account by email address
+	// Hybris Project-4479:Add the Account Notes for Consultant
 	@Test(priority=1)
-	public void testSearchForAccountByEmail_4527() throws InterruptedException{
-		//get emailId of username
-		logger.info("The email address is "+consultantEmailID); 
+	public void testAddAccountNoteForConsultant_4479() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String orderNote="This is automation note"+randomNum;
+		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		while(true){
@@ -94,22 +95,57 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}
 		}
-		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
-		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()) || consultantEmailID.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
+
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Notes Section is not present on Account Details page");
+		//Verify account dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPagePresent(),"Account dropdown is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
+		//verify channel dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");
+		//Verify reason dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Consultants"),"Reason dropdown Consultants option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("CRP"),"Reason dropdown CRP option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PCs"),"Reason dropdown PCs option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Order"),"Reason dropdown Order option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
+		//		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Special Communications (Price Increase)"),"Reason dropdown Special Communications (Price Increase) option is not present on Account Details page");
+		//verify details dropdown
+		s_assert.assertTrue(crmAccountDetailsPage.isDetailsDropdownOnAccountDetailPagePresent(),"Detail dropdown is not present on Account Details page");
+		//verify note section
+		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
+		//add note and click save.
+		crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectReasonDropdown("Consultants");
+		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
+		crmAccountDetailsPage.enterNote(orderNote);
+		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
+		//Verify channel account and reason dropdown are disabled.
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPageIsEnabled(),"Account dropdown is not disable on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPageIsEnabled(),"Channel dropdown is not disable on Account Details page");
+		s_assert.assertFalse(crmAccountDetailsPage.isDetailDropdownOnAccountDetailPageIsEnabled(),"Detail dropdown is not disable on Account Details page");
+		//verify the note in account activity section present
+		s_assert.assertTrue(crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage().contains(orderNote),"Note text from UI is "+crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage()+" While expected text is "+orderNote);
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4548:Preferred Customer detail view page
+	// Hybris Project-4507:Edit Preferred Customer Account details
 	@Test(priority=2)
-	public void testPreferredCustomerdDetailViewTest_4548() throws InterruptedException{
-		logger.info("The username is "+pcUserName); 
+	public void testEditPreferredCustomerActDetails_4507() throws InterruptedException	{
+		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
-
 		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
 				logger.info("No active user in the search results..searching new user");
@@ -125,54 +161,27 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}
 		}
-
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		//		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
-		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
-		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
-
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isPlacementSponsorFieldDisplayed(),"Placement sponsor is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Contacts"),"Contact link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Autoships"),"Autoships link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Notes"),"Account Notes link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Shipping Profiles"),"Shipping Profiles link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Billing  Profiles"),"Billing  Profiles link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Statuses History"),"Account Statuses History link is not displayed on account in section account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Contacts"),"Contacts mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Autoships"),"Autoships mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Notes"),"Account Notes mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Shipping Profiles"),"Shipping Profiles mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Billing"),"Billing Profiles mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Statuses History"),"Contacts mouse hover section is not displayed on account section in account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Contacts"),"Contacts blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Autoships"),"Autoships blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Notes"),"Account Activities blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Shipping Profiles"),"Shipping Profiles blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Billing"),"Billing Profiles blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Statuses History"),"Account Statuses History blue line section is not displayed on account section in account details page");
-
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+		crmAccountDetailsPage.updateRecognitionNameField(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME);
+		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
+		s_assert.assertTrue(crmAccountDetailsPage.getRecognitionName().equalsIgnoreCase(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME),"Recognition name is not updated");
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Main Address");
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
+		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
+		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4550:Retail Customer detail view page
+	//Hybris Project-4510:Edit Retail Customer Account details
 	@Test(priority=3)
-	public void testRetailCustomerdDetailViewTest_4550() throws InterruptedException{
+	public void testEditRetailCustomerActDetails_4510() throws InterruptedException	{
+		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
+		String postalCode = TestConstants.CRM_NEW_POSTALCODE_CA;
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-
 		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Retail Customer") ==false){
 				logger.info("No active user in the search results..searching new user");
@@ -188,41 +197,17 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}
 		}
-
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcUserName.toLowerCase().trim());
-		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
-		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
-
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isPlacementSponsorFieldDisplayed(),"Placement sponsor is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Contacts"),"Contact link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Notes"),"Account Notes link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Shipping Profiles"),"Shipping Profiles link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Billing  Profiles"),"Billing  Profiles link is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Statuses History"),"Account Statuses History link is not displayed on account in section account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Contacts"),"Contacts mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Notes"),"Account Notes mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Shipping Profiles"),"Shipping Profiles mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Billing"),"Billing Profiles mouse hover section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Statuses History"),"Contacts mouse hover section is not displayed on account section in account details page");
-
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Contacts"),"Contacts blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Notes"),"Account Activities blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Shipping Profiles"),"Shipping Profiles blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Billing"),"Billing Profiles blue line section is not displayed on account section in account details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Statuses History"),"Account Statuses History blue line section is not displayed on account section in account details page");
-
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
+		crmAccountDetailsPage.updateRecognitionNameField(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME);
+		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
+		s_assert.assertTrue(crmAccountDetailsPage.getRecognitionName().equalsIgnoreCase(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME),"Recognition name is not updated");
+		crmAccountDetailsPage.clickAccountDetailsButton("Edit Main Address");
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Postal Code", postalCode);
+		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
+		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");
 		s_assert.assertAll();
 	}
 
@@ -572,142 +557,158 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-4479:Add the Account Notes for Consultant
-	@Test(priority=12)
-	public void testAddAccountNoteForConsultant_4479() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String orderNote="This is automation note"+randomNum;
-		logger.info("The username is "+consultantEmailID); 
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
-				consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 
-				logger.info("The email address is "+consultantEmailID);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-			}else{
-				break;
-			}
-		}
+	//Hybris Project-4527:Search for account by email address
+	@Test(priority=12)
+	public void testSearchForAccountByEmail_4527() throws InterruptedException{
+		//get emailId of username
+		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
-		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()) || consultantEmailID.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
+		/*while(true){
+					if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
+						logger.info("No active user in the search results..searching new user");
+						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+						accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+						randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+						consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 
+						logger.info("The email address is "+consultantEmailID);
+						s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+						crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+					}else{
+						break;
+					}
+				}*/
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Notes Section is not present on Account Details page");
-		//Verify account dropdown
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPagePresent(),"Account dropdown is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
-		//verify channel dropdown
-		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");
-		//Verify reason dropdown
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Consultants"),"Reason dropdown Consultants option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("CRP"),"Reason dropdown CRP option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PCs"),"Reason dropdown PCs option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Order"),"Reason dropdown Order option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Returns"),"Reason dropdown Returns option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("RF Mall"),"Reason dropdown RF Mall option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Pulse"),"Reason dropdown Pulse option is not present on Account Details page");
-		//		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("PSales Support RF Connection Transferulse"),"Reason dropdown PSales Support RF Connection Transferulse option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Technology"),"Reason dropdown Technology option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Marketing Promotion"),"Reason dropdown Marketing Promotion option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Special Communications (Price Increase)"),"Reason dropdown Special Communications (Price Increase) option is not present on Account Details page");
-		//verify details dropdown
-		s_assert.assertTrue(crmAccountDetailsPage.isDetailsDropdownOnAccountDetailPagePresent(),"Detail dropdown is not present on Account Details page");
-		//verify note section
-		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
-		//add note and click save.
-		crmAccountDetailsPage.selectChannelDropdown("Email");
-		crmAccountDetailsPage.selectReasonDropdown("Consultants");
-		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
-		crmAccountDetailsPage.enterNote(orderNote);
-		crmAccountDetailsPage.clickOnSaveAfterEnteringNote();
-		//Verify channel account and reason dropdown are disabled.
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownOnAccountDetailPageIsEnabled(),"Account dropdown is not disable on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPageIsEnabled(),"Channel dropdown is not disable on Account Details page");
-		s_assert.assertFalse(crmAccountDetailsPage.isDetailDropdownOnAccountDetailPageIsEnabled(),"Detail dropdown is not disable on Account Details page");
-		//verify the note in account activity section present
-		s_assert.assertTrue(crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage().contains(orderNote),"Note text from UI is "+crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage()+" While expected text is "+orderNote);
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
 		s_assert.assertAll();
 	}
 
-	// Hybris Project-4507:Edit Preferred Customer Account details
+	//Hybris Project-4548:Preferred Customer detail view page
 	@Test(priority=13)
-	public void testEditPreferredCustomerActDetails_4507() throws InterruptedException	{
-		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
+	public void testPreferredCustomerdDetailViewTest_4548() throws InterruptedException{
+		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
-				randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
-				pcUserName = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
-				logger.info("The email address is "+pcUserName);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
-			}else{
-				break;
-			}
-		}
+		/*while(true){
+					if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
+						logger.info("No active user in the search results..searching new user");
+						randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+						pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+
+						randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+						pcUserName = String.valueOf(getValueFromQueryResult(randomPCUsernameList, "EmailAddress"));
+						logger.info("The email address is "+pcUserName);
+						s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+						crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+					}else{
+						break;
+					}
+				}
+		 */
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//		s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(pcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+pcUserName.toLowerCase().trim());
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
-		crmAccountDetailsPage.updateRecognitionNameField(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME);
-		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
-		s_assert.assertTrue(crmAccountDetailsPage.getRecognitionName().equalsIgnoreCase(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME),"Recognition name is not updated");
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit Main Address");
-		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
-		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
-		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isPlacementSponsorFieldDisplayed(),"Placement sponsor is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Contacts"),"Contact link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Autoships"),"Autoships link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Notes"),"Account Notes link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Shipping Profiles"),"Shipping Profiles link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Billing  Profiles"),"Billing  Profiles link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Statuses History"),"Account Statuses History link is not displayed on account in section account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Contacts"),"Contacts mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Autoships"),"Autoships mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Notes"),"Account Notes mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Shipping Profiles"),"Shipping Profiles mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Billing"),"Billing Profiles mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Statuses History"),"Contacts mouse hover section is not displayed on account section in account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Contacts"),"Contacts blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Autoships"),"Autoships blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Notes"),"Account Activities blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Shipping Profiles"),"Shipping Profiles blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Billing"),"Billing Profiles blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Statuses History"),"Account Statuses History blue line section is not displayed on account section in account details page");
+
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4510:Edit Retail Customer Account details
+	//Hybris Project-4550:Retail Customer detail view page
 	@Test(priority=14)
-	public void testEditRetailCustomerActDetails_4510() throws InterruptedException	{
-		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
-		String postalCode = TestConstants.CRM_NEW_POSTALCODE_CA;
+	public void testRetailCustomerdDetailViewTest_4550() throws InterruptedException{
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser("Retail Customer") ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-				rcAccountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
 
-				randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountID),RFO_DB);
-				rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
-				logger.info("The email address is "+rcUserName);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-			}else{
-				break;
-			}
-		}
+		/*while(true){
+					if(crmHomePage.isSearchResultHasActiveUser("Retail Customer") ==false){
+						logger.info("No active user in the search results..searching new user");
+						randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+						rcAccountID = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+
+						randomRCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,rcAccountID),RFO_DB);
+						rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
+						logger.info("The email address is "+rcUserName);
+						s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+						crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+					}else{
+						break;
+					}
+				}*/
+
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcUserName.toLowerCase().trim());
+		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
+		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
+
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
-		crmAccountDetailsPage.updateRecognitionNameField(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME);
-		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
-		s_assert.assertTrue(crmAccountDetailsPage.getRecognitionName().equalsIgnoreCase(TestConstants.CRM_ACT_INFORMATION_RECOGNITION_NAME),"Recognition name is not updated");
-		crmAccountDetailsPage.clickAccountDetailsButton("Edit Main Address");
-		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
-		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Postal Code", postalCode);
-		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
-		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountNumberFieldDisplayedAndNonEmpty(),"Account Number is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountTypeFieldDisplayedAndNonEmpty(),"Account Type is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountStatusFieldDisplayedAndNonEmpty(),"Account Status is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isCountryFieldDisplayedAndNonEmpty(),"Country field is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isPlacementSponsorFieldDisplayed(),"Placement sponsor is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEnrollmentDateFieldDisplayedAndNonEmpty(),"Enrollment Date is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMainPhoneFieldDisplayedAndNonEmpty(),"Main Phone is not displayed on account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isEmailAddressFieldDisplayedAndNonEmpty(),"Email Address is not displayed on account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Contacts"),"Contact link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Notes"),"Account Notes link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Shipping Profiles"),"Shipping Profiles link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Billing  Profiles"),"Billing  Profiles link is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isLinkOnAccountSectionPresent("Account Statuses History"),"Account Statuses History link is not displayed on account in section account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Contacts"),"Contacts mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Notes"),"Account Notes mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Shipping Profiles"),"Shipping Profiles mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Billing"),"Billing Profiles mouse hover section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverSectionPresentOfLink("Account Statuses History"),"Contacts mouse hover section is not displayed on account section in account details page");
+
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Contacts"),"Contacts blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Notes"),"Account Activities blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Shipping Profiles"),"Shipping Profiles blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Billing"),"Billing Profiles blue line section is not displayed on account section in account details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isListItemsWithBlueLinePresent("Account Statuses History"),"Account Statuses History blue line section is not displayed on account section in account details page");
+
 		s_assert.assertAll();
 	}
 
@@ -900,8 +901,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		List<Map<String, Object>> randomPCFirstNameList =  null;
 		List<Map<String, Object>> randomPCList =  null;
 		String pcFirstName = null;
+		String accountIDForPC = pcAccountID;
 		while(true){
-			randomPCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
+			randomPCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,accountIDForPC),RFO_DB);
 			pcFirstName = String.valueOf(getValueFromQueryResult(randomPCFirstNameList, "FirstName"));
 			if((pcFirstName.length()>2) &&(!pcFirstName.equalsIgnoreCase("null"))){
 				logger.info("PCFirst name is not null");
@@ -909,7 +911,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 			}else{
 				logger.info("PCFirst name is equal to null for account ID: "+pcAccountID);
 				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+				accountIDForPC = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
 				continue;
 			}
 		}
@@ -2767,7 +2769,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(addressLine1.contains(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
 		s_assert.assertTrue(locale.contains(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
 		//s_assert.assertTrue(mainPhoneNo.equals(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber")), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
-		s_assert.assertTrue(emailId.contains(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
+		s_assert.assertTrue(emailId.toLowerCase().contains(storeFrontHomePage.getConsultantStoreFrontInfo("email-account").toLowerCase()), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
 		storeFrontHomePage.switchToPreviousTab();
 		s_assert.assertAll();
 	}
@@ -2898,7 +2900,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(addressLine1.equals(storeFrontHomePage.getConsultantStoreFrontInfo("address-1")), "Address Line Not Matched, Expected is "+ addressLine1 +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("address-1"));
 		s_assert.assertTrue(locale.equals(storeFrontHomePage.getConsultantStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("city"));
 		/*String phoneNumberFromUI = storeFrontHomePage.convertPhoneNumber(storeFrontHomePage.getConsultantStoreFrontInfo("phonenumber"));
-	  s_assert.assertTrue(mainPhoneNo.equals(phoneNumberFromUI), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +phoneNumberFromUI);*/
+		  s_assert.assertTrue(mainPhoneNo.equals(phoneNumberFromUI), "Phone Number Not Matched, Expected is "+ mainPhoneNo +"But Actual is " +phoneNumberFromUI);*/
 		s_assert.assertTrue(emailId.equals(storeFrontHomePage.getConsultantStoreFrontInfo("email-account")), "Email ID Not Matched, Expected is "+ emailId +"But Actual is " +storeFrontHomePage.getConsultantStoreFrontInfo("email-account"));
 		crmAccountDetailsPage.switchToPreviousTab();
 		s_assert.assertAll();
@@ -3081,7 +3083,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}else{
 				logger.info("RCFirst name is equal to null for account ID: "+rcAccountID);
-				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 				retailAccountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 				continue;
 			}
@@ -3177,7 +3179,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		while(true){
 			if(crmAccountDetailsPage.isNoRecordToDisplayPresentOnShippingProfile()==true){
 				List<Map<String, Object>> randomPCList =  null;
-				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 				String pcUserName = (String) getValueFromQueryResult(randomPCList, "UserName");  
 				logger.info("The email address is "+pcUserName);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -3510,18 +3512,18 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				logger.info("The email address is "+consultantEmailID);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-			}else{
-				break;
-			}
-		}
+		/*while(true){
+				if(crmHomePage.isSearchResultHasActiveUser() ==false){
+					logger.info("No active user in the search results..searching new user");
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+					logger.info("The email address is "+consultantEmailID);
+					s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+					crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+				}else{
+					break;
+				}
+			}*/
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
@@ -3551,7 +3553,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String firstNameActiveConsultant = null;
 		String lastNameActiveConsultant = null;
 		String editedName = null;
-		String consultantEmail = consultantEmailID;
+		String consultantEmail = null;
 		randomConsultantListMoreThan180days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_INACTIVE_CONSULTANT_EMAILID_MORE_THAN_90_DAYS,countryId),RFO_DB);
 		inActiveconsultantEmailID = (String) getValueFromQueryResult(randomConsultantListMoreThan180days, "EmailAddress");
 		randomAccountDetails = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_DETAILS_QUERY,inActiveconsultantEmailID),RFO_DB);
@@ -3560,7 +3562,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		editedName = firstNameInActiveConsultant+" "+lastNameInActiveConsultant;
 		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmail);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser() ==false){
 				logger.info("No active user in the search results..searching new user");
@@ -3649,19 +3651,19 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address of active consultant is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailId);
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("The email address is "+consultantEmailId);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailId);
-			}else{
-				break;
-			}
-		}
+		/*while(true){
+				if(crmHomePage.isSearchResultHasActiveUser() ==false){
+					logger.info("No active user in the search results..searching new user");
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+					consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+					logger.info("The email address is "+consultantEmailId);
+					s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+					crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailId);
+				}else{
+					break;
+				}
+			}*/
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
@@ -3694,19 +3696,19 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address of active PC is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserNamed);
-		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser() ==false){
-				logger.info("No active user in the search results..searching new user");
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				pcUserNamed = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-				pcAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
-				logger.info("The email address is "+pcUserName);
-				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-				crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserNamed);
-			}else{
-				break;
-			}
-		}
+		/*while(true){
+				if(crmHomePage.isSearchResultHasActiveUser() ==false){
+					logger.info("No active user in the search results..searching new user");
+					randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					pcUserNamed = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+					pcAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+					logger.info("The email address is "+pcUserName);
+					s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+					crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserNamed);
+				}else{
+					break;
+				}
+			}*/
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");

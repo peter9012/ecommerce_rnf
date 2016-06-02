@@ -14,6 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -59,17 +60,36 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.get(driver.getURL());
 		}
 		else{
-			driver.get(driver.getURL()+"/"+country);
+			//driver.get(driver.getURL()+"/"+country);
 		}
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-			try{
-				logout();
-			}catch(NoSuchElementException e){
-
-			}   
+			//			try{
+			//				logout();
+			//			}catch(NoSuchElementException e){
+			//
+			//			}   
 		}		           
+		if(country.equalsIgnoreCase("ca"))
+			countryId = "40";
+		else if(country.equalsIgnoreCase("us"))
+			countryId = "236";            
+		//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
+		//			driver.selectCountry(country);
+		//		}
+		setStoreFrontPassword(driver.getStoreFrontPassword());		
+	}
+	
+	public void navigateToStoreFrontBaseURL(){
+		String country = driver.getCountry();
+		driver.get(driver.getURL()+"/"+country);
+	}
+
+	@BeforeClass(alwaysRun=true)
+	public void beforeClass(){
+		String country = driver.getCountry();
+		navigateToStoreFrontBaseURL();		        
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
@@ -77,30 +97,21 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
 			driver.selectCountry(country);
 		}
-		setStoreFrontPassword(driver.getStoreFrontPassword());
-		//		if(driver.getURL().contains("salesforce")==true){
-		//			try{
-		//				crmLogoutFromHome();
-		//				driver.get(driver.getURL());
-		//			}catch(Exception e){
-		//
-		//			}
-		//		}
+		setStoreFrontPassword(driver.getStoreFrontPassword());		
 	}
 
 	@AfterMethod
-	public void tearDownAfterMethod(){
-		driver.manage().deleteAllCookies();
+	public void tearDownAfterMethod(){		
 		if(driver.getURL().contains("salesforce")==true){
-		      try{
-		          crmLogout();
-		          Alert alert = driver.switchTo().alert();
-		          System.out.println(alert.getText());
-		          alert.dismiss();
+			try{
+				crmLogout();
+				Alert alert = driver.switchTo().alert();
+				System.out.println(alert.getText());
+				alert.dismiss();
 
-		        }catch(NoAlertPresentException Ex){
-		                  
-		        }
+			}catch(NoAlertPresentException Ex){
+
+			}
 		}
 	}
 
@@ -139,12 +150,16 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		driver.click(By.id("account-info-button"));
-		logger.info("Your account info has been clicked");
-		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.click(By.linkText("Log out"));
-		logger.info("Logout");                    
-		driver.pauseExecutionFor(3000);
+		try{
+			driver.click(By.id("account-info-button"));
+			logger.info("Your account info has been clicked");
+			driver.waitForElementPresent(By.linkText("Log out"));
+			driver.click(By.linkText("Log out"));
+			logger.info("Logout");                    
+			driver.pauseExecutionFor(3000);
+		}catch(Exception e){
+
+		}
 	}
 
 	// This assertion for the UI Texts

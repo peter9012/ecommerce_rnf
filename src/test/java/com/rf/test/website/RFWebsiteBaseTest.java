@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -19,7 +21,6 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
-import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -90,11 +91,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void tearDownAfterMethod(){
 		driver.manage().deleteAllCookies();
 		if(driver.getURL().contains("salesforce")==true){
-			try{
-				crmLogout();
-			}catch(Exception e){
+		      try{
+		          crmLogout();
+		          Alert alert = driver.switchTo().alert();
+		          System.out.println(alert.getText());
+		          alert.dismiss();
 
-			}
+		        }catch(NoAlertPresentException Ex){
+		                  
+		        }
 		}
 	}
 

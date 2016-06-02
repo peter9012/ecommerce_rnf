@@ -54,12 +54,12 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean isDefaultBillingAddressSelected(String firstName) throws InterruptedException{
 		try{
-			driver.waitForElementPresent(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input"));
-			return driver.findElement(By.xpath("//span[text()='"+firstName+"']/ancestor::li[1]/form//input")).isSelected();
+			driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/following::input[@name='bill-card'][1]"));
+			return driver.findElement(By.xpath("//span[contains(text(),'"+firstName+"')]/following::input[@name='bill-card'][1]")).isSelected();
 
 		}catch(NoSuchElementException e){
 			try{
-				return driver.findElement(By.xpath("//span[text()='"+firstName.toLowerCase()+"']/ancestor::li[1]/form//input")).isSelected();				
+				return driver.findElement(By.xpath("//span[contains(text(),'"+firstName.toLowerCase()+"')]/following::input[@name='bill-card'][1]")).isSelected();				
 			}
 			catch(NoSuchElementException e1){
 				return false;
@@ -90,11 +90,10 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void enterNewBillingCardNumber(String cardNumber){
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.id("credit-cards"));		
+		driver.waitForElementPresent(By.id("card-nr"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
-		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
 		driver.type((ADD_NEW_BILLING_CARD_NUMBER_LOC),cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
@@ -156,6 +155,13 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//input[@checked='checked']/preceding::p[1]/a"));
 		driver.waitForPageLoad();
 		logger.info("Edit billing profile link clicked");
+	}
+		
+	public void clickOnEditOfFirstBillingProfile(){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
+		driver.waitForPageLoad();
+		logger.info("First billing profile's edit link clicked");
 	}
 
 	public String getBillingProfileName(){

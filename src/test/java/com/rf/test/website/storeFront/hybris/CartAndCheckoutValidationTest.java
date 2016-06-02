@@ -48,6 +48,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	private String country = null;
 	private String RFO_DB = null;
 	private String env = null;
+	private String state = null;
 
 	//Hybris Project-2327 :: Version : 1 :: check Mini Cart - Not Logged In user
 	@Test
@@ -665,7 +666,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		if(orderTotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("CA")){
 				//Assert of shipping cost from UI
-				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
 				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
 			}else if(driver.getCountry().equalsIgnoreCase("US")){
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
@@ -2713,6 +2714,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -2750,15 +2752,15 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String defaultBillingProfile=storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName();
 		logger.info("default billing profile is "+defaultBillingProfile);
 		//storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-//		//Add new billing profile
-//		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-//		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-//		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontUpdateCartPage.selectNewBillingCardAddress();
-//		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-//		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
+		//		//Add new billing profile
+		//		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+		//		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		//		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		//		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		//		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		//		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		//		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		//		s_assert.assertTrue(storeFrontUpdateCartPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created billing address is not present on page");
 		//Add new billing address.
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(secondNewBillingProfileName+" "+lastName);
@@ -2784,7 +2786,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShipingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
@@ -3251,6 +3253,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		country = driver.getCountry();
 		String URL=null;
+		String state = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String firstName=TestConstants.FIRST_NAME+randomNumber;
 		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
@@ -3270,6 +3273,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.selectDifferentCountry();
@@ -3279,7 +3283,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, newSponserEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, newSponserEmailAddress, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4333,6 +4337,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4362,7 +4367,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyConfirmationMessagePresentOnUI(),"Your profile has been updated message not present");
 		storeFrontShippingInfoPage.clickOnWelcomeDropDown();
@@ -4672,10 +4677,10 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnCheckoutButton();
 		//add a shipping address(if<=1)
 		if(country.equalsIgnoreCase("us")){
-			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_US, TestConstants.ADDRESS_LINE_1_US, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum+" last", TestConstants.PHONE_NUMBER_US, TestConstants.POSTAL_CODE_US);
+			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_US,TestConstants.STATE_US, TestConstants.ADDRESS_LINE_1_US, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum+" last", TestConstants.PHONE_NUMBER_US, TestConstants.POSTAL_CODE_US);
 		}
 		else{
-			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_CA, TestConstants.ADDRESS_LINE_1_CA, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum+" last", TestConstants.PHONE_NUMBER_CA, TestConstants.POSTAL_CODE_CA);
+			storeFrontUpdateCartPage.addAshippingProfile(TestConstants.CITY_CA,TestConstants.PROVINCE_CA, TestConstants.ADDRESS_LINE_1_CA, TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum+" last", TestConstants.PHONE_NUMBER_CA, TestConstants.POSTAL_CODE_CA);
 		}
 		//In shipment section,validate selecting 2 shipping address(only one radio button shld be selected at a time)
 		//Select first radio button and validate 2nd is un selected..
@@ -5723,6 +5728,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -5747,7 +5753,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
@@ -5819,6 +5825,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
+		String state = null;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 
 		if(country.equalsIgnoreCase("CA")){
@@ -5827,6 +5834,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -5839,7 +5847,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);

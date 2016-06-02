@@ -1264,4 +1264,15 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		return ""+i;
 	}
 
+	public int getDayFromDate(String date){
+		int day = 0;
+		try{
+			day = Integer.parseInt(date.split("\\ ")[0]);
+		}catch(Exception e){
+			String pstDay = date.split("\\ ")[1];
+			day = Integer.parseInt(pstDay.split("\\,")[0]);
+		}
+		return day;
+	}
+
 }

@@ -46,6 +46,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		String lastName = "lN";
+		String state = null;
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
@@ -55,6 +56,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -82,7 +84,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 //		storeFrontShippingInfoPage.selectFirstCardNumber();
@@ -128,6 +130,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
+		String state = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -138,6 +141,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -178,7 +182,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.selectNewShippingAddressState();
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
@@ -227,6 +231,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
+		String state = null;
 		String lastName = "lN";
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -237,6 +242,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -267,7 +273,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 //		storeFrontShippingInfoPage.selectFirstCardNumber();
@@ -320,6 +326,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		String country = driver.getCountry();
 		String addressLine1 = null;
 		String city = null;
+		String state = null;
 		String postalCode = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -334,6 +341,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -363,7 +371,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 //		storeFrontShippingInfoPage.selectFirstCardNumber();

@@ -97,4 +97,10 @@ public class CRMContactDetailsPage extends CRMRFWebsiteBasePage{
 		driver.waitForPageLoad();
 	}
 
+	public String getAccountName(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.findElement(By.xpath("//td[text()='Account Name']/following-sibling::td[1]/a")).getText();
+	}
 }

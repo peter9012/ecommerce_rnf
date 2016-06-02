@@ -3,11 +3,14 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
-	<test name="autoshipTestSuiteRFO">		
+	<test name="autoshipTestSuiteRFO">
 		<classes>
-				<!-- AUTOSHIPS -->			
-			<class name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest"></class>
-</classes>
+			<!-- AUTOSHIPS -->
+			<class
+				name="com.rf.test.website.storeFront.dataMigration.rfo.autoships.AutoshipTest"></class>
+		</classes>
 	</test>
 </suite>

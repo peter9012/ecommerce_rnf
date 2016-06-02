@@ -27,8 +27,8 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	private String phoneNumber = null;
 
 	//[Hybris Project-3612,Hybris Project-1670,Hybris Project-1669,Hybris Project-1668,Hybris Project-1667,Hybris Project-1665,Hybris Project-1664,Hybris Project-1663,Hybris Project-1662,Hybris Project-1661]
-	@Test //(dataProvider="rfTestData") //string province
-	public void testExpressEnrollmentCanadaProvince() throws InterruptedException{
+	@Test(enabled=false)//test needs updation (dataProvider="rfTestData")
+	public void testExpressEnrollmentCanadaProvince(String province) throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -40,8 +40,6 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			
-			String province = "Alberta";
-
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 
@@ -77,7 +75,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1699 :: Version : 1 :: Express Enrollment for Nunavut province and tryto ship adhoc order at quebec address. 
-	@Test
+	@Test(enabled=false)//test needs updation
 	public void testExpressEnrollmentNunavutProvince_1699() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -89,7 +87,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_QUEBEC;
 			postalCode = TestConstants.POSTAL_CODE_QUEBEC;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-
+			String state = TestConstants.PROVINCE_QUEBEC;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 
@@ -125,7 +123,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 			storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_QUEBEC);
 			storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_QUEBEC);
-			storeFrontShippingInfoPage.selectNewShippingAddressState();
+			storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_QUEBEC);
 			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
 //			storeFrontShippingInfoPage.selectFirstCardNumber();
@@ -141,7 +139,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1698 :: Version : 1 :: Express Enrollment for Northwest territories province and adding qubec address and make it default.
-	@Test
+	@Test(enabled=false)//test needs updation
 	public void testExpressEnrollmentNorthWestProvince_1698() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -187,7 +185,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1292 :: Version : 1 :: Customer living in Quebec cannot be enrolled as consultant. 
-	@Test
+	@Test(enabled=false)//test needs updation
 	public void testCustomerLivingInQuebecCannotEnroll_1292() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;

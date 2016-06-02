@@ -37,7 +37,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
-
+	
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
@@ -362,13 +362,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("City entered is "+city);
 	}
 
-	public void selectProvince(){		
-		driver.click(By.xpath("//select[@id='state']"));
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-		driver.click(By.xpath("//select[@id='state']/option[2]"));
-		logger.info("state selected");
-	}
-
 	public void selectProvince(String province){		
 		driver.click(By.id("state"));
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
@@ -401,7 +394,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("EnrollmentTest Next Button clicked");
 			driver.waitForLoadingImageToDisappear();
 			////driver.pauseExecutionFor(2000);
-			
+
 		}
 
 		try{
@@ -417,7 +410,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 				logger.info("Accept the suggested address button clicked");
 			}
-				
+
 
 		}
 		catch(Exception e){
@@ -814,7 +807,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.findElement(By.xpath("//a[contains(text(),'Switch to Express')]")).click();
 	}
 
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	//	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
+	//		selectEnrollmentKitPage(kitName, regimenName);		
+	//		chooseEnrollmentOption(enrollmentType);
+	//		enterFirstName(firstName);
+	//		enterLastName(lastName);
+	//		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+	//		enterPassword(password);
+	//		enterConfirmPassword(password);
+	//		enterAddressLine1(addressLine1);
+	//		enterCity(city);
+	//		selectProvince(state);
+	//		enterPostalCode(postalCode);
+	//		enterPhoneNumber(phoneNumber);
+	//
+	//	}
+
+	// method overloaded, parameter for province is there
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
@@ -824,10 +834,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(province);
 		enterPostalCode(postalCode);
-		enterPhoneNumber(phoneNumber);
-
+		enterPhoneNumber(phoneNumber);		
 	}
 
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
@@ -846,7 +855,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterEmailAddress(emailaddress);
 	}
 
-	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);  
 		chooseEnrollmentOption(enrollmentType);
 		enterFirstName(firstName);
@@ -856,27 +865,27 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 	}
 
 	//Method Overloaded without Kit and Regimen
-	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		enterFirstName(firstName);
 		enterLastName(lastName);
 		enterPassword(password);
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
 	//method overloaded,no need for enrollment type if kit is portfolio
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String kitName,String regimenName,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName, regimenName);		
 		enterFirstName(firstName);
 		enterLastName(lastName);
@@ -884,13 +893,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 	}
 
-	public void enterUserInformationForEnrollment(String kitName,String firstName,String lastName,String password,String addressLine1,String city,String postalCode,String phoneNumber){
+	public void enterUserInformationForEnrollment(String kitName,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		selectEnrollmentKitPage(kitName);  
 		enterFirstName(firstName);
 		enterLastName(lastName);
@@ -899,27 +908,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
 		enterCity(city);
-		selectProvince();
+		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
 
 	}
 
-	// method overloaded, parameter for province is there
-	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
-		selectEnrollmentKitPage(kitName, regimenName);		
-		chooseEnrollmentOption(enrollmentType);
-		enterFirstName(firstName);
-		enterLastName(lastName);
-		enterPassword(password);
-		enterConfirmPassword(password);
-		enterAddressLine1(addressLine1);
-		enterCity(city);
-		selectProvince(province);
-		enterPostalCode(postalCode);
-		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
-	}
+
 
 	public void clickOnSwitchToStandardEnrollmentLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
@@ -1905,12 +1900,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("New Shipping Address name is "+name);
 	}
 
-	public void enterNewShippingAddressLine1DuringEnrollment(String addressLine1){
-		driver.clear(By.id("address-1"));
-		driver.type(By.id("address-1"),addressLine1);
-		logger.info("New Shipping Address is "+addressLine1);
-	}
-
 	public void enterNewShippingAddressCityDuringEnrollment(String city){
 		driver.clear(By.id("city"));
 		driver.type(By.id("city"),city);
@@ -1990,13 +1979,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.clear(By.id("first-name"));
 		driver.type(By.id("first-name"), firstName);
 		logger.info("first name entered as "+firstName);
-	}
-
-	public void enterNewShippingAddressName(String name){
-		driver.waitForElementPresent(By.id("new-attention"));
-		driver.clear(By.id("new-attention"));
-		driver.type(By.id("new-attention"),name);
-		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void clickOnEditBillingProfile() throws InterruptedException{
@@ -2579,9 +2561,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.findElement(By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/h2")).getText();
 	}
 
-	public int getSizeOfProductFilter(){
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
-		driver.click(By.xpath("//input[@class='refine-products-button']"));
+	public int getSizeOfProductFilter(){  
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
 		driver.pauseExecutionFor(4000);
 		int sizeOfProduct = driver.findElements(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li")).size();
 		driver.click(By.xpath("//input[@class='refine-products-button']"));
@@ -2589,8 +2571,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyProductFilterIsApply(int i){
-		driver.waitForElementPresent(By.xpath("//input[@class='refine-products-button']"));
-		driver.click(By.xpath("//input[@class='refine-products-button']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
 		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li[1]"));
 		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
 		driver.click(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[@class='pull-right']//input/.."));
@@ -2598,6 +2580,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String productNameFromUI = driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim();
 		driver.click(By.xpath("//a[contains(text(),'Clear All')]"));
 		driver.waitForPageLoad();
+		System.out.println(productNameFromUI+"  "+productNameFromfilter+"  "+i);
 		return productNameFromUI.contains(productNameFromfilter);
 	}
 
@@ -3245,12 +3228,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("City entered is "+TestConstants.CITY_CA);
 			try{
 				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']"));
-				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[2]"));
+				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 			}catch(Exception e){
 				driver.click(By.id("state"));
-				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[2]"));
-				driver.click(By.xpath("//select[@id='state']/option[2]")); 
+				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
+				driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]")); 
 			} 
 			logger.info("state selected");
 			driver.clear(By.id("address.postcode"));
@@ -4044,5 +4027,43 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public String convertCABizPWSToUS(String PWS){
 		return PWS.replaceAll("ca","us");
 	}
+
+	public String getpreferredCustomerStoreFrontInfo(String label){
+		driver.waitForElementPresent(By.id(label));
+		return driver.findElement(By.id(label)).getAttribute("value");
+	}
+
+	public String convertPhoneNumber(String number){
+		String phoneNumberFromUI = null;
+		if(number.contains(".")){
+			String[] phoneNumber = number.split("\\.");
+			phoneNumberFromUI = phoneNumber[0]+phoneNumber[1]+phoneNumber[2];
+		}else if(number.contains(".")){
+			String[] phoneNumber = number.split("\\ ");
+			phoneNumberFromUI = phoneNumber[0]+phoneNumber[1]+phoneNumber[2];
+		}else{
+			phoneNumberFromUI = number;
+		}
+		logger.info("Converted phone number is: "+number);
+		return phoneNumberFromUI;
+	}
+
+	public boolean isSolutionToolContentBlockPresent() {
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+		return driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+	}
+
+
+	public boolean isAccessSolutionToolPresent() {
+		boolean status = false;
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.waitForPageLoad();
+		if(driver.getCurrentUrl().contains("solutiontool") && driver.isElementPresent(By.id("mirror"))){
+			status = true;
+		}
+		return status;
+	}
+
 
 }

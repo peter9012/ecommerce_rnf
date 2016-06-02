@@ -35,6 +35,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private String RFO_DB = null;
 	private String city = null;
+	private String state = null;
 	private String addressLine = null;
 	private String profileName = null;
 	private String phoneNumber = null;
@@ -77,6 +78,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -105,7 +107,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAdrressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		//storeFrontShippingInfoPage.selectFirstCardNumber();
@@ -161,6 +163,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			profileName = TestConstants.FIRST_NAME+randomNum;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			state = TestConstants.PROVINCE_CA;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -193,7 +196,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		//String getDefaultSelectedShippingProfile = storeFrontUpdateCartPage.getDefaultShippingProfileName();
 		String newShippingProfileName = TestConstants.ADDRESS_NAME_US;
 		if(storeFrontUpdateCartPage.isOnlyOneShippingProfilePresentOnAdhocCart()==true) 
-			storeFrontUpdateCartPage.addAshippingProfileAndClickOnItsEdit(city, addressLine, newShippingProfileName, phoneNumber, postalCode);
+			storeFrontUpdateCartPage.addAshippingProfileAndClickOnItsEdit(city,state, addressLine, newShippingProfileName, phoneNumber, postalCode);
 		else
 			storeFrontUpdateCartPage.clickOnEditOnNonDefaultAddress();		
 		storeFrontUpdateCartPage.enterNewShippingAddressName(profileName+" "+TestConstants.LAST_NAME);
@@ -256,6 +259,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			newPhoneNumber = TestConstants.NEW_ADDRESS_LINE_PHONE_NUMBER_CA;
 			newPostalCode = TestConstants.POSTAL_CODE_CA;
 			newProfileName = TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum;
+			state = TestConstants.PROVINCE_CA;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -284,7 +288,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditShipping();
 
 		if(storeFrontUpdateCartPage.isOnlyOneShippingProfilePresentOnAdhocCart()==true) 
-			storeFrontUpdateCartPage.addAshippingProfileAndClickOnItsEdit(city, addressLine, profileName, phoneNumber, postalCode);
+			storeFrontUpdateCartPage.addAshippingProfileAndClickOnItsEdit(city,state, addressLine, profileName, phoneNumber, postalCode);
 		else
 			storeFrontUpdateCartPage.clickOnEditOnNonDefaultAddress();
 
@@ -417,6 +421,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.CONSULTANT_POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
@@ -427,7 +432,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		}
 
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -485,6 +490,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -497,7 +503,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city,state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -573,6 +579,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			addressLine2= TestConstants.ADDRESS_LINE_2_CA;
+			state = TestConstants.PROVINCE_CA;
 		} 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -600,7 +607,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.selectNewShippingAddressState();
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
@@ -635,7 +642,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
-
+			state = TestConstants.PROVINCE_CA;
 		} 
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -660,7 +667,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();

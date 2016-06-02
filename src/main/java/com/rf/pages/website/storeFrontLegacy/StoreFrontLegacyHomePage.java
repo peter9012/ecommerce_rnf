@@ -342,6 +342,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Main Address Line1 entered as: "+addressLine1);
 		driver.type(ACCOUNT_POSTAL_CODE_LOC, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
+		driver.pauseExecutionFor(3000);
 		driver.type(ACCOUNT_PHONE_NUMBER1_LOC,phnNumber1);
 		logger.info("Phone number 1 entered as: "+phnNumber1);
 		driver.type(ACCOUNT_PHONE_NUMBER2_LOC,phnNumber2);
@@ -622,6 +623,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Address line 1 entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 		logger.info("Postal code entered as: "+postalCode);
 		driver.type(CITY_DD, "Fremont");
 		logger.info("City Selected");

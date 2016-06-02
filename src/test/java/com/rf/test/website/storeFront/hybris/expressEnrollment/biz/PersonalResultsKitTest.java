@@ -14,6 +14,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 	private String enrollmentType = null;
 	private String addressLine1 = null;
 	private String city = null;
+	private String state = null;
 	private String postalCode = null;
 	private String phoneNumber = null;
 	private String country = null;
@@ -38,6 +39,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_PERSONAL;
@@ -49,7 +51,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);

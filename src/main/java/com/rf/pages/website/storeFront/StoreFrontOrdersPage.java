@@ -6,6 +6,8 @@ import java.util.TimeZone;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.Select;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -438,10 +440,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 				double totalTax = (gstTaxIntegerValue+pstTaxIntegerValue);
 				System.out.println("totalTax==="+totalTax);
 				String taxFinal = Double.toString(totalTax);
-				return taxFinal;
+				return taxFinal.trim();
 			}else if(driver.isElementPresent(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span"))){
 				String gstTax = driver.findElement(By.xpath("//div[@id='module-hst']//div[text()='GST:']/following::div[1]/span")).getText();
-				return gstTax;
+				return gstTax.trim();
 			}
 			else if(driver.isElementPresent(By.id("totalTax"))){
 				tax = driver.findElement(By.id("totalTax")).getText();
@@ -1057,5 +1059,70 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			}
 			return false;
 		}
+	}
+
+	public void clickReportProblemsUnderActionsForFirstOrderUnderOrderHistory() {
+		String firstOrderNumber=getFirstOrderNumberFromOrderHistory();
+		driver.waitForElementPresent(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.click(By.xpath("//a[text()="+firstOrderNumber+"]/following::span[1]"));
+		driver.click(By.linkText("Report Problems"));
+		logger.info("Report problems under actions is clicked");
+		driver.waitForPageLoad();
+	}
+
+	public boolean verifyReportAProblemSectionPresent() {
+		return driver.isElementPresent(By.xpath("//div[contains(text(),'Report a problem')]"));
+	}
+
+	public void selectItemsAndReportAProblem() {
+		if(driver.isElementPresent(By.xpath("//input[@id='problemCheckBox']"))){
+			driver.click(By.xpath("//input[@id='problemCheckBox']/ancestor::div[1]"));
+			logger.info("item checkbox is checked");
+			Select select = new Select(driver.findElement(By.xpath("//select[@id='problemType']")));
+			select.selectByVisibleText("Order is incorrect");
+			driver.type(By.xpath("//textarea[@id='problemText']"), "Problem");
+			logger.info("problem type selected is::  Order is incorrect");
+			driver.click(By.id("submitButton"));
+			logger.info("problem submit button clicked");
+			driver.waitForPageLoad();
+		}
+	}
+
+	public boolean verifyReportAProblemConfirmationMessage() {
+		boolean presenceThankyouMessage = driver.isElementPresent(By.xpath("//div[@id='main-content']//h3[text()='Thank you']"));
+		boolean presenceSendMessage = driver.isElementPresent(By.xpath("//div[@id='main-content']//p[contains(text(),'We have sent your problem')]"));
+		if(presenceThankyouMessage && presenceSendMessage ){
+			return true;}
+		else
+			return false;
+	}
+
+	public String getStatusOfFirstAutoshipTemplateID(){
+		driver.isElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[4]"));
+		String status = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[4]")).getText().trim();
+		logger.info("Status of first autoship template id is: "+status);
+		return status;
+	}
+
+	public String getStatusOfSecondAutoshipTemplateID(){
+		driver.isElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[4]"));
+		String status = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[4]")).getText().trim();
+		logger.info("Status of second autoship template id is: "+status);
+		return status;
+	}
+
+	public String getPulseAutoshipOrderDate(){
+		String autoShipOrderDate = null;
+		driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[2]"));
+		autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]/div[2]")).getText();
+		logger.info("Return autoship order date is: "+autoShipOrderDate);
+		return  autoShipOrderDate;
+	}
+
+	public String getPulseAutoshipOrderNumber(){
+		driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]//a"));
+		autoShipOrderNumber = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]//a")).getText();
+		logger.info("Pulse autoship order number is "+autoShipOrderNumber);
+		return  autoShipOrderNumber;
 	}
 }

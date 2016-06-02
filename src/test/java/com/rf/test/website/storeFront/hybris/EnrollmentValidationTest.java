@@ -11,6 +11,15 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
+import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
 import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
@@ -37,6 +46,11 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
+	private CSCockpitLoginPage cscockpitLoginPage;	
+	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
+	private CSCockpitOrderTabPage cscockpitOrderTabPage;
+	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
+
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;
@@ -47,7 +61,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	private String country = null;
 	private String RFO_DB = null;
 	private String env = null;
-
+	private String state = null; 
 	//Hybris Project-1361:Enroll as consultant using invalid card numbers
 	@Test
 	public void testEnrollAsConsultantUsingInvalidCardNumbers_1361() throws InterruptedException {
@@ -55,7 +69,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;		
 
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
@@ -63,6 +77,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -74,7 +89,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country,env );
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.INVALID_CARD_NUMBER_15DIGITS);
 		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
@@ -106,6 +121,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -132,7 +148,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterInvalidConfirmPassword(TestConstants.PASSWORD_BELOW_6CHARS);
 		s_assert.assertTrue(storeFrontHomePage.getInvalidPasswordNotmatchingMessage().contains("Your passwords do not match"), "Error message for invalid confirm password does not visible");
-		storeFrontHomePage.enterUserInformationForEnrollment( TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment( TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		//validate that the user is able to see the section for 'Recurring monthly charges' with the ability to enter their PWS prefix
@@ -184,6 +200,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -196,7 +213,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		//Enter Billing Profile
@@ -243,6 +260,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -255,7 +273,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -298,6 +316,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -310,7 +329,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -355,6 +374,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_US;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -367,7 +387,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -421,6 +441,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -432,7 +453,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		////storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -474,6 +495,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -487,7 +509,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -544,6 +566,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_PORTFOLIO;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -567,7 +590,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterConfirmPassword(password);
 		storeFrontHomePage.enterAddressLine1(addressLine1);
 		storeFrontHomePage.enterCity(city);
-		storeFrontHomePage.selectProvince();
+		storeFrontHomePage.selectProvince(state);
 		storeFrontHomePage.enterPostalCode(postalCode);
 		storeFrontHomePage.enterPhoneNumber(phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -602,6 +625,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -615,7 +639,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -634,7 +658,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnReviewAndConfirmShippingEditBtn();
 		String newFirstName = TestConstants.FIRST_NAME+randomNum;
 		String newLastName = TestConstants.LAST_NAME+randomNum;
-		storeFrontHomePage.enterUserInformationForEnrollment(newFirstName, newLastName, password, newAddressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(newFirstName, newLastName, password, newAddressLine1, city,state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isReviewAndConfirmPageContainsShippingAddress(newAddressLine1), "Shiiping address is not updated on Review and Confirm page after EDIT");
 		s_assert.assertTrue(storeFrontHomePage.isReviewAndConfirmPageContainsFirstAndLastName(newFirstName+" "+newLastName), "First and last Name is not updated on Review and Confirm page after EDIT");
@@ -668,6 +692,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -681,7 +706,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -788,6 +813,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -801,7 +827,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -897,6 +923,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
@@ -910,7 +937,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -969,6 +996,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
@@ -980,7 +1008,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -1500,6 +1528,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryIDS),RFO_DB);
 			CCS = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
 		}else{
@@ -1516,7 +1545,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.searchCID(CCS);
 		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchList(), "No Sponsor present in search results");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,password, addressLine1, city,postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,password, addressLine1, city,state,postalCode, phoneNumber);
 		//storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, TestConstants.PROVINCE_YUKON, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
@@ -1554,6 +1583,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -1566,7 +1596,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2087,6 +2117,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_EXPRESS;
@@ -2099,7 +2130,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, profileName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, profileName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -2143,6 +2174,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_EXPRESS;
@@ -2155,7 +2187,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, profileName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, profileName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -2476,6 +2508,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -2488,7 +2521,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName,TestConstants.LAST_NAME, emailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName,TestConstants.LAST_NAME, emailAddress, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2627,6 +2660,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
@@ -2644,7 +2678,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2748,7 +2782,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_US);
 			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
 			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
-			storeFrontUpdateCartPage.selectNewShippingAddressState();
+			storeFrontUpdateCartPage.selectNewShippingAddressState(TestConstants.STATE_US);
 			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
 			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
 		}
@@ -2756,7 +2790,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_CA);
 			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
 			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
-			storeFrontUpdateCartPage.selectNewShippingAddressState();
+			storeFrontUpdateCartPage.selectNewShippingAddressState(TestConstants.PROVINCE_CA);
 			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
 			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
 		}
@@ -2804,6 +2838,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 				kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
 				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 				city = TestConstants.CITY_CA;
+				state = TestConstants.PROVINCE_CA;
 				postalCode = TestConstants.POSTAL_CODE_CA;
 				phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			}
@@ -2819,7 +2854,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID(sponserIdOfFirstConsultant);
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME,firstConsultantEmailID, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME,firstConsultantEmailID, password, addressLine1, city,state,postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2848,7 +2883,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID(sponserIdOfSecondConsultant);
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME,secondConsultantEmailID, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME,secondConsultantEmailID, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumber);
@@ -2983,6 +3018,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
+			state = TestConstants.PROVINCE_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -2997,7 +3033,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID(sponserIdOfFirstConsultant);
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME,firstConsultantEmailID, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME,firstConsultantEmailID, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -3026,7 +3062,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID(sponserIdOfSecondConsultant);
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME,secondConsultantEmailID, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType,TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME,secondConsultantEmailID, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumber);
@@ -3517,6 +3553,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			kitName = TestConstants.KIT_NAME_EXPRESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
+			state = TestConstants.PROVINCE_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
@@ -3547,7 +3584,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		PWSAfterSelectSponsor = driver.getCurrentUrl();
 		s_assert.assertTrue(PWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS+" and on UI after select ca sponsor from ca corp site is "+PWSAfterSelectSponsor);
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -3591,7 +3628,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			PWSAfterSelectSponsor = driver.getCurrentUrl();
 			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
 			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -3630,7 +3667,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			PWSAfterSelectSponsor = driver.getCurrentUrl();
 			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
 			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum, password,addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -3863,6 +3900,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
+			state = TestConstants.PROVINCE_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		}else{
@@ -3876,7 +3914,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		////storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -4003,6 +4041,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4015,7 +4054,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4067,6 +4106,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4079,7 +4119,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4346,6 +4386,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4358,7 +4399,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4408,6 +4449,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4420,7 +4462,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4469,6 +4511,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4481,7 +4524,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4537,6 +4580,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -4572,7 +4616,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.enterNewShippingAddressName(profileName+i+" "+lastName);
 			storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
 			storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-			storeFrontUpdateCartPage.selectNewShippingAddressState();
+			storeFrontUpdateCartPage.selectNewShippingAddressState(state);
 			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 			storeFrontUpdateCartPage.clickOnSaveShippingProfile();
@@ -4583,7 +4627,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
 		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.selectNewShippingAddressState();
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
@@ -4630,6 +4674,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 
 			String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -4637,7 +4682,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -4748,6 +4793,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -4781,7 +4827,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.enterNewShippingAddressName(profileName+i+" "+lastName);
 			storeFrontShippingInfoPage.enterNewShippingAddressLine1(addressLine1);
 			storeFrontShippingInfoPage.enterNewShippingAddressCity(city);
-			storeFrontShippingInfoPage.selectNewShippingAddressState();
+			storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 			storeFrontShippingInfoPage.clickOnSaveShippingProfile();
@@ -4831,6 +4877,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -4843,7 +4890,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -5003,6 +5050,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -5031,7 +5079,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		PWSAfterSelectSponsor = driver.getCurrentUrl();
 		s_assert.assertTrue(PWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1]), "CA sponsor PWS for ca corp"+sponsorPWS+" and on UI after select ca sponsor from ca corp site is "+PWSAfterSelectSponsor);
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		//Enter Billing Profile
@@ -5071,7 +5119,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			PWSAfterSelectSponsor = driver.getCurrentUrl();
 			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
 			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1]), "CA sponsor PWS for ca corp"+sponsorPWS+" and on UI after select us sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			//Enter Billing Profile
@@ -5108,7 +5156,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			PWSAfterSelectSponsor = driver.getCurrentUrl();
 			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
 			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1]), "ca sponsor PWS for us corp"+sponsorPWS+" and on UI after select ca sponsor from us corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum2, TestConstants.LAST_NAME+randomNum2, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum2, TestConstants.LAST_NAME+randomNum2, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			//Enter Billing Profile
@@ -5237,6 +5285,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -5245,7 +5294,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -5283,6 +5332,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -5310,7 +5360,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		logger.info("biz pws to start enroll is "+bizPWS);
 		//Click Enroll now link.
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -5525,6 +5575,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -5539,7 +5590,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		logger.info("biz pws to start enroll is "+bizPWSForEnrollment);
 		storeFrontHomePage.openConsultantPWS(bizPWSForEnrollment);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME+randomNumber, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType,firstName, TestConstants.LAST_NAME+randomNumber, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		//Get Current prefix name.
@@ -6037,6 +6088,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
+			state = TestConstants.STATE_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 			String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
@@ -6045,7 +6097,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
+			storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -6305,6 +6357,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -6316,7 +6369,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -6360,6 +6413,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -6371,7 +6425,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -6753,6 +6807,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -6763,7 +6818,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn(); 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(newBillingProfileName+" "+lastName);
@@ -6916,13 +6971,14 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME, consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 		//validate existing Consultant popup should not be displayed..
 		s_assert.assertFalse(storeFrontHomePage.validateExistingConsultantPopup(), "Existing user popup is present!!");
 		storeFrontHomePage.clickNextButton();
@@ -6988,6 +7044,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -7000,7 +7057,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7072,7 +7129,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-
+			state = TestConstants.PROVINCE_CA;
 
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
@@ -7121,6 +7178,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -7197,6 +7255,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE_1_US;
@@ -7210,7 +7269,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7289,6 +7348,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -7307,7 +7367,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(sponsorId);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7342,7 +7402,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(accountNumberOfEnrolled);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME+randomNumber, TestConstants.FIRST_NAME+randomNumber+TestConstants.EMAIL_ADDRESS_SUFFIX, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNumber, TestConstants.LAST_NAME+randomNumber, TestConstants.FIRST_NAME+randomNumber+TestConstants.EMAIL_ADDRESS_SUFFIX, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumber);
@@ -7372,6 +7432,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -7390,7 +7451,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(sponsorId);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,emailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7480,6 +7541,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -7492,7 +7554,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7628,6 +7690,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -7642,7 +7705,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -7688,6 +7751,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -7701,7 +7765,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -8029,6 +8093,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -8043,7 +8108,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, 
-				addressLine1, city, postalCode, phoneNumber);
+				addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -8242,6 +8307,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -8254,7 +8320,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -8304,6 +8370,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
@@ -8316,7 +8383,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, sRandName, TestConstants.PASSWORD, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -8463,11 +8530,13 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test(enabled=false)//test needs to be modified
+	@Test(enabled=true)//test needs to be modified
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;
 		List<Map<String, Object>> randomConsultantList =  null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String billingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNum;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -8483,6 +8552,10 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}  
+		List<Map<String, Object>> emailIdFromAccountIdList =  null;
+		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
+		String consultantEmailID = (String) getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress");  
+		logger.info("emaild of consultant username "+consultantEmailID);	
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
@@ -8502,14 +8575,44 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyConfirmationMessagePresentOnUI(),"Your next autoship cart has been updated message not present");
 		storeFrontAccountInfoPage.clickOnCRPCheckout();
 		storeFrontAccountInfoPage.clickOnShippingAddressNextStepBtn();
+		storeFrontAccountInfoPage.clickAddNewBillingProfileLink();
+		storeFrontAccountInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontAccountInfoPage.enterNewBillingNameOnCard(billingProfileName);
+		storeFrontAccountInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontAccountInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontAccountInfoPage.selectNewBillingCardAddress();
+		storeFrontAccountInfoPage.clickOnSaveBillingProfile();
 		storeFrontAccountInfoPage.clickOnBillingNextStepButtonDuringEnrollInCRP();
 		storeFrontAccountInfoPage.clickOnSetupCRPAccountBtn();
 		s_assert.assertTrue(storeFrontAccountInfoPage.isOrderPlacedSuccessfully(), "Order is not placed successfully");
 		storeFrontAccountInfoPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontAccountInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//Verify Status of CRP autoship template
+		s_assert.assertTrue(storeFrontOrdersPage.getStatusOfFirstAutoshipTemplateID().toLowerCase().contains("pending"), "Expected status of first autoship id is: pending and actual on UI is: "+storeFrontOrdersPage.getStatusOfFirstAutoshipTemplateID().toLowerCase());
+		String CRPAutoshipID = storeFrontOrdersPage.getAutoshipOrderNumber();
 		String autoshipDate = storeFrontOrdersPage.getAutoshipOrderDate();
 		System.out.println(autoshipDate+"===autoshipDate");
 		s_assert.assertTrue(storeFrontOrdersPage.validateSameDatePresentForAutoship(autoshipDate),"Same date is not present");
+		logout();
+		//verify on CSCockpit
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(consultantEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getStatusOfAutoshipID(CRPAutoshipID).toLowerCase().contains("pending"), "Expected status of autoship id in CSCockpit is: pending and actual on UI is: "+cscockpitCustomerTabPage.getStatusOfAutoshipID(CRPAutoshipID).toLowerCase());
 		s_assert.assertAll();
 	}
 
@@ -8603,6 +8706,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_EXPRESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -8617,7 +8721,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -8643,4 +8747,184 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-3855:Register as RC with Same CA Sponsor WITH Pulse
+	@Test
+	public void testRegisterAsRCWithSameCASponsorWithPulse_3855() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String caConsultantPWS = null;
+		String countryID ="40";
+		String country = "ca";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String billinglastName = "lN";
+		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String lastName = TestConstants.LAST_NAME+randomNum;
+
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER_CA;
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
+		caConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL");
+		driver.get(caConsultantPWS);
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
+		storeFrontHomePage.clickOnPlaceOrderButton();
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(),"login or create account page is not displayed");
+		storeFrontHomePage.enterNewRCDetails(firstName, lastName, password);
+		storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_CA, postalCode, phoneNumber);
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"connect with a consultant block is not displayed");
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		s_assert.assertFalse(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"connect with a consultant block is displayed");
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+billinglastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		String orderNumber = storeFrontHomePage.getOrderNumberAfterPlacingOrder();
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-3927:CORP:Enroll CA/US User, Sponsor without PWS
+	@Test
+	public void testEnrollCA_USUserSponsorWithoutPWS_3927() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String accountNumber = null;
+		String kitName = null;
+		String addressLine1 = null;
+		String city = null;
+		String postalCode = null;
+		String phoneNumber = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String country = driver.getCountry();
+		String enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		String regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_PERSONAL;   
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,"40"),RFO_DB);
+		accountNumber = (String) getValueFromQueryResult(randomConsultantList, "AccountNumber");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(accountNumber);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("biz/ca"),"url is not a biz url");
+		s_assert.assertAll();
+	}
+
+	//**
+
+	// Hybris Project-3966:Use email id of existing inactive consultant (more than 180 days) during consultant enrollment under different sponsor's .biz site.
+	@Test
+	public void testUseEmailIdOfExistingInactiveConsultantDuringEnrollmentUnderDifferentBizSite_3966() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomInactiveConsultantList =  null;
+		String consultantPWS = null;
+		String consultantEmailID = null;
+		country = driver.getCountry();
+		env = driver.getEnvironment();
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
+		if(country.equalsIgnoreCase("CA")){
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
+		}else{
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+		}
+		randomConsultantList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryId), RFO_DB);
+		consultantPWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		randomInactiveConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS,countryId), RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomInactiveConsultantList, "EmailAddress");
+		driver.get(consultantPWS);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, consultantEmailID, password, addressLine1, city,state, postalCode, phoneNumber);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		s_assert.assertAll(); 
+	}
+	
+	
+
 }

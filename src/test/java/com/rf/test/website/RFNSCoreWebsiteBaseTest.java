@@ -87,10 +87,6 @@ public class RFNSCoreWebsiteBaseTest extends RFBaseTest {
 		driver.waitForCSCockpitLoadingImageToDisappear();		
 	}
 
-	@AfterMethod
-	public void tearDownAfterMethod(){
-
-	}
 
 	/**
 	 * @throws Exception

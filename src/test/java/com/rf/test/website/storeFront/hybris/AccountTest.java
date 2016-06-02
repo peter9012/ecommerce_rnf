@@ -352,19 +352,36 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1276:Email field validation for Active/Inactive users
-	@Test(enabled=false)//Wrong results from database
+	@Test
 	public void testEmailValidationsDuringEnroll_1276() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> consultantEmailList =  null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCList =  null;
+		List<Map<String, Object>> randomConsultantEmailList =  null;
+		List<Map<String, Object>> randomPCEmailList =  null;
+		List<Map<String, Object>> randomRCEmailList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
+		List<Map<String, Object>> randomRCUserList =  null;
 		List<Map<String, Object>> pcEmailList =  null;
-		List<Map<String, Object>> accountIDList =  null;
+		List<Map<String, Object>> randomConsultantListMoreThan180days =  null;
+		List<Map<String, Object>> randomPCListMoreThan90days =  null;
 		List<Map<String, Object>> accountContactIDList =  null;
 		List<Map<String, Object>> emailAddressIDList =  null;
+		List<Map<String, Object>> consultantEmailList =  null;
 		String consultantEmailID = null;
-		String pcEmailID= null;
-		String accountID = null;
+		String inactiveConsultantMoreThan180DaysEmailID =null;
+		String inActive90PCAccountId = null;
+		String inActive180consultantAccountId = null;
+		String pcUserEmailID= null;
+		String rcUserEmailID = null;
+		String consultantAccountID = null;
+		String pcAccountId = null;
+		String pcUserEmailAddress = null;
+		String inactivePCMoreThan90DaysEmailID = null;
 		String accountContactID = null;
 		String emailAddressID = null;
+		String activePCAccountId = null;
+		String activeRCAccountId = null;
 		String country = driver.getCountry();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		country = driver.getCountry();
@@ -384,77 +401,124 @@ public class AccountTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//Code for email field validation
+		// assertion for Inactive consultant less than 6 month
+		//Terminate consultant user.
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			randomConsultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,consultantAccountID),RFO_DB);
+			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantEmailList, "EmailAddress"));
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//Terminate PC User
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcAccountId = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
+			randomPCEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountId),RFO_DB);
+			pcUserEmailAddress = String.valueOf(getValueFromQueryResult(randomPCEmailList, "EmailAddress"));
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailAddress, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+pcUserEmailAddress);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		} 
+		logger.info("login is successful");
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
+		storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnYourAccountDropdown();
+		storeFrontPCUserPage.clickOnPCPerksStatus();
+		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+		storeFrontPCUserPage.cancelMyPCPerksAct();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_PERSONAL, TestConstants.REGIMEN_NAME);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
-
-		//Code for email field validation
-		// assertion for Inactive consultant less than 6 month
-		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_CONSULTANT_LESS_THAN_6_MONTH_RFO,countryId),RFO_DB);
-		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
-		logger.info("Account Id for Inactive consultant less than 6 month = "+accountID);
-		if(accountID.equals(null)==false){
-			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
-			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
-
-			emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
-			emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
-
-			consultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
-			consultantEmailID = String.valueOf(getValueFromQueryResult(consultantEmailList, "EmailAddress"));
-
-			storeFrontHomePage.enterEmailAddress(consultantEmailID);
-			s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveCCLessThan6Month() , "Existing Active Consultant User email id should not be acceptable");
-		}
 		// assertion for Active PC
-		storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_ACTIVE_PC_USER);
-		logger.info(TestConstants.EMAIL_ACTIVE_PC_USER);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		activePCAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID")); 
+		randomPCEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,activePCAccountId),RFO_DB);
+		pcUserEmailID = String.valueOf(getValueFromQueryResult(randomPCEmailList, "EmailAddress"));
+		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActivePC() , "Existing Active PC User email id should not be acceptable");
 
-		// assertion for Active RC
-		storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_ACTIVE_RC_USER);
-		logger.info(TestConstants.EMAIL_ACTIVE_RC_USER);
-		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveRC() , "Existing Active RC User email id should not be acceptable");
-
 		// assertion for Inactive PC less than 90 days
-		/* storeFrontHomePage.enterEmailAddress(TestConstants.EMAIL_INACTIVE_PC_USER_LESS_THAN_90_DAYS_USER);
-	    s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days() , "Existing Inactive PC User email id before 90 days should not be acceptable");*/
+		storeFrontHomePage.enterEmailAddress(pcUserEmailAddress);
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days() , "Inactive pc less than 90 days User email id should not be acceptable");
 
-		// assertion for Inactive PC greater than 90 days
-		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_PC_MORE_THAN_90_DAYS_RFO,countryId),RFO_DB);
-		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
-		logger.info("Account Id for Inactive PC greater than 90 days = "+accountID);
-		if(accountID.equals(null)==false){
-			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
-			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
+		//assertion for Inactive PC greater than 90 days
+		/*randomPCListMoreThan90days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_INACTIVE_PC_EMAILID_MORE_THAN_90_DAYS,countryId),RFO_DB);
+		    inActive90PCAccountId = String.valueOf(getValueFromQueryResult(randomPCListMoreThan90days, "AccountID"));
+		    logger.info("Account Id for Inactive PC greater than 90 days = "+inActive90PCAccountId);
+		    if(inActive90PCAccountId.equals(null)==false){
+		     accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,inActive90PCAccountId),RFO_DB);
+		     accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 
-			emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
-			emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
+		     emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
+		     emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
 
-			pcEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
-			pcEmailID = String.valueOf(getValueFromQueryResult(pcEmailList, "EmailAddress"));
-			storeFrontHomePage.enterEmailAddress(pcEmailID);
-			s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days(), "Existing Inactive PC User email id After 90 days should be acceptable");
-		}
+		     pcEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
+		     inactivePCMoreThan90DaysEmailID = String.valueOf(getValueFromQueryResult(pcEmailList, "EmailAddress"));
+		     storeFrontHomePage.enterEmailAddress(inactivePCMoreThan90DaysEmailID);
+		     s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactivePC90Days(), "Existing Inactive PC User email id After 90 days should be acceptable");
+		    }*/
+
+		// assertion for Inactive Consultant less than 180 days
+		storeFrontHomePage.enterEmailAddress(consultantEmailID);
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveCCLessThan6Month() , "Inactive Consultant less than 180 days User email id should not be acceptable");
+
 		// assertion for Inactive consultant greater than 6 month
-		accountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_INACTIVE_CONSULTANT_MORE_THAN_6_MONTH_RFO,countryId),RFO_DB);
-		accountID = String.valueOf(getValueFromQueryResult(accountIDList, "AccountID"));
-		logger.info("Account Id for Inactive consultant greater than 6 month = "+accountID);
-		if(accountID.equals(null)==false){
-			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,accountID),RFO_DB);
+		randomConsultantListMoreThan180days = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_CONSULTANTS_INACTIVE_MORE_THAN_180_DAYS,countryId),RFO_DB);
+		inActive180consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantListMoreThan180days, "AccountID"));
+		logger.info("Account Id for Inactive consultant greater than 6 month = "+inActive180consultantAccountId);
+		if(inActive180consultantAccountId.equals(null)==false){
+			accountContactIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_CONTACT_ID_RFO,inActive180consultantAccountId),RFO_DB);
 			accountContactID = String.valueOf(getValueFromQueryResult(accountContactIDList, "AccountConTactId"));
 
 			emailAddressIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ADDRESS_ID_RFO,accountContactID),RFO_DB);
 			emailAddressID = String.valueOf(getValueFromQueryResult(emailAddressIDList, "EmailAddressId"));
 
 			consultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_RFO,emailAddressID),RFO_DB);
-			consultantEmailID = String.valueOf(getValueFromQueryResult(consultantEmailList, "EmailAddress"));
+			inactiveConsultantMoreThan180DaysEmailID = String.valueOf(getValueFromQueryResult(consultantEmailList, "EmailAddress"));
 
-			storeFrontHomePage.enterEmailAddress(consultantEmailID);
-			s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactiveCC180Days() , "Existing Inactive Consultant User email id before 180 days should not be acceptable");
+			storeFrontHomePage.enterEmailAddress(inactiveConsultantMoreThan180DaysEmailID);
+			s_assert.assertFalse(storeFrontHomePage.verifyPopUpForExistingInactiveCC180Days() , "Inactive Consultant more than 6 month User email id should be acceptable");
 		}
+
+		// assertion for Active RC
+		randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+		activeRCAccountId = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+		randomRCEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,activeRCAccountId),RFO_DB);
+		rcUserEmailID = String.valueOf(getValueFromQueryResult(randomRCEmailList, "EmailAddress"));
+		storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForExistingActiveRC() , "Existing Active RC User email id should not be acceptable");
 		s_assert.assertAll();
 	}
 
@@ -2070,6 +2134,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 			String firstName=TestConstants.FIRST_NAME+randomNum;
 			String lastName = "lN";
+			String state = null;
 			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 			regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
@@ -2077,6 +2142,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			while(true){
 				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
@@ -2172,7 +2238,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(password);
 			storeFrontHomePage.enterAddressLine1(addressLine1);
 			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.selectProvince(state);
 			storeFrontHomePage.enterPostalCode(postalCode);
 			storeFrontHomePage.enterPhoneNumber(phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
@@ -2251,7 +2317,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterConfirmPassword(password);
 			storeFrontHomePage.enterAddressLine1(addressLine1);
 			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince();
+			storeFrontHomePage.selectProvince(state);
 			storeFrontHomePage.enterPostalCode(postalCode);
 			storeFrontHomePage.enterPhoneNumber(phoneNumber);
 			storeFrontHomePage.clickEnrollmentNextBtn();
@@ -2417,7 +2483,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		env = driver.getEnvironment();		
+		env = driver.getEnvironment();	
+		String state = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 
@@ -2428,6 +2495,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 
 			kitName = TestConstants.KIT_NAME_EXPRESS;
@@ -2440,7 +2508,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		/*storeFrontHomePage.clickOnOurBusinessLink();
 				storeFrontHomePage.clickOnOurEnrollNowLink();*/
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state,postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -2495,13 +2563,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
-
+		String state = null;
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
 		}else{
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -2514,7 +2583,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();		
-		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, postalCode, phoneNumber);
+		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -2548,6 +2617,53 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
 		storeFrontUpdateCartPage.clickOnSubscribeBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyPulseOrderCreatedMsg(), "Pulse order created msg is NOT present,Pulse might NOT be subscribed successfully");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4064:Access US Con's Canadian PWS as a Canadian Consultant W/O Pulse
+	@Test
+	public void testAccessUSConsCanadianPWSAsACanadianConsultantWithoutPulse_4064() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String usConsultantPWS = null;
+		String consultantEmailID = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
+		driver.get(usConsultantPWS);
+		storeFrontHomePage.selectCountryUsToCan();
+		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-4065:Login on US Con's Canadian PWS as a Canadian Consultant W/O Pulse
+	@Test
+	public void testLoginOnUsConsCanadianPWSAsACanadianConsultantWithoutPulse_4065() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantList2 =  null;
+		String usConsultantPWS = null;
+		String consultantEmailID = null;
+		String countryID ="236";
+		String country = "us";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryId),RFO_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
+		driver.get(usConsultantPWS);
+		storeFrontHomePage.selectCountryUsToCan();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
+		s_assert.assertTrue(storeFrontConsultantPage.isAutoshipLinkPresentOnThePage(),"Autoship link is not present");
 		s_assert.assertAll();
 	}
 }

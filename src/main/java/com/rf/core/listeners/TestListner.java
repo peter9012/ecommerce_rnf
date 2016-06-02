@@ -1,8 +1,13 @@
 package com.rf.core.listeners;
 
 
+import java.util.Iterator;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -13,7 +18,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
  *
  */
 
-public class TestListner extends TestListenerAdapter {
+public class TestListner implements ITestListener {
 
 	private static final Logger logger = LogManager.getLogger(TestListner.class
 			.getName());
@@ -22,8 +27,8 @@ public class TestListner extends TestListenerAdapter {
 	@Override
 	public void onTestStart(ITestResult tr) {
 		logger.info("\n******************************************************************************************************************************"+
-		"\n\t\t\t\t\tTEST CASE NAME:                  "+ tr.getMethod().getMethodName()+
-		"\n******************************************************************************************************************************");
+				"\n\t\t\t\t\tTEST CASE NAME:                  "+ tr.getMethod().getMethodName()+
+				"\n******************************************************************************************************************************");
 	}
 
 	@Override
@@ -33,9 +38,8 @@ public class TestListner extends TestListenerAdapter {
 
 	@Override
 	public void onTestFailure(ITestResult tr) {
-		logger.info("Test has failed with TestResult status = "+tr.getStatus());
 		if (tr.getStatus() == ITestResult.FAILURE){
-			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]. The reason is "+tr.getThrowable());
+			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]");
 			try {
 				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, tr.getMethod().getMethodName());
 			} catch (Exception e) {
@@ -48,6 +52,34 @@ public class TestListner extends TestListenerAdapter {
 	@Override
 	public void onTestSkipped(ITestResult tr) {
 		logger.info("[TEST IS SKIPPED -------- Test case " + tr.getMethod().getMethodName()	+ " skipped]");
+	}
+
+	@Override
+	public void onFinish(ITestContext context) { 
+		Iterator<ITestResult> listOfFailedTests = context.getFailedTests().getAllResults().iterator();
+		while (listOfFailedTests.hasNext()) {
+			ITestResult failedTest = listOfFailedTests.next();
+			ITestNGMethod method = failedTest.getMethod();
+			if (context.getFailedTests().getResults(method).size() > 1) {
+				listOfFailedTests.remove();
+			} else {
+				if (context.getPassedTests().getResults(method).size() > 0) {
+					listOfFailedTests.remove();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStart(ITestContext context) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

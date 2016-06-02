@@ -110,6 +110,9 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SELECT_BTN_IN_CHANGE_CONSULTANT_RECEIVING_COMMISSIONS_POPUP = By.xpath("//td[text()='SELECT']");
 	private static final By CREATE_NEW_ADDRESS_BTN_LOC = By.xpath("//td[text()='Create new address']");
 	private static final By REFUND_TAX_LBL = By.xpath("//span[text()='Refunded Tax']/following::span[1]");
+	private static final By ORDER_NUMBER_TXT_BOX_LOC = By.xpath("//span[text()='Order Number']/following-sibling::input[1]");
+	private static final By ORIGINATION_NAME_LOC = By.xpath("//span[text()='Origination:']/following-sibling::span");
+	private static final By SEARCH_BTN_LOC = By.xpath("//td[text()='Search']");
 
 	protected RFWebsiteDriver driver;
 
@@ -720,6 +723,20 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 		String orderTypeOnUI = driver.findElement(ORDER_TYPE_LOC).getText();
 		logger.info("Order Type on UI is: "+orderTypeOnUI);
 		return orderTypeOnUI;
+	}
+
+	public void enterOrderNumber(String orderNumber) {
+		driver.waitForElementPresent(ORDER_NUMBER_TXT_BOX_LOC);
+		driver.type(ORDER_NUMBER_TXT_BOX_LOC, orderNumber);
+		logger.info("order number is entered as :"+orderNumber);
+		driver.click(SEARCH_BTN_LOC);
+		logger.info("search btn is clicked");
+
+	}
+
+	public String getOriginationNameFromOrderInfo() {
+		driver.waitForElementPresent(ORIGINATION_NAME_LOC);
+		return driver.findElement(ORIGINATION_NAME_LOC).getText();
 	}
 
 }

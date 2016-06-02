@@ -129,7 +129,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAdrressName+" "+lastName);
 			storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
 			storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
-			storeFrontShippingInfoPage.selectNewShippingAddressState();
+			storeFrontShippingInfoPage.selectNewShippingAddressState(TestConstants.STATE_US);
 			storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
 			storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 			storeFrontShippingInfoPage.selectFirstCardNumber();
@@ -205,7 +205,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
 		storeFrontShippingInfoPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressCity(TestConstants.CITY_US);
-		storeFrontShippingInfoPage.selectNewShippingAddressState();
+		storeFrontShippingInfoPage.selectNewShippingAddressState(TestConstants.STATE_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_US);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_US);
 		storeFrontShippingInfoPage.selectFirstCardNumber();

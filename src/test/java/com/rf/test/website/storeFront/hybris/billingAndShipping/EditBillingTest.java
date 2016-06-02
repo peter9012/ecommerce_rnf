@@ -22,9 +22,9 @@ import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
-import com.rf.test.website.StorefrontRFWebsiteBaseTest;
+import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 
-public class EditBillingTest extends StorefrontRFWebsiteBaseTest{
+public class EditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EditBillingTest.class.getName());
 

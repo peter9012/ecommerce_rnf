@@ -30,7 +30,7 @@ import com.rf.test.base.RFBaseTest;
  *         desktop Test classes initializes the driver is used for execution.
  *
  */
-public class StorefrontRFWebsiteBaseTest extends RFBaseTest {
+public class RFStoreFrontWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
@@ -38,7 +38,7 @@ public class StorefrontRFWebsiteBaseTest extends RFBaseTest {
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
-			.getLogger(StorefrontRFWebsiteBaseTest.class.getName());
+			.getLogger(RFStoreFrontWebsiteBaseTest.class.getName());
 
 	/**
 	 * @throws Exception

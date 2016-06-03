@@ -608,20 +608,20 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges)*/;
 		if(subtotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("ca")){
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-			}else if(driver.getCountry().equalsIgnoreCase("us")){
+/*				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}else if(driver.getCountry().equalsIgnoreCase("us")){
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$17.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-			}
+/*				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}
 		}else{
 			logger.info(" Order total is not in required range");
 		}
@@ -661,16 +661,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+orderTotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(orderTotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("CA")){
 				//Assert of shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+				/*s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");*/
 			}else if(driver.getCountry().equalsIgnoreCase("US")){
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+				/*s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");*/
 			}
 
 		}else{
@@ -2887,16 +2887,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$25.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-		}
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}
 		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		logout();
 
@@ -2942,16 +2942,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 15.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$25.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-		}
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}
 		s_assert.assertAll();
 
 	}
@@ -3001,16 +3001,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges)*/;
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-		}
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}
 		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		logout();
 
@@ -3053,16 +3053,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
-			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-		}
+/*			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}
 		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		s_assert.assertAll();
 	}
@@ -4990,33 +4990,33 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectShippingMethodUPS2DayInOrderSummary();
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+		/*String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 		//assert shipping and handling fee
 		deliveryCharges = storeFrontUpdateCartPage.getShippingChargesAtOrderConfirmationPage();
-		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
-		logger.info("deliveryCharges 1 ="+deliveryCharges);
-		logger.info("handlingCharges 1 ="+handlingCharges);
-		if(driver.getCountry().equalsIgnoreCase("CA")){
+/*		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
+*/		logger.info("deliveryCharges 1 ="+deliveryCharges);
+/*		logger.info("handlingCharges 1 ="+handlingCharges);
+*/		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 		//storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
@@ -5024,18 +5024,18 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		// Get Order Number
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
-		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+/*		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+*/		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
 		logger.info("deliveryCharges 2 ="+deliveryCharges);
-		logger.info("handlingCharges 2 ="+handlingCharges);
-		if(driver.getCountry().equalsIgnoreCase("CA")){
+/*		logger.info("handlingCharges 2 ="+handlingCharges);
+*/		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_US),"Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 
 		// assert for order total > 100
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
@@ -5057,54 +5057,54 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		System.out.println("shipping charges at shipping page "+deliveryCharges);
-		System.out.println("handlin charges at shipping page "+handlingCharges);
-		logger.info("deliveryCharges 3 ="+deliveryCharges);
-		logger.info("handlingCharges 3 ="+handlingCharges);
-		if(driver.getCountry().equalsIgnoreCase("CA")){
+/*		System.out.println("handlin charges at shipping page "+handlingCharges);
+*/		logger.info("deliveryCharges 3 ="+deliveryCharges);
+/*		logger.info("handlingCharges 3 ="+handlingCharges);
+*/		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page ");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 		//assert shipping and handling fee
 		deliveryCharges = storeFrontUpdateCartPage.getShippingChargesAtOrderConfirmationPage();
-		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
-		logger.info("deliveryCharges 4 ="+deliveryCharges);
-		logger.info("handlingCharges 4 ="+handlingCharges);
-		if(driver.getCountry().equalsIgnoreCase("CA")){
+/*		handlingCharges = storeFrontUpdateCartPage.getHandlingChargesAtOrderConfirmationPage();
+*/		logger.info("deliveryCharges 4 ="+deliveryCharges);
+/*		logger.info("handlingCharges 4 ="+handlingCharges);
+*/		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number
 		orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
-		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
+/*		handlingCharges = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+*/		deliveryCharges = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
 		logger.info("deliveryCharges 5 ="+deliveryCharges);
-		logger.info("handlingCharges 5 ="+handlingCharges);
-		if(driver.getCountry().equalsIgnoreCase("CA")){
+/*		logger.info("handlingCharges 5 ="+handlingCharges);
+*/		if(driver.getCountry().equalsIgnoreCase("CA")){
 			//Assert of shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}else if(driver.getCountry().equalsIgnoreCase("US")){
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_CA),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			s_assert.assertTrue(deliveryCharges.contains(TestConstants.SHIPPING_CHARGES_FOR_UPS2DAY_AND_TOTAL_GREATER_THAN_99),"When order total>100 Shipping charges on UI is not As per shipping method selected at order history page");
-			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains(TestConstants.HANDLING_CHARGES_FOR_UPS2DAY_US),"When order total>100 Handling charges on UI is not As per shipping method selected at order history page");
+*/		}
 		s_assert.assertAll();
 	}
 
@@ -5211,8 +5211,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Subtotal while creating order is "+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -5239,8 +5239,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getCreditCardNumber().contains(TestConstants.AMERICAN_EXPRESS_CARD_NUMBER.substring(11)),"Adhoc Order template credit card number "+TestConstants.AMERICAN_EXPRESS_CARD_NUMBER.substring(11)+" and on UI is "+storeFrontOrdersPage.getCreditCardNumber());
 		s_assert.assertAll();
 	}
@@ -5281,8 +5281,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Subtotal while creating order is "+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -5309,8 +5309,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getCreditCardNumber().contains(TestConstants.CARD_NUMBER.substring(12)),"Adhoc Order template credit card number "+TestConstants.CARD_NUMBER.substring(11)+" and on UI is "+storeFrontOrdersPage.getCreditCardNumber());
 		s_assert.assertAll();
 	}
@@ -5455,19 +5455,19 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectShippingMethodUPSGroundInOrderSummary();
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			//Assert  shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains("15.00"),"Shipping charges on UI is not As per shipping method selected");
 			//Handling charges
-			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-		}else if(driver.getCountry().equalsIgnoreCase("us")){
+/*			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}else if(driver.getCountry().equalsIgnoreCase("us")){
 			//Assert  shipping cost from UI
 			s_assert.assertTrue(deliveryCharges.contains("17.00"),"Shipping charges on UI is not As per shipping method selected");
 			//Handling charges
-			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-		}
+/*			s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+*/		}
 		s_assert.assertAll();
 	}
 
@@ -5503,20 +5503,20 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(subtotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("ca")){ 
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 20.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
-			}else if(driver.getCountry().equalsIgnoreCase("us")){
+/*				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}else if(driver.getCountry().equalsIgnoreCase("us")){
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
-			}
+/*				s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}
 		}else{
 			logger.info(" Order total is not in required range");
 		}
@@ -5555,19 +5555,19 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		if(subtotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("ca")){ 
 				//Assert  shipping cost from UI
 				s_assert.assertTrue(deliveryCharges.contains("30.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-			}else if(driver.getCountry().equalsIgnoreCase("us")){
+/*				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}else if(driver.getCountry().equalsIgnoreCase("us")){
 				s_assert.assertTrue(deliveryCharges.contains("17.00"),"Shipping charges on UI is not As per shipping method selected");
 				//Handling charges
-				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
-			}
+/*				s_assert.assertTrue(handlingCharges.contains("2.50"),"Handling charges on UI is not As per shipping method selected");
+*/			}
 		}else{
 			logger.info(" Order total is not in required range");
 		}
@@ -5613,8 +5613,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -5647,8 +5647,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		//assert product names at adhoc template
 		s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("2"));
 		s_assert.assertTrue(storeFrontOrdersPage.getProductNameFromAdhocTemplate("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at Adhoc template "+storeFrontOrdersPage.getProductNameFromAdhocTemplate("3"));
@@ -5805,15 +5805,15 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//validate Delivery/Shipping Charges On Order Summary
 		String handlingCharges=storeFrontUpdateCartPage.getHandlingCharges();
 		logger.info("handling charges"+handlingCharges);
-		String deliveryCharges=storeFrontUpdateCartPage.getDeliveryCharges();
-		logger.info("Delivery charges"+deliveryCharges);
+/*		String deliveryCharges=storeFrontUpdateCartPage.getDeliveryCharges();
+		logger.info("Delivery charges"+deliveryCharges)*/;
 		if(driver.getCountry().equalsIgnoreCase("us")){
 			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("$2.50"),"Handling charges on UI is not As per shipping method selected for CRP Autoship");
-			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$35.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship");
-		}else if(driver.getCountry().equalsIgnoreCase("ca")){
+/*			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$35.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship");
+*/		}else if(driver.getCountry().equalsIgnoreCase("ca")){
 			s_assert.assertTrue(handlingCharges.equalsIgnoreCase("CAD$ 2.50"),"Handling charges on UI is not As per shipping method selected for CRP Autoship");
-			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 30.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship"); 
-		}
+/*			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 30.00"),"Shipping/Delivery charges on UI is not As per shipping method selected for CRP Autoship"); 
+*/		}
 		s_assert.assertAll();
 	}
 
@@ -5914,8 +5914,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Subtotal while creating order is "+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -5942,8 +5942,8 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getCreditCardNumber().contains(TestConstants.MASTER_CARD_NUMBER.substring(12)),"Adhoc Order template credit card number "+TestConstants.MASTER_CARD_NUMBER.substring(11)+" and on UI is "+storeFrontOrdersPage.getCreditCardNumber());
 		s_assert.assertAll();
 	}

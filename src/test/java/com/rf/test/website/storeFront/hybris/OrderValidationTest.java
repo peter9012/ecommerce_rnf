@@ -2182,8 +2182,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = String.valueOf(storeFrontUpdateCartPage.getTax());
 		logger.info("tax ="+tax);
 		String total = String.valueOf(storeFrontUpdateCartPage.getTotal());
@@ -2223,8 +2223,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertTrue(totalSV.contains(storeFrontOrdersPage.getTotalSVValue()), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());
@@ -2277,8 +2277,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("Subtotal while creating order is "+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -2316,8 +2316,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total.trim()),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges.trim()),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges.trim()),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().trim()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
@@ -2366,8 +2366,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("deliveryCharges ="+deliveryCharges);
-		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("handlingCharges ="+handlingCharges);
+/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -2408,8 +2408,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-
+/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+*/
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		//s_assert.assertTrue(storeFrontOrdersPage.getTotalSVValue().contains(totalSV), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());

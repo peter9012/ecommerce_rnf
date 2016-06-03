@@ -1,5 +1,6 @@
 package com.rf.test.website.storeFront.hybris;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
@@ -34,6 +36,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
+	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private String phoneNumber = null;
 	private String country = null;
 	private String RFO_DB = null;
@@ -3002,6 +3005,80 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
 		s_assert.assertAll();
 	}
-	
-		
+
+	// Hybris Project-4024:Access Solution tool from .BIZ Site Home Page Content Block
+	@Test
+	public void testAccessSolutionToolFromBizSiteHomePageContentBlock_4024() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantPWS = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId), RFO_DB);
+		consultantPWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		driver.get(consultantPWS);
+		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
+		s_assert.assertTrue(storeFrontHomePage.isAccessSolutionToolPresent(),"Solution tool is not giving the expected results");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4305:In DB, check details of pulse autoship for inactive consultant
+	@Test
+	public void testCheckPulseAutoshipForInactiveConsultant_4305() throws SQLException, InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> emailIdFromAccountIDList =  null;
+		List<Map<String, Object>> pulseStatusList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		String pulseStatusBeforeTermination =null;
+		String pulseStatusAfterTermination =null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			emailIdFromAccountIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(emailIdFromAccountIDList, "EmailAddress");
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontHomePage.clickOnYourAccountDropdown();
+		storeFrontHomePage.clickOnAutoshipStatusLink();
+		if(storeFrontAccountInfoPage.validateSubscribeToPulse()==false){
+			storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
+			storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+			storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+			storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+			storeFrontUpdateCartPage.clickOnSubscribeBtn();
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		}
+		//Get Pulse status of user before termination.
+		pulseStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_PULSE_STATUS_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pulseStatusBeforeTermination = String.valueOf(getValueFromQueryResult(pulseStatusList, "AutoshipTypeID"));
+		s_assert.assertFalse(pulseStatusBeforeTermination.equalsIgnoreCase("null"), "Consultant user does not have pulse");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+		storeFrontHomePage.clickOnCountryAtWelcomePage();
+		//Get pulse status of user after account termination
+		pulseStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_PULSE_STATUS_FROM_ACCOUNT_ID,accountID),RFO_DB);
+		pulseStatusAfterTermination = String.valueOf(getValueFromQueryResult(pulseStatusList, "AutoshipTypeID"));
+		s_assert.assertTrue(pulseStatusAfterTermination.equalsIgnoreCase("null"), "Pulse of Consultant user exists after termination");
+		s_assert.assertAll();
+
+	}
+
+
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -12,15 +13,18 @@ import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.storeFront.StoreFrontBillingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
+import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class AddShippingTest extends RFWebsiteBaseTest{
+public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 
 	private static final Logger logger = LogManager
 			.getLogger(AddShippingTest.class.getName());
@@ -32,6 +36,8 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
+	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
+	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private String RFO_DB = null;
 	private String city = null;
 	private String phoneNumber = null;
@@ -42,49 +48,72 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	private String addressLine1 = null;
 	private String country = null;
 	private String state = null;
-
-	//Hybris Project-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page
-	@Test
-	public void testAddsShippingAddressOnShippingProfilePage_2029() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	private String env = null;
+	private int randomNum; 	
+	List<Map<String, Object>> randomConsultantList =  null;
+	String consultantEmailID = null;
+	String accountID = null;
+	
+	@BeforeClass
+	public void setupDataForAddShipping() throws InterruptedException{	
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontBillingInfoPage = new StoreFrontBillingInfoPage(driver);
+		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
+		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
-		String country = driver.getCountry();
-		String addressLine1 = null;
-		String city = null;
-		String postalCode = null;
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
-		String lastName = "lN";
-		if(country.equalsIgnoreCase("us")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-		}
-		else if(country.equalsIgnoreCase("ca")){
+		env = driver.getEnvironment();
+		country = driver.getCountry();
+		kitName = TestConstants.KIT_NAME_BIG_BUSINESS; 	
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+		if(country.equalsIgnoreCase("CA")){				 
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			state = TestConstants.PROVINCE_CA;
-		} 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		}else{			
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			state = TestConstants.STATE_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;			
+		}
+
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
+			//storeFrontHomePage = new StoreFrontHomePage(driver);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 			}
-			else
-				break;
-		}
+			else{
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontHomePage.isEditCRPLinkPresent()==true)
+					break;
+				else
+					driver.get(driver.getURL());				
+			}
 
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
+		}
+		logger.info("login is successful");		
+	}
+
+	//Hybris Project-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page
+	@Test
+	public void testAddsShippingAddressOnShippingProfilePage_2029() throws InterruptedException{
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String lastName = "lN";
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -96,8 +125,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		//		storeFrontShippingInfoPage.selectFirstCardNumber();
-		//		storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -109,7 +136,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address when future autoship checkbox is selected");
+		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address when future autoship checkbox is selected");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -130,44 +157,9 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2030 :: Version : 1 :: Add shipping address during checkout 
 	@Test
 	public void testAddShippingAddressDuringCheckout_2030() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO(); 
-		String country = driver.getCountry();
-		String addressLine1 = null;
-		String city = null;
-		String postalCode = null;
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		if(country.equalsIgnoreCase("us")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-		}
-		else if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-		} 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -203,47 +195,10 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2031 :: Version : 1 :: Add shipping address in autoship template 
 	@Test
 	public void testAddShippingAddressInAutoshipTemplate_2031() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO(); 
-		String country = driver.getCountry();
-		String addressLine1 = null;
-		String city = null;
-		String postalCode = null;
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		if(country.equalsIgnoreCase("us")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-		}
-		else if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			state = TestConstants.PROVINCE_CA;
-		} 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
-
 		//get shipping address name on adhoc order
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -286,7 +241,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
-		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
+		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
 
 		// verify Adhoc order template addreess is remain same as before
@@ -301,26 +256,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2032 :: Version : 1 :: Add shipping address during PC user or Retail user registration
 	@Test
 	public void testAddShippingAddressDuringPCRegistration_2032() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		logout();
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
-		String country = driver.getCountry();
-		String addressLine1 = null;
-		String city = null;
-		String postalCode = null;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
-
-		if(country.equalsIgnoreCase("us")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-		}
-		else if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-		} 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
+		navigateToStoreFrontBaseURL();
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -362,7 +303,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 
 		// add a new shipping profile
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnEditShipping();
 		storeFrontUpdateCartPage.clickOnAddANewShippingAddress();
 		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
@@ -397,7 +337,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
-		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
+		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyRadioButtonIsSelectedByDefault(firstName), "Shipping address was given in main account info is not selected by default");
 
@@ -415,29 +355,12 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
 	@Test
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		logout();
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
-		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-		country = driver.getCountry();
-		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_CA;			 
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			state = TestConstants.PROVINCE_CA;
-		}else{
-			kitName = TestConstants.KIT_NAME_BIG_BUSINESS; //TestConstants.KIT_PRICE_BIG_BUSINESS_US;
-			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
-			city = TestConstants.NEW_ADDRESS_CITY_US;
-			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
-		}
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		//String shippingAddressName = firstName+" "+TestConstants.LAST_NAME;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
@@ -484,30 +407,16 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2034 :: Version : 1 :: Add shipping address during CRP enrollment through my account 
 	@Test
 	public void testAddShippingAddressDuringCRPEnrollment_2034() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		logout();
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String newShippingAddressName = TestConstants.FIRST_NAME+randomNum;
-		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;    
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			state = TestConstants.PROVINCE_CA;
-		}else{
-			kitName = TestConstants.KIT_NAME_EXPRESS;
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-			phoneNumber = TestConstants.PHONE_NUMBER_US;
-		}
+		navigateToStoreFrontBaseURL();
 		//Enroll a consultant without CRP and pulse
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
@@ -544,7 +453,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnEnrollInCRP();
 		storeFrontAccountInfoPage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
 		storeFrontAccountInfoPage.clickOnCRPCheckout();
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
 		String lastName = "In";
 		String newShippingName = newShippingAddressName+randomNum;
@@ -554,10 +462,6 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.selectNewShippingAddressStateOnCartPage();
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		/*storeFrontShippingInfoPage.selectFirstCardNumber();
-	   storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
-	   storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();*/
-
 		storeFrontUpdateCartPage.clickOnSaveCRPShippingInfo();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyCreatedShippingAddressIsSelectedByDefault(newShippingName), "Newly created shipping address is not selected by default");
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
@@ -576,42 +480,11 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	//Hybris Project-2238:Verify that QAS validation gets perform everytime user adds a shipping address.
 	@Test
 	public void testQASValidationPerformEveryTimeUserAddsAShippingAddress_2238() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		RFO_DB = driver.getDBNameRFO();
-		String country = driver.getCountry();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountID = null;
+		logout();
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		if(country.equalsIgnoreCase("us")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-			city = TestConstants.CITY_US;
-			postalCode = TestConstants.POSTAL_CODE_US;
-		}
-		else if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			city = TestConstants.CITY_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;
-			state = TestConstants.PROVINCE_CA;
-		} 
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
+		navigateToStoreFrontBaseURL();
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		//Add a new shipping address

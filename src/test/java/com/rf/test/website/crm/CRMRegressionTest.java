@@ -3431,7 +3431,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		List<Map<String, Object>> mainPhoneNumberList =  null;
 		//get main phone number
 		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_MOBILE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "Number");
+		mainPhoneNumberDB = String.valueOf(getValueFromQueryResult(mainPhoneNumberList, "Number"));
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		//search for account by Main Phone no.
 		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB/*.split("(?<=\\G...)")[0]*/);
@@ -3599,7 +3599,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		List<Map<String, Object>> mainPhoneNumberList =  null;
 		//get main phone number
 		mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-		mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "Number");
+		mainPhoneNumberDB = String.valueOf(getValueFromQueryResult(mainPhoneNumberList, "Number"));
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		//search for account by Main Phone no.
 		crmHomePage.enterTextInSearchFieldAndHitEnter(mainPhoneNumberDB);

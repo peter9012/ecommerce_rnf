@@ -2476,4 +2476,109 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"RC order is  not placed successfully");
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-2191:Enroll PC who lives in Quebec and then try to upgrade his membership from PC to Consultant. 
+	@Test
+	public void testQuebecPCEnrollmentAndUpgradeMembershipFromPCToConsultant_2191() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+			String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+			String lastName = "lN";
+			String firstName=TestConstants.FIRST_NAME+randomNum;
+			String emailid = firstName+randomNum+"@xyz.com";
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String addressLine1_CA = null;
+			String city1 = null;
+			String postalCode1 = null;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_QUEBEC;
+			city = TestConstants.CITY_QUEBEC;
+			postalCode = TestConstants.POSTAL_CODE_QUEBEC;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			addressLine1_CA = TestConstants.ADDRESS_LINE_1_CA;
+			city1 = TestConstants.CITY_CA;
+			postalCode1 = TestConstants.POSTAL_CODE_CA;
+			regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
+			kitName = TestConstants.KIT_NAME_PERSONAL;
+			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+			state = TestConstants.PROVINCE_CA;
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
+			storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+			// Products are displayed?
+			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+			logger.info("Quick shop products are displayed");
+			//Select a product and proceed to buy it
+			storeFrontHomePage.selectProductAndProceedToBuy();
+			//Click on Check out
+			storeFrontHomePage.clickOnCheckoutButton();
+			//Enter the User information and check the "Become a Preferred Customer" checkbox and click the create account button
+			storeFrontHomePage.enterNewPCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, emailid );
+			//Enter the Main account info and check the "Become a Preferred Customer" and click next
+			storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_QUEBEC, postalCode, phoneNumber);
+			logger.info("Main account details entered");
+			storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+			storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+			storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+			//Enter Billing Profile
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+			storeFrontHomePage.clickOnBillingNextStepBtn();
+			storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
+			storeFrontHomePage.clickPlaceOrderBtn();
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			//PC Account Termination
+			storeFrontPCUserPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontPCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontPCUserPage.clickOnYourAccountDropdown();
+			storeFrontPCUserPage.clickOnPCPerksStatus();
+			storeFrontPCUserPage.clickDelayOrCancelPCPerks();
+			storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
+			storeFrontPCUserPage.cancelMyPCPerksAct();
+			storeFrontHomePage.loginAsPCUser(emailid, password);
+			s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			// Upgrade the PC as Consultant	
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID();
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+			storeFrontHomePage.enterEmailAddress(emailid);
+			s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
+			storeFrontHomePage.enterPassword(password);
+			storeFrontHomePage.enterConfirmPassword(password);
+			storeFrontHomePage.enterFirstName(newBillingProfileName);
+			storeFrontHomePage.enterLastName(lastName);
+			storeFrontHomePage.enterAddressLine1(addressLine1_CA);
+			storeFrontHomePage.enterCity(city1);
+			storeFrontHomePage.selectProvince(state);
+			storeFrontHomePage.enterPostalCode(postalCode1);
+			storeFrontHomePage.enterPhoneNumber(phoneNumber);		
+			storeFrontHomePage.clickEnrollmentNextBtn();		
+			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+			storeFrontHomePage.clickEnrollmentNextBtn();
+			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+			storeFrontHomePage.checkTheIAgreeCheckBox();
+			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+			storeFrontHomePage.clickOnEnrollMeBtn();
+			storeFrontHomePage.clickOnConfirmAutomaticPayment();
+			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+			storeFrontHomePage.clickOnRodanAndFieldsLogo();
+			storeFrontHomePage.clickOnWelcomeDropDown();
+			s_assert.assertTrue(storeFrontHomePage.isEditCRPLinkPresent(), "Edit CRP Link is Present on Welcome Drop Down");
+			s_assert.assertAll();
+		}
+	}
 }

@@ -564,22 +564,26 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
-			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-			driver.click(RODAN_AND_FIELDS_IMG_LOC);
+			if(driver.IsElementVisible(driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span"))))
+			{
+				driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+				driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+			}
+			else{
+				
+				driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+				driver.click(RODAN_AND_FIELDS_IMG_LOC);
+				
+			}
+
 		}catch(NoSuchElementException e){
-			if(driver.isElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span")))
-				{
-					driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-					driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-				}
-			else
-				{
-					try{
-						driver.click(By.xpath("//img[@title='Rodan+Fields']"));
-					}catch(NoSuchElementException e1){
-					driver.click(By.xpath("//div[@id='header-middle-top']//a"));
-					}
-				}
+			try{
+				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+			}catch(NoSuchElementException e1)
+			{
+				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+			}
+				
 		}
 		finally{
 			driver.turnOnImplicitWaits();

@@ -31,14 +31,6 @@ import com.rf.test.website.RFWebsiteBaseTest;
 public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EditShippingTest.class.getName());
-
-	//	private String addressLine = null;
-	//	private String profileName = null;
-	//	private String newCity; 
-	//	private String newAddressLine;
-	//	private String newPhoneNumber;
-	//	private String newPostalCode; 
-	//	private String newProfileName;
 	private StoreFrontOrdersAutoshipStatusPage storeFrontOrdersAutoshipStatusPage;
 
 	private StoreFrontHomePage storeFrontHomePage;
@@ -48,7 +40,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
-	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
 	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private String RFO_DB = null;
 	private String city = null;
@@ -69,7 +60,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	@BeforeClass
 	public void setupDataForEditShipping() throws InterruptedException{	
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontBillingInfoPage = new StoreFrontBillingInfoPage(driver);
 		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
 		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
@@ -126,10 +116,8 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testEditShippingAddressOnShippingProfilePage_2035() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		//s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		storeFrontShippingInfoPage.clickOnEditForFirstAddress();
 		String newShippingAdrressName = TestConstants.ADDRESS_NAME+randomNum;
 		storeFrontShippingInfoPage.enterNewShippingAddressName(newShippingAdrressName+" "+lastName);
@@ -138,8 +126,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontShippingInfoPage.selectNewShippingAddressState(state);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		//storeFrontShippingInfoPage.selectFirstCardNumber();
-		//storeFrontShippingInfoPage.enterNewShippingAddressSecurityCode(TestConstants.SECURITY_NUMBER);
 		storeFrontShippingInfoPage.selectUseThisShippingProfileFutureAutoshipChkbox();
 		storeFrontShippingInfoPage.clickOnSaveShippingProfile();
 
@@ -167,23 +153,18 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		s_assert.assertAll();
-
 	}
 
 	// Hybris Project-2036 :: Version : 1 :: Edit shipping address during checkout 
 	@Test(priority=2)
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		String defaultSelectedShippingName = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 		storeFrontHomePage.clickOnPlaceOrderButton();
 		storeFrontUpdateCartPage.clickOnConfirmationOK();
-
 		String newShippingProfileName = TestConstants.ADDRESS_NAME_US+randomNum;
 		if(storeFrontUpdateCartPage.isOnlyOneShippingProfilePresentOnAdhocCart()==true) 
 			storeFrontUpdateCartPage.addAshippingProfileAndClickOnItsEdit(city,state, addressLine1, newShippingProfileName, phoneNumber, postalCode);
@@ -195,8 +176,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
-		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
-
 		// verify that updated address is listed on cart page
 		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingProfileName), "New Shipping address NOT added to update cart");
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
@@ -209,11 +188,9 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		String addressnameAfterEdit = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-		System.out.println("After "+addressnameAfterEdit);
 		// assert of default selected shipping address
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(defaultSelectedShippingName, addressnameAfterEdit), "New Shipping address is not listed on Shipping profile page");
 		s_assert.assertAll();
-
 	}
 
 	//Hybris Project-2037 :: Version : 1 :: Edit shipping address in autoship template 
@@ -221,8 +198,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		String defaultSelectedShippingName = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
 		String newShippingProfileName = TestConstants.ADDRESS_NAME_US+randomNum;
@@ -242,7 +217,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontShippingInfoPage.enterNewShippingAddressPhoneNumber(phoneNumber);
 		storeFrontShippingInfoPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileOnUpdateCrpPage();
-		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingProfileName),"Edited Shipping Address is not on cart page");
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewlyEditedShippingAddressIsSelected(newShippingProfileName),"newly edited shipping address is not choosen by default");
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
@@ -264,8 +238,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testPopUpToUpdateAutoshipShippingProfileOnChangingDefaultSelection_2094() throws InterruptedException			 {
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage=storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
 
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
@@ -284,15 +256,13 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
-	@Test(priority=5)
+	@Test(enabled=false)//(priority=5)
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
 		List<Map<String, Object>> shippingAddressCountList =  null;
 		List<Map<String, Object>> defaultShippingAddressList =  null;
 		String shippingAddressName=null;
 
 		int totalShippingAddressesFromDB = 0;
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
@@ -330,26 +300,26 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
+//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+//		logger.info("Quick shop products are displayed");
 
 		//Select a product and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
+//		//Cart page is displayed?
+//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+//		logger.info("Cart page is displayed");
 
-		//1 product is in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-		logger.info("1 product is successfully added to the cart");
+//		//1 product is in the Shopping Cart?
+//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+//		logger.info("1 product is successfully added to the cart");
 
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
 
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
+//		//Log in or create an account page is displayed?
+//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+//		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
@@ -513,12 +483,10 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2239:Verify that QAS validation gets perform everytime user edits a shipping address.
 	@Test(priority=9)
 	public void testQASValidationPerformEveryTimeUserEditsAShippingAddress_2239() throws InterruptedException		 {
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String lastName = "lN";
 		String addressLine2 = null;
-		navigateToStoreFrontBaseURL();
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
 		storeFrontUpdateCartPage.clickAddToBagButton(country);
 		storeFrontUpdateCartPage.clickOnCheckoutButton();

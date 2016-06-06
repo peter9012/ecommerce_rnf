@@ -164,7 +164,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		String defaultSelectedShippingAddressNameOnShippingInfo = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
 		//Continue with checkout page
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickAddToBagButton(country);
@@ -179,7 +179,6 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
-		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyNewShippingAddressIsSelectedByDefaultOnAdhocCart(newShippingAddressName), "New Address has not got associated with the billing profile");
 		storeFrontConsultantPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -302,7 +301,6 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
 		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
 		storeFrontUpdateCartPage.clickOnSaveShippingProfileAfterEdit();
-		storeFrontUpdateCartPage.clickOnUseAsEnteredButton();
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickOnEditShipping();
 
@@ -468,12 +466,11 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2238:Verify that QAS validation gets perform everytime user adds a shipping address.
 	@Test(priority=7)
 	public void testQASValidationPerformEveryTimeUserAddsAShippingAddress_2238() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
-		navigateToStoreFrontBaseURL();
+		//navigateToStoreFrontBaseURL();
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickAddToBagButton(country);
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		//Add a new shipping address
 		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();

@@ -74,48 +74,48 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		logger.info("First Address Edit link clicked");
-		driver.waitForLoadingImageToDisappear();
+		//driver.waitForLoadingImageToDisappear();
 
 	}
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
-		driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
+		//driver.waitForElementPresent(ADD_NEW_SHIPPING_LINK_LOC);
 		driver.click(ADD_NEW_SHIPPING_LINK_LOC);
 		logger.info("Add new shipping profile link clicked");
 	}
 
 	public void enterNewShippingAddressName(String name){
-		driver.waitForElementPresent(By.id("new-attention"));
-		driver.clear(By.id("new-attention"));
+//		driver.waitForElementPresent(By.id("new-attention"));
+//		driver.clear(By.id("new-attention"));
 		driver.type(By.id("new-attention"),name);
 		logger.info("New Shipping Address name is "+name);
 	}
 
 	public void enterNewShippingAddressCity(String city){
-		driver.waitForElementPresent(By.id("townCity"));
-		driver.clear(By.id("townCity"));
+		//		driver.waitForElementPresent(By.id("townCity"));
+		//		driver.clear(By.id("townCity"));
 		driver.type(By.id("townCity"),city);
 		logger.info("New Shipping City is "+city);
 	}
 
 	public void selectNewShippingAddressState(String state){
-		driver.waitForElementPresent(By.id("state"));
+		//		driver.waitForElementPresent(By.id("state"));
 		driver.click(By.id("state"));
-		driver.pauseExecutionFor(1000);
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
+		//		driver.pauseExecutionFor(1000);
+		//		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		logger.info("State/Province selected");
 	}
 
 	public void enterNewShippingAddressPostalCode(String postalCode){
-		driver.waitForElementPresent(By.id("postcode"));
-		driver.clear(By.id("postcode"));
+		//		driver.waitForElementPresent(By.id("postcode"));
+		//		driver.clear(By.id("postcode"));
 		driver.type(By.id("postcode"),postalCode);
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
-		driver.waitForElementPresent(By.id("phonenumber"));
-		driver.clear(By.id("phonenumber"));
+		//		driver.waitForElementPresent(By.id("phonenumber"));
+		//		driver.clear(By.id("phonenumber"));
 		driver.type(By.id("phonenumber"),phoneNumber);
 	}
 
@@ -140,22 +140,22 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
-		driver.pauseExecutionFor(3000);
+		//		driver.pauseExecutionFor(3000);
 		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
+		//		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		logger.info("New Shipping prifile save button clicked");
 		try{
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
-		}catch(NoSuchElementException e){
+		//	driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+		}catch(Exception e){
 
 		}
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(3000);
+		//driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
 
@@ -245,7 +245,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 			return false;
 		}
 	}
-	
+
 	public boolean verifyOldDefaultSelectAddress(String addressname, String addressnameAfterAdd){
 		return addressname.equalsIgnoreCase(addressnameAfterAdd);
 	}

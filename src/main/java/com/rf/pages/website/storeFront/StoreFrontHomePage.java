@@ -37,7 +37,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private String addressLine1=null;
 	private String city=null;
 	private String postalCode=null;
-	
+
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
@@ -386,36 +386,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEnrollmentNextBtn() throws InterruptedException{
-		if(driver.isElementPresent(By.id("enrollment-next-button")))
-		{
-			driver.waitForElementPresent(By.id("enrollment-next-button"));
-			////driver.pauseExecutionFor(2000);
-			driver.click(By.id("enrollment-next-button"));
-			logger.info("EnrollmentTest Next Button clicked");
-			driver.waitForLoadingImageToDisappear();
-			////driver.pauseExecutionFor(2000);
-
-		}
-
-		try{
-			if(driver.isElementPresent(By.id("QAS_AcceptOriginal")))
-			{
-				driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-				driver.click(By.id("QAS_AcceptOriginal"));
-				logger.info("Accept the original button clicked");
-			}
-			else
-			{
-				driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
-				driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
-				logger.info("Accept the suggested address button clicked");
-			}
-
-
-		}
-		catch(Exception e){
-			logger.info("Accept the original pop up was NOT present");
-		}		
+		driver.waitForElementPresent(By.id("enrollment-next-button"));
+		////driver.pauseExecutionFor(2000);
+		driver.click(By.id("enrollment-next-button"));
+		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+		driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+		logger.info("Accept the suggested address button clicked");
 	}
 
 	public void clickNextButton(){
@@ -427,8 +405,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		////driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
-			driver.quickWaitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
@@ -496,35 +474,21 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
 		}
-		/*		if(verifyEnrollToCRPCheckBoxIsNotSelected()&&verifySubsribeToPulseCheckBoxIsNotSelected())
-		{
-			driver.waitForElementPresent(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
-			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
-			logger.info("Yes,Subscribe me to pulse checkbox is unchecked");
-			driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
-			driver.pauseExecutionFor(3000);
-			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
-			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
-		}
-		else
-			;*/
-
 	}
-
-
-	//	public void acceptTheVerifyYourShippingAddressPop() throws InterruptedException{
-	//		driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
-	//		driver.click(By.id("QAS_AcceptOriginal"));
-	//		logger.info("accept the original button clicked");
-	//	}
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){
 		try{
-			driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
-			driver.click(By.id("QAS_AcceptOriginal"));
+			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			return true;
 		}catch(NoSuchElementException e){
-			return false;
+			try{
+				driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
+				driver.click(By.id("QAS_AcceptOriginal"));
+				return true;
+			}catch(NoSuchElementException e1){
+				return false;
+			}
 		}
 	}
 
@@ -770,23 +734,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			logger.info("Add to CRP button clicked");  	
 		}
 
-		/*		try{
-
-			driver.click(By.xpath("//div[@id='quick-refine']/following::div[1]/div[2]/div[1]//input[@value='Add to crp']"));
-			driver.waitForLoadingImageToDisappear();
-			logger.info("Add to CRP button clicked");
-		}catch(Exception e){
-			try{
-				driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));
-				driver.waitForLoadingImageToDisappear();
-				logger.info("Add to CRP button clicked");
-			}catch(Exception e1){
-
-				driver.click(By.xpath("//div[@id='quick-refine']/following::div[2]/div[2]/div[1]/div[2]/div[2]//button"));
-				driver.waitForLoadingImageToDisappear();
-				logger.info("Add to CRP button clicked");    
-			}
-		}*/
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
@@ -806,22 +753,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Express')]"));
 		driver.findElement(By.xpath("//a[contains(text(),'Switch to Express')]")).click();
 	}
-
-	//	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
-	//		selectEnrollmentKitPage(kitName, regimenName);		
-	//		chooseEnrollmentOption(enrollmentType);
-	//		enterFirstName(firstName);
-	//		enterLastName(lastName);
-	//		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
-	//		enterPassword(password);
-	//		enterConfirmPassword(password);
-	//		enterAddressLine1(addressLine1);
-	//		enterCity(city);
-	//		selectProvince(state);
-	//		enterPostalCode(postalCode);
-	//		enterPhoneNumber(phoneNumber);
-	//
-	//	}
 
 	// method overloaded, parameter for province is there
 	public void enterUserInformationForEnrollment(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String password,String addressLine1,String city,String province,String postalCode,String phoneNumber){
@@ -913,8 +844,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		enterPhoneNumber(phoneNumber);
 
 	}
-
-
 
 	public void clickOnSwitchToStandardEnrollmentLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Switch to Standard Enrollment')]"));
@@ -1785,6 +1714,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public String getDotComPWS(){
@@ -1914,13 +1844,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEditShipping(){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
+		//driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
 		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
 		logger.info("Edit shipping link clicked.");
 	}
 
 	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{
-		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
+		//driver.waitForElementPresent(By.id("saveShippingAddreessId"));
 		driver.click(By.id("saveShippingAddreessId")); 
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -2595,7 +2525,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEditShippingInShipmentOnCheckoutPage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+	//	driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		logger.info("Edit For shipping address clicked.");
 	}

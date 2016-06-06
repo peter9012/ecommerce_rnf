@@ -48,19 +48,11 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		}
 	}
 
-//	public boolean isAutoshipOrderAddressTextPresent(String firstName){
-//		try{
-//			driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
-//			return driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));
-//		}catch(NoSuchElementException e){
-//			String word = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
-//			if(driver.isElementPresent(By.xpath("//span[contains(text(),'"+firstName+"')]/ancestor::div[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"))){
-//				return true;
-//			}else{
-//				return false;
-//			}
-//		}
-//	}
+	public boolean isAutoshipOrderAddressTextPresent(String firstName){
+		String getAutoshipOrderDetailsText = driver.findElement(By.xpath("//div[@class='autoshipOrderDetails']")).getText();
+		logger.info("Autoship address details "+getAutoshipOrderDetailsText);
+		return getAutoshipOrderDetailsText.contains(firstName);
+	}
 
 	public boolean isDefaultShippingAddressSelected(String name) throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@name='addressCode' and @checked='checked']/ancestor::li[1]/p[1]"));

@@ -109,8 +109,8 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2029 :: Version : 1 :: Add shipping address on 'Shipping Profile' page
-	@Test
-	public void testAddsShippingAddressOnShippingProfilePage_2029() throws InterruptedException{
+	@Test(priority=1)
+	public void testAddShippingAddressOnShippingProfilePage_2029() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
 		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
@@ -136,7 +136,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
 
-		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address when future autoship checkbox is selected");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address when future autoship checkbox is selected");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -155,7 +155,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2030 :: Version : 1 :: Add shipping address during checkout 
-	@Test
+	@Test(priority=2)
 	public void testAddShippingAddressDuringCheckout_2030() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
@@ -193,7 +193,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2031 :: Version : 1 :: Add shipping address in autoship template 
-	@Test
+	@Test(priority=3)
 	public void testAddShippingAddressInAutoshipTemplate_2031() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
@@ -202,12 +202,6 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage =  storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
-
-		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		String shippingAddressNameFromAdhoc = storeFrontOrdersPage.getShippingAddressFromAdhocTemplate();
-
 		storeFrontOrdersPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontOrdersPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -230,7 +224,8 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		//---------------Verify that the new added shipping address is displayed in 'Shipment' section on update autoship cart page------------------------------------------------------------------------
 
 		s_assert.assertTrue(storeFrontUpdateCartPage.isShippingAddressPresent(newShippingAddressName), "New Shipping address NOT selected in update cart under shipping section");
-
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedShippingProfileIsSelectedByDefault(newShippingAddressName), "New Shipping address NOT selected as default in update cart under shipping section");
+		
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
@@ -243,18 +238,11 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingAddressName), "New Shipping address is not listed on Shipping profile page");
 		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName), "Autoship order text is not present under the new Shipping Address");
 		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonNotSelectedByDefault(newShippingAddressName), "Newly created shipping address is selected by default");
-
-		// verify Adhoc order template addreess is remain same as before
-		storeFrontShippingInfoPage.clickOnWelcomeDropDown();
-		storeFrontShippingInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
-		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-		String shippingAddressNameFromAdhocAfterAddANewAddress = storeFrontOrdersPage.getShippingAddressFromAdhocTemplate();
-		s_assert.assertTrue(storeFrontShippingInfoPage.verifyOldDefaultSelectAddress(shippingAddressNameFromAdhoc, shippingAddressNameFromAdhocAfterAddANewAddress), "New Address has not got associated with the billing profile");
 		s_assert.assertAll();
 	} 
 
 	//Hybris Project-2032 :: Version : 1 :: Add shipping address during PC user or Retail user registration
-	@Test
+	@Test(priority=4)
 	public void testAddShippingAddressDuringPCRegistration_2032() throws InterruptedException{
 		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);		
@@ -353,7 +341,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2033 :: Version : 1 :: Add shipping address during consultant enrollment
-	@Test
+	@Test(priority=5)
 	public void testAddShippingAddressDuringConsultantEnrollment_2033() throws InterruptedException{
 		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -361,7 +349,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 		String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		//String shippingAddressName = firstName+" "+TestConstants.LAST_NAME;
-		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		storeFrontHomePage.openPWSSite(country, env);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
 		storeFrontHomePage.clickEnrollmentNextBtn();
@@ -405,7 +393,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2034 :: Version : 1 :: Add shipping address during CRP enrollment through my account 
-	@Test
+	@Test(priority=6)
 	public void testAddShippingAddressDuringCRPEnrollment_2034() throws InterruptedException{
 		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -478,7 +466,7 @@ public class AddShippingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2238:Verify that QAS validation gets perform everytime user adds a shipping address.
-	@Test
+	@Test(priority=7)
 	public void testQASValidationPerformEveryTimeUserAddsAShippingAddress_2238() throws InterruptedException{
 		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);

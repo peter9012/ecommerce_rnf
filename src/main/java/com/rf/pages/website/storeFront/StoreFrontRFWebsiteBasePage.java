@@ -39,7 +39,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
-	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.linkText("Shipping Info");
+	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
@@ -1106,7 +1106,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		driver.pauseExecutionFor(2000);
 		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("clicked on welcome drop down");		
 	}
@@ -1287,7 +1286,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
-		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);		
+		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);	
+		driver.pauseExecutionFor(2000);
 		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
 	}

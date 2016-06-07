@@ -472,6 +472,7 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnSetupCRPAccountBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.handlePolicies();
 		//verify the default shipping address is new shipping address
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage=storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
@@ -484,7 +485,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	@Test(priority=9)
 	public void testQASValidationPerformEveryTimeUserEditsAShippingAddress_2239() throws InterruptedException		 {
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		List<Map<String, Object>> randomConsultantList =  null;
 		String lastName = "lN";
 		String addressLine2 = null;
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  

@@ -42,35 +42,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		super(driver);		
 	}
 
-	public StoreFrontConsultantPage dismissPolicyPopup(){
-		try {	
-			driver.quickWaitForElementPresent(By.id("agree"));
-			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
-			if (we.isDisplayed()){
-				we.click();
-				driver.click(By.xpath("//input[@value='Continue']"));
-				driver.waitForLoadingImageToDisappear();
-			}
-			//do nothing
-		}
-		catch (Exception e) {
-			System.out.println("Policy Popup Dialog not seen.");
-		}
-		return null;
-	} 
-
-	public void clickRenewLater()  {
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
-			//driver.pauseExecutionFor(2000);
-			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
-			logger.info("Renew later button clicked");
-			driver.waitForLoadingImageToDisappear();
-		}catch(Exception e){
-
-		}
-	}
-
+	
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -390,10 +362,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		////driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			logger.info("Accept the suggested address button clicked");
+		}catch(Exception e){
+
+		}
 		driver.waitForLoadingImageToDisappear();
-		driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
-		driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
-		logger.info("Accept the suggested address button clicked");
 	}
 
 	public void clickNextButton(){
@@ -2525,7 +2501,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEditShippingInShipmentOnCheckoutPage(){
-	//	driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
+		//	driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		driver.click(By.xpath("//div[@id='checkout_summary_deliverymode_div']/div[1]/a[text()='Edit']"));
 		logger.info("Edit For shipping address clicked.");
 	}

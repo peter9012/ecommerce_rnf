@@ -458,7 +458,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		try{
-		//	driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
+			//	driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 		}catch(Exception e){
 			driver.waitForElementPresent(By.id("saveShippingInfo"));
@@ -466,11 +466,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}		
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-		//driver.waitForElementPresent(By.id("card-nr"));
+		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"), cardNumber);
 		logger.info("Billing card number entered is "+cardNumber);
 	}
@@ -513,7 +513,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		//driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
-	//	driver.pauseExecutionFor(5000);
+		//	driver.pauseExecutionFor(5000);
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
@@ -581,6 +581,41 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public StoreFrontConsultantPage dismissPolicyPopup(){
+		try {	
+			driver.quickWaitForElementPresent(By.id("agree"));
+			WebElement we = driver.findElement(By.xpath("//div[@class='shipping-popup-gray']/span[1]"));
+			if (we.isDisplayed()){
+				we.click();
+				driver.click(By.xpath("//input[@value='Continue']"));
+				driver.waitForLoadingImageToDisappear();
+			}
+			//do nothing
+		}
+		catch (Exception e) {
+			System.out.println("Policy Popup Dialog not seen.");
+		}
+		return null;
+	} 
+
+	public void clickRenewLater()  {
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			//driver.pauseExecutionFor(2000);
+			driver.click(By.xpath("//div[contains(@class,'fancybox-overlay')]//input[@id='renewLater']"));
+			logger.info("Renew later button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+	}
+
+
+	public void handlePolicies(){
+		dismissPolicyPopup();
+		clickRenewLater();
 	}
 
 	public boolean isOrderPlacedSuccessfully(){
@@ -1841,31 +1876,17 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
-		try{
-			driver.click(By.id("saveCrpShippingAddress"));
-		}catch(NoSuchElementException e){
-			try{
-				driver.click(By.id("saveCrpShippingAddress"));
-			}catch(Exception e1){
-				driver.click(By.id("saveShippingAddreessId"));
-			}
-
-		}
+		//driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
+		driver.click(By.id("saveCrpShippingAddress"));
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save shipping profile button clicked");
 		try{
-			driver.click(By.id("QAS_AcceptOriginal"));
+			//driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept New shipping address button clicked");
-		}catch(NoSuchElementException e){
-			try{
-				driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
-				driver.click(By.id("QAS_RefineBtn"));
-				logger.info("Accept New shipping address button clicked");
-			}catch(NoSuchElementException e1){
+		}catch(NoSuchElementException e1){
 
-			}
-		}
+		}		
 
 		driver.waitForLoadingImageToDisappear();
 	}

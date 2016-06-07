@@ -253,7 +253,6 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	@Test(priority=4)
 	public void testAddBillingProfileDuringCheckout_2042() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String consultantEmailID = TestConstants.CONSULTANT_USERNAME;
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
@@ -409,7 +408,6 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2044:Add billing profile during PC user or Retail user registration
 	@Test(priority=8)
 	public void testAddBillingProfileDuringPCRegistration_2044() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
@@ -479,7 +477,6 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	// Hybris Project-2045 :: Version : 1 :: Add billing address during consultant enrollment 
 	@Test(priority=9)
 	public void testAddBillingAddressConsultantEnrollment_2045() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage.openPWSSite(country, env);
@@ -533,7 +530,6 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account 
 	@Test(priority=10)
 	public void testAddNewBillingProfileDuringCRPEnrollment_2046() throws InterruptedException{
-		logout();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

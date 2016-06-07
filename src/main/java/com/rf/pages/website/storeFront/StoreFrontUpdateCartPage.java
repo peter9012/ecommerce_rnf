@@ -31,6 +31,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
 		driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
 		driver.pauseExecutionFor(2000);
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isNewBillingProfileIsSelectedByDefault(String profileName){
@@ -341,8 +342,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
-		//driver.pauseExecutionFor(3000);
-		//driver.waitForElementPresent(By.id("saveShippingInfo"));
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.id("saveShippingInfo"));
 		driver.click(By.id("saveShippingInfo"));
 		logger.info("Next button on shipping address clicked");	
 		driver.waitForLoadingImageToDisappear();		
@@ -421,9 +422,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{
 //		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
 		driver.click(By.id("saveShippingAddreessId"));	
-		try{
-			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
+		try{			
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			logger.info("QAS Popup clicked");
 		}catch(Exception e){
 
 		}

@@ -3080,5 +3080,4 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 
 	}
 
-
 }

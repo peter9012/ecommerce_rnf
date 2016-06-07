@@ -42,7 +42,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		super(driver);		
 	}
 
-	
+
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
@@ -359,12 +359,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollmentNextBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		////driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
-			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@id='QAS_RefineBtn']"));
+			driver.pauseExecutionFor(2000);
+			driver.click(By.xpath("//input[@id='QAS_RefineBtn']"));
 			logger.info("Accept the suggested address button clicked");
 		}catch(Exception e){
 
@@ -381,8 +383,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		////driver.pauseExecutionFor(2000);
 		try{
 			driver.turnOffImplicitWaits();
-			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.pauseExecutionFor(2000);
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 			logger.info("Accept the original button clicked");
 		}
 		catch(Exception e){
@@ -454,8 +457,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){
 		try{
-			driver.waitForElementPresent(By.id("QAS_RefineBtn"));
-			driver.click(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 			return true;
 		}catch(NoSuchElementException e){
 			try{
@@ -1823,6 +1826,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
 		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div/div[2]/a"));
 		logger.info("Edit shipping link clicked.");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{

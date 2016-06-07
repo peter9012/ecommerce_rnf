@@ -1900,7 +1900,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("deliveryCharges ="+deliveryCharges);
-/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
 		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("tax ="+tax);
@@ -1941,8 +1941,8 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-*/
+		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		 */
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
@@ -2302,7 +2302,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
 		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = String.valueOf(storeFrontUpdateCartPage.getTax());
 		logger.info("tax ="+tax);
@@ -2336,10 +2336,10 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-*/		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
-		s_assert.assertTrue(totalSV.contains(storeFrontOrdersPage.getTotalSVValue()), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());
-		s_assert.assertAll();
+		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
+		 s_assert.assertTrue(totalSV.contains(storeFrontOrdersPage.getTotalSVValue()), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());
+		 s_assert.assertAll();
 	}
 
 	//Hybris Project-4310 :: Version : 1 :: Soft-Terminate Consultant is not available for Sponsor's search
@@ -9094,6 +9094,82 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 			s_assert.assertAll();
 		}
 
+	}
+
+	//Hybris Project-135:Enroll in pulse from my account - enrolling from 1st till 17th
+	@Test
+	public void testEnrollInPulseFromMyAccountEnrolligFrom1stTill17th_135() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String accountId = null;
+		List<Map<String, Object>> randomConsultantList =  null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String billingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNum;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String userName = null;
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO,countryId),RFO_DB);
+			userName = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
+			//accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(userName, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+userName);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}  
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOnYourAccountDropdown();
+		storeFrontConsultantPage.clickOnAutoshipStatusLink();
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
+		storeFrontAccountInfoPage.clickOnOnlySubscribeToPulseBtn();
+		storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		//Enter Billing Profile
+		storeFrontAccountInfoPage.clickAddNewBillingProfileLink();
+		storeFrontAccountInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontAccountInfoPage.enterNewBillingNameOnCard(billingProfileName);
+		storeFrontAccountInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontAccountInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontAccountInfoPage.selectNewBillingCardAddress();
+		storeFrontAccountInfoPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+		storeFrontUpdateCartPage.clickOnSubscribeBtn();
+		s_assert.assertTrue(storeFrontAccountInfoPage.isOrderPlacedSuccessfully(), "Order is not placed successfully");
+		storeFrontAccountInfoPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontAccountInfoPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//Verify Status of CRP autoship template
+		s_assert.assertTrue(storeFrontOrdersPage.getStatusOfSecondAutoshipTemplateID().toLowerCase().contains("pending"), "Expected status of second pulse autoship id is: pending and actual on UI is: "+storeFrontOrdersPage.getStatusOfSecondAutoshipTemplateID().toLowerCase());
+		String pulseAutoshipID = storeFrontOrdersPage.getPulseAutoshipOrderNumber();
+		String autoshipDate = storeFrontOrdersPage.getPulseAutoshipOrderDate();
+		s_assert.assertTrue(storeFrontOrdersPage.validateSameDatePresentForAutoship(autoshipDate),"Same date is not present");
+		logout();
+		//verify on CSCockpit
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			country= TestConstants.COUNTRY_DD_VALUE_CA;
+		}else{
+			country= TestConstants.COUNTRY_DD_VALUE_US;
+		}
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitCustomerTabPage = new CSCockpitCustomerTabPage(driver);
+		driver.get(driver.getCSCockpitURL());
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(userName);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		s_assert.assertTrue(cscockpitCustomerTabPage.getStatusOfAutoshipID(pulseAutoshipID).toLowerCase().contains("pending"), "Expected status of autoship id in CSCockpit is: pending and actual on UI is: "+cscockpitCustomerTabPage.getStatusOfAutoshipID(pulseAutoshipID).toLowerCase());
+		s_assert.assertAll();
 	}
 
 }

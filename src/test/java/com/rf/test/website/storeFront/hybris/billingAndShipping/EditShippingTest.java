@@ -159,6 +159,8 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	@Test(priority=2)
 	public void testEditShippingAddressDuringCheckout_2036() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		String defaultSelectedShippingName = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -198,6 +200,8 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testEditShippingAddressInAutoshipTemplate_2037() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		String defaultSelectedShippingName = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
 		String newShippingProfileName = TestConstants.ADDRESS_NAME_US+randomNum;
@@ -238,6 +242,8 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testPopUpToUpdateAutoshipShippingProfileOnChangingDefaultSelection_2094() throws InterruptedException			 {
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage=storeFrontHomePage.clickShippingLinkPresentOnWelcomeDropDown();
 
 		storeFrontShippingInfoPage.clickAddNewShippingProfileLink();
@@ -263,6 +269,8 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		String shippingAddressName=null;
 
 		int totalShippingAddressesFromDB = 0;
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 
@@ -285,10 +293,46 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-2239:Verify that QAS validation gets perform everytime user edits a shipping address.
+	@Test(priority=5)
+	public void testQASValidationPerformEveryTimeUserEditsAShippingAddress_2239() throws InterruptedException		 {
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String lastName = "lN";
+		String addressLine2 = null;
+		if(country.equalsIgnoreCase("CA")){				 
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;			
+		}else{			
+			addressLine2 = TestConstants.ADDRESS_LINE_2_US;				
+		}
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
+		storeFrontUpdateCartPage.clickAddToBagButton(country);
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		//Add a new shipping address
+		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
+		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
+
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+		//Edit the default shipping address
+		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress(); 
+		//Enter new Shipping Address Line 1
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine2);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfileWithoutAcceptingQASValidationPopUp();
+		//validate QAS Validation PopUp is Displayed after Editing a Shipping Profile
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateQASValidationPopUpIsDisplayed(),"QAS Validation PopUp is Not Displayed After Editing A Shipping Profile");
+		s_assert.assertAll();
+	}
+
+
 	// Hybris Project-2038 :: Version : 1 :: Edit shipping address during PC user or Retail user registration  
 	@Test(priority=6)
 	public void testEditShippingAddressDuringPCEnrollment_2038() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
@@ -300,26 +344,26 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
-//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-//		logger.info("Quick shop products are displayed");
+		//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		//		logger.info("Quick shop products are displayed");
 
 		//Select a product and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
-//		//Cart page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-//		logger.info("Cart page is displayed");
+		//		//Cart page is displayed?
+		//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		//		logger.info("Cart page is displayed");
 
-//		//1 product is in the Shopping Cart?
-//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-//		logger.info("1 product is successfully added to the cart");
+		//		//1 product is in the Shopping Cart?
+		//		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
+		//		logger.info("1 product is successfully added to the cart");
 
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
 
-//		//Log in or create an account page is displayed?
-//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-//		logger.info("Login or Create Account page is displayed");
+		//		//Log in or create an account page is displayed?
+		//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		//		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
@@ -366,7 +410,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2039 :: Version : 1 :: Edit shipping address during consultant enrollment 
 	@Test(priority=7)
 	public void testEditShippingAddressDuringConsultantEnrollment_2039() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -388,7 +431,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterConfirmPassword(password);
 		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
@@ -415,7 +457,6 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2040 :: Version : 1 :: Edit shipping address during CRP enrollment through my account 
 	@Test(priority=8)
 	public void testEditShippingAddressDuringCRPEnrollment_2040() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -480,36 +521,4 @@ public class EditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName),"Default selected shipping address does not have autoship text");
 		s_assert.assertAll();
 	}
-
-	//Hybris Project-2239:Verify that QAS validation gets perform everytime user edits a shipping address.
-	@Test(priority=9)
-	public void testQASValidationPerformEveryTimeUserEditsAShippingAddress_2239() throws InterruptedException		 {
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String lastName = "lN";
-		String addressLine2 = null;
-		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-		storeFrontUpdateCartPage.clickAddToBagButton(country);
-		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		//Add a new shipping address
-		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
-		String newShippingAddressName = TestConstants.ADDRESS_NAME+randomNum;
-
-		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingAddressName+" "+lastName);
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
-		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
-		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
-		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
-		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER);
-		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
-		//Edit the default shipping address
-		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress(); 
-		//Enter new Shipping Address Line 1
-		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine2);
-		storeFrontUpdateCartPage.clickOnSaveShippingProfileWithoutAcceptingQASValidationPopUp();
-		//validate QAS Validation PopUp is Displayed after Editing a Shipping Profile
-		s_assert.assertTrue(storeFrontUpdateCartPage.validateQASValidationPopUpIsDisplayed(),"QAS Validation PopUp is Not Displayed After Editing A Shipping Profile");
-		s_assert.assertAll();
-	}
-
-
 }

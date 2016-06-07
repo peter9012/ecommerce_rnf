@@ -354,7 +354,6 @@ public class EditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	// Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
 	@Test(priority=6)
 	public void testEditBillingProfileDuringPCRegistration_2050() throws InterruptedException{
-		logout();
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String editedBillingProfileName = TestConstants.EDIT_BILLING_PROFILE_NAME+randomNum;
@@ -420,7 +419,6 @@ public class EditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2051:Edit billing address during consultant enrollment
 	@Test(priority=7)
 	public void testEditBillingAddressDuringConsultantEnrollment_2051() throws InterruptedException	  {
-		logout();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -468,7 +466,6 @@ public class EditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-2052:Edit billing profile during CRP enrollment through my account
 	@Test(priority=8)
 	public void editBillingprofileDuringCRPEnrollmentThroughMyAccount_2052() throws InterruptedException{
-		logout();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME+randomNum;

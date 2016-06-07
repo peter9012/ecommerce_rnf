@@ -461,12 +461,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			//	driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 		}catch(Exception e){
-			driver.waitForElementPresent(By.id("saveShippingInfo"));
 			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		}		
 		logger.info("Next button on shipping address clicked");		
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
+		try{
+			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
+			logger.info("save shipping info clicked");
+		}catch(Exception e){
+			
+		}
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
@@ -1153,7 +1159,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnPlaceOrderButton(){
-		//driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
 		driver.click(By.xpath("//input[@value='NEXT']"));
 		logger.info("Place order button clicked");
 		driver.waitForPageLoad();
@@ -1309,13 +1315,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(WELCOME_DD_BILLING_INFO_LINK_LOC);
 		logger.info("User has clicked on billing link from welcome drop down");
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontBillingInfoPage(driver);
 	}
 
 	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		//driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
 		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);	
-		//		driver.pauseExecutionFor(2000);
+		driver.waitForLoadingImageToDisappear();
 		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
 	}
@@ -1423,6 +1430,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
 		logger.info("filter done for high to low price");
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{
@@ -1812,7 +1820,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
 		driver.click(UPDATE_CART_BTN_LOC);		
 		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
-		//driver.waitForLoadingImageToDisappear();
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 
@@ -1876,8 +1884,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		//driver.quickWaitForElementPresent(By.id("saveCrpShippingAddress"));
-		driver.click(By.id("saveCrpShippingAddress"));
+		driver.turnOffImplicitWaits();
+		try{
+			
+			driver.click(By.id("saveShippingAddreessId"));
+		}catch(Exception e){
+			driver.click(By.id("saveCrpShippingAddress"));
+		}
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save shipping profile button clicked");
 		try{
@@ -1887,7 +1900,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}catch(NoSuchElementException e1){
 
 		}		
-
+		driver.turnOnImplicitWaits();
 		driver.waitForLoadingImageToDisappear();
 	}
 

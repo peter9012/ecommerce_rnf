@@ -2182,7 +2182,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+		/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
 		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = String.valueOf(storeFrontUpdateCartPage.getTax());
 		logger.info("tax ="+tax);
@@ -2223,8 +2223,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-*/
+		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		 */
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertTrue(totalSV.contains(storeFrontOrdersPage.getTotalSVValue()), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());
@@ -2277,7 +2277,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("Subtotal while creating order is "+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
-/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
 		logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
@@ -2316,8 +2316,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total.trim()),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges.trim()),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-*/
+		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges.trim()),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		 */
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().trim()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		s_assert.assertAll();
@@ -2366,7 +2366,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("deliveryCharges ="+deliveryCharges);
-/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
+		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
 		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("tax ="+tax);
@@ -2408,12 +2408,48 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 
-/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-*/
+		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		 */
 		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
 
 		//s_assert.assertTrue(storeFrontOrdersPage.getTotalSVValue().contains(totalSV), "Adhoc order template total sv value "+totalSV+"and on UI is "+storeFrontOrdersPage.getTotalSVValue());
 
+		s_assert.assertAll();
+	}
+
+	// Hybris Project-2245:Verify that user can access order details.
+	@Test
+	public void testVerifyThatUserCanAccessOrderDetails_2245() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickDetailsUnderActionsForFirstOrderUnderOrderHistory();
+		s_assert.assertTrue(storeFrontOrdersPage.validateOrderDetails(),"order details not present after click details link of order number");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickReportProblemsUnderActionsForFirstOrderUnderOrderHistory();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyReportAProblemSectionPresent(),"Report a problem with order number is not present");
+		storeFrontOrdersPage.selectItemsAndReportAProblem();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyReportAProblemConfirmationMessage(),"report a problem confirmation msg not present");
 		s_assert.assertAll();
 	}
 

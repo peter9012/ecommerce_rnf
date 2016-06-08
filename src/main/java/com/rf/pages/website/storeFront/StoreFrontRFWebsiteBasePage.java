@@ -147,7 +147,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectProductAndProceedToBuy() throws InterruptedException{
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
 		//driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
@@ -458,19 +458,19 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		try{
-			//	driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
+			driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 		}catch(Exception e){
 			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
-		}		
-		logger.info("Next button on shipping address clicked");		
+		}  
+		logger.info("Next button on shipping address clicked");  
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(3000);
 		try{
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 			logger.info("save shipping info clicked");
 		}catch(Exception e){
-			
+
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1886,7 +1886,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickOnSaveShippingProfile() throws InterruptedException{
 		driver.turnOffImplicitWaits();
 		try{
-			
+
 			driver.click(By.id("saveShippingAddreessId"));
 		}catch(Exception e){
 			driver.click(By.id("saveCrpShippingAddress"));

@@ -92,6 +92,8 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PERFORM_SOO_OVERRIDE_REASON_DEPT_DD_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[2]//img");
 	private static final By SELECT_OVERRIDE_REASON_DEPT_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'IT')]");
 	private static final By PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[3]//img");
+	private static final By SELECT_OVERRIDE_REASON_TYPE_AS_SALES_LOC = By.xpath("//div[@class='z-combobox-pp']//td[text()='Sale']");
+	private static final By SELECT_SOO_REASON_AS_WAIVE_LOC = By.xpath("//div[@class='z-combobox-pp']//td[starts-with(.,'Waive')]");
 	private static final By SELECT_OVERRIDE_REASON_TYPE_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'Appeasement')]");
 	private static final By PERFORM_SOO_REASON_LOC = By.xpath("//span[@class='soo-popup-bottom-left']//div[4]//img");
 	private static final By SELECT_SOO_REASON_LOC = By.xpath("//div[@class='z-combobox-pp']//td[contains(text(),'Damaged')]");
@@ -156,11 +158,11 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.findElement(DELIVERY_MODE).getText();
 	}
 
-//	public boolean isCommissionDatePopulatedInCheckoutTab(){
-//		boolean isCommissionDatePopulatedInCheckoutTab = !(driver.findElement(COMMISSION_DATE).getAttribute("value").isEmpty());
-//		logger.info("is Commission Date Populated In Checkout Tab = "+isCommissionDatePopulatedInCheckoutTab);
-//		return isCommissionDatePopulatedInCheckoutTab;
-//	}
+	//	public boolean isCommissionDatePopulatedInCheckoutTab(){
+	//		boolean isCommissionDatePopulatedInCheckoutTab = !(driver.findElement(COMMISSION_DATE).getAttribute("value").isEmpty());
+	//		logger.info("is Commission Date Populated In Checkout Tab = "+isCommissionDatePopulatedInCheckoutTab);
+	//		return isCommissionDatePopulatedInCheckoutTab;
+	//	}
 
 	public void clickPlaceOrderButtonInCheckoutTab(){
 		driver.waitForElementPresent(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
@@ -364,10 +366,10 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		return driver.isElementPresent(COMMISSION_DATE_TXT);
 	}
 
-//	public boolean verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(){
-//		driver.waitForElementPresent(COMMISSION_DATE);
-//		return driver.isElementPresent(COMMISSION_DATE);
-//	}
+	//	public boolean verifyCommissionDateCalenderIconTxtIsPresentInCustomSectionInCheckoutTab(){
+	//		driver.waitForElementPresent(COMMISSION_DATE);
+	//		return driver.isElementPresent(COMMISSION_DATE);
+	//	}
 
 	public boolean verifyOrderNotesTextInOrderInfoSectionInCheckoutTab(){
 		driver.waitForElementPresent(ORDER_NOTES_TXT_LOCATOR);
@@ -556,8 +558,8 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC);
 		driver.click(PERFORM_SOO_OVERRIDE_REASON_SOO_TYPE_DD_LOC);
 		logger.info("SOO TYPE DD CLICKED IN SALES OVERRIDE POPUP");
-		driver.waitForElementPresent(SELECT_OVERRIDE_REASON_TYPE_LOC);
-		driver.click(SELECT_OVERRIDE_REASON_TYPE_LOC);
+		driver.waitForElementPresent(SELECT_OVERRIDE_REASON_TYPE_AS_SALES_LOC);
+		driver.click(SELECT_OVERRIDE_REASON_TYPE_AS_SALES_LOC);
 		logger.info("SOO TYPE DD VALUE SELECTED IN SALES OVERRIDE POPUP");
 	}
 
@@ -565,8 +567,8 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.waitForElementPresent(PERFORM_SOO_REASON_LOC);
 		driver.click(PERFORM_SOO_REASON_LOC);
 		logger.info("SOO REASON DD CLICKED IN SALES OVERRIDE POPUP");
-		driver.waitForElementPresent(SELECT_SOO_REASON_LOC);
-		driver.click(SELECT_SOO_REASON_LOC);
+		driver.waitForElementPresent(SELECT_SOO_REASON_AS_WAIVE_LOC);
+		driver.click(SELECT_SOO_REASON_AS_WAIVE_LOC);
 		logger.info("SOO REASON DD VALUE SELECTED");
 	}
 
@@ -590,24 +592,24 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 
 	public void addANewBillingProfileIfThereIsNoStoredCreditCard(){
 		/*if(driver.isElementPresent(NO_STORED_CREDIT_CARD_DETAILS)==true){*/
-			driver.click(ADD_NEW_BILLING_PROFILE_BTN);
-			driver.waitForCSCockpitLoadingImageToDisappear();
-			driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
-			driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
-			driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
-			driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
-			driver.waitForCSCockpitLoadingImageToDisappear();
-			enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
-			driver.click(USE_THIS_CARD_BTN);
-			driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.click(ADD_NEW_BILLING_PROFILE_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.type(CARD_NUMBER_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.CARD_NUMBER);
+		driver.type(NAME_ON_CARD_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.NEW_BILLING_PROFILE_NAME);
+		driver.click(CARD_TYPE_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(CARD_TYPE_VALUE_VISA_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_MONTH_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(EXPIRATION_YEAR_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.type(SECURITY_CODE_TXT_FIELD_ON_ADD_NEW_BILLING_PROFILE_POPUP, TestConstants.SECURITY_CODE);
+		driver.click(BILLING_ADDRESS_DD_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(BILLING_ADDRESS_VALUE_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.click(SAVE_BTN_ON_ADD_NEW_BILLING_PROFILE_POPUP);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
+		driver.click(USE_THIS_CARD_BTN);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 		/*}*/
 	}
 

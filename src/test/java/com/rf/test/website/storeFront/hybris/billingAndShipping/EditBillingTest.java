@@ -469,6 +469,7 @@ public class EditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME+randomNum;
+		String enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		navigateToStoreFrontBaseURL();
 		//Enroll a consultant without CRP and pulse

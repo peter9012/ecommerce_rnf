@@ -158,14 +158,13 @@ AND ho.p_active = 1
 EXECUTE ('CREATE CLUSTERED INDEX cls ON ' +@BackupTemplateName+'(PK)');
 EXECUTE ('CREATE NONCLUSTERED INDEX cls1 ON ' +@BackupTemplateName+'(code)');
 
-
 EXECUTE
-('SELECT   count(*),b.InternalCode from  ' + @BackupTemplateName +
+('SELECT   count(*)[Templates Total],b.InternalCode[Templates Type],CAST(p_schedulingdate AS DATE) ScheduledDate from  ' + @BackupTemplateName +
 'a join   Hybris.dbo.composedtypes b on a.TypepkString=b.pk
 WHERE     p_template = 1
 AND currencypk = 8796125888545
 AND p_active = 1 
-group By b.InternalCode '); 
+group By b.InternalCode,CAST(p_schedulingdate AS DATE) '); 
 
 
 

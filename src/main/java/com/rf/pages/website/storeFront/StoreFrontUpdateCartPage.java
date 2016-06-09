@@ -998,8 +998,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean verifySVValueOnOrderSummaryPage(){
-		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
-		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]/div[9]/div[2]/span"));
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following-sibling::div/span"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following-sibling::div/spann"));
 	}
 
 	public boolean verifySVValueOnOrderConfirmationPage(){

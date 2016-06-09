@@ -97,7 +97,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String lastName = "Last Name";
 		String line1 = "Line 1";
 		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
+		String cityOrTown = "Town";
 		String postalCode = "Postal Code";
 		String country = "Country";
 		String stateOrProvince = "State/Province";
@@ -210,7 +210,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String lastName = "Last Name";
 		String line1 = "Line 1";
 		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
+		String cityOrTown = "Town";
 		String postalCode = "Postal Code";
 		String country = "Country";
 		String stateOrProvince = "State/Province";
@@ -317,7 +317,7 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 		String lastName = "Last Name";
 		String line1 = "Line 1";
 		String line2 = "Line 2";
-		String cityOrTown = "City/Town";
+		String cityOrTown = "Town";
 		String postalCode = "Postal Code";
 		String country = "Country";
 		String stateOrProvince = "State/Province";
@@ -428,4 +428,3 @@ public class CustomerVerificationTest extends RFWebsiteBaseTest{
 	}
 
 }
-

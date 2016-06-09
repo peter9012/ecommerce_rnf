@@ -81,7 +81,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static final By PAYMENT_PROFILE_POPUP_SAVE_BUTTON_LOC = By.xpath("//td[text()='SAVE']");
 	private static final By ADD_A_NEW_ADDRESS_IN_PAYMENT_PROFILE_POPUP = By.xpath("//a[contains(text(),'Add a new Address')]");
 	private static final By ATTENDENT_NAME_TEXT_BOX = By.xpath("//span[text()='Attention']/following::input[1]");
-	private static final By CITY_TOWN_TEXT_BOX = By.xpath("//span[text()='City/Town']/following::input[1]");
+	private static final By CITY_TOWN_TEXT_BOX_LOC = By.xpath("//span[text()='Town']/following::input[1]");
 	private static final By POSTAL_TEXT_BOX = By.xpath("//span[text()='Postal Code']/following::input[1]");
 	private static final By COUNTRY_TEXT_BOX = By.xpath("//span[text()='Country']/following::input[1]");
 	private static final By PROVINCE_TEXT_BOX = By.xpath("//span[text()='State/Province']/following::input[1]");
@@ -850,8 +850,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
 		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
 		logger.info("Address line 1 entered is "+addressLine);
-		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
-		driver.type(CITY_TOWN_TEXT_BOX, city);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX_LOC);
+		driver.type(CITY_TOWN_TEXT_BOX_LOC, city);
 		logger.info("City entered is "+city);
 		driver.waitForElementPresent(POSTAL_TEXT_BOX);
 		driver.type(POSTAL_TEXT_BOX, postalCode);
@@ -876,8 +876,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
 		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
 		logger.info("Address line 1 entered is "+addressLine);
-		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
-		driver.type(CITY_TOWN_TEXT_BOX, city);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX_LOC);
+		driver.type(CITY_TOWN_TEXT_BOX_LOC, city);
 		logger.info("City entered is "+city);
 		driver.waitForElementPresent(POSTAL_TEXT_BOX);
 		driver.type(POSTAL_TEXT_BOX, postalCode);
@@ -930,8 +930,8 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(ADDRESS_LINE_TEXT_BOX);
 		driver.type(ADDRESS_LINE_TEXT_BOX,addressLine);
 		logger.info("Address line 1 entered is "+addressLine);
-		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX);
-		driver.type(CITY_TOWN_TEXT_BOX, city);
+		driver.waitForElementPresent(CITY_TOWN_TEXT_BOX_LOC);
+		driver.type(CITY_TOWN_TEXT_BOX_LOC, city);
 		logger.info("City entered is "+city);
 		driver.waitForElementPresent(POSTAL_TEXT_BOX);
 		driver.type(POSTAL_TEXT_BOX, postalCode);

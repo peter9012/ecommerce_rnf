@@ -71,7 +71,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.findElement(By.xpath("//li[@id='account-info-button']")).click();
 		driver.waitForElementPresent(By.linkText("Log out"));
 		driver.findElement(By.linkText("Log out")).click();
-		logger.info("Logout");		
+		logger.info("Logout");	
+		driver.waitForPageLoad();
 	}
 
 	// This assertion for the UI Texts

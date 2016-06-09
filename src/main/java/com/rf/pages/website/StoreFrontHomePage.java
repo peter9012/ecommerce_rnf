@@ -1101,6 +1101,103 @@ public class StoreFrontHomePage extends RFWebsiteBasePage {
 		else
 			return true;
 	}
+
+	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String email, String password,String addressLine1,String city,String postalCode,String phoneNumber){
+		selectEnrollmentKitPage(kitName, regimenName);  
+		chooseEnrollmentOption(enrollmentType);
+		enterFirstName(firstName);
+		enterLastName(lastName);
+		enterPassword(password);
+		enterConfirmPassword(password);
+		enterAddressLine1(addressLine1);
+		enterCity(city);
+		selectProvince();
+		enterPostalCode(postalCode);
+		enterPhoneNumber(phoneNumber);
+		enterEmailAddress(email);
+	}
+
+	public String createConsultant(String sponsorID, String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailID, String password,String addressLine1,String city,String postalCode,String phoneNumber, String cardNumber, String nameOnCard, String socialInsuranceNumber, String productQuantity) throws InterruptedException{
+		searchCID(sponsorID);
+		mouseHoverSponsorDataAndClickContinue();
+		enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, lastName, emailID, password, addressLine1, city, postalCode, phoneNumber);
+		clickEnrollmentNextBtn();
+		acceptTheVerifyYourShippingAddressPop();  
+		enterCardNumber(cardNumber);
+		enterNameOnCard(nameOnCard);
+		selectNewBillingCardExpirationDate();
+		enterSecurityCode(TestConstants.SECURITY_CODE);
+		enterSocialInsuranceNumber(socialInsuranceNumber);
+		enterNameAsItAppearsOnCard(firstName);
+		clickEnrollmentNextBtn();
+		clickEnrollmentNextBtn();
+		applySortFilterHighToLow();
+		selectProductAndProceedToAddToCRP();
+		addQuantityOfProduct(productQuantity);
+		clickOnNextBtnAfterAddingProductAndQty();
+		checkThePoliciesAndProceduresCheckBox();
+		checkTheIAcknowledgeCheckBox();  
+		checkTheIAgreeCheckBox();
+		checkTheTermsAndConditionsCheckBox();
+		clickOnChargeMyCardAndEnrollMeBtn();
+		clickOnConfirmAutomaticPayment();
+		return emailID;
+	}
+
+	public String createPC(String firstName, String lastName, String password, String emailID, String sponsorID, String newBillingProfileName) throws InterruptedException{
+		clickOnShopLink();
+		clickOnAllProductsLink();
+		applySortFilterHighToLow();
+		selectProductAndProceedToBuy();
+		clickOnCheckoutButton();
+		enterNewPCDetails(firstName, lastName, password, emailID);
+		enterMainAccountInfo();
+		enterSponsorIdDuringCreationOfPC(sponsorID);
+		mouseHoverSponsorDataAndClickContinueForPC();
+		clickOnNextButtonAfterSelectingSponsor();
+		clickOnShippingAddressNextStepBtn();
+		enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		enterNewBillingNameOnCard(newBillingProfileName);
+		selectNewBillingCardExpirationDate();
+		enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		selectNewBillingCardAddress();
+		clickOnSaveBillingProfile();
+		clickOnBillingNextStepBtn();
+		clickOnPCPerksTermsAndConditionsCheckBoxes();
+		clickPlaceOrderBtn();
+		return emailID;
+	}
+
+	public void applySortFilterHighToLow() throws InterruptedException{
+		driver.waitForElementPresent(By.id("sortOptions"));
+		driver.click(By.id("sortOptions"));
+		driver.click(By.xpath("//select[@id='sortOptions']//option[contains(text(),'High to Low')]"));
+		logger.info("sort filter done for high low to price");
+	}
+
+	public void enterNewPCDetails(String firstName,String lastName,String password, String emailID) throws InterruptedException{
+		driver.findElement(By.id("first-Name")).sendKeys(firstName);
+		logger.info("first name entered as "+firstName);
+		driver.findElement(By.id("last-name")).sendKeys(lastName);
+		logger.info("last name entered as "+lastName);
+		driver.findElement(By.id("email-account")).sendKeys(emailID+"\t");
+		logger.info("email entered as "+emailID);
+		driver.pauseExecutionFor(1000);
+		driver.waitForSpinImageToDisappear();
+		driver.findElement(By.id("password")).sendKeys(password);
+		logger.info("password entered as "+password);
+		driver.findElement(By.id("the-password-again")).sendKeys(password);
+		logger.info("confirm password entered as "+password);
+		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		logger.info("check box for PC user checked");
+		driver.click(By.xpath("//input[@id='next-button']"));  
+		logger.info("Create New Account button clicked");  
+	}
+
+	public boolean verifyWelcomeDropdownPresentForCheckUserRegistered(){  
+		driver.waitForElementPresent(By.xpath("//li[@id='account-info-button']/a[contains(text(),'Welcome')]"));
+		return driver.isElementPresent(By.xpath("//li[@id='account-info-button']/a[contains(text(),'Welcome')]"));
+	}
 }
 
 

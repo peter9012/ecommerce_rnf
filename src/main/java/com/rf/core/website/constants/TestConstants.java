@@ -293,6 +293,89 @@ public class TestConstants {
 	public static final String CONSULTANT_PROVINCE_FOR_ACCOUNT_INFORMATION_CA="Manitoba";
 	public static final String CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA="8067736419";
 
+	//LSD Test Data(Don't modify !!)
+
+	public static final String FIRST_NAME_FOR_TOP_LEVEL_CONSULTANT = "Mary";
+	public static final String LAST_NAME_FOR_TOP_LEVEL_CONSULTANT = "McQueen";
+
+	public static final String FIRST_NAME_FOR_FIRST_CONSULTANT_OF_L1 = "Ramone";
+	public static final String LAST_NAME_FOR_FIRST_CONSULTANT_OF_L1 = "Marine";
+
+	public static final String FIRST_NAME_FOR_SECOND_CONSULTANT_OF_L1 = "Luigi";
+	public static final String LAST_NAME_FOR_SECOND_CONSULTANT_OF_L1 = "Shalhoub";
+
+	public static final String FIRST_NAME_FOR_THIRD_CONSULTANT_OF_L1 = "Guido";
+	public static final String LAST_NAME_FOR_THIRD_CONSULTANT_OF_L1 = "Quaroni";
+
+	public static final String FIRST_NAME_FOR_FOURTH_CONSULTANT_OF_L1 = "Harv";
+	public static final String LAST_NAME_FOR_FOURTH_CONSULTANT_OF_L1 = "Clarkson";
+
+	public static final String FIRST_NAME_FOR_FIFTH_CONSULTANT_OF_L1 = "Sally";
+	public static final String LAST_NAME_FOR_FIFTH_CONSULTANT_OF_L1 = "Carrera";
+
+	public static final String FIRST_NAME_FOR_SIXTH_CONSULTANT_OF_L1 = "Flo";
+	public static final String LAST_NAME_FOR_SIXTH_CONSULTANT_OF_L1 = "Lewis";
+
+	public static final String FIRST_NAME_FOR_SEVENTH_CONSULTANT_OF_L1 = "Fillmore";
+	public static final String LAST_NAME_FOR_SEVENTH_CONSULTANT_OF_L1 = "Carlin";
+
+	public static final String FIRST_NAME_FOR_EIGHTH_CONSULTANT_OF_L1 = "Mack";
+	public static final String LAST_NAME_FOR_EIGHTH_CONSULTANT_OF_L1 = "Crystal";
+
+	public static final String FIRST_NAME_FOR_FIRST_PC_OF_L1 = "Woody";
+	public static final String LAST_NAME_FOR_FIRST_PC_OF_L1 = "Car";
+
+	public static final String FIRST_NAME_FOR_SECOND_PC_OF_L1 = "PT";
+	public static final String LAST_NAME_FOR_SECOND_PC_OF_L1 = "Flea";
+
+	public static final String FIRST_NAME_FOR_FIRST_CONSULTANT_OF_L2 = "Snotrod";
+	public static final String LAST_NAME_FOR_FIRST_CONSULTANT_OF_L2 = "Romano";
+
+	public static final String FIRST_NAME_FOR_SECOND_CONSULTANT_OF_L2 = "Darell";
+	public static final String LAST_NAME_FOR_SECOND_CONSULTANT_OF_L2 = "Waltrip";
+
+	public static final String FIRST_NAME_FOR_THIRD_CONSULTANT_OF_L2 = "Jerry";
+	public static final String LAST_NAME_FOR_THIRD_CONSULTANT_OF_L2 = "Ranft";
+
+	public static final String FIRST_NAME_FOR_FOURTH_CONSULTANT_OF_L2 = "Jay";
+	public static final String LAST_NAME_FOR_FOURTH_CONSULTANT_OF_L2 = "Limo";
+
+	public static final String FIRST_NAME_FOR_FIFTH_CONSULTANT_OF_L2 = "Hamm";
+	public static final String LAST_NAME_FOR_FIFTH_CONSULTANT_OF_L2 = "Truck";
+
+	public static final String FIRST_NAME_FOR_SIXTH_CONSULTANT_OF_L2 = "Albert";
+	public static final String LAST_NAME_FOR_SIXTH_CONSULTANT_OF_L2 = "Hinkey";
+
+	public static final String FIRST_NAME_FOR_SEVENTH_CONSULTANT_OF_L2 = "Mia";
+	public static final String LAST_NAME_FOR_SEVENTH_CONSULTANT_OF_L2 = "Collins";
+
+	public static final String FIRST_NAME_FOR_EIGHTH_CONSULTANT_OF_L2 = "Elvis";
+	public static final String LAST_NAME_FOR_EIGHTH_CONSULTANT_OF_L2 = "Crow";
+
+	public static final String FIRST_NAME_FOR_FIRST_PC_OF_L3 = "Tia";
+	public static final String LAST_NAME_FOR_FIRST_PC_OF_L3 = "Knight";
+
+	public static final String FIRST_NAME_FOR_SECOND_PC_OF_L3 = "Van";
+	public static final String LAST_NAME_FOR_SECOND_PC_OF_L3 = "Kind";
+
+	public static final String FIRST_NAME_FOR_THIRD_PC_OF_L3 = "Fred";
+	public static final String LAST_NAME_FOR_THIRD_PC_OF_L3 = "Stanton";
+
+	public static final String FIRST_NAME_FOR_FOURTH_PC_OF_L3 = "DJ";
+	public static final String LAST_NAME_FOR_FOURTH_PC_OF_L3 = "Holowicki";
+
+	public static final String FIRST_NAME_FOR_FIFTH_PC_OF_L3 = "Mater";
+	public static final String LAST_NAME_FOR_FIFTH_PC_OF_L3 = "Guy";
+
+	public static final String FIRST_NAME_FOR_SIXTH_PC_OF_L3 = "Doc";
+	public static final String LAST_NAME_FOR_SIXTH_PC_OF_L3 = "Hudson";
+
+	public static final String FIRST_NAME_FOR_SEVENTH_PC_OF_L3 = "James";
+	public static final String LAST_NAME_FOR_SEVENTH_PC_OF_L3 = "GoodWin";
+
+	public static final String FIRST_NAME_FOR_EIGHTH_PC_OF_L3 = "Boost";
+	public static final String LAST_NAME_FOR_EIGHTH_PC_OF_L3 = "Rivera";
+
 }
 
 

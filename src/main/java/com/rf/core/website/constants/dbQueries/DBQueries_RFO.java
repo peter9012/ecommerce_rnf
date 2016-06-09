@@ -26,6 +26,8 @@ public class DBQueries_RFO {
 	public static String GET_ACCOUNT_ADDRESS_DETAILS_QUERY_RFO =" select top 1 * from RFO_Accounts.Addresses where addresstypeId='1' and AddressID IN (select top 3 AddressID from RFO_Accounts.AccountContactAddresses where accountContactId IN (select TOP 1 AccountContactId from RFO_Accounts.AccountEmails where EmailAddressID IN (select EmailAddressID from RFO_Accounts.EmailAddresses where EmailAddress='%s')))";
 	public static String GET_EMAIL_ID_FROM_ACCOUNT_ID = "select EmailAddress from RFO_Accounts.AccountContacts acTB INNER JOIN RFO_Accounts.AccountEmails aeTB  "+
 			"on acTB.AccountContactId=aeTB.AccountContactId INNER JOIN RFO_Accounts.EmailAddresses aEMTB on aeTB.EmailAddressID=aEMTB.EmailAddressID WHERE acTB.AccountID='%s' and aEMTB.EmailAddressTypeID=1 ";
+	public static String GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS = "select * from RFO_Accounts.AccountBase join RFO_Accounts.AccountContacts ON RFO_Accounts.AccountContacts.AccountId = RFO_Accounts.AccountBase.AccountID join RFO_Accounts.AccountEmails ON RFO_Accounts.AccountEmails.AccountContactId = RFO_Accounts.AccountContacts.AccountContactId join RFO_Accounts.EmailAddresses ON RFO_Accounts.EmailAddresses.EmailAddressID = RFO_Accounts.AccountEmails.EmailAddressId where RFO_Accounts.EmailAddresses.EmailAddress like '%s'";
+
 	public static String GET_AUTOSHIP_ID_FOR_RFO = "SELECT * "+
 			"FROM Hybris.Autoship AS A "+
 			"WHERE A.AutoshipNumber='%s'";
@@ -1510,14 +1512,14 @@ public class DBQueries_RFO {
 
 	public static String GET_RANDOM_100_USERS_RFO = "select top 100 * from RFO_Accounts.EmailAddresses order by NEWID()";
 
-/*	public static String GET_RANDOM_ACTIVE_SITE_PREFIX_RFO = "select top 1 SitePrefix from Hybris.Sites where accountID IN (select top 1 accountID from RFO_Accounts.AccountBase where countryID=%s and AccountStatusID=1 and AccountTypeID=1 order by newId())";
-*/
+	/*	public static String GET_RANDOM_ACTIVE_SITE_PREFIX_RFO = "select top 1 SitePrefix from Hybris.Sites where accountID IN (select top 1 accountID from RFO_Accounts.AccountBase where countryID=%s and AccountStatusID=1 and AccountTypeID=1 order by newId())";
+	 */
 	public static String GET_RANDOM_ACTIVE_SITE_PREFIX_RFO = "USE RFOperations; "+
-					"SELECT TOP 1 SitePrefix FROM Hybris.Sites "+
-					"WHERE AccountID IN (SELECT TOP 1 AccountID FROM RFO_Accounts.AccountBase (NOLOCK) "+
-					"WHERE CountryID = %s "+
-					"AND AccountStatusID = 1 "+
-					"AND AccountTypeID = 1 ORDER BY NEWID())";
+			"SELECT TOP 1 SitePrefix FROM Hybris.Sites "+
+			"WHERE AccountID IN (SELECT TOP 1 AccountID FROM RFO_Accounts.AccountBase (NOLOCK) "+
+			"WHERE CountryID = %s "+
+			"AND AccountStatusID = 1 "+
+			"AND AccountTypeID = 1 ORDER BY NEWID())";
 	/**
 	 * 
 	 * @param query

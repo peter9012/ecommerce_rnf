@@ -2666,4 +2666,253 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.isAutoshipLinkPresentOnThePage(),"Autoship link is not present");
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-4814:Edit Existing Shipping Billing Address on Edit CRP Template
+	@Test
+	public void testEditExistingShippingAndBillingAddressOnEditCRPTemplate_4814() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String profileName=null;
+		String lastName = "lN";
+		String state = null;
+		String accountID = null;
+		String billingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNumber;
+		String newBillingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNum2;
+		String newProfileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME+randomNum1;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		if(driver.getCountry().equalsIgnoreCase("CA")){   
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
+		}else{
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		//Enroll new CRP
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
+		storeFrontHomePage.clickOnCRPCheckout();
+		storeFrontHomePage.clickOnEditForDefaultShippingAddress();
+		storeFrontHomePage.enterNewShippingAddressName(profileName+" "+lastName);
+		storeFrontHomePage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontHomePage.enterNewShippingAddressCity(city);
+		storeFrontHomePage.selectNewShippingAddressState(state);
+		storeFrontHomePage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontHomePage.enterNewShippingAddressPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickOnSaveShippingProfile();
+		s_assert.assertTrue(storeFrontHomePage.isNewlyCreatedShippingProfileIsSelectedByDefault(profileName),"New Shipping Profile is not selected by default on CRP cart page");
+		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		storeFrontHomePage.clickOnDefaultBillingProfileEdit();
+		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(billingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontHomePage.getDefaultSelectedBillingAddressName().contains(billingProfileName), "Expected shipping profile name is: "+billingProfileName+"Actual on UI is: "+storeFrontHomePage.getDefaultSelectedBillingAddressName());
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
+		// assert shipping and billing profile
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontHomePage.clickOnAutoshipCart();
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(profileName), "Autoship template does not contain shipping profile name");
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(billingProfileName), "Autoship template does not contain billing profile name");
+		// Edit shipping and billing
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.clickOnEditForDefaultShippingAddress();
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedShippingProfileIsSelectedByDefault(newProfileName),"New Shipping Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.getDefaultSelectedShippingAddress().contains(newProfileName), "Expected shipping profile name is: "+newProfileName+"Actual on UI is: "+storeFrontUpdateCartPage.getDefaultSelectedShippingAddress());
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName().contains(newBillingProfileName), "Expected shipping profile name is: "+newBillingProfileName+"Actual on UI is: "+storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName());
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newProfileName), "Autoship template does not contain shipping profile name in Edit section");
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(newBillingProfileName), "Autoship template does not contain billing profile name in Edit section");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-4813:Add New Shipping Billing Address on Edit CRP Template
+	@Test
+	public void testAddNewShippingAndBillingAddressOnEditCRPTemplate_4813() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		int i=0;
+		int countOfBilling = 0;
+		String profileName=null;
+		String lastName = "lN";
+		String accountID = null;
+		String state = null;
+		String billingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNumber;
+		String newBillingProfileName = TestConstants.BILLING_ADDRESS_NAME+randomNum2;
+		String newProfileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME+randomNum1;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		if(driver.getCountry().equalsIgnoreCase("CA")){   
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.PROVINCE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+		}else{
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
+		//Enroll new CRP
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
+		storeFrontHomePage.clickOnCRPCheckout();
+		//Add multiple shipping address
+		for(i=0;i<2;i++){
+			storeFrontHomePage.clickAddNewShippingProfileLink();
+			storeFrontHomePage.enterNewShippingAddressName(profileName+i+" "+lastName);
+			storeFrontHomePage.enterNewShippingAddressLine1(addressLine1);
+			storeFrontHomePage.enterNewShippingAddressCity(city);
+			storeFrontHomePage.selectNewShippingAddressState(state);
+			storeFrontHomePage.enterNewShippingAddressPostalCode(postalCode);
+			storeFrontHomePage.enterNewShippingAddressPhoneNumber(phoneNumber);
+			storeFrontHomePage.clickOnSaveShippingProfile();
+			s_assert.assertTrue(storeFrontHomePage.isNewlyCreatedShippingProfileIsSelectedByDefault(profileName+i),"New Shipping Profile is not selected by default on CRP cart page");
+		}
+		i=1;
+		storeFrontHomePage.selectShippingAddress(profileName+i);
+		s_assert.assertTrue(storeFrontHomePage.getDefaultSelectedShippingAddress().contains(profileName+i), "Expected shipping profile name is: "+profileName+i+"Actual on UI is: "+storeFrontHomePage.getDefaultSelectedShippingAddress());
+		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		for(countOfBilling=0;countOfBilling<2;countOfBilling++){
+			storeFrontHomePage.clickAddNewBillingProfileLink();
+			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontHomePage.enterNewBillingNameOnCard(billingProfileName+countOfBilling+" "+lastName);
+			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontHomePage.selectNewBillingCardAddress();
+			storeFrontHomePage.clickOnSaveBillingProfile();
+		}
+		countOfBilling = 1;
+		storeFrontHomePage.selectBillingAddress(billingProfileName+countOfBilling);
+		s_assert.assertTrue(storeFrontHomePage.getDefaultSelectedBillingAddressName().contains(billingProfileName+countOfBilling), "Expected shipping profile name is: "+billingProfileName+countOfBilling+"Actual on UI is: "+storeFrontHomePage.getDefaultSelectedBillingAddressName());
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
+		// assert shipping and billing profile
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontHomePage.clickOnAutoshipCart();
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultShippingProfileIsUpdatedInAutoshipShippingSection(profileName+i), "Autoship template does not contain shipping profile name");
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(billingProfileName+countOfBilling), "Autoship template does not contain billing profile name");
+		// add shipping and billing
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		for(i=1;i<=2;i++){
+			storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
+			storeFrontUpdateCartPage.enterNewShippingAddressName(newProfileName+i+" "+lastName);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+			storeFrontUpdateCartPage.selectNewShippingAddressState(state);
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
+			storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+			s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedShippingProfileIsSelectedByDefault(newProfileName+i),"New Shipping Profile is not selected by default on CRP cart page");
+		}
+		i=1;
+		storeFrontUpdateCartPage.selectShippingAddress(newProfileName+i);
+		s_assert.assertTrue(storeFrontUpdateCartPage.getDefaultSelectedShippingAddress().contains(newProfileName+i), "Expected shipping profile name is: "+newProfileName+i+"Actual on UI is: "+storeFrontUpdateCartPage.getDefaultSelectedShippingAddress());
+		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		for(countOfBilling=1;countOfBilling<=2;countOfBilling++){
+			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
+			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+countOfBilling+" "+lastName);
+			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+			storeFrontUpdateCartPage.selectNewBillingCardAddress();
+			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		}
+		countOfBilling = 1;
+		storeFrontUpdateCartPage.selectBillingAddress(newBillingProfileName+countOfBilling);
+		s_assert.assertTrue(storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName().contains(newBillingProfileName+countOfBilling), "Expected shipping profile name is: "+newBillingProfileName+countOfBilling+"Actual on UI is: "+storeFrontUpdateCartPage.getDefaultSelectedBillingAddressName());
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(),"Your Next cart has been updated message not present on UI");
+		s_assert.assertTrue(storeFrontUpdateCartPage.verifyUpdatedAddressPresentUpdateCartPg(newProfileName+i), "Autoship template does not contain shipping profile name in Edit section");
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateNewlySelectedDefaultBillingProfileIsNotUpdatedInAutoshipBillingProfileSection(newBillingProfileName+countOfBilling), "Autoship template does not contain billing profile name in Edit section");
+		s_assert.assertAll();
+	}
 }

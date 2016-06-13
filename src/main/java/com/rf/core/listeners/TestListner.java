@@ -10,6 +10,8 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
+
+import com.rf.core.driver.mobile.RFMobileDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 /**
@@ -43,8 +45,12 @@ public class TestListner implements ITestListener {
 			try {
 				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, tr.getMethod().getMethodName());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try {
+					RFMobileDriver.takeSnapShotAndRetPath(RFMobileDriver.driver, tr.getMethod().getMethodName());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		} 
 	}

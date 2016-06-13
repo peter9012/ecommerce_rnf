@@ -1,4 +1,4 @@
-package com.rf.pages.website.storeFront;
+package com.rf.pages.mobile.storeFront;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.rf.core.driver.mobile.RFMobileDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
@@ -28,9 +29,9 @@ import com.rf.pages.RFBasePage;
 import com.thoughtworks.selenium.webdriven.commands.IsElementPresent;
 
 
-public class StoreFrontRFWebsiteBasePage extends RFBasePage{
+public class StoreFrontRFMobileBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
-			.getLogger(StoreFrontRFWebsiteBasePage.class.getName());
+			.getLogger(StoreFrontRFMobileBasePage.class.getName());
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
 	private final By RODAN_AND_FIELDS_LOGO_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
@@ -45,9 +46,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By ADD_NEW_BILLING_CARD_NUMBER_LOC = By.id("card-nr");
 	private final By UPDATE_CART_BTN_LOC = By.xpath("//input[@value='UPDATE CART']");
 
-	protected RFWebsiteDriver driver;
+	protected RFMobileDriver driver;
 	private String RFO_DB = null;
-	public StoreFrontRFWebsiteBasePage(RFWebsiteDriver driver){		
+	public StoreFrontRFMobileBasePage(RFMobileDriver driver){		
 		super(driver);
 		this.driver = driver;
 	}
@@ -233,7 +234,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			//driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();
 		}catch(Exception e){
-			Actions action = new Actions(RFWebsiteDriver.driver);
+			Actions action = new Actions(RFMobileDriver.driver);
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
 			action.moveToElement(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).doubleClick(driver.findElement(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"))).build().perform();
 			//driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
@@ -456,10 +457,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
-		Actions action = new Actions(RFWebsiteDriver.driver);
+		Actions action = new Actions(RFMobileDriver.driver);
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
-			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
+			driver.findElement(By.xpath("//input[contains(@class,'use_address')]")).click();
 		}catch(Exception e){
 			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		}  
@@ -467,7 +468,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		try{
-			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
+			driver.findElement(By.xpath("//input[contains(@class,'use_address')]")).click();
 			logger.info("save shipping info clicked");
 		}catch(Exception e){
 
@@ -553,6 +554,17 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.close();
 		driver.switchTo().window(tabs.get(0));
 		//driver.pauseExecutionFor(2000);
+	}
+
+	public void clickRFStamp(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-rf-stamp')]"));
+		driver.findElement(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-rf-stamp')]")).click();
+		driver.waitForPageLoad();
+	}
+
+	public void clickRFMenuBars(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-menu')]"));
+		driver.findElement(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-menu')]")).click();		
 	}
 
 	public void clickOnRodanAndFieldsLogo(){
@@ -902,7 +914,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]"));
-		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		JavascriptExecutor js = ((JavascriptExecutor)RFMobileDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]")));
 		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
@@ -922,7 +934,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityRC(){
 		driver.waitForElementPresent(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]"));
-		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		JavascriptExecutor js = ((JavascriptExecutor)RFMobileDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath(" //div[@id='activeRetailPopup']//input[contains(@class,'resetPasswordEmail')]")));
 		return driver.isElementPresent(By.xpath("//div[contains(text(),'An e-mail has been sent to reset your password')]"));   
 	}
@@ -939,7 +951,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityConsultant(){
 		driver.waitForElementPresent(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]"));
-		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		JavascriptExecutor js = ((JavascriptExecutor)RFMobileDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[contains(@class,'resetPasswordEmail')]")));
 		//driver.findElement(By.xpath("//div[@id='notavailablePopup']//input[@class='resetPasswordEmail']")).click();
 		//driver.pauseExecutionFor(2000);
@@ -1093,7 +1105,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	@SuppressWarnings("deprecation")
 	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
+		Actions actions = new Actions(RFMobileDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
@@ -1101,7 +1113,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		actions.moveToElement(allProducts).pause(1000).build().perform();
 		while(true){
 			try{
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+				driver.clickByJS(RFMobileDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 
 				break;
 			}catch(Exception e){
@@ -1117,7 +1129,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	@SuppressWarnings("deprecation")
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
+		Actions actions = new Actions(RFMobileDriver.driver);
 		//driver.waitForElementPresent(By.id("our-products")); 
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
@@ -1125,7 +1137,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		actions.moveToElement(allProducts).pause(1000).build().perform();
 		while(true){
 			try{
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+				driver.clickByJS(RFMobileDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 
 				break;
 			}catch(Exception e){
@@ -1142,13 +1154,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
 		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("clicked on welcome drop down");		
-	}
-
-	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
-		logger.info("User has clicked on orders link from welcome drop down");
-		return new StoreFrontOrdersPage(driver);
 	}
 
 	public void clickOnYourAccountDropdown(){
@@ -1233,9 +1238,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		applyPriceFilterHighToLow();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+			driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).click();
 		else
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+			driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]")).click();
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -1426,8 +1431,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void applyPriceFilterHighToLow() throws InterruptedException{
 		//driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));
-		driver.click(By.xpath("//select[@id='sortOptions']"));
-		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
+		driver.findElement(By.xpath("//select[@id='sortOptions']")).click();
+		driver.findElement(By.xpath("//select[@id='sortOptions']/option[2]")).click();
 		logger.info("filter done for high to low price");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
@@ -1780,7 +1785,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterEditedCardNumber(String cardNumber){
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("credit-cards"));  
-		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		JavascriptExecutor js = ((JavascriptExecutor)RFMobileDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		//driver.pauseExecutionFor(2000);
 		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
@@ -1943,7 +1948,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnEditShipping() throws InterruptedException{
 		//driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a/ancestor::div[@style='display: block;']"));		
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")));
 		logger.info("Edit Shipping link clicked");			
 	}
@@ -1957,6 +1962,33 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public String getDefaultSelectedShippingAddress(){
 		//driver.waitForElementPresent(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]"));
 		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
+	}
+
+	public void clickShopSkinCareOnMenuBar(){
+		Actions actions = new Actions(RFMobileDriver.driver);
+		//		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.xpath("//a[@id='our-products']/span"));
+		//		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		driver.waitForElementPresent(By.xpath("//a[@id='our-products']/span"));
+		driver.pauseExecutionFor(3000);
+		try{
+			driver.findElement(By.xpath("//a[@id='our-products']/span")).click();
+		}catch(Exception e){
+			System.out.println("catch 1");
+			try{
+				actions.click(shopSkinCare).build().perform();
+			}catch(Exception e1){
+				System.out.println("catch 2");
+				actions.doubleClick(shopSkinCare).build().perform();
+			}
+		}
+		System.out.println("clicked");
+	}
+
+	public void clickAllProductsLink(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")).click();
+		driver.waitForPageLoad();
 	}
 
 }

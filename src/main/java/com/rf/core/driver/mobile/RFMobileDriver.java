@@ -26,12 +26,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rf.core.driver.RFDriver;
+import com.rf.core.utils.DBUtil;
 import com.rf.core.utils.PropertyFile;
 import com.rf.core.website.constants.TestConstants;
 
@@ -42,12 +44,13 @@ import com.rf.core.website.constants.TestConstants;
  *         functions are added along with regular functions
  */
 public class RFMobileDriver implements RFDriver, WebDriver {
-	public static AppiumDriver driver;
+//	public static AppiumDriver driver;
+	public static WebDriver driver;
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 120;
+	private static int DEFAULT_TIMEOUT = 30;
 	private static int MIN_DEFAULT_TIMEOUT=5;
 	private static String platformUsed;
-	
+
 	public RFMobileDriver(PropertyFile propertyFile) {
 		super();
 		this.propertyFile = propertyFile;
@@ -62,7 +65,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 *             Prepares the environment that tests to be run on
 	 */
 	public void loadApplication() throws MalformedURLException {
-		capabilities.setCapability("device", propertyFile.getProperty("device"));
+		//capabilities.setCapability("device", propertyFile.getProperty("device"));
 		capabilities.setCapability("platformName",
 				propertyFile.getProperty("platformName"));
 		capabilities.setCapability("platformVersion",
@@ -72,23 +75,72 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		capabilities.setCapability("browserName",
 				propertyFile.getProperty("browserName"));
 		capabilities.setCapability("autoAcceptAlerts", "true");
-	//	capabilities.setCapability("newCommandTimeout", 600);
+		//	capabilities.setCapability("newCommandTimeout", 600);
 		URL remoteUrl = new URL("http://" + propertyFile.getProperty("host")
 				+ "/wd/hub");
 		logger.debug("Remote URL is " + remoteUrl);
 		if (propertyFile.getProperty("platformName").contains("iOS"))
 			driver = new IOSDriver(remoteUrl, capabilities);
 		else
-			driver = new AndroidDriver(remoteUrl, capabilities);
-		
+			//driver = new AndroidDriver(remoteUrl, capabilities);
+			driver = new RemoteWebDriver(remoteUrl, capabilities);
+
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.get(propertyFile.getProperty("baseUrl"));
 		platformUsed = propertyFile.getProperty("platformName");
 	}
 
+	public void setDBConnectionString(){
+		String dbIP = null;
+		String dbUsername = null;
+		String dbPassword = null;
+		String dbDomain = null;
+
+		String authentication = null;
+		dbIP = propertyFile.getProperty("dbIP");
+		dbUsername = propertyFile.getProperty("dbUsername");
+		dbPassword = propertyFile.getProperty("dbPassword");
+		dbDomain = propertyFile.getProperty("dbDomain");		 
+		authentication = propertyFile.getProperty("authentication");
+		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
+		logger.info("DB connections are set");
+	}
+
+	public void selectCountry(String country){
+		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
+		if(country.equalsIgnoreCase("ca")){
+			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownCA']")).click();
+		}
+		else{
+			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownUS']")).click();
+		}
+		waitForPageLoad();
+	}
+
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
+
+	public String getDBNameRFL(){
+		return propertyFile.getProperty("databaseNameRFL");
+	}
+
+	public String getDBNameRFO(){
+		return propertyFile.getProperty("databaseNameRFO");
+	}
+
+	public String getCountry(){
+		return propertyFile.getProperty("country");
+	}
+
+	public String getEnvironment(){
+		return propertyFile.getProperty("environment");
+	}
+
+	public String getStoreFrontPassword(){
+		return propertyFile.getProperty("storeFrontPassword");
+	}
+
 
 	/**
 	 * @param locator
@@ -101,37 +153,118 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			return false;
 	}
 
-	/**
-	 * @param locator
-	 *            Waits
-	 */
-	// public void waitForElementPresent(By locator) {
-	// try {
-	// for (int i = 0; i < 10; i++) {
-	// logger.debug("waiting for locator " + locator);
-	// if (isElementPresent(locator))
-	// break;
-	// Thread.sleep(100);
-	// }
-	// } catch (Exception e) {
-	// e.getStackTrace();
-	// }
-	// // driver.findElements((By) element).size()
-	//
-	// }
-
 	public void waitForElementPresent(By locator) {
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_TIMEOUT, 15);
-			logger.debug("waiting for locator " + locator);
-			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-			logger.debug("Found locator "+ locator);
-		} catch (Exception e) {
-			e.getStackTrace();
+		logger.info("wait started for "+locator);
+		int timeout = 10;
+		turnOffImplicitWaits();
+		boolean isElementFound = false;
+		for(int i=1;i<=timeout;i++){		
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					isElementFound =true;
+					turnOnImplicitWaits();
+					pauseExecutionFor(1000);
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
 		}
-		// driver.findElements((By) element).size()
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");		
+	}
+
+	public void quickWaitForElementPresent(By locator){
+		logger.info("quick wait started for "+locator);
+		int timeout = 2;
+		turnOffImplicitWaits();
+		for(int i=1;i<=timeout;i++){
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+
+	public void waitForLoadingImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@id='blockUIBody']");
+		logger.info("Waiting for loading image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					logger.info("loading image disappears");
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
 
 	}
+
+	public void waitForLoadingImageToAppear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//div[@id='blockUIBody']");
+		int timeout = 3;
+
+		for(int i=1;i<=timeout;i++){			
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+
+					continue;
+				}else{
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+
+	}
+
+	public void waitForSpinImageToDisappear(){
+		turnOffImplicitWaits();
+		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: inline;')]");
+		logger.info("Waiting for spin image to get disappear");
+		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
+			try{
+				if(driver.findElements(locator).size()==1){
+					pauseExecutionFor(1000);
+					logger.info("waiting..");
+					continue;
+				}else {
+					logger.info("spin image disappears");
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+
 
 	/**
 	 * @param locator
@@ -174,8 +307,8 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	}
 
 	public List<WebElement> findElements(By by) {
-//		if(getPlatformUsed().equalsIgnoreCase(TestConstants.IOS))
-//		movetToElementJavascript(by);
+		//		if(getPlatformUsed().equalsIgnoreCase(TestConstants.IOS))
+		//		movetToElementJavascript(by);
 		return driver.findElements(by);
 	}
 
@@ -470,16 +603,61 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		executor.executeScript("arguments[0].click();", element);
 	}
 
-	public String takeSnapShotAndRetPath(WebDriver driver) throws Exception {
-		logger.debug("INTO METHOD->Fn_TakeSnapShotAndRetPath");
+	public void clickByJS(WebDriver driver, WebElement element) {
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", element);
+	}
+
+	public void switchToSecondWindow(){
+		//		Set<String> allWindows = driver.getWindowHandles();
+		//		Iterator itr = allWindows.iterator();
+		//		while(itr.hasNext()){
+		//			driver.switchTo().window((String) itr.next());
+		//			break;
+		//		}
+
+		Set<String> allWindows = driver.getWindowHandles();
+		logger.info("total windows opened = "+allWindows.size());
+		String parentWindow = driver.getWindowHandle();
+		for(String allWin : allWindows){
+			if(!allWin.equalsIgnoreCase(parentWindow)){
+				driver.switchTo().window(allWin);
+				break;
+			}
+
+		}
+		logger.info("Switched to second window whose title is "+driver.getTitle());		
+	}
+
+
+	public static String takeSnapShotAndRetPath(WebDriver driver,String methodName) throws Exception {
+
 		String FullSnapShotFilePath = "";
 
-		try {
-			logger.debug("Take Screen shot started");
+		try {			
 			File scrFile = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.FILE);
 			String sFilename = null;
-			sFilename = "Screenshot-" + getDateTime() + ".png";
+			sFilename = "Screenshot-" +methodName+getDateTime() + ".png";
+			FullSnapShotFilePath = System.getProperty("user.dir")
+					+ "\\output\\ScreenShots\\" + sFilename;
+			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
+		} catch (Exception e) {
+
+		}
+
+		return FullSnapShotFilePath;
+	}
+
+	public static String takeSnapShotAndRetPath(WebDriver driver) throws Exception {
+
+		String FullSnapShotFilePath = "";
+		try {
+			logger.info("Taking Screenshot");
+			File scrFile = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.FILE);
+			String sFilename = null;
+			sFilename = "verificationFailure_Screenshot.png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
 					+ "\\output\\ScreenShots\\" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
@@ -495,9 +673,9 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * @return
 	 */
-	public void swipe(int startx, int starty, int endx, int endy, int duration) {
-		driver.swipe(startx, starty, endx, endy, duration);
-	}
+//	public void swipe(int startx, int starty, int endx, int endy, int duration) {
+//		driver.swipe(startx, starty, endx, endy, duration);
+//	}
 
 	/**
 	 * Returns current Date Time
@@ -594,12 +772,12 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		.executeScript("window.scrollTo(0,0);");
 	}
 
-//	public void takeScreenShot() throws Exception{
-//		WebDriver driver1 = new Augmenter().augment(driver);
-//		File file  = ((TakesScreenshot)driver1).getScreenshotAs(OutputType.FILE);
-//		FileUtils.copyFile(file, new File("Screenshot.jpg"));
-//	}
-	
+	//	public void takeScreenShot() throws Exception{
+	//		WebDriver driver1 = new Augmenter().augment(driver);
+	//		File file  = ((TakesScreenshot)driver1).getScreenshotAs(OutputType.FILE);
+	//		FileUtils.copyFile(file, new File("Screenshot.jpg"));
+	//	}
+
 	public boolean isElementClickable(WebElement element) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, MIN_DEFAULT_TIMEOUT);
@@ -609,9 +787,9 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			return false;
 		}
 	}
-	
+
 	public String getPlatformUsed() {
 		return platformUsed;
 	}
-	
+
 }

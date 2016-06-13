@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.asserts.IAssert;
 import org.testng.collections.Maps;
+
+import com.rf.core.driver.mobile.RFMobileDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 public class SoftAssert extends org.testng.asserts.SoftAssert {
@@ -70,11 +72,16 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 	@Override
 	public void onAssertFailure(IAssert a, AssertionError ex)
 	{
+		String sScreenshotPath=null;
 		try {
 			logger.info("VERIFICATION FAILED: " + ex.getMessage());
 			logger.info("Expected: " + a.getExpected());
-			logger.info("Actual: " + a.getActual());			
-			String sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
+			logger.info("Actual: " + a.getActual());
+			try{
+				sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
+			}catch(Exception e){
+				sScreenshotPath= RFMobileDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
+			}
 			logger.info("Snapshot Path :<a href='" + sScreenshotPath + "'>"+ sScreenshotPath+"</a>\n");
 			m_errors.put(ex, a);
 		} catch (Exception e) {

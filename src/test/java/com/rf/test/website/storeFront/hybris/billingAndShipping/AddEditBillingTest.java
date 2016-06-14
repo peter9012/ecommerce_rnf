@@ -495,7 +495,6 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	@Test(priority=8)
 	public void testAddAndEditNewBillingProfileDuringCRPEnrollment_2046_2052() throws InterruptedException{
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		String lastName = "lN";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
 		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();

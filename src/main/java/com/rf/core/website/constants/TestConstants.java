@@ -40,7 +40,7 @@ public class TestConstants {
 
 	public static final String FIRST_NAME = "auto";
 	public static final String LAST_NAME = FIRST_NAME;		
-	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
+	public static final String EMAIL_ADDRESS_SUFFIX = "@rf.com";
 
 	//public static final String PASSWORD = "test1234";
 	//public static final String PASS = "111Maiden$";

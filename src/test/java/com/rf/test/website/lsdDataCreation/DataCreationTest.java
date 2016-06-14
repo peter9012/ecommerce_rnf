@@ -56,14 +56,15 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		/**
 		 * Mary McQueen enrollment(TOP LEVEL)
 		 */
-		String emailID = TestConstants.FIRST_NAME_FOR_TOP_LEVEL_CONSULTANT+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String topLevelUserEmailID = TestConstants.FIRST_NAME_FOR_TOP_LEVEL_CONSULTANT+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage.clickOnOurBusinessLink();
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String firstName = TestConstants.FIRST_NAME_FOR_TOP_LEVEL_CONSULTANT;
 		String lastName = TestConstants.LAST_NAME_FOR_TOP_LEVEL_CONSULTANT;
-		String consultantEmailID = 	storeFrontHomePage.createConsultant("test", kitName, regimenName, enrollmentType, firstName, lastName, emailID, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, socialInsuranceNumber, productQuantity );
+		String consultantEmailID = 	storeFrontHomePage.createConsultant("test", kitName, regimenName, enrollmentType, firstName, lastName, topLevelUserEmailID, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, socialInsuranceNumber, productQuantity );
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for top level consultant");
 		logger.info("Top level consultant email : "+consultantEmailID);
+		System.out.println("Top level consultant email : "+consultantEmailID);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 
@@ -84,6 +85,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String firstConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForFirstConsultantOfL1, lastNameForFirstConsultantOfL1, emailIdForFirstConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFirstConsultantOfL1, productQuantity );
 		logger.info("First consultant email of L1: "+firstConsultantEmailIDOfL1);
+		System.out.println("First consultant email of L1: "+firstConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for first consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -100,6 +102,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String secondConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForSecondConsultantOfL1, lastNameForSecondConsultantOfL1, emailIdForSecondConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSecondConsultantOfL1, productQuantity );
 		logger.info("Second consultant email of L1: "+secondConsultantEmailIDOfL1);
+		System.out.println("Second consultant email of L1: "+secondConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for second consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -116,6 +119,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String thirdConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForThirdConsultantOfL1, lastNameForThirdConsultantOfL1, emailIdForThirdConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForThirdConsultantOfL1, productQuantity );
 		logger.info("Third consultant email of L1: "+thirdConsultantEmailIDOfL1);
+		System.out.println("Third consultant email of L1: "+thirdConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for third consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -132,6 +136,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String fourthConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForFourthConsultantOfL1, lastNameForFourthConsultantOfL1, emailIdForFourthConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFourthConsultantOfL1, productQuantity );
 		logger.info("Fourth consultant email of L1: "+fourthConsultantEmailIDOfL1);
+		System.out.println("Fourth consultant email of L1: "+fourthConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for fourth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -148,10 +153,10 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String fifthConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForFifthConsultantOfL1, lastNameForFifthConsultantOfL1, emailIdForFifthConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFifthConsultantOfL1, productQuantity );
 		logger.info("Fifth consultant email of L1: "+fifthConsultantEmailIDOfL1);
+		System.out.println("Fifth consultant email of L1: "+fifthConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for fifth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
-
 
 		/**
 		 * LEVEL 1 Flo Lewis consultant enrollment under Mary McQueen 
@@ -165,6 +170,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String sixthConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForSixthConsultantOfL1, lastNameForSixthConsultantOfL1, emailIdForSixthConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSixthConsultantOfL1, productQuantity );
 		logger.info("Sixth consultant email of L1: "+sixthConsultantEmailIDOfL1);
+		System.out.println("Sixth consultant email of L1: "+sixthConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for sixth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -181,6 +187,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String seventhConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForSeventhConsultantOfL1, lastNameForSeventhConsultantOfL1, emailIdForSeventhConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSeventhConsultantOfL1, productQuantity );
 		logger.info("Seventh consultant email of L1: "+seventhConsultantEmailIDOfL1);
+		System.out.println("Seventh consultant email of L1: "+seventhConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for seventh consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -197,6 +204,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String eighthConsultantEmailIDOfL1 = storeFrontHomePage.createConsultant(sponsorIDOfTopLevelConsultant, kitName, regimenName, enrollmentType, firstNameForEighthConsultantOfL1, lastNameForEighthConsultantOfL1, emailIdForEighthConsultantOfL1, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForEighthConsultantOfL1, productQuantity );
 		logger.info("Eighth consultant email of L1: "+eighthConsultantEmailIDOfL1);
+		System.out.println("Eighth consultant email of L1: "+eighthConsultantEmailIDOfL1);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for eighth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -210,6 +218,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForFirstPCOfL1 = TestConstants.FIRST_NAME_FOR_FIRST_PC_OF_L1+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String firstPCEmailIDOfL1 = storeFrontHomePage.createPC(firstNameForFirstPCOfL1, lastNameForFirstPCOfL1, password, emailIdForFirstPCOfL1, sponsorIDOfTopLevelConsultant, newBillingProfileName);
 		logger.info("First pc email of L1: "+firstPCEmailIDOfL1);
+		System.out.println("First pc email of L1: "+firstPCEmailIDOfL1);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "First PC of L1 is not registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -226,6 +235,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForSecondPCOfL1 = TestConstants.FIRST_NAME_FOR_SECOND_PC_OF_L1+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String secondPCEmailIDOfL1 = storeFrontHomePage.createPC(firstNameForSecondPCOfL1, lastNameForSecondPCOfL1, password, emailIdForSecondPCOfL1, sponsorIDOfTopLevelConsultant, newBillingProfileName);
 		logger.info("Second pc email of L1: "+secondPCEmailIDOfL1);
+		System.out.println("Second pc email of L1: "+secondPCEmailIDOfL1);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -253,6 +263,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String firstConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfFirstConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForFirstConsultantOfL2, lastNameForFirstConsultantOfL2, emailIdForFirstConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFirstConsultantOfL2, productQuantity );
 		logger.info("First consultant email of L2: "+firstConsultantEmailIDOfL2);
+		System.out.println("First consultant email of L2: "+firstConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for first consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -275,6 +286,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String secondConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfSecondConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForSecondConsultantOfL2, lastNameForSecondConsultantOfL2, emailIdForSecondConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSecondConsultantOfL2, productQuantity );
 		logger.info("Second consultant email of L2: "+secondConsultantEmailIDOfL2);
+		System.out.println("Second consultant email of L2: "+secondConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for second consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -297,6 +309,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String thirdConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfThirdConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForThirdConsultantOfL2, lastNameForThirdConsultantOfL2, emailIdForThirdConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForThirdConsultantOfL2, productQuantity );
 		logger.info("Third consultant email of L2: "+thirdConsultantEmailIDOfL2);
+		System.out.println("Third consultant email of L2: "+thirdConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for third consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -319,6 +332,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String fourthConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfFourthConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForFourthConsultantOfL2, lastNameForFourthConsultantOfL2, emailIdForFourthConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFourthConsultantOfL2, productQuantity );
 		logger.info("Fourth consultant email of L2: "+fourthConsultantEmailIDOfL2);
+		System.out.println("Fourth consultant email of L2: "+fourthConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for fourth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -341,6 +355,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String fifthConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfFifthConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForFifthConsultantOfL2, lastNameForFifthConsultantOfL2, emailIdForFifthConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForFifthConsultantOfL2, productQuantity );
 		logger.info("Fifth consultant email of L2: "+fifthConsultantEmailIDOfL2);
+		System.out.println("Fifth consultant email of L2: "+fifthConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for fifth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -363,6 +378,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String sixthConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfSixthConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForSixthConsultantOfL2, lastNameForSixthConsultantOfL2, emailIdForSixthConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSixthConsultantOfL2, productQuantity );
 		logger.info("Sixth consultant email of L2: "+sixthConsultantEmailIDOfL2);
+		System.out.println("Sixth consultant email of L2: "+sixthConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for sixth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -385,6 +401,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String seventhConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfSeventhConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForSeventhConsultantOfL2, lastNameForSeventhConsultantOfL2, emailIdForSeventhConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForSeventhConsultantOfL2, productQuantity );
 		logger.info("Seventh consultant email of L2: "+seventhConsultantEmailIDOfL2);
+		System.out.println("Seventh consultant email of L2: "+seventhConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for seventh consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -406,6 +423,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnOurEnrollNowLink();
 		String eighthConsultantEmailIDOfL2 = storeFrontHomePage.createConsultant(sponsorIDOfEighthConsultantOfL1, kitName, regimenName, enrollmentType, firstNameForEighthConsultantOfL2, lastNameForEighthConsultantOfL2, emailIdForEighthConsultantOfL2, password, addressLine1, city, postalCode, phoneNumber, cardNumber,nameOnCard, SINForEighthConsultantOfL2, productQuantity );
 		logger.info("Eighth consultant email of L2: "+eighthConsultantEmailIDOfL2);
+		System.out.println("Eighth consultant email of L2: "+eighthConsultantEmailIDOfL2);
 		Assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible for eighth consultant of L1");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -421,6 +439,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForFirstPCOfL3 = TestConstants.FIRST_NAME_FOR_FIRST_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String firstPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForFirstPCOfL3, lastNameForFirstPCOfL3, password, emailIdForFirstPCOfL3, sponsorIDOfFirstConsultantOfL1, newBillingProfileName);
 		logger.info("First pc email of L1: "+firstPCEmailIDOfL3);
+		System.out.println("First pc email of L1: "+firstPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "First PC of L1 is not registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -438,6 +457,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForSecondPCOfL3 = TestConstants.FIRST_NAME_FOR_SECOND_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String secondPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForSecondPCOfL3, lastNameForSecondPCOfL3, password, emailIdForSecondPCOfL3, sponsorIDOfSecondConsultantOfL1, newBillingProfileName);
 		logger.info("Second pc email of L3: "+secondPCEmailIDOfL3);
+		System.out.println("Second pc email of L3: "+secondPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -454,6 +474,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForThirdPCOfL3 = TestConstants.FIRST_NAME_FOR_THIRD_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String thirdPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForThirdPCOfL3, lastNameForThirdPCOfL3, password, emailIdForThirdPCOfL3, sponsorIDOfThirdConsultantOfL1, newBillingProfileName);
 		logger.info("Third pc email of L3: "+thirdPCEmailIDOfL3);
+		System.out.println("Third pc email of L3: "+thirdPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -470,6 +491,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForFourthPCOfL3 = TestConstants.FIRST_NAME_FOR_FOURTH_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String fourthPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForFourthPCOfL3, lastNameForFourthPCOfL3, password, emailIdForFourthPCOfL3, sponsorIDOfFourthConsultantOfL1, newBillingProfileName);
 		logger.info("Fourth pc email of L3: "+fourthPCEmailIDOfL3);
+		System.out.println("Fourth pc email of L3: "+fourthPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -487,6 +509,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForFifthPCOfL3 = TestConstants.FIRST_NAME_FOR_FIFTH_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String fifthPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForFifthPCOfL3, lastNameForFifthPCOfL3, password, emailIdForFifthPCOfL3, sponsorIDOfFifthConsultantOfL1, newBillingProfileName);
 		logger.info("Fifth pc email of L3: "+fifthPCEmailIDOfL3);
+		System.out.println("Fifth pc email of L3: "+fifthPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -503,6 +526,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForSixthPCOfL3 = TestConstants.FIRST_NAME_FOR_SIXTH_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String sixthPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForSixthPCOfL3, lastNameForSixthPCOfL3, password, emailIdForSixthPCOfL3, sponsorIDOfSixthConsultantOfL1, newBillingProfileName);
 		logger.info("Sixth pc email of L3: "+sixthPCEmailIDOfL3);
+		System.out.println("Sixth pc email of L3: "+sixthPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -519,6 +543,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForSeventhPCOfL3 = TestConstants.FIRST_NAME_FOR_SEVENTH_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String seventhPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForSeventhPCOfL3, lastNameForSeventhPCOfL3, password, emailIdForSeventhPCOfL3, sponsorIDOfSeventhConsultantOfL1, newBillingProfileName);
 		logger.info("Seventh pc email of L3: "+seventhPCEmailIDOfL3);
+		System.out.println("Seventh pc email of L3: "+seventhPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);
@@ -535,6 +560,7 @@ public class DataCreationTest extends RFWebsiteBaseTest{
 		String emailIdForEighthPCOfL3 = TestConstants.FIRST_NAME_FOR_EIGHTH_PC_OF_L3+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		String eighthPCEmailIDOfL3 = storeFrontHomePage.createPC(firstNameForEighthPCOfL3, lastNameForEighthPCOfL3, password, emailIdForEighthPCOfL3, sponsorIDOfEighthConsultantOfL1, newBillingProfileName);
 		logger.info("Eighth pc email of L3: "+eighthPCEmailIDOfL3);
+		System.out.println("Eighth pc email of L3: "+eighthPCEmailIDOfL3);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		Assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownPresentForCheckUserRegistered(), "User NOT registered successfully");
 		driver.get(driver.getURL()+"/"+country);

@@ -30,7 +30,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFMobileBasePage{
 
 	public void clickOnEditPaymentBillingProfile(){
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
-		driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
+		driver.findElement(PAYMENT_BILLING_EDIT_BTN_LOC).click();
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 	}

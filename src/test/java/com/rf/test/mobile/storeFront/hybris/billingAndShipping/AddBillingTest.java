@@ -28,7 +28,7 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
-	
+
 	private String country = null;
 	private String RFO_DB = null;
 	private int randomNum; 	
@@ -51,7 +51,7 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
-//			storeFrontHomePage.clickRodanAndFieldsLogo();
+			//			storeFrontHomePage.clickRodanAndFieldsLogo();
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
@@ -59,11 +59,11 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 				driver.get(driver.getURL());
 			}
 			else{
-//				storeFrontConsultantPage.clickOnWelcomeDropDown();
-//				if(storeFrontHomePage.isEditCRPLinkPresent()==true)
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				if(storeFrontHomePage.isEditCRPLinkPresent()==true)
 					break;
-				//else
-					//driver.get(driver.getURL());				
+				else
+					driver.get(driver.getURL());				
 			}
 
 		}
@@ -77,37 +77,35 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 		String lastName = "lN";
 		String defaultBillingProfileName = null;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-//		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-//		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-//		int totalBillingProfiles = storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed();
-//		if(totalBillingProfiles>1){
-//			defaultBillingProfileName = storeFrontBillingInfoPage.getDefaultSelectedBillingAddressName();
-//		}
-//		else{
-//			defaultBillingProfileName = storeFrontBillingInfoPage.getFirstBillingProfileName();
-//		}
-//		logger.info("Default Billing profile is "+defaultBillingProfileName);
-//		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
-//		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
-//		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontBillingInfoPage.selectNewBillingCardAddress();
-//		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-//		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-//
-//		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-//
-//		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
-//
-//		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page");
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+		int totalBillingProfiles = storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed();
+		if(totalBillingProfiles>1){
+			defaultBillingProfileName = storeFrontBillingInfoPage.getDefaultSelectedBillingAddressName();
+		}
+		else{
+			defaultBillingProfileName = storeFrontBillingInfoPage.getFirstBillingProfileName();
+		}
+		logger.info("Default Billing profile is "+defaultBillingProfileName);
+		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
+
+		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page");
 //		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page");
-//
-//		storeFrontHomePage.clickRFStamp();
+
+		storeFrontHomePage.clickRFStamp();
 		storeFrontHomePage.clickRFMenuBars();
 		storeFrontHomePage.clickShopSkinCareOnMenuBar();
 		storeFrontHomePage.clickAllProductsLink();
@@ -133,5 +131,5 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 
 		s_assert.assertAll();  
 	}
-	
+
 }

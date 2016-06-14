@@ -1,5 +1,7 @@
 package com.rf.pages.mobile.storeFront;
 
+import io.appium.java_client.TouchAction;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -858,7 +861,7 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 
 	public StoreFrontCartAutoShipPage clickEditCrpLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		//driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
-		driver.click(WELCOME_DD_EDIT_CRP_LINK_LOC);
+		driver.findElement(WELCOME_DD_EDIT_CRP_LINK_LOC).click();
 		logger.info("User has clicked on edit Crp link from welcome drop down");
 		driver.waitForPageLoad();
 		return new StoreFrontCartAutoShipPage(driver);
@@ -1965,24 +1968,32 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 	}
 
 	public void clickShopSkinCareOnMenuBar(){
-		Actions actions = new Actions(RFMobileDriver.driver);
-		//		driver.waitForElementPresent(By.id("our-products")); 
-		WebElement shopSkinCare = driver.findElement(By.xpath("//a[@id='our-products']/span"));
-		//		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-		driver.waitForElementPresent(By.xpath("//a[@id='our-products']/span"));
-		driver.pauseExecutionFor(3000);
+		List<WebElement>allElement = driver.findElements(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
+		System.out.println("SIZE="+allElement.size());
 		try{
-			driver.findElement(By.xpath("//a[@id='our-products']/span")).click();
+			allElement.get(0).click();
 		}catch(Exception e){
-			System.out.println("catch 1");
 			try{
-				actions.click(shopSkinCare).build().perform();
-			}catch(Exception e1){
-				System.out.println("catch 2");
-				actions.doubleClick(shopSkinCare).build().perform();
+				System.out.println("***************");
+				JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
+				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']")));
+			}
+			finally{		
+				System.out.println("###############");
+				WebElement elem = driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
+
+				// This will enable this element if element is invisible      
+
+				String js = "arguments[0].style.height='auto'; arguments[0].style.visibility='visible';";
+
+				// Execute the Java Script for the element which we find out
+				((JavascriptExecutor) RFMobileDriver.driver).executeScript(js, elem);
+
+				// Click on element
+
+				elem.click();
 			}
 		}
-		System.out.println("clicked");
 	}
 
 	public void clickAllProductsLink(){

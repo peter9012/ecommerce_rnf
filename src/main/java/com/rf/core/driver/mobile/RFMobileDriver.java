@@ -1,6 +1,7 @@
 package com.rf.core.driver.mobile;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 
@@ -44,8 +45,8 @@ import com.rf.core.website.constants.TestConstants;
  *         functions are added along with regular functions
  */
 public class RFMobileDriver implements RFDriver, WebDriver {
-//	public static AppiumDriver driver;
-	public static WebDriver driver;
+	public static AppiumDriver driver;
+//	public static WebDriver driver;
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 30;
 	private static int MIN_DEFAULT_TIMEOUT=5;
@@ -83,8 +84,21 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			driver = new IOSDriver(remoteUrl, capabilities);
 		else
 			//driver = new AndroidDriver(remoteUrl, capabilities);
-			driver = new RemoteWebDriver(remoteUrl, capabilities);
-
+			driver = new AppiumDriver(remoteUrl, capabilities) {
+				
+				@Override
+				public MobileElement scrollToExact(String arg0) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public MobileElement scrollTo(String arg0) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			};
+			
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.get(propertyFile.getProperty("baseUrl"));
 		platformUsed = propertyFile.getProperty("platformName");
@@ -139,6 +153,10 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 
 	public String getStoreFrontPassword(){
 		return propertyFile.getProperty("storeFrontPassword");
+	}
+	
+	public void tap(int x,WebElement element,int y){
+		driver.tap(x, element, y);
 	}
 
 

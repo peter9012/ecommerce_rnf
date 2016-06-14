@@ -24,9 +24,9 @@ import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 
-public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
+public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	private static final Logger logger = LogManager
-			.getLogger(AddBillingTest.class.getName());
+			.getLogger(AddEditBillingTest.class.getName());
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontBillingInfoPage storeFrontBillingInfoPage;
@@ -110,12 +110,15 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
+	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page
+
 	@Test(priority=1)
-	public void testAddNewBillingProfileOnBillingProfilePage_2041() throws InterruptedException, SQLException{
+	public void testAddAndEditNewBillingProfileOnBillingProfilePage_2041_2047() throws InterruptedException, SQLException{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String defaultBillingProfileName = null;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
 		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
@@ -143,17 +146,36 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page when we add a new billing info");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page when we add a new billing info");
 
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Edit the newly added billing profile
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum1;
+		storeFrontBillingInfoPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info page when we edit the billing info");
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Already Default billing profile is not DEFAULT selected on billing info page when we edit the billing info");
+
+
+		//------------------------------Verify billing profile for adhoc cart page ------------------------------------------//
+
+		//storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontHomePage.clickAddToBagButton(country);
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		storeFrontHomePage.clickOnCheckoutButton();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created Billing profile is NOT listed on the Adhoc cart");
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
 		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Adhoc cart");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 
@@ -164,7 +186,7 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//------------------ Verify that CRP/PC cart contains the newly created billing profile address as selected ------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on autoship cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(editedBillingProfileName),"Newly/Edited Billing Profile is not selected by default on autoship cart page");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -172,8 +194,9 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-2341:Add new billing profile | My Account | checkbox UN-CHECKED
+	// Hybris Phase 2-2342:Edit billing profile | My Account | Not check
 	@Test(priority=2)
-	public void testAddBillingProfileMyAccountFutureAutoshipCheckboxNotChecked_2341() throws InterruptedException{
+	public void testAddAndEditBillingProfileMyAccountFutureAutoshipCheckboxNotChecked_2341_2342() throws InterruptedException{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
 		String defaultBillingProfileName = null;
@@ -204,29 +227,47 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page when we add a new billing info");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page when we add a new billing info");
 
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Edit the newly added billing profile
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum1;
+		storeFrontBillingInfoPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
+
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info pagewhen we edit the billing info ");
+
+		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Already Default billing profile is not DEFAULT selected on billing info page when we edit the billing info");
+
+
+		//-----------------------Verify That newly/edited Billing Profile is Selected for Adhoc order Cart page-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontHomePage.clickAddToBagButton(country);
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		storeFrontHomePage.clickOnCheckoutButton();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created Billing profile is NOT listed on the Adhoc cart");
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
 		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Adhoc cart");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 
-		//------------------ Verify that CRP/PC cart contains the newly created billing profile address as selected ------------------------------------------------------------
+		//------------------ Verify that CRP/PC cart contains the newly/Edited created billing profile address as selected ------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly created Billing profile is NOT listed on the autoship cart");
-		//s_assert.assertFalse(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Autoship cart");
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edit created Billing profile is NOT listed on the autoship cart");
+		s_assert.assertFalse(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Autoship cart");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -249,9 +290,10 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Phase 2-2042 :: Version : 1 :: Add billing profile during checkout 
+	// Hybris Phase 2-2042 :: Version : 1 :: Add billing profile during checkout
+	// Hybris Phase 2-2048:Edit billing profile during checkout
 	@Test(priority=4)
-	public void testAddBillingProfileDuringCheckout_2042() throws InterruptedException{
+	public void testAddAndEditBillingProfileDuringCheckout_2042_2048() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -267,6 +309,22 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited Billing profile is NOT listed on Adhoc cart while add the billing profile");
+		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Already Default billing profile is not DEFAULT selected on adhoc cart while add the billing profile");
+
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontUpdateCartPage.clickOnEditOnNotDefaultAddressOfBilling();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on Adhoc cart while edit the billing profile");
+		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(editedBillingProfileName),"Already Default billing profile is not DEFAULT selected on adhoc cart while edit the billing profile");
+
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickBillingEditAfterSave();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
@@ -294,8 +352,9 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-2043:Add billing profile in autoship template
+	//Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
 	@Test(priority=5)
-	public void testAddBillingAutoshipCartFutureCheckboxSelected_2043() throws InterruptedException{ 
+	public void testAddAndEditBillingAutoshipCartFutureCheckboxSelected_2043_2049() throws InterruptedException{ 
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -314,7 +373,20 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page while add a new billing profile");
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontUpdateCartPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(editedBillingProfileName),"Edited Billing Profile is not selected by default on CRP cart page while edit billing profile");
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
@@ -324,13 +396,13 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		//--------------- Verify that Newly added Billing profile is NOT default selected in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(newBillingProfileName),"Newly added Billing profile is NOT default on the page");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(editedBillingProfileName),"Newly added/Edited Billing profile is NOT default on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -338,8 +410,9 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-4467 ADD a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
+	//Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future use" NOT Selected
 	@Test(priority=6)
-	public void testAddBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{  
+	public void testAddAndEditBillingAutoshipCartFutureCheckboxNotSelected_4467_4468() throws InterruptedException{  
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -357,7 +430,19 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
-		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is selected by default on CRP cart page");
+		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is selected by default on CRP cart page while we add a new billing profile");
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontUpdateCartPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		s_assert.assertFalse(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(editedBillingProfileName),"Edited Billing Profile is selected by default on CRP cart page while we edit billing profile");
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
@@ -367,13 +452,13 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		//--------------- Verify that Newly added Billing profile is default selected in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(newBillingProfileName),"Newly added Billing profile is NOT default on the page");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(editedBillingProfileName),"Newly added/Edited Billing profile is NOT default on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -405,16 +490,75 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-2044:Add billing profile during PC user or Retail user registration
+	//Hybris Project-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account 
+	//Hybris Project-2052:Edit billing profile during CRP enrollment through my account
 	@Test(priority=8)
-	public void testAddBillingProfileDuringPCRegistration_2044() throws InterruptedException{
+	public void testAddAndEditNewBillingProfileDuringCRPEnrollment_2046_2052() throws InterruptedException{
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
+		String lastName = "lN";
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
+		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		if(storeFrontAccountInfoPage.verifyCRPCancelled()==false){
+			storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		}
+		storeFrontAccountInfoPage.clickOnEnrollInCRP();
+		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
+		storeFrontHomePage.clickOnCRPCheckout();
+		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
+		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontBillingInfoPage.selectNewBillingCardAddress();
+		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly Created Billing Address not present on page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(newBillingProfileName),"Radio button is not selected for billing address");
+		storeFrontHomePage.clickOnEditOfBillingProfile(newBillingProfileName);
+		int randomNum2 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum2;
+		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly Edited Billing Address not present on page");
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickOnSetupCRPAccountBtn();
+		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
+		storeFrontHomePage.clickOnGoToMyAccountToCheckStatusOfCRP();
+		storeFrontHomePage.clickOnYourAccountDropdown();
+		storeFrontAccountInfoPage.clickOnAutoShipStatus();
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage =storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"billing info page has not been displayed");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly Created/Edited Billing Address not present on Billing info page");
+		//s_assert.assertTrue(storeFrontBillingInfoPage.isAutoshipOrderAddressTextPresent(newBillingProfileName),"AutoShip order text is not present under billing address");
+		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(editedBillingProfileName),"Radio button is selected for newly created/Edited billing address");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2044:Add billing profile during PC user or Retail user registration
+	//Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
+	@Test(priority=9)
+	public void testAddAndEditBillingProfileDuringPCRegistration_2044_2050() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		/*storeFrontHomePage.clickOnShopLink();
-			storeFrontHomePage.clickOnAllProductsLink();*/
+				storeFrontHomePage.clickOnAllProductsLink();*/
 		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -448,7 +592,21 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickBillingEditAfterSave();
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page while we edit the billing profile");
+
+		storeFrontUpdateCartPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickBillingEditAfterSave();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(editedBillingProfileName),"Edit Billing Profile is not selected by default on CRP cart page while we edit the billing profile");
+
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
@@ -459,7 +617,7 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -467,7 +625,7 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//------------------ Verify that CRP/PC cart contains the newly created billing profile address as selected ------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(newBillingProfileName),"New Billing Profile is not selected by default on update cart page");
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefault(editedBillingProfileName),"Newly/Edited Billing Profile is not selected by default on update cart page");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -475,8 +633,9 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Hybris Project-2045 :: Version : 1 :: Add billing address during consultant enrollment 
-	@Test(priority=9)
-	public void testAddBillingAddressConsultantEnrollment_2045() throws InterruptedException{
+	// Hybris Project-2051:Edit billing address during consultant enrollment
+	@Test(priority=10)
+	public void testAddAndEditBillingAddressConsultantEnrollment_2045_2051() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		storeFrontHomePage.openPWSSite(country, env);
@@ -493,6 +652,19 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.clickOnEditBillingOnReviewAndConfirmPage();
+		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
+		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
+		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickEnrollmentNextBtn();
+
+
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
@@ -510,7 +682,7 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//------------------ Verify that autoship template contains the newly created billing profile ------------------------------------------------------------  
 
-		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(newBillingProfileName),"Autoship Template Payment Method doesn't contains the new billing profile even when future autoship checkbox is selected");
+		s_assert.assertTrue(storeFrontOrdersPage.isPaymentMethodContainsName(editedBillingProfileName),"Autoship Template Payment Method doesn't contains the newly/Edited billing profile even when future autoship checkbox is selected");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -520,87 +692,10 @@ public class AddBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		s_assert.assertAll();
-	}
-
-	//Hybris Project-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account 
-	@Test(priority=10)
-	public void testAddNewBillingProfileDuringCRPEnrollment_2046() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
-		String firstName = TestConstants.FIRST_NAME+randomNum;
-		String lastName = "lN";
-		String consultantEmail = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
-		navigateToStoreFrontBaseURL();
-		//Enroll a consultant without CRP and pulse
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.searchCID();
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmail, password, addressLine1, city,state, postalCode, phoneNumber);
-		storeFrontHomePage.clickNextButton();
-
-		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		storeFrontHomePage.uncheckPulseAndCRPEnrollment();
-		s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
-		storeFrontHomePage.clickEnrollmentNextBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-		storeFrontHomePage.checkTheIAgreeCheckBox();
-		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-		storeFrontHomePage.clickOnEnrollMeBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-
-		//Add New Billing Profile during enroll the consultant in CRP 
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		storeFrontAccountInfoPage.clickOnEnrollInCRP();
-		storeFrontHomePage.clickOnAddToCRPButtonCreatingCRPUnderBizSite();
-		storeFrontHomePage.clickOnCRPCheckout();
-		storeFrontHomePage.clickOnUpdateCartShippingNextStepBtnDuringEnrollment();
-		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
-		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
-		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontBillingInfoPage.selectNewBillingCardAddress();
-		//storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
-		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly Created Billing Address not present on page");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(newBillingProfileName),"Radio button is not selected for billing address");
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickOnSetupCRPAccountBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyOrderConfirmation(), "Order Confirmation Message has not been displayed");
-		storeFrontHomePage.clickOnGoToMyAccountToCheckStatusOfCRP();
-		storeFrontHomePage.clickOnYourAccountDropdown();
-		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCurrentCRPStatus(), "Current CRP Status has not been Enrolled");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage =storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"billing info page has not been displayed");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly Created Billing Address not present on Billing info page");
-		//s_assert.assertTrue(storeFrontBillingInfoPage.isAutoshipOrderAddressTextPresent(newBillingProfileName),"AutoShip order text is not present under billing address");
-		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultAddressRadioBtnSelected(newBillingProfileName),"Radio button is selected for newly created billing address");
-		s_assert.assertAll();
-
 	}
 }

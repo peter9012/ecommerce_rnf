@@ -359,7 +359,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		 driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -367,7 +367,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error") || (driver.getCurrentUrl().contains("corp"));
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				 driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -757,15 +757,11 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
-		RFO_DB = driver.getDBNameRFO();
 		String province = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-
 		List<Map<String, Object>> randomConsultantList =  null;
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		String consultantEmailID = null;
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -773,13 +769,12 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error") || (driver.getCurrentUrl().contains("corp"));
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getStoreFrontURL()+"/us");
+				driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
 		}
 		//Terminate consultant Account
-		//storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
@@ -794,7 +789,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
 		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
 		storeFrontHomePage.clickOnCountryAtWelcomePage();
-
 		//navigate to US Corp Site And start enrolling RC user.
 		storeFrontHomePage.navigateToCountry();
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -812,14 +806,8 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 			province = TestConstants.PROVINCE_US;
 		}
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
 		//Select a product and proceed to buy it
 		String countryName = null;
 		if(driver.getCountry().equalsIgnoreCase("ca")){
@@ -828,47 +816,19 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			countryName = "ca";
 		}
 		storeFrontHomePage.clickAddToBagButton(countryName);
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		//one products are in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-		logger.info("1 product is successfully added to the cart");
-
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
 		//Enter the email address and DO NOT check the "Become a Preferred Customer" checkbox 
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
-
 		//Assert for enroll under last upline popup
 		s_assert.assertTrue(storeFrontHomePage.verifyInvalidSponsorPopupIsPresent(), "Invalid Sponsor popup is not present");
-
 		//Handle popup for enroll under last upline
 		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
 		//Select a product and proceed to buy it
 		storeFrontHomePage.clickAddToBagButton(countryName);
-
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME,consultantEmailID, password);
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next

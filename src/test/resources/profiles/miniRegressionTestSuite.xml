@@ -109,7 +109,7 @@
 				</methods>
 			</class>
 			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest">
+				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditBillingTest">
 				<methods>
 					<include name="testAddBillingAddressConsultantEnrollment_2045" />
 					<include name="testAddBillingAutoshipCartFutureCheckboxSelected_2043" />
@@ -119,7 +119,7 @@
 				</methods>
 			</class>
 			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest">
+				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditShippingTest">
 				<methods>
 					<include name="testAddShippingAddressDuringCheckout_2030" />
 					<include name="testAddShippingAddressDuringConsultantEnrollment_2033" />

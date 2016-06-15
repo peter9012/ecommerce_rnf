@@ -35,9 +35,9 @@
 				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.BigBusinessLaunchKitTest" />
 
 			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest" />
+				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditBillingTest" />
 			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest" />
+				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditShippingTest" />
 			<class
 				name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditBillingTest" />
 			<class

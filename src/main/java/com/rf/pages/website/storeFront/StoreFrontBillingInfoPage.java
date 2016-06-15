@@ -188,4 +188,5 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 	}
+	
 }

@@ -1959,4 +1959,33 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		return driver.findElement(By.xpath("//input[@checked='checked']/preceding::span[@class='font-bold'][1]")).getText();
 	}
 
+	public void clickOnEditOfBillingProfile(String profileName){
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.waitForPageLoad();
+		logger.info("billing profile"+profileName+" 's edit link clicked");
+	}
+
+	public void clickOnEditOfShippingProfile(String profileName){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.waitForPageLoad();
+		logger.info("Shipping profile"+profileName+" 's edit link clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnAcceptOfQASPopup(){
+		driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+		driver.click(By.id("QAS_RefineBtn"));
+		logger.info("Accept New shipping address button clicked");
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean isShippingAddressPresentAtOrderAndReviewPage(String profilename){
+		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Shipping info')]/../..//span[contains(text(),'"+profilename+"')]"));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping info')]/../..//span[contains(text(),'"+profilename+"')]"));
+
+	}
+
 }

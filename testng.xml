@@ -70,10 +70,10 @@
       <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.bulkTest.AddShippingTest"/>
       <class name="com.rf.test.website.storeFront.dataMigration.rfl.order.ViewOrderDetailsTest"/>
       <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.canadaProvince.EnrollmentTest"/>
-      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditBillingTest"/>
       <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditShippingTest"/>
       <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest"/>
-      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditShippingTest"/>
       <class name="com.rf.test.website.storeFront.dataMigration.rfo.accounts.AddBillingTest"/>
       <class name="com.rf.test.website.storeFront.dsv.StorefrontDSVTest"/>
       <class name="com.rf.test.website.storeFront.dataMigration.rfl.accounts.AddShippingTest"/>

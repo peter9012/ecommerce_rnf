@@ -40,8 +40,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(String profileName){
-		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/following::span[@class='radio-button custom-checkbox billtothis'][1]/input"));
-		return driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]/following::span[@class='radio-button custom-checkbox billtothis'][1]/input")).isSelected();
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::span[@class='radio-button custom-checkbox billtothis'][1]/input"));
+		return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+profileName+"')]/following::span[@class='radio-button custom-checkbox billtothis'][1]/input")).isSelected();
 	}
 
 	public String getNameOnPaymentProfile(){
@@ -399,7 +399,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
-//		driver.waitForElementPresent(By.id("placeOrderButton"));
+		//		driver.waitForElementPresent(By.id("placeOrderButton"));
 		driver.click(By.id("placeOrderButton"));
 		logger.info("Place order button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -420,7 +420,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{
-//		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
+		//		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
 		driver.click(By.id("saveShippingAddreessId"));	
 		try{			
 			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));

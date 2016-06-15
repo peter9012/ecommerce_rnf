@@ -1968,32 +1968,33 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 	}
 
 	public void clickShopSkinCareOnMenuBar(){
-		List<WebElement>allElement = driver.findElements(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
-		System.out.println("SIZE="+allElement.size());
-		try{
-			allElement.get(0).click();
-		}catch(Exception e){
-			try{
-				System.out.println("***************");
-				JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
-				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']")));
-			}
-			finally{		
-				System.out.println("###############");
-				WebElement elem = driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
-
-				// This will enable this element if element is invisible      
-
-				String js = "arguments[0].style.height='auto'; arguments[0].style.visibility='visible';";
-
-				// Execute the Java Script for the element which we find out
-				((JavascriptExecutor) RFMobileDriver.driver).executeScript(js, elem);
-
-				// Click on element
-
-				elem.click();
-			}
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//a[@id='our-products']"));
+		driver.findElement(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//a[@id='our-products']")).click();
+//		System.out.println("SIZE="+allElement.size());
+//		try{
+//			allElement.get(0).click();
+//		}catch(Exception e){
+//			try{
+//				System.out.println("***************");
+//				JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
+//				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']")));
+//			}
+//			finally{		
+//				System.out.println("###############");
+//				WebElement elem = driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
+//
+//				// This will enable this element if element is invisible      
+//
+//				String js = "arguments[0].style.height='auto'; arguments[0].style.visibility='visible';";
+//
+//				// Execute the Java Script for the element which we find out
+//				((JavascriptExecutor) RFMobileDriver.driver).executeScript(js, elem);
+//
+//				// Click on element
+//
+//				elem.click();
+//			}
+//		}
 	}
 
 	public void clickAllProductsLink(){

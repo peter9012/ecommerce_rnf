@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.rf.core.driver.mobile.RFMobileDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -3975,5 +3977,52 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return status;
 	}
 
+	public void clickRFStamp(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-rf-stamp')]"));
+		driver.findElement(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-rf-stamp')]")).click();
+		driver.waitForPageLoad();
+	}
+
+	public void clickRFMenuBars(){
+		driver.waitForElementPresent(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-menu')]"));
+		driver.findElement(By.xpath("//div[@id='header']//span[contains(@class,'icons icon-menu')]")).click();		
+	}
+	
+	public void clickShopSkinCareOnMenuBar(){
+		driver.pauseExecutionFor(2000);
+		List<WebElement>allElement = driver.findElements(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
+		System.out.println("SIZE="+allElement.size());
+		try{
+			allElement.get(0).click();
+		}catch(Exception e){
+			try{
+				System.out.println("***************");
+				JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
+				js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']")));
+			}
+			finally{		
+				System.out.println("###############");
+				WebElement elem = driver.findElement(By.xpath("//div[@id='header']/following::nav[1]//a[@id='our-products']"));
+
+				// This will enable this element if element is invisible      
+
+				String js = "arguments[0].style.height='auto'; arguments[0].style.visibility='visible';";
+
+				// Execute the Java Script for the element which we find out
+				((JavascriptExecutor) RFMobileDriver.driver).executeScript(js, elem);
+
+				// Click on element
+
+				elem.click();
+			}
+		}
+	}
+
+	public void clickAllProductsLink(){
+		driver.waitForElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")).click();
+		driver.waitForPageLoad();
+	}
+	
 
 }

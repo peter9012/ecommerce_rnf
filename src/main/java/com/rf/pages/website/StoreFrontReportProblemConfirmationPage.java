@@ -45,7 +45,7 @@ public class StoreFrontReportProblemConfirmationPage extends RFWebsiteBasePage  
 		driver.waitForElementPresent(REPORT_CONFIRMATION_EMAIL_ADD_LOC);
 		String emailAdd = driver.findElement(REPORT_CONFIRMATION_EMAIL_ADD_LOC).getText();
 		logger.info("Email from UI is "+emailAdd +" and expected email address is "+emailAddress);
-		if(emailAdd.equals(emailAddress)){
+		if(emailAdd.toLowerCase().equals(emailAddress.toLowerCase())){
 			return true;
 		}
 		return false;

@@ -179,12 +179,9 @@ public class StoreFrontShippingInfoPage extends RFWebsiteBasePage{
 	}
 
 	public boolean isAutoshipOrderAddressTextPresent(String firstName){
-		try{
-			driver.findElement(By.xpath("//span[contains(text(),'"+StringUtils.uncapitalize(firstName)+"')]/ancestor::li[1]//b[@class='AutoshipOrderAddress' and text()='Autoship Order Address']"));			
-			return true;
-		}catch(NoSuchElementException e){
-			return false;
-		}
+		String getAutoshipOrderDetailsText = driver.findElement(By.xpath("//div[@class='autoshipOrderDetails']")).getText();
+		logger.info("Autoship address details "+getAutoshipOrderDetailsText);
+		return getAutoshipOrderDetailsText.contains(firstName);
 	}
 
 }

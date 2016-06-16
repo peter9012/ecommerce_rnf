@@ -1,7 +1,6 @@
 package com.rf.core.driver.website;
 
 import java.io.File;
-
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -72,6 +73,13 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);
+		}
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
+			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			// for clearing cache
+			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+			driver = new InternetExplorerDriver(capabilities);
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();

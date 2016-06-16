@@ -3077,7 +3077,42 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		pulseStatusAfterTermination = String.valueOf(getValueFromQueryResult(pulseStatusList, "AutoshipTypeID"));
 		s_assert.assertTrue(pulseStatusAfterTermination.equalsIgnoreCase("null"), "Pulse of Consultant user exists after termination");
 		s_assert.assertAll();
-
 	}
+
+	//Hybris Project-3751:Select a sponsor from connect with a consultant page- should direct you to sponsor's COM site
+	@Test
+	public void testSelectSponsorFromConnectWithConsultantPageShoulDirectToSponsorComSite_3751() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		String CCS = null;
+		List<Map<String, Object>> sponsorIdList =  null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//connect with a consultant
+		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			//search for a CA Sponsor
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
+			//validate sponsor details?
+			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
+			//select sponsor
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			//verify user is navigated to PWS Site of the selected sponsor?
+			s_assert.assertTrue(driver.getCurrentUrl().contains(".biz") || driver.getCurrentUrl().contains("myrfotst3.com"),"user is not navigated to PWS site of the selected sponsor");
+		}else{
+			//search for a US Sponsor
+			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
+			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
+			//validate sponsor details?
+			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
+			//select sponsor
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			//verify user is continued on the corp site?
+			s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"user is not continued to corp site"); 
+		}
+		s_assert.assertAll();
+	}
+
 
 }

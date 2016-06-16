@@ -2451,6 +2451,5 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage.selectItemsAndReportAProblem();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyReportAProblemConfirmationMessage(),"report a problem confirmation msg not present");
 		s_assert.assertAll();
-	}
-
+	}	
 }

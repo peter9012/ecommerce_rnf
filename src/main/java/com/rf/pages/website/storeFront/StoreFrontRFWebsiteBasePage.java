@@ -441,11 +441,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnNextButtonAfterSelectingSponsor() throws InterruptedException{
-		//driver.waitForElementPresent(By.id("saveAccountAddress"));
 		driver.click(By.id("saveAccountAddress"));
 		logger.info("Next button after selecting sponsor is clicked");
-
-		//driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+		driver.waitForLoadingImageToDisappear();
 		try{
 			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 			logger.info("Accept the suggested address button clicked");
@@ -453,19 +451,21 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 		}
 		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
+			driver.waitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
+			logger.info("save shipping info clicked");
 		}catch(Exception e){
 			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		}  
 		logger.info("Next button on shipping address clicked");  
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 			logger.info("save shipping info clicked");

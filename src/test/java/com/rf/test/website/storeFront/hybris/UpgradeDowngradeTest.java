@@ -466,6 +466,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickOnEnrollUnderLastUpline();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);

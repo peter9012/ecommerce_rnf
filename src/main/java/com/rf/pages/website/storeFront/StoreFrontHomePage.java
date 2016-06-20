@@ -3975,5 +3975,32 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return status;
 	}
 
+	public boolean isHeaderPresent(){
+		driver.waitForElementPresent(By.id("header"));
+		return driver.isElementPresent(By.id("header"));
+	}
+
+	public boolean isHeroBannerPresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='pagebanner']/img[1]"));
+		return driver.isElementPresent(By.xpath("//div[@class='pagebanner']/img[1]"));
+	}
+
+	public String getConsultantAndPWSSiteOwnerName(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'consultant-info')]//a"));
+		String name = driver.findElement(By.xpath("//div[contains(@class,'consultant-info')]//a")).getText();
+		logger.info("PWS site owner name is: "+name);
+		return name;
+	}
+
+	public boolean isContactBoxPresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='contactBox']"));
+		return driver.isElementPresent(By.xpath("//div[@class='contactBox']"));
+	}
+
+	public boolean isFooterPresent(){
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'footer-content')]"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'footer-content')]"));
+	}
+
 
 }

@@ -3114,5 +3114,19 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-3831:Navigate to Meet your consultant screens from various other screens on the website
+	@Test
+	public void testNavigateToMeetYourConsultantScreensFromVariousOtherScreensOnTheWebsite() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.openComPWSSite(driver.getCountry(), driver.getEnvironment());
+		storeFrontHomePage.clickOnUserName();
+		s_assert.assertTrue(storeFrontHomePage.isHeaderPresent(), "Header is not present at meet your consultant page");
+		s_assert.assertTrue(storeFrontHomePage.isHeroBannerPresent(), "Hero banner is not present at meet your consultant page");
+		s_assert.assertFalse(storeFrontHomePage.getConsultantAndPWSSiteOwnerName()==null, "PWS site owner's name is present");
+		s_assert.assertTrue(storeFrontHomePage.isContactBoxPresent(), "Contact box is not present at meet your consultant page");
+		s_assert.assertTrue(storeFrontHomePage.isFooterPresent(), "Footer is not present at meet your consultant page");
+		s_assert.assertAll();
+	}
 
 }

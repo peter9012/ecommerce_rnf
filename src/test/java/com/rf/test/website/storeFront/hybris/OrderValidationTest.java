@@ -138,14 +138,13 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage=storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		//select details under Actions tab on the side of the first order no.
-		String firstOrderNo=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
-		storeFrontOrdersPage.clickDetailsUnderActionsForFirstOrderUnderOrderHistory();
+		String firstOrderNo=storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+		storeFrontOrdersPage.clickDetailsUnderActionsForOrderUnderOrderHistory(firstOrderNo);
 		//validate product details,payment method,address,status,total,currency on the order details page
 		// Get Order Id
 		getOrderIDList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,firstOrderNo),RFO_DB);
@@ -179,7 +178,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO,orderId),RFO_DB);
 		shippingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 
-		handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
+		//handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
 
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
@@ -193,7 +192,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		// assert shipping amount with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		if(!(shippingMethodId=="null")){
@@ -229,7 +228,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 
 		// Get Order Id
 		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
@@ -327,7 +326,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		// Get Order Id
 		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
 		orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
@@ -369,7 +368,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		// values for assertion for pending order autoship template
 		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
 		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
-		handling = storeFrontUpdateCartPage.getHandlingFromCart();
+		//handling = storeFrontUpdateCartPage.getHandlingFromCart();
 		tax = storeFrontUpdateCartPage.getTaxFromCart();
 		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
 
@@ -396,7 +395,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"PC autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"PC autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"PC autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// Now verify the details of orders
 		storeFrontHomePage.navigateToBackPage();
@@ -436,7 +435,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO,orderId),RFO_DB);
 		shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
 
-		handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 
@@ -454,7 +453,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
@@ -530,7 +529,8 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		taxUI = storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate();
 		grandTotalUI = storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate();
 		shippingUI = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
-		handlingUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+
+		//handlingUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
 		shippingMethodUI = storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate();
 
 		storeFrontOrdersPage.clickOnWelcomeDropDown();
@@ -563,7 +563,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
@@ -588,7 +588,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(shippingUI.trim().contains(shippingDB.trim()),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+shippingUI);
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(handlingUI.trim().contains(handlingDB.trim()),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingUI);
+		//s_assert.assertTrue(handlingUI.trim().contains(handlingDB.trim()),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingUI);
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(shippingMethodUI.trim().contains(shippingMethodDB.trim()),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+shippingMethodUI);
@@ -705,7 +705,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
 		storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-		String orderNumber=storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderNumber=storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber); 
 		s_assert.assertTrue(storeFrontOrdersPage.verifyQuantityOnOrdersDetails(quantityOfProductsOrdered),"quantity is not matched in order detail page");
 		s_assert.assertTrue(storeFrontOrdersPage.verifyTotalValueOfProductOnOrderDetails(totalPrice),"Price mismatch");
@@ -768,7 +768,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		String shippingAddressFromUI =storeFrontOrdersPage.getShippingAddressFromAutoshipTemplate();
 		String subTotalFromUI = storeFrontOrdersPage.getSubTotalFromAutoshipTemplate();
 		String shippingFromUI = storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate();
-		String handlingFromUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
+		//String handlingFromUI = storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate();
 		String taxFromUI = 	storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate();
 		String grandTotalFromUI = storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate();
 		String shippingMethodFromUI = storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate();
@@ -803,7 +803,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
 		taxDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
@@ -820,7 +820,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		// assert shipping amount with RFO
 		s_assert.assertTrue(shippingFromUI.contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+shippingFromUI);
 		// assert Handling Value with RFO
-		s_assert.assertTrue(handlingFromUI.contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingFromUI);
+		//s_assert.assertTrue(handlingFromUI.contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+handlingFromUI);
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(shippingMethodFromUI.contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+shippingMethodFromUI);
 		s_assert.assertAll();
@@ -903,7 +903,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
@@ -928,7 +928,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"PC autoship template shipping amount is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"PC autoship template handling amount is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"PC autoship template handling amount is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"PC autoship template shipping method is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -1010,7 +1010,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
@@ -1035,7 +1035,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"CRP autoship template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"CRP autoship template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"CRP autoship template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -1096,7 +1096,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
 		// Get Order Id
@@ -1131,7 +1131,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO,orderId),RFO_DB);
 		shippingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost"));
 
-		handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
+		//handlingDB = df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost"));
 
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		boolean isShippingMethodPresent = false;
@@ -1151,7 +1151,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		// assert shipping amount with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		if(isShippingMethodPresent==true){
@@ -1237,7 +1237,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_AND_HANDLING_COST_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		shippingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format(getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_TOTAL_SUBTOTAL_TAX_FOR_AUTOSHIP_TEMPLATE_RFO,autoshipID),RFO_DB);
 		subTotalDB = String.valueOf(df.format(getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
@@ -1262,7 +1262,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"PC autoship template shipping amount is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"PC autoship template handling amount is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"PC autoship template handling amount is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate().contains(shippingMethodDB),"PC autoship template shipping method is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -1324,7 +1324,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
 
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
 		// Get Order Id
@@ -1360,7 +1360,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4293_RFO,orderId),RFO_DB);
 		shippingDB = String.valueOf(df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
 
-		handlingDB = String.valueOf(df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format((Number) getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		shippingMethodId = String.valueOf( getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
 		//GET_SHIPPING_METHOD_QUERY_RFO
@@ -1381,7 +1381,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount from RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 
 		// assert Handling Value with RFO
-		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount from RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount from RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 
 		// assert for shipping Method with RFO
 		//shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
@@ -1584,7 +1584,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
 	//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 	//		// Get Order Number
-	//		//		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+	//		//		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 	//		//		// Get Order Id
 	//		//		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
 	//		//		orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
@@ -1790,7 +1790,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 
 		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4287_RFO,orderId),RFO_DB);
 		shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-		handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
 
 		//Assert Subtotal with RFO
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc Order template subtotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
@@ -1803,9 +1803,9 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc Order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
 		}
 		// assert Handling Value with RFO
-		if(storeFrontOrdersPage.isHandlingCostPresent()==true){
-			s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-		}
+		//		if(storeFrontOrdersPage.isHandlingCostPresent()==true){
+		//			s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc Order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//		}
 		// assert return order status
 		String createdOrderStatus = storeFrontOrdersPage.convertOrderStatusForReturnOrder(orderStatusID);    
 		s_assert.assertTrue(storeFrontOrdersPage.getOrderStatusFromUI().toLowerCase().trim().contains(createdOrderStatus.toLowerCase().trim()),"Adhoc Order template handling amount on RFO is "+createdOrderStatus+" and on UI is "+storeFrontOrdersPage.getOrderStatusFromUI());
@@ -1872,7 +1872,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
 		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
@@ -2214,7 +2214,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
@@ -2307,7 +2307,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		//storeFrontOrdersPage.clickOrderNumber(orderNumber);
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal.trim()),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
@@ -2398,7 +2398,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		//storeFrontOrdersPage.clickOrderNumber(orderNumber);
 		// Get Order Number
-		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 
 
@@ -2510,7 +2510,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
+		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
 		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
 		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);

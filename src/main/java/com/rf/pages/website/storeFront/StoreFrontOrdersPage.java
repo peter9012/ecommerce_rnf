@@ -1125,4 +1125,17 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("Pulse autoship order number is "+autoShipOrderNumber);
 		return  autoShipOrderNumber;
 	}
+
+	public String getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory(){
+		driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/descendant::div[contains(@class,'-m grand-total')][not(contains(text(),'0.0'))][1]/../div[1]/a"));
+		String firstOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/descendant::div[contains(@class,'-m grand-total')][not(contains(text(),'0.0'))][1]/../div[1]/a")).getText(); 
+		return  firstOrderNumber;
+	}
+
+	public void clickDetailsUnderActionsForOrderUnderOrderHistory(String orderNumber){
+		driver.waitForElementPresent(By.xpath("//a[text()="+orderNumber+"]/following::span[1]"));
+		driver.click(By.xpath("//a[text()="+orderNumber+"]/following::span[1]"));
+		driver.click(By.linkText("Details"));
+		driver.waitForPageLoad();
+	}
 }

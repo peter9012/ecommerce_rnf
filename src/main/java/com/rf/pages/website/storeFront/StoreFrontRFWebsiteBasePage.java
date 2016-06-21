@@ -227,8 +227,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void addAnotherProduct() throws InterruptedException{
 		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/p/a[contains(text(),'Continue shopping')]"));
-			driver.click(By.xpath("//div[@id='left-shopping']/p/a[contains(text(),'Continue shopping')]"));
+			driver.waitForElementPresent(By.xpath("//*[contains(text(),'Continue shopping')]"));
+			driver.click(By.xpath("//*[contains(text(),'Continue shopping')]"));
 			logger.info("Continue shopping link clicked");
 			//driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();

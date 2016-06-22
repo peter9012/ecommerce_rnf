@@ -1322,8 +1322,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
-		driver.click(By.xpath("//input[@value='NEXT']"));
+		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
+		driver.click(By.xpath("//input[@value='CHECKOUT']"));
 		logger.info("checkout button clicked");
 		if(driver.isElementPresent(By.xpath("//input[@onclick='checkOutNow();']"))){
 			driver.click(By.xpath("//input[@onclick='checkOutNow();']"));

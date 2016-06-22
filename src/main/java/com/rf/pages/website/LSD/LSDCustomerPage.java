@@ -19,13 +19,13 @@ public class LSDCustomerPage extends LSDRFWebsiteBasePage{
 	private static String orderValuesInUpcomingOrderSection = "//section[@class='pc-order-upcoming']//span[text()='%s']";
 	private static String orderValuesOfFirstOrderInOrderHistorySection = "//section[@class='pc-order-history']//pc-order-history-card[contains(@class,'pc-order-history-card')][1]//th[text()='%s']";
 
-	private static final By EXPAND_AND_MINIMIZE_BTN_OF_THIS_MONTH = By.xpath("//section[@class='pc-orders']/div[1]//button[@class='au-target']");
-	private static final By EXPAND_AND_MINIMIZE_BTN_OF_NEXT_MONTH = By.xpath("//section[@class='pc-orders']/div[2]//button[@class='au-target']");
-	private static final By EXPAND_AND_MINIMIZE_BTN_OF_FURTHER_OUT = By.xpath("//section[@class='pc-orders']/div[3]//button[@class='au-target']");
+	private static final By EXPAND_AND_MINIMIZE_BTN_OF_THIS_MONTH = By.xpath("//h2[text()='This Month']/preceding::div[1]/button");
+	private static final By EXPAND_AND_MINIMIZE_BTN_OF_NEXT_MONTH = By.xpath("//h2[text()='Next Month']/preceding::div[1]/button");
+	private static final By EXPAND_AND_MINIMIZE_BTN_OF_FURTHER_OUT = By.xpath("//h2[text()='Further Out']/preceding::div[1]/button");
 	private static final By CUSTOMER_AUTOSHIP_ORDER_SECTION = By.xpath("//div[@id='sub-stage']//section//div[@class='pc-order-cards']");
 	private static final By ORDER_CUSTOMER_NAME = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//h3");
 	private static final By ORDER_TYPE = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//h4");
-	private static final By ORDER_STATUS = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//div[@class='data']/div[1]/div[1]");
+	private static final By ORDER_STATUS = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//div[@class='data']/div[2]/div[1]");
 	private static final By ORDER_DATE = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//div[@class='data']/div[1]/div[2]");
 	private static final By FIRST_PROCESSED_ORDER = By.xpath("//div[@class='pc-order-cards']/descendant::div[text()='Processed'][1]");
 	private static final By FIRST_FAILED_ORDER = By.xpath("//div[@class='pc-order-cards']/descendant::div[text()='Failed'][1]");
@@ -41,6 +41,8 @@ public class LSDCustomerPage extends LSDRFWebsiteBasePage{
 	private static final By DATE_AND_TIME_STAMP_IN_ORDER_HISTORY_SECTION_FOR_FIRST_ORDER = By.xpath("//section[@class='pc-order-history']//pc-order-history-card[contains(@class,'pc-order-history-card')][1]//p[@class='commission-date']");
 	private static final By ORDER_ITEMS_OF_FIRST_ORDER_IN_ORDER_HISTORY_SECTION = By.xpath("//section[@class='pc-order-history']//pc-order-history-card[contains(@class,'pc-order-history-card')][1]//div[@class='items-container']");
 	private static final By BACK_ARROW_ICON = By.xpath("//section[@id='pc-profile-modal']/div[@class='icon-arrow-back pointer']");
+	private static final By NEW_LABEL_LOC = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//div[text()='New']");
+	private static final By NEW_LABEL_IN_ORDER_LOC = By.xpath("//div[@class='pc-profile-content']//div[text()='New']");
 
 	public boolean isCustomerPagePresent(){
 		driver.waitForElementPresent(CUSTOMERS_PAGE);
@@ -197,5 +199,15 @@ public class LSDCustomerPage extends LSDRFWebsiteBasePage{
 	public void clickBackArrowIcon(){
 		driver.click(BACK_ARROW_ICON);
 		logger.info("Back arrow icon clicked");
+	}
+
+	public boolean isNewLabelPresentForFirstOrder(){
+		driver.waitForElementPresent(NEW_LABEL_LOC);
+		return driver.isElementPresent(NEW_LABEL_LOC);
+	}
+
+	public boolean isNewLabelPresentInFirstOrder(){
+		driver.waitForElementPresent(NEW_LABEL_IN_ORDER_LOC);
+		return driver.isElementPresent(NEW_LABEL_IN_ORDER_LOC);
 	}
 }

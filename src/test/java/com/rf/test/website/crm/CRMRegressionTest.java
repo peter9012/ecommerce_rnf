@@ -895,16 +895,19 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	// Hybris Project-4508:Edit PC contact details
 	@Test(priority=19)
 	public void testEditPreferredCustomerContactDetails_4508() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		List<Map<String, Object>> randomPCFirstNameList =  null;
 		List<Map<String, Object>> randomPCList =  null;
 		String pcFirstName = null;
+		String pcLastName = null;
 		String accountIDForPC = pcAccountID;
 		while(true){
 			randomPCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,accountIDForPC),RFO_DB);
 			pcFirstName = String.valueOf(getValueFromQueryResult(randomPCFirstNameList, "FirstName"));
+			pcLastName = String.valueOf(getValueFromQueryResult(randomPCFirstNameList, "LastName"));
 			if((pcFirstName.length()>2) &&(!pcFirstName.equalsIgnoreCase("null"))){
 				logger.info("PCFirst name is not null");
 				break;
@@ -915,7 +918,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				continue;
 			}
 		}
-		crmHomePage.enterTextInSearchFieldAndHitEnter(pcFirstName);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcFirstName+" "+pcLastName);
 		crmHomePage.clickContactOnFirstRowInSearchResults();
 		//verify for number of contacts present in the contact details
 
@@ -3094,9 +3097,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		List<Map<String, Object>> randomRCFirstNameList =  null;
 		List<Map<String, Object>> randomRCList =  null;
 		String rcFirstName = null;
+		String rcLastName = null;
 		while(true){
 			randomRCFirstNameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_FIRST_NAME_FROM_ACCOUNT_ID,retailAccountID),RFO_DB);
 			rcFirstName = String.valueOf(getValueFromQueryResult(randomRCFirstNameList, "FirstName"));
+			rcLastName = String.valueOf(getValueFromQueryResult(randomRCFirstNameList, "LastName"));
 			if((rcFirstName.length()>2) &&(!rcFirstName.equalsIgnoreCase("null"))){
 				logger.info("RCFirst name is not null");
 				break;
@@ -3108,7 +3113,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 			}
 		}
 
-		crmHomePage.enterTextInSearchFieldAndHitEnter(rcFirstName);
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcFirstName+" "+rcLastName);
 		crmHomePage.clickContactOnFirstRowInSearchResults();
 		//verify contact type should be 'primary'
 		s_assert.assertTrue(crmContactDetailsPage.getContactType().trim().equalsIgnoreCase("Primary".trim()),"Contact type is not primary");

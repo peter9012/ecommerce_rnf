@@ -522,4 +522,15 @@ public class TestConstants {
 	public static final String CRM_NEW_PHONENUM_CA = "(204) 339-8710";
 	public static final String CRM_NEW_PROFILENAME_CA = "NewProfileCA";
 
+	//-----------------------LSD Test Constants----------------------------------------------------------
+	public static final String COUNT_OF_PENDING_ORDERS = "0";
+	public static final String COUNT_OF_PROCESSED_ORDERS = "21";
+	public static final String COUNT_OF_FAILED_ORDERS = "0";
+	public static final String FIRST_ORDER_NAME = "Mary McQueen";
+	public static final String PROCESSED_ORDER_STATUS = "processed";
+	public static final String ORDER_TYPE_CONSULTANT = "Consultant Order";
+	public static final String FIRST_ORDER_SV_VALUE = "900";
+	public static final String FIRST_PC_ORDER_NAME = "Woody Car";
+	public static final String ORDER_TYPE_PC = "PC Perks";
+
 }

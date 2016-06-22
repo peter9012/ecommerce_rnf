@@ -141,7 +141,7 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	}
 
 	public void mouseHoverSponsorDataAndClickContinue() throws InterruptedException{
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		JavascriptExecutor js = (JavascriptExecutor)(RFMobileDriver.driver);
 		try{
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]")));
 		}catch(Exception e){

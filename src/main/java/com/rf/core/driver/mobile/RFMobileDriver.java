@@ -46,7 +46,7 @@ import com.rf.core.website.constants.TestConstants;
  */
 public class RFMobileDriver implements RFDriver, WebDriver {
 	public static AppiumDriver driver;
-//	public static WebDriver driver;
+	//	public static WebDriver driver;
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 30;
 	private static int MIN_DEFAULT_TIMEOUT=5;
@@ -83,22 +83,8 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		if (propertyFile.getProperty("platformName").contains("iOS"))
 			driver = new IOSDriver(remoteUrl, capabilities);
 		else
-			//driver = new AndroidDriver(remoteUrl, capabilities);
-			driver = new AppiumDriver(remoteUrl, capabilities) {
-				
-				@Override
-				public MobileElement scrollToExact(String arg0) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-				@Override
-				public MobileElement scrollTo(String arg0) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			};
-			
+			driver = new AndroidDriver(remoteUrl, capabilities);			
+
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.get(propertyFile.getProperty("baseUrl"));
 		platformUsed = propertyFile.getProperty("platformName");
@@ -154,7 +140,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	public String getStoreFrontPassword(){
 		return propertyFile.getProperty("storeFrontPassword");
 	}
-	
+
 	public void tap(int x,WebElement element,int y){
 		driver.tap(x, element, y);
 	}
@@ -691,9 +677,9 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * @return
 	 */
-//	public void swipe(int startx, int starty, int endx, int endy, int duration) {
-//		driver.swipe(startx, starty, endx, endy, duration);
-//	}
+	//	public void swipe(int startx, int starty, int endx, int endy, int duration) {
+	//		driver.swipe(startx, starty, endx, endy, duration);
+	//	}
 
 	/**
 	 * Returns current Date Time

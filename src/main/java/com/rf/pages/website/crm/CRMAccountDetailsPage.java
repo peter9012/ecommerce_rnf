@@ -1530,5 +1530,27 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		logger.info("Address after updation is "+emailAddress);
 		return emailAddress;
 	}
+
+	public boolean isShowMoreOptionUnderShippingProfilesPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[@class='pShowMore']/a[contains(text(),'Show')]"));
+	}
+	public void clickShowMoreOptionUnderShippingProfilesPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[@class='pShowMore']/a[contains(text(),'Show')]"));
+		logger.info("Show more link clicked");
+		while(true){
+			if(isShowMoreOptionUnderShippingProfilesPresent() ==true){
+				driver.click(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::div[@class='pShowMore']/a[contains(text(),'Show')]"));
+			}else{
+				break;
+			}
+		}
+
+	}
 }
 

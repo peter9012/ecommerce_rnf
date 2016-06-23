@@ -48,7 +48,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	public static AppiumDriver driver;
 	//	public static WebDriver driver;
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 30;
+	private static int DEFAULT_TIMEOUT = 20;
 	private static int MIN_DEFAULT_TIMEOUT=5;
 	private static String platformUsed;
 

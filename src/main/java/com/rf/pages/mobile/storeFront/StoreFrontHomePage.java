@@ -76,18 +76,20 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	public void searchCID() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.quickWaitForElementPresent(By.id("sponsor-name-id"));
-			driver.type(By.id("sponsor-name-id"),"test");
-		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.id("sponserparam"));
 			driver.type(By.id("sponserparam"),"test");
+			
+		}catch(NoSuchElementException e){
+			driver.type(By.id("sponsor-name-id"),"test");
 		}
 		try{
-			driver.click(By.xpath("//input[@value='Search']"));			
-		}catch(NoSuchElementException e){
-			driver.click(By.id("search-sponsor-button"));
+			driver.turnOffImplicitWaits();
+			driver.click(By.id("search-sponsor-button"));						
+		}catch(Exception e){
+			driver.click(By.xpath("//input[@value='Search']"));
 
 		}
-
+		driver.turnOnImplicitWaits();
 		logger.info("Sponsor entered as 'test' and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -176,7 +178,7 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 		regimenName = regimenName.toUpperCase();
 		//driver.pauseExecutionFor(500);
 		//****next line span = div for old UI****
-		Actions actions = new Actions(RFWebsiteDriver.driver);
+		Actions actions = new Actions(RFMobileDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"))).click();
 		/*driver.click(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"));*/
 		//driver.pauseExecutionFor(500);
@@ -279,7 +281,8 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	}
 
 	public void selectProvince(String province){		
-		driver.click(By.id("state"));
+		driver.pauseExecutionFor(2000);
+		driver.findElement(By.xpath("//select[@id='state']")).click();
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
 		logger.info("state selected");

@@ -493,7 +493,7 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.id("expiryMonth"));
+		driver.findElement(By.id("expiryMonth")).click();
 		//driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.id("expiryYear"));

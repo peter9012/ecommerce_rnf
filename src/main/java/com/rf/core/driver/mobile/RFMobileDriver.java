@@ -284,7 +284,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	}
 
 	public void click(By locator) {
-		waitForElementToBeVisible(locator);
+		//waitForElementToBeVisible(locator);
 		findElement(locator).click();
 	}
 

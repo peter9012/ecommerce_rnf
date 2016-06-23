@@ -1492,6 +1492,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.clickUserEnteredAddressRadioBtn();
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		if(crmAccountDetailsPage.isShowMoreOptionUnderShippingProfilesPresent()){
+			crmAccountDetailsPage.clickShowMoreOptionUnderShippingProfilesPresent();
+		}
 		String updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstNameWithSpecialChar), "Expected shipping profile name is "+shippingProfileFirstNameWithSpecialChar+"Actual on UI "+updatedProfileName);
 		//change the shipping profile with a new address & save
@@ -1504,6 +1507,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.clickSaveBtnAfterEditShippingAddress();
 		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
 		//verify the updated shipping address is saved as default
+		if(crmAccountDetailsPage.isShowMoreOptionUnderShippingProfilesPresent()){
+			crmAccountDetailsPage.clickShowMoreOptionUnderShippingProfilesPresent();
+		}
 		updatedProfileName = crmAccountDetailsPage.getDefaultSelectedShippingAddressName();
 		s_assert.assertTrue(updatedProfileName.contains(shippingProfileFirstName), "Expected shipping profile name is "+shippingProfileFirstName+"Actual on UI "+updatedProfileName);
 		s_assert.assertAll();
@@ -3237,11 +3243,13 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
 
-		//String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
-		//String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
-		//s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count = "+shippingProfilesCount+"while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
-		//s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
-
+		if(crmAccountDetailsPage.isShowMoreOptionUnderShippingProfilesPresent()){
+			crmAccountDetailsPage.clickShowMoreOptionUnderShippingProfilesPresent();
+		}
+		String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
+		String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
+		s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count under shipping is:- = "+shippingProfilesCount+" while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
+		s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
 		s_assert.assertAll(); 
 	}
 

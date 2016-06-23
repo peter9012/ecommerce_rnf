@@ -23,11 +23,12 @@
 				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditBillingTest" />
 			<class
 				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditShippingTest" />
-			<class
+			<!-- <class
 				name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditBillingTest" />
+			
 			<class
 				name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditShippingTest" />
-
+-->
 			<class
 				name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest" />
 			<class

@@ -86,7 +86,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			driver = new AndroidDriver(remoteUrl, capabilities);			
 
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get(propertyFile.getProperty("baseUrl"));
+		//driver.get(propertyFile.getProperty("baseUrl"));
 		platformUsed = propertyFile.getProperty("platformName");
 	}
 

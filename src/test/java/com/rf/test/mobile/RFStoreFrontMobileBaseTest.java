@@ -55,34 +55,36 @@ public class RFStoreFrontMobileBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
-		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
-			driver.get(driver.getURL());
-		}
-		else{
-			//driver.get(driver.getURL()+"/"+country);
-		}
-		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
-
-		}else{
-			//			try{
-			//				logout();
-			//			}catch(NoSuchElementException e){
-			//
-			//			}   
-		}		           
-		if(country.equalsIgnoreCase("ca"))
-			countryId = "40";
-		else if(country.equalsIgnoreCase("us"))
-			countryId = "236";            
-		//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
-		//			driver.selectCountry(country);
-		//		}
+//		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
+//			driver.get(driver.getURL());
+//		}
+//		else{
+//			driver.get(driver.getURL()+"/"+country);
+//			System.out.println("opening "+driver.getURL()+"/"+country);
+//		}
+//		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
+//
+//		}else{
+//			//			try{
+//			//				logout();
+//			//			}catch(NoSuchElementException e){
+//			//
+//			//			}   
+//		}		           
+//		if(country.equalsIgnoreCase("ca"))
+//			countryId = "40";
+//		else if(country.equalsIgnoreCase("us"))
+//			countryId = "236";            
+//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
+//			driver.selectCountry(country);
+//		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());		
 	}
-	
+
 	public void navigateToStoreFrontBaseURL(){
 		String country = driver.getCountry();
 		driver.get(driver.getURL()+"/"+country);
+		System.out.println("get "+driver.getURL()+"/"+country);
 	}
 
 	@BeforeClass(alwaysRun=true)
@@ -93,9 +95,9 @@ public class RFStoreFrontMobileBaseTest extends RFBaseTest {
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";            
-//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
-//			driver.selectCountry(country);
-//		}
+		//		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
+		//			driver.selectCountry(country);
+		//		}
 		setStoreFrontPassword(driver.getStoreFrontPassword());		
 	}
 

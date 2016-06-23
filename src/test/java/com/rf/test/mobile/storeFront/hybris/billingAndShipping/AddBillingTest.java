@@ -56,7 +56,7 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else{
 				storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -105,7 +105,7 @@ public class AddBillingTest extends RFStoreFrontMobileBaseTest{
 		s_assert.assertFalse(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(newBillingProfileName),"Newly created billing profile is DEFAULT selected on the billing info page");
 		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the billing info page");
 
-		//storeFrontHomePage.clickRFStamp();
+//		storeFrontHomePage.clickRFStamp();
 		storeFrontHomePage.clickRFMenuBars();
 		storeFrontHomePage.clickShopSkinCareOnMenuBar();
 		storeFrontHomePage.clickAllProductsLink();

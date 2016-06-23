@@ -1266,15 +1266,17 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
-		driver.findElement(By.xpath("//input[@value='NEXT']")).click();
+//		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
+//		driver.findElement(By.xpath("//input[@value='NEXT']")).click();
+		driver.waitForElementPresent(By.xpath("input[@value='CHECKOUT']"));
+		driver.findElement(By.xpath("input[@value='CHECKOUT']")).click();
 		logger.info("checkout button clicked");
 		if(driver.isElementPresent(By.xpath("//input[@onclick='checkOutNow();']"))){
 			driver.findElement(By.xpath("//input[@onclick='checkOutNow();']")).click();
 		}
 		driver.waitForPageLoad();
 	}
-
+	//
 	public void clickEditShoppingCartLink(){
 		driver.waitForElementPresent(By.xpath("//a[@class='gray-anchor']"));
 		driver.click(By.xpath("//a[@class='gray-anchor']"));

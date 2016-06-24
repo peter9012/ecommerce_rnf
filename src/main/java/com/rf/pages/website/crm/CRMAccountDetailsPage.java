@@ -1441,7 +1441,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.switchTo().frame(driver.findElement(By.xpath("//td[@class='last dataCol']//iframe")));
 		driver.click(By.xpath("//a[contains(text(),'Send Forgot Password Email')]"));
-		driver.pauseExecutionFor(2500);
+		driver.pauseExecutionFor(2500);		
 	}
 
 

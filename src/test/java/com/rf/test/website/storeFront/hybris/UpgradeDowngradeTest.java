@@ -18,9 +18,10 @@ import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
+import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
+public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(UpgradeDowngradeTest.class.getName());
 	public String emailID=null;
@@ -117,7 +118,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("pc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");
@@ -136,7 +137,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing PC Popup during RC Registration by entering existing PC mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("pc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing PC PopUp is not displayed");

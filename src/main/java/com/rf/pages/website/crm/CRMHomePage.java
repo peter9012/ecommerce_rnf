@@ -38,6 +38,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.type(SEARCH_TEXT_BOX_LOC,text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
+		driver.waitForCRMLoadingImageToDisappear();
 	}
 
 	public String getNameOnFirstRowInSearchResults(){
@@ -88,7 +89,14 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
-		return driver.isElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		return driver.isElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));		
+	}
+
+	public boolean isAccountSectionPresent(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//div[@id='Account_body']"));
 	}
 
 	public boolean isAccountLinkPresentInLeftNaviagation(){
@@ -142,7 +150,6 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 	}
-
 
 	public void clickAnyTypeOfActiveCustomerInSearchResult(String customer){
 		driver.switchTo().defaultContent();

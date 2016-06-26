@@ -9,12 +9,12 @@
 	<test name="oldUISmokeTest">
 		<classes>
 			<class name="com.rf.test.website.storeFront.smoke.EnrollmentTest" />
-	<!--		<methods>
+			<methods>
 			<include name="testStandardEnrollmentPersonalKitReverseRegimen_50"/>
 			<include name="testTermsAndConditionsRCEnrollment_2188"/>
 			<include name="testStandardEnrollmentWithoutCRPAndPulse_3255"/>
 			<include name="testPCEnrollment"/>
 			</methods>
-	-->	</classes>
+		</classes>
 	</test>
 </suite>

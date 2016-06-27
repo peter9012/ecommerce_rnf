@@ -670,8 +670,11 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 			driver.click(By.id("QAS_AcceptOriginal"));
 			logger.info("Accept as original button clicked");
 			driver.waitForLoadingImageToDisappear();
-		}catch(NoSuchElementException e){
-
+		}catch(Exception e){
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+			logger.info("Accept as original button clicked");
+			driver.waitForLoadingImageToDisappear();
 		}  
 	}
 

@@ -166,7 +166,7 @@ public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
@@ -185,7 +185,7 @@ public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
@@ -214,7 +214,7 @@ public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
@@ -233,7 +233,7 @@ public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
 		//Click on place order
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 
 		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
 		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
@@ -756,11 +756,12 @@ public class UpgradeDowngradeTest extends RFStoreFrontWebsiteBaseTest{
 	@Test
 	public void testConsultantToRCDowngrade_4777() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		RFO_DB = driver.getDBNameRFO();
 		//String  consultantEmailAddress=TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REDEFINE;
 		String province = null;
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		List<Map<String, Object>> randomConsultantList =  null;
 		driver.get(driver.getStoreFrontURL()+"/"+driver.getCountry());
 		String consultantEmailID = null;

@@ -2939,26 +2939,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-4520:Verify the Proxy to my account for a Preferred Customer
-	@Test(priority=69)
-	public void testVerifyTheProxyToMyAccountForAPrefferedCustomer_4520() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO(); 
-		List<Map<String, Object>> randomPCUserList =  null;
-		crmLoginpage = new CRMLoginPage(driver);
-		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String pcUserName = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");
-		logger.info("The username is "+pcUserName); 
-		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
-		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
-		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
-		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
-		s_assert.assertTrue(crmAccountDetailsPage.clickMyAccountAndVerifyWelcomeDropDownPresent(),"welcome drop down with pc user is not present on store front new tab");
-		s_assert.assertAll();
-	}
-
 	// Hybris Project-4505:View and Edit PWS Domain for a Consultant
 	@Test(enabled=false)//WIP
 	public void testViewAndEditPWSDomainForConsultant_4505() throws InterruptedException{
@@ -3256,6 +3236,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//Hybris Project-4520:Verify the Proxy to my account for a Preferred Customer
 	@Test(priority=73)
 	public void testVerifyProxyToMyAccountForPC_4520() throws InterruptedException{
+		pcUserName = "abigailbouma@icloud.com";
 		logger.info("The email address is "+pcUserName);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
@@ -3277,7 +3258,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(locale.equals(storeFrontHomePage.getpreferredCustomerStoreFrontInfo("city")), "City Not Matched, Expected is "+ locale +"But Actual is " +storeFrontHomePage.getpreferredCustomerStoreFrontInfo("city"));
 		s_assert.assertTrue(emailId.toLowerCase().equals(storeFrontHomePage.getpreferredCustomerStoreFrontInfo("email-account").toLowerCase()), "Email ID Not Matched, Expected is "+ emailId.toLowerCase() +"But Actual is " +storeFrontHomePage.getpreferredCustomerStoreFrontInfo("email-account").toLowerCase());
 		storeFrontHomePage.switchToPreviousTab();
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(3000);
 		s_assert.assertAll();
 	}
 

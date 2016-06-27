@@ -76,6 +76,10 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	private static final By FIRST_ORDER_STATUS_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[1]/span");
 	private static final By FIRST_ORDER_TYPE_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[2]/span");
 	private static final By FIRST_ORDER_PSQV_LOC = By.xpath("//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][1]//div[@class='order-summary']//li[3]/span");
+	private static final By SV_VALUE_IN_VIEW_ORDER_DETAILS= By.xpath("//div[@class='order-detail-overview']//li[contains(text(),'SV')]/span");
+	private static final By SHIPPING_METHOD_IN_VIEW_ORDER_DETAILS= By.xpath("//div[@class='order-detail-shipping-method']/div[1]");
+	private static final By CONTACT_NAME_AT_FOOTER = By.xpath("//section[@class='order-nav']//div[@class='shadow-card-button-container']//span[@class='label']");
+	private static final By BACK_ARROW_ICON_OF_VIEW_DETAILS = By.xpath("//section[@id='order-detail-modal']/div[1]");
 
 	private static String presentFilterName= "//div[@class='filter-list-tag']//span[text()='%s']";
 	private static String getOrderStatus= "//div[@id='sub-stage']//section[4]//order-status-card[@class='au-target'][%s]//ul[contains(@class,'data-point-list')]/li[1]/span";
@@ -521,6 +525,46 @@ public class LSDOrderPage extends LSDRFWebsiteBasePage{
 	public boolean isOrderLabelPresent(String name){
 		driver.waitForElementPresent(By.xpath(String.format(orderLables, name)));
 		return driver.isElementPresent(By.xpath(String.format(orderLables, name)));
+	}
+
+	public String getSVValueFromViewOrderDetails(){
+		driver.waitForElementPresent(SV_VALUE_IN_VIEW_ORDER_DETAILS);
+		String SVValue = driver.findElement(SV_VALUE_IN_VIEW_ORDER_DETAILS).getText();
+		logger.info("SV value is "+SVValue);
+		return SVValue;
+	}
+
+	public String getShippingMethodNameFromViewOrderDetails(){
+		driver.waitForElementPresent(SHIPPING_METHOD_IN_VIEW_ORDER_DETAILS);
+		String shippingMethod = driver.findElement(SHIPPING_METHOD_IN_VIEW_ORDER_DETAILS).getText();
+		logger.info("Shipping method is "+shippingMethod);
+		return shippingMethod;
+	}
+
+	public String getTotalPricePresentUnderOrderItems(){
+		driver.waitForElementPresent(PRICE_UNDER_ORDER_ITEMS);
+		String totalPrice =  driver.findElement(PRICE_UNDER_ORDER_ITEMS).getText();
+		logger.info("Total price under order items is: "+totalPrice);
+		return totalPrice;
+	}
+
+	public String getQuantityPresentUnderOrderItems(){
+		driver.waitForElementPresent(QUANTITY_UNDER_ORDER_ITEMS);
+		String quantity =  driver.findElement(QUANTITY_UNDER_ORDER_ITEMS).getText();
+		logger.info("Total quantity under order items is: "+quantity);
+		return quantity;
+	}
+
+	public String getContactNameFromContactButton(){
+		driver.waitForElementPresent(CONTACT_NAME_AT_FOOTER);
+		String name =  driver.findElement(CONTACT_NAME_AT_FOOTER).getText();
+		logger.info("Contact name is: "+name);
+		return name;
+	}
+
+	public void clickBackArrowIconOfViewDetails(){
+		driver.click(BACK_ARROW_ICON_OF_VIEW_DETAILS);
+		logger.info("Back arrow icon clicked");
 	}
 
 }

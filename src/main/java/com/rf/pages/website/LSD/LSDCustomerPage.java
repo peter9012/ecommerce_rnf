@@ -43,7 +43,9 @@ public class LSDCustomerPage extends LSDRFWebsiteBasePage{
 	private static final By BACK_ARROW_ICON = By.xpath("//section[@id='pc-profile-modal']/div[@class='icon-arrow-back pointer']");
 	private static final By NEW_LABEL_LOC = By.xpath("//div[@class='pc-order-cards']//pc-order-card[@class='au-target'][1]//div[text()='New']");
 	private static final By NEW_LABEL_IN_ORDER_LOC = By.xpath("//div[@class='pc-profile-content']//div[text()='New']");
-
+	private static final By CONTACT_NAME_AT_FOOTER_FROM_CUSTOMER_PAGE = By.xpath("//section[@id='pc-profile-modal']//div[@class='shadow-card-button-container']//span[@class='label']");
+	 
+	
 	public boolean isCustomerPagePresent(){
 		driver.waitForElementPresent(CUSTOMERS_PAGE);
 		return driver.isElementPresent(CUSTOMERS_PAGE);
@@ -209,5 +211,12 @@ public class LSDCustomerPage extends LSDRFWebsiteBasePage{
 	public boolean isNewLabelPresentInFirstOrder(){
 		driver.waitForElementPresent(NEW_LABEL_IN_ORDER_LOC);
 		return driver.isElementPresent(NEW_LABEL_IN_ORDER_LOC);
+	}
+
+	public String getContactNameFromContactButtonInCustomerPage(){
+		driver.waitForElementPresent(CONTACT_NAME_AT_FOOTER_FROM_CUSTOMER_PAGE);
+		String name =  driver.findElement(CONTACT_NAME_AT_FOOTER_FROM_CUSTOMER_PAGE).getText();
+		logger.info("Contact name is: "+name);
+		return name;
 	}
 }

@@ -81,6 +81,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		lsdHomePage.clickViewMyOrdersLink();
 		lsdOrderPage.clickFirstProcessedOrder();
 		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for any processed order");
+		s_assert.assertTrue(lsdOrderPage.getContactNameFromContactButton().toLowerCase().trim().contains(TestConstants.FIRST_ORDER_CONTACT_NAME.toLowerCase().trim()), "Expected Contact name is:"+TestConstants.FIRST_ORDER_CONTACT_NAME+" Actual on UI is "+lsdOrderPage.getContactNameFromContactButton());
 		lsdOrderPage.clickCloseIconOfOrder();
 		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
 		s_assert.assertTrue(lsdOrderPage.isContactButtonPresentAtFooter(),"Contact button is not present at footer for PC autoship processed order");
@@ -91,6 +92,11 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdOrderPage.isContactDetailsPresent(),"Contact details is not present after clicked on contact button");
 		lsdOrderPage.clickCloseIconOfContact();
 		lsdOrderPage.clickCloseIconOfOrder();
+		lsdHomePage.clickCustomersLink();
+		lsdCustomerPage.clickExpandAndMinimizeButtonOfThisMonth();
+		lsdCustomerPage.clickFirstProcessedOrderUnderCustomerSection();
+		s_assert.assertTrue(lsdCustomerPage.getContactNameFromContactButtonInCustomerPage().toLowerCase().trim().contains(TestConstants.FIRST_ORDER_CONTACT_NAME_UNDER_CUSTOMER_SECTION.toLowerCase().trim()), "Expected Contact name is:"+TestConstants.FIRST_ORDER_CONTACT_NAME_UNDER_CUSTOMER_SECTION+" Actual on UI is "+lsdCustomerPage.getContactNameFromContactButtonInCustomerPage());
+		lsdCustomerPage.clickBackArrowIcon();
 		s_assert.assertAll();
 	}
 
@@ -217,7 +223,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	}
 
 	//Navigation of tracking link (Order Summary/Details) TC-1117
-	@Test
+	@Test(enabled=false)
 	public void testNavigationOfTrackingLink_LSD_TC_1117(){
 		lsdHomePage.navigateToHomePage();
 		lsdHomePage.clickOrdersLink();
@@ -233,39 +239,40 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	public void testOrderDetailsDesignAndDataFieldsLayout_LSD_TC_1157(){
 		lsdHomePage.navigateToHomePage();
 		lsdHomePage.clickOrdersLink();
-		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		lsdOrderPage.clickFirstProcessedOrder();
 		lsdOrderPage.clickViewDetailsBtn();
+		s_assert.assertTrue(lsdOrderPage.getOrderNamePresentInViewOrderDetails().toLowerCase().trim().contains(TestConstants.FIRST_ORDER_NAME.toLowerCase().trim()), "Expected Order Username is "+TestConstants.FIRST_ORDER_NAME+" but actual on UI is "+lsdOrderPage.getOrderNamePresentInViewOrderDetails().trim());
+		s_assert.assertTrue(lsdOrderPage.getOrderTypePresentInViewOrderDetails().trim().contains(TestConstants.ORDER_TYPE_CONSULTANT), "Expected Order type is "+TestConstants.ORDER_TYPE_CONSULTANT+" but actual on UI is "+lsdOrderPage.getOrderTypePresentInViewOrderDetails().trim());
 		s_assert.assertTrue(lsdOrderPage.isOrderDetailsHeaderPresent("Order details"), "Order details header is not present");
-		s_assert.assertFalse(lsdOrderPage.getOrderNamePresentInViewOrderDetails()==null, "Order name is blank");
-		s_assert.assertFalse(lsdOrderPage.getOrderTypePresentInViewOrderDetails()==null, "Order type is blank");
+		//s_assert.assertFalse(lsdOrderPage.getOrderNamePresentInViewOrderDetails()==null, "Order name is blank");
+		//s_assert.assertFalse(lsdOrderPage.getOrderTypePresentInViewOrderDetails()==null, "Order type is blank");
 		s_assert.assertFalse(lsdOrderPage.getEnrolledDatePresentInViewOrderDetails()==null, "Enrolled date is blank");
-
 		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Overview"), "Overview header is not present");
 		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Order Date"), "Order Date is not present in overview section");
 		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Commission Date"), "Commission Date is not present in overview section");
 		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Order Number"), "Order number is not present in overview section");
-		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("PSQV"), "PSQV is not present in overview section");
+		s_assert.assertTrue(lsdOrderPage.getSVValueFromViewOrderDetails().trim().contains(TestConstants.FIRST_ORDER_SV_VALUE), "Expected SV value is "+TestConstants.FIRST_ORDER_SV_VALUE+" but actual on UI is "+lsdOrderPage.getSVValueFromViewOrderDetails().trim());
 		s_assert.assertTrue(lsdOrderPage.isOverviewDetailsPresent("Total"), "total is not present in overview section");
-
 		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Shipment details"), "Shipment details header is not present");
 		s_assert.assertTrue(lsdOrderPage.isShipmentDetailsPresent("Order Status"), "Order Status is not present in shipment details section");
-		s_assert.assertTrue(lsdOrderPage.isShipmentDetailsPresent("Tracking"), "Tracking link is not present in shipment details section");
-
+		//s_assert.assertTrue(lsdOrderPage.isShipmentDetailsPresent("Tracking"), "Tracking link is not present in shipment details section");
 		s_assert.assertTrue(lsdOrderPage.isOrderItemsPresent(), "Order is not contain any item");
 		s_assert.assertTrue(lsdOrderPage.isSKUValuePresentUnderOrderItems(), "SKU value is not present under item");
-		s_assert.assertTrue(lsdOrderPage.isTotalPricePresentUnderOrderItems(), "Total price is not present under item");
-		s_assert.assertTrue(lsdOrderPage.isQuantityPresentUnderOrderItems(), "Quantity is not present under item");
-
-		s_assert.assertTrue(lsdOrderPage.isTrackOrderBtnPresent(), "Track order btn is not present under item");
-
+		//s_assert.assertTrue(lsdOrderPage.isTotalPricePresentUnderOrderItems(), "Total price is not present under item");
+		s_assert.assertTrue(lsdOrderPage.getTotalPricePresentUnderOrderItems().trim().contains(TestConstants.TOTAL_PRICE), "Expected total price is "+TestConstants.TOTAL_PRICE+" but actual on UI is "+lsdOrderPage.getTotalPricePresentUnderOrderItems().trim());
+		//s_assert.assertTrue(lsdOrderPage.isQuantityPresentUnderOrderItems(), "Quantity is not present under item");
+		s_assert.assertTrue(lsdOrderPage.getQuantityPresentUnderOrderItems().trim().contains(TestConstants.QUANTITY_OF_PRODUCT), "Expected product quantity is "+TestConstants.QUANTITY_OF_PRODUCT+" but actual on UI is "+lsdOrderPage.getQuantityPresentUnderOrderItems().trim());
+		//s_assert.assertTrue(lsdOrderPage.isTrackOrderBtnPresent(), "Track order btn is not present under item");
 		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Shipping details"), "Shipping details header is not present");
 		s_assert.assertTrue(lsdOrderPage.isShippingDetailsSubHeadingPresent(), "Shipping details subheading is not present");
-		s_assert.assertFalse(lsdOrderPage.getShippingAddressName()==null, "Shipping address is blank");
+		s_assert.assertTrue(lsdOrderPage.getShippingAddressName().toLowerCase().trim().contains(TestConstants.FIRST_ORDER_NAME.toLowerCase().trim()), "Expected Order Username is "+TestConstants.FIRST_ORDER_NAME+" but actual on UI is "+lsdOrderPage.getShippingAddressName().trim());
 		s_assert.assertTrue(lsdOrderPage.isShippingMethodPresent(), "Shipping details subheading is not present");
-
+		s_assert.assertTrue(lsdOrderPage.getShippingMethodNameFromViewOrderDetails().toLowerCase().trim().contains(TestConstants.SHIPPING_METHOD.toLowerCase().trim()), "Expected shipping method is "+TestConstants.SHIPPING_METHOD+" but actual on UI is "+lsdOrderPage.getShippingMethodNameFromViewOrderDetails().trim());
 		s_assert.assertTrue(lsdOrderPage.isOrderHeaderPresent("Billing details"), "Billing details header is not present");
 		s_assert.assertTrue(lsdOrderPage.isBillingDetailsSubHeadingPresent(), "Billing details subheading is not present");
-		s_assert.assertFalse(lsdOrderPage.getBillingProfileName()==null, "Billing address is blank");
+		s_assert.assertTrue(lsdOrderPage.getBillingProfileName().toLowerCase().trim().contains(TestConstants.FIRST_ORDER_NAME.toLowerCase().trim()), "Expected Billing name is "+TestConstants.FIRST_ORDER_NAME+" but actual on UI is "+lsdOrderPage.getBillingProfileName().trim());
+		lsdOrderPage.clickBackArrowIconOfViewDetails();
+		lsdOrderPage.clickCloseIconOfOrder();
 		s_assert.assertAll();
 	}
 

@@ -1460,7 +1460,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4359:New autoship date for Reactivated Consultant
-	@Test
+	@Test(enabled=false)//Test No longer valid
 	public void testAutoshipDateForReactivatedConsultant_4359() throws InterruptedException, Exception{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO(); 

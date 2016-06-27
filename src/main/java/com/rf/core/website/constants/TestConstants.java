@@ -532,5 +532,10 @@ public class TestConstants {
 	public static final String FIRST_ORDER_SV_VALUE = "900";
 	public static final String FIRST_PC_ORDER_NAME = "Woody Car";
 	public static final String ORDER_TYPE_PC = "PC Perks";
+	public static final String SHIPPING_METHOD = "UPS 2DAY";
+	public static final String TOTAL_PRICE = "$1145.00";
+	public static final String QUANTITY_OF_PRODUCT = "1";
+	public static final String FIRST_ORDER_CONTACT_NAME = "Contact Mary";
+	public static final String FIRST_ORDER_CONTACT_NAME_UNDER_CUSTOMER_SECTION = "Contact Woody";
 
 }

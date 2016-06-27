@@ -12,7 +12,6 @@
 				<class name="com.rf.test.website.crm.miniRegression.CRMMiniRegressionTest"></class> -->
 			<class name="com.rf.test.website.crm.CRMRegressionTest">
 			</class>
-
 		</classes>
 	</test>
 </suite>

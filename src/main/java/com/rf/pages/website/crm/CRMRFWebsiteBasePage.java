@@ -247,14 +247,23 @@ public class CRMRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void closeAllOpenedTabs(){
-		int totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
-		logger.info("total opened tabs = "+totalOpenedTabs);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		for(int i=totalOpenedTabs;i>=1;i--){
-			//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
-			actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
-			//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
-			driver.pauseExecutionFor(1000);
+		int totalOpenedTabs = 0;
+		totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+		for(int count=1;count<=3;count++){
+			logger.info("total opened tabs = "+totalOpenedTabs);
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			for(int i=totalOpenedTabs;i>=1;i--){
+				//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+				//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				driver.pauseExecutionFor(1000);
+			}
+			totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+			if(totalOpenedTabs==0){
+				break;
+			}else{
+				continue;
+			}
 		}
 	}
 

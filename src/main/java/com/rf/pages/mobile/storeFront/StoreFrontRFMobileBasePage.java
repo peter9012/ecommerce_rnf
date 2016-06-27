@@ -1971,12 +1971,12 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//a[@id='our-products']"));
 		driver.findElement(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//a[@id='our-products']")).click();
 	}
-	
+
 	public void clickBecomeAConsultantOnMenuBar(){
 		driver.waitForElementPresent(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//li[@id='BusinessSystemBar']/a"));
 		driver.findElement(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//li[@id='BusinessSystemBar']/a")).click();
 	}
-	
+
 	public void clickEnrollNowOnMenuBar(){
 		driver.waitForElementPresent(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//li[@id='BusinessSystemBar']//a[text()='Enroll Now']"));
 		driver.findElement(By.xpath("//div[@id='header']/following::div[@class='row mobile-nav']//li[@id='BusinessSystemBar']//a[text()='Enroll Now']")).click();
@@ -1986,6 +1986,13 @@ public class StoreFrontRFMobileBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
 		driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")).click();
 		driver.waitForPageLoad();
+	}
+
+	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
+		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+		logger.info("User has clicked on orders link from welcome drop down");
+		return new StoreFrontOrdersPage(driver);
 	}
 
 }

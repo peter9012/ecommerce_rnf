@@ -19,7 +19,6 @@ import com.rf.core.driver.mobile.RFMobileDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
-
 public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
@@ -78,7 +77,7 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 		try{
 			driver.quickWaitForElementPresent(By.id("sponserparam"));
 			driver.type(By.id("sponserparam"),"test");
-			
+
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponsor-name-id"),"test");
 		}
@@ -1269,8 +1268,8 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 	}
 
 	public void clickOnCheckoutButton(){
-//		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
-//		driver.findElement(By.xpath("//input[@value='NEXT']")).click();
+		//		driver.waitForElementPresent(By.xpath("//input[@value='NEXT']"));
+		//		driver.findElement(By.xpath("//input[@value='NEXT']")).click();
 		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
 		driver.findElement(By.xpath("//input[@value='CHECKOUT']")).click();
 		logger.info("checkout button clicked");
@@ -3924,5 +3923,22 @@ public class StoreFrontHomePage extends StoreFrontRFMobileBasePage {
 		return status;
 	}
 
+	public StoreFrontPCUserPage loginAsPCUser(String username,String password){
+		driver.waitForElementPresent(LOGIN_LINK_LOC);
+		driver.click(LOGIN_LINK_LOC);		
+		logger.info("login link clicked");
+		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);		
+		logger.info("login username is "+username);
+		logger.info("login password is "+password);
+		driver.click(LOGIN_BTN_LOC);
+		dismissPolicyPopup();
+		clickRenewLater();
+		logger.info("login button clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return new StoreFrontPCUserPage(driver);
+	}
 
 }

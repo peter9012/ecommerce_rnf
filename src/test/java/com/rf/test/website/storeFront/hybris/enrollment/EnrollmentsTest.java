@@ -68,11 +68,10 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-5284:CORP:Standard Enroll USD 395 Personal Results Kit, Personal Regimen REVERSE REGIME
-	@Test
+	@Test(priority=1)
 	public void testStandardEnroll_PersonalRegimenReverseRegime_5284() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		country = driver.getCountry();
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 		String firstName=TestConstants.FIRST_NAME+randomNum;		
@@ -103,14 +102,14 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Hybris Project-1287: Terms and Conditions (Express enrollment)
-	@Test
+	@Test(priority=2)
 	public void testTermsAndConditions_ExpressEnrollment_1287() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		country = driver.getCountry();
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_UNBLEMISH;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
@@ -139,13 +138,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
-	@Test 
+	@Test(priority=3)
 	public void testPCEnrollment_1308() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
-		country = driver.getCountry();
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 		//Click on Check out
@@ -179,12 +178,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC EnrollmentTest 
-	@Test 
+	@Test(priority=4) 
 	public void testRCEnrollment_1307() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		String lastName = "lN";
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		//Select a product and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
@@ -213,13 +213,14 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Standard enrollment Version : 1 :: Global Sponsorship: Cross Country Sponsor
-	@Test
+	@Test(priority=5)
 	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(CCS);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
@@ -248,13 +249,14 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
-	@Test
+	@Test(priority=6)
 	public void testGlobalSponsorshipCrossCountrySponsor_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName = TestConstants.REGIMEN_NAME_REVERSE;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID(CCS);
 		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchList(), "No Sponsor present in search results");
@@ -282,12 +284,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-3617 CCS PC EnrollmentTest under US Sponsor
-	@Test 
+	@Test(priority=7)
 	public void testCcsPCEnrollmentUnderUSSponsor_3617() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String firstName = TestConstants.FIRST_NAME+randomNum;
 		String lastName = "lN";
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 		//Click on Check out
@@ -309,9 +312,6 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
@@ -321,12 +321,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-3618 CCS RC EnrollmentTest under US Sponsor
-	@Test 
+	@Test(priority=8)
 	public void ccsRCEnrollmentUnderUSSponsor_3618() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		String firstName = TestConstants.FIRST_NAME+randomNum;
+		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		//Select a product and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();

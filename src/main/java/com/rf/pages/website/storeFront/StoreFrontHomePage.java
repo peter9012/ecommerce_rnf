@@ -366,7 +366,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
 		driver.click(By.id("enrollment-next-button"));
 		logger.info("EnrollmentTest Next Button clicked");
-		//		driver.waitForLoadingImageToDisappear();
+		driver.waitForLoadingImageToDisappear();
 		try{
 			driver.turnOffImplicitWaits();
 			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));

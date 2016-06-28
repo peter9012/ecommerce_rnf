@@ -149,7 +149,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void selectProductAndProceedToBuy() throws InterruptedException{
 		driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
-		//driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
 			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		else
@@ -214,7 +214,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
-		driver.waitForElementPresent(By.id("submitForm"));
+//		driver.waitForElementPresent(By.id("submitForm"));
 		driver.click(By.id("submitForm"));
 		logger.info("Next button after adding quantity clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -490,10 +490,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void selectNewBillingCardExpirationDate(){
 		driver.click(By.id("expiryMonth"));
-		//driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
 		driver.click(By.id("expiryYear"));
-		//driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 		logger.info("expiration date is selected");
 	}
@@ -1429,8 +1427,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='sortOptions']"));
 		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
 		logger.info("filter done for high to low price");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
+//		driver.waitForPageLoad();
+//		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{

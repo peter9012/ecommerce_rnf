@@ -45,7 +45,7 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 	protected LSDCustomerPage lsdCustomerPage;
 	protected LSDFeedbackPage lsdFeedbackPage;
 
-	public String whiteListedUserName = "Kohollaren3@gmail.com";
+	public String whiteListedUserName = "Mary@rf.com";
 	public String nonwhiteListedUserName = "renee.corker@gmail.com";
 	protected Actions actions;
 

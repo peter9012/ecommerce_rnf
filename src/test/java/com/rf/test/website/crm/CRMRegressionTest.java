@@ -50,14 +50,14 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		crmContactDetailsPage = new CRMContactDetailsPage(driver);
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 
 		randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 		consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
 
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 		pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
@@ -81,9 +81,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		while(true){
-			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
+			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false || crmHomePage.isAccountSectionPresent()==false){
 				logger.info("No active user in the search results..searching new user");
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 				randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 				consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
@@ -149,7 +149,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") == false || crmHomePage.isAccountSectionPresent()==false){
 				logger.info("No active user in the search results..searching new user");
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 				pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
 				randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
@@ -573,7 +573,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		/*while(true){
 					if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false){
 						logger.info("No active user in the search results..searching new user");
-						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+						randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 						accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 						randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
 						consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
@@ -604,7 +604,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		/*while(true){
 					if(crmHomePage.isSearchResultHasActiveUser("Preferred Customer") ==false){
 						logger.info("No active user in the search results..searching new user");
-						randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+						randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 						pcAccountID = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 
 						randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountID),RFO_DB);
@@ -918,7 +918,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}else{
 				logger.info("PCFirst name is equal to null for account ID: "+pcAccountID);
-				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 				accountIDForPC = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
 				continue;
 			}
@@ -1186,7 +1186,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -1222,7 +1222,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	public void testDeleteShippingProfileForPCUser_4501() throws InterruptedException {
 		String pcUserName = null;
 		List<Map<String, Object>> randomPCUserList =  null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -1759,7 +1759,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	@Test(priority=41)
 	public void testVerifyStatusChangesOfSoftTerminatedConsultant_4472() throws InterruptedException{
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -1810,7 +1810,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	public void testVerifyStatusChangesOfSoftTerminatedPC_4473() throws InterruptedException{
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserName = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		logger.info("The email address is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -1835,7 +1835,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	public void testChangeAccountStatusForPreferredCustomerFromActiveToInactive_4518() throws InterruptedException{
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserName = null;
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -1858,7 +1858,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	public void testChangeAccountStatusForPreferredCustomerFromInactiveToActive_4519() throws InterruptedException{
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserName = null;		 
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserName = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		logger.info("The username is "+pcUserName);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -2176,7 +2176,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmContactDetailsPage= new CRMContactDetailsPage(driver);
 		crmAccountDetailsPage = new CRMAccountDetailsPage(driver);
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		logger.info("The email address is "+consultantEmailID); 
@@ -2207,8 +2207,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String combineFullName = firstName+" "+lastName;
 		String emailId = firstName+"@gmail.com";
 		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		randomConsultantListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 		consultantEmailIDToVerifiy = (String) getValueFromQueryResult(randomConsultantListToVerify, "UserName");
 		logger.info("The email address is "+consultantEmailID);
@@ -2282,7 +2282,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String consultantEmailID = null;
 		String otherReason = TestConstants.OTHER_REASON;
 		String changedMyMind = TestConstants.CHANGED_MY_MIND;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The email address is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -2779,7 +2779,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	@Test(priority=66) 
 	public void testVerifyProxyToMyAccountForConsultant_4498() throws InterruptedException{ 
 		String consultantEmailID = null;
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		logger.info("The email address is "+consultantEmailID); 
 		logger.info("The email address is "+consultantEmailID);
@@ -2828,14 +2828,14 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		String combineFullName = firstName+" "+lastName;
 	//		String emailId = firstName+"@gmail.com";
 	//		String emailIDContainsSpecialCharacter = "^&@#"+"@gmail.com";
-	//		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//		String accountId = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
 	//		List<Map<String, Object>> emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
 	//		String pcEmail = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));  
 	//		logger.info("emaild of username "+pcEmail); 
 	//
 	//
-	//		randomPCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//		randomPCListToVerify = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//		String accountIdToVerify = String.valueOf(getValueFromQueryResult(randomPCListToVerify, "AccountID"));
 	//		emailIdFromAccountIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountIdToVerify),RFO_DB);
 	//		pcEmailIDToVerifiy = String.valueOf(getValueFromQueryResult(emailIdFromAccountIdList, "EmailAddress"));  
@@ -3194,7 +3194,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		while(true){
 			if(crmAccountDetailsPage.isNoRecordToDisplayPresentOnShippingProfile()==true){
 				List<Map<String, Object>> randomPCList =  null;
-				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 				String pcUserName = (String) getValueFromQueryResult(randomPCList, "UserName");  
 				logger.info("The email address is "+pcUserName);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
@@ -3236,7 +3236,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//Hybris Project-4520:Verify the Proxy to my account for a Preferred Customer
 	@Test(priority=73)
 	public void testVerifyProxyToMyAccountForPC_4520() throws InterruptedException{
-		pcUserName = "abigailbouma@icloud.com";
 		logger.info("The email address is "+pcUserName);
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
@@ -3529,7 +3528,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		lastNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
 	//		editedName = firstNameInActiveConsultant+" "+lastNameInActiveConsultant;
 	//
-	//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 	//		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 	//
@@ -3540,7 +3539,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		while(true){
 	//			if(crmHomePage.isSearchResultHasActiveUser() ==false){
 	//				logger.info("No active user in the search results..searching new user");
-	//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	//				logger.info("The email address is "+consultantEmailID);
 	//				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -3594,7 +3593,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		lastNameInActiveConsultant = (String) getValueFromQueryResult(randomAccountDetails, "LastName");
 	//		editedName = firstNameInActiveConsultant+" "+lastNameInActiveConsultant;
 	//
-	//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");
 	//		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 	//
@@ -3605,7 +3604,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		while(true){
 	//			if(crmHomePage.isSearchResultHasActiveUser() ==false){
 	//				logger.info("No active user in the search results..searching new user");
-	//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	//				logger.info("The email address is "+consultantEmailID);
 	//				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -3696,7 +3695,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	//		/*while(true){
 	//				if(crmHomePage.isSearchResultHasActiveUser() ==false){
 	//					logger.info("No active user in the search results..searching new user");
-	//					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 	//					consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 	//					consultantAccountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 	//					logger.info("The email address is "+consultantEmailId);
@@ -3741,7 +3740,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		/*while(true){
 				if(crmHomePage.isSearchResultHasActiveUser() ==false){
 					logger.info("No active user in the search results..searching new user");
-					randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 					pcUserNamed = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 					pcAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 					logger.info("The email address is "+pcUserName);

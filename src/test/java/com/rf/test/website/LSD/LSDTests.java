@@ -157,7 +157,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	}
 
 	//PC Profile TC-1150
-	@Test
+	@Test(priority=9)
 	public void testPCProfile_1150(){
 		String orderStatus = "Order Status";
 		String orderType = "Order Type";
@@ -191,7 +191,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	}
 
 	//Filters Functionality TC-264 
-	@Test
+	@Test(priority=10)
 	public void testFiltersFunctionality_LSD_TC_264(){
 		lsdHomePage.navigateToHomePage();
 		lsdHomePage.clickOrdersLink();
@@ -222,20 +222,8 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Navigation of tracking link (Order Summary/Details) TC-1117
-	@Test(enabled=false)
-	public void testNavigationOfTrackingLink_LSD_TC_1117(){
-		lsdHomePage.navigateToHomePage();
-		lsdHomePage.clickOrdersLink();
-		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
-		String parentWindowHandle = driver.getWindowHandle();
-		String trackingNumber = lsdOrderPage.clickAndGetTrackingNumberLink();
-		s_assert.assertTrue(lsdOrderPage.isTrackingWebsitePagePresent(parentWindowHandle, trackingNumber), "Tracking number link is not working");
-		s_assert.assertAll();
-	}
-
 	//Order Details - Design and data fields layout TC-1157 
-	@Test
+	@Test(priority=11)
 	public void testOrderDetailsDesignAndDataFieldsLayout_LSD_TC_1157(){
 		lsdHomePage.navigateToHomePage();
 		lsdHomePage.clickOrdersLink();
@@ -277,7 +265,7 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 	}
 
 	//Orders View - Design and data fields layout TC-1155
-	@Test(enabled=true)
+	@Test(priority=12)
 	public void testOrdersViewDesignAndDataFieldsLayout_LSD_TC_1155(){
 		String countOfPendingOrders = TestConstants.COUNT_OF_PENDING_ORDERS;
 		String countOfProcessedOrders = TestConstants.COUNT_OF_PROCESSED_ORDERS;
@@ -299,4 +287,17 @@ public class LSDTests extends RFLSDWebsiteBaseTest{
 		s_assert.assertTrue(lsdOrderPage.isFirstOrderDatePresent(), "First order date is not present");
 		s_assert.assertAll();
 	}
+
+	//Navigation of tracking link (Order Summary/Details) TC-1117
+	@Test(enabled=false)
+	public void testNavigationOfTrackingLink_LSD_TC_1117(){
+		lsdHomePage.navigateToHomePage();
+		lsdHomePage.clickOrdersLink();
+		lsdOrderPage.clickFirstProcessedPCAutishipOrder();
+		String parentWindowHandle = driver.getWindowHandle();
+		String trackingNumber = lsdOrderPage.clickAndGetTrackingNumberLink();
+		s_assert.assertTrue(lsdOrderPage.isTrackingWebsitePagePresent(parentWindowHandle, trackingNumber), "Tracking number link is not working");
+		s_assert.assertAll();
+	}
+
 }

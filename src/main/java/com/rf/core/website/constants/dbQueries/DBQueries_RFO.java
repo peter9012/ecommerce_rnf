@@ -101,6 +101,35 @@ public class DBQueries_RFO {
 			"AND a.Active = 1 ) "+
 			"ORDER BY NEWID()";
 
+	public static String GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO =
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+ 
+					"BEGIN TRANSACTION "+ 
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+ 
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+ 
+					"WHERE   ab.CountryID = %s "+
+					"AND ab.AccountTypeID = 2 "+/*Preferred Customer*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+ 
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+ 
+					"AND ar.AccountID = ab.AccountID ) "+  
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.EmailAddresses AS ea "+
+					"WHERE  ea.EmailAddress = [as].Username) "+  
+					/*Active Template*/
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+ 
+					"AND a.AutoshipTypeID = 1 "+/*PC Auto-ship Template*/
+					"AND a.Active = 1 ) "+ 
+					"ORDER BY NEWID();";
+
 	public static String GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO =
 			"USE RFOperations "+
 					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
@@ -1503,6 +1532,35 @@ public class DBQueries_RFO {
 			"AND a.AutoshipTypeID = 2 "+/*Consultant Auto-ship Template*/
 			"AND a.Active = 1 ) "+
 			"ORDER BY NEWID()";
+
+	public static String GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO =
+			"USE RFOperations "+
+					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+ 
+					"BEGIN TRANSACTION "+ 
+					"SELECT TOP 1 "+
+					"ab.AccountID , "+
+					"[as].Username "+
+					"FROM    RFO_Accounts.AccountBase AS ab "+
+					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+ 
+					"WHERE   ab.CountryID = %s "+
+					"AND ab.AccountTypeID = 1 "+/*Consultant*/
+					/*Active Accounts*/
+					"AND NOT EXISTS ( SELECT 1 "+
+					"FROM   RFO_Accounts.AccountRF AS ar "+ 
+					"WHERE  ar.Active = 0 "+
+					"AND ar.HardTerminationDate IS NOT NULL "+ 
+					"AND ar.AccountID = ab.AccountID ) "+  
+					"AND EXISTS ( SELECT 1 "+
+					"FROM RFO_Accounts.EmailAddresses AS ea "+
+					"WHERE  ea.EmailAddress = [as].Username) "+
+					/*Active Template*/
+					"AND EXISTS ( SELECT 1 "+
+					"FROM   Hybris.Autoship AS a "+
+					"WHERE  a.AccountID = ab.AccountID "+ 
+					"AND a.AutoshipTypeID = 2 "+ /*Consultant Auto-ship Template*/
+					"AND a.Active = 1 ) "+ 
+					"ORDER BY NEWID();";
 
 	public static String GET_RANDOM_CONSULTANT_WITH_PWS_RFO = 
 			"USE RFOperations "+

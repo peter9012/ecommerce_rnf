@@ -570,14 +570,14 @@ public class AddEditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.openPWSSite(country, env);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.enterUserInformationForEnrollmentWithEmail(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME,consultantEmailAddress, password, addressLine1, city,state, postalCode, phoneNumber);
-		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isShippingAddressPresentAtOrderAndReviewPage(firstName), "Newly added address is not present at order and revie confirm page");
 		//Edit the shipping address
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -586,7 +586,7 @@ public class AddEditShippingTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.editFirstName(newShippingAddressName);
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterConfirmPassword(password);
-		storeFrontHomePage.clickEnrollmentNextBtn();
+		storeFrontHomePage.clickNextButton();
 
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();

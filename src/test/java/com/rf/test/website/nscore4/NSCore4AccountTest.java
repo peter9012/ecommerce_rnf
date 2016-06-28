@@ -562,7 +562,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		logger.info("DB is "+RFL_DB);
 		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
 		logger.info("Account number from DB is "+accountNumber);
-		nscore4HomePage.enterAccountNumberInAccountSearchField("1940905");
+		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
 		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
 		nscore4HomePage.clickFullAccountRecordLink();
 		//get all values before update

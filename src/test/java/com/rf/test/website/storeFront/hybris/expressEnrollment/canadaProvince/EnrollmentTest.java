@@ -52,7 +52,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,province, postalCode, phoneNumber);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -60,7 +60,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
@@ -100,7 +100,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NUNAVUT, postalCode, phoneNumber);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -108,7 +108,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
@@ -164,7 +164,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.searchCID();
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,TestConstants.PROVINCE_NORTHWEST_TERRITORIES, postalCode, phoneNumber);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
@@ -172,7 +172,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		

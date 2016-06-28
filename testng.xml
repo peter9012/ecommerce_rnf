@@ -86,6 +86,7 @@
       <class name="com.rf.test.website.storeFront.legacy.BizPWSTest"/>
       <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
       <class name="com.rf.test.website.cscockpit.SearchVerificationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.enrollment.EnrollmentsTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

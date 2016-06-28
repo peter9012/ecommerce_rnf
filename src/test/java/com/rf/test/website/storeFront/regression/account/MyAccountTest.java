@@ -851,8 +851,7 @@ public class MyAccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterLastName(TestConstants.LAST_NAME);
 
 		storeFrontHomePage.enterEmailAddress(newPCName);
-		s_assert.assertFalse(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
-
+		s_assert.assertTrue(storeFrontHomePage.verifySwitchPCToUnderDifferentConsultant(), "PC is able to move under different consultant");
 		s_assert.assertAll();
 	}
 

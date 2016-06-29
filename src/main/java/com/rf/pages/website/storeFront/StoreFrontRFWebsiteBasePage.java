@@ -214,7 +214,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
-//		driver.waitForElementPresent(By.id("submitForm"));
+		//		driver.waitForElementPresent(By.id("submitForm"));
 		driver.click(By.id("submitForm"));
 		logger.info("Next button after adding quantity clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -869,10 +869,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-		driver.type(By.id("first-Name"),firstName);
-		logger.info("first name entered as "+firstName);
-		driver.type(By.id("last-name"),lastName);
-		logger.info("last name entered as "+lastName);
+//		driver.type(By.id("first-Name"),firstName);
+//		logger.info("first name entered as "+firstName);
+//		driver.type(By.id("last-name"),lastName);
+//		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
@@ -893,7 +893,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
 	}
 
@@ -1134,6 +1134,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		logger.info("All products link clicked "); 
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
@@ -1427,8 +1428,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='sortOptions']"));
 		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
 		logger.info("filter done for high to low price");
-//		driver.waitForPageLoad();
-//		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{

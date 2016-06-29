@@ -111,7 +111,6 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
 	// Hybris Phase 2-2047 :: Version : 1 :: Edit billing profile on 'Billing Profile' page
-
 	@Test(priority=1)
 	public void testAddAndEditNewBillingProfileOnBillingProfilePage_2041_2047() throws InterruptedException, SQLException{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;

@@ -98,12 +98,12 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 		driver.waitForLoadingImageToDisappear();  
 	}
 	public boolean verifyAccountTerminationIsConfirmedPopup(){
-		  if(driver.findElement(By.xpath("//div[@id='showConsultantTerminatePopUp']")).isDisplayed()){
-		   return true;
-		  }else{
-		   return false;
-		  }
-		 }
+		if(driver.findElement(By.xpath("//div[@id='showConsultantTerminatePopUp']")).isDisplayed()){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	public void clickOnCloseWindowAfterTermination(){
 		driver.waitForElementPresent(By.xpath("//input[@value='Close window']"));
@@ -117,10 +117,12 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 			driver.quickWaitForElementPresent(POPUP_CONFIRM_TERMINATION_BUTTON);
 			driver.click(POPUP_CONFIRM_TERMINATION_BUTTON);
 			logger.info("Confirm popup clicked");
-			driver.waitForPageLoad();
+
 		}catch(Exception e){
 			System.out.println("Confirm popup not seen.");
 		}
+
+		driver.waitForPageLoad();
 	}
 
 	public void fillTheEntriesAndClickOnSubmitDuringTerminationForPC(){

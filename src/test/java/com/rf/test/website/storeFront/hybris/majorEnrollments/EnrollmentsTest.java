@@ -39,7 +39,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	private String state = null; 
 	String countryIDS=null;
 	String CCS = null;
-	
+
 	@BeforeTest
 	public void beforeTest(){
 		country = driver.getCountry();		
@@ -62,7 +62,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
-		
+
 		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryIDS),RFO_DB);
 		CCS = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));		
 	}
@@ -137,9 +137,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-2250:Corporate Sponsor: PC and RC can create an account without a Sponsor -- will be set to Corporate
+	//Hybris Project-2300:Becomke PC User After adding product to cart
+	//Hybris Project-2187:Terms and Conditions - PC enrollment
+	//Hybris Project-2160:Place and Order and Enroll for PC during Checkout and check disclaimers
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
 	@Test(priority=3)
-	public void testPCEnrollment_1308() throws InterruptedException{
+	public void testPCEnrollment_1308_2160_2187_2300_1308() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
@@ -151,6 +155,8 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnCheckoutButton();
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+		//validate 10% discount for PC User account in order summary section
+		s_assert.assertTrue(storeFrontHomePage.validateDiscountForEnrollingAsPCUser(TestConstants.DISCOUNT_TEXT_FOR_PC_USER),"Discount text Checkbox is not checked for pc User");
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
@@ -164,8 +170,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
+		//validate bill to this card radio button selected under billing profile section
+		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
+		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Bill to this card radio button is not selected under billing profile");
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksTermsAndConditionsPopupText().toLowerCase().contains(TestConstants.PC_PERKS_TERMS_CONDITION_POPUP_TEXT.toLowerCase()),"PC perks terms and condition popup text is not as expected");
+		s_assert.assertTrue(storeFrontHomePage.getPCPerksTermsAndConditionsPopupHeaderText().toLowerCase().contains(TestConstants.PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT.toLowerCase()),"PC perks terms and candition popup Header text is not as expected");
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
@@ -173,13 +184,15 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
 		s_assert.assertAll(); 
-
 	}
 
+	// Hybris Project-2188:Terms and Conditions - RC enrollment
+	//Hybris Project-2250:Corporate Sponsor: PC and RC can create an account without a Sponsor -- will be set to Corporate
 	// Test Case Hybris Project-1307 :: Version : 1 :: 2. RC EnrollmentTest 
 	@Test(priority=4) 
-	public void testRCEnrollment_1307() throws InterruptedException{
+	public void testRCEnrollment_1307_2250_2188() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String firstName=TestConstants.FIRST_NAME+randomNum;
@@ -208,13 +221,15 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
-		s_assert.assertAll();	
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
+		s_assert.assertAll(); 
 
 	}
 
-	//Standard enrollment Version : 1 :: Global Sponsorship: Cross Country Sponsor
+	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
 	@Test(priority=5)
-	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment() throws InterruptedException	{
+	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
@@ -248,9 +263,10 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Hybris Project-5137:Global Sponsorship : Cross Country Sponsor
 	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
 	@Test(priority=6)
-	public void testGlobalSponsorshipCrossCountrySponsor_2251() throws InterruptedException	{
+	public void testGlobalSponsorshipCrossCountrySponsor_2251_5137() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
@@ -261,10 +277,12 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.searchCID(CCS);
 		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchList(), "No Sponsor present in search results");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		String currentPWS = driver.getCurrentUrl();
+		s_assert.assertFalse(currentPWS.contains("corp"), "After select sponsor current url does  contain corp");
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,password, addressLine1, city,state,postalCode, phoneNumber);
 		//storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, TestConstants.PROVINCE_YUKON, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();
-		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
+		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
 		storeFrontHomePage.selectNewBillingCardExpirationDate();
@@ -274,7 +292,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();

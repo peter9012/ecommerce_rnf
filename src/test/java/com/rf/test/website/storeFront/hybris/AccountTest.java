@@ -51,7 +51,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	private String env = null;
 
 	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -67,7 +67,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -90,7 +90,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Test Case Hybris Phase 2-3719 :: Version : 1 :: Perform PC Account termination through my account
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4318
 	public void testAccountTerminationPageForPCUser_3719() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -98,7 +98,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -106,7 +106,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -142,7 +142,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -177,7 +177,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -207,7 +207,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -272,7 +272,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Phase 2-2228 :: Version : 1 :: Perform RC Account termination through my account
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in UpgradeDowngrade TC-4694
 	public void testAccountTerminationPageForRCUser_2228() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
@@ -289,7 +289,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -312,7 +312,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1975 :: Version : 1 :: Retail user termination
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in UpgradeDowngrade TC-4694
 	public void testRetailUserTermination_1975() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
@@ -329,7 +329,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -414,7 +414,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -432,7 +432,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnCountryAtWelcomePage();
 		//Terminate PC User
 		while(true){
-			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcAccountId = String.valueOf(getValueFromQueryResult(randomPCList, "AccountID"));
 			randomPCEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,pcAccountId),RFO_DB);
 			pcUserEmailAddress = String.valueOf(getValueFromQueryResult(randomPCEmailList, "EmailAddress"));
@@ -441,7 +441,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailAddress);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -462,7 +462,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_PERSONAL, TestConstants.REGIMEN_NAME);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.STANDARD_ENROLLMENT);
 		// assertion for Active PC
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		activePCAccountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID")); 
 		randomPCEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,activePCAccountId),RFO_DB);
 		pcUserEmailID = String.valueOf(getValueFromQueryResult(randomPCEmailList, "EmailAddress"));
@@ -541,7 +541,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -575,7 +575,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -626,7 +626,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -670,7 +670,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -733,7 +733,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -773,7 +773,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantWithPWSEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -828,7 +828,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -849,59 +849,21 @@ public class AccountTest extends RFWebsiteBaseTest{
 	//Hybris Project-2234:Verify that user can cancel PC Perks subscription through my account
 	@Test
 	public void testPCUserCancelPcPerks_2234() throws InterruptedException{
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
-		country = driver.getCountry();
-		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String firstName=TestConstants.FIRST_NAME+randomNum;
-		emailID = firstName+randomNum+"@xyz.com";
-		// Click on our product link that is located at the top of the page and then click in on quick shop
-
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
-		//Select a product with the price less than $80 and proceed to buy it
-		storeFrontHomePage.applyPriceFilterLowToHigh();
-		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		//1 product is in the Shopping Cart?
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-		logger.info("1 product is successfully added to the cart");
-
+		storeFrontHomePage.selectProductAndProceedToBuy();
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
-
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailID);
-
-		//Pop for PC threshold validation
-		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-
-		//In the Cart page add one more product
-		storeFrontHomePage.addAnotherProduct();
-
-		//Click on Check out
-		storeFrontHomePage.clickOnCheckoutButton();
-
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
-
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -911,9 +873,9 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
-		/*storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPCPerksTermsAndConditionsPopup(),"PC Perks terms and conditions popup not visible when checkboxes for t&c not selected and place order button clicked");
-		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");*/
+		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
@@ -971,7 +933,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1012,7 +974,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4663:Consultant Account Termination
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
 	public void testConsultantAccountTermination_4663() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1028,7 +990,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1094,28 +1056,11 @@ public class AccountTest extends RFWebsiteBaseTest{
 		   storeFrontHomePage.clickOnAllProductsLink();*/
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
-		//Select a product with the price less than $80 and proceed to buy it
 		//  storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
-		//1 product is in the Shopping Cart?
-		//  s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
-		logger.info("1 product is successfully added to the cart");
-
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
-
-		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
 
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		String emailAddress = firstName+randomNum+"@xyz.com";
@@ -1157,7 +1102,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4648:Cancellation Message for PC account Termination
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4318
 	public void testCancellationMessageforPCaccountTermination_4648() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -1165,7 +1110,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -1173,7 +1118,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1192,7 +1137,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4647:PC Account Termination
-	@Test
+	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4318
 	public void testPCAccountTermination_4647() throws InterruptedException{
 		country = driver.getCountry();
 		RFO_DB = driver.getDBNameRFO();
@@ -1203,7 +1148,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String pcUserEmailID = null;
 		String accountIdForPCUser = null;
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForPCUser);
@@ -1212,7 +1157,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1251,8 +1196,9 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-5003:Add Birthday and gender and allow my sponsor information
+	//Hybris Project-5002:Modify Main Phone Number and mobile phone information
 	@Test
-	public void testAddBirthDayAndGenderAndAllowMySponsorInformation_5003() throws InterruptedException{
+	public void testAddBirthDayAndGenderAndAllowMySponsorInformation_5003_5002() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -1264,6 +1210,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 			String firstNameFromUI=null;
 			String lastNameFromUI=null;
 			String legalName=null;
+			String mainPhoneNumberDB = null;
+			List<Map<String, Object>> mainPhoneNumberList =  null;
 			String accountIdForConsultant = null;
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -1275,7 +1223,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -1284,6 +1232,10 @@ public class AccountTest extends RFWebsiteBaseTest{
 			logger.info("login is successful");
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
+					
 			firstNameFromUI=storeFrontAccountInfoPage.getFirstNameFromAccountInfo();
 			lastNameFromUI=storeFrontAccountInfoPage.getLastNameFromAccountInfo();
 			legalName=firstNameFromUI+" "+lastNameFromUI; 
@@ -1307,7 +1259,11 @@ public class AccountTest extends RFWebsiteBaseTest{
 			accountNameDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NAME_DETAILS_QUERY, legalName), RFO_DB);
 			dobDB = String.valueOf(getValueFromQueryResult(accountNameDetailsList, "Birthday"));
 			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyEnteredBirthDateFromDB(dobDB,TestConstants.CONSULTANT_DAY_OF_BIRTH,TestConstants.CONSULTANT_MONTH_OF_BIRTH,TestConstants.CONSULTANT_YEAR_OF_BIRTH));  
-
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+			
 			s_assert.assertAll();
 		}
 		else{
@@ -1315,48 +1271,48 @@ public class AccountTest extends RFWebsiteBaseTest{
 		}
 	}
 
-	//Hybris Project-5002:Modify Main Phone Number and mobile phone information
-	@Test
-	public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			RFO_DB = driver.getDBNameRFO();
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-
-			String mainPhoneNumberDB = null;
-			List<Map<String, Object>> mainPhoneNumberList =  null;
-			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;
-			String accountIdForConsultant = null;
-			while(true){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				logger.info("Account Id of the user is "+accountIdForConsultant);
-				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			}
-			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
-			logger.info("login is successful");
-			storeFrontConsultantPage.clickOnWelcomeDropDown();
-			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
-			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
-			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
-			s_assert.assertAll();
-		}else{
-			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-		}
-	}
+//	//Hybris Project-5002:Modify Main Phone Number and mobile phone information
+//	@Test
+//	public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
+//		if(driver.getCountry().equalsIgnoreCase("ca")){
+//			RFO_DB = driver.getDBNameRFO();
+//			storeFrontHomePage = new StoreFrontHomePage(driver);
+//
+//			String mainPhoneNumberDB = null;
+//			List<Map<String, Object>> mainPhoneNumberList =  null;
+//			List<Map<String, Object>> randomConsultantList =  null;
+//			String consultantEmailID = null;
+//			String accountIdForConsultant = null;
+//			while(true){
+//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+//				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+//				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//				logger.info("Account Id of the user is "+accountIdForConsultant);
+//				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+//				boolean isError = driver.getCurrentUrl().contains("error");
+//				if(isError){
+//					logger.info("login error for the user "+consultantEmailID);
+//					driver.get(driver.getURL()+"/"+driver.getCountry());
+//				}
+//				else
+//					break;
+//			}
+//			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+//			logger.info("login is successful");
+//			storeFrontConsultantPage.clickOnWelcomeDropDown();
+//			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+//			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
+//			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+//			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
+//			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+//			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+//			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+//			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+//			s_assert.assertAll();
+//		}else{
+//			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+//		}
+//	}
 
 	//Hybris Project-4999:Modify name of the users
 	@Test
@@ -1383,7 +1339,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -1435,7 +1391,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -1480,7 +1436,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isLoginError = driver.getCurrentUrl().contains("error");
 				if(isLoginError){
 					logger.info("Login error for the user "+consultantEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -1564,7 +1520,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1705,7 +1661,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1772,7 +1728,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1837,7 +1793,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+crossCountryConsultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1853,7 +1809,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1884,13 +1840,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 		//Get Cross Country PC User from database
 		driver.get(driver.getURL()+"/"+crossCountry);
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,cid),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,cid),RFO_DB);
 			crossCountryPCUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(crossCountryPCUserEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("Login Error for the user "+crossCountryPCUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1899,13 +1855,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 		//Get User from database .
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");		
 			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("Login Error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1942,7 +1898,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+crossCountryRCUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1957,7 +1913,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2006,7 +1962,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2053,7 +2009,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2098,7 +2054,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2155,7 +2111,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("login error for the user "+rcUserEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -2203,7 +2159,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("login error for the user "+rcUserEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -2262,7 +2218,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			List<Map<String, Object>> randomPCUserList;
 			String pcUserEmailID = null;
 			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");
 				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 				List<Map<String, Object>> randomPCUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountId),RFO_DB);
@@ -2272,7 +2228,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 				boolean isLoginError = driver.getCurrentUrl().contains("error");
 				if(isLoginError){
 					logger.info("Login error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -2354,39 +2310,44 @@ public class AccountTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+		String country= driver.getCountry();
+		if(country.equalsIgnoreCase("us")){
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountID);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantEmailID);
+					driver.get(driver.getURL()+"/"+country);
+				}
+				else
+					break;
 			}
-			else
-				break;
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+			storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
+			storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
+			s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
+			s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
+			storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
+			storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
+			storeFrontHomePage.clickOnCountryAtWelcomePage();
+			//connect with a consultant
+			storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
+			//search with terminated consultant
+			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
+			//verify 'No Result found' is displayed
+			s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated US Consultant is Present!!!");
+			s_assert.assertAll(); 
+		}else{
+			logger.info("NOT EXECUTED..US Specific test");
 		}
-		logger.info("login is successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-		storeFrontAccountTerminationPage = storeFrontAccountInfoPage.clickTerminateMyAccount();
-		storeFrontAccountTerminationPage.fillTheEntriesAndClickOnSubmitDuringTermination();
-		s_assert.assertTrue(storeFrontAccountTerminationPage.validateConfirmAccountTerminationPopUp(), "confirm account termination pop up is not displayed");
-		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyAccountTerminationIsConfirmedPopup(), "Account still exist");
-		storeFrontAccountTerminationPage.clickConfirmTerminationBtn();  
-		storeFrontAccountTerminationPage.clickOnCloseWindowAfterTermination();
-		storeFrontHomePage.clickOnCountryAtWelcomePage();
-		//connect with a consultant
-		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
-		//search with terminated consultant
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantEmailID);
-		//verify 'No Result found' is displayed
-		s_assert.assertTrue(storeFrontHomePage.validateInvalidSponsor(),"Terminated US Consultant is Present!!!");
-		s_assert.assertAll(); 
 	}
 
 	//Hybris Project-4010:Look up with Terminated Preffered consultant's Full name/ Account ID
@@ -2398,7 +2359,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 			accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
@@ -2406,7 +2367,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2420,7 +2381,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
 		storeFrontPCUserPage.cancelMyPCPerksAct();
 		//Navigate to the base url
-		driver.get(driver.getURL());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//connect with a consultant
 		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
 		//search with terminated consultant
@@ -2448,7 +2409,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2465,7 +2426,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
 		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup(); 
 		//Navigate to the base url
-		driver.get(driver.getURL());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//connect with a consultant
 		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
 		//search with terminated consultant
@@ -2710,7 +2671,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2826,7 +2787,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

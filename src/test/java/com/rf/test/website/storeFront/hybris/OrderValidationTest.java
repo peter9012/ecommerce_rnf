@@ -1813,81 +1813,81 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3254:RC order be placed and select different sponsor for order.
-	@Test
-	public void testRCOrderPlacedAndSelectDifferentSponsorForOrder_3254() throws InterruptedException{
-		String rcUserEmailID = null;
-		List<Map<String, Object>> randomRCList =  null;
-		String accountID = null;
-		RFO_DB = driver.getDBNameRFO();
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String lastName = "lN";
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
-			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-			if(isSiteNotFoundPresent){
-				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		}	
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.selectProductAndProceedToBuy();
-		storeFrontHomePage.clickOnCheckoutButton();
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-
-				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		logger.info("Account Id of the user is "+consultantAccountID);
-		// Get Account Number
-		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-
-				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
-		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-		//storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-		storeFrontHomePage.enterMainAccountInfo();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		//Enter Billing Profile
-		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
-			storeFrontHomePage.clickAddNewBillingProfileLink();
-		}
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		s_assert.assertTrue(storeFrontHomePage.validateTermsAndConditionsForRC(), "Terms and Conditions & 'this order cannot be cancelled.' is not present on UI");
-		storeFrontHomePage.clickPlaceOrderBtn();
-		storeFrontHomePage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		driver.get(driver.getCSCockpitURL());		
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
-		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
-		s_assert.assertAll(); 
-	}
+//	@Test
+//	public void testRCOrderPlacedAndSelectDifferentSponsorForOrder_3254() throws InterruptedException{
+//		String rcUserEmailID = null;
+//		List<Map<String, Object>> randomRCList =  null;
+//		String accountID = null;
+//		RFO_DB = driver.getDBNameRFO();
+//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+//		String lastName = "lN";
+//		storeFrontHomePage = new StoreFrontHomePage(driver);
+//		while(true){
+//			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+//			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+//			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
+//
+//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+//			if(isSiteNotFoundPresent){
+//				logger.info("login error for the user "+rcUserEmailID);
+//				driver.get(driver.getURL());
+//			}
+//			else
+//				break;
+//		}	
+//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+//		storeFrontHomePage.selectProductAndProceedToBuy();
+//		storeFrontHomePage.clickOnCheckoutButton();
+//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+//
+//				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+//		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//		logger.info("Account Id of the user is "+consultantAccountID);
+//		// Get Account Number
+//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+//
+//				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
+//		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
+//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+//		//storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+//		storeFrontHomePage.enterMainAccountInfo();
+//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+//		//Enter Billing Profile
+//		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
+//			storeFrontHomePage.clickAddNewBillingProfileLink();
+//		}
+//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+//		storeFrontHomePage.selectNewBillingCardAddress();
+//		storeFrontHomePage.clickOnSaveBillingProfile();
+//		storeFrontHomePage.clickOnBillingNextStepBtn();
+//		s_assert.assertTrue(storeFrontHomePage.validateTermsAndConditionsForRC(), "Terms and Conditions & 'this order cannot be cancelled.' is not present on UI");
+//		storeFrontHomePage.clickPlaceOrderBtn();
+//		storeFrontHomePage.clickOnWelcomeDropDown();
+//		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+//		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+//		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+//		driver.get(driver.getCSCockpitURL());		
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+//		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+//		cscockpitOrderSearchTabPage.clickSearchBtn();
+//		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+//		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+//		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
+//		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
+//		s_assert.assertAll(); 
+//	}
 
 	// Hybris Project-3849:Verify Sponsor on Return Orders RFO
 	@Test
@@ -2454,78 +2454,78 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3779:Place Adhoc Order as RC with different sponsor
-	@Test
-	public void testPlaceAdhocOrderAsRCWithDifferentSponsor_3779() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomRCList =  null;
-		String rcEmailID = null;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-		String lastName = "lN";
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String pws = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
-		while(true){
-			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
-			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID,password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+rcEmailID);
-				driver.get(pws);
-			}
-			else
-				break;
-		}
-
-		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		storeFrontHomePage.selectProductAndProceedToBuy();
-		storeFrontHomePage.clickOnCheckoutButton();
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-
-				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-		logger.info("Account Id of the user is "+consultantAccountID);
-		// Get Account Number
-		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-
-				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
-		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-		storeFrontHomePage.clickOnNotYourSponsorLink();
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
-		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-		storeFrontHomePage.enterMainAccountInfo();
-		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		//Enter Billing Profile
-		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
-			storeFrontHomePage.clickAddNewBillingProfileLink();
-		}
-		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
-		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontHomePage.selectNewBillingCardAddress();
-		storeFrontHomePage.clickOnSaveBillingProfile();
-		storeFrontHomePage.clickOnBillingNextStepBtn();
-		storeFrontHomePage.clickPlaceOrderBtn();
-		storeFrontHomePage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		driver.get(driver.getCSCockpitURL());  
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
-		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
-		String originationValue = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
-		s_assert.assertTrue(pws.contains(originationValue), "Expected origination value is :"+pws+"Actual On UI is: "+originationValue);
-		s_assert.assertAll(); 
-	}
+//	@Test
+//	public void testPlaceAdhocOrderAsRCWithDifferentSponsor_3779() throws InterruptedException{
+//		RFO_DB = driver.getDBNameRFO();
+//		List<Map<String, Object>> randomRCList =  null;
+//		String rcEmailID = null;
+//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+//		String lastName = "lN";
+//		storeFrontHomePage = new StoreFrontHomePage(driver);
+//		String pws = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+//		while(true){
+//			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+//			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
+//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID,password);
+//			boolean isLoginError = driver.getCurrentUrl().contains("error");
+//			if(isLoginError){
+//				logger.info("Login error for the user "+rcEmailID);
+//				driver.get(pws);
+//			}
+//			else
+//				break;
+//		}
+//
+//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+//		storeFrontHomePage.selectProductAndProceedToBuy();
+//		storeFrontHomePage.clickOnCheckoutButton();
+//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+//
+//				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+//		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//		logger.info("Account Id of the user is "+consultantAccountID);
+//		// Get Account Number
+//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+//
+//				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
+//		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+//		storeFrontHomePage.clickOnNotYourSponsorLink();
+//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
+//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+//		storeFrontHomePage.enterMainAccountInfo();
+//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+//		//Enter Billing Profile
+//		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
+//			storeFrontHomePage.clickAddNewBillingProfileLink();
+//		}
+//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+//		storeFrontHomePage.selectNewBillingCardAddress();
+//		storeFrontHomePage.clickOnSaveBillingProfile();
+//		storeFrontHomePage.clickOnBillingNextStepBtn();
+//		storeFrontHomePage.clickPlaceOrderBtn();
+//		storeFrontHomePage.clickOnWelcomeDropDown();
+//		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+//		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+//		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+//		driver.get(driver.getCSCockpitURL());  
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+//		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+//		cscockpitOrderSearchTabPage.clickSearchBtn();
+//		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+//		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+//		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
+//		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
+//		String originationValue = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+//		s_assert.assertTrue(pws.contains(originationValue), "Expected origination value is :"+pws+"Actual On UI is: "+originationValue);
+//		s_assert.assertAll(); 
+//	}
 }

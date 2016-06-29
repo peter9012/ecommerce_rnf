@@ -1715,7 +1715,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String consultantEmailID = null;
 		String accountID = null;
 		storeFrontHomePage=new StoreFrontHomePage(driver);
-		String alphanumericUserName=RandomStringUtils.randomAlphanumeric(6);
 		String specialSymbolUsername="@"+randomNum;
 
 		//Get CA consultant from database .
@@ -1737,15 +1736,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		//String existingUserName=storeFrontAccountInfoPage.getExistingUserName();
-		storeFrontAccountInfoPage.enterUserName(alphanumericUserName);
-		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");
-		logout();
-		// login with new username.
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(alphanumericUserName, password);
-		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"login is not successful");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontAccountInfoPage= storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.enterUserName(specialSymbolUsername);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not appear for correct username");

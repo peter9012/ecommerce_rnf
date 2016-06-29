@@ -1617,7 +1617,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4063:Access Canadian PWS site of USConsultant as RCUser
-	@Test
+	@Test(enabled=false)
 	public void testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		country = driver.getCountry();

@@ -4,9 +4,10 @@ import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
+import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class PersonalResultsKitTest extends RFWebsiteBaseTest{
+public class PersonalResultsKitTest extends RFStoreFrontWebsiteBaseTest{
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private String kitName = null;

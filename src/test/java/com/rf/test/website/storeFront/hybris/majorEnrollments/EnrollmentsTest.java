@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.hybris.enrollment;
+package com.rf.test.website.storeFront.hybris.majorEnrollments;
 
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 

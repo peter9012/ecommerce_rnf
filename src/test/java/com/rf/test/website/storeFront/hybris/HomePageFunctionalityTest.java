@@ -353,15 +353,18 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	//Hybris Project-3824:Verify Top Nav as Logged in PC User(.com)
 	@Test 
 	public void testVerifyTopNavLoggedInPCUser_3824() throws InterruptedException{
+		country = driver.getCountry();
+		env = driver.getEnvironment();
 		List<Map<String, Object>> randomPCUserList =  null;
 		String pcUserEmailID = null;
 		String accountIdForPCUser = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		RFO_DB = driver.getDBNameRFO();
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
 
 					(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName"); 
 			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForPCUser);
 

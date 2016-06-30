@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AccountTest_CA">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="Account_Test">
+		<classes>
+
+			<class name="com.rf.test.website.storeFront.hybris.AccountTest" />
+				<methods>
+                               <include name="testUpdateUserNameAndUpgradeUser_4278" />
+                                <include name="testLookUPWithTerminatedUSConsultant_4008" />
+                                <include name="testLookUpWithTerminatedPCFullNameOrAccountID_4010" />
+                                <include name="testLookUpWithTerminatedRCFullNameOrAccountID_4012" />
+                                <include name="testCreatingCRPAutoshipUnderBizSite_3920" />
+                                <include name="testSubscribingPulseMyAccount_3921" />
+                                <include name="testAccessUSConsCanadianPWSAsACanadianConsultantWithoutPulse_4064" />
+                                <include name="testLoginOnUsConsCanadianPWSAsACanadianConsultantWithoutPulse_4065" />
+                                <include name="testEditExistingShippingAndBillingAddressOnEditCRPTemplate_4814" />
+                                <include name="testAddNewShippingAndBillingAddressOnEditCRPTemplate_4813" />
+                                <include name="testAddMultipeShippingAddressFromMyAccounts_2283" />
+                                <include name="testVerifyUserCanCancelCRPSubscriptionThroughMyAccount_2232" />
+                                <include name="testEnrollInPulseFromMyAccountEnrolligFrom1stTill17th_135" />
+                                <include name="testConsultantCanChooseDefaultPWSPrefixUponEnrollingInPulse_4765" />
+                                <include name="testVerifyConsultantCanChooseCustomPWSPrefixUponEnrollingInPulse_4766" />
+                                <include name="testCheckAnotherConsultantSitePrefixWhileEnrollingToPulse_4769" />				                
+				                
+				                	</methods>
+
+		</classes>
+	</test>
+</suite>

@@ -3144,20 +3144,20 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1282:16.North Dakota rule out US
-	@Test
-	public void testNorthDakotaRuleOut_US_1282() throws InterruptedException{
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontHomePage.selectCountryUsToCan();
-			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-			storeFrontHomePage.searchCID();
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			s_assert.assertFalse(storeFrontHomePage.verifyPresenceOfNorthDakotaLink(),"I live in North Dakota and want to continue without purchasing a business portfolio Link coming up");
-			s_assert.assertAll();
-		}else{
-			logger.info("US specific test");
-		}
-	}
+//	@Test
+//	public void testNorthDakotaRuleOut_US_1282() throws InterruptedException{
+//		if(driver.getCountry().equalsIgnoreCase("us")){
+//			storeFrontHomePage = new StoreFrontHomePage(driver);
+//			storeFrontHomePage.selectCountryUsToCan();
+//			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+//			storeFrontHomePage.searchCID();
+//			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+//			s_assert.assertFalse(storeFrontHomePage.verifyPresenceOfNorthDakotaLink(),"I live in North Dakota and want to continue without purchasing a business portfolio Link coming up");
+//			s_assert.assertAll();
+//		}else{
+//			logger.info("US specific test");
+//		}
+//	}
 
 	//Hybris Project-2247:Sponsor Search & details: Search by name or ID
 	@Test

@@ -54,7 +54,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
-		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);
 		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
@@ -422,6 +421,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnSaveShippingProfileAfterEdit() throws InterruptedException{
 		//		driver.waitForElementPresent(By.id("saveShippingAddreessId"));
 		driver.click(By.id("saveShippingAddreessId"));	
+		driver.waitForLoadingImageToDisappear();
 		try{			
 			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
 			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
@@ -905,8 +905,9 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		//driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
 		driver.click(By.id("saveCrpShippingAddress"));
 		logger.info("Save shipping profile button clicked");
+		driver.waitForLoadingImageToDisappear();
 		try{
-			//driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 			driver.click(By.id("QAS_RefineBtn"));
 		}catch(Exception e){
 
@@ -964,6 +965,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnSaveCRPShippingInfo(){
 		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
 		driver.click(By.id("saveCrpShippingAddress"));
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 		driver.click(By.id("QAS_RefineBtn"));		
 		driver.waitForLoadingImageToDisappear();
@@ -998,8 +1000,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean verifySVValueOnOrderSummaryPage(){
-		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following-sibling::div/span"));
-		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following-sibling::div/spann"));
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following::div[1]/span"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'checkout-module-content')]//div[contains(text(),'Total SV')]/following::div[1]/span"));
 	}
 
 	public boolean verifySVValueOnOrderConfirmationPage(){
@@ -1461,4 +1463,59 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return driver.findElement(By.xpath("//p[contains(text(),'"+SKUValue+"')]/preceding::input[1]")).getAttribute("value");
 	}
 
+	public void selectShippingMethod2DayForAdhocOrder(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'UPS 2Day')]/..//span[contains(@class,'radio')]"));
+			driver.click(By.xpath("//span[contains(text(),'UPS 2Day')]/..//span[contains(@class,'radio')]"));
+			logger.info("UPS 2Day shipping method is selected");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			driver.click(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			logger.info("Fedex 2Day shipping method is selected");
+		}
+
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void selectDifferentProductAndAddItToCRP(int j) throws InterruptedException{  
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp']["+j+"]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp']["+j+"]"));
+		logger.info("Add to CRP button clicked");
+		driver.waitForLoadingImageToDisappear();
+
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+	}
+
+	public void selectProductAndProceedToBuyForPC(int i) throws InterruptedException{
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')]["+i+"]"));
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
+			driver.click(By.xpath("//input[@value='OK']"));
+		}catch(Exception e){
+		}
+		logger.info("Add To PC perks button clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void selectShippingMethodUPSGroundForAdhocOrder(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'UPS Ground')]/..//span[contains(@class,'radio')]"));
+			driver.click(By.xpath("//span[contains(text(),'UPS Ground')]/..//span[contains(@class,'radio')]"));
+			logger.info("UPS Ground HD shipping method is selected");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			driver.click(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			logger.info("Fedex 2Day shipping method is selected");
+		}
+
+		driver.waitForLoadingImageToDisappear();
+	}
 }

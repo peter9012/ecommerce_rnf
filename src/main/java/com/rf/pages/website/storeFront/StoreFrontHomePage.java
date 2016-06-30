@@ -291,7 +291,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void closePopUp(){
 		driver.click(By.cssSelector("a[title='Close']"));
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 	}	
 
 	public Boolean checkExistenceOfEmailAddress() throws InterruptedException{
@@ -444,6 +444,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){
 		try{
+			driver.waitForLoadingImageToDisappear();
 			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
 			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 			return true;
@@ -579,7 +580,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		isPopForTermsAndConditionsVisible = driver.IsElementVisible(driver.findElement(By.xpath("//div[@class='popup-standard tcpopup']//p")));
 		if(isPopForTermsAndConditionsVisible==true){
 			driver.click(By.xpath("//div[@class='popup-standard tcpopup']//p/following::a[@title='Close']"));
-			driver.pauseExecutionFor(1000);
+			driver.pauseExecutionFor(2000);
 			return true;
 		}
 		return false;
@@ -1195,6 +1196,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnUserName(){
 		driver.waitForElementPresent(By.xpath("//div[@id='header-middle-top']//a"));
 		driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyJoinMyTeamLinkPresent(){
@@ -1465,8 +1467,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void addSecondProduct(){
 		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath("//div[@id='left-shopping']/div/a[contains(text(),'Continue shopping')]"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Continue shopping')]"));
+		driver.click(By.xpath("//a[contains(text(),'Continue shopping')]"));
 		logger.info("Continue shopping link clicked");
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
@@ -1579,7 +1581,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				driver.pauseExecutionFor(1000);
 				driver.click(By.xpath("//form[@id='inactivePc90Form']//input[@id='enrollUnderLastUpline']"));
 			}
-		}driver.waitForPageLoad();
+		}
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterPasswordForReactivationForConsultant(){
@@ -2083,10 +2087,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.type(By.id("sponserparam"),sponsor);
 		}
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
-			driver.click(By.xpath("//input[@value='Search']"));   
-		}catch(NoSuchElementException e){
-			driver.click(By.id("search-sponsor-button"));
+			driver.waitForElementPresent(By.id("search-sponsor-button"));
+			driver.click(By.id("search-sponsor-button"));			   
+		}catch(NoSuchElementException e){			
+			driver.click(By.xpath("//input[@value='Search']"));
 
 		}
 		logger.info("Sponsor entered as "+sponsor+" and search button clicked");
@@ -2603,8 +2607,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyEmailIdIsPresentInContactBox(){
-		driver.waitForElementPresent(By.xpath("//a[@id='txtContactMe']"));
-		return driver.isElementPresent(By.xpath("//a[@id='txtContactMe']"));
+		driver.waitForElementPresent(By.xpath("//input[@id='senderEmailId']"));
+		return driver.isElementPresent(By.xpath("//input[@id='senderEmailId']"));
 	}
 
 	public boolean verifyPhoneNumberIsPresentInContactBox(){

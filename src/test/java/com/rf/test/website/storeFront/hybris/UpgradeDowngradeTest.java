@@ -1769,7 +1769,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-3959:BIZ:Active PC email id during consultant enrollment under different sponsor
-	@Test
+	@Test(enabled=false)//Needs Updation
 	public void testActivePCEmailIdDuringConsultantEnrollmentUnderDifferentSponsor_3959() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();

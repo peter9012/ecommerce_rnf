@@ -445,6 +445,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("Next button after selecting sponsor is clicked");
 		driver.waitForLoadingImageToDisappear();
 		try{
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
 			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
 			logger.info("Accept the suggested address button clicked");
 		}catch(Exception e){
@@ -638,6 +639,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='sortOptions']"));
 		driver.click(By.xpath("//select[@id='sortOptions']/option[3]"));
 		logger.info("filter done for low to high price");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyPCPerksTermsAndConditionsPopup() throws InterruptedException{
@@ -847,6 +850,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(WELCOME_DD_EDIT_CRP_LINK_LOC);
 		logger.info("User has clicked on edit Crp link from welcome drop down");
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartAutoShipPage(driver);
 	}
 
@@ -869,10 +873,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-//		driver.type(By.id("first-Name"),firstName);
-//		logger.info("first name entered as "+firstName);
-//		driver.type(By.id("last-name"),lastName);
-//		logger.info("last name entered as "+lastName);
+		//		driver.type(By.id("first-Name"),firstName);
+		//		logger.info("first name entered as "+firstName);
+		//		driver.type(By.id("last-name"),lastName);
+		//		logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
@@ -1100,7 +1104,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		while(true){
 			try{
 				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
-
 				break;
 			}catch(Exception e){
 				System.out.println("element not clicked..trying again");
@@ -1445,8 +1448,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnContinueShoppingLink(){
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
-			driver.click(By.xpath("//div[@id='left-shopping']/div[1]//a[contains(text(),'Continue shopping')]"));
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Continue shopping')]"));
+			driver.click(By.xpath("//a[contains(text(),'Continue shopping')]"));
 		}
 		catch(Exception e){
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
@@ -1893,7 +1896,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save shipping profile button clicked");
 		try{
-			//driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 			driver.click(By.id("QAS_RefineBtn"));
 			logger.info("Accept New shipping address button clicked");
 		}catch(NoSuchElementException e1){
@@ -1975,6 +1978,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAcceptOfQASPopup(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 		driver.click(By.id("QAS_RefineBtn"));
 		logger.info("Accept New shipping address button clicked");

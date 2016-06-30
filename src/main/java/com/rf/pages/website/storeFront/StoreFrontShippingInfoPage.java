@@ -85,8 +85,8 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressName(String name){
-//		driver.waitForElementPresent(By.id("new-attention"));
-//		driver.clear(By.id("new-attention"));
+		//		driver.waitForElementPresent(By.id("new-attention"));
+		//		driver.clear(By.id("new-attention"));
 		driver.type(By.id("new-attention"),name);
 		logger.info("New Shipping Address name is "+name);
 	}
@@ -114,8 +114,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterNewShippingAddressPhoneNumber(String phoneNumber){
-		//		driver.waitForElementPresent(By.id("phonenumber"));
-		//		driver.clear(By.id("phonenumber"));
+		driver.waitForElementPresent(By.id("phonenumber"));
 		driver.type(By.id("phonenumber"),phoneNumber);
 	}
 
@@ -140,16 +139,17 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectUseThisShippingProfileFutureAutoshipChkbox(){
-		//		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(2000);
 		driver.click(USE_THIS_SHIPPING_PROFILE_FUTURE_AUTOSHIP_CHKBOX_LOC);
 	}
 
 	public void clickOnSaveShippingProfile() throws InterruptedException{
-		//		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
+		driver.waitForElementPresent(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_SHIPPING_PROFILE_SAVE_BTN_LOC);
 		logger.info("New Shipping prifile save button clicked");
+		driver.waitForLoadingImageToDisappear();
 		try{
-		//	driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 			driver.click(By.id("QAS_RefineBtn"));
 		}catch(Exception e){
 

@@ -798,6 +798,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
 			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			if(value.contains(",")){
+				value.replace(",","");
+			}
 			String[] totalValue= value.split("\\s");
 			double  orderTotal = Double.parseDouble(totalValue[1]);
 			logger.info("Subtotal Value fetched is "+orderTotal);

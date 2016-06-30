@@ -32,6 +32,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	protected boolean runBaseURLOrLogoutExecutionCode = true;
 	private Actions actions;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
@@ -50,6 +51,11 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.setDBConnectionString();                
 	}
 
+	public void navigateToStoreFrontBaseURL(){
+		String country = driver.getCountry();
+		driver.get(driver.getURL()+"/"+country);
+	}
+
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
@@ -58,13 +64,13 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.get(driver.getURL());
 		}
 		else{
-			driver.get(driver.getURL()+"/"+country);
+			driver.get(driver.getURL()+"/"+country);			
 		}
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
 			try{
-				logout();
+				logout();		
 			}catch(NoSuchElementException e){
 
 			}   
@@ -91,15 +97,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void tearDownAfterMethod(){
 		driver.manage().deleteAllCookies();
 		if(driver.getURL().contains("salesforce")==true){
-		      try{
-		          crmLogout();
-		          Alert alert = driver.switchTo().alert();
-		          System.out.println(alert.getText());
-		          alert.dismiss();
+			try{
+				crmLogout();
+				Alert alert = driver.switchTo().alert();
+				System.out.println(alert.getText());
+				alert.dismiss();
 
-		        }catch(NoAlertPresentException Ex){
-		                  
-		        }
+			}catch(NoAlertPresentException Ex){
+
+			}
 		}
 	}
 

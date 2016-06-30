@@ -103,7 +103,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-1274:9. Express enrollment -fields validation
 	//Hybris Project-1361:Enroll as consultant using invalid card numbers
 	// Hybris Project-82- Version : 1 :: Allow my Spouse through EnrollmentTest
-	@Test
+	@Test(priority=1)
 	public void testExpressEnrollmentFieldsValidationWithInvalidCardNumbers_1274_1361_82() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

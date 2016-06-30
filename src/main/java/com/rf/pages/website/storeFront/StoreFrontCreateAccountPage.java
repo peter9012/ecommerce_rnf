@@ -79,6 +79,8 @@ public class StoreFrontCreateAccountPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void acceptTheVerifyYourShippingAddressPop(){
+		driver.waitForLoadingImageToDisappear();
+		driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
 		driver.click(By.id("QAS_RefineBtn"));
 	}
 

@@ -408,7 +408,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		while(true){
 			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
 
-					(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 			logger.info("Account Id of the user is "+accountIdForPCUser);
@@ -417,7 +417,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("sitenotfound");
 			if(isSiteNotFoundPresent){
 				logger.info("SITE NOT FOUND for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2356,11 +2356,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Pc user is not terminated successfully");
-		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-		logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
-		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+//		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+//		storeFrontHomePage.clickOnEnrollUnderLastUpline();
+//		logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
+//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(firstName);
 		storeFrontHomePage.enterLastName(lastName);
 		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
@@ -2970,18 +2970,17 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	// Hybris Project-4053:Check the Meet your consultant Banner on the home page of PWS(Both .Biz and .com)
 	@Test
 	public void testCheckTheMeetYourConsultantBannerOnTheHomePageOfPWS_4053() throws InterruptedException{
-		country = driver.getCountry();
-		RFO_DB = driver.getDBNameRFO();
 		String countryID = null;
 		String country = null;
+		country = driver.getCountry();
+		RFO_DB = driver.getDBNameRFO();
+		
 		List<Map<String, Object>> randomConsultantList2 =  null;
 		String consultantPWS = null;
 		if(country.equalsIgnoreCase("us")){
-			countryID ="236";
-			country = "us";	
+			countryID ="236";				
 		}else{
-			countryID ="40";
-			country = "ca";
+			countryID ="40";			
 		}		
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
@@ -3113,7 +3112,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			//select sponsor
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			//verify user is navigated to PWS Site of the selected sponsor?
-			s_assert.assertTrue(driver.getCurrentUrl().contains(".biz") || driver.getCurrentUrl().contains("myrfotst3.com"),"user is not navigated to PWS site of the selected sponsor");
+			s_assert.assertTrue(driver.getCurrentUrl().contains(".myrfo"+driver.getEnvironment()+".com"),"user is not navigated to COM PWS site of the selected sponsor");
 		}else{
 			//search for a US Sponsor
 			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
@@ -3124,7 +3123,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			//select sponsor
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			//verify user is continued on the corp site?
-			s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"user is not continued to corp site"); 
+			s_assert.assertTrue(driver.getCurrentUrl().contains(".myrfo"+driver.getEnvironment()+".com"),"user is not navigated to COM PWS site of the selected sponsor"); 
 		}
 		s_assert.assertAll();
 	}

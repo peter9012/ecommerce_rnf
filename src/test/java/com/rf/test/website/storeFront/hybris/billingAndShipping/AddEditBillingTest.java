@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
@@ -24,7 +25,7 @@ import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 
-public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
+public class AddEditBillingTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(AddEditBillingTest.class.getName());
 
@@ -51,6 +52,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	List<Map<String, Object>> randomConsultantList =  null;
 	String consultantEmailID = null;
 	String accountID = null;
+	String countryID=null;
 
 	@BeforeClass
 	public void setupDataForAddBilling() throws InterruptedException{	
@@ -77,14 +79,17 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			state = TestConstants.PROVINCE_CA;
+			countryId = "40";
 		}else{			
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			state = TestConstants.STATE_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
-			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;			
-		}
-
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+			countryId = "236";
+		}				
+		navigateToStoreFrontBaseURL();
+		setStoreFrontPassword(driver.getStoreFrontPassword());
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -95,18 +100,20 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());				
 			}
 			else{
 				storeFrontConsultantPage.clickOnWelcomeDropDown();
-				if(storeFrontHomePage.isEditCRPLinkPresent()==true)
+				if(storeFrontHomePage.isEditCRPLinkPresent()==true){
 					break;
-				else
-					driver.get(driver.getURL());				
+				}
+				else{
+					driver.get(driver.getURL()+"/"+driver.getCountry());					
+				}
 			}
 
 		}
-		logger.info("login is successful");		
+		logger.info("login is successful");
 	}
 
 	// Hybris Phase 2-2041 :: Version : 1 :: Add new billing profile on 'Billing Profile' page
@@ -118,7 +125,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		String defaultBillingProfileName = null;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum1 = CommonUtils.getRandomNum(10000, 1000000);
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
@@ -200,7 +207,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		String lastName = "lN";
 		String defaultBillingProfileName = null;
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
@@ -278,7 +285,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 	public void testViewNewBillingProfile_HP2_4327() throws InterruptedException, SQLException{
 		int totalBillingAddressesFromDB = 0;
 		List<Map<String, Object>> billingAddressCountList =  null;
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
@@ -296,7 +303,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -357,7 +364,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -415,7 +422,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontCartAutoShipPage = storeFrontConsultantPage.clickEditCrpLinkPresentOnWelcomeDropDown();
 		storeFrontUpdateCartPage = storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
@@ -470,7 +477,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
 		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
@@ -496,7 +503,7 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNumber;
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -557,7 +564,6 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		/*storeFrontHomePage.clickOnShopLink();
 				storeFrontHomePage.clickOnAllProductsLink();*/
-		navigateToStoreFrontBaseURL();
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
 		// Products are displayed?
@@ -695,5 +701,5 @@ public class AddEditBillingTest extends RFStoreFrontWebsiteBaseTest{
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		s_assert.assertAll();
-	}
+	}	
 }

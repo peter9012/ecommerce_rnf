@@ -1303,17 +1303,17 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span"));
-		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
 		driver.pauseExecutionFor(2000);
-		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span")).isSelected();
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
 	}
 
 	public boolean selectSecondAddressAndValidateFirstIsUnSelected(){
-		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span"));
-		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]/p[3]/span"));
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
+		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span"));
 		driver.pauseExecutionFor(2000);
-		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]/p[3]/span")).isSelected();
+		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")).isSelected();
 	}
 
 	public String selectAndGetBillingMethodName(String country) throws InterruptedException{
@@ -1518,4 +1518,19 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 		driver.waitForLoadingImageToDisappear();
 	}
+
+	public void selectShippingMethodUPSStandardOverNightForAdhocOrder(){
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			driver.waitForElementPresent(By.xpath("//span[contains(text(),'UPS Standard Overnight')]/..//span[contains(@class,'radio')]"));
+			driver.click(By.xpath("//span[contains(text(),'UPS Standard Overnight')]/..//span[contains(@class,'radio')]"));
+			logger.info("UPS Standard overnight shipping method is selected");
+		}else if(driver.getCountry().equalsIgnoreCase("US")){
+			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			driver.click(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));
+			logger.info("Fedex 2Day shipping method is selected");
+		}
+
+		driver.waitForLoadingImageToDisappear();
+	}
+
 }

@@ -434,7 +434,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
-		//driver.waitForElementPresent(By.id("continue-no-sponsor"));
+		driver.waitForElementPresent(By.id("continue-no-sponsor"));
 		driver.click(By.id("continue-no-sponsor"));	
 		logger.info("continue without sponsor link clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -1990,5 +1990,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping info')]/../..//span[contains(text(),'"+profilename+"')]"));
 
 	}
+
+	public void clickOnCheckoutButtonAfterAddProduct(){
+		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
+		driver.click(By.xpath("//input[@value='CHECKOUT']"));
+		logger.info("Checkout button clicked");
+	}
+
 
 }

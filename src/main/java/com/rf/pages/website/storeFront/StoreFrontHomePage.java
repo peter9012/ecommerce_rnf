@@ -4001,10 +4001,4 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'footer-content')]"));
 	}
 
-	public void clickOnCheckoutButtonAfterAddProduct(){
-		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
-		driver.click(By.xpath("//input[@value='CHECKOUT']"));
-		logger.info("Checkout button clicked");
-	}
-
 }

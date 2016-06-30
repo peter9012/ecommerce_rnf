@@ -3041,4 +3041,177 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateSubTotal(subtotal1, subtotal2), "sub-total is not recalculated accordingly to the updated qty of product(s)");
 		s_assert.assertAll(); 
 	}
+
+	// Hybris Project-146:Autoship Update - Flow & Review and Confirm step - consultant
+	@Test
+	public void testAutoshipUpdateFlowReviewAndConfirm_146() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		country=driver.getCountry();
+
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontCartAutoShipPage=new StoreFrontCartAutoShipPage(driver);
+		storeFrontUpdateCartPage=new StoreFrontUpdateCartPage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login Error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		//click on auto ship cart
+		storeFrontHomePage.clickOnAutoshipCart();
+		//click update more info btn
+		storeFrontUpdateCartPage=storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
+		//select a product and add it to crp
+		//storeFrontHomePage.selectAProductAndAddItToCRP();
+
+		//click the edit link in the payment section
+		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
+		//click the edit link in the billing section
+		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
+		//update the CC Expiration date and re-enter the CC security code..
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDateAsExpiredDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		//click the edit link in the shipping section
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		//Add a new shipping address..
+		storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
+		if(country.equalsIgnoreCase("us")){
+			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.NEW_ADDRESS_LINE1_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.NEW_ADDRESS_CITY_US);
+			storeFrontUpdateCartPage.selectNewShippingAddressState(TestConstants.STATE_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.NEW_ADDRESS_POSTAL_CODE_US);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.NEW_ADDRESS_PHONE_NUMBER_US);
+		}
+		else{
+			storeFrontUpdateCartPage.enterNewShippingAddressName(TestConstants.NEW_SHIPPING_PROFILE_NAME_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(TestConstants.ADDRESS_LINE_1_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(TestConstants.CITY_CA);
+			storeFrontUpdateCartPage.selectNewShippingAddressState(TestConstants.PROVINCE_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(TestConstants.POSTAL_CODE_CA);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(TestConstants.PHONE_NUMBER_CA);
+		}
+		//change the shipping method and proceed to next stp
+		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
+		storeFrontUpdateCartPage.clickOnNextStepBtn();
+		//validate header..
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateHeaderContent(), "header content is not displayed properly");
+		//click on update cart button
+		//storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+		//validate cart has been updated?
+		s_assert.assertTrue(storeFrontUpdateCartPage.validateCartUpdated(), "cart is not updated!! ");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-2281:Add/Edit Multiple shippiing address and during checkout
+	@Test
+	public void testAddMultipeShippingProfileDuringCheckout_2281() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int i=0;
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String profileName=null;
+		String newShippingProfileName = TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME+randomNumber;
+		String lastName = "lN";
+		String accountID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		if(driver.getCountry().equalsIgnoreCase("CA")){   
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_CA+randomNum;
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			city = TestConstants.CITY_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_CA;
+		}else{
+			profileName=TestConstants.NEW_SHIPPING_PROFILE_FIRST_NAME_US+randomNum;
+			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
+			city = TestConstants.NEW_ADDRESS_CITY_US;
+			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
+			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+		}
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+
+		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		logger.info("login is successful");
+		//storeFrontConsultantPage=new StoreFrontConsultantPage(driver);
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		storeFrontUpdateCartPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+
+		for(i=0;i<2;i++){
+			storeFrontUpdateCartPage.clickAddNewShippingProfileLink();
+			storeFrontUpdateCartPage.enterNewShippingAddressName(profileName+i+" "+lastName);
+			storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+			storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+			storeFrontUpdateCartPage.selectNewShippingAddressState(state);
+			storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+			storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
+			storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+			s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedShippingProfileIsSelectedByDefault(profileName+i),"New Shipping Profile is not selected by default on CRP cart page");
+		}
+		i=1;
+		storeFrontUpdateCartPage.clickOnEditOnNotDefaultAddressOfShipping();
+		storeFrontUpdateCartPage.enterNewShippingAddressName(newShippingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.enterNewShippingAddressLine1(addressLine1);
+		storeFrontUpdateCartPage.enterNewShippingAddressCity(city);
+		storeFrontUpdateCartPage.selectNewShippingAddressState(state);
+		storeFrontUpdateCartPage.enterNewShippingAddressPostalCode(postalCode);
+		storeFrontUpdateCartPage.enterNewShippingAddressPhoneNumber(phoneNumber);
+		storeFrontUpdateCartPage.clickOnSaveShippingProfile();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewlyCreatedShippingProfileIsSelectedByDefault(newShippingProfileName),"New Edited Shipping Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewEditedShippingProfileIsPresentOnOrderConfirmationPage(newShippingProfileName),"New Edited Shipping Profile is not Present by default on Order Summary page");
+		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickOnFirstAdHocOrder();
+
+		//------------------ Verify that adhoc orders template doesn't contains the newly Edited Shipping profile by verifying by name------------------------------------------------------------
+		s_assert.assertTrue(storeFrontOrdersPage.isShippingAddressContainsName(newShippingProfileName),"AdHoc Orders Page do not contain the newly edited shipping address");
+		//------------------Verify that Shipping info page contains the newly created Shipping profile
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"Shipping Info page has not been displayed");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(newShippingProfileName),"Newly added Shipping profile is NOT listed on the Shipping info page");
+		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(profileName+i),"Newly added Shipping profile is NOT listed on the Shipping info page");
+
+		s_assert.assertAll();
+	}
+
 }

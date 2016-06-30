@@ -2356,11 +2356,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Pc user is not terminated successfully");
-//		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-//		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-//		logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
-//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		//		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+		//		storeFrontHomePage.clickOnEnrollUnderLastUpline();
+		//		logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
+		//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
+		//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
 		storeFrontHomePage.enterFirstName(firstName);
 		storeFrontHomePage.enterLastName(lastName);
 		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
@@ -2974,7 +2974,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String country = null;
 		country = driver.getCountry();
 		RFO_DB = driver.getDBNameRFO();
-		
+
 		List<Map<String, Object>> randomConsultantList2 =  null;
 		String consultantPWS = null;
 		if(country.equalsIgnoreCase("us")){
@@ -3142,5 +3142,183 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isFooterPresent(), "Footer is not present at meet your consultant page");
 		s_assert.assertAll();
 	}
+
+	//Hybris Project-1282:16.North Dakota rule out US
+	@Test
+	public void testNorthDakotaRuleOut_US_1282() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("us")){
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			storeFrontHomePage.selectCountryUsToCan();
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.searchCID();
+			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+			s_assert.assertFalse(storeFrontHomePage.verifyPresenceOfNorthDakotaLink(),"I live in North Dakota and want to continue without purchasing a business portfolio Link coming up");
+			s_assert.assertAll();
+		}else{
+			logger.info("US specific test");
+		}
+	}
+
+	//Hybris Project-2247:Sponsor Search & details: Search by name or ID
+	@Test
+	public void testSponsorSearchAndDetailsByNameOrID_2247() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		String accountID = null;
+		country = driver.getCountry();
+		String sponsorID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+accountID);
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
+		sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontHomePage.clickOnConnectWithAConsultant();
+		s_assert.assertTrue(storeFrontHomePage.verifyFindYourSponsorPage(), "Find your sponsor page is not present");
+		// assert for CID
+		storeFrontHomePage.searchCID(sponsorID);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorListIsPresentAfterClickOnSearch(), "sponsor list is not present when serach by CID");
+		String sponsorIDFromResult = storeFrontHomePage.getSponsorResultAccordingToCID(sponsorID);
+		s_assert.assertTrue(sponsorIDFromResult.contains(sponsorID), "Sponsor Id From RFO "+sponsorID+" and on UI is "+sponsorIDFromResult);
+		s_assert.assertAll();
+	}
+
+
+	// Hybris Project-5274:Verify Ploicies and procedures link in sponsor selection page for enrolling consultant corp site US
+	@Test
+	public void testVerifyPolicyAndProcedureLinkOnEnrollmentPage_5274() throws InterruptedException {
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.clickPolicyAndProcedureLink();
+		storeFrontHomePage.switchToChildWindow();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5275:Verify Policies and procedures link in sponsor selection page for enrolling consultant BIZ site US
+	@Test
+	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5275()	{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			env = driver.getEnvironment();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.clickPolicyAndProcedureLink();
+			storeFrontHomePage.switchToChildWindow();
+			s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+			s_assert.assertAll();
+		}else{
+			logger.info("CA Specific test");
+		}
+	}
+
+	//Hybris Project-5276: Verify Policies and procedures link in sponsor selection page for enrolling consultant CA corp site
+	@Test
+	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsCACorpSite_5276() {
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.clickPolicyAndProcedureLink();
+		storeFrontHomePage.switchToChildWindow();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-5277:Verify Policies and procedures link in sponsor selection page for enrolling consultant BIZ site CA
+	@Test
+	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5277() {
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			country = driver.getCountry();
+			env = driver.getEnvironment();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+			storeFrontHomePage.clickPolicyAndProcedureLink();
+			storeFrontHomePage.switchToChildWindow();
+			s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+			s_assert.assertAll();
+		}else{
+			logger.info("CA Specific test");
+		}
+	}
+
+	//Hybris Project-3850:Verify Search Again functionality on Sponsor Search section
+	@Test
+	public void testSearchAgainFunctionalityOnSponsorSearchSection_3850() throws InterruptedException	{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();  
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Enter the User information and DONOT  check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password);
+		//search for wrong/Incorrect sponsor..
+		storeFrontHomePage.searchCID(TestConstants.INVALID_SPONSOR_ID);
+		//validate that  Continuewithout a spsonor and Request a spsonr link should not be displayed..
+		s_assert.assertFalse(storeFrontHomePage.validateContinueWithoutSponsorLinkPresentOnUI(), "continue without sponsor link is present");
+		//click search-again..
+		storeFrontHomePage.clickSearchAgain();
+		//validate  Continuewithout a spsonor link should be present..
+		s_assert.assertTrue(storeFrontHomePage.validateContinueWithoutSponsorLinkPresentOnUI(), "continue without sponsor link is not present");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3928:Verify the page displayed after clicking on Enroll Now button from .biz home page.
+	@Test
+	public void testPageDisplayedAfterClickingEnrollNowBizHomePage_3928()  {
+		RFO_DB = driver.getDBNameRFO();
+		country = driver.getCountry();
+		env = driver.getEnvironment();  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+			String PWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
+			storeFrontHomePage.openConsultantPWS(PWS);
+			if(driver.getCurrentUrl().contains("sitenotfound"))
+				continue;
+			else
+				break;
+		} 
+
+		//click Enroll now link..
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		//validate 'select sponsor page' is skipped and is not displayed
+		s_assert.assertTrue(!driver.getCurrentUrl().contains("SelectSponsorPage"), "select sponsor page is displayed!!");
+		//validate 'select kit' page is displayed..
+		s_assert.assertTrue(driver.getCurrentUrl().contains("kitproduct"), "Select Kit page is not displayed!!");
+		s_assert.assertAll();
+	}
+
+	//Hybris Project-3814:Click "Enroll Now" on BIZ site From home Page with logged in user - Pg direct to "Select a Kit" pa
+	@Test 
+	public void testEnrollNowOnBizSiteFromHomePage_3814()	{
+		RFO_DB = driver.getDBNameRFO();
+		country = driver.getCountry();
+		env = driver.getEnvironment();  
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String PWS = storeFrontHomePage.getBizPWS(country, env);
+		storeFrontHomePage.openPWS(PWS);
+		//click Enroll now from the Home-Page..
+		storeFrontHomePage.clickEnrollNowFromBizHomePage();
+		//validate user is navigated to why R+F Page..
+		s_assert.assertTrue(driver.getCurrentUrl().contains("why-rf#"), "Why R+F page is not dsplayed!");
+		//click again 'enroll now' from why R+F Page
+		storeFrontHomePage.clickEnrollNowFromWhyRFPage();
+		//validate 'select kit' page is displayed..
+		s_assert.assertTrue(driver.getCurrentUrl().contains("kitproduct"), "Select Kit page is not displayed!!");
+		s_assert.assertAll();
+	}
+
+
 
 }

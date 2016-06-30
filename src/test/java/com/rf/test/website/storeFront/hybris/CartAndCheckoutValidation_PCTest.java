@@ -23,9 +23,9 @@ import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class CartAndCheckoutValidationPCTest extends RFWebsiteBaseTest{
+public class CartAndCheckoutValidation_PCTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
-			.getLogger(CartAndCheckoutValidationPCTest.class.getName());
+			.getLogger(CartAndCheckoutValidation_PCTest.class.getName());
 	public String emailID=null;
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;

@@ -744,7 +744,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
-			province = TestConstants.PROVINCE_ALBERTA;
+			province = TestConstants.PROVINCE_CA;
 		}else{
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;

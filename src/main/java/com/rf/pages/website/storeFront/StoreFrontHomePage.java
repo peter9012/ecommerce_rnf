@@ -389,8 +389,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[@class='repaired-checkbox']"));
-		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[@class='repaired-checkbox']")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]"));
+		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]")).isSelected();
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsSelected(){
@@ -399,8 +399,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[@class='repaired-checkbox']"));
-		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[@class='repaired-checkbox']")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]"));
+		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]")).isSelected();
 	}
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{

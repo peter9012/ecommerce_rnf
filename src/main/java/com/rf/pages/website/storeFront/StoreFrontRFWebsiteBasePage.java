@@ -57,7 +57,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		try{
 			driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
 		}catch(Exception e){
-			driver.findElement(By.xpath("//div[@id='header']//span")).click();
+			try{
+				driver.findElement(By.xpath("//div[@id='header']//span")).click();
+			}catch(Exception e1){
+				try{
+					driver.findElement(By.xpath("//div[@id='header-middle-top']//a")).click();
+				}catch(Exception e2){
+					driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span")).click();
+				}
+			}
 		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -166,14 +174,22 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
+		String price = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled() && (!price.contains("0.00"))==true){
+			System.out.println("In if condition");
 			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		else
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		}else
+			try{
+				driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+			}catch (Exception e) {
+				driver.click(By.xpath("//section[contains(@class,'productCatPage')]/div[2]/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+				logger.info("2nd Product selected");
+			}
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[contains(text(),'ADD TO CRP') or @value='Add to crp'][1]"));
@@ -435,6 +451,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("postal code entered is "+postalCode);
 		driver.type(By.id("address.phonenumber"),phoneNumber);
 		logger.info("phone number entered is "+phoneNumber);
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnContinueWithoutSponsorLink() throws InterruptedException{
@@ -558,39 +575,39 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//driver.pauseExecutionFor(2000);
 	}
 
-//	public void clickOnRodanAndFieldsLogo(){
-//		//driver.pauseExecutionFor(2000);
-//		try{
-//			driver.turnOffImplicitWaits();
-//			if(driver.IsElementVisible(driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span"))))
-//			{
-//				driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-//				driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-//			}
-//			else{
-//
-//				driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-//				driver.click(RODAN_AND_FIELDS_IMG_LOC);
-//
-//			}
-//
-//		}catch(NoSuchElementException e){
-//			try{
-//				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
-//			}catch(NoSuchElementException e1)
-//			{
-//				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
-//			}
-//
-//		}
-//		finally{
-//			driver.turnOnImplicitWaits();
-//		}
-//		logger.info("Rodan and Fields logo clicked");
-//		driver.waitForLoadingImageToDisappear();
-//		driver.waitForPageLoad();
-//		driver.waitForLoadingImageToDisappear();
-//	}
+	//	public void clickOnRodanAndFieldsLogo(){
+	//		//driver.pauseExecutionFor(2000);
+	//		try{
+	//			driver.turnOffImplicitWaits();
+	//			if(driver.IsElementVisible(driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span"))))
+	//			{
+	//				driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+	//				driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+	//			}
+	//			else{
+	//
+	//				driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+	//				driver.click(RODAN_AND_FIELDS_IMG_LOC);
+	//
+	//			}
+	//
+	//		}catch(NoSuchElementException e){
+	//			try{
+	//				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+	//			}catch(NoSuchElementException e1)
+	//			{
+	//				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+	//			}
+	//
+	//		}
+	//		finally{
+	//			driver.turnOnImplicitWaits();
+	//		}
+	//		logger.info("Rodan and Fields logo clicked");
+	//		driver.waitForLoadingImageToDisappear();
+	//		driver.waitForPageLoad();
+	//		driver.waitForLoadingImageToDisappear();
+	//	}
 
 	public StoreFrontConsultantPage dismissPolicyPopup(){
 		try {	

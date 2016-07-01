@@ -479,7 +479,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+rcEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -635,7 +635,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 				boolean isError = driver.getCurrentUrl().contains("error");
 				if(isError){
 					logger.info("Login Error for the user "+pcUserEmailID);
-					driver.get(driver.getURL());
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
 				else
 					break;
@@ -702,7 +702,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -819,7 +819,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2832,7 +2832,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3061,7 +3061,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		driver.get(caConsultantPWS);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
-		storeFrontHomePage.clickOnPlaceOrderButton();
+		storeFrontHomePage.clickOnCheckoutButton();
 		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(),"login or create account page is not displayed");
 		storeFrontHomePage.enterNewRCDetails(firstName, lastName, password);
 		storeFrontHomePage.enterMainAccountInfo(addressLine1, city, TestConstants.PROVINCE_CA, postalCode, phoneNumber);

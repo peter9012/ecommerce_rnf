@@ -308,11 +308,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}
 	}
 
-	public String getSubtotal(){
-		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
-		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
-	}
-
 	public String getDeliveryCharges(){
 		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span"));
 		return driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span")).getText().trim();
@@ -323,13 +318,30 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText().trim();
 	}
 
+	public String getSubtotal(){
+		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		String subTotal= driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText().trim();
+		if(subTotal.contains(",")){
+			subTotal = subTotal.replaceAll(",","");
+		}
+		return subTotal;
+	}
+
 	public String getTax(){
 		driver.waitForElementPresent(By.xpath("//div[@id='module-tax']//span[@class='taxRight']"));
-		return driver.findElement(By.xpath("//div[@id='module-tax']//span[@class='taxRight']")).getText().trim();
+		String tax=driver.findElement(By.xpath("//div[@id='module-tax']//span[@class='taxRight']")).getText().trim();
+		if(tax.contains(",")){
+			tax = tax.replaceAll(",","");
+		}
+		return tax;
 	}
 
 	public String getTotal(){
-		return driver.findElement(By.xpath("//div[@id='module-total'][1]//b[text()='Total']/following::div[1]/span")).getText().trim();
+		String total =  driver.findElement(By.xpath("//div[@id='module-total'][1]//b[text()='Total']/following::div[1]/span")).getText().trim();
+		if(total.contains(",")){
+			total = total.replaceAll(",","");
+		}
+		return total;
 	}
 
 	public String getTotalSV(){
@@ -966,8 +978,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.id("saveCrpShippingAddress"));
 		driver.click(By.id("saveCrpShippingAddress"));
 		driver.waitForLoadingImageToDisappear();
-		driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
-		driver.click(By.id("QAS_RefineBtn"));		
+		try{
+			driver.quickWaitForElementPresent(By.id("QAS_RefineBtn"));
+			driver.click(By.id("QAS_RefineBtn"));
+		}catch(Exception e){
+			logger.info("No Accept popup");
+		}
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();

@@ -23,9 +23,9 @@ import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class CartAndCheckoutValidation_PCTest extends RFWebsiteBaseTest{
+public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
-			.getLogger(CartAndCheckoutValidation_PCTest.class.getName());
+			.getLogger(PC_CartAndCheckoutValidationTest.class.getName());
 	public String emailID=null;
 	private StoreFrontHomePage storeFrontHomePage;
 	private StoreFrontConsultantPage storeFrontConsultantPage;
@@ -3230,7 +3230,7 @@ public class CartAndCheckoutValidation_PCTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2").contains(firstProductName),"When select first product, Product name "+firstProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("2"));
 		s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3").contains(secondProductName),"When select second product, Product name "+secondProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("3"));
 		s_assert.assertTrue(storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4").contains(thirdProductName),"When select third product, Product name "+thirdProductName+" and at order confirmation page "+storeFrontUpdateCartPage.getProductNameAtOrderConfirmationPage("4"));
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number

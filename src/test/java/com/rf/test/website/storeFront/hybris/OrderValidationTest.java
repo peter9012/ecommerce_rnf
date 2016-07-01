@@ -2209,7 +2209,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
@@ -2302,7 +2302,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		//logger.info("Order Number after placing the order is "+orderNumber);
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		//storeFrontOrdersPage.clickOrderNumber(orderNumber);
@@ -2393,7 +2393,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		//storeFrontOrdersPage.clickOrderNumber(orderNumber);

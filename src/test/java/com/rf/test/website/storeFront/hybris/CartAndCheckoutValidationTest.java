@@ -243,7 +243,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOnFirstAdHocOrder();
@@ -606,7 +606,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtnShippingAddress();
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		String orderNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
@@ -962,7 +962,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
@@ -1994,7 +1994,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -2278,7 +2278,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number
@@ -2348,7 +2348,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number
@@ -2693,7 +2693,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		// Get Order Number
@@ -3196,7 +3196,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontUpdateCartPage.isNewEditedShippingProfileIsPresentOnOrderConfirmationPage(newShippingProfileName),"New Edited Shipping Profile is not Present by default on Order Summary page");
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(),"Order is not placed successfully");
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();

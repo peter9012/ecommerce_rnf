@@ -105,7 +105,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 
@@ -186,7 +186,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		logger.info("Order Number after placing the order is "+orderNumber);
 
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
@@ -258,7 +258,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		logger.info("Order Number after placing the order is "+orderNumber);
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontRCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);

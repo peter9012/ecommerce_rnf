@@ -95,7 +95,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		//
 		//		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		//
-		//		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		//		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		//		s_assert.assertAll();		
 	}
 
@@ -154,7 +154,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
@@ -424,7 +424,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
-		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
@@ -484,7 +484,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickOrderNumber(orderNumber);
@@ -542,7 +542,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnPaymentNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		storeFrontOrdersPage.clickAutoshipOrderNumber();

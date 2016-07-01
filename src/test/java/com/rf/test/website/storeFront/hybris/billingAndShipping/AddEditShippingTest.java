@@ -201,7 +201,7 @@ public class AddEditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		String defaultSelectedShippingAddressNameOnShippingInfo = storeFrontShippingInfoPage.getDefaultSelectedShippingAddress();
-		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
+		storeFrontConsultantPage = storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		//Continue with checkout page
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
 		storeFrontUpdateCartPage.clickAddToBagButton(country);
@@ -301,7 +301,7 @@ public class AddEditShippingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnUpdateCartShippingNextStepBtn();
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontUpdateCartPage.clickOnWelcomeDropDown();
 		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");

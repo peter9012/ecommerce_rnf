@@ -77,7 +77,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontPCUserPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");
@@ -127,7 +127,7 @@ public class AutoshipTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnNextStepBtn();
 		storeFrontUpdateCartPage.clickUpdateCartBtn();
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontOrdersPage.verifyOrdersPageIsDisplayed(),"Orders page has not been displayed");

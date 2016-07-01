@@ -52,7 +52,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		this.driver = driver;
 	}
 
-	public StoreFrontConsultantPage clickRodanAndFieldsLogo(){
+	public StoreFrontConsultantPage clickOnRodanAndFieldsLogo(){
 		driver.waitForElementPresent(RODAN_AND_FIELDS_LOGO_IMG_LOC);
 		try{
 			driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
@@ -558,39 +558,39 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//driver.pauseExecutionFor(2000);
 	}
 
-	public void clickOnRodanAndFieldsLogo(){
-		//driver.pauseExecutionFor(2000);
-		try{
-			driver.turnOffImplicitWaits();
-			if(driver.IsElementVisible(driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span"))))
-			{
-				driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-				driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
-			}
-			else{
-
-				driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-				driver.click(RODAN_AND_FIELDS_IMG_LOC);
-
-			}
-
-		}catch(NoSuchElementException e){
-			try{
-				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
-			}catch(NoSuchElementException e1)
-			{
-				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
-			}
-
-		}
-		finally{
-			driver.turnOnImplicitWaits();
-		}
-		logger.info("Rodan and Fields logo clicked");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-	}
+//	public void clickOnRodanAndFieldsLogo(){
+//		//driver.pauseExecutionFor(2000);
+//		try{
+//			driver.turnOffImplicitWaits();
+//			if(driver.IsElementVisible(driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span"))))
+//			{
+//				driver.quickWaitForElementPresent(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+//				driver.click(By.xpath("//*[@id='header']/div/div[2]/a/span"));
+//			}
+//			else{
+//
+//				driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+//				driver.click(RODAN_AND_FIELDS_IMG_LOC);
+//
+//			}
+//
+//		}catch(NoSuchElementException e){
+//			try{
+//				driver.click(By.xpath("//img[@title='Rodan+Fields']"));
+//			}catch(NoSuchElementException e1)
+//			{
+//				driver.click(By.xpath("//div[@id='header-middle-top']//a"));
+//			}
+//
+//		}
+//		finally{
+//			driver.turnOnImplicitWaits();
+//		}
+//		logger.info("Rodan and Fields logo clicked");
+//		driver.waitForLoadingImageToDisappear();
+//		driver.waitForPageLoad();
+//		driver.waitForLoadingImageToDisappear();
+//	}
 
 	public StoreFrontConsultantPage dismissPolicyPopup(){
 		try {	

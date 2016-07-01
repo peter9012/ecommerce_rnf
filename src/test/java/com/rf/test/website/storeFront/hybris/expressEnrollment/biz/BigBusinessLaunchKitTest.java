@@ -92,16 +92,16 @@ public class BigBusinessLaunchKitTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		StoreFrontConsultantPage storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-		StoreFrontBillingInfoPage storeFrontBillingInfoPage = new StoreFrontBillingInfoPage(driver);
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
-		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-
-		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
+//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+//		StoreFrontConsultantPage storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+//		StoreFrontBillingInfoPage storeFrontBillingInfoPage = new StoreFrontBillingInfoPage(driver);
+//		storeFrontConsultantPage.clickOnWelcomeDropDown();
+//		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+//		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
+//
+//		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+//
+//		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
 		s_assert.assertAll(); 
 	}
 }

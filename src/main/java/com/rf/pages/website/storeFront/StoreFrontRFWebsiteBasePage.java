@@ -54,7 +54,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public StoreFrontConsultantPage clickRodanAndFieldsLogo(){
 		driver.waitForElementPresent(RODAN_AND_FIELDS_LOGO_IMG_LOC);
-		driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
+		try{
+			driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
+		}catch(Exception e){
+			driver.findElement(By.xpath("//div[@id='header']//span")).click();
+		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontConsultantPage(driver);
@@ -1154,7 +1158,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnYourAccountDropdown(){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(YOUR_ACCOUNT_DROPDOWN_LOC);
 		driver.click(YOUR_ACCOUNT_DROPDOWN_LOC);
 		logger.info("Your accountdropdown clicked from left panel clicked "+YOUR_ACCOUNT_DROPDOWN_LOC);
@@ -1819,7 +1823,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickUpdateCartBtn() throws InterruptedException{
-		//driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
+		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
 		driver.click(UPDATE_CART_BTN_LOC);		
 		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
 		driver.waitForLoadingImageToDisappear();

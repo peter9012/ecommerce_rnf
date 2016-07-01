@@ -862,12 +862,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";
 		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String pcUserEmailId = firstName+randomNum+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 		storeFrontHomePage.selectProductAndProceedToBuy();
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
-		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
+		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password, pcUserEmailId);
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
@@ -896,7 +898,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickDelayOrCancelPCPerks();
 		storeFrontPCUserPage.clickPleaseCancelMyPcPerksActBtn();
 		storeFrontPCUserPage.cancelMyPCPerksAct();
-		storeFrontHomePage.loginAsConsultant(emailID, password);
+		storeFrontHomePage.loginAsConsultant(pcUserEmailId, password);
 		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Inactive User doesn't get Login failed");
 		s_assert.assertAll();
 	}

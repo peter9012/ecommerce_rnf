@@ -82,7 +82,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(TERMINATE_MY_ACCOUNT);
 		driver.click(TERMINATE_MY_ACCOUNT);
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(3000);
 		return new StoreFrontAccountTerminationPage(driver);
 
 	}

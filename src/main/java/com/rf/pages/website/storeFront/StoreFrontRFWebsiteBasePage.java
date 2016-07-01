@@ -57,7 +57,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		try{
 			driver.click(RODAN_AND_FIELDS_LOGO_IMG_LOC);
 		}catch(Exception e){
-			driver.findElement(By.xpath("//div[@id='header']//span")).click();
+			try{
+				driver.findElement(By.xpath("//div[@id='header']//span")).click();
+			}catch(Exception e1){
+				try{
+					driver.findElement(By.xpath("//div[@id='header-middle-top']//a")).click();
+				}catch(Exception e2){
+					driver.findElement(By.xpath("//*[@id='header']/div/div[2]/a/span")).click();
+				}
+			}
 		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForLoadingImageToDisappear();

@@ -2616,7 +2616,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String deliveryCharges=storeFrontHomePage.getShippingChargesOnReviewOrderPage();
 		//Validate shipping cost from UI
 		System.out.println("ShippingAndHandlingFeeForUPS2DayConsultantEnrollment");
-		System.out.println(handlingCharges );
+		//System.out.println(handlingCharges); //added by Sean, removed by Sean 
 		System.out.println(deliveryCharges);
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("CAD$ 0.00"),"Shipping charges on UI is not As per shipping method selected");

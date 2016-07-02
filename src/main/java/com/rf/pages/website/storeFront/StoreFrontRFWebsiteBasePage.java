@@ -1074,7 +1074,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		while(true){
 			driver.get(getBizPWS(country, env));
 			driver.waitForPageLoad();
-			//driver.pauseExecutionFor(2000);
+			driver.pauseExecutionFor(2000);
 			if(driver.getCurrentUrl().contains("sitenotfound")){
 				logger.info("SITE NOT FOUND error,try new PWS");
 				continue;
@@ -1118,6 +1118,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void hoverOnShopLinkAndClickAllProductsLinksAfterLogin(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
+		driver.pauseExecutionFor(3000);
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
@@ -1140,7 +1141,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	@SuppressWarnings("deprecation")
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		//driver.waitForElementPresent(By.id("our-products")); 
+		driver.waitForElementPresent(By.id("our-products")); 
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));

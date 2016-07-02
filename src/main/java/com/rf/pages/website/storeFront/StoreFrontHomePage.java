@@ -2426,8 +2426,16 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String thirdProductPrice = null;
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]"));
 		firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
-		secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][2]")).getText().split("\\$")[1].trim();
-		thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][3]")).getText().split("\\$")[1].trim();
+		try{
+			secondProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][2]")).getText().split("\\$")[1].trim();
+		}catch(Exception e){
+			secondProductPrice = driver.findElement(By.xpath("//section[contains(@class,'productCatPage')]/div[2]/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
+		}
+		try{
+			thirdProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][3]")).getText().split("\\$")[1].trim();
+		}catch(Exception e){
+			thirdProductPrice = driver.findElement(By.xpath("//section[contains(@class,'productCatPage')]/div[2]/descendant::span[@class='your-price'][2]")).getText().split("\\$")[1].trim();
+		}
 		logger.info("price of first product "+firstProductPrice);
 		logger.info("price of second product "+secondProductPrice);
 		logger.info("price of third product "+thirdProductPrice);
@@ -2440,6 +2448,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			}
 		}return false;
 	}
+
 	public boolean verifyPriceFromHighTolow(){
 		String firstProductPrice = null;
 		String secondProductPrice = null;
@@ -2607,8 +2616,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyEmailIdIsPresentInContactBox(){
-		driver.waitForElementPresent(By.xpath("//input[@id='senderEmailId']"));
-		return driver.isElementPresent(By.xpath("//input[@id='senderEmailId']"));
+		driver.waitForElementPresent(By.xpath("//a[@id='txtContactMe']"));
+		return driver.isElementPresent(By.xpath("//a[@id='txtContactMe']"));
 	}
 
 	public boolean verifyPhoneNumberIsPresentInContactBox(){
@@ -3999,6 +4008,40 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean isFooterPresent(){
 		driver.waitForElementPresent(By.xpath("//div[contains(@class,'footer-content')]"));
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'footer-content')]"));
+	}
+
+	public boolean isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(){
+		String parentWindowID = driver.getWindowHandle();
+		driver.waitForElementPresent(POLICY_AND_PROCEDURE_LINK);
+		driver.click(POLICY_AND_PROCEDURE_LINK);
+		driver.pauseExecutionFor(2000);
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		boolean status=false;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("pdf")){
+					status=true;
+				}
+
+			}
+		}
+		driver.close();
+		driver.switchTo().window(parentWindowID);
+		return status;
+	}
+
+	public boolean isEnrollUnderLastUplinePresentForPC(){
+		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'you already have a Preferred Customer')]"));
+		return driver.isElementPresent(By.xpath("//h2[contains(text(),'you already have a Preferred Customer')]"));
+	}
+
+	public boolean isShippingChargesPresentOnReviewOrderPage(){
+		driver.waitForElementPresent(By.xpath("//span[@id='deliveryCost']"));
+		String value= driver.findElement(By.xpath("//span[@id='deliveryCost']")).getText();
+		return !(value==null);
 	}
 
 }

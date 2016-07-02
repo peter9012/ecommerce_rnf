@@ -683,26 +683,40 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	}
 
-	public String getSubtotalFromCart(){
-		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span"));
-		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText();
-	}
-
 	public String getDeliveyFromCart(){
 		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span"));
-		return driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span")).getText();
+		String delivery= driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[2]//span")).getText();
+		if(delivery.contains(",")){
+			delivery=delivery.replaceAll(",", "");
+		}
+		return delivery;
 	}
-	public String getHandlingFromCart(){
-		driver.waitForElementPresent(By.xpath("//div[@id='module-handling']//span"));
-		return driver.findElement(By.xpath("//div[@id='module-handling']//span")).getText();
+
+	public String getSubtotalFromCart(){
+		driver.waitForElementPresent(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span"));
+		String subtotal = driver.findElement(By.xpath("//div[contains(text(),'Subtotal')]/following::div[1]/span")).getText();
+		if(subtotal.contains(",")){
+			subtotal=subtotal.replaceAll(",", "");
+		}
+		return subtotal;
 	}
+
 	public String getTaxFromCart(){
 		driver.waitForElementPresent(By.xpath("//span[@class='taxRight']"));
-		return driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+		String tax= driver.findElement(By.xpath("//span[@class='taxRight']")).getText();
+		if(tax.contains(",")){
+			tax=tax.replaceAll(",", "");
+		}
+		return tax;
 	}
+
 	public String getGrandTotalFromCart(){
 		driver.waitForElementPresent(By.id("orderTotal"));
-		return driver.findElement(By.id("orderTotal")).getText();
+		String grandTotal = driver.findElement(By.id("orderTotal")).getText();
+		if(grandTotal.contains(",")){
+			grandTotal=grandTotal.replaceAll(",", "");
+		}
+		return grandTotal;
 	}
 
 	public boolean validateHeaderContent(){
@@ -1547,6 +1561,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		}
 
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean isDeliveryChargesPresent(){
+		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span"));
+		String deliveryCharges =  driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span")).getText().trim();
+		return !(deliveryCharges==null);
 	}
 
 }

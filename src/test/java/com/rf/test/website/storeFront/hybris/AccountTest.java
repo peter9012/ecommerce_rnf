@@ -2077,7 +2077,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4278:Update USer name and Upgrade USer
-	@Test
+	@Test(enabled=false)//Test needs updation
 	public void testUpdateUserNameAndUpgradeUser_4278() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -2630,7 +2630,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4814:Edit Existing Shipping Billing Address on Edit CRP Template
-	@Test
+	@Test(enabled=false)//Already covered in shipping billing tests
 	public void testEditExistingShippingAndBillingAddressOnEditCRPTemplate_4814() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2745,7 +2745,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4813:Add New Shipping Billing Address on Edit CRP Template
-	@Test
+	@Test(enabled=false)//ALready covered in billing shipping tests
 	public void testAddNewShippingAndBillingAddressOnEditCRPTemplate_4813() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -2777,6 +2777,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US;
+			state = TestConstants.PROVINCE_US;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -2913,7 +2914,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2984,7 +2985,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3004,7 +3005,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135:Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test
+	@Test(enabled=false)//Tests needs updation
 	public void testEnrollInPulseFromMyAccountEnrolligFrom1stTill17th_135() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;
@@ -3022,7 +3023,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+userName);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3190,7 +3191,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+			driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

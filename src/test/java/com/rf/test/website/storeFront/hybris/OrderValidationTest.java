@@ -316,7 +316,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+pcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -1890,7 +1890,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 //	}
 
 	// Hybris Project-3849:Verify Sponsor on Return Orders RFO
-	@Test
+	@Test(enabled=false)//Test needs updation
 	public void testVerifySponserOnReturnOrder_3849() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

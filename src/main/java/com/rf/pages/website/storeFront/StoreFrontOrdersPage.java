@@ -1050,6 +1050,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		String currentDay = currentDate.split("\\ ")[0];
 		logger.info("Current day is: "+currentDay);
 		String autoshipDay = autoshipDate.split("\\ ")[1];
+		autoshipDay = autoshipDay.split(",")[0];
 		logger.info("Current autoship day is: "+autoshipDay);
 		if(Integer.parseInt(currentDay)<=17){
 			if(autoshipDay.contains(currentDay)){
@@ -1140,5 +1141,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.click(By.xpath("//a[text()="+orderNumber+"]/following::span[1]"));
 		driver.click(By.linkText("Details"));
 		driver.waitForPageLoad();
+	}
+
+	public boolean isShippingAmountFromAutoshipTemplatePresent(){
+		String shippingAmount = driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Shipping')]/following::div[1]")).getText();
+		return !(shippingAmount.substring(1)==null);
 	}
 }

@@ -2344,7 +2344,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
 		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.searchCID();
@@ -2356,11 +2356,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterPasswordForUpgradePcToConsultant();
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Pc user is not terminated successfully");
-		//		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
-		//		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-		//		logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
-		//		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
-		//		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
+		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
+		if(storeFrontHomePage.isEnrollUnderLastUplinePresentForPC()){
+			storeFrontHomePage.clickOnEnrollUnderLastUpline();
+			logger.info("After click enroll under last upline we are on "+driver.getCurrentUrl());
+			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		}
 		storeFrontHomePage.enterFirstName(firstName);
 		storeFrontHomePage.enterLastName(lastName);
 		storeFrontHomePage.enterEmailAddress(pcUserEmailID);
@@ -3144,20 +3146,20 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1282:16.North Dakota rule out US
-//	@Test
-//	public void testNorthDakotaRuleOut_US_1282() throws InterruptedException{
-//		if(driver.getCountry().equalsIgnoreCase("us")){
-//			storeFrontHomePage = new StoreFrontHomePage(driver);
-//			storeFrontHomePage.selectCountryUsToCan();
-//			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-//			storeFrontHomePage.searchCID();
-//			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-//			s_assert.assertFalse(storeFrontHomePage.verifyPresenceOfNorthDakotaLink(),"I live in North Dakota and want to continue without purchasing a business portfolio Link coming up");
-//			s_assert.assertAll();
-//		}else{
-//			logger.info("US specific test");
-//		}
-//	}
+	//	@Test
+	//	public void testNorthDakotaRuleOut_US_1282() throws InterruptedException{
+	//		if(driver.getCountry().equalsIgnoreCase("us")){
+	//			storeFrontHomePage = new StoreFrontHomePage(driver);
+	//			storeFrontHomePage.selectCountryUsToCan();
+	//			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+	//			storeFrontHomePage.searchCID();
+	//			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+	//			s_assert.assertFalse(storeFrontHomePage.verifyPresenceOfNorthDakotaLink(),"I live in North Dakota and want to continue without purchasing a business portfolio Link coming up");
+	//			s_assert.assertAll();
+	//		}else{
+	//			logger.info("US specific test");
+	//		}
+	//	}
 
 	//Hybris Project-2247:Sponsor Search & details: Search by name or ID
 	@Test
@@ -3190,15 +3192,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testVerifyPolicyAndProcedureLinkOnEnrollmentPage_5274() throws InterruptedException {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.clickPolicyAndProcedureLink();
-		storeFrontHomePage.switchToChildWindow();
-		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+		s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 		s_assert.assertAll();
 	}
 
 	//Hybris Project-5275:Verify Policies and procedures link in sponsor selection page for enrolling consultant BIZ site US
 	@Test
-	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5275()	{
+	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5275() {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
 			country = driver.getCountry();
@@ -3207,9 +3207,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			String PWS = storeFrontHomePage.getBizPWS(country, env);
 			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-			storeFrontHomePage.clickPolicyAndProcedureLink();
-			storeFrontHomePage.switchToChildWindow();
-			s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 			s_assert.assertAll();
 		}else{
 			logger.info("CA Specific test");
@@ -3221,9 +3219,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsCACorpSite_5276() {
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.clickPolicyAndProcedureLink();
-		storeFrontHomePage.switchToChildWindow();
-		s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+		s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 		s_assert.assertAll();
 	}
 
@@ -3238,9 +3234,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			String PWS = storeFrontHomePage.getBizPWS(country, env);
 			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-			storeFrontHomePage.clickPolicyAndProcedureLink();
-			storeFrontHomePage.switchToChildWindow();
-			s_assert.assertTrue(driver.getCurrentUrl().contains("pdf"),"Policy and procedure page is not displayed.");
+			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 			s_assert.assertAll();
 		}else{
 			logger.info("CA Specific test");

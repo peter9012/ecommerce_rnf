@@ -1047,22 +1047,40 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean validateSameDatePresentForAutoship(String autoshipDate) {
 		String currentDate = getPSTDate();
-		String currentDay = currentDate.split("\\ ")[0];
-		logger.info("Current day is: "+currentDay);
-		String autoshipDay = autoshipDate.split("\\ ")[1];
-		autoshipDay = autoshipDay.split(",")[0];
-		logger.info("Current autoship day is: "+autoshipDay);
-		if(Integer.parseInt(currentDay)<=17){
-			if(autoshipDay.contains(currentDay)){
-				return true;
+		try{
+			String currentDay = currentDate.split("\\ ")[0].split("\\,")[0];
+			logger.info("Current day is: "+currentDay);
+			String autoshipDay = autoshipDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current autoship day is: "+autoshipDay);
+			if(Integer.parseInt(currentDay)<=17){
+				if(autoshipDay.contains(currentDay)){
+					return true;
+				}
+				return false;
+			}else{
+				if(autoshipDay.contains("17")){
+					return true;
+				}
+				return false;
 			}
-			return false;
-		}else{
-			if(autoshipDay.contains("17")){
-				return true;
+		}catch(NumberFormatException nfe){
+			String currentDay = currentDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current day is: "+currentDay);
+			String autoshipDay = autoshipDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current autoship day is: "+autoshipDay);
+			if(Integer.parseInt(currentDay)<=17){
+				if(autoshipDay.contains(currentDay)){
+					return true;
+				}
+				return false;
+			}else{
+				if(autoshipDay.contains("17")){
+					return true;
+				}
+				return false;
 			}
-			return false;
 		}
+
 	}
 
 	public void clickReportProblemsUnderActionsForFirstOrderUnderOrderHistory() {

@@ -1245,11 +1245,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
-	public void clickAddToBagButtonWithoutFilter() throws InterruptedException{		
+	public void clickAddToBagButtonWithoutFilter() throws InterruptedException{  
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		logger.info("Add To Bag button clicked");
-		driver.waitForLoadingImageToDisappear();
+		String firstProductPrice = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[@class='your-price'][1]")).getText().split("\\$")[1].trim();
+		if(firstProductPrice.contains("0.00")){
+			driver.click(By.xpath("//section[contains(@class,'productCatPage')]/div[2]/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+			logger.info("2nd Product selected first product having ");
+		}else{
+			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+			logger.info("Add To Bag button clicked of first product");
+		}driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
 

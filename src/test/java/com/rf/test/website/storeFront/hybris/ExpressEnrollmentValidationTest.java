@@ -810,7 +810,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 			PWSAfterSelectSponsor = driver.getCurrentUrl();
 			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1]), "CA sponsor PWS for ca corp"+sponsorPWS+" and on UI after select us sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
+			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1])||sponsorPWS.split("\\:")[1].contains(sponsorPWS), "CA sponsor PWS for ca corp"+sponsorPWS+" and on UI after select us sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
 			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city,state, postalCode, phoneNumber);
 			storeFrontHomePage.clickNextButton();
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
@@ -832,7 +832,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickOnConfirmAutomaticPayment();
 			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 			PWSAfterEnrollment = driver.getCurrentUrl();
-			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment us sponsor from ca corp site is "+PWSAfterEnrollment);
+			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1])||userPWS.split("\\:")[1].contains(PWSAfterEnrollment), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment us sponsor from ca corp site is "+PWSAfterEnrollment);
 		}else{
 			// assert US user with CA Sponsor
 			// Get us sponser with PWS from database

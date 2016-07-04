@@ -155,94 +155,94 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	//	//Hybris Project-2200 :: Version : 1 :: Verify Existing Retail Customer popup during RC registration
-	//	@Test
-	//	public void testExistingRetailCustomerPopupDuringRCRegistration_2200() throws InterruptedException {
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		// Click on our product link that is located at the top of the page and then click in on quick shop
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Click on place order
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
-	//		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
-	//		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionality(),"Cancel Registration button not working");	
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//		//Click on place order
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
-	//		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
-	//		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"'Send mail to reset my password' button not working");	
-	//
-	//		s_assert.assertAll(); 
-	//	}
+	//Hybris Project-2200 :: Version : 1 :: Verify Existing Retail Customer popup during RC registration
+	@Test(enabled=false)//Already covered 2199
+	public void testExistingRetailCustomerPopupDuringRCRegistration_2200() throws InterruptedException {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
 
-	//	//Hybris Project-2201 :: Version : 1 :: Verify Existing Consultant popup during RC registration
-	//	@Test
-	//	public void testExistingConsultantPopupDuringRCRegistration_2201() throws InterruptedException {
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		// Click on our product link that is located at the top of the page and then click in on quick shop
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//		//Click on place order
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
-	//		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
-	//		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionalityConsultant(),"Cancel Registration button not working");	
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//		//Click on place order
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//
-	//		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
-	//		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
-	//		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityConsultant(),"Send Mail To Reset My Password button not working");	
-	//
-	//		s_assert.assertAll(); 
-	//	}
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on place order
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionality(),"Cancel Registration button not working");	
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Validate Existing RC Popup during RC Registration by entering existing RC mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("rc",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing RC PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityRC(),"'Send mail to reset my password' button not working");	
+
+		s_assert.assertAll(); 
+	}
+
+	//Hybris Project-2201 :: Version : 1 :: Verify Existing Consultant popup during RC registration
+	@Test(enabled=false)//Already covered 2199
+	public void testExistingConsultantPopupDuringRCRegistration_2201() throws InterruptedException {
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		// Click on our product link that is located at the top of the page and then click in on quick shop
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateCancelEnrollmentFunctionalityConsultant(),"Cancel Registration button not working");	
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		//Click on place order
+		storeFrontHomePage.clickOnCheckoutButton();
+
+		//Validate Existing Consultant Popup during RC Registration by entering existing Consultant mailid
+		s_assert.assertTrue(storeFrontHomePage.validateExistingUserPopUp("consultant",TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password,countryId), "Existing Consultant PopUp is not displayed");
+		s_assert.assertTrue(storeFrontHomePage.validateSendMailToResetMyPasswordFunctionalityConsultant(),"Send Mail To Reset My Password button not working");	
+
+		s_assert.assertAll(); 
+	}
 
 	//Hybris Project-2198 :: Version : 1 :: Switch from RC to PC (Under Same Consultant) 
 	@Test
@@ -2017,39 +2017,39 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(), "User NOT registered successfully as PC User");
 		s_assert.assertAll();
 	}
+	
+	//Hybris Project-2186:PC2RC: RC enrollment add already exist PC email ID: Verify Popup
+	@Test(enabled=false)//Already covered 2199
+	public void testRcEnrollmentAddAlreadyExistPcEmailId_VerifyPopUp_2186() throws InterruptedException{
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomPCUserList =  null;
+		String pcUserEmailID = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);
 
-	//	//Hybris Project-2186:PC2RC: RC enrollment add already exist PC email ID: Verify Popup
-	//	@Test
-	//	public void testRcEnrollmentAddAlreadyExistPcEmailId_VerifyPopUp_2186() throws InterruptedException{
-	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	//		String firstName=TestConstants.FIRST_NAME+randomNum;
-	//		RFO_DB = driver.getDBNameRFO();
-	//		List<Map<String, Object>> randomPCUserList =  null;
-	//		String pcUserEmailID = null;
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//
-	//		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	//		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
-	//
-	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-	//
-	//		// Products are displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-	//		logger.info("Quick shop products are displayed");
-	//
-	//		//Select a product and proceed to buy it
-	//		storeFrontHomePage.selectProductAndProceedToBuy();
-	//
-	//		//Cart page is displayed?
-	//		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-	//		logger.info("Cart page is displayed");
-	//		storeFrontHomePage.clickOnCheckoutButton();
-	//		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-	//		logger.info("Login or Create Account page is displayed");
-	//		storeFrontHomePage.enterNewRCDetails(firstName, pcUserEmailID);
-	//		s_assert.assertTrue(storeFrontHomePage.verifyPresenceOfPopUpForExistingPC(),"Pop Up is not present");
-	//		s_assert.assertAll();
-	//	}
+		randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+
+		// Products are displayed?
+		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
+		logger.info("Quick shop products are displayed");
+
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Cart page is displayed?
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
+		logger.info("Cart page is displayed");
+		storeFrontHomePage.clickOnCheckoutButton();
+		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
+		logger.info("Login or Create Account page is displayed");
+		storeFrontHomePage.enterNewRCDetails(firstName, pcUserEmailID);
+		s_assert.assertTrue(storeFrontHomePage.verifyPresenceOfPopUpForExistingPC(),"Pop Up is not present");
+		s_assert.assertAll();
+	}
 
 	//Hybris Project-4674:During PC enrollment add email ID of RC user who is already exist. Verify the popup and follow the i
 	@Test

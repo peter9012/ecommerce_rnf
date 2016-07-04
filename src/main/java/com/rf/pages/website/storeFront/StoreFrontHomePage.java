@@ -614,7 +614,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.isElementPresent(By.id("Congrats"));
 	}
 
-
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address btn btn-primary']"));

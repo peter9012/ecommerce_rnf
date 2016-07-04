@@ -373,7 +373,7 @@ public class AddEditShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Phase 2-4326: View shipping address on 'Shipping Profile' page
-	@Test(enabled=false)//(priority=6)
+	@Test(enabled=false)//Covered in other tests
 	public void testShippingAddressOnShippingProfile_HP2_4326() throws InterruptedException, SQLException{
 		List<Map<String, Object>> shippingAddressCountList =  null;
 		List<Map<String, Object>> defaultShippingAddressList =  null;

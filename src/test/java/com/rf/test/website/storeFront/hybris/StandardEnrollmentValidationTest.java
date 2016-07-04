@@ -1358,10 +1358,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-
-
-
 	// Hybris Project-3973:Verify if Consultant can use same prefix, when he is subscribing to pulse again
 	@Test
 	public void testVerifyConsultantCanUseSamePrefixWhileSubscribingToPulse_3973() throws InterruptedException{
@@ -1441,8 +1437,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-
 	//Hybris Project-2372:Email Validation for consultant trying to enroll under valid sponsor and complete enrollment.
 	@Test
 	public void testEmailValidationForConsultantTryingToEnrollUnderValidSponsor_2372() throws InterruptedException	{
@@ -1519,9 +1513,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll();
 	}
-
-
-
 
 	//Hybris Project-2214:CC enrollment who has terminated his account for LESS than 6 months enrolling under different sponso
 	@Test
@@ -1843,8 +1834,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyEnrolledUserStatus(accountStatusId), "Status of enrolled user is not active in database");
 		s_assert.assertAll();
 	}	
-
-
 
 	//Hybris Project-1273:18.Change Social Security Number to Social Insurance Number at Standard Enrollment for Canada users
 	@Test

@@ -3066,10 +3066,10 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("deliveryCharges ="+deliveryCharges);
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			//Assert  shipping cost from UI
-			s_assert.assertTrue(deliveryCharges.contains("0.00"),"Shipping charges on UI is not As per shipping method selected");
+			s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping/Delivery charges on UI is not present");
 		}else if(driver.getCountry().equalsIgnoreCase("us")){
 			//Assert  shipping cost from UI
-			s_assert.assertTrue(deliveryCharges.contains("17.00"),"Shipping charges on UI is not As per shipping method selected");
+			s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping/Delivery charges on UI is not present");
 		}
 		s_assert.assertAll();
 	}

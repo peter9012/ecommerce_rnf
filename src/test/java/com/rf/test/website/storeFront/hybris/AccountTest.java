@@ -1282,48 +1282,48 @@ public class AccountTest extends RFWebsiteBaseTest{
 		}
 	}
 
-	//	//Hybris Project-5002:Modify Main Phone Number and mobile phone information
-	//	@Test
-	//	public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
-	//		if(driver.getCountry().equalsIgnoreCase("ca")){
-	//			RFO_DB = driver.getDBNameRFO();
-	//			storeFrontHomePage = new StoreFrontHomePage(driver);
-	//
-	//			String mainPhoneNumberDB = null;
-	//			List<Map<String, Object>> mainPhoneNumberList =  null;
-	//			List<Map<String, Object>> randomConsultantList =  null;
-	//			String consultantEmailID = null;
-	//			String accountIdForConsultant = null;
-	//			while(true){
-	//				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	//				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-	//				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-	//				logger.info("Account Id of the user is "+accountIdForConsultant);
-	//				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-	//				boolean isError = driver.getCurrentUrl().contains("error");
-	//				if(isError){
-	//					logger.info("login error for the user "+consultantEmailID);
-	//					driver.get(driver.getURL()+"/"+driver.getCountry());
-	//				}
-	//				else
-	//					break;
-	//			}
-	//			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
-	//			logger.info("login is successful");
-	//			storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-	//			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
-	//			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-	//			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
-	//			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-	//			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-	//			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-	//			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
-	//			s_assert.assertAll();
-	//		}else{
-	//			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
-	//		}
-	//	}
+		//Hybris Project-5002:Modify Main Phone Number and mobile phone information
+		@Test(enabled=false)//Covered in TC - 5003
+		public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
+			if(driver.getCountry().equalsIgnoreCase("ca")){
+				RFO_DB = driver.getDBNameRFO();
+				storeFrontHomePage = new StoreFrontHomePage(driver);
+	
+				String mainPhoneNumberDB = null;
+				List<Map<String, Object>> mainPhoneNumberList =  null;
+				List<Map<String, Object>> randomConsultantList =  null;
+				String consultantEmailID = null;
+				String accountIdForConsultant = null;
+				while(true){
+					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+					accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+					logger.info("Account Id of the user is "+accountIdForConsultant);
+					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+					boolean isError = driver.getCurrentUrl().contains("error");
+					if(isError){
+						logger.info("login error for the user "+consultantEmailID);
+						driver.get(driver.getURL()+"/"+driver.getCountry());
+					}
+					else
+						break;
+				}
+				//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+				logger.info("login is successful");
+				storeFrontConsultantPage.clickOnWelcomeDropDown();
+				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+				storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
+				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+				storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
+				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+				mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+				mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+				assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+				s_assert.assertAll();
+			}else{
+				logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+			}
+		}
 
 	//Hybris Project-4999:Modify name of the users
 	@Test
@@ -2077,7 +2077,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4278:Update USer name and Upgrade USer
-	@Test(enabled=false)//Test needs updation
+	@Test
 	public void testUpdateUserNameAndUpgradeUser_4278() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -3005,7 +3005,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-135:Enroll in pulse from my account - enrolling from 1st till 17th
-	@Test(enabled=false)//Tests needs updation
+	@Test
 	public void testEnrollInPulseFromMyAccountEnrolligFrom1stTill17th_135() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;

@@ -8,11 +8,10 @@
 	</listeners>
 	<test name="CorpKits">
 		<classes>
-
-	
 			<class name="com.rf.test.website.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest" />
 			<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.RFExpressBusinessKitTest" />
-
+			<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.BigBusinessLaunchKitTest" />
+			<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest" />
 		</classes>
 	</test>
 </suite>

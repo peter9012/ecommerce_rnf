@@ -267,7 +267,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2250:Corporate Sponsor: PC and RC can create an account without a Sponsor -- will be set to Corporate
-	@Test  (enabled=false)//Covered in TC 1307 and TC 1308 of Enrollment Test in MajorEnrollment package
+	@Test(enabled=false)//Covered in TC 1307 and TC 1308 of Enrollment Test in MajorEnrollment package
 	public void testPCAndRCAccountCreationWithoutASponsor_2250() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -344,7 +344,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-3774:Register as RC with Different CA Sponsor WITH Pulse
-	@Test  (enabled= false) //Duplicate test case, Same as 3854
+	@Test(enabled= false) //Duplicate test case, Same as 3854
 	public void testRegisterAsRCWithDifferentCASponserWithPulse_3774() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();  
@@ -803,7 +803,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 
 
 	//Hybris Project-4319:Soft-Terminated PC Cancel Reactivation
-	@Test  (enabled=false)// Covered in TC 4318
+	@Test(enabled=false)// Covered in TC 4318
 	public void testTerminatePCAndCancelReactivation_4319() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomPCUserList =  null;
@@ -892,7 +892,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2160:Place and Order and Enroll for PC during Checkout and check disclaimers
-	@Test  (enabled=false)//Covered in TC 1308
+	@Test(enabled=false)//Covered in TC 1308
 	public void testPlaceOrderAndEnrollForPCDuringCheckout_2160() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -1030,7 +1030,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2187:Terms and Conditions - PC enrollment
-	@Test  (enabled=false)//covered in TC-1308
+	@Test(enabled=false)//covered in TC-1308
 	public void testTermsAndConditionsPCEnrollment_2187() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -1103,7 +1103,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-2300:Becomke PC User After adding product to cart
-	@Test  (enabled=false)//covered in TC-1308
+	@Test(enabled=false)//covered in TC-1308
 	public void testBecomePCUserAfterAddingProductToCart_2300() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -1623,7 +1623,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3726:(Login or Create an Account) Register as PC customer with CA sponsor from BIZ PWS site (ECOM-75)
-	@Test  (enabled=false)//Covered in TC -4440
+	@Test(enabled=false)//Covered in TC -4440
 	public void testRegisterAsPCUserWithCASponserFromBizPWS_3726() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -1730,7 +1730,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll(); 
 	}
 
-	// Hybris Project-5139:Search Sponsor with PWS for PC
+	//Hybris Project-5139:Search Sponsor with PWS for PC
 	@Test  
 	public void testSearchSponsorWithPWSForPC_5139() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
@@ -2631,7 +2631,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3739:Preferred Customer Flow
-	@Test  (enabled=false)//Covered in TC 1308
+	@Test(enabled=false)//Covered in TC 1308
 	public void testPreferredCustomerFlow_3739() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -2753,7 +2753,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
-	@Test  (enabled=false)//Covered in TC 1307
+	@Test(enabled=false)//Covered in TC 1307
 	public void testTermsAndConditionsRCEnrollment_2188() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;

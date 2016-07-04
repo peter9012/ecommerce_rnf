@@ -1526,210 +1526,207 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-
 	//Hybris Project-1978:Orders page UI for Consultant - Cart - history and autoships
-	//	@Test(enabled=false) //Tax value doesn't get updated while automation executes
-	//	public void testOrderPageUIAndEditCartForConsultant_1978() throws InterruptedException{
-	//		RFO_DB = driver.getDBNameRFO();
-	//		List<Map<String, Object>> randomConsultantList =  null;
-	//		String consultantEmailID = null;
-	//		String accountID = null;
-	//		List<Map<String, Object>> orderStatusList =  null;
-	//
-	//		String orderStatusDB = null;
-	//		String orderGrandTotalDB = null;
-	//		String orderDateDB = null;
-	//		String firstName = null;
-	//		String addressLine1 = null;
-	//		String postalCode = null;
-	//		String country = null;
-	//		String shippingAddressFromDB =null;
-	//		String city = null;
-	//		String state = null;
-	//		String subTotalDB = null;
-	//		String shippingDB = null;
-	//		String handlingDB = null;
-	//		String taxDB = null; 
-	//		String grandTotal = null;
-	//		String subTotal = null;
-	//		String shipping = null;
-	//		String handling = null;
-	//		String tax = null; 
-	//		String grandTotalDB = null;
-	//		String shippingMethodDB = null;
-	//		String lastName = null;
-	//		String orderId = null;
-	//		String shippingMethodId =null;
-	//		List<Map<String, Object>> verifyAllDetailsList = null;
-	//		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
-	//		List<Map<String,Object>> getOtherDetailValuesList = null;
-	//		DecimalFormat df = new DecimalFormat("#.00");
-	//		storeFrontHomePage = new StoreFrontHomePage(driver);
-	//		while(true){
-	//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-	//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-	//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-	//			logger.info("Account Id of the user is "+accountID);
-	//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-	//			boolean isError = driver.getCurrentUrl().contains("error");
-	//			if(isError){
-	//				logger.info("login error for the user "+consultantEmailID);
-	//				driver.get(driver.getURL());
-	//			}
-	//			else
-	//				break;
-	//		}
-	//		logger.info("login is successful");
-	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-	//		// Get Order Number
-	//		//		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
-	//		//		// Get Order Id
-	//		//		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
-	//		//		orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
-	//		//		String orderStatusId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderStatusID"));
-	//		//
-	//		//		//assert for order status with RFO
-	//		//		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS, orderStatusId),RFO_DB);
-	//		//		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
-	//		//		logger.info("Order Status from RFO DB is "+orderStatusDB);
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB, orderHistoryNumber),"Order Status on UI is different from RFO DB");
-	//		//
-	//		//		//assert for grand total with RFO
-	//		//		DecimalFormat dff = new DecimalFormat("#.00");
-	//		//		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(getOrderDetailsList, "Total"))); 
-	//		//		logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
-	//
-	//		//		//assert for order date with RFO
-	//		//		orderDateDB = String.valueOf (getValueFromQueryResult(getOrderDetailsList, "CompletionDate"));
-	//		//		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
-	//		// click on edit
-	//		String autoshipNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
-	//		logger.info("Autoship Number is "+autoshipNumber);
-	//		//		storeFrontOrdersPage.clickAutoshipOrderNumber();
-	//		//		storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate();
-	//		//		storeFrontHomePage.navigateToBackPage();
-	//		storeFrontOrdersPage.clickOnEditAtAutoshipTemplate();
-	//		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-	//		String quantityBeforeUpdate = storeFrontUpdateCartPage.getQuantityOfProductOnCartPage();
-	//		String updatedQuantity = storeFrontUpdateCartPage.upgradeQuantityOfProduct(quantityBeforeUpdate);
-	//		storeFrontHomePage.addQuantityOfProduct(updatedQuantity);
-	//		// assert update quantity on cart page
-	//		s_assert.assertTrue(storeFrontUpdateCartPage.getQuantityOfProductOnCartPage().contains(updatedQuantity),"CRP autoship template subTotal on RFO is "+updatedQuantity+" and on UI is "+storeFrontUpdateCartPage.getQuantityOfProductOnCartPage());
-	//		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
-	//		storeFrontUpdateCartPage.clickUpdateCartBtn();
-	//
-	//		// values for assertion for pending order autoship template
-	//		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
-	//		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
-	//		handling = storeFrontUpdateCartPage.getHandlingFromCart();
-	//		tax = storeFrontUpdateCartPage.getTaxFromCart();
-	//		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
-	//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-	//		storeFrontOrdersPage.clickAutoshipOrderNumber(autoshipNumber);
-	//		// assert update quantity on autoship template 
-	//		//s_assert.assertTrue(storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate().contains(updatedQuantity),"CRP autoship template subTotal on RFO is "+updatedQuantity+" and on UI is "+storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate());
-	//		//Assert Subtotal with RFO
-	//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotal),"autoship cart subTotal is "+subTotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-	//		// Assert Tax with RFO
-	//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"autoship cart tax amount is "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
-	//		// Assert Grand Total with RFO
-	//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotal),"autoship cart grand total is "+grandTotal+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-	//		// assert shipping amount with RFO
-	//		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
-	//		// assert Handling Value with RFO
-	//		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-	//		// Now verify the details of orders
-	//		//		storeFrontHomePage.navigateToBackPage();
-	//		//		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
-	//		//		storeFrontHomePage.clickOnYourAccountDropdown();
-	//		//		storeFrontHomePage.clickOnAutoshipStatusLink();
-	//		//		if(storeFrontAccountInfoPage.validateSubscribeToPulse()==true){
-	//		//			storeFrontHomePage.cancelPulseSubscription();
-	//		//		}
-	//		//
-	//		//		s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse subscription is not cancelled for the user");
-	//		//		storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
-	//		//
-	//		//		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-	//		//		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
-	//		//
-	//		//		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
-	//		//		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
-	//		//		handling = storeFrontUpdateCartPage.getHandlingFromCart();
-	//		//		tax = storeFrontUpdateCartPage.getTaxFromCart();
-	//		//		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
-	//		//		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
-	//		//		storeFrontUpdateCartPage.clickOnSubscribeBtn();
-	//		//
-	//		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-	//		//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-	//		//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
-	//		//		storeFrontOrdersPage.clickAutoshipOrderNumberOfPulse();
-	//		//
-	//		//		//Assert Subtotal with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotal),"autoship cart subTotal is "+subTotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-	//		//		// Assert Tax with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"autoship cart tax amount is "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
-	//		//		// Assert Grand Total with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotal),"autoship cart grand total is "+grandTotal+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-	//		//		// assert shipping amount with RFO
-	//		//		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
-	//		//		// assert Handling Value with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-	//		//		// Now verify the details of orders
-	//		//		storeFrontHomePage.navigateToBackPage();
-	//		//
-	//		//		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPCPerksOrderPageHeader(),"Order Text is not present on the Page");
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderDateText(),"Schedule Date Text is not present on the Page");
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderStatusText(),"Order Status Text is not present on the Page");
-	//		//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_QUERY_FOR_ALL_RFO, orderId), RFO_DB);
-	//		//		firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
-	//		//		lastName = (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
-	//		//		addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
-	//		//		city = (String) getValueFromQueryResult(verifyAllDetailsList, "Locale");
-	//		//		state = (String) getValueFromQueryResult(verifyAllDetailsList, "Region");
-	//		//		postalCode = (String) getValueFromQueryResult(verifyAllDetailsList, "PostalCode");
-	//		//		country = String.valueOf(getValueFromQueryResult(verifyAllDetailsList, "CountryID"));
-	//		//		if(country.equals("40")){
-	//		//			country = "canada"; 
-	//		//		}else if(country.equals("236")){
-	//		//			country = "United States";
-	//		//		}
-	//		//		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
-	//		//		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
-	//		//		// assert shipping Address with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
-	//		//		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4292_RFO,orderId),RFO_DB);
-	//		//		subTotalDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
-	//		//		taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
-	//		//		grandTotalDB = String.valueOf(df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total")));
-	//		//		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO,orderId),RFO_DB);
-	//		//		shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
-	//		//		handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
-	//		//		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
-	//		//		//Assert Subtotal with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc order template subTotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-	//		//		// Assert Tax with RFO
-	//		//		//assertTrue("Tax is not as expected", storeFrontOrdersPage.verifyOrderHistoryTax(taxDB));
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),"Adhoc order template tax amount on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
-	//		//		// Assert Grand Total with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"Adhoc order template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
-	//		//		// assert shipping amount with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
-	//		//		// assert Handling Value with RFO
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
-	//		//		// assert for shipping Method with RFO
-	//		//		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
-	//		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"Adhoc order template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());  
-	//		s_assert.assertAll();  	
-	//	}
+	@Test(enabled=false) //Tax value doesn't get updated while automation executes
+	public void testOrderPageUIAndEditCartForConsultant_1978() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+		String accountID = null;
+		List<Map<String, Object>> orderStatusList =  null;
+
+		String orderStatusDB = null;
+		String orderGrandTotalDB = null;
+		String orderDateDB = null;
+		String firstName = null;
+		String addressLine1 = null;
+		String postalCode = null;
+		String country = null;
+		String shippingAddressFromDB =null;
+		String city = null;
+		String state = null;
+		String subTotalDB = null;
+		String shippingDB = null;
+		String handlingDB = null;
+		String taxDB = null; 
+		String grandTotal = null;
+		String subTotal = null;
+		String shipping = null;
+		String handling = null;
+		String tax = null; 
+		String grandTotalDB = null;
+		String shippingMethodDB = null;
+		String lastName = null;
+		String orderId = null;
+		String shippingMethodId =null;
+		List<Map<String, Object>> verifyAllDetailsList = null;
+		List<Map<String,Object>> shippingCostAndHandlingCostList = null;
+		List<Map<String,Object>> getOtherDetailValuesList = null;
+		DecimalFormat df = new DecimalFormat("#.00");
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		// Get Order Number
+		//		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+		//		// Get Order Id
+		//		List<Map<String,Object>> getOrderDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDERID_RFO,orderHistoryNumber),RFO_DB);
+		//		orderId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderID"));
+		//		String orderStatusId = String.valueOf(getValueFromQueryResult(getOrderDetailsList, "OrderStatusID"));
+		//
+		//		//assert for order status with RFO
+		//		orderStatusList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_STATUS, orderStatusId),RFO_DB);
+		//		orderStatusDB = (String) getValueFromQueryResult(orderStatusList, "Name");
+		//		logger.info("Order Status from RFO DB is "+orderStatusDB);
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyOrderStatus(orderStatusDB, orderHistoryNumber),"Order Status on UI is different from RFO DB");
+		//
+		//		//assert for grand total with RFO
+		//		DecimalFormat dff = new DecimalFormat("#.00");
+		//		orderGrandTotalDB = String.valueOf(dff.format(getValueFromQueryResult(getOrderDetailsList, "Total"))); 
+		//		logger.info("Order GrandTotal from RFO DB is "+orderGrandTotalDB);
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyGrandTotal(orderGrandTotalDB),"Grand total on UI is different from RFO DB");
+
+		//		//assert for order date with RFO
+		//		orderDateDB = String.valueOf (getValueFromQueryResult(getOrderDetailsList, "CompletionDate"));
+		//		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
+		// click on edit
+		String autoshipNumber = storeFrontOrdersPage.getAutoshipOrderNumber();
+		logger.info("Autoship Number is "+autoshipNumber);
+		//		storeFrontOrdersPage.clickAutoshipOrderNumber();
+		//		storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate();
+		//		storeFrontHomePage.navigateToBackPage();
+		storeFrontOrdersPage.clickOnEditAtAutoshipTemplate();
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		String quantityBeforeUpdate = storeFrontUpdateCartPage.getQuantityOfProductOnCartPage();
+		String updatedQuantity = storeFrontUpdateCartPage.upgradeQuantityOfProduct(quantityBeforeUpdate);
+		storeFrontHomePage.addQuantityOfProduct(updatedQuantity);
+		// assert update quantity on cart page
+		s_assert.assertTrue(storeFrontUpdateCartPage.getQuantityOfProductOnCartPage().contains(updatedQuantity),"CRP autoship template subTotal on RFO is "+updatedQuantity+" and on UI is "+storeFrontUpdateCartPage.getQuantityOfProductOnCartPage());
+		storeFrontUpdateCartPage.clickOnUpdateMoreInfoButton();
+		storeFrontUpdateCartPage.clickUpdateCartBtn();
+
+		// values for assertion for pending order autoship template
+		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
+		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
+		tax = storeFrontUpdateCartPage.getTaxFromCart();
+		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		storeFrontOrdersPage.clickAutoshipOrderNumber(autoshipNumber);
+		// assert update quantity on autoship template 
+		//s_assert.assertTrue(storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate().contains(updatedQuantity),"CRP autoship template subTotal on RFO is "+updatedQuantity+" and on UI is "+storeFrontOrdersPage.getQuantityOfProductFromAutoshipTemplate());
+		//Assert Subtotal with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotal),"autoship cart subTotal is "+subTotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		// Assert Tax with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"autoship cart tax amount is "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
+		// Assert Grand Total with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotal),"autoship cart grand total is "+grandTotal+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		// assert shipping amount with RFO
+		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		// assert Handling Value with RFO
+		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		// Now verify the details of orders
+		//		storeFrontHomePage.navigateToBackPage();
+		//		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+		//		storeFrontHomePage.clickOnYourAccountDropdown();
+		//		storeFrontHomePage.clickOnAutoshipStatusLink();
+		//		if(storeFrontAccountInfoPage.validateSubscribeToPulse()==true){
+		//			storeFrontHomePage.cancelPulseSubscription();
+		//		}
+		//
+		//		s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse subscription is not cancelled for the user");
+		//		storeFrontAccountInfoPage.clickOnSubscribeToPulseBtn();
+		//
+		//		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		//		storeFrontUpdateCartPage.clickOnAccountInfoNextButton();
+		//
+		//		subTotal = storeFrontUpdateCartPage.getSubtotalFromCart();
+		//		shipping = storeFrontUpdateCartPage.getDeliveyFromCart();
+		//		handling = storeFrontUpdateCartPage.getHandlingFromCart();
+		//		tax = storeFrontUpdateCartPage.getTaxFromCart();
+		//		grandTotal = storeFrontUpdateCartPage.getGrandTotalFromCart();
+		//		storeFrontUpdateCartPage.clickOnSubscribePulseTermsAndConditionsChkbox();
+		//		storeFrontUpdateCartPage.clickOnSubscribeBtn();
+		//
+		//		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		//		storeFrontOrdersPage = storeFrontConsultantPage.clickOrdersLinkPresentOnWelcomeDropDown();
+		//		storeFrontOrdersPage.clickAutoshipOrderNumberOfPulse();
+		//
+		//		//Assert Subtotal with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotal),"autoship cart subTotal is "+subTotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		//		// Assert Tax with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"autoship cart tax amount is "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate());
+		//		// Assert Grand Total with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotal),"autoship cart grand total is "+grandTotal+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		//		// assert shipping amount with RFO
+		//		s_assert.assertTrue(shipping.contains(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate()),"autoship cart shipping amount is "+shipping+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		//		// assert Handling Value with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handling),"autoship cart handling amount is "+handling+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//		// Now verify the details of orders
+		//		storeFrontHomePage.navigateToBackPage();
+		//
+		//		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPCPerksOrderPageHeader(),"Order Text is not present on the Page");
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderDateText(),"Schedule Date Text is not present on the Page");
+		//		s_assert.assertTrue(storeFrontOrdersPage.verifyPresenceOfOrderStatusText(),"Order Status Text is not present on the Page");
+		//		verifyAllDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_QUERY_FOR_ALL_RFO, orderId), RFO_DB);
+		//		firstName = (String) getValueFromQueryResult(verifyAllDetailsList, "FirstName");
+		//		lastName = (String) getValueFromQueryResult(verifyAllDetailsList, "LastName");
+		//		addressLine1 = (String) getValueFromQueryResult(verifyAllDetailsList, "Address1");
+		//		city = (String) getValueFromQueryResult(verifyAllDetailsList, "Locale");
+		//		state = (String) getValueFromQueryResult(verifyAllDetailsList, "Region");
+		//		postalCode = (String) getValueFromQueryResult(verifyAllDetailsList, "PostalCode");
+		//		country = String.valueOf(getValueFromQueryResult(verifyAllDetailsList, "CountryID"));
+		//		if(country.equals("40")){
+		//			country = "canada"; 
+		//		}else if(country.equals("236")){
+		//			country = "United States";
+		//		}
+		//		shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+city+", "+state+" "+postalCode+"\n"+country.toUpperCase();
+		//		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
+		//		// assert shipping Address with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingAddressFromAdhocTemplate().contains(shippingAddressFromDB), "Adhoc Order template shipping address on RFO is"+shippingAddressFromDB+" and on UI is "+storeFrontOrdersPage.getShippingAddressFromAdhocTemplate());
+		//		getOtherDetailValuesList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ORDER_DETAILS_FOR_4292_RFO,orderId),RFO_DB);
+		//		subTotalDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "SubTotal")));
+		//		taxDB = String.valueOf(df.format((Number)getValueFromQueryResult(getOtherDetailValuesList, "TotalTax")));
+		//		grandTotalDB = String.valueOf(df.format((Number) getValueFromQueryResult(getOtherDetailValuesList, "Total")));
+		//		shippingCostAndHandlingCostList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_COST_HANDLING_COST_FOR_4292_RFO,orderId),RFO_DB);
+		//		shippingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingCost")));
+		//		handlingDB = String.valueOf(df.format((Number)getValueFromQueryResult(shippingCostAndHandlingCostList, "HandlingCost")));
+		//		shippingMethodId =  String.valueOf(getValueFromQueryResult(shippingCostAndHandlingCostList, "ShippingMethodID"));
+		//		//Assert Subtotal with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subTotalDB),"Adhoc order template subTotal on RFO is "+subTotalDB+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
+		//		// Assert Tax with RFO
+		//		//assertTrue("Tax is not as expected", storeFrontOrdersPage.verifyOrderHistoryTax(taxDB));
+		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate().contains(taxDB),"Adhoc order template tax amount on RFO is "+taxDB+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		//		// Assert Grand Total with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(grandTotalDB),"Adhoc order template grand total on RFO is "+grandTotalDB+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
+		//		// assert shipping amount with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate().contains(shippingDB),"Adhoc order template shipping amount on RFO is "+shippingDB+" and on UI is "+storeFrontOrdersPage.getShippingAmountFromAutoshipTemplate());
+		//		// assert Handling Value with RFO
+		//		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingDB),"Adhoc order template handling amount on RFO is "+handlingDB+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
+		//		// assert for shipping Method with RFO
+		//		shippingMethodDB = storeFrontOrdersPage.convertShippingMethodNameAsOnUI(shippingMethodId);
+		//		s_assert.assertTrue(storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate().contains(shippingMethodDB),"Adhoc order template shipping method on RFO is "+shippingMethodDB+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAdhocOrderTemplate());  
+		s_assert.assertAll();  	
+	}
 
 	//Hybris Project-4297:Verify the details of returned order.
 	@Test
@@ -1813,81 +1810,81 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3254:RC order be placed and select different sponsor for order.
-//	@Test
-//	public void testRCOrderPlacedAndSelectDifferentSponsorForOrder_3254() throws InterruptedException{
-//		String rcUserEmailID = null;
-//		List<Map<String, Object>> randomRCList =  null;
-//		String accountID = null;
-//		RFO_DB = driver.getDBNameRFO();
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-//		String lastName = "lN";
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		while(true){
-//			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-//			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
-//			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//
-//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
-//			if(isSiteNotFoundPresent){
-//				logger.info("login error for the user "+rcUserEmailID);
-//				driver.get(driver.getURL());
-//			}
-//			else
-//				break;
-//		}	
-//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-//		storeFrontHomePage.selectProductAndProceedToBuy();
-//		storeFrontHomePage.clickOnCheckoutButton();
-//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-//
-//				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-//		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//		logger.info("Account Id of the user is "+consultantAccountID);
-//		// Get Account Number
-//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-//
-//				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
-//		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-//		//storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-//		storeFrontHomePage.enterMainAccountInfo();
-//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-//		//Enter Billing Profile
-//		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
-//			storeFrontHomePage.clickAddNewBillingProfileLink();
-//		}
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnSaveBillingProfile();
-//		storeFrontHomePage.clickOnBillingNextStepBtn();
-//		s_assert.assertTrue(storeFrontHomePage.validateTermsAndConditionsForRC(), "Terms and Conditions & 'this order cannot be cancelled.' is not present on UI");
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		storeFrontHomePage.clickOnWelcomeDropDown();
-//		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-//		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
-//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-//		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-//		driver.get(driver.getCSCockpitURL());		
-//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-//		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-//		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
-//		cscockpitOrderSearchTabPage.clickSearchBtn();
-//		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-//		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-//		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
-//		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
-//		s_assert.assertAll(); 
-//	}
+	//	@Test
+	//	public void testRCOrderPlacedAndSelectDifferentSponsorForOrder_3254() throws InterruptedException{
+	//		String rcUserEmailID = null;
+	//		List<Map<String, Object>> randomRCList =  null;
+	//		String accountID = null;
+	//		RFO_DB = driver.getDBNameRFO();
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+	//		String lastName = "lN";
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		while(true){
+	//			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+	//			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");		
+	//			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
+	//			logger.info("Account Id of the user is "+accountID);
+	//
+	//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+	//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
+	//			if(isSiteNotFoundPresent){
+	//				logger.info("login error for the user "+rcUserEmailID);
+	//				driver.get(driver.getURL());
+	//			}
+	//			else
+	//				break;
+	//		}	
+	//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+	//		storeFrontHomePage.selectProductAndProceedToBuy();
+	//		storeFrontHomePage.clickOnCheckoutButton();
+	//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+	//
+	//				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	//		logger.info("Account Id of the user is "+consultantAccountID);
+	//		// Get Account Number
+	//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+	//
+	//				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
+	//		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+	//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
+	//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+	//		//storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+	//		storeFrontHomePage.enterMainAccountInfo();
+	//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+	//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+	//		//Enter Billing Profile
+	//		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
+	//			storeFrontHomePage.clickAddNewBillingProfileLink();
+	//		}
+	//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+	//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+	//		storeFrontHomePage.selectNewBillingCardExpirationDate();
+	//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+	//		storeFrontHomePage.selectNewBillingCardAddress();
+	//		storeFrontHomePage.clickOnSaveBillingProfile();
+	//		storeFrontHomePage.clickOnBillingNextStepBtn();
+	//		s_assert.assertTrue(storeFrontHomePage.validateTermsAndConditionsForRC(), "Terms and Conditions & 'this order cannot be cancelled.' is not present on UI");
+	//		storeFrontHomePage.clickPlaceOrderBtn();
+	//		storeFrontHomePage.clickOnWelcomeDropDown();
+	//		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+	//		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+	//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+	//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+	//		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+	//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+	//		driver.get(driver.getCSCockpitURL());		
+	//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+	//		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+	//		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+	//		cscockpitOrderSearchTabPage.clickSearchBtn();
+	//		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+	//		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+	//		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
+	//		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
+	//		s_assert.assertAll(); 
+	//	}
 
 	// Hybris Project-3849:Verify Sponsor on Return Orders RFO
 	@Test(enabled=false)//Test needs updation
@@ -2454,78 +2451,78 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3779:Place Adhoc Order as RC with different sponsor
-//	@Test
-//	public void testPlaceAdhocOrderAsRCWithDifferentSponsor_3779() throws InterruptedException{
-//		RFO_DB = driver.getDBNameRFO();
-//		List<Map<String, Object>> randomRCList =  null;
-//		String rcEmailID = null;
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
-//		String lastName = "lN";
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		String pws = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
-//		while(true){
-//			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
-//			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
-//			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID,password);
-//			boolean isLoginError = driver.getCurrentUrl().contains("error");
-//			if(isLoginError){
-//				logger.info("Login error for the user "+rcEmailID);
-//				driver.get(pws);
-//			}
-//			else
-//				break;
-//		}
-//
-//		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-//		storeFrontHomePage.selectProductAndProceedToBuy();
-//		storeFrontHomePage.clickOnCheckoutButton();
-//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-//
-//				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-//		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//		logger.info("Account Id of the user is "+consultantAccountID);
-//		// Get Account Number
-//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
-//
-//				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
-//		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-//		storeFrontHomePage.clickOnNotYourSponsorLink();
-//		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
-//		storeFrontHomePage.enterMainAccountInfo();
-//		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
-//		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-//		//Enter Billing Profile
-//		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
-//			storeFrontHomePage.clickAddNewBillingProfileLink();
-//		}
-//		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontHomePage.selectNewBillingCardExpirationDate();
-//		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontHomePage.selectNewBillingCardAddress();
-//		storeFrontHomePage.clickOnSaveBillingProfile();
-//		storeFrontHomePage.clickOnBillingNextStepBtn();
-//		storeFrontHomePage.clickPlaceOrderBtn();
-//		storeFrontHomePage.clickOnWelcomeDropDown();
-//		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-//		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
-//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-//		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
-//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-//		driver.get(driver.getCSCockpitURL());  
-//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-//		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-//		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
-//		cscockpitOrderSearchTabPage.clickSearchBtn();
-//		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
-//		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
-//		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
-//		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
-//		String originationValue = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
-//		s_assert.assertTrue(pws.contains(originationValue), "Expected origination value is :"+pws+"Actual On UI is: "+originationValue);
-//		s_assert.assertAll(); 
-//	}
+	@Test(enabled=false)//Test needs update
+	public void testPlaceAdhocOrderAsRCWithDifferentSponsor_3779() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
+		List<Map<String, Object>> randomRCList =  null;
+		String rcEmailID = null;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		String pws = storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID,password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcEmailID);
+				driver.get(pws);
+			}
+			else
+				break;
+		}
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		storeFrontHomePage.selectProductAndProceedToBuy();
+		storeFrontHomePage.clickOnCheckoutButton();
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+
+				(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+		String consultantAccountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		logger.info("Account Id of the user is "+consultantAccountID);
+		// Get Account Number
+		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
+
+				(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,consultantAccountID),RFO_DB);
+		String sponsor = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontHomePage.clickOnNotYourSponsorLink();
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsor);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.enterMainAccountInfo();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		if(storeFrontHomePage.verifyAddNewBillingProfileLinkIsPresent()==true){
+			storeFrontHomePage.clickAddNewBillingProfileLink();
+		}
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		String orderNumber = storeFrontOrdersPage.getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory();
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		cscockpitOrderSearchTabPage = new CSCockpitOrderSearchTabPage(driver);
+		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		driver.get(driver.getCSCockpitURL());  
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
+		cscockpitOrderSearchTabPage.enterOrderNumberInOrderSearchTab(orderNumber);
+		cscockpitOrderSearchTabPage.clickSearchBtn();
+		String randomOrderSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomOrdersFromOrderResultSearchFirstPageInOrderSearchTab());
+		cscockpitOrderSearchTabPage.clickOrderNumberInOrderSearchResultsInOrderSearchTab(randomOrderSequenceNumber);
+		String sponsorIdFromCscockpit = cscockpitOrderTabPage.getConsultantReceivingCommissionsName();
+		s_assert.assertTrue(sponsorIdFromCscockpit.split("\\(")[1].contains(sponsor), "Expected sponsor ID is "+sponsor+"Actual on UI is "+sponsorIdFromCscockpit.split("\\(")[1]);
+		String originationValue = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+		s_assert.assertTrue(pws.contains(originationValue), "Expected origination value is :"+pws+"Actual On UI is: "+originationValue);
+		s_assert.assertAll(); 
+	}
 }

@@ -2253,7 +2253,7 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

@@ -1746,6 +1746,9 @@ public class DBQueries_RFO {
 	     "AND a.AutoshipTypeID = 2 "+ /*Consultant Auto-ship Template*/ 
 	     "AND a.Active = 1 )) order by newID()";
 
+	public static String GET_ACCOUNT_TYPE_ID_FROM_ACCOUNT_NUMBER = "select AccountTypeID from  RFO_Accounts.AccountBase where AccountNumber='%s'";
+	public static String GET_ACTIVE_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS = "select  * from RFO_Accounts.AccountBase join RFO_Accounts.AccountContacts ON RFO_Accounts.AccountContacts.AccountId = RFO_Accounts.AccountBase.AccountID join RFO_Accounts.AccountEmails ON RFO_Accounts.AccountEmails.AccountContactId = RFO_Accounts.AccountContacts.AccountContactId join RFO_Accounts.EmailAddresses ON RFO_Accounts.EmailAddresses.EmailAddressID = RFO_Accounts.AccountEmails.EmailAddressId where RFO_Accounts.EmailAddresses.EmailAddress like '%s' and RFO_Accounts.AccountBase.AccountStatusID='1'";
+
 	public static String GET_CONSULTANT_EMAIL_ID_FROM_ACCOUNT_ID = "select Top 1 EmailAddress from RFO_Accounts.EmailAddresses where EmailAddressId IN (select EmailAddressId from RFO_Accounts.AccountEmails where AccountContactId IN (select AccountContactId from RFO_Accounts.AccountContacts where AccountId = '%s'))";
 
 	public static String GET_ACCOUNT_CONTACT_ID_RFO = "select top 1 * from RFO_Accounts.AccountContacts where AccountId = '%s'";

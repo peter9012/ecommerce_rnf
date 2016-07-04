@@ -315,10 +315,10 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		String PWS = storeFrontHomePage.getBizPWS(country, env);
 		PWS = storeFrontHomePage.convertComSiteToBizSite(PWS);
-		storeFrontHomePage.openPWS(PWS);
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountId = null;
+		storeFrontHomePage.openPWS(PWS);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
 
@@ -330,7 +330,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+				storeFrontHomePage.openPWS(PWS);
 			}
 			else
 				break;
@@ -439,17 +440,17 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-3840:Verify Top Nav as Logged in RC User(.biz)
 	@Test 
-	public void testVerifyTopNavLoggedInRCUserbizSite_3840() throws InterruptedException	{
+	public void testVerifyTopNavLoggedInRCUserbizSite_3840() throws InterruptedException {
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		RFO_DB = driver.getDBNameRFO();
 		String PWS = storeFrontHomePage.getBizPWS(country, env);
 		PWS = storeFrontHomePage.convertComSiteToBizSite(PWS);
-		storeFrontHomePage.openPWS(PWS);
 		List<Map<String, Object>> randomRCUserList =  null;
 		String rcUserEmailID = null;
 		String accountIdForRCUser = null;
+		storeFrontHomePage.openPWS(PWS);
 		while(true){
 			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement
 					(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
@@ -461,7 +462,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+				storeFrontHomePage.openPWS(PWS);
 			}
 			else
 				break;

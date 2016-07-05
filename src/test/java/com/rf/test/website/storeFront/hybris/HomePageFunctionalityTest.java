@@ -2744,14 +2744,14 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
 			List<Map<String, Object>> randomConsultantList =  null;
-			String consultantEmailID = null;
+			String consultantPWS = null;
 			country = driver.getCountry();
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com","us",countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "URL"); 
-			storeFrontHomePage.openConsultantPWS(consultantEmailID);
+			consultantPWS = (String) getValueFromQueryResult(randomConsultantList, "URL"); 
+			storeFrontHomePage.openConsultantPWS(consultantPWS);
 			storeFrontHomePage.clickOnSponsorName();
 			s_assert.assertFalse(storeFrontHomePage.isPersonalizeMyProfileLinkNotPresent(),"personalize my profile link present");
 			s_assert.assertAll();

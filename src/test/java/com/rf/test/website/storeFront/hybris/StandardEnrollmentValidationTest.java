@@ -2154,7 +2154,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test(enabled=false)//Test Needs update
+	@Test //(enabled=false)//Test Needs update
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;

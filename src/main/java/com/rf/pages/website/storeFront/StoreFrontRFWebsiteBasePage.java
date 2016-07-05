@@ -1851,7 +1851,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("quantity1"));
 		driver.type(By.id("quantity1"),qty);
 		logger.info("quantity added is "+qty);
-		driver.click(By.xpath("//a[@class='updateLink']"));
+		driver.click(By.xpath("//form[@id='updateCartForm1']/a"));
 		//driver.pauseExecutionFor(2000);
 		logger.info("Update button clicked after adding quantity");
 		driver.waitForPageLoad();

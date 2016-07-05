@@ -622,7 +622,7 @@ public class AddShippingTest extends RFWebsiteBaseTest{
 	}
 
 	//select any other shipping info by selecting radio button 'ship to this address' via Next CRP
-	@Test
+	@Test(enabled=false)
 	public void testSelectOtherShippingInfoBySelectingRadioButtonViaNextCrp() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 

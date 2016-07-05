@@ -482,7 +482,7 @@ public class EnrollmentTest extends RFWebsiteBaseTest{
 
 	// Test Case Hybris Project-1308 :: Version : 1 :: 1. PC EnrollmentTest  
 	@Test(enabled=true)
-	public void testPCEnrollment() throws InterruptedException{
+	public void testPCEnrollment_1308() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);		
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		String lastName = "lN";

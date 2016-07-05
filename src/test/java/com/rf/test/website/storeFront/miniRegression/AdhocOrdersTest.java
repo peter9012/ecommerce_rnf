@@ -173,7 +173,7 @@ public class AdhocOrdersTest extends RFWebsiteBaseTest{
 
 	// Hybris Phase 2-1878 :: Version : 1 :: Create Adhoc Order For The Consultant Customer
 	@Test
-	public void testCreateAdhocOrderConsultant() throws InterruptedException{
+	public void testCreateAdhocOrderConsultant_1878() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;

@@ -3800,7 +3800,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public String convertUSBizPWSToCA(String PWS){
-		return PWS.replaceAll("us","ca");
+		return PWS.replaceAll("/us","/ca");
 	}
 
 	public String getOrderNumberAfterPlacingOrder(){
@@ -3942,7 +3942,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public String convertCABizPWSToUS(String PWS){
-		return PWS.replaceAll("ca","us");
+		return PWS.replaceAll("/ca","/us");
 	}
 
 	public String getpreferredCustomerStoreFrontInfo(String label){

@@ -1121,7 +1121,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
-		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))){
+		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");			
 		}else{
@@ -1151,7 +1151,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		driver.pauseExecutionFor(2000);
-		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))){
+		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
 		}else{

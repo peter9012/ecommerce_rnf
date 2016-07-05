@@ -368,7 +368,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-4793:Ad-hoc Scenarios- Checking the consultant > consultant > PC for US User
 	//Hybris Project-4792:Ad-hoc Scenarios- Checking the consultant > consultant > PC for Canada User
-	@Test(enabled=false)//needs review
+	@Test
 	public void testRegisterAsConsultantWithDifferentConsultantAsSponser_4792_4793() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
@@ -283,16 +284,16 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 	//Hybris Phase 2-4327:View new billing profile on 'Billing Profile' page	
 	@Test(enabled=false)//Covered in other billig tests
 	public void testViewNewBillingProfile_HP2_4327() throws InterruptedException, SQLException{
-//		int totalBillingAddressesFromDB = 0;
+		//		int totalBillingAddressesFromDB = 0;
 		List<Map<String, Object>> billingAddressCountList =  null;
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
 		billingAddressCountList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_BILLING_ADDRESS_COUNT_QUERY,consultantEmailID),RFO_DB);
-//		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
-//		logger.info("Total Billing Profiles from RFO DB are "+totalBillingAddressesFromDB);
-//		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is "+storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed()+" while the total billing addresses in DB is "+totalBillingAddressesFromDB);		
+		//		totalBillingAddressesFromDB = (Integer) getValueFromQueryResult(billingAddressCountList, "count");
+		//		logger.info("Total Billing Profiles from RFO DB are "+totalBillingAddressesFromDB);
+		//		s_assert.assertEquals(totalBillingAddressesFromDB,storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed(),"Billing Addresses count on UI is "+storeFrontBillingInfoPage.getTotalBillingAddressesDisplayed()+" while the total billing addresses in DB is "+totalBillingAddressesFromDB);		
 		s_assert.assertAll();
 	}
 
@@ -693,13 +694,9 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
-
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 		s_assert.assertAll();
 	}	
 }

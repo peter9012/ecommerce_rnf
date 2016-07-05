@@ -1619,68 +1619,56 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4063:Access Canadian PWS site of USConsultant as RCUser
-	@Test(enabled=false)
-	public void testAccessCanadianPWSiteOfUSConsultantAsUSRCUser_4063() throws InterruptedException {
+	@Test
+	public void testAccessCanadianPWSSiteOfUSConsultantAsUSRCUser_4063() {
+		String bizPWS = null;
 		RFO_DB = driver.getDBNameRFO(); 
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
+
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		if(driver.getCountry().toLowerCase().trim().equalsIgnoreCase("us")){
-			String bizPWSUS=storeFrontHomePage.getBizPWS(country, env);
+		bizPWS=storeFrontHomePage.getBizPWS(country, env);
+
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
 			//Navigate to canadian PWS
-			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWSUS);
-			driver.get(bizPWSCA);
-			//Access Canadian PWS site of US Consultant as Canadian RC user
-			List<Map<String, Object>> randomRCList =  null;
-			String rcUserEmailID =null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"40"),RFO_DB);
-				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
-
-				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+rcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-			logger.info("login is successful");
-			//verify RC user should login and redirect to same PWS.
-			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWSCA.split(":")[1].toLowerCase())," RC user is not redirected to US Site of same PWS");
-		}else{
-			String bizPWSCA=storeFrontHomePage.getBizPWS(country, env);
+			bizPWS=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+		}
+		else{
 			//Navigate to US PWS
-			String bizPWSUS=storeFrontHomePage.convertCABizPWSToUS(bizPWSCA);
-			driver.get(bizPWSUS);
-			//Access US PWS site of US Consultant as US RC user
-			List<Map<String, Object>> randomRCList =  null;
-			String rcUserEmailID =null;
-			String accountId = null;
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,"236"),RFO_DB);
-				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-				accountId = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
-				logger.info("Account Id of the user is "+accountId);
+			bizPWS=storeFrontHomePage.convertCABizPWSToUS(bizPWS);
+		}
+		driver.get(bizPWS);
 
-				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+rcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-			logger.info("login is successful");
-			//verify RC user should login and redirect to same PWS.
-			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWSUS.split(":")[1].toLowerCase()),"RC user is not redirected to US Site of same PWS");
+		//Access PWS site as a RC user
+		List<Map<String, Object>> randomRCUserList =  null;
+		String rcUserEmailID = null;
+		String accountId = null;
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountId = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountId);
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
+				driver.get(driver.getURL());
+
+			}
+			else
+				break;
+		} 
+
+		logger.info("login is successful");
+		//verify US PC user should login and redirect to US .COM PWS of its sponsor.
+		logger.info("CurrentURL is"+driver.getCurrentUrl());
+		if(driver.getCountry().trim().equalsIgnoreCase("us")){
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/ca", "/us"))&& (driver.getCurrentUrl().split("\\:")[1].toLowerCase().contains("/us"))," US RC user is not redirected to its Site of same PWS of US");
+		}
+		else
+		{
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/us", "/ca"))&& (driver.getCurrentUrl().split("\\:")[1].toLowerCase().contains("/ca"))," CA RC user is not redirected to its Site of same PWS of CA");
+
 		}
 		s_assert.assertAll();
 	}

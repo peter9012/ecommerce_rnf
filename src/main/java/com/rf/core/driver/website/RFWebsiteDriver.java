@@ -22,11 +22,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+//import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -65,21 +66,30 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver();
 		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
-			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new ChromeDriver(capabilities);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
-			driver = new HtmlUnitDriver(true);
+			//driver = new HtmlUnitDriver(true);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
-			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", "src//test//resources//IEDriverServer.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new InternetExplorerDriver(capabilities);
+		}
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("safari"))
+		{	
+			System.setProperty("webdriver.safari.noinstall", "true");
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			// for clearing cache
+			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+			driver = new SafariDriver(capabilities);
+			
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();

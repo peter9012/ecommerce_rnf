@@ -48,7 +48,7 @@ public class RFBaseTest{
 	@Parameters({"envproperties"})
 	public void beforeSuite(@Optional String envproperties) {
 		System.out.println("Started execution with " + " " + envproperties);
-		String pathOfAtuReports = System.getProperty("user.dir")+"\\ATU Reports";
+		String pathOfAtuReports = System.getProperty("user.dir")+"//ATU Reports";
 		logger.debug("Started execution with " + " " + envproperties);
 		if (!StringUtils.isEmpty(envproperties)) {
 			propertyFile.loadProps(envproperties);
@@ -71,25 +71,25 @@ public class RFBaseTest{
 		// clear screenshots folder
 		try {
 			File fDir = new File(System.getProperty("user.dir")
-					+ "\\output\\ScreenShots");
+					+ "//output//ScreenShots");
 			if (!fDir.exists()) {
 				fDir.mkdirs();
 			}
 			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
-					+ "\\output\\ScreenShots"));
+					+ "//output//ScreenShots"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		File fDir2 = new File(System.getProperty("user.dir")
-				+ "\\test-output");
+				+ "//test-output");
 		if (!fDir2.exists()) {
 			fDir2.mkdirs();
 		}
 		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
-		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");
+		propertyFile.setProperty("atu.proj.header.logo","src//test//resources//staticdata//RodanAndFields.png");
 	}
 
 	@AfterSuite(alwaysRun=true)
@@ -100,14 +100,14 @@ public class RFBaseTest{
 		String timeStamp = String.valueOf(dateFormat.format(date));
 
 		// set the location of the source directories of logs,output and test-output folder
-		String srcLogsDirectory = System.getProperty("user.dir")+"\\logs";
-		String srcOutputDirectory = System.getProperty("user.dir")+"\\output";
-		String srcTestOutputDirectory = System.getProperty("user.dir")+"\\test-output";
+		String srcLogsDirectory = System.getProperty("user.dir")+"//logs";
+		String srcOutputDirectory = System.getProperty("user.dir")+"//output";
+		String srcTestOutputDirectory = System.getProperty("user.dir")+"//test-output";
 
 		// set the location of the destination directories of logs,output and test-output folder under buildHistory folder
-		String destinationLogsDirectory = System.getProperty("user.dir")+"\\buildHistory\\logs\\logs-"+timeStamp;
-		String destinationOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\output\\output-"+timeStamp;
-		String destinationTestOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\test-output\\test-output-"+timeStamp;
+		String destinationLogsDirectory = System.getProperty("user.dir")+"//buildHistory//logs//logs-"+timeStamp;
+		String destinationOutputDirectory = System.getProperty("user.dir")+"//buildHistory//output//output-"+timeStamp;
+		String destinationTestOutputDirectory = System.getProperty("user.dir")+"//buildHistory//test-output//test-output-"+timeStamp;
 
 		// create new folders for logs,output and test-output directories
 		try {
@@ -137,7 +137,7 @@ public class RFBaseTest{
 	@DataProvider(name = "rfTestData")
 	public Object[][] rfDataProvider(Method testMethod) throws Exception {
 		String sheetName = testMethod.getName();
-		String filePath = "src/test/resources/"
+		String filePath = "src//test//resources//"
 				+ testMethod
 				.getDeclaringClass()
 				.getName()

@@ -2,6 +2,7 @@ package com.rf.test.website.storeFront.hybris;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -2154,7 +2155,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test //(enabled=false)//Test Needs update
+	@Test//(enabled=true)//Test Needs update
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;
@@ -2192,7 +2193,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnEnrollInCRP();
 		storeFrontAccountInfoPage.applyPriceFilterLowToHigh();
 		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyThresholdErrorMsgPresent(),"Message for threshold present on UI");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyThresholdErrorMsgPresent(),"Message for threshold not present on UI");
 		storeFrontAccountInfoPage.clickOnContinueShoppingLink();
 		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
 		storeFrontAccountInfoPage.updateQuantityOfProductToTheSecondProduct("3");

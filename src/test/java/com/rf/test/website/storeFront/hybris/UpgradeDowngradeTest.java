@@ -1580,11 +1580,12 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	//Hybris Project-3958:CORP: Active PC email id during consultant enrollment under same sponsor.
 	@Test
 	public void testActivePCEmailIdDuringConsultantEnrollmentUnderSameSponsor_3958() throws InterruptedException{
+		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
-
+		String reqCountry = null;
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_PERSONAL;   
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -1592,12 +1593,14 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			state = TestConstants.PROVINCE_CA;
+			reqCountry = "Canada";
 		}else{
 			kitName = TestConstants.KIT_NAME_PERSONAL;
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
 			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			reqCountry = "United States";
 		}
 
 		String firstName=TestConstants.FIRST_NAME+randomNum;
@@ -1622,7 +1625,13 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC();
+		// Get  sponser with PWS for PC User from database
+		List<Map<String, Object>> sponserList  = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
+		String pcSponserAccountID = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,pcSponserAccountID),RFO_DB);
+		String sponsorIdOfPC = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorIdOfPC); 
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPC();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -1641,7 +1650,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		logout();
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		storeFrontHomePage.searchCID(sponsorIdOfPC);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(TestConstants.KIT_NAME_BIG_BUSINESS, TestConstants.REGIMEN_NAME_REVERSE);  
 		storeFrontHomePage.chooseEnrollmentOption(TestConstants.EXPRESS_ENROLLMENT);
@@ -1677,14 +1686,28 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-
-		storeFrontHomePage.clickOnWelcomeDropDown();
-		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-
-		// Verify Order is present
-		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
+		//Verify the enrolled consultant in RFO database.
+		List<Map<String, Object>> enrolledConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,pcEmailId),RFO_DB);
+		String accountNumberOfUpgradedPC = String.valueOf(getValueFromQueryResult(enrolledConsultantList, "AccountNumber"));
+		List<Map<String, Object>> accountTypeList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_TYPE_ID_FROM_ACCOUNT_NUMBER,accountNumberOfUpgradedPC),RFO_DB);
+		String accountTypeIDOfUpgradedPC = String.valueOf(getValueFromQueryResult(accountTypeList, "AccountTypeID"));
+		s_assert.assertTrue(accountTypeIDOfUpgradedPC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
+		logout();
+		//Verify enrolled consultant in cscockpit.
+		driver.get(driver.getCSCockpitURL());
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
+		cscockpitCustomerSearchTabPage.clickMenuButton();
+		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
-
 	}
 
 	//Hybris Project-4317:Soft-Terminated PC Customer enrolls to be a Consultant with his old email

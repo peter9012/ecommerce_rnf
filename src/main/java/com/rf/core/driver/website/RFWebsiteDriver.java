@@ -1,6 +1,7 @@
 package com.rf.core.driver.website;
 
 import java.io.File;
+import org.openqa.selenium.Dimension;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
+		System.out.println(driver.manage().window().getSize());
+		Dimension d = new Dimension(1936, 1056);
+		driver.manage().window().setSize(d);
+		System.out.println("Dimension reset to larger");
+		System.out.println(driver.manage().window().getSize());
 		logger.info("Window is maximized");
 		// for clearing cookies
 		driver.manage().deleteAllCookies();

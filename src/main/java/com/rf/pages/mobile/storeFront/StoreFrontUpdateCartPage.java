@@ -52,7 +52,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFMobileBasePage{
 	public void enterNewBillingCardNumber(String cardNumber){
 		//		driver.waitForPageLoad();
 		driver.quickWaitForElementPresent(By.id("card-nr"));		
-		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		JavascriptExecutor js = ((JavascriptExecutor)RFMobileDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
 		driver.clear(ADD_NEW_BILLING_CARD_NUMBER_LOC);

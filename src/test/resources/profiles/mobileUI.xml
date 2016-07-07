@@ -8,7 +8,7 @@
 	</listeners>
 	<test name="SmokeTest">
 		<classes>
-			<class name="com.rf.test.mobile.storeFront.hybris.expressEnrollment.RFExpressBusinessKitTest">
+			<class name="com.rf.test.mobile.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest">
 				<methods>
 					<include name="testExpressEnrollmentRFExpressKitReverseRegimen_2202" />
 				</methods>

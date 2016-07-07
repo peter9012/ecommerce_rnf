@@ -99,7 +99,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 		return homeTown;
 	}
 
-	public String  getConsultantSinceTextPresentAfterClickonPersinalizeLink(){
+	public String getConsultantSinceTextPresentAfterClickonPersinalizeLink(){
 		return driver.findElement(By.xpath("//span[contains(text(),'Consultant since')]")).getText();
 	}
 
@@ -141,13 +141,16 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 			logger.info("Meet Your Consultant link is not present");
 			e.printStackTrace();
 		}
+		driver.waitForPageLoad();
 	}
 
 	public boolean validateMeetYourConsultantPage(){
-		driver.pauseExecutionFor(5000);
-		return driver.getCurrentUrl().toLowerCase().contains("meetyourconsultant");
+		driver.pauseExecutionFor(3000);
+		String meetYourConsultantViewURL = "meetYourConsultant/view/meetYourConsultant"; 
+		String meetYourConsultantURL = "meetYourConsultant/meetYourConsultant/MeetYourConsultantPage";
+		return driver.getCurrentUrl().toLowerCase().contains(meetYourConsultantViewURL.toLowerCase())|| driver.getCurrentUrl().toLowerCase().contains(meetYourConsultantURL.toLowerCase());
 	}
-
+	
 	public boolean validateCRPCartDisplayed(){
 		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
 		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));

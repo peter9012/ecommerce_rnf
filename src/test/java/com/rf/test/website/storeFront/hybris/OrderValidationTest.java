@@ -263,7 +263,6 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		//assert for order date with RFO
 		orderDateDB = String.valueOf (getValueFromQueryResult(getOrderDetailsList, "CompletionDate"));
 		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
-		logger.info("Order Scheduled Date from RFO DB is "+orderDateDB);
 		s_assert.assertTrue(storeFrontOrdersPage.verifyScheduleDate(orderDateDB),"Scheduled date on UI is different from RFO DB");
 
 		s_assert.assertAll();  

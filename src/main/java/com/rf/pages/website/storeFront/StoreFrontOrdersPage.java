@@ -75,9 +75,13 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		}
 		else{
 			grandTotal = "$"+grandTotal;
-		}		
-		logger.info("Order Grand total from UI is "+driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
-		return grandTotal.contains(driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
+		}
+		String grandTotalFromUI = driver.findElement(ORDER_GRAND_TOTAL_LOC).getText();
+		if(grandTotalFromUI.contains(",")){
+			grandTotalFromUI = grandTotalFromUI.replaceAll(",","");
+		}
+		logger.info("Order Grand total from UI is "+grandTotalFromUI);
+		return grandTotal.contains(grandTotalFromUI);
 	}
 
 	public boolean verifyOrderStatus(String status){

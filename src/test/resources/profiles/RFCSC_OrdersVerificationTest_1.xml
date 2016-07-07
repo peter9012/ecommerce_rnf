@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CSC_OrdersVerificationSuite1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="CSC_OrdersVerificationTest">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.OrdersVerificationTest">
+				<methods>
+					<include name="testVerifyAdhocConsultantOrder_1934"></include>
+					<include name="testToVerifyAdhocPCOrder_1941"></include>
+					<include name="testToVerifyAdhocRetailOrder_1942"></include>
+					<include name="testVerifyUserPermissionForTransactionStatus_1780"></include>
+					<include name="testVerifyTheAbilityToMarkTestOrderFunctionalityForAllUsers_1924"></include>
+					<include name="testToVerifyTheAbilityToMarkDoNotShipOrderFunctionality_1925"></include>
+					<include name="testVerifyTheAbilityToMarkTestOrderAndDoNotShipFunctionality_1926"></include>
+					<include name="testVerifyTheDisplayOrderOrigination_1948"></include>
+					<include name="testToVerifyPlaceOrderFromOrderDetailPage_1951"></include>
+					<include name="testVerifyUserPermissionsForQVandCVUpdate_1818"></include>
+					<include name="testVerifyUserPermissionsForOrderStatus_1779"></include>
+					<include name="testToVerifyForCreatedNewUserTheOrderStatusShouldBeSubmitted_1937"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

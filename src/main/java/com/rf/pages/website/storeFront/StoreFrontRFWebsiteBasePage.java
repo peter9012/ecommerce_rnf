@@ -1699,8 +1699,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateEditYourInformationLink(){
-		driver.quickWaitForElementPresent(WELCOME_USER_DD_LOC);
-		return driver.isElementPresent(WELCOME_USER_DD_LOC);
+		driver.quickWaitForElementPresent(By.xpath("//a[text()='Personalize my Profile']"));
+		return driver.isElementPresent(By.xpath("//a[text()='Personalize my Profile']"));
 	}
 
 	public boolean validateAccessSolutionTool(){

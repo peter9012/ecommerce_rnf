@@ -27,7 +27,6 @@ import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-
 public class OrdersVerificationTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(OrdersVerificationTest.class.getName());
@@ -956,8 +955,6 @@ public class OrdersVerificationTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-
-
 
 	//Hybris Project-1937:To verify for created new user the order status should be submitted
 	@Test

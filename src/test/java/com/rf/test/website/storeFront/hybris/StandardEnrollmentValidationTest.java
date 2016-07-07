@@ -576,7 +576,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		String bizPWS = null;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -611,7 +611,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
@@ -626,7 +626,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//login with .biz pws of consultant
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
@@ -639,18 +639,16 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.cancelPulseSubscription();
 		s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse has not been cancelled for consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//Retry to login on .com pws of consultant after cancelled Paid pulse and check login successful
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//Retry to login in to .biz pws of consultant after cancelled Paid pulse and check login is successful
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .biz pws of consultant");
-		logout();
-
 		//enroll a consultant with express enrollment
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -662,7 +660,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		if(country.equalsIgnoreCase("CA")){
 
-			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -695,7 +693,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for policies and procedures is not visible");
@@ -710,7 +708,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//login with .biz pws of consultant
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
@@ -1729,7 +1727,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickNextButton();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.applyPriceFilterHighToLow();

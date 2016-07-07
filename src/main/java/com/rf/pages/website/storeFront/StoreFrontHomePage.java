@@ -1230,6 +1230,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnPersonalizeMyProfileLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
 		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public String convertBizToComPWS(String pws){
@@ -2640,8 +2641,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickCancelBtnOnEditConsultantInfoPage(){
-		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//a[@class='btn btn-secondary editmode-cancel']"));
-		driver.click(By.xpath("//div[contains(@class,'top-save')]//a[@class='btn btn-secondary editmode-cancel']"));
+		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//a[text()='CANCEL']"));
+		driver.click(By.xpath("//div[contains(@class,'top-save')]//a[text()='CANCEL']"));
 		driver.pauseExecutionFor(1000);
 	}
 
@@ -4041,6 +4042,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//span[@id='deliveryCost']"));
 		String value= driver.findElement(By.xpath("//span[@id='deliveryCost']")).getText();
 		return !(value==null);
+	}
+
+	public String getNameFromContactBox(){
+		String fullname =  driver.findElement(By.xpath("//div[@class='content-header-filled txtConsultantName']")).getText();
+		return fullname;
 	}
 
 }

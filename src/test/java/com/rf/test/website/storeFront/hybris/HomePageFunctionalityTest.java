@@ -158,7 +158,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3836:Verify 3 Content Block SECTION of Meet Your Consultant Page
-	@Test 
+	@Test(enabled=false)//test no longer valid in new UI
 	public void testContentBlockSectionOfMeetYourConsultantPage_3836(){
 		RFO_DB = driver.getDBNameRFO();		
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -667,7 +667,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
 		//validate 'edit your information' link shouldn't be present as user doesn't logged in..
 		s_assert.assertFalse(storeFrontConsultantPage.validateEditYourInformationLink(), "edit your Information link is present in UI");
-		s_assert.assertFalse(storeFrontHomePage.verifyConsultantSinceOnMeetYourConsultantPage(), "Consultant since is not present");
 		s_assert.assertAll();
 	}
 
@@ -690,8 +689,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				continue;
 			}
 			else
 				break;
@@ -706,7 +704,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//click on cancel button on 'editConsultantInfo' page
 		storeFrontHomePage.clickCancelBtnOnEditConsultantInfoPage();
 		//validate we are navigated to "Meet your Consultant" page
-		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed after clicking cancel button");
 		s_assert.assertAll();
 	}
 
@@ -730,7 +728,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				continue;
 			}
 			else
 				break;
@@ -940,7 +938,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4028:Access Solution tool from .COM Site Category pages Left Menu
-	@Test 
+	@Test(enabled=false)//Test No Longer valid as there is no such Category pages Left Menu on UI
 	public void testAccessSolutionToolcomSiteCategoryPagesLeftMenu_4028()	 {
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
@@ -1605,16 +1603,14 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL());
+				driver.get(PWS);
 			}
 			else
 				break;
 		}
 		logger.info("login is successful");
-		//click learn more link
-		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
-		//validate consultant info on top right corner..
-		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner On Solution tool page");
+		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
+		s_assert.assertTrue(storeFrontHomePage.isAccessSolutionToolPresent(),"Solution tool is not giving the expected results");
 		s_assert.assertAll();
 	}
 
@@ -2851,7 +2847,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			String pcUserEmailID = null;
 			String accountId = null;
 			while(true){
-				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,"236"),RFO_DB);
 				pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
 				accountId = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
 				logger.info("Account Id of the user is "+accountId);
@@ -2869,7 +2865,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(driver.getCurrentUrl().contains("us") && driver.getCurrentUrl().contains(".com") && !driver.getCurrentUrl().equals(bizPWS) && !driver.getCurrentUrl().equals(bizPWSCA),"US PC user is not redirected to US .COM PWS of its sponsor.");
 			s_assert.assertAll();
 		}else{
-			logger.info("Not Executed Test is for 'US' Environment");
+			logger.info("Not Executed, as Test is for 'US' Environment");
 		}
 	}
 
@@ -2961,29 +2957,83 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-4053:Check the Meet your consultant Banner on the home page of PWS(Both .Biz and .com)
 	@Test
-	public void testCheckTheMeetYourConsultantBannerOnTheHomePageOfPWS_4053() throws InterruptedException{
-		String countryID = null;
-		String country = null;
-		country = driver.getCountry();
+	public void testCheckTheMeetYourConsultantBannerOnTheHomePageOfPWS_4053_() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-
-		List<Map<String, Object>> randomConsultantList2 =  null;
-		String consultantPWS = null;
-		if(country.equalsIgnoreCase("us")){
-			countryID ="236";				
-		}else{
-			countryID ="40";			
-		}		
+		country = driver.getCountry();
+		env = driver.getEnvironment(); 
+		String comPWS = null;
+		String firstname = null;
+		String lastname = null;
+		String fullname = null;
+		String PWS = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryID), RFO_DB);
-		consultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL");
-		driver.get(consultantPWS);
+		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
+
+		String consultantEmailID = null;
+		while(true){
+			List<Map<String, Object>> sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+			consultantEmailID = String.valueOf(getValueFromQueryResult(sponserList, "Username"));
+			PWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
+			comPWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
+			storeFrontHomePage.openPWS(comPWS);
+
+			//Login with same PWS consultant
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		firstname = storeFrontAccountInfoPage.getFirstNameFromAccountInfo();
+		lastname = storeFrontAccountInfoPage.getLastNameFromAccountInfo();
+		fullname = firstname+" "+lastname;
+
+
 		storeFrontHomePage.clickOnUserName();
-		s_assert.assertTrue(storeFrontHomePage.verifyContactBoxIsPresent(),"contact box is not present");
-		s_assert.assertTrue(storeFrontHomePage.isPwsOwnerNamePresent(),"consultant name is not present");
-		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(),"emailId is not present in contact box");
+
+		String fullnameoncontactbox = storeFrontHomePage.getNameFromContactBox();
+		s_assert.assertTrue(fullname.contentEquals(fullnameoncontactbox),"User Name is not matching from Account Info Page and Contact Box");
+		logout();
+
+		//Login to BIZ Site of the same PWS Consultant  
+		while(true){
+
+			driver.get(PWS);
+			storeFrontHomePage.convertComSiteToBizSite(PWS);
+			storeFrontHomePage.openPWS(comPWS);
+
+			//Login with same PWS consultant
+			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		firstname = storeFrontAccountInfoPage.getFirstNameFromAccountInfo();  
+		lastname = storeFrontAccountInfoPage.getLastNameFromAccountInfo();  
+		fullname = firstname+" "+lastname;
+		storeFrontHomePage.clickOnUserName();
+		String fullnameoncontactbox2 = storeFrontHomePage.getNameFromContactBox();
+		s_assert.assertTrue(fullname.contentEquals(fullnameoncontactbox2),"User Name is not matching from Account Info Page and Contact Box");
+
 		s_assert.assertAll();
-	}
+	}  
+
 
 	// Hybris Project-4061:Login to US Con's PWS(.BIZ, .COM) as Another US Consultant W/O Pulse
 	@Test
@@ -3013,7 +3063,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4024:Access Solution tool from .BIZ Site Home Page Content Block
-	@Test
+	@Test(enabled=false)//Test no longer valid as solution tool doesn't come on .biz site
 	public void testAccessSolutionToolFromBizSiteHomePageContentBlock_4024() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -3021,6 +3071,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		randomConsultantList =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId), RFO_DB);
 		consultantPWS = (String) getValueFromQueryResult(randomConsultantList, "URL");
+		storeFrontHomePage.convertComSiteToBizSite(consultantPWS);
 		driver.get(consultantPWS);
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
 		s_assert.assertTrue(storeFrontHomePage.isAccessSolutionToolPresent(),"Solution tool is not giving the expected results");

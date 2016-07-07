@@ -1108,6 +1108,7 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		String pws = driver.getCurrentUrl();
+		logger.info("PWS after enrollment is:"+pws);
 		logout();
 		storeFrontHomePage.openPWS(pws);
 		//storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
@@ -1129,11 +1130,11 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		String pwsAfterOrderPlaced = driver.getCurrentUrl();
-		System.out.println("After "+pwsAfterOrderPlaced);
+		System.out.println("After order placed is:"+pwsAfterOrderPlaced);
+		logger.info("After "+pwsAfterOrderPlaced);
 		s_assert.assertTrue(storeFrontHomePage.verifyUrlAfterplacedAnAdhocOrder(pws, pwsAfterOrderPlaced), "pws before and are not equal");
-		s_assert.assertAll(); 
+		s_assert.assertAll();
 	}
-
 
 	// Hybris Project-3766:RC2PC User - Place Adhoc Order from Different PWS site check Sposnor of Order
 	@Test 
@@ -1225,8 +1226,7 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isWelcomePCPerksMessageDisplayed(), "welcome PC perks message should be displayed");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		String pws = driver.getCurrentUrl();
-		System.out.println("before  "+pws);
-
+		logger.info("PWS after enrollment is:"+pws);
 		logout();
 		storeFrontHomePage.openPWSSite(driver.getCountry(), driver.getEnvironment());
 		storeFrontHomePage.loginAsPCUser(emailAddress, password);
@@ -1248,8 +1248,9 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		String pwsAfterOrderPlaced = driver.getCurrentUrl();
 		System.out.println("After "+pwsAfterOrderPlaced);
+		logger.info("PWS after order placed is:"+pwsAfterOrderPlaced);
 		s_assert.assertTrue(storeFrontHomePage.verifyUrlAfterplacedAnAdhocOrder(pws, pwsAfterOrderPlaced), "pws before and are not equal");
-		s_assert.assertAll(); 
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-3768:Update PCPerk Template from Different PWS site(Other Than Sponsor's PWS)

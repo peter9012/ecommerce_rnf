@@ -3122,7 +3122,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-3831:Navigate to Meet your consultant screens from various other screens on the website
 	@Test
-	public void testNavigateToMeetYourConsultantScreensFromVariousOtherScreensOnTheWebsite() throws InterruptedException{
+	public void testNavigateToMeetYourConsultantScreensFromVariousOtherScreensOnTheWebsite_3831() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.openComPWSSite(driver.getCountry(), driver.getEnvironment());

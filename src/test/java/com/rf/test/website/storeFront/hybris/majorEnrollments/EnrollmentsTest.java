@@ -227,8 +227,8 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
-	@Test(priority=5)
+	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor(Standard)
+	@Test
 	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -263,10 +263,9 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-5137:Global Sponsorship : Cross Country Sponsor
-	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
+	//Hybris Project-5137:Global Sponsorship : Cross Country Sponsor(Express)
 	@Test(priority=6)
-	public void testGlobalSponsorshipCrossCountrySponsor_2251_5137() throws InterruptedException {
+	public void testGlobalSponsorshipCrossCountrySponsor_5137() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;

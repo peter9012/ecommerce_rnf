@@ -319,37 +319,6 @@
 //		s_assert.assertAll();
 //	}
 //
-//	// Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future use" NOT Selected
-//	@Test(priority=5)
-//	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{
-//		CommonUtils.getRandomNum(10000, 1000000);
-//		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
-//		String lastName = "lN";
-//		storeFrontConsultantPage = storeFrontHomePage.clickRodanAndFieldsLogo();
-//		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
-//		storeFrontUpdateCartPage.clickOnBuyNowButton();
-//		storeFrontUpdateCartPage.clickOnCheckoutButton();
-//		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-//		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-//		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-//		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-//		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
-//		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-//		storeFrontUpdateCartPage.selectNewBillingCardAddress();
-//		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-//		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
-//		storeFrontUpdateCartPage.clickBillingEditAfterSave();
-//		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
-//		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
-//		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-//		storeFrontConsultantPage = storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
-//		storeFrontConsultantPage.clickOnWelcomeDropDown();
-//		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
-//		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-//		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited default Billing profile is NOT listed on the page");
-//		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Newly edited default Billing profile is not selected as default profile");
-//		s_assert.assertAll();
-//	}
 //
 //	// Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
 //	@Test(priority=6)

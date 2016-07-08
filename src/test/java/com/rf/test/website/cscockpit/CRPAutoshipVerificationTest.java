@@ -657,7 +657,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	//Hybris Project-1701:To verify CRP Autoship template Page UI
 	@Test
 	public void testVerifyCRPAutoshipTemplate_1701() throws InterruptedException{
@@ -686,7 +685,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		}else{
 			country= TestConstants.COUNTRY_DD_VALUE_US;
 		}
-
 
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
@@ -719,7 +717,9 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab().contains(autoshipNumber),"Autoship template header section Autoship id expected "+autoshipNumber+"While on UI"+cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab());
 		if(isAutoshipIdPresent == true){
 			s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is not present on Autoship template page.");
+			System.out.println("1");
 			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditAutoshipTemplateLinkInAutoshipTemplateTab(),"Edit autoship link in Autoship template header section is not present on Autoship template page.");
+			System.out.println("2");
 		}
 		//Verify Sub components of Order Detail section in autoship template tab page.
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionBasePrice),"Order Detail Section Base Price Is not present.");
@@ -767,7 +767,8 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(locale),"Shipping Address Locale Expected is "+locale+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(region),"Shipping Address Region Expected is "+region+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(postalCode),"Shipping Address PostCode Expected is "+postalCode+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().contains(countryID),"Shipping Address Country Expected is "+countryID+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
+
+		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().toLowerCase().contains(countryID),"Shipping Address Country Expected is "+countryID+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
 		//Assert Billing address details.
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().length()>0,"Payment Address Name Expected but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
 		//verify components of order from AutoShip Template section
@@ -793,7 +794,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitCustomerSearchTabPage.clickSearchBtn();
 		String randomCustomerSequenceNumberOfInactiveUser = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
 		cidOfInactiveUser=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberOfInactiveUser);
-		cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
+		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsCancelled();
 		//verify cancel autoship and edit autoship link are not present for inactive user in autoship template header.
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateBtnDisabled(),"Edit autoship link in Autoship template header section is present on Autoship template page for inactive user.");

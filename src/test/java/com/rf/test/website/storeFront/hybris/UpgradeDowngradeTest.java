@@ -1452,91 +1452,192 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	//Hybris Project-3963:Inactive RC email address, during consultant enrollment under same/different sponsor(BIZ & CORP)
 	@Test
 	public void testInactiveRCEmailAddressDuringConsultantEnrollment_3963() throws InterruptedException{
-		if(driver.getEnvironment().equalsIgnoreCase("stg")){
-			RFO_DB = driver.getDBNameRFO();
-			int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-			List<Map<String, Object>> randomRCList =  null;
-			String rcUserEmailID =null;
-			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-			enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
-			regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
-			String firstName=TestConstants.FIRST_NAME+randomNum;
-			String lastName = "lN";
-
+		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> sponserList =  null;
+		String rcUserEmailID =null;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNumber;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String socialInsuranceNumbers = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
+		regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String enrolledRCFirstName = TestConstants.FIRST_NAME+randomNumber;
+		String enrolledRCEmailAddress = enrolledRCFirstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String secondConsultantFirstName=TestConstants.FIRST_NAME+randomNumbers;
+		String lastName = "lN";
+		if(driver.getCountry().equalsIgnoreCase("ca")){
 			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
 			state = TestConstants.PROVINCE_CA;
-
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			while(true){
-				randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,countryId),RFO_DB);
-				rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-				storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
-				boolean isError = driver.getCurrentUrl().contains("error");
-				if(isError){
-					logger.info("login error for the user "+rcUserEmailID);
-					driver.get(driver.getURL());
-				}
-				else
-					break;
-			} 
-
-			logger.info("login is successful");
-			storeFrontRCUserPage.clickOnWelcomeDropDown();
-			storeFrontAccountInfoPage = storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-			storeFrontAccountInfoPage.clickOnYourAccountDropdown();
-			storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
-
-			storeFrontAccountTerminationPage.selectTerminationReason();
-			storeFrontAccountTerminationPage.enterTerminationComments();
-			storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
-			storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
-
-			s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
-			storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
-			//Enroll consultant with inactive rc user
-			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-			storeFrontHomePage.searchCID();
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
-			storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
-			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-			storeFrontHomePage.enterFirstName(firstName);
-			storeFrontHomePage.enterLastName(lastName);
-			storeFrontHomePage.enterEmailAddress(rcUserEmailID);
-			storeFrontHomePage.enterPassword(password);
-			storeFrontHomePage.enterConfirmPassword(password);
-			storeFrontHomePage.enterAddressLine1(addressLine1);
-			storeFrontHomePage.enterCity(city);
-			storeFrontHomePage.selectProvince(state);
-			storeFrontHomePage.enterPostalCode(postalCode);
-			storeFrontHomePage.enterPhoneNumber(phoneNumber);
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickNextButton();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			storeFrontHomePage.clickOnRodanAndFieldsLogo();
-			storeFrontHomePage.clickOnWelcomeDropDown();
-			storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
-			s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
-
-			s_assert.assertAll();
+		}else{
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			city = TestConstants.CITY_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			phoneNumber = TestConstants.PHONE_NUMBER_US;
+			state = TestConstants.PROVINCE_US;
 		}
+		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//Enroll An RC user.
+		// Get sponser with PWS from database
+		sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		String sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
+		String idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(enrolledRCFirstName, TestConstants.LAST_NAME+randomNumber,enrolledRCEmailAddress,password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.searchCIDForSponserHavingPulseSubscribed(idForConsultant);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		logger.info("login is successful");
+		//Terminate the enrolled RC User.
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		//Enroll consultant with inactive rc user under same sponser.
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(idForConsultant);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(enrolledRCEmailAddress);
+		storeFrontHomePage.enterFirstName(firstName);
+		storeFrontHomePage.enterLastName(lastName);
+		storeFrontHomePage.enterEmailAddress(enrolledRCEmailAddress);
+		storeFrontHomePage.enterPassword(password);
+		storeFrontHomePage.enterConfirmPassword(password);
+		storeFrontHomePage.enterAddressLine1(addressLine1);
+		storeFrontHomePage.enterCity(city);
+		storeFrontHomePage.selectProvince(state);
+		storeFrontHomePage.enterPostalCode(postalCode);
+		storeFrontHomePage.enterPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickNextButton();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Get Active RC user from database.
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+rcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		} 
+		//Terminate the RC User.
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
+		storeFrontAccountTerminationPage=storeFrontAccountInfoPage.clickTerminateMyAccount();
+		storeFrontAccountTerminationPage.selectTerminationReason();
+		storeFrontAccountTerminationPage.enterTerminationComments();
+		storeFrontAccountTerminationPage.selectCheckBoxForVoluntarilyTerminate();
+		storeFrontAccountTerminationPage.clickSubmitToTerminateAccount();
+		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is Present");
+		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup();
+		//Get different Sponser from database
+		sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		String sponserAccountID = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+		// sponser search by Account Number
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
+		String differentSponser = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+		//Enroll consultant with inactive rc user under different sponser.
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(differentSponser);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+		storeFrontHomePage.enterFirstName(secondConsultantFirstName);
+		storeFrontHomePage.enterLastName(lastName);
+		storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+		storeFrontHomePage.enterPassword(password);
+		storeFrontHomePage.enterConfirmPassword(password);
+		storeFrontHomePage.enterAddressLine1(addressLine1);
+		storeFrontHomePage.enterCity(city);
+		storeFrontHomePage.selectProvince(state);
+		storeFrontHomePage.enterPostalCode(postalCode);
+		storeFrontHomePage.enterPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumbers);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumbers);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickNextButton();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontOrdersPage = storeFrontHomePage.clickOrdersLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontOrdersPage.verifyAdhocOrderIsPresent(), "Adhoc Order is not present");
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-1498:Active RC email address, during consultant enrollment under Same & Different sponsor(BIZ and CORP)

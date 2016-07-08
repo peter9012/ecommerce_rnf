@@ -214,7 +214,15 @@ public class TestConstants {
 
 	public static final String CORPORATE_SITE = "http://www.corprfo.tst2.rodanandfields.com/ca/";
 
+	public static final String ADDRESS_LINE_1_NT = "40 Capital Drive";
+	public static final String CITY_NT = "Hay River";
+	public static final String POSTAL_CODE_NT = "X0E 1G2";
+	public static final String PHONE_NUMBER_NT = "8678745670";
 
+	public static final String ADDRESS_LINE_1_NUNAVUT = "Rankin Inlet";
+	public static final String CITY_NUNAVUT = "Iqaluit";
+	public static final String POSTAL_CODE_NUNAVUT = "X0A 0H0";
+	public static final String PHONE_NUMBER_NUNAVUT = "8679797974";
 	/**
 	 * Retail Customer Details
 	 */

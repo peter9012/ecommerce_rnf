@@ -447,16 +447,35 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.waitForLoadingImageToDisappear();
 			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
 			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.waitForLoadingImageToDisappear();
 			return true;
 		}catch(NoSuchElementException e){
 			try{
 				driver.waitForElementPresent(By.id("QAS_AcceptOriginal"));
 				driver.click(By.id("QAS_AcceptOriginal"));
+				driver.waitForLoadingImageToDisappear();
 				return true;
 			}catch(NoSuchElementException e1){
 				return false;
 			}
 		}
+
+	}
+
+	public boolean verifyAndClickAcceptOnQASPopup(){
+		try{
+			driver.waitForLoadingImageToDisappear();
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.waitForLoadingImageToDisappear();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
+	public boolean isQuebecNotEligibleAsConsultantErrorDisplayed(){
+		return driver.isElementPresent(By.xpath("//span[@id='addressForm.stateIso.errors']"));
 	}
 
 	public void enterCardNumber(String cardNumber){
@@ -4047,6 +4066,27 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public String getNameFromContactBox(){
 		String fullname =  driver.findElement(By.xpath("//div[@class='content-header-filled txtConsultantName']")).getText();
 		return fullname;
+	}
+
+	public void clickNextButtonWithUseAsEnteredButton(){
+		driver.waitForElementPresent(By.id("enrollment-next-button"));
+		driver.click(By.id("enrollment-next-button"));
+		logger.info("EnrollmentTest Next Button clicked");
+		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.turnOffImplicitWaits();
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_AcceptOriginal']"));
+			//driver.pauseExecutionFor(2000);
+			driver.click(By.xpath("//*[@id='QAS_AcceptOriginal']"));
+			logger.info("Use As Entered button clicked");
+		}
+		catch(Exception e){
+			logger.info("Use As Entered pop up was NOT present");
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
+		driver.waitForLoadingImageToDisappear();
 	}
 
 }

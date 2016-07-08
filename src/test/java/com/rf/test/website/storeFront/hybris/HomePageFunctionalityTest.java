@@ -56,6 +56,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String PWS = storeFrontHomePage.openPWSSite(country, env);
+		storeFrontHomePage.convertComSiteToBizSite(PWS);
 		storeFrontHomePage.clickOnUserName();
 		s_assert.assertTrue(storeFrontHomePage.verifyJoinMyTeamLinkPresent(), "Join My Team Link is not present on the Biz page");
 		storeFrontHomePage.clickOnJoinMyTeamBtn();

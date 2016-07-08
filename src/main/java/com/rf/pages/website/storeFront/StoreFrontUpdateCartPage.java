@@ -1569,4 +1569,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return !(deliveryCharges==null);
 	}
 
+	public boolean isShippingChargesPresentAtOrderConfirmationPage(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]"));
+		String deliveryCharges = driver.findElement(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]")).getText();
+		return !(deliveryCharges==null);
+	}
+
 }

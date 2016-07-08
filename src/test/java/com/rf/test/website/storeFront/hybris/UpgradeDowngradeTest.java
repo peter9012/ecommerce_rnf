@@ -1642,10 +1642,23 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-1498:Active RC email address, during consultant enrollment under Same & Different sponsor(BIZ and CORP)
 	@Test
-	public void testActiveRCEnailAddressDuringConsultantEnrollment_1498() throws InterruptedException{
+	public void testActiveRCEmailAddressDuringConsultantEnrollment_1498() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> sponserList =  null;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String socialInsuranceNumbers = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String rcUserEmailID =null;
+		String reqCountry = null;
+		String firstName=TestConstants.FIRST_NAME+randomNum;
+		String firstConsultantName = TestConstants.FIRST_NAME+randomNumber;
+		String secondConsultantName= TestConstants.FIRST_NAME+randomNumbers;
+		String lastName = "lN";
+		String rcEmailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
 		regimenName =  TestConstants.REGIMEN_NAME_REVERSE;
 		kitName = TestConstants.KIT_NAME_BIG_BUSINESS; 
@@ -1654,19 +1667,124 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
 			phoneNumber = TestConstants.PHONE_NUMBER_CA;
+			state = TestConstants.PROVINCE_ALBERTA;
+			reqCountry = "Canada";
 		} else{
 			addressLine1 = TestConstants.NEW_ADDRESS_LINE1_US;
 			city = TestConstants.NEW_ADDRESS_CITY_US;
 			postalCode = TestConstants.NEW_ADDRESS_POSTAL_CODE_US;
 			phoneNumber = TestConstants.NEW_ADDRESS_PHONE_NUMBER_US; 
+			state = TestConstants.PROVINCE_ALABAMA_US;
+			reqCountry = "United States";
 		}
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		//Enroll a PC user.
+		// Get sponser with PWS from database
+		sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		String sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+
+		// sponser search by Account Number
+		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
+		String RCSponser = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
+
+		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		//Select a product and proceed to buy it
+		storeFrontHomePage.selectProductAndProceedToBuy();
+
+		//Click on Check out
+		storeFrontHomePage.clickOnCheckoutButton();
+		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
+		storeFrontHomePage.enterNewRCDetails(firstName, TestConstants.LAST_NAME+randomNum,rcEmailAddress, password);
+
+		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
+		storeFrontHomePage.enterMainAccountInfo();
+		logger.info("Main account details entered");
+		storeFrontHomePage.searchCIDForSponserHavingPulseSubscribed(RCSponser);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
+		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		//Enter Billing Profile
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
+		storeFrontHomePage.clickOnBillingNextStepBtn();
+		storeFrontHomePage.clickPlaceOrderBtn();
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Enroll consultant under same sponser as PC.
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.searchCID(RCSponser);
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
+		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
+		storeFrontHomePage.enterEmailAddress(rcEmailAddress);
+		s_assert.assertTrue(storeFrontHomePage.verifyUpradingToConsulTantPopup(), "Upgrading to a consultant popup is not present");
+		storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
+		storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
+		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
+		storeFrontHomePage.enterFirstName(firstConsultantName);
+		storeFrontHomePage.enterLastName(lastName);
+		storeFrontHomePage.enterEmailAddress(rcEmailAddress);
+		storeFrontHomePage.enterPassword(password);
+		storeFrontHomePage.enterConfirmPassword(password);
+		storeFrontHomePage.enterAddressLine1(addressLine1);
+		storeFrontHomePage.enterCity(city);
+		storeFrontHomePage.selectProvince(state);
+		storeFrontHomePage.enterPostalCode(postalCode);
+		storeFrontHomePage.enterPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickNextButton();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Verify the enrolled consultant in RFO database.
+		List<Map<String, Object>> enrolledConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,rcEmailAddress),RFO_DB);
+		String accountNumberOfUpgradedRC = String.valueOf(getValueFromQueryResult(enrolledConsultantList, "AccountNumber"));
+		List<Map<String, Object>> accountTypeList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_TYPE_ID_FROM_ACCOUNT_NUMBER,accountNumberOfUpgradedRC),RFO_DB);
+		String accountTypeIDOfUpgradedRC = String.valueOf(getValueFromQueryResult(accountTypeList, "AccountTypeID"));
+		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "Enrolled PC user account is not upgraded to consultant account in RFO database.");
+		logout();
+		//Verify enrolled consultant in cscockpit.
+		driver.get(driver.getCSCockpitURL());
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailAddress);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"Enrolled PC user account is not upgraded to consultant account in CSCockpit");
+		cscockpitCustomerSearchTabPage.clickMenuButton();
+		cscockpitCustomerSearchTabPage.clickLogoutButton();
+		//Enroll consultant under different sponser.
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
 		rcUserEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");  
-
-		//Enroll consultant with inactive rc user
+		//Get sponser for consultant enrollment.
+		sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		String sponserAccountid = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
+		//Sponser search by Account Number
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserAccountid),RFO_DB);
+		String differentSponser = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
 		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		storeFrontHomePage.searchCID();
+		storeFrontHomePage.searchCID(differentSponser);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);  
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
@@ -1675,9 +1793,56 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterPasswordForUpgradeRCToConsultant();
 		storeFrontHomePage.clickOnLoginToTerminateToMyRCAccount();
 		s_assert.assertTrue(storeFrontHomePage.verifyAccountTerminationMessage(), "Rc user is not terminated successfully");
+		storeFrontHomePage.enterFirstName(secondConsultantName);
+		storeFrontHomePage.enterLastName(lastName);
+		storeFrontHomePage.enterEmailAddress(rcUserEmailID);
+		storeFrontHomePage.enterPassword(password);
+		storeFrontHomePage.enterConfirmPassword(password);
+		storeFrontHomePage.enterAddressLine1(addressLine1);
+		storeFrontHomePage.enterCity(city);
+		storeFrontHomePage.selectProvince(state);
+		storeFrontHomePage.enterPostalCode(postalCode);
+		storeFrontHomePage.enterPhoneNumber(phoneNumber);
+		storeFrontHomePage.clickNextButton();
+		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumbers);
+		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
+		storeFrontHomePage.clickNextButton();
+		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
+		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
+		storeFrontHomePage.checkTheIAgreeCheckBox();
+		storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
+		storeFrontHomePage.clickOnEnrollMeBtn();
+		storeFrontHomePage.clickOnConfirmAutomaticPayment();
+		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		//Verify the enrolled consultant in RFO database.
+		enrolledConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACTIVE_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,rcEmailAddress),RFO_DB);
+		accountNumberOfUpgradedRC = String.valueOf(getValueFromQueryResult(enrolledConsultantList, "AccountNumber"));
+		accountTypeList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_TYPE_ID_FROM_ACCOUNT_NUMBER,accountNumberOfUpgradedRC),RFO_DB);
+		accountTypeIDOfUpgradedRC = String.valueOf(getValueFromQueryResult(accountTypeList, "AccountTypeID"));
+		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
+		logout();
+		//Verify enrolled consultant in cscockpit.
+		driver.get(driver.getCSCockpitURL());
+		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
+		cscockpitCustomerSearchTabPage.clickSearchBtn();
+		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
+		cscockpitCustomerSearchTabPage.clickMenuButton();
+		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
-
 	//Hybris Project-3958:CORP: Active PC email id during consultant enrollment under same sponsor.
 	@Test
 	public void testActivePCEmailIdDuringConsultantEnrollmentUnderSameSponsor_3958() throws InterruptedException{

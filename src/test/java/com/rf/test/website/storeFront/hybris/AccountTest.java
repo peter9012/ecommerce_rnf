@@ -321,7 +321,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-1975 :: Version : 1 :: Retail user termination
-	@Test(enabled=false)//Duplicate test,covered in UpgradeDowngrade TC-4694
+	@Test(enabled=false)//Duplicate test,covered in TC_4308
 	public void testRetailUserTermination_1975() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;

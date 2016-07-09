@@ -1841,6 +1841,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
+	
+	public boolean isSearchedSponsorIdPresentInSearchList(String CID){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//li[contains(text(),'"+CID+"')]"));
+	}
 
 	public boolean validateCorpCurrentUrlPresent() {
 		return driver.getCurrentUrl().contains("corp");

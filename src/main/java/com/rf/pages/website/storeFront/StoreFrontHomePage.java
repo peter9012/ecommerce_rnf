@@ -188,6 +188,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+	
+	public boolean isSponsorPresentInSearchResult(){
+		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
+	}
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -3747,6 +3752,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifySponsorFullNamePresent() {
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[1]"));
+	}
+	
+	public boolean verifySponsorFullNamePresent(String fullName) {
+		return driver.findElement(By.xpath("//div[@class='sponsorDataDiv']//li[1]")).getText().toLowerCase().contains(fullName.toLowerCase());		
 	}
 
 	public boolean verifySponsorZipCodePresent(){

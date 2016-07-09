@@ -1383,6 +1383,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
 		//verify search field should be present on find a consultant page
 		s_assert.assertTrue(storeFrontHomePage.validateConsultantSearchFieldPresent(),"Sponsor/Consultant Search field is not present on 'Find A Consultant' Page");
+
+		storeFrontHomePage.searchCID();
+		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchResult(),"No sponsor is present in search result");
 		s_assert.assertAll();
 	}
 
@@ -1472,9 +1475,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-3991:Go to' Find a consultant' page and search with US consultnat's First and Last name
-	@Test
+	@Test//(enabled=false)
 	public void testSearchWithUSConsultantFirstNameOnFindAConsultantPage_3991()	{
-		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantDetailsList =  null;
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -1482,8 +1484,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		String accountID = null;
 		String firstName= null;
 		String lastName =null;
+		String countryId=null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			countryId="236";
+		}else{
+			countryId="40";
+		}
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
@@ -1494,23 +1501,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		lastName = (String) getValueFromQueryResult(randomConsultantDetailsList, "LastName");
 		//Navigate to find A Consultant page..
 		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
-		//search with Consultant's first Name
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(firstName);
-		//verify full name,city,state,Zip code,PWS is present
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor Full Name is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(),"Sponsor zipcode is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(),"Sponsor details is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(),"Sponsor details is not present!!");
-		//search with Consultant's last Name
-		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(lastName);
-		//verify full name,city,state,Zip code,PWS is present
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor Full Name is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(),"Sponsor zipcode is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(),"Sponsor details is not present!!");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(),"Sponsor details is not present!!");
-		s_assert.assertAll(); 
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(firstName+" "+lastName);
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(firstName+" "+lastName),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
+		s_assert.assertAll();
 	}
 
 	//Hybris Project-4060:Post Contact Me Request on Meet Your Consultant Page on US Con's PWS as another
@@ -1622,24 +1619,34 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO(); 
 		country = driver.getCountry();
 		env = driver.getEnvironment(); 
-
+		String countryId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		bizPWS=storeFrontHomePage.getBizPWS(country, env);
+		while(true){
+			bizPWS=storeFrontHomePage.getBizPWS(country, env);
 
-		if(driver.getCountry().trim().equalsIgnoreCase("us")){
-			//Navigate to canadian PWS
-			bizPWS=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			if(driver.getCountry().trim().equalsIgnoreCase("ca")){
+				//Navigate to canadian PWS
+				bizPWS=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+				countryId = "236";
+			}
+			else{
+				//Navigate to US PWS
+				bizPWS=storeFrontHomePage.convertCABizPWSToUS(bizPWS);
+				countryId = "40";
+			}
+			driver.get(bizPWS);
+			boolean isSiteNotFound = driver.getCurrentUrl().contains("sitenotfound");
+			if(isSiteNotFound){
+				continue;
+			}else
+				break;
 		}
-		else{
-			//Navigate to US PWS
-			bizPWS=storeFrontHomePage.convertCABizPWSToUS(bizPWS);
-		}
-		driver.get(bizPWS);
 
 		//Access PWS site as a RC user
 		List<Map<String, Object>> randomRCUserList =  null;
 		String rcUserEmailID = null;
 		String accountId = null;
+
 		while(true){
 			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
@@ -1649,8 +1656,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("SITE NOT FOUND for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
-
+				driver.get(bizPWS);
 			}
 			else
 				break;
@@ -1660,11 +1666,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//verify US PC user should login and redirect to US .COM PWS of its sponsor.
 		logger.info("CurrentURL is"+driver.getCurrentUrl());
 		if(driver.getCountry().trim().equalsIgnoreCase("us")){
-			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/ca", "/us"))&& (driver.getCurrentUrl().split("\\:")[1].toLowerCase().contains("/us"))," US RC user is not redirected to its Site of same PWS of US");
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/us", "/ca"))," CA RC user is not redirected to its Site of same PWS of CA");
 		}
 		else
 		{
-			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/us", "/ca"))&& (driver.getCurrentUrl().split("\\:")[1].toLowerCase().contains("/ca"))," CA RC user is not redirected to its Site of same PWS of CA");
+			s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains(bizPWS.split(":")[1].toLowerCase().replace("/ca", "/us"))," US RC user is not redirected to its Site of same PWS of US");
 
 		}
 		s_assert.assertAll();
@@ -1718,10 +1724,10 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);
 		consultantFirstName = (String) getValueFromQueryResult(randomConsultantList, "FirstName");
 		consultantlastName = (String) getValueFromQueryResult(randomConsultantList, "LastName");
-		storeFrontHomePage.clickOnSponsorName();
+		storeFrontHomePage.clickFindAConsultantLinkOnHomePage();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantlastName);
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(),"Sponsor full name not present in Sponsor Details");
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorFullNamePresent(consultantFirstName+" "+consultantlastName),"Sponsor full name not present in Sponsor Details");
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorZipCodePresent(), "Sponsor ZipCode not present in Sponsor Detail page");
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorCityPresent(), "Sponsor city not present in Sponsor Detail page");
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
@@ -3141,34 +3147,26 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSelectSponsorFromConnectWithConsultantPageShoulDirectToSponsorComSite_3751() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		String CCS = null;
+		String sponsorId = null;
+		String accountId = null;
 		List<Map<String, Object>> sponsorIdList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		//connect with a consultant
 		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			//search for a CA Sponsor
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
-			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
-			//validate sponsor details?
-			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
-			//select sponsor
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			//verify user is navigated to PWS Site of the selected sponsor?
-			s_assert.assertTrue(driver.getCurrentUrl().contains(".myrfo"+driver.getEnvironment()+".com"),"user is not navigated to COM PWS site of the selected sponsor");
-		}else{
-			//search for a US Sponsor
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SPONSOR_ID,countryId),RFO_DB);
-			CCS = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(CCS);
-			//validate sponsor details?
-			s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
-			//select sponsor
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			//verify user is continued on the corp site?
-			s_assert.assertTrue(driver.getCurrentUrl().contains(".myrfo"+driver.getEnvironment()+".com"),"user is not navigated to COM PWS site of the selected sponsor"); 
-		}
+		//search for a CA Sponsor
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment(),driver.getCountry(),countryId),RFO_DB);
+		accountId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountID"));
+		// Get Account Number
+		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountId),RFO_DB);
+		sponsorId = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
+		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorId);
+		//validate sponsor details?
+		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor details is not present!!");
+		//select sponsor
+		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
+		//verify user is navigated to PWS Site of the selected sponsor?
+		s_assert.assertTrue(driver.getCurrentUrl().contains(".myrfo"+driver.getEnvironment()+".com/"+driver.getCountry().toLowerCase()),"user is not navigated to COM PWS site of the selected sponsor");
+
 		s_assert.assertAll();
 	}
 
@@ -3218,13 +3216,10 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		// Get Account Number
 		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-		storeFrontHomePage.clickOnConnectWithAConsultant();
-		s_assert.assertTrue(storeFrontHomePage.verifyFindYourSponsorPage(), "Find your sponsor page is not present");
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		// assert for CID
 		storeFrontHomePage.searchCID(sponsorID);
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorListIsPresentAfterClickOnSearch(), "sponsor list is not present when serach by CID");
-		String sponsorIDFromResult = storeFrontHomePage.getSponsorResultAccordingToCID(sponsorID);
-		s_assert.assertTrue(sponsorIDFromResult.contains(sponsorID), "Sponsor Id From RFO "+sponsorID+" and on UI is "+sponsorIDFromResult);
+		s_assert.assertTrue(storeFrontHomePage.isSearchedSponsorIdPresentInSearchList(sponsorID),"searched CID is not present in the list");
 		s_assert.assertAll();
 	}
 

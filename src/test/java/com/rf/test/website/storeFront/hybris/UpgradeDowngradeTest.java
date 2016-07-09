@@ -2440,7 +2440,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-4694:COM: Terminate RC, Enroll RC and Upgrade 2 PC
 	@Test
-	public void testTerminateRCEnrollRCUpgradeToPC_4694() throws InterruptedException{
+	public void testTerminateRCEnrollRCUpgradeToPC_4694_2228() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
 		String rcUserEmailID = null;

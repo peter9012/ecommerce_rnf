@@ -517,6 +517,29 @@ public class DBQueries_RFO {
 			   "AND O.OrderStatusID = 1) "+ /*Failed*/ 
 			   "ORDER BY NEWID() ";
 
+//	public static String GET_RANDOM_CONSULTANT_WITH_PENDING_STATUS_RFO =
+//			"USE RFOperations "+
+//					"SET TRANSACTION  ISOLATION LEVEL READ UNCOMMITTED; "+
+//					"BEGIN TRANSACTION "+
+//					"SELECT TOP 1 "+
+//					"ab.AccountID , "+
+//					"AT.Name AS AccountType , "+
+//					"[as].Username "+
+//					"FROM    RFO_Accounts.AccountBase AS ab "+
+//					"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+//					"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+//					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+//					"WHERE   ab.CountryID = %s AND ab.AccountTypeID = 1 "+
+//					"AND AccountStatusID = 4 "+
+//					/*Active Accounts*/
+//					"AND EXISTS ( SELECT 1 "+
+//					"FROM   RFO_Accounts.AccountRF AS ar "+
+//					"WHERE  ar.Active = 1 "+
+//					"AND ar.HardTerminationDate IS NOT NULL "+
+//					"AND ar.AccountID = ab.AccountID ) "+
+//					"ORDER BY NEWID() ";
+
+
 	public static String GET_RANDOM_PC_EMAIL_ID_HAVING_ACTIVE_ORDER_RFO = 
 			"USE RFOperations "+
 
@@ -1869,6 +1892,15 @@ public class DBQueries_RFO {
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
 			"JOIN   RFO_Accounts.AccountContacts AS AC ON AC.AccountId = ab.AccountID "+
 			"WHERE ab.CountryID = '%s' and ar.Active = 1 and ab.AccountTypeID = 1  "+
+			"ORDER BY NEWID()";
+	
+	public static String GET_PENDING_CONSULTANT_DETAILS_RFO = "SELECT top 1 ab.AccountID , AC.FirstName, AC.LastName,AT.Name AS AccountType,[as].Username "+
+			"FROM    RFO_Accounts.AccountBase AS ab "+
+			"JOIN    RFO_Reference.AccountType AS AT ON AT.AccountTypeID = ab.AccountTypeID "+
+			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
+			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"JOIN   RFO_Accounts.AccountContacts AS AC ON AC.AccountId = ab.AccountID "+
+			"WHERE ab.CountryID = '%s' and ar.Active = 1 and ab.AccountTypeID = 1 and ab.AccountStatusID = 4 "+
 			"ORDER BY NEWID()";
 
 	public static String GET_CONSULTANT_DETAILS_WITH_PWS_RFO = 

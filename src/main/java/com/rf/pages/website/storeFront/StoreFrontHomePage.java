@@ -188,6 +188,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+
+	public void mouseHoverSponsorInResultAndClickContinue(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
+		driver.pauseExecutionFor(1000);
+//		driver.click(By.xpath("//input[@value='Select & Continue']"));
+		driver.click(By.xpath("//input[contains(@value,'Select')]"));
+		driver.waitForLoadingImageToDisappear();
+	}
 	
 	public boolean isSponsorPresentInSearchResult(){
 		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
@@ -2105,7 +2114,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
+			driver.quickWaitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponserparam"),sponsor);
@@ -2734,6 +2743,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForPageLoad();
 		System.out.println("current url is "+driver.getCurrentUrl());
 		return driver.getCurrentUrl().toLowerCase().contains("corp");
+	}
+	
+	public boolean isTheMessageOfNoPWSDisplayed(){
+		return driver.isElementPresent(By.xpath("//*[contains(text(),'The Consultant you searched for does not have a personal Rodan + Fields website.')]"));
 	}
 
 	public boolean verifyBizUrlAfterEnrollment(String pws){
@@ -3753,9 +3766,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean verifySponsorFullNamePresent() {
 		return driver.isElementPresent(By.xpath("//div[@class='sponsorDataDiv']//li[1]"));
 	}
-	
+
 	public boolean verifySponsorFullNamePresent(String fullName) {
 		return driver.findElement(By.xpath("//div[@class='sponsorDataDiv']//li[1]")).getText().toLowerCase().contains(fullName.toLowerCase());		
+	}
+
+	public boolean verifySponsorIdPresent(String sponsorId) {
+		return driver.findElement(By.xpath("//div[@class='sponsorDataDiv']//li[2]")).getText().toLowerCase().contains(sponsorId.toLowerCase());		
 	}
 
 	public boolean verifySponsorZipCodePresent(){
@@ -3778,7 +3795,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifyUserRedirectingToComSite() {
 		String url = driver.getCurrentUrl();
-		if(!url.contains("corp"))
+		if(url.contains("myrfo"+driver.getEnvironment().toLowerCase()+".com"))
 			return true;
 		else
 			return false;

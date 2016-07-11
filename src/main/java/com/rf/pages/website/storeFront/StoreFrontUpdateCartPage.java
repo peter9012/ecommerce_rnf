@@ -642,8 +642,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateMoreInfoButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='Update more info']"));
-		driver.click(By.xpath("//input[@value='Update more info']"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Update Shipping and Billing info')]"));
+		driver.click(By.xpath("//a[contains(text(),'Update Shipping and Billing info')]"));
 		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 	}

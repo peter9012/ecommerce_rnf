@@ -531,16 +531,17 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-1976 :: Version : 1 :: Autoship Module. Check My Pulse UI 
+	//Hybris Project-1976:Navigation to Consultant Pulse page from My Account
 	@Test
-	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException	 {
+	public void testAutoshipModuleCheckMyPulseUI_1976() throws InterruptedException  {
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			//randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
@@ -562,6 +563,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.switchToChildWindow();
 		//validate home page for pulse
 		s_assert.assertTrue(storeFrontConsultantPage.validatePulseHomePage(),"Home Page for pulse is not displayed");
+		//s_assert.assertTrue(storeFrontAccountInfoPage.validateSubscribeToPulse(),"pulse subscription is not Present for the user");
 		storeFrontConsultantPage.switchToPreviousTab();
 		s_assert.assertAll();
 	}
@@ -619,11 +621,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 	// Hybris Project-4260 :: Version : 1 :: UserName Field: Edit & Login 
 	@Test
 	public void testUserNameFieldEditAndLogin_4260() throws InterruptedException{
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
+		String Username = "testUser"+randomNumber;
 		String newUsername = TestConstants.CONSULTANT_EMAIL_ID_FOR_ACCOUNTINFO+randomNum;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
@@ -646,33 +650,39 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
 		//Enter new user name logout and validate the new user
-		storeFrontAccountInfoPage.enterUserName(newUsername);
+		storeFrontAccountInfoPage.enterUserName(Username);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		logout();
 		//login with the same user
 		//storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(newUsername,password);   
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(Username,password);   
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyAccountInfoPageIsDisplayed(),"Account Info page has not been displayed");
+		//Enter new user name logout and validate the new user
+		storeFrontAccountInfoPage.enterUserName(newUsername);
+		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		//validate the new user
 		s_assert.assertTrue(newUsername.equalsIgnoreCase(storeFrontAccountInfoPage.getUserName()),"Username didn't match");
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(Username,password);
+		s_assert.assertTrue(storeFrontHomePage.isCurrentURLShowsError(),"Old Username doesn't get Login failed");
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-86 :: Version : 1 :: Edit Allow my spouse in My Account  
+	//Hybris Project-86:Verify editing Spouse details under Account Info
 	@Test
-	public void testEditAllowMySpouseInMyAccount_86() throws InterruptedException	{
-		RFO_DB = driver.getDBNameRFO();	
+	public void testEditAllowMySpouseInMyAccount_86() throws InterruptedException {
+		RFO_DB = driver.getDBNameRFO(); 
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
@@ -684,7 +694,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -695,8 +704,12 @@ public class AccountTest extends RFWebsiteBaseTest{
 		//Enter first,last name and click accept on the popup and validate
 		s_assert.assertTrue(storeFrontAccountInfoPage.validateEnterSpouseDetailsAndAccept(),"Accept button not working in the popup");
 		storeFrontAccountInfoPage.checkAllowMySpouseCheckBox();
+		storeFrontAccountInfoPage.checkAllowMySpouseCheckBox();
 		//click cancel on the 'Allow my spouse' popup and validate
-		s_assert.assertFalse(storeFrontAccountInfoPage.validateClickCancelOnProvideAccessToSpousePopup(),"Cancel button not working in the popup");
+		s_assert.assertTrue(storeFrontAccountInfoPage.validateClickCancelOnProvideAccessToSpousePopup(),"Cancel button not working in the popup");
+		//Click X on allow my spouse popup
+		storeFrontAccountInfoPage.checkAllowMySpouseCheckBox();
+		s_assert.assertTrue(storeFrontAccountInfoPage.validateClickXOnProvideAccessToSpousePopup(),"X button not working in the popup");
 		s_assert.assertAll();
 	}
 
@@ -1282,48 +1295,48 @@ public class AccountTest extends RFWebsiteBaseTest{
 		}
 	}
 
-		//Hybris Project-5002:Modify Main Phone Number and mobile phone information
-		@Test(enabled=false)//Covered in TC - 5003
-		public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
-			if(driver.getCountry().equalsIgnoreCase("ca")){
-				RFO_DB = driver.getDBNameRFO();
-				storeFrontHomePage = new StoreFrontHomePage(driver);
-	
-				String mainPhoneNumberDB = null;
-				List<Map<String, Object>> mainPhoneNumberList =  null;
-				List<Map<String, Object>> randomConsultantList =  null;
-				String consultantEmailID = null;
-				String accountIdForConsultant = null;
-				while(true){
-					randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-					consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-					accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-					logger.info("Account Id of the user is "+accountIdForConsultant);
-					storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-					boolean isError = driver.getCurrentUrl().contains("error");
-					if(isError){
-						logger.info("login error for the user "+consultantEmailID);
-						driver.get(driver.getURL()+"/"+driver.getCountry());
-					}
-					else
-						break;
+	//Hybris Project-5002:Modify Main Phone Number and mobile phone information
+	@Test(enabled=false)//Covered in TC - 5003
+	public void testModifyMainPhoneNmberAndMobilePhoneInfo_5002() throws InterruptedException{
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO();
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+
+			String mainPhoneNumberDB = null;
+			List<Map<String, Object>> mainPhoneNumberList =  null;
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantEmailID = null;
+			String accountIdForConsultant = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				accountIdForConsultant = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				logger.info("Account Id of the user is "+accountIdForConsultant);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+				boolean isError = driver.getCurrentUrl().contains("error");
+				if(isError){
+					logger.info("login error for the user "+consultantEmailID);
+					driver.get(driver.getURL()+"/"+driver.getCountry());
 				}
-				//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
-				logger.info("login is successful");
-				storeFrontConsultantPage.clickOnWelcomeDropDown();
-				storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
-				storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
-				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-				storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
-				s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
-				mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-				mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-				assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
-				s_assert.assertAll();
-			}else{
-				logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
+				else
+					break;
 			}
+			//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+			logger.info("login is successful");
+			storeFrontConsultantPage.clickOnWelcomeDropDown();
+			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
+			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
+			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+			s_assert.assertAll();
+		}else{
+			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
+	}
 
 	//Hybris Project-4999:Modify name of the users
 	@Test
@@ -2914,7 +2927,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-			driver.get(driver.getURL()+"/"+driver.getCountry());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2985,7 +2998,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-			driver.get(driver.getURL()+"/"+driver.getCountry());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -3191,7 +3204,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
-			driver.get(driver.getURL()+"/"+driver.getCountry());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;

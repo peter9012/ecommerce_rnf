@@ -174,13 +174,17 @@ public class AccountTest extends RFWebsiteBaseTest{
 	public void testVerifyLogoutwithValidCredentials_1977() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCList =  null;
 		String consultantEmailID = null;
+		String pcEmailID = null;
 		String accountID = null;
+		String bizPWS = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",driver.getCountry(),countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			bizPWS = (String) getValueFromQueryResult(randomConsultantList, "URL"); 
 			logger.info("Account Id of the user is "+accountID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -192,10 +196,42 @@ public class AccountTest extends RFWebsiteBaseTest{
 				break;
 		}
 		logger.info("login is successful");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("myrfo"+driver.getEnvironment()+".com/"+driver.getCountry()+"/"), "current url doesn't contains expected .com but actual URL is "+driver.getCurrentUrl());
 		logout();
-		s_assert.assertTrue(driver.getCurrentUrl().contains(".com/"+driver.getCountry()+"/"), "current url doesn't contains expected .com but actual URL is "+driver.getCurrentUrl());
+		s_assert.assertTrue(!driver.getCurrentUrl().contains("corprfo"),"Consultant user is not on .com site after logout");
+		driver.get(bizPWS);
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("myrfo"+driver.getEnvironment()+".biz/"+driver.getCountry()+"/"), "current url doesn't contains expected .biz but actual URL is "+driver.getCurrentUrl());
+		logout();
+		s_assert.assertTrue(!driver.getCurrentUrl().contains("corprfo"),"Consultant user is not on .biz site after logout");
+		//For PC user.
+		storeFrontHomePage.openComPWSSite(driver.getCountry(), driver.getEnvironment());
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			logger.info("Account Id of the user is "+accountID);
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				storeFrontHomePage.openComPWSSite(driver.getCountry(), driver.getEnvironment());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("myrfo"+driver.getEnvironment()+".com/"+driver.getCountry()+"/"), "current url doesn't contains expected .com but actual URL is "+driver.getCurrentUrl());
+		logout();
+		s_assert.assertTrue(!driver.getCurrentUrl().contains("corprfo"),"PC user is not on .com site after logout");
+		driver.get(bizPWS);
+		storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcEmailID, password);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("myrfo"+driver.getEnvironment()+".biz/"+driver.getCountry()+"/"), "current url doesn't contains expected .biz but actual URL is "+driver.getCurrentUrl());
+		logout();
+		s_assert.assertTrue(!driver.getCurrentUrl().contains("corprfo"),"PC user is not on .biz site after logout");
 		s_assert.assertAll();
 	}
+
 
 	//Hybris Project-2512 :: Version : 1 :: Username validations.
 	@Test //Test case in test link not updated as per the functionality
@@ -839,13 +875,17 @@ public class AccountTest extends RFWebsiteBaseTest{
 	public void testchangeUsernameOfRcUserWithUpdatedUserName_4660() throws InterruptedException{
 		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
 		String newUserName = TestConstants.NEW_RC_USER_NAME+randomNumber;
+		String updatedUsernameFromDB = null;
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomRCList =  null;
+		List<Map<String, Object>> updatedUserList =  null;
 		String rcEmailID = null;
+		String accountID = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
 			rcEmailID = (String) getValueFromQueryResult(randomRCList, "Username");
+			accountID = String.valueOf(getValueFromQueryResult(randomRCList, "AccountID"));
 			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcEmailID,password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -865,6 +905,10 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.loginAsRCUser(newUserName, password);
 		String newUserNameOnUI = storeFrontHomePage.fetchingUserName();
 		s_assert.assertTrue(storeFrontHomePage.verifyUserNameAfterLoginAgain(oldUserNameOnUI,newUserNameOnUI),"Login is not successful with new UserName");
+		//Verify updated username in RFO database.
+		updatedUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_UPDATED_USERNAME_FROM_RFO,accountID),RFO_DB);
+		updatedUsernameFromDB =(String) getValueFromQueryResult(updatedUserList, "Username");
+		s_assert.assertTrue(updatedUsernameFromDB.equalsIgnoreCase(newUserName),"Username is not updated in RFO database.");
 		s_assert.assertAll();
 	}
 
@@ -1665,7 +1709,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-2278:Add New Billing from accounts and chk on 
+	//Hybris Project-2278:Add New Billing from accounts and chk on Checkout screen
 	@Test
 	public void testAddNewBillingProfileFromAccountsAndCheckOn_2278() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

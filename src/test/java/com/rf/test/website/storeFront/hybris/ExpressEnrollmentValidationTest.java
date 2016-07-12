@@ -105,7 +105,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	//Hybris Project-1361:Enroll as consultant using invalid card numbers
 	// Hybris Project-82- Version : 1 :: Allow my Spouse through EnrollmentTest
 	@Test(priority=1)
-	public void testExpressEnrollmentFieldsValidationWithInvalidCardNumbers_1274_1361_82() throws InterruptedException	{
+	public void testExpressEnrollmentFieldsValidationWithInvalidCardNumbers_1274_1361_82() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String invalidSocialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(10000000, 99999999));
@@ -129,6 +129,14 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterInvalidConfirmPassword(TestConstants.PASSWORD_BELOW_6CHARS);
 		s_assert.assertTrue(storeFrontHomePage.getInvalidPasswordNotmatchingMessage().contains("Your passwords do not match"), "Error message for invalid confirm password does not visible");
 		storeFrontHomePage.enterUserInformationForEnrollment( TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, state,postalCode, phoneNumber);
+		storeFrontHomePage.clickOnNotYourCountryLink();
+
+		if(driver.getCountry().equalsIgnoreCase("CA")){
+			s_assert.assertTrue(storeFrontHomePage.getCountryNameFromNotYourCountryPopUp().contains("Switch to United States"), "Not Your Country Popup should display country as United States");
+		}else{
+			s_assert.assertTrue(storeFrontHomePage.getCountryNameFromNotYourCountryPopUp().contains("Switch to Canada"), "Not Your Country Popup should display country as Canada");
+		}
+		storeFrontHomePage.clickOnCancelButtonOfNotYourCountryPopUp();
 		storeFrontHomePage.clickNextButton();
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		//validate that the user is able to see the section for 'Recurring monthly charges' with the ability to enter their PWS prefix

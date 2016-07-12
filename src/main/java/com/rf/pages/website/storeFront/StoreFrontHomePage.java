@@ -193,11 +193,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
 		driver.pauseExecutionFor(1000);
-//		driver.click(By.xpath("//input[@value='Select & Continue']"));
+		//		driver.click(By.xpath("//input[@value='Select & Continue']"));
 		driver.click(By.xpath("//input[contains(@value,'Select')]"));
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public boolean isSponsorPresentInSearchResult(){
 		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
@@ -2744,7 +2744,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		System.out.println("current url is "+driver.getCurrentUrl());
 		return driver.getCurrentUrl().toLowerCase().contains("corp");
 	}
-	
+
 	public boolean isTheMessageOfNoPWSDisplayed(){
 		return driver.isElementPresent(By.xpath("//*[contains(text(),'The Consultant you searched for does not have a personal Rodan + Fields website.')]"));
 	}
@@ -4113,6 +4113,31 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.turnOnImplicitWaits();
 		}
 		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnNotYourCountryLink(){
+		driver.quickWaitForElementPresent(By.id("notYourCountryId"));
+		driver.click(By.id("notYourCountryId"));
+		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.turnOffImplicitWaits();
+			driver.isElementPresent(By.xpath("//div[@id='notYourCountryPopupId']"));
+			logger.info("Not Your Country Popup is Present");
+		}
+		catch(Exception e){
+			logger.info("Not Your Country Popup is not Present");
+		}
+	}
+
+	public String getCountryNameFromNotYourCountryPopUp(){
+		driver.waitForElementPresent(By.xpath("//*[@id='popup-content']/div/div/ul/li/a"));
+		String errorMessage=driver.findElement(By.xpath("//*[@id='popup-content']/div/div/ul/li/a")).getText();
+		return errorMessage;
+	}
+
+	public void clickOnCancelButtonOfNotYourCountryPopUp(){
+		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
+		driver.click(By.xpath("//span[@class='icon-close']"));
 	}
 
 }

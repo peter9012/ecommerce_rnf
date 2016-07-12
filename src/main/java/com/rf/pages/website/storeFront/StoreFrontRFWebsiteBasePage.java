@@ -1491,8 +1491,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//a[contains(text(),'Continue shopping')]"));
 		}
 		catch(Exception e){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
-			driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));   
+			try{
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
+				driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]")); 
+			}
+			catch(NoSuchElementException e2){
+				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
+				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
+			}
+  
 		}
 		driver.waitForPageLoad();
 	}

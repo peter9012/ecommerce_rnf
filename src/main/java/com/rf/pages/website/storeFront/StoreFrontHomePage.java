@@ -109,7 +109,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.type(By.id("sponserparam"),"test");
+			driver.type(By.id("sponserparam"),"mary");
 
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponsor-name-id"),"test");

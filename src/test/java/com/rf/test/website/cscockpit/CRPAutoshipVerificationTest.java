@@ -347,7 +347,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		//Login to storefront and check the added item in mini cart page.
-		driver.get(driver.getStoreFrontURL()+countryCode);
+		driver.get(driver.getStoreFrontURL()+"/"+countryCode);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontHomePage.clickOnAutoshipCart();
 		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
@@ -531,11 +531,11 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
 		String day = modifiedDate.split("\\ ")[1];
 		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
-		driver.get(driver.getStoreFrontURL()+countryCode);
+		driver.get(driver.getStoreFrontURL()+"/"+countryCode);
 		try{
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		}catch(Exception e){
-			driver.get(driver.getStoreFrontURL()+countryCode);
+			driver.get(driver.getStoreFrontURL()+"/"+countryCode);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -1014,7 +1014,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+countryCode);
+		driver.get(driver.getStoreFrontURL()+"/"+countryCode);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));

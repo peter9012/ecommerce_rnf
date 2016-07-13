@@ -3754,7 +3754,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickConnectUnderConnectWithAConsultantSection(){
-		driver.waitForElementPresent(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+		WebElement element = driver.findElement(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", element);
 		driver.click(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
 	}
 

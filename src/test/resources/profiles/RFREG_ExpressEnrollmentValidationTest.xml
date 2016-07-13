@@ -10,7 +10,10 @@
 		<classes>
 
 			<class name="com.rf.test.website.storeFront.hybris.ExpressEnrollmentValidationTest" />
-			
+			<methods>
+				<exclude name="testRegisterAsConsultantWithDifferentConsultantAsSponser_4792_4793" />
+				<exclude name="testDuringEnrollmentSwitchFromExpressToStandardEnrollment_3957_1295" />
+			</methods>
 
 		</classes>
 	</test>

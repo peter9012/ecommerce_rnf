@@ -2654,8 +2654,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
 		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
 		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
-		driver.get(usConsultantPWS);
-		storeFrontHomePage.selectCountryUsToCan();
+		driver.get(usConsultantPWS+"/ca");
+//		storeFrontHomePage.selectCountryUsToCan();
 		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");
@@ -2677,8 +2677,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress"); 
 		randomConsultantList2 =  DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
 		usConsultantPWS = (String) getValueFromQueryResult(randomConsultantList2, "URL"); 
-		driver.get(usConsultantPWS);
-		storeFrontHomePage.selectCountryUsToCan();
+		driver.get(usConsultantPWS+"/ca");
+//		storeFrontHomePage.selectCountryUsToCan();
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"),"current url is not a corp url");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(),"welcome dropDown is not present after login");

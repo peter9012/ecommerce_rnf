@@ -403,18 +403,18 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]"));
-		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]/input"));
+		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]/input")).getAttribute("class").contains("checked");
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsSelected(){
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[@class='repaired-checkbox checked']"));
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[@class='repaired-checkbox checked']/input"));
 		return driver.isElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[@class='repaired-checkbox checked']"));
 	}
 
 	public boolean verifyEnrollToCRPCheckBoxIsNotSelected(){
-		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]"));
-		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]")).isSelected();
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]/input"));
+		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, enroll me in CRP')]/preceding-sibling::li/div[contains(@class,'repaired-checkbox')]/input")).getAttribute("class").contains("checked");
 	}
 
 	public void uncheckPulseAndCRPEnrollment() throws InterruptedException{
@@ -448,12 +448,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//li[text()='Yes, subscribe me to Pulse Pro.']/preceding::div[1]/input/.."));
 			logger.info("Yes,Subscribe me to pulse checkbox is unchecked");			
 		}
+		else{}
 		if(verifyEnrollToCRPCheckBoxIsNotSelected())
 		{
 			driver.waitForElementPresent(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input"));
 			driver.click(By.xpath("//li[text()='Yes, enroll me in CRP.']/preceding::div[1]/input/.."));
 			logger.info("Yes,enroll me in CRP checkbox is unchecked");	
-		}
+		}else{}
 	}
 
 	public boolean verifySuggesstionsForEnteredAddressPop(){

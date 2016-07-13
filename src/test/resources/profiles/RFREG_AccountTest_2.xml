@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="AccountTest_CA">
+<suite name="AccountTest_CA_2">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 		<listener class-name="com.rf.core.listeners.TestListner" />
 		<listener class-name="com.rf.core.listeners.RetryListener" />
 	</listeners>
-	<test name="Account_Test">
+	<test name="Account_Test_2">
 		<classes>
 
 			<class name="com.rf.test.website.storeFront.hybris.AccountTest" />
@@ -24,7 +24,7 @@
                         <include name="testJoinPCPerksInOrderSummarySection_3877" />
                         <include name="testAddNewBillingProfileFromAccountsAndCheckOn_2278" />
                         <include name="testVerifyUserNameFieldValidation_4274" />
-                        <include name="testVerifyUniqnessOfUsername_4275" />
+                        <exclude name="testVerifyUniqnessOfUsername_4275" />
                         <include name="testVerifyUserNameAndEmailAddressFieldsValidation_4276" />
                         <include name="testVerifyUserNameAndEmailAddressFieldsValidationWithDifferentValues_4277" />
                       	<include name="testVerifyChangeUserNameFieldsMultipleTimeAndValidateLoginWithLastChange_4279" />

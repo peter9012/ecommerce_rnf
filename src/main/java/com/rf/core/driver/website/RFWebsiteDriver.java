@@ -84,9 +84,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("safari"))
 		{	
-			System.setProperty("webdriver.safari.noinstall", "true");
+			System.setProperty("webdriver.safari.noinstall", "false");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
+			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new SafariDriver(capabilities);
 			
@@ -824,7 +825,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			String sFilename = null;
 			sFilename = "Screenshot-" +methodName+getDateTime() + ".png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
-					+ "\\output\\ScreenShots\\" + sFilename;
+					+ "//output//ScreenShots//" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
 		} catch (Exception e) {
 
@@ -843,7 +844,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			String sFilename = null;
 			sFilename = "verificationFailure_Screenshot.png";
 			FullSnapShotFilePath = System.getProperty("user.dir")
-					+ "\\output\\ScreenShots\\" + sFilename;
+					+ "//output//ScreenShots//" + sFilename;
 			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
 		} catch (Exception e) {
 

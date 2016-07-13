@@ -531,15 +531,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnSaveBillingProfile() throws InterruptedException{
-		//driver.waitForElementPresent(By.id("submitButton"));
-		driver.click(By.id("submitButton"));
+		driver.waitForElementPresent(By.xpath("//*[@id='submitButton']"));
+		driver.click(By.xpath("//*[@id='submitButton']"));
+		/*((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//*[@id='submitButton']")));*/
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save billing profile button clicked");
 	}
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
-		//driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
-		//	driver.pauseExecutionFor(5000);
+		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		driver.pauseExecutionFor(5000);
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
@@ -1173,6 +1174,35 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
 	}
+	
+	public void ClickAllProductsLinks(){
+		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
+			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
+			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
+		}else{
+			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
+			
+			while(true){
+				try{
+					
+					((JavascriptExecutor) driver).executeScript("arguments[0].click();", driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+					break;
+				}catch(Exception e){
+					System.out.println("element not clicked..trying again");
+					
+
+				}
+			}
+			logger.info("All products link clicked "); 
+
+		}
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		
+	}
+	
+	
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
@@ -1370,8 +1400,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
-			driver.click(By.xpath("//a[text()='Add new shipping address »']"));
+			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address ï¿½']"));
+			driver.click(By.xpath("//a[text()='Add new shipping address ï¿½']"));
 			logger.info("Ads new shipping profile link clicked");
 		}
 		catch(NoSuchElementException e){
@@ -1576,8 +1606,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void subscribeToPulse(){
-		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"))){
-			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		if(driver.isElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"))){
+			driver.click(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"));
 			driver.pauseExecutionFor(2500);
 			driver.click(By.xpath("//a[@id='cancelPulse']"));
 			driver.waitForLoadingImageToDisappear();

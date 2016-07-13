@@ -58,7 +58,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//cufontext[text()='About ']");
 
 	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
-	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//a[text()='ENROLL NOW']");
+	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
 	private static final By CID_LOC = By.id("NameOrId");
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
 	private static final By SEARCH_RESULTS_LOC = By.xpath("//div[@id='searchResults']//a");

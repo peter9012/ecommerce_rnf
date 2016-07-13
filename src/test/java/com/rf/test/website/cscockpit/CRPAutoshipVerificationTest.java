@@ -255,6 +255,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
+		String countryCode= propertyFile.getProperty("country");
 		String randomCustomerSequenceNumber = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String cid=null;
@@ -346,7 +347,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickMenuButton();
 		cscockpitAutoshipTemplateTabPage.clickLogoutButton();
 		//Login to storefront and check the added item in mini cart page.
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+countryCode);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontHomePage.clickOnAutoshipCart();
 		afterProductCountInAutoshipCart=storeFrontUpdateCartPage.getProductCountOnAutoShipCartPage();
@@ -480,6 +481,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyChangeCRPDate_1705() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
+		String countryCode= propertyFile.getProperty("country");
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID=null;
 		String country = null;
@@ -529,11 +531,11 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.clickCustomerTab();
 		String day = modifiedDate.split("\\ ")[1];
 		s_assert.assertTrue(cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/")[1].contains(day.split("\\,")[0]),"Expected day of CRP is "+day.split("\\,")[0]+"Actual on UI "+cscockpitCustomerTabPage.getNextDueDateOfCRPAutoshipAndStatusIsPending().split("\\/"));
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+countryCode);
 		try{
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		}catch(Exception e){
-			driver.get(driver.getStoreFrontURL()+"/us");
+			driver.get(driver.getStoreFrontURL()+countryCode);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		}
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -654,153 +656,6 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		String crpDate = storeFrontAccountInfoPage.getNextDueDateOfCRPTemplate();
 		s_assert.assertTrue(crpDate.trim().contains(oneMonthExtendedDate.trim()), "Expected next due date of CRP is "+oneMonthExtendedDate+"Actual on UI in storeFront "+crpDate);
 		logout();
-		s_assert.assertAll();
-	}
-
-	//Hybris Project-1701:To verify CRP Autoship template Page UI
-	@Test
-	public void testVerifyCRPAutoshipTemplate_1701() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		String randomCustomerSequenceNumber = null;
-		String cid=null;
-		String cidOfInactiveUser=null;
-		String autoshipNumber=null;
-		String orderSectionBasePrice="Base Price";
-		String orderSectionAdjPrice="Adj Price";
-		String orderSectionTotalCVPrice="Total CV";
-		String orderSectionTotalQVPrice="Total QV";
-		String orderSectionQuantity="Qty";
-		String appliedPromotionDescription="Description";
-		String appliedPromotionresult="Result";
-		String orderNumberOfOrderFromAutoshipTemplate="Order #";
-		String orderStatusOfOrderFromAutoshipTemplate="Order Status";
-		String runDateOfOrderFromAutoshipTemplate="Run Date";
-		String ShipDateOfOrderFromAutoshipTemplate="Ship Date";
-		String orderTotalOfOrderFromAutoshipTemplate="Order Total";
-		String failedReasonOfOrderFromAutoshipTemplate="Failed Reason";
-		boolean isAutoshipIdPresent = false;
-		String country = null;
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			country= TestConstants.COUNTRY_DD_VALUE_CA;
-		}else{
-			country= TestConstants.COUNTRY_DD_VALUE_US;
-		}
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(country);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cid=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Verify Different Section on Customer tab page.
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyAutoshipTemplateSectionInCustomerTab(),"AutoShip Template section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerOrderSectionInCustomerTab(),"Customer Order section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerBillingInfoSectionInCustomerTab(),"Customer Billing Info section is not on Customer Tab Page");
-		s_assert.assertTrue(cscockpitCustomerTabPage.verifyCustomerAddressSectionInCustomerTab(),"Customer Address section is not on Customer Tab Page");
-		if(cscockpitCustomerTabPage.isPulseTemplateAutoshipIDHavingStatusIsPendingPresent() && cscockpitCustomerTabPage.isCRPAutoshipIDHavingStatusIsPendingPresent()==true){
-			isAutoshipIdPresent = true;
-		}
-		if(isAutoshipIdPresent ==true){
-			autoshipNumber = cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsPending();
-		}else{
-			autoshipNumber=cscockpitCustomerTabPage.getAndClickFirstAutoshipIDInCustomerTab();
-		}
-		//Verify Different section on autoShip template tab Page.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyAutoshipTemplateHeaderSectionInAutoshipTemplateTab(),"Autoship template header section is not present on Autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyAppliedPromotionSectionInAutoshipTemplateTab(),"Applied Promotion section is not present on Autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyShippingAddressSectionInAutoshipTemplateTab(),"Shipping Address section is not present on Autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyPaymentInfoSectionInAutoshipTemplateTab(),"Payment info section is not present on Autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderFromThisAutoshipTemplateSectionInAutoshipTemplateTab(),"Order from this autoship template section is not present on Autoship template page.");
-		//Verify Sub components of autoship template section in autoship template tab page.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab().contains(cid),"Autoship template header section cid Expected "+cid+"While on UI"+cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab().contains(autoshipNumber),"Autoship template header section Autoship id expected "+autoshipNumber+"While on UI"+cscockpitAutoshipTemplateTabPage.getAutoshipTemplateCIDFromAutoshipTemplateSectionInAutoshipTemplateTab());
-		if(isAutoshipIdPresent == true){
-			s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTab(),"Cancel autoship link in Autoship template header section is not present on Autoship template page.");
-			System.out.println("1");
-			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyEditAutoshipTemplateLinkInAutoshipTemplateTab(),"Edit autoship link in Autoship template header section is not present on Autoship template page.");
-			System.out.println("2");
-		}
-		//Verify Sub components of Order Detail section in autoship template tab page.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionBasePrice),"Order Detail Section Base Price Is not present.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionAdjPrice),"Order Detail Section Adj Price Is not present.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionTotalCVPrice),"Order Detail Section Total CV Is not present.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionTotalQVPrice),"Order Detail Section Total QV Is not present.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyOrderDetailsInAutoshipTemplateTab(orderSectionQuantity),"Order Detail Section Quantity Is not present.");
-		//Click + link to view product details.
-		cscockpitAutoshipTemplateTabPage.clickPlusButtonNextToProductInAutoshipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyViewProductPageLinkInAutoshipTemplateTab(),"View Product Page Detail link is not present on autoship template page.");
-		cscockpitAutoshipTemplateTabPage.clickViewProductPageLinkInAutoshipTemplateTemplateTab();
-		cscockpitAutoshipTemplateTabPage.switchToSecondWindow();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyProductDetailOfNewTabInAutoshipTemplateTab(),"View Product Page is not present after clicking view product page link in autoship template page.");
-		cscockpitAutoshipTemplateTabPage.switchToPreviousTab();
-		//click - link to collapse product details.
-		cscockpitAutoshipTemplateTabPage.clickMinusButtonNextToProductInAutoshipTemplateTab();
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyPlusButtonNextToProductInAutoshipTemplateTab(),"Plus button next to product details does not appears after clicking Minus button");
-		//Assert applied promotion details.
-		//s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyAppliedPromotionsInAutoshipTemplateTab(appliedPromotionDescription),"Applied promotion description is not present");
-		//s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyAppliedPromotionsInAutoshipTemplateTab(appliedPromotionresult),"Applied promotion results are not present");
-		//Get Shipping Address Details from Database.
-		//get Autoship Id From RFO
-		List<Map<String, Object>> autoshipIdDetailsList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_AUTOSHIP_ID_FOR_RFO, autoshipNumber),RFO_DB);
-		String autoshipID = String.valueOf(getValueFromQueryResult(autoshipIdDetailsList, "AutoshipID"));
-		System.out.println("Autoship id "+autoshipID);
-		List<Map<String,Object>> shippingAddressList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_SHIPPING_ADDRESS_FOR_AUTOSHIP_TEMPLATE_RFO, autoshipID), RFO_DB);
-		String firstName = (String) getValueFromQueryResult(shippingAddressList, "FirstName");
-		String lastName = (String) getValueFromQueryResult(shippingAddressList, "LastName");
-		String addressLine1 = (String) getValueFromQueryResult(shippingAddressList, "Address1");
-		String postalCode = (String) getValueFromQueryResult(shippingAddressList, "PostalCode");
-		String locale = (String) getValueFromQueryResult(shippingAddressList, "Locale");
-		String region = (String) getValueFromQueryResult(shippingAddressList, "Region");
-		String countryID = String.valueOf(getValueFromQueryResult(shippingAddressList, "CountryID"));
-		if(countryID.equals("40")){
-			countryID = "canada"; 
-		}else if(countryID.equals("236")){
-			countryID = "United States";
-		}
-		String shippingAddressFromDB = firstName.trim()+" "+lastName.trim()+"\n"+ addressLine1+"\n"+locale+", "+region+" "+postalCode+"\n"+countryID.toUpperCase();
-		shippingAddressFromDB = shippingAddressFromDB.trim().toLowerCase();
-		logger.info("created Shipping Address is "+shippingAddressFromDB);
-		//Assert Shipping address details.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab().contains(firstName.trim()+" "+lastName.trim()),"Shipping Address Name Expected is "+firstName.trim()+" "+lastName.trim()+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressNameInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLine1InAutoshipTemplateTab().contains(addressLine1),"Shipping Address Line 1 Expected is "+addressLine1+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLine1InAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(locale),"Shipping Address Locale Expected is "+locale+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(region),"Shipping Address Region Expected is "+region+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab().contains(postalCode),"Shipping Address PostCode Expected is "+postalCode+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressLocaleRegionPostCodeInAutoshipTemplateTab());
-
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab().toLowerCase().contains(countryID),"Shipping Address Country Expected is "+countryID+" While on UI"+cscockpitAutoshipTemplateTabPage.getShippingAddressCountryInAutoshipTemplateTab());
-		//Assert Billing address details.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab().toLowerCase().length()>0,"Payment Address Name Expected but on UI"+cscockpitAutoshipTemplateTabPage.getPaymentAddressNameInAutoshipTemplateTab());
-		//verify components of order from AutoShip Template section
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.getTextOfOrderFromAutoshipTemplateInAutoshipTemplateTab().contains("Number of Consecutive Autoship Orders From Template"),"Text Of order from autoship template Expected is= Number of Consecutive Autoship Orders From Template While on UI="+cscockpitAutoshipTemplateTabPage.getTextOfOrderFromAutoshipTemplateInAutoshipTemplateTab());
-		//Create an order in order from autoship template section.
-		if(isAutoshipIdPresent == true){
-			cscockpitAutoshipTemplateTabPage.clickRunNowButtonOnAutoshipTemplateTab();
-			cscockpitAutoshipTemplateTabPage.clickOkForRegeneratedIdpopUp();
-			s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyConfirmMessagePopUpIsAppearing(),"confirm message is not appearing for US");
-			cscockpitAutoshipTemplateTabPage.clickOkConfirmMessagePopUp();
-		}
-		//verify sub components of order from AutoShip Template section
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(orderNumberOfOrderFromAutoshipTemplate),"Order Number is not present in order from autoship template On autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(orderStatusOfOrderFromAutoshipTemplate),"Order Status is not present in order from autoship template On autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(runDateOfOrderFromAutoshipTemplate),"Run date is not present in order from autoship template On autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(ShipDateOfOrderFromAutoshipTemplate),"Ship Date is not present in order from autoship template On autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(orderTotalOfOrderFromAutoshipTemplate),"Order Total is not present in order from autoship template On autoship template page.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifySectionsOfOrderFromAutoshipTemplateInAutoshipTemplateTab(failedReasonOfOrderFromAutoshipTemplate),"Failed Reason is not present in order from autoship template On autoship template page.");
-		//click customer search tab.
-		cscockpitAutoshipTemplateTabPage.clickCustomerSearchTab();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Inactive");
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumberOfInactiveUser = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cidOfInactiveUser=cscockpitCustomerSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumberOfInactiveUser);
-		cscockpitCustomerTabPage.getAndClickAutoshipIDHavingTypeAsCRPAutoshipAndStatusIsCancelled();
-		//verify cancel autoship and edit autoship link are not present for inactive user in autoship template header.
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.verifyCancelAutoshipTemplateLinkInAutoshipTemplateTabForRandomUser(),"Cancel autoship link in Autoship template header section is present on Autoship template page for inactive user.");
-		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isEditTemplateBtnDisabled(),"Edit autoship link in Autoship template header section is present on Autoship template page for inactive user.");
-		//verify Update and run now  link are not present or disabled for inactive user in order from autoship template section.
-		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyUpdateLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Update link in order from Autoship template section is active  on Autoship template page for inactive user.");
-		s_assert.assertFalse(cscockpitAutoshipTemplateTabPage.verifyRunNowLinkInOrderFromAutoshipTemplateInAutoshipTemplateTab(),"Run now  link in order from Autoship template section is active on Autoship template page for inactive user.");
 		s_assert.assertAll();
 	}
 
@@ -1088,6 +943,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyCancelAutoshipButtonNotDisplayedInCRPCheckoutPage_1704(){
 		RFO_DB = driver.getDBNameRFO();
+		String countryCode= propertyFile.getProperty("country");
 		String randomCustomerSequenceNumber = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID;
@@ -1158,7 +1014,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateUpdateTabPage.enterCVVValueInCheckoutTab(TestConstants.SECURITY_CODE);
 		cscockpitAutoshipTemplateUpdateTabPage.clickUseThisCardBtnInCheckoutTab();
 		cscockpitAutoshipTemplateUpdateTabPage.clickUpdateAutoshipTemplateInAutoshipTemplateUpdateTab();
-		driver.get(driver.getStoreFrontURL()+"/us");
+		driver.get(driver.getStoreFrontURL()+countryCode);
 		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnAutoshipCart();
 		s_assert.assertTrue(storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue).contains(qtyOfProduct), "Expected No Of Quantity of Add product in store front is "+qtyOfProduct+" Actual on UI is "+storeFrontUpdateCartPage.getQtyOfAddedProduct(SKUValue));

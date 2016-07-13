@@ -16,7 +16,6 @@
 					<include name="testFindAutoshipSearchCriteria_1723"></include>
 					<include name="testVerifyChangeCRPDate_1705"></include>
 					<include name="testVerifyCreateCRPAutoship_1700"></include>
-					<include name="testVerifyCRPAutoshipTemplate_1701"></include>
 					<include name="testVerifyPulseFeeProductNotAvailableToAddIntoCrpCart_4722"></include>
 					<include name="testVerifyPCPerksRunAutoshipFromAutoshipTemplate_1719"></include>
 					<include name="testVerifyRunNowButtonNotDisplayedForCancelledPCPerksAutoship_1715"></include>

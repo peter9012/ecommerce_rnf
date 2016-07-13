@@ -19,7 +19,6 @@
 			<include name="testVerifyReturnHandlingFunctionality_2025"></include>
 			<include name="testCheckReturnOrderInformationOnTheOrderHistoryPage_2409"></include>
 			<include name="testVerifyPartiallyReturnFunctionality_2028"></include>
-			<include name="testVerifyPartiallyShippedOrder_3817"></include>
 			</methods>
 			</class>
 		</classes>

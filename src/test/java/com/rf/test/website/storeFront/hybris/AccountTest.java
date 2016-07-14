@@ -1426,7 +1426,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 			lastNameDB = (String) getValueFromQueryResult(accountNameDetailsList, "LastName");
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB),"Last Name on UI is different from DB" );
 			storeFrontAccountInfoPage.clickMeetYourConsultantLink();
-			s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameAndLastNameAtMeetYourConsultantSection(TestConstants.FIRST_NAME+randomNum,lastName),"First name and last name is not updated at meet your consultant section");
 			s_assert.assertAll();
 			//***REMOVED FURTHER ACTIONS AS VERIFY NAME IS PURPOSE OF TEST***
 		}else{

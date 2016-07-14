@@ -2163,7 +2163,7 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String lastName = "lN";
 		country = driver.getCountry();
 		List<Map<String, Object>> randomConsultantList=null;
-		List<Map<String, Object>> sponsorIdList =null;
+		List<Map<String, Object>> sponsorIdList = null;
 		String requiredCountry=null;
 		String requiredCountryId=null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);

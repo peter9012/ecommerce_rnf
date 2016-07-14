@@ -1417,8 +1417,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String getThresholdMessageIsDisplayed(){
 		driver.pauseExecutionFor(3000);
-		driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
-		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+		try{
+			driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+			return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
+		}catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='globalMessages']//div[@class='information_message negative']"));
+			return driver.findElement(By.xpath("//div[@id='globalMessages']//div[@class='information_message negative']")).getText();
+		}
 	}
 
 	public void clickOnBelowFieldsSponsorLink(){
@@ -3755,9 +3760,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickConnectUnderConnectWithAConsultantSection(){
-		WebElement element = driver.findElement(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+		WebElement element = driver.findElement(By.xpath("//div[@id='corp-start-boxes']/div[1]//h3[contains(text(),'CONNECT WITH A CONSULTANT')]//following-sibling::a"));
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		driver.click(By.xpath("//div[@class='corp-start-left']//h3[contains(text(),'CONNECT WITH A CONSULTANT')]/following-sibling::a"));
+		driver.click(By.xpath("//div[@id='corp-start-boxes']/div[1]//h3[contains(text(),'CONNECT WITH A CONSULTANT')]//following-sibling::a"));
 	}
 
 	public boolean verifySponsorDetailsPresent() {

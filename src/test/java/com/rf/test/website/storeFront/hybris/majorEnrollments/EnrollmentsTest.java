@@ -70,6 +70,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-5284:CORP:Standard Enroll USD 395 Personal Results Kit, Personal Regimen REVERSE REGIME
 	@Test(priority=1)
 	public void testStandardEnroll_PersonalRegimenReverseRegime_5284() throws InterruptedException{
+		navigateToStoreFrontBaseURL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;

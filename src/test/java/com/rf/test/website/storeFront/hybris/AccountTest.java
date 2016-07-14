@@ -1427,12 +1427,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyLasttNameFromUIForAccountInfo(lastNameDB),"Last Name on UI is different from DB" );
 			storeFrontAccountInfoPage.clickMeetYourConsultantLink();
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameAndLastNameAtMeetYourConsultantSection(TestConstants.FIRST_NAME+randomNum,lastName),"First name and last name is not updated at meet your consultant section");
-			storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
-			storeFrontHomePage.clickAddToBagButton(driver.getCountry());
-			storeFrontHomePage.clickOnCheckoutButton();
-			s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameAndLastNameAtMainAccountInfoduringPlacingAdhocOrder(TestConstants.FIRST_NAME+randomNum,lastName),"First name and last name is not updated at main account info during placing adhoc order");
 			s_assert.assertAll();
+			//***REMOVED FURTHER ACTIONS AS VERIFY NAME IS PURPOSE OF TEST***
 		}else{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}

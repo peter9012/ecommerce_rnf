@@ -987,12 +987,9 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		userPWS = storeFrontHomePage.getDotBizPWS();
 		storeFrontHomePage.checkPulseCheckBox();
-		s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
@@ -1002,90 +999,9 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		PWSAfterEnrollment =driver.getCurrentUrl();
 		s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
+		//***THIS TEST IS DONE HERE ***
 		driver.get(driver.getURL()+"/"+driver.getCountry());
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		//assert CA user with US Sponsor
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			// Get us sponser with PWS from database
-			sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",countryNameForUS,countryIdForUS),RFO_DB);
-			sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
-			sponsorPWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
-			// sponser search by Account Number
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
-			idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-			storeFrontHomePage.searchCID(idForConsultant);
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			PWSAfterSelectSponsor = driver.getCurrentUrl();
-			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city,state, postalCode, phoneNumber);
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber1);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickNextButton();
-			userPWS = storeFrontHomePage.getDotBizPWS();
-			storeFrontHomePage.checkPulseCheckBox();
-			s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.selectProductAndProceedToAddToCRP();
-			storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			PWSAfterEnrollment =driver.getCurrentUrl();
-			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		}else{
-			// Get CA sponser with PWS from database
-			sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",countryNameForCA,countryIdForCA),RFO_DB);
-			sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
-			sponsorPWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
-			// sponser search by Account Number
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
-			idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-			storeFrontHomePage.searchCID(idForConsultant);
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			PWSAfterSelectSponsor = driver.getCurrentUrl();
-			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum, password,addressLine1, city,state, postalCode, phoneNumber);
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber1);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickNextButton();
-			userPWS = storeFrontHomePage.getDotBizPWS();
-			storeFrontHomePage.checkPulseCheckBox();
-			s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.selectProductAndProceedToAddToCRP();
-			storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			PWSAfterEnrollment =driver.getCurrentUrl();
-			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		}
 		s_assert.assertAll();
 	}
 

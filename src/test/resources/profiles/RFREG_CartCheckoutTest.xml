@@ -10,7 +10,9 @@
 		<classes>
 
 			<class name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest" />
-			
+			<methods>
+				<exclude name="testValidateErrorMessagesThroughOutChkOutFlow_2368" />
+			</methods>
 		</classes>
 	</test>
 </suite>

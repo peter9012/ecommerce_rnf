@@ -1652,17 +1652,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
-//		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//		logger.info("Account Id of the user is "+accountID);
-//
-//		// Get Account Number
-//		List<Map<String, Object>>sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-//		String sponsorID = (String) getValueFromQueryResult(sponsorIdList, "AccountNumber");
-//
-////		storeFrontHomePage.clickOnNotYourSponsorLink();
-////		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponsorID);
-//		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
+//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();

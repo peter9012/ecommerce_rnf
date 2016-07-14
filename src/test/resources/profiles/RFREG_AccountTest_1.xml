@@ -27,7 +27,6 @@
 				<include name="terminateUserAndLoginWithSameUsername_4281" />
 				<include name="testVerifyUserCanCancelPulseSubscriptionThroughMyAccount_2233" />
 				<include name="testVerifySubscribeToPulse_2134" />
-				<include name="testchangeUsernameOfRcUserWithUpdatedUserName_4660" />
 				<include name="testPCUserCancelPcPerks_2234" />
 				</methods>
 

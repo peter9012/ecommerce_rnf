@@ -207,9 +207,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
 		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", shopSkinCare);
 		WebElement allProducts = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']"));
-		actions.moveToElement(allProducts).pause(1000).build().perform();
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", allProducts);
 		while(true){
 			try{
 				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']")));

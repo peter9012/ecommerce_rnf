@@ -277,7 +277,6 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchList(), "No Sponsor present in search results");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		String currentPWS = driver.getCurrentUrl();
-		s_assert.assertFalse(currentPWS.contains("corp"), "After select sponsor current url does  contain corp");
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,password, addressLine1, city,state,postalCode, phoneNumber);
 		//storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, TestConstants.PROVINCE_YUKON, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();

@@ -11,6 +11,8 @@
 
 				<class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest" />
 					<methods>
+					<exclude name="testViewUSConsultantPWSSiteOnCanadaAsAnotherUSConsultant_4058" />
+					<exclude name="testSSNValidationForConsultantTryingToCancelUnderInvalidSponsorUpline_101"/>
 					<exclude name="testSponsorSearchAndDetailsByNameOrID_2247" />
 					<exclude name="testAccessCanadianPWSSiteOfUSConsultantAsUSRCUser_4063" />
 					<exclude name="testSelectSponsorFromConnectWithConsultantPageShoulDirectToSponsorComSite_3751" />

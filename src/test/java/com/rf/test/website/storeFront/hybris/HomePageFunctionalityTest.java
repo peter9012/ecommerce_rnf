@@ -768,10 +768,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			if(isLoginError){
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
+				System.out.println(consultantEmailID + " failed to login.");
+				
 			}
 			else
 				break;
 		}
+	
 		logger.info("login is successful");
 		//click meet your consultant banner link
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
@@ -782,29 +785,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//select the checkbox next to the email field and click save..
 		storeFrontHomePage.checkEmailFieldCBOnEditConsultantInfoPage();
 		storeFrontHomePage.clickOnSaveAfterEditPWS();
-		//validate we are navigated to "Meet your Consultant" page
-		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"Meet your consultant page is not displayed");
 
-		logout();
-
-		storeFrontHomePage.openPWS(comPWS);
-
-		//Login with same PWS consultant
-		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
-		s_assert.assertFalse(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(), "Email Address is not Present in contact box After Edit");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your name box is not present on com site");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnterYourEmailFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your email box is not present on com site");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnterYourMessageFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your Message box is not present on com site");
-		s_assert.assertTrue(storeFrontHomePage.verifySubmitButtonIsPresentOnMeetMyConsultantPage(), "Send button is not present on com site");
-
-		logout();
-
-		String bizPWS = storeFrontHomePage.convertComSiteToBizSite(comPWS);
-		storeFrontHomePage.openPWS(bizPWS);
-
-		//Login with same PWS consultant
-		storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
 		s_assert.assertFalse(storeFrontHomePage.verifyEmailIdIsPresentInContactBox(), "Email Address is not Present in contact box After Edit");
 		s_assert.assertTrue(storeFrontHomePage.verifyEnterYourNameFunctionalityIsPresentOnMeetMyConsultantPage(), "Enter your name box is not present on com site");
@@ -1086,7 +1067,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.addNewContentOfYourOwnCopy();
 		storeFrontConsultantPage.clickSaveButton();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
-		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
 		s_assert.assertAll();
 	}
 
@@ -1127,7 +1108,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.addNewContentOfYourOwnCopyInComPWS();
 		storeFrontConsultantPage.clickSaveButton();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
-		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
 		s_assert.assertAll();
 	}
 

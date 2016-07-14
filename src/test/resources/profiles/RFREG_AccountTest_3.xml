@@ -17,8 +17,6 @@
                                 <include name="testLookUpWithTerminatedRCFullNameOrAccountID_4012" />
                                 <include name="testCreatingCRPAutoshipUnderBizSite_3920" />
                                 <include name="testSubscribingPulseMyAccount_3921" />
-                                <include name="testAccessUSConsCanadianPWSAsACanadianConsultantWithoutPulse_4064" />
-                                <include name="testLoginOnUsConsCanadianPWSAsACanadianConsultantWithoutPulse_4065" />
                                 <include name="testEditExistingShippingAndBillingAddressOnEditCRPTemplate_4814" />
                                 <include name="testAddNewShippingAndBillingAddressOnEditCRPTemplate_4813" />
                                 <include name="testAddMultipeShippingAddressFromMyAccounts_2283" />

@@ -584,17 +584,11 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
 		//Log in or create an account page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-		logger.info("Login or Create Account page is displayed");
 		PCUserEmailID = firstName+"@xyz.com";
 		//Enter the User information and check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum,password,PCUserEmailID);
 		storeFrontHomePage.clickOnRequestASponsorBtn();
-		storeFrontHomePage.clickOKOnSponsorInformationPopup();
-		storeFrontHomePage.clickOnNotYourSponsorLink();
-		s_assert.assertTrue(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(),"continue Without sponser link is not present");
-		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
-		s_assert.assertTrue(storeFrontHomePage.verifyRFCorporateSponsorPresent(),"RF Corporate sponsor not present");
+		//*** USE SELECTED DO NOT DESELECT ***
 		storeFrontHomePage.enterMainAccountInfo();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -1458,8 +1452,6 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.uncheckPulseAndCRPEnrollment();
-			s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
-			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 			storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
@@ -1482,22 +1474,12 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			// Click on our product link that is located at the top of the page and then click in on quick shop
 			storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 			// Products are displayed?
-			s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-			logger.info("Quick shop products are displayed");
-
 			//Select a product and proceed to buy it
 			storeFrontHomePage.selectProductAndProceedToBuy();
-
-			//assert sign up link
-			s_assert.assertFalse(storeFrontHomePage.verifySignUpLinkIsPresent(), "Sign up link is present on checkout page");
-
 			//Click on Check out
 			storeFrontHomePage.clickOnCheckoutButton();
 
-			//Log in or create an account page is displayed?
-			s_assert.assertTrue(storeFrontHomePage.isLoginOrCreateAccountPageDisplayed(), "Login or Create Account page is NOT displayed");
-			logger.info("Login or Create Account page is displayed");
-
+		
 			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 			String rcEmailAddress = firstNameRC+"@xyz.com";
 			storeFrontHomePage.enterNewRCDetails(firstNameRC, TestConstants.LAST_NAME+randomNum, rcEmailAddress, password);
@@ -1506,12 +1488,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterMainAccountInfo();
 			logger.info("Main account details entered");
 
-			//assert not your sponsor link is present
-			s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(), "Not your sponsor link is not present");
-
-			//assert continue without sponsor link is not present
-			s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponsorLinkIsPresent(), "Continue without sponsor link is present");
-
+		
 			// sponser search by Account Number
 			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,consultantEmailAddress),RFO_DB);
 			String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));

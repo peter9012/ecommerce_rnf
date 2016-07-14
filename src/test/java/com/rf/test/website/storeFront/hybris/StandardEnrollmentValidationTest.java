@@ -1897,7 +1897,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1288 :: Version : 1 :: 2. Terms and Conditions - Standard EnrollmentTest with both CRP and Pulse
-	@Test(enabled=false)//Covered in TC 5284
+	@Test(enabled=true)//Covered in TC 5284
 	public void testStandardEnrollmentTermsAndConditions_1288() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

@@ -29,10 +29,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='SIGN IN']");
 	//private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//div[@id='sponsorPage']/div/div/div[2]/div/div[1]/a");
-	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don’t Have an R+F Sponsor?')]");
+	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Donï¿½t Have an R+F Sponsor?')]");
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
-	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now »')]");
+	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now ï¿½')]");
 	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//div[@id='disclaimer']//a[contains(text(),'Policies and Procedures')]");
 	private String addressLine1=null;
 	private String city=null;
@@ -109,7 +109,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.type(By.id("sponserparam"),"test");
+			driver.type(By.id("sponserparam"),"mary");
 
 		}catch(NoSuchElementException e){
 			driver.type(By.id("sponsor-name-id"),"test");
@@ -193,9 +193,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
 		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+	     ((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", shopSkinCare);
+		//actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']"));
-		actions.moveToElement(allProducts).pause(1000).build().perform();
+
+		 ((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", allProducts);
+		//allProducts.click();//actions.moveToElement(allProducts).pause(1000).build().perform();
 		while(true){
 			try{
 				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']")));
@@ -460,8 +463,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterCardNumber(String cardNumber){
-		driver.waitForElementPresent(By.id("card-nr"));
-		driver.type(By.id("card-nr"),cardNumber+"\t");
+		driver.pauseExecutionFor(5000);
+		driver.waitForElementPresent(By.xpath("//*[@id='card-nr']"));
+		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
+		//executor.executeScript("arguments[0].setAttribute('value', '"+cardNumber+"')", driver.findElement(By.xpath("//*[@id='card-nr']")));
+		driver.type(By.xpath("//*[@id='card-nr']"),cardNumber);
+		executor.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
 		logger.info("card number entered as "+cardNumber);
 	}
 
@@ -956,8 +963,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"));
+		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription ï¿½']"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
@@ -2795,7 +2802,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean verifyShopNowPageAfterClickingShopNowLinkOfHeroBanner(){
 		if(driver.getCurrentUrl().toLowerCase().contains("Skincare-for-Expression-Lines".toLowerCase())&&
-				driver.getTitle().contains("ACUTE CARE™ Skincare for Expression Lines- Rodan + Fields")){
+				driver.getTitle().contains("ACUTE CAREï¿½ Skincare for Expression Lines- Rodan + Fields")){
 			return true;
 		}else{
 			return false;

@@ -22,7 +22,7 @@ public class HtmlLogger
 		OutputStream htmlfile = new FileOutputStream(new File(
 				"logs/rf-info.html"));
 		PrintStream printhtml = new PrintStream(htmlfile);
-		String imagePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\staticdata\\RodanAndFields.png";
+		String imagePath = System.getProperty("user.dir")+ "/src/test/resources/staticdata/RodanAndFields.png";
 		System.out.println("Image path is "+imagePath);
 
 		BufferedReader br = new BufferedReader(new FileReader("logs/rf-info.log"));

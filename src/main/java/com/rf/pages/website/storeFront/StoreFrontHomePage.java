@@ -3374,10 +3374,18 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		try{
 			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span"));
 			return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[3]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
-		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
-			return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
+		}catch(Exception e){
+			try{
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
+				return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
+			}
+			catch(NoSuchElementException e2){
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[1]/div[1]/h1/span"));
+				return driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[1]/div[1]/h1/span")).getText().contains(numberOfProductsInCart);
+
+			}
 		}
+
 	}
 
 	public String getSubTotalOfAddedProduct() {

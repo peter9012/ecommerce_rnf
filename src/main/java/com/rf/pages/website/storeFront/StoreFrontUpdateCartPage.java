@@ -1308,13 +1308,25 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			String []countOfProduct=arr[0].split("\\(");
 			countOfProductInAutoShipCart=countOfProduct[1];
 			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
-		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
-			String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().trim();
-			String[] arr=count.split("\\ ");
-			String []countOfProduct=arr[0].split("\\(");
-			countOfProductInAutoShipCart=countOfProduct[1];
-			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+		}catch(Exception e){
+			try{
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
+				String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().trim();
+				String[] arr=count.split("\\ ");
+				String []countOfProduct=arr[0].split("\\(");
+				countOfProductInAutoShipCart=countOfProduct[1];
+				logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+			}
+			catch(NoSuchElementException e2){
+
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[1]/div[1]/h1/span"));
+				String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[1]/div[1]/h1/span")).getText().trim();
+				String[] arr=count.split("\\ ");
+				String []countOfProduct=arr[0].split("\\(");
+				countOfProductInAutoShipCart=countOfProduct[1];
+				logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+			}
+
 		}
 		return countOfProductInAutoShipCart.trim();
 	}

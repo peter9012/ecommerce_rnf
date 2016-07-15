@@ -150,7 +150,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 		String meetYourConsultantURL = "meetYourConsultant/meetYourConsultant/MeetYourConsultantPage";
 		return driver.getCurrentUrl().toLowerCase().contains(meetYourConsultantViewURL.toLowerCase())|| driver.getCurrentUrl().toLowerCase().contains(meetYourConsultantURL.toLowerCase());
 	}
-	
+
 	public boolean validateCRPCartDisplayed(){
 		driver.waitForElementPresent(By.xpath("//div[@id='bag-special']/span"));
 		return driver.isElementPresent(By.xpath("//div[@id='bag-special']/span"));
@@ -171,7 +171,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyDefaultContentReseted() {
 		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
 		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]")).getText();
-		if(content.contains("Rodan + Fields has brought confidence")){
+		if(content.contains("I am proud to represent Rodan + Fields")){
 			return true;
 		}
 		return false;
@@ -209,7 +209,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyDefaultContentResetedForComPWS() {
 		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]"));
 		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[2]//div[4]")).getText();
-		if(content.contains("No matter your age")){
+		if(content.contains("I am proud to represent Rodan + Fields")){
 			return true;
 		}
 		return false;

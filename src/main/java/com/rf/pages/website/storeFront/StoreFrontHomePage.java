@@ -463,7 +463,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterCardNumber(String cardNumber){
-		driver.pauseExecutionFor(5000);
 		driver.waitForElementPresent(By.xpath("//*[@id='card-nr']"));
 		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
 		//executor.executeScript("arguments[0].setAttribute('value', '"+cardNumber+"')", driver.findElement(By.xpath("//*[@id='card-nr']")));

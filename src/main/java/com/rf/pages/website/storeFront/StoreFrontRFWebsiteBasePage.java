@@ -499,7 +499,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterNewBillingCardNumber(String cardNumber){
 		driver.waitForElementPresent(By.id("card-nr"));
-		driver.type(By.id("card-nr"), cardNumber);
+		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
+		driver.type(By.xpath("//*[@id='card-nr']"),cardNumber);
+		executor.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
 		logger.info("Billing card number entered is "+cardNumber);
 	}
 
@@ -540,8 +542,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
-		driver.pauseExecutionFor(5000);
-		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//div[@id='payment-next-button']/input")));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1120,21 +1121,22 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
 		driver.pauseExecutionFor(2000);
-		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
 		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");			
 		}else{
 			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
-			actions.moveToElement(allProducts).pause(1000).build().perform();
+			/*actions.moveToElement(allProducts).pause(1000).build().perform();*/
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
 			while(true){
 				try{
 					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 					break;
 				}catch(Exception e){
 					System.out.println("element not clicked..trying again");
-					actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+					/*actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
 
 				}
 			}
@@ -1149,22 +1151,22 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
-		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
+		
 		driver.pauseExecutionFor(2000);
 		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
 		}else{
 			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
-			actions.moveToElement(allProducts).pause(1000).build().perform();
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
 			while(true){
 				try{
 					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 					break;
 				}catch(Exception e){
 					System.out.println("element not clicked..trying again");
-					actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 
 				}
 			}
@@ -1211,8 +1213,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_ORDERS_LINK_LOC));
 		logger.info("User has clicked on orders link from welcome drop down");
 		return new StoreFrontOrdersPage(driver);
 	}

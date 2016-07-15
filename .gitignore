@@ -11,3 +11,4 @@ test-output/
 *.exe
 *.DS_Store
 logs/rf-info.html
+pom.xml

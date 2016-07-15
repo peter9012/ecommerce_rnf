@@ -53,8 +53,9 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.id("card-nr"));		
 		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);		
 		driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
+		js.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
 
@@ -375,7 +376,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
-		//driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
 		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
 		logger.info("Next button on billing profile clicked");	
 		driver.waitForLoadingImageToDisappear();
@@ -1136,7 +1137,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void addAshippingProfileAndClickOnItsEdit(String city,String state,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
-		//driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
+		//driver.waitForElementPresent(By.xpath("//a[text()='Add new shipping address ï¿½']"));
 		driver.click(By.xpath("//a[contains(text(),'Add new shipping address')]"));
 		logger.info("add new shipping address clicked");
 		enterNewShippingAddressName(profileName+" "+TestConstants.LAST_NAME);

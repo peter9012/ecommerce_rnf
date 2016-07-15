@@ -22,23 +22,27 @@
 						name="testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67" />
 				</methods>
 			</class>
-			<class
-				name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
+			<class name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
 				<methods>
-					
 					<include name="testTermsAndConditionsRCEnrollment_2188" />
-					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
-					<include name="testPCEnrollment_1308" />
 				</methods>
 			</class>
-			<class
-				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest">
+			<class name="com.rf.test.website.storeFront.hybris.majorEnrollments.EnrollmentsTest">
+				<methods>
+					<include name="testPCEnrollment_1308_2160_2187_2300_1308" />
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.StandardEnrollmentValidationTest">
+				<methods>
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255" />
+				</methods>
+			</class>
+			<class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest">
 				<methods>
 					<include name="testStandardEnrollmentPersonalKitReverseRegimen_50" />
-					<include name="testTermsAndConditionsRCEnrollment_2188" />
+					
 				</methods>
 			</class>
-
 		</classes>
 	</test>
 </suite>

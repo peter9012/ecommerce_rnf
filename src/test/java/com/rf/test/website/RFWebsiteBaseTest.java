@@ -115,7 +115,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
 		new HtmlLogger().createHtmlLogFile();                 
-		driver.quit();
+		//driver.quit();
 	}
 
 	public void setStoreFrontPassword(String pass){

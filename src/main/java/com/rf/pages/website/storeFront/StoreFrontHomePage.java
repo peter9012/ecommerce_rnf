@@ -188,6 +188,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+	
+	public void mouseHoverSponsorInResultAndClickContinue(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
+		driver.pauseExecutionFor(1000);
+		//		driver.click(By.xpath("//input[@value='Select & Continue']"));
+		driver.click(By.xpath("//input[contains(@value,'Select')]"));
+		driver.waitForLoadingImageToDisappear();
+	}
+	
+	public boolean isSponsorPresentInSearchResult(){
+		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
+	}
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -463,6 +477,22 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				return false;
 			}
 		}
+	}
+	
+	public boolean verifyAndClickAcceptOnQASPopup(){
+		try{
+			driver.waitForLoadingImageToDisappear();
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.waitForLoadingImageToDisappear();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
+	public boolean isQuebecNotEligibleAsConsultantErrorDisplayed(){
+		return driver.isElementPresent(By.xpath("//span[@id='addressForm.stateIso.errors']"));
 	}
 
 	public void enterCardNumber(String cardNumber){

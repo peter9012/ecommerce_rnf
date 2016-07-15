@@ -9,6 +9,6 @@ buildHistory/
 test-output/
 *.log
 *.exe
-*.DS_Store
+*DS_Store
 logs/rf-info.html
 pom.xml

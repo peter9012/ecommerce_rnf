@@ -643,8 +643,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnUpdateMoreInfoButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='Update more info']"));
-		driver.click(By.xpath("//input[@value='Update more info']"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Update Shipping and Billing info')]"));
+		driver.click(By.xpath("//a[contains(text(),'Update Shipping and Billing info')]"));
 		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 	}
@@ -1310,12 +1310,21 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			countOfProductInAutoShipCart=countOfProduct[1];
 			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
 		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
-			String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().trim();
-			String[] arr=count.split("\\ ");
-			String []countOfProduct=arr[0].split("\\(");
-			countOfProductInAutoShipCart=countOfProduct[1];
-			logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+			try{
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div/div[1]/h1/span  "));
+				String count=driver.findElement(By.xpath(".//div[@id='shopping-wrapper']/div/div[1]/h1/span  ")).getText().trim();
+				String[] arr=count.split("\\ ");
+				String []countOfProduct=arr[0].split("\\(");
+				countOfProductInAutoShipCart=countOfProduct[1];
+				logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+			}catch(NoSuchElementException e1){
+				driver.waitForElementPresent(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span"));
+				String count=driver.findElement(By.xpath("//div[@id='shopping-wrapper']/div[2]/div[1]/h1/span")).getText().trim();
+				String[] arr=count.split("\\ ");
+				String []countOfProduct=arr[0].split("\\(");
+				countOfProductInAutoShipCart=countOfProduct[1];
+				logger.info("count of product in autoship cart is "+countOfProductInAutoShipCart);
+			}
 		}
 		return countOfProductInAutoShipCart.trim();
 	}
@@ -1567,6 +1576,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public boolean isDeliveryChargesPresent(){
 		driver.waitForElementPresent(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span"));
 		String deliveryCharges =  driver.findElement(By.xpath("//div[@class='checkout-module-content']//div[contains(text(),'Delivery')]/following::div[1]/span")).getText().trim().split("\\$")[1].trim();
+		return !(deliveryCharges==null);
+	}
+
+	public boolean isShippingChargesPresentAtOrderConfirmationPage(){
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]"));
+		String deliveryCharges = driver.findElement(By.xpath("//span[contains(text(),'Shipping')]/following::span[1]")).getText();
 		return !(deliveryCharges==null);
 	}
 

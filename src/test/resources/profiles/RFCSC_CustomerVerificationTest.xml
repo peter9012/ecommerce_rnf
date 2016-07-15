@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CSC_CustomerVerificationSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="CSC_CustomerVerificationTest">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.CustomerVerificationTest" />
+		</classes>
+	</test>
+</suite>

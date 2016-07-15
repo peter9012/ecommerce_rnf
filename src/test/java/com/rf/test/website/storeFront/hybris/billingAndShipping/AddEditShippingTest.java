@@ -455,6 +455,7 @@ public class AddEditShippingTest extends RFWebsiteBaseTest{
 		storeFrontShippingInfoPage = storeFrontUpdateCartPage.clickShippingLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontShippingInfoPage.verifyShippingInfoPageIsDisplayed(),"shipping info page has not been displayed");
 		s_assert.assertTrue(storeFrontShippingInfoPage.isShippingAddressPresentOnShippingPage(editedShippingName), "Newly/Edited Shipping address is not listed on Shipping profile page");
+		s_assert.assertFalse(storeFrontShippingInfoPage.verifyRadioButtonIsSelectedByDefault(editedShippingName), "Shipping address was given in main account info is selected by default");
 		s_assert.assertAll();
 	}
 

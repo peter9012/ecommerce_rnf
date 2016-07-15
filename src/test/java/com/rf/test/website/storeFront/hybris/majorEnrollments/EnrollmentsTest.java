@@ -70,6 +70,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	//Hybris Project-5284:CORP:Standard Enroll USD 395 Personal Results Kit, Personal Regimen REVERSE REGIME
 	@Test(priority=1)
 	public void testStandardEnroll_PersonalRegimenReverseRegime_5284() throws InterruptedException{
+		navigateToStoreFrontBaseURL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.STANDARD_ENROLLMENT;
@@ -227,8 +228,8 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 
 	}
 
-	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
-	@Test(priority=5)
+	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor(Standard)
+	@Test
 	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -263,10 +264,9 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Hybris Project-5137:Global Sponsorship : Cross Country Sponsor
-	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor
+	//Hybris Project-5137:Global Sponsorship : Cross Country Sponsor(Express)
 	@Test(priority=6)
-	public void testGlobalSponsorshipCrossCountrySponsor_2251_5137() throws InterruptedException {
+	public void testGlobalSponsorshipCrossCountrySponsor_5137() throws InterruptedException {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		enrollmentType = TestConstants.EXPRESS_ENROLLMENT;
@@ -278,7 +278,6 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isSponsorPresentInSearchList(), "No Sponsor present in search results");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		String currentPWS = driver.getCurrentUrl();
-		s_assert.assertFalse(currentPWS.contains("corp"), "After select sponsor current url does  contain corp");
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum,password, addressLine1, city,state,postalCode, phoneNumber);
 		//storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, firstName, TestConstants.LAST_NAME+randomNum, password, addressLine1, city, TestConstants.PROVINCE_YUKON, postalCode, phoneNumber);
 		storeFrontHomePage.clickNextButton();

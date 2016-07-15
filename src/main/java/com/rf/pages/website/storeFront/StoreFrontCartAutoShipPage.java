@@ -11,12 +11,12 @@ public class StoreFrontCartAutoShipPage extends StoreFrontRFWebsiteBasePage{
 			.getLogger(StoreFrontCartAutoShipPage.class.getName());
 
 
-	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//input[@value='Update more info']");
+//	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//input[@value='Update more info']");
+	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//a[contains(text(),'Update Shipping and Billing info')]");	
 	
 	public StoreFrontCartAutoShipPage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-
 
 	public StoreFrontUpdateCartPage clickUpdateMoreInfoLink() throws InterruptedException{
 		driver.waitForElementPresent(UPDATE_MORE_INFO_LINK_LOC);
@@ -26,3 +26,4 @@ public class StoreFrontCartAutoShipPage extends StoreFrontRFWebsiteBasePage{
 		return new StoreFrontUpdateCartPage(driver);
 	}	
 }
+

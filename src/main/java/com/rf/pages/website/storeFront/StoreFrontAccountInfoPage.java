@@ -13,6 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 
 
@@ -458,6 +459,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("Save account info button clicked "+ACCOUNT_SAVE_BUTTON_LOC);
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public StoreFrontAccountInfoPage clickOnAccountInfoFromLeftPanel(){
@@ -550,7 +552,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
 		actions = new Actions(RFWebsiteDriver.driver);
-		String spouseFirstName="Mary";
+		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
+		String spouseFirstName="Mary"+randomNumber;
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
@@ -563,12 +566,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
 		driver.click(By.xpath("//input[@id='acceptSpouse']"));
 		driver.pauseExecutionFor(1500);
-		return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
+		//return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
 	public boolean validateClickCancelOnProvideAccessToSpousePopup(){
 		actions = new Actions(RFWebsiteDriver.driver);
-		String spouseFirstName="Mary";
+		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
+		String spouseFirstName="Mary"+randomNumber;
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
@@ -581,7 +586,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
-		return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+		return !driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
+		//return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
 	public void clickOnSaveButtonAfterAddressChange() throws InterruptedException{
@@ -681,7 +687,6 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyProfileUpdationMessage(){
 		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//p"));
 		String updationMessage = driver.findElement(By.xpath("//div[@id='globalMessages']//p")).getText();
-		System.out.println("updationMessage==="+updationMessage);
 		if(updationMessage.equals("Your profile has been updated")){
 			return true;
 		}
@@ -689,8 +694,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']"));
-		return driver.findElement(By.xpath("//div[@class='information_message negative']/p[text()='Your Username already exist,Please Enter the Different Username']")).isDisplayed();
+		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div"));
+		return driver.findElement(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div")).isDisplayed();
 	}
 
 	public String getWrongUsernameErrorMessage() {
@@ -991,6 +996,26 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		Select stateDD = new Select(driver.findElement(By.xpath("//select[@id='state']")));
 		stateDD.selectByVisibleText(state);
 		return state;
+	}
+
+	public boolean validateClickXOnProvideAccessToSpousePopup(){
+		actions = new Actions(RFWebsiteDriver.driver);
+		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
+		String spouseFirstName="Mary"+randomNumber;
+		String spouseLastName="Rose";
+		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
+		driver.pauseExecutionFor(5000);
+		driver.clear(By.xpath("//input[@id='spouse-first']"));
+		driver.clear(By.xpath("//input[@id='spouse-last']"));
+		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
+		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
+		actions.sendKeys(Keys.TAB).build().perform();
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
+		driver.click(By.xpath("//span[@class='icon-close']"));
+		driver.pauseExecutionFor(1500);
+		return !driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
+		//return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
 
 }

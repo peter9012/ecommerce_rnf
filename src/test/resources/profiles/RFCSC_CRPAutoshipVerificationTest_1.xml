@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CSC_CRPAutoshipVerificationSuite1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="CSC_CRPAutoshipVerificationTest">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.CRPAutoshipVerificationTest">
+				<methods>
+					<include name="testToVerifyAddNewPaymentProfileFunctionalityInTheCheckoutPage_1735"></include>
+					<include name="testVerifyTheFindAutoshipPageUI_1722"></include>
+					<include name="testVerifyEditCRPAutoshipTemplate_1702"></include>
+					<include name="testFindAutoshipSearchCriteria_1723"></include>
+					<include name="testVerifyChangeCRPDate_1705"></include>
+					<include name="testVerifyCreateCRPAutoship_1700"></include>
+					<include name="testVerifyPulseFeeProductNotAvailableToAddIntoCrpCart_4722"></include>
+					<include name="testVerifyPCPerksRunAutoshipFromAutoshipTemplate_1719"></include>
+					<include name="testVerifyRunNowButtonNotDisplayedForCancelledPCPerksAutoship_1715"></include>
+					<include name="testVerifyUpdateCRPAutoshipTemplate_1703"></include>
+					<include name="testVerifyCancelAutoshipButtonNotDisplayedInCRPCheckoutPage_1704"></include>
+					<include name="testVerifyDelayPCPerks_1709"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

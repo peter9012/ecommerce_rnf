@@ -417,9 +417,8 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4467 ADD a billing profile from AUTOSHIP CART page, having "Use this billing profile for your future auto-ship" check box NOT CHECKED
-	//Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future use" NOT Selected
 	@Test(priority=6)
-	public void testAddAndEditBillingAutoshipCartFutureCheckboxNotSelected_4467_4468() throws InterruptedException{  
+	public void testAddAndEditBillingAutoshipCartFutureCheckboxNotSelected_4467() throws InterruptedException{  
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -471,9 +470,42 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
+	
+	// Hybris Project-4468:EDIT a billing profile from AD-HOC CHECKOUT page, having "Use this billing profile for your future use" NOT Selected
+	@Test(priority=7)
+	public void testEditBillingAdhocCheckoutFutureChecboxNotSelected_4468() throws InterruptedException{
+		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
+		String lastName = "lN";
+		storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();		
+		storeFrontUpdateCartPage.clickOnBuyNowButton();
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
+		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
+		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontUpdateCartPage.selectNewBillingCardAddress();
+		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
+		storeFrontUpdateCartPage.clickBillingEditAfterSave();
+		s_assert.assertTrue(storeFrontUpdateCartPage.isNewBillingProfileIsSelectedByDefaultAfterClickOnEdit(newBillingProfileName),"New Billing Profile is not selected by default on CRP cart page");
+		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
+		storeFrontUpdateCartPage.clickPlaceOrderBtn();
+		storeFrontConsultantPage = storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
+		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
+		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
+		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited default Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Newly edited default Billing profile is not selected as default profile");
+		s_assert.assertAll();
+	}
+
 
 	//Hybris Project-2389:Verify that QAS validation DO NOT get perform anytime user adds a billing address.
-	@Test(priority=7)
+	@Test(priority=8)
 	public void testQASValidationDoNotPerformAnyTimeUserAddsABillingAddress_2389() throws InterruptedException	{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
@@ -499,7 +531,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2046 :: Version : 1 :: Add billing profile during CRP enrollment through my account 
 	//Hybris Project-2052:Edit billing profile during CRP enrollment through my account
-	@Test(priority=8)
+	@Test(priority=9)
 	public void testAddAndEditNewBillingProfileDuringCRPEnrollment_2046_2052() throws InterruptedException{
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String lastName = "lN";
@@ -556,7 +588,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2044:Add billing profile during PC user or Retail user registration
 	//Hybris Project-2050 :: Version : 1 :: Edit billing profile during PC user or Retail user registration
-	@Test(priority=9)
+	@Test(priority=10)
 	public void testAddAndEditBillingProfileDuringPCRegistration_2044_2050() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
@@ -639,7 +671,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 	// Hybris Project-2045 :: Version : 1 :: Add billing address during consultant enrollment 
 	// Hybris Project-2051:Edit billing address during consultant enrollment
-	@Test(priority=10)
+	@Test(priority=11)
 	public void testAddAndEditBillingAddressConsultantEnrollment_2045_2051() throws InterruptedException{
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

@@ -2,6 +2,7 @@ package com.rf.test.website.storeFront.hybris;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -575,7 +576,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		String bizPWS = null;
 
 		if(country.equalsIgnoreCase("CA")){
-			kitName = TestConstants.KIT_NAME_EXPRESS;			 
+			kitName = TestConstants.KIT_NAME_EXPRESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -610,7 +611,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForPoliciesAndProcedures(), "PopUp for policies and procedures is not visible");
@@ -625,7 +626,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//login with .biz pws of consultant
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
@@ -638,18 +639,16 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
 		storeFrontAccountInfoPage.cancelPulseSubscription();
 		s_assert.assertTrue(storeFrontAccountInfoPage.validatePulseCancelled(),"pulse has not been cancelled for consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//Retry to login on .com pws of consultant after cancelled Paid pulse and check login successful
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//Retry to login in to .biz pws of consultant after cancelled Paid pulse and check login is successful
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .biz pws of consultant");
-		logout();
-
 		//enroll a consultant with express enrollment
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -661,7 +660,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		if(country.equalsIgnoreCase("CA")){
 
-			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;			 
+			kitName = TestConstants.KIT_NAME_BIG_BUSINESS;    
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 			city = TestConstants.CITY_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
@@ -694,7 +693,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
+		storeFrontHomePage.checkTheIAcknowledgeCheckBox();  
 		storeFrontHomePage.checkTheIAgreeCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		s_assert.assertTrue(storeFrontHomePage.verifyPopUpForTermsAndConditions(), "PopUp for policies and procedures is not visible");
@@ -709,7 +708,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		driver.get(comPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
 		s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Unable to login with .com pws of consultant");
-		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//login with .biz pws of consultant
 		driver.get(bizPWS);
 		storeFrontConsultantPage=storeFrontHomePage.loginAsConsultant(emailAddress,password);
@@ -988,12 +987,9 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		userPWS = storeFrontHomePage.getDotBizPWS();
 		storeFrontHomePage.checkPulseCheckBox();
-		s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-		s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
 		storeFrontHomePage.checkTheIAgreeCheckBox();
@@ -1003,90 +999,9 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		PWSAfterEnrollment =driver.getCurrentUrl();
 		s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		logout();
+		//***THIS TEST IS DONE HERE ***
 		driver.get(driver.getURL()+"/"+driver.getCountry());
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
-		//assert CA user with US Sponsor
-		if(driver.getCountry().equalsIgnoreCase("ca")){
-			// Get us sponser with PWS from database
-			sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",countryNameForUS,countryIdForUS),RFO_DB);
-			sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
-			sponsorPWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
-			// sponser search by Account Number
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
-			idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-			storeFrontHomePage.searchCID(idForConsultant);
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			PWSAfterSelectSponsor = driver.getCurrentUrl();
-			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum1, password, addressLine1, city,state, postalCode, phoneNumber);
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber1);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickNextButton();
-			userPWS = storeFrontHomePage.getDotBizPWS();
-			storeFrontHomePage.checkPulseCheckBox();
-			s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.selectProductAndProceedToAddToCRP();
-			storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			PWSAfterEnrollment =driver.getCurrentUrl();
-			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		}else{
-			// Get CA sponser with PWS from database
-			sponserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",countryNameForCA,countryIdForCA),RFO_DB);
-			sponserHavingPulse = String.valueOf(getValueFromQueryResult(sponserList, "AccountID"));
-			sponsorPWS = String.valueOf(getValueFromQueryResult(sponserList, "URL"));
-			// sponser search by Account Number
-			sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,sponserHavingPulse),RFO_DB);
-			idForConsultant = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-			storeFrontHomePage.searchCID(idForConsultant);
-			storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
-			PWSAfterSelectSponsor = driver.getCurrentUrl();
-			String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-			s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
-			storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum1, TestConstants.LAST_NAME+randomNum, password,addressLine1, city,state, postalCode, phoneNumber);
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
-			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
-			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber1);
-			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickNextButton();
-			userPWS = storeFrontHomePage.getDotBizPWS();
-			storeFrontHomePage.checkPulseCheckBox();
-			s_assert.assertFalse(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsSelected(), "Subscribe to pulse checkbox not selected");
-			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsSelected(), "Enroll to CRP checkbox not selected");
-			storeFrontHomePage.clickNextButton();
-			storeFrontHomePage.selectProductAndProceedToAddToCRP();
-			storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
-			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
-			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
-			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
-			storeFrontHomePage.checkTheIAgreeCheckBox();
-			storeFrontHomePage.checkTheTermsAndConditionsCheckBox();
-			storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
-			storeFrontHomePage.clickOnConfirmAutomaticPayment();
-			s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
-			PWSAfterEnrollment =driver.getCurrentUrl();
-			s_assert.assertTrue(PWSAfterEnrollment.contains(userPWS.split("\\:")[1]), "CA User PWS for ca corp"+userPWS+" and on UI after complete the enrollment ca sponsor from ca corp site is "+PWSAfterEnrollment);
-		}
 		s_assert.assertAll();
 	}
 
@@ -1728,7 +1643,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickNextButton();
-		storeFrontHomePage.checkPulseAndCRPEnrollment();
+		//storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.uncheckPulseCheckBox();
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.applyPriceFilterHighToLow();
@@ -2154,7 +2069,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-132:Enroll in CRP from my account - Ship inmediately
-	@Test(enabled=false)//Test Needs update
+	@Test//(enabled=true)//Test Needs update
 	public void testEnrollInCRPFromMyAccountShipImmediately_132() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		String accountId = null;
@@ -2192,7 +2107,7 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnEnrollInCRP();
 		storeFrontAccountInfoPage.applyPriceFilterLowToHigh();
 		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
-		s_assert.assertTrue(storeFrontAccountInfoPage.verifyThresholdErrorMsgPresent(),"Message for threshold present on UI");
+		s_assert.assertTrue(storeFrontAccountInfoPage.verifyThresholdErrorMsgPresent(),"Message for threshold not present on UI");
 		storeFrontAccountInfoPage.clickOnContinueShoppingLink();
 		storeFrontAccountInfoPage.clickOnAddToCRPButtonAfterCancelMyCRP();
 		storeFrontAccountInfoPage.updateQuantityOfProductToTheSecondProduct("3");

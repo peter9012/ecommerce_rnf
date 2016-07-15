@@ -144,6 +144,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		driver.waitForElementPresent(By.id("account-info-button"));
 		driver.click(By.id("account-info-button"));
 		logger.info("Your account info has been clicked");
 		driver.waitForElementPresent(By.linkText("Log out"));

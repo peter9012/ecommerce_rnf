@@ -35,8 +35,6 @@
 						<include name="testLookUpWithTerminatedCAConsultantFullNameOrActID_4005" />
 						<include name="testLookUpWithActiveRCFullNameOrAccountID_4011" />
 						<include name="testLookUpWithActivePCFullNameOrAccountID_4009" />
-						<include name="testLookUpWithTerminatedRCFullNameOrccountID_4002" />
-						<include name="testLookUpWithTerminatedPCFullNameOrccountID_4001" />
 						<include name="testLookUpWithPendingCAConsultantAccountID_4006" />
 						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantFullName_3980" />
 						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantUserWhoUpgradedFromRCtoConsultant_4000" />

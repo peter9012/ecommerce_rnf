@@ -10,7 +10,10 @@
 		<classes>
 
 			<class name="com.rf.test.website.storeFront.hybris.PC_CartAndCheckoutValidationTest" />
-			
+			<methods>
+				<exclude name="testAutoshipTemplateManagePoductsInCartPCPerk_142" />
+				<exclude name="testPlaceAdhocOrderFromSponsorPWSSiteCheckSponsorOfOrder_3765" />
+			</methods>
 		</classes>
 	</test>
 </suite>

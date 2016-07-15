@@ -1523,8 +1523,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//a[contains(text(),'Continue shopping')]"));
 		}
 		catch(Exception e){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
-			driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));   
+			try{
+				driver.quickWaitForElementPresent(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]"));
+				driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]")); 
+			}
+			catch(NoSuchElementException e2){
+				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
+				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
+			}
+  
 		}
 		driver.waitForPageLoad();
 	}
@@ -1731,8 +1738,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean validateEditYourInformationLink(){
-		driver.quickWaitForElementPresent(WELCOME_USER_DD_LOC);
-		return driver.isElementPresent(WELCOME_USER_DD_LOC);
+		driver.quickWaitForElementPresent(By.xpath("//a[text()='Personalize my Profile']"));
+		return driver.isElementPresent(By.xpath("//a[text()='Personalize my Profile']"));
 	}
 
 	public boolean validateAccessSolutionTool(){
@@ -1873,6 +1880,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
+	
+	public boolean isSearchedSponsorIdPresentInSearchList(String CID){
+		driver.waitForPageLoad();
+		return driver.isElementPresent(By.xpath("//li[contains(text(),'"+CID+"')]"));
+	}
 
 	public boolean validateCorpCurrentUrlPresent() {
 		return driver.getCurrentUrl().contains("corp");
@@ -1883,7 +1895,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clear(By.id("quantity1"));
 		driver.type(By.id("quantity1"),qty);
 		logger.info("quantity added is "+qty);
-		driver.click(By.xpath("//a[@class='updateLink']"));
+		driver.click(By.xpath("//form[@id='updateCartForm1']/a"));
 		//driver.pauseExecutionFor(2000);
 		logger.info("Update button clicked after adding quantity");
 		driver.waitForPageLoad();

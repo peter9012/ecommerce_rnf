@@ -1065,39 +1065,6 @@ public class ReturnVerificationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	// Hybris Project-3817:Perform Return on PARTIALLY SHIPPED Orders
-	@Test
-	public void testVerifyPartiallyShippedOrder_3817() throws InterruptedException{
-		String randomCustomerSequenceNumber = null;
-		String orderNumber = null;
-		RFO_DB = driver.getDBNameRFO();
-
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickFindOrderLinkOnLeftNavigation();
-		cscockpitOrderSearchTabPage.selectOrderStatusOnOrderSearchTab("Partially_Shipped");
-		cscockpitOrderSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitOrderSearchTabPage.getRandomCustomerFromSearchResult());
-		orderNumber=cscockpitOrderSearchTabPage.clickAndReturnCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		//Return partially shipped order.
-		orderNumber = cscockpitOrderTabPage.clickRefundOrderBtnOnOrderTab(orderNumber);
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyRefundRequestPopUpPresent(),"Refund Request PopUp not present.");
-		boolean isReturnCompleteOrderChecked = cscockpitOrderTabPage.checkReturnCompleteOrderChkBoxOnRefundPopUpAndReturnTrueElseFalse();
-		if(isReturnCompleteOrderChecked==true){
-			s_assert.assertTrue(cscockpitOrderTabPage.areAllCheckBoxesGettingDisabledAfterCheckingReturnCompleteOrderChkBox(), "All other checkboxes are not disabled after checking 'Return Complete Order' checkbox");
-		}
-		cscockpitOrderTabPage.selectRefundReasonOnRefundPopUp("Test");
-		cscockpitOrderTabPage.selectFirstReturnActionOnRefundPopUp();
-		cscockpitOrderTabPage.selectFirstRefundTypeOnRefundPopUp();
-		cscockpitOrderTabPage.clickCreateBtnOnRefundPopUp();
-		String refundTotal = cscockpitOrderTabPage.getRefundTotalFromRefundConfirmationPopUp();
-		cscockpitOrderTabPage.clickConfirmBtnOnConfirmPopUp();
-		String rmaNumber=cscockpitOrderTabPage.getRMANumberFromPopup().split("\\:")[1].trim();
-		cscockpitOrderTabPage.clickOKBtnOnRMAPopUp();
-		s_assert.assertTrue(cscockpitOrderTabPage.isReturnRequestSectionDisplayed(), "Return request section is NOT displayed");
-		s_assert.assertTrue(cscockpitOrderTabPage.verifyReturnOrderRMANumberInOrderTab(rmaNumber), "Expected RMA number in return request section is "+rmaNumber+"Actual on UI, it is not present ");
-		s_assert.assertAll();  
-	}
-
 	//Hybris Project-5286:to verify that Return Complete Order functionality
 	@Test
 	public void testVerifyReturnCompleteOrderFunctionality_5286() throws InterruptedException{

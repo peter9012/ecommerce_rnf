@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CSC_ReturnVerificationSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="CSC_ReturnVerificationTest">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.ReturnVerificationTest">
+			<methods>
+			<include name="testChangeSponserOfRCFromCSCockpit_4661"></include>
+			<include name="testToVerifyThatForTerminatedUserCanDoReturns_2013"></include>
+			<include name="testToVerifyTheRefundRequestPopUpUI_2014"></include>
+			<include name="testVerifyReturnCompleteOrderFunctionality_2017"></include>
+			<include name="testVerifyCscockpitRefundOrderFunctionality_4073"></include>
+			<include name="testVerifyReturnShippingFunctionality_2024"></include>
+			<include name="testVerifyReturnHandlingFunctionality_2025"></include>
+			<include name="testCheckReturnOrderInformationOnTheOrderHistoryPage_2409"></include>
+			<include name="testVerifyPartiallyReturnFunctionality_2028"></include>
+			</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

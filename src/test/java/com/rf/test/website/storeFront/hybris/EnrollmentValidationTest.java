@@ -2753,11 +2753,7 @@ public class EnrollmentValidationTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
-<<<<<<< HEAD
-	@Test //Covered in TC 1307
-=======
 	@Test  (enabled=true)//Covered in TC 1307
->>>>>>> refs/heads/newUI
 	public void testTermsAndConditionsRCEnrollment_2188() throws InterruptedException	 {
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;

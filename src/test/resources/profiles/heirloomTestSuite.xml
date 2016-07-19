@@ -21,6 +21,7 @@
 			<class name="com.rf.test.website.storeFront.legacy.BizPWSTest">
 				<method>
 					<include name="testCheckoutAsConsultant" />
+					<include name="testConsultantEnrollmentSignUp" />
 				</method>
 			</class>
 		</classes>

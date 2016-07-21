@@ -1473,13 +1473,11 @@ public class DBQueries_RFO {
 					"[as].Username "+
 					"FROM    RFO_Accounts.AccountBase AS ab "+
 					"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+					"JOIN	 RFO_Accounts.AccountRF As arf ON arf.AccountID = ab.AccountID	"+			
 					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
+					"AND	 ab.CountryID = '40' "+
 					/*Active Accounts*/
-					"AND NOT EXISTS ( SELECT 1 "+
-					"FROM   RFO_Accounts.AccountRF AS ar "+
-					"WHERE  ar.Active = 0 "+
-					"AND ar.HardTerminationDate IS NOT NULL "+
-					"AND ar.AccountID = ab.AccountID ) "+
+					"AND 	 arf.Active = 1 "+
 					/*Pulse*/
 					"AND NOT EXISTS ( SELECT 1 "+
 					"FROM   Hybris.Autoship AS a "+

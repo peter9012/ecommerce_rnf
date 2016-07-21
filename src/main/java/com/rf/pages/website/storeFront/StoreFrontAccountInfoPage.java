@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -399,9 +400,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		return false;
 	}
 
-	public StoreFrontOrdersAutoshipStatusPage clickOnAutoShipStatus(){
+	public StoreFrontOrdersAutoshipStatusPage clickOnAutoShipStatus(){		
 		driver.waitForElementPresent(ACCOUNT_AUTOSHIP_STATUS_LOC);
-		driver.click(ACCOUNT_AUTOSHIP_STATUS_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(ACCOUNT_AUTOSHIP_STATUS_LOC));
 		logger.info("Autoship status clicked "+ACCOUNT_AUTOSHIP_STATUS_LOC);
 		driver.pauseExecutionFor(3000);
 		driver.waitForLoadingImageToDisappear();
@@ -551,7 +553,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
-		actions = new Actions(RFWebsiteDriver.driver);
+		//actions = new Actions(RFWebsiteDriver.driver);
 		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
 		String spouseFirstName="Mary"+randomNumber;
 		String spouseLastName="Rose";
@@ -561,10 +563,9 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
-		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(1000);
-		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
-		driver.click(By.xpath("//input[@id='acceptSpouse']"));
+		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(Keys.ENTER);
+/*		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
+		driver.click(By.xpath("//input[@id='acceptSpouse']"));*/
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
@@ -801,8 +802,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnNextDuringPulseSubscribtion(){
-		driver.waitForElementPresent(By.id("pulse-enroll"));
-		driver.click(By.id("pulse-enroll"));
+		driver.waitForElementPresent(By.xpath("//*[@id='pulse-enroll']"));
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='pulse-enroll']")));
+		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 	}
 
@@ -999,21 +1002,27 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateClickXOnProvideAccessToSpousePopup(){
-		actions = new Actions(RFWebsiteDriver.driver);
+		/*actions = new Actions(RFWebsiteDriver.driver);*/
 		int randomNumber =  CommonUtils.getRandomNum(10000, 1000000);
 		String spouseFirstName="Mary"+randomNumber;
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
-		driver.pauseExecutionFor(5000);
+		
 		driver.clear(By.xpath("//input[@id='spouse-first']"));
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
-		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(1000);
+		/*actions.sendKeys(Keys.TAB).build().perform();*/
+/*		driver.pauseExecutionFor(1000);
 		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
-		driver.click(By.xpath("//span[@class='icon-close']"));
+		driver.click(By.xpath("//span[@class='icon-close']"));*/
+
+		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
+		executor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//span[@class='icon-close']")));
+		
 		driver.pauseExecutionFor(1500);
+		System.out.println(!driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName));
+		System.out.println(spouseFirstName);
 		return !driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}

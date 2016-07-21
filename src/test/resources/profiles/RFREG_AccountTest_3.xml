@@ -24,7 +24,7 @@
                            
                                 <include name="testConsultantCanChooseDefaultPWSPrefixUponEnrollingInPulse_4765" />
                                 <include name="testVerifyConsultantCanChooseCustomPWSPrefixUponEnrollingInPulse_4766" />
-                                <include name="testCheckAnotherConsultantSitePrefixWhileEnrollingToPulse_4769" />				                
+                                <exclude name="testCheckAnotherConsultantSitePrefixWhileEnrollingToPulse_4769" />				                
 				         
 				                	</methods>
 

@@ -1,6 +1,7 @@
 package com.rf.pages.website.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -82,9 +83,8 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 
 	public void selectCheckBoxForVoluntarilyTerminate() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='volunteerTermination']"));
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));
-		actions.click(driver.findElement(By.xpath("//div[@class='repaired-checkbox']"))).build().perform();
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));		
 		logger.info("Checkbox for voluntarily terminate selected");
 	}
 

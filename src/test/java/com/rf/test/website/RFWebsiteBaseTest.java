@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -115,7 +116,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
 		new HtmlLogger().createHtmlLogFile();                 
-		//driver.quit();
+		driver.quit();
 	}
 
 	public void setStoreFrontPassword(String pass){
@@ -147,8 +148,12 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		driver.waitForElementPresent(By.id("account-info-button"));
 		driver.click(By.id("account-info-button"));
 		logger.info("Your account info has been clicked");
-		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.click(By.linkText("Log out"));
+		//driver.waitForElementPresent(By.linkText("Log out"));
+/*		String sCurrent = driver.getCurrentUrl();
+		driver.get(sCurrent+"/logout");*/
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']//a[text()='Log out']")));		
+		//driver.click(By.linkText("Log out"));
 		logger.info("Logout");                    
 		driver.pauseExecutionFor(3000);
 	}

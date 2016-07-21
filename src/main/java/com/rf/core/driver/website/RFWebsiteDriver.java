@@ -91,6 +91,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new SafariDriver(capabilities);
+			pauseExecutionFor(2000);
 			
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);

@@ -1,6 +1,7 @@
 package com.rf.pages.website.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -30,7 +31,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		logger.info(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC));
 		logger.info("Account info linked from welcome drop down clicked");
 		return new StoreFrontAccountInfoPage(driver);
 	}

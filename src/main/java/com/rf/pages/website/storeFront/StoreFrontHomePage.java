@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -303,6 +304,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
 		logger.info("email Address of the user is "+emailAddress);
+		driver.findElement(By.xpath("//*[@id='new-password-account']")).click();
 		driver.waitForSpinImageToDisappear();
 	}
 
@@ -654,11 +656,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
-		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//input[@class='use_address btn btn-primary']"));
-		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();  
-		action.moveToElement(driver.findElement(By.xpath("//input[@class='use_address btn btn-primary']"))).click(driver.findElement(By.xpath("//input[@class='use_address btn btn-primary']"))).build().perform();
-		logger.info("Next button on shipping update cart clicked"); 
+		//action.moveToElement(driver.findElement(By.xpath("//input[@class='use_address btn btn-primary']"))).click(driver.findElement(By.xpath("//input[@class='use_address btn btn-primary']"))).build().perform();
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//input[@class='use_address btn btn-primary']")));
+		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -878,6 +880,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyPopUpForExistingActivePC() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		boolean isPopForExistingAccountVisible = false;
 		//Thread.sleep(5000);
 		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='activePCPopup']/div/div")).isDisplayed();
@@ -890,6 +893,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyPopUpForExistingActiveCCLessThan6Month() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		boolean isPopForExistingAccountVisible = false;
 		driver.waitForElementPresent(CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH);
 		isPopForExistingAccountVisible = driver.findElement(CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH).isDisplayed();
@@ -902,6 +906,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyPopUpForExistingActiveRC() throws InterruptedException{
+		driver.pauseExecutionFor(2000);
 		boolean isPopForExistingAccountVisible = false;
 		isPopForExistingAccountVisible = driver.findElement(By.xpath("//div[@id='activeRetailPopup']/div/div")).isDisplayed();
 		if(isPopForExistingAccountVisible==true){
@@ -995,8 +1000,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription �']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription �']"));
+		driver.waitForElementPresent(By.xpath("//*[@id='idCancelMypulseSubscription']"));
+		driver.click(By.xpath("//*[@id='idCancelMypulseSubscription']"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();

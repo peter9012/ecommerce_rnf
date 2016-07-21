@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
 
@@ -25,7 +26,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 	private final By ORDER_SCHEDULE_DATE_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]/preceding::div[3]");
 	private final By ORDER_GRAND_TOTAL_LOC = By.xpath("//div[@id='history-orders-table']/div[2]//span[contains(text(),'Actions')]/preceding::div[2]");
 	private final By ORDER_STATUS_LOC = By.xpath("//div[@id='history-orders-table']/div[2]/div[2]//div[contains(@class,'col-sm')][4]");
-	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[1]");
+	private final By ORDER_AUTOSHIP_ORDER_NUMBER_LOC = By.xpath("//div[@id='pending-autoship-orders-table']/div[1]/div//div[contains(text(),'Schedule Date')]/following::div[@class='ref-labels'][2]/div//div[1]/a");
 	private final By ORDER_AUTOSHIP_ADDRESS_LOC = By.xpath("//ul[@class='order-detail-list']/li[1]/p");
 	private final By SCHEDULE_DATE_TEXT_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'date')]");
 	private final By ORDER_STATUS_TEXT_LOC = By.xpath("//div[@id='main-content']//span[contains(text(),'Order status')]");
@@ -92,8 +93,10 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickAutoshipOrderNumber(){
 		driver.waitForElementPresent(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
-		//getAutoshipOrderNumber();		
-		driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
+		//getAutoshipOrderNumber();
+		JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
+		js.executeScript("arguments[0].click();", driver.findElement(ORDER_AUTOSHIP_ORDER_NUMBER_LOC));
+		//driver.click(ORDER_AUTOSHIP_ORDER_NUMBER_LOC);
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("autoship order clicked " +ORDER_AUTOSHIP_ORDER_NUMBER_LOC);

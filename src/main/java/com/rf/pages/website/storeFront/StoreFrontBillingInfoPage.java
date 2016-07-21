@@ -95,6 +95,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
 		driver.pauseExecutionFor(2000);
 		driver.type((ADD_NEW_BILLING_CARD_NUMBER_LOC),cardNumber);
+		js.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
 		logger.info("New Billing card number enterd as "+cardNumber);		
 	}
 

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -38,7 +39,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
-	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
+	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.xpath("//*[@id='account-info-dropdown']/ul[1]/li[5]/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
@@ -1106,9 +1107,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
-		driver.click(By.xpath("//a[text()='Check My Pulse']"));
+/*		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
+		WebElement element = driver.findElement(By.xpath("//a[text()='Check My Pulse']"));
+		JavascriptExecutor executor = (JavascriptExecutor)RFWebsiteDriver.driver;
+		executor.executeScript("arguments[0].click();", element);*/
 		driver.pauseExecutionFor(5000);
+		driver.get(driver.getCurrentUrl()+"/route/pulse");
 	}
 
 	public boolean validatePulseHomePage(){
@@ -1123,23 +1127,23 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 /*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
-		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
+		if(driver.isElementPresent(By.xpath("//nav[@class='row navbar navbar-inverse hidden-xs']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");			
 		}else{
-			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+			WebElement allProducts = driver.findElement(By.xpath("//nav[@class='row navbar navbar-inverse hidden-xs']//a[text()='All Products']"));
 			/*actions.moveToElement(allProducts).pause(1000).build().perform();*/
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
-			while(true){
+			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();", allProducts);
+/*			while(true){
 				try{
 					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 					break;
 				}catch(Exception e){
 					System.out.println("element not clicked..trying again");
-					/*actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
+					actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 
 				}
-			}
+			}*/
 			logger.info("All products link clicked "); 
 
 		}
@@ -1355,8 +1359,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnAccountInfoNextButton(){
-		driver.waitForElementPresent(By.id("clickNext"));
-		driver.click(By.id("clickNext"));
+		driver.waitForElementPresent(By.xpath("//*[@id='clickNext']"));
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='clickNext']")));
 	}	
 
 	public boolean verifyEditPcPerksIsPresentInWelcomDropdownForUpgrade(){
@@ -1385,7 +1390,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
 		driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
-		driver.click(WELCOME_DD_BILLING_INFO_LINK_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_BILLING_INFO_LINK_LOC));
 		logger.info("User has clicked on billing link from welcome drop down");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
@@ -1393,8 +1399,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public StoreFrontShippingInfoPage clickShippingLinkPresentOnWelcomeDropDown() throws InterruptedException{
-		//driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
-		driver.click(WELCOME_DD_SHIPPING_INFO_LINK_LOC);	
+		driver.waitForElementPresent(WELCOME_DD_SHIPPING_INFO_LINK_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_SHIPPING_INFO_LINK_LOC));
 		driver.waitForLoadingImageToDisappear();
 		logger.info("User has clicked on shipping link from welcome drop down");
 		return new StoreFrontShippingInfoPage(driver);
@@ -1471,7 +1478,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public StoreFrontAccountInfoPage clickAccountInfoLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
-		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);		
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click()", driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC));
+		//driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);		
 		logger.info("User has clicked on account link from welcome drop down");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
@@ -1594,9 +1602,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterWebsitePrefixName(String name){
-		driver.waitForElementPresent(By.id("webSitePrefix"));
-		driver.type(By.id("webSitePrefix"), name+"\t");
-		//driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//*[@id='webSitePrefix']"));
+		driver.type(By.xpath("//*[@id='webSitePrefix']"), name);
+		//driver.findElement(By.xpath("//*[@id='webSitePrefixForm']/div/p[2]")).click();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public boolean verifySpecialCharNotAcceptInPrefixName(){

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <suite name="CRMSmokeTestSuite.xml">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
@@ -6,7 +6,7 @@
 		<listener class-name="com.rf.core.listeners.RetryListener" />
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
-	<test name="CRMSmokeTestSuite.xml">
+	<test name="CRM Build Acceptance Test Suite">
 		<classes>
 			<class name="com.rf.test.website.crm.CRMRegressionTest">
 				<methods>

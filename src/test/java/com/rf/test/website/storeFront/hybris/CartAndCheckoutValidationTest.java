@@ -646,7 +646,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//click on continue shopping link
 		storeFrontHomePage.clickOnContinueShoppingLink();
 		//verify the number of products in mini cart
-		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInMiniCart("1"),"number of products in the mini cart is not 1");
+		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInMiniCart(),"number of products in the mini cart is not 1");
 		//*******THIS TEST IS COMPLETE AT THIS STAGE *****
 		s_assert.assertAll();	
 	}

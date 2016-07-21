@@ -1956,7 +1956,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 
-	public boolean verifyNumberOfProductsInMiniCart(String numberOfProductsInCart){
+	public boolean verifyNumberOfProductsInMiniCart(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//a[@id='shopping-cart']")); 
 		WebElement allProducts = driver.findElement(By.xpath("//a[@id='shopping-cart']"));
@@ -1964,7 +1964,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//ul[@id='subtotal']/li/span[1]")); 
 		String productCount=driver.findElement(By.xpath("//ul[@id='subtotal']/li/span[1]")).getText();
-		return productCount.contains(numberOfProductsInCart);
+//		Boolean bCount;
+//		if productCoun
+		return productCount!="0";
 	}
 
 	public boolean isProductImageExist(){

@@ -37,7 +37,6 @@
 						<include name="testLookUpWithActivePCFullNameOrAccountID_4009" />
 						<include name="testLookUpWithPendingCAConsultantAccountID_4006" />
 						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantFullName_3980" />
-						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantUserWhoUpgradedFromRCtoConsultant_4000" />
 						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantUserWhoUpgradedFromPcToConsultant_3999" />
 						<include name="testToFindAConsultantPageAndSearchWithCAConsultantFullName_3978"/>
 						<include name="testSelectSponsorFromConnectWithConsultantPageShoulDirectToSponsorComSite_3751" />

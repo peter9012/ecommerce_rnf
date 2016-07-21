@@ -1589,7 +1589,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		}
 		logger.info("login is successful");
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
-		s_assert.assertTrue(storeFrontHomePage.isAccessSolutionToolPresent(),"Solution tool is not giving the expected results");
+		//removed content block as we don't access the tool
 		s_assert.assertAll();
 	}
 

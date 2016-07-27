@@ -31,7 +31,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	private static final By EDIT_ORDER_UPDATE_MESSAGE = By.xpath("//p[@class='success']");
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='Shop Skincare']");
-	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']/span");
+	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']");
 	private static final By MY_SHOPPING_BAG_LINK = By.xpath("//a[@class='BagLink']");
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");
 	private static final By OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER = By.xpath("//span[text()='OK']");
@@ -84,10 +84,23 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickAddToCartButtonAfterLogin() {
-		driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
-		driver.click(ADD_TO_CART_BTN_LOC);
-		logger.info("Add to cart button is clicked");
-
+		try{
+			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
+			driver.click(By.xpath("//a[text()='Add to Cart']"));
+			System.out.println("Add to cart button on ProdDetailPage is clicked");
+			
+		} catch (NoSuchElementException e) {
+			driver.findElement(ADD_TO_CART_BTN_LOC);
+			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
+			driver.click(ADD_TO_CART_BTN_LOC);
+			logger.info("Add to cart button is clicked");
+		
+		}
+		
+		
+		
+		
+		
 	}
 	public void mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn(){
 		actions =  new Actions(RFWebsiteDriver.driver);

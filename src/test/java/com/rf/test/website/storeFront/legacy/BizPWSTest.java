@@ -828,18 +828,20 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber3 = "9099";
 		String editMyPWS = "edit my pws";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String pwsBizBase = driver.getBizPWSURL();
+		String PWS = "https://rfqa"+pwsBizBase;
+		driver.get(PWS);
+//		while(true){
+//			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+//			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+//			driver.get(PWS);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+//			if(isSiteNotFoundPresent){
+//				continue;
+//			}else{
+//				break;
+//			}
+//		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
 		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();

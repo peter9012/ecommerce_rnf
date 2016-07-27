@@ -118,10 +118,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
-	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//div[@id='mainBanner']/div[1]/a/img");
+	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
+	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//a[@href='/NewEnrollment/SearchSponsor']");
 	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
 
-	private static final By ADD_TO_CART_BTN = By.xpath("//a[text()='Add to Cart']");
+	private static final By ADD_TO_CART_BTN = By.id("addToCartButton");//"//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
 	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[contains(text(),'Enroll Now')]");
 	private static final By FIRST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxFirstName')]");
@@ -471,6 +472,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickEnrollNowBtnOnbizPWSPage(){
+		driver.click(BECOME_A_CONSULTANT_MENU);
 		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
 		driver.click(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
 		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");

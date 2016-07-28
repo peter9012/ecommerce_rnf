@@ -9,20 +9,20 @@
 	<test name="Heirloom Build Acceptance Tests">
 		<classes>
 			<class name="com.rf.test.website.storeFront.legacy.EnrollmentTest">
-				<method>
+				<methods>
 					<include name="testPCEnrollment" />
 					<include name="testRCEnrollment" />
 					<include name="testConsultantExpressEnrollment" />
 					<include name="testConsultantStandardEnrollment" />
 					<include name="testMyAccountOptionAsRCCustomer" />
 					<include name="testMyAccountOptionsAs_PC_Customer" />
-				</method>
+				</methods>
 			</class>
 			<class name="com.rf.test.website.storeFront.legacy.BizPWSTest">
-				<method>
+				<methods>
 					<include name="testCheckoutAsConsultant" />
-					<include name="testConsultantEnrollmentSignUp" />
-				</method>
+					<include name="testConsultantEnrollmentSignUp" /
+				</methods>
 			</class>
 		</classes>
 	</test>

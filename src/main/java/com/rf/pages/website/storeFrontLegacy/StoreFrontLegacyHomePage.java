@@ -1525,13 +1525,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void selectConsultantEnrollmentKitByPrice(String price) {
-//		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
+		//*** Price became unstable for selection, opting for Javascript
 		JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
 		js.executeScript("selectKit(269)");
 		
-//		driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
-//		driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
-//		logger.info("Selected consultant enrollment kit's price is: "+price);
+		//driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
+		//driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
+		//logger.info("Selected consultant enrollment kit's price is: "+price);
 	}
 
 	public void selectRegimenForConsultant(String regimen){

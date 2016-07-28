@@ -66,7 +66,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver();
 		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
-			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);

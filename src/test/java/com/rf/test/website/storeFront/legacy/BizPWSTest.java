@@ -243,23 +243,13 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		List<Map<String, Object>> accountStatusIDList =  null;
 		String statusID = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		driver.get(PWS);
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+//		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -287,20 +277,9 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String pcEmailId = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-
+		
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -323,19 +302,9 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String pcEmailId = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		
 
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");

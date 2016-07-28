@@ -148,7 +148,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By COUNTRY_DD = By.xpath("//input[contains(@id,'uxCountyDropDown_Input')]");
 	private static final By FIRST_VALUE_OF_COUNTRY_DD = By.xpath("//div[contains(@id,'uxCountyDropDown_DropDown')]//ul[@class='rcbList']/li");
 	private static final By PHONE_NUMBER_SHIPPING_PROFILE_PAGE = By.xpath("//input[contains(@id,'uxShippingEditor_AppPhone')]");
-	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.xpath("//input[contains(@id,'uxBillingProfileName')]");
+	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.id("ctl00_ctl00_ContentPlaceHolder1_MainContent_uxBillingInfo_uxBillingEditor_uxBillingProfileName");//xpath("//input[contains(@id,'uxBillingProfileName')]");
 	private static final By NAME_ON_CARD = By.xpath("//input[contains(@id,'uxNameOnCard')]");
 	private static final By CREDIT_CARD_NUMBER_INPUT_FIELD = By.xpath("//input[contains(@id,'uxCreditCardNumber')]");
 	private static final By EXPIRATION_DATE_MONTH_DD = By.xpath("//select[contains(@id,'uxMonthDropDown')]");

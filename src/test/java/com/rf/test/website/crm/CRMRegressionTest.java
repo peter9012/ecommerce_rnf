@@ -126,7 +126,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -468,7 +468,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -520,7 +520,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -549,8 +549,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Default"),"Default label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
+/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
+*/		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
 
@@ -797,8 +797,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Default"),"Default label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
+/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
+*/		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
 
@@ -1684,7 +1684,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1714,7 +1714,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1744,7 +1744,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1919,7 +1919,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		crmAccountDetailsPage.selectChannelDropdown("Email");
+		//crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);

@@ -1760,9 +1760,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public boolean validateAccessSolutionTool(){
 		boolean status = false;
-		//click learn more..		
-		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//click learn more..	
+		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");
+//		
+//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
 		if(driver.getCountry().equalsIgnoreCase("us")){

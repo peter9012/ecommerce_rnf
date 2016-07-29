@@ -145,17 +145,24 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		driver.waitForElementPresent(By.id("account-info-button"));
-		driver.click(By.id("account-info-button"));
-		logger.info("Your account info has been clicked");
-		//driver.waitForElementPresent(By.linkText("Log out"));
-/*		String sCurrent = driver.getCurrentUrl();
-		driver.get(sCurrent+"/logout");*/
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']//a[text()='Log out']")));		
-		//driver.click(By.linkText("Log out"));
-		logger.info("Logout");                    
-		driver.pauseExecutionFor(3000);
+		try
+		{
+			driver.waitForElementPresent(By.id("account-info-button"));
+			driver.click(By.id("account-info-button"));
+			logger.info("Your account info has been clicked");
+			//driver.waitForElementPresent(By.linkText("Log out"));
+			//String sCurrent = driver.getCurrentUrl();
+			//driver.get(sCurrent+"/logout");*
+			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']//a[text()='Log out']")));		
+			//driver.click(By.linkText("Log out"));
+			logger.info("Logout");                    
+			driver.pauseExecutionFor(3000);
+		}
+		catch(Exception e)
+		{
+			
+		}
 	}
 
 	// This assertion for the UI Texts

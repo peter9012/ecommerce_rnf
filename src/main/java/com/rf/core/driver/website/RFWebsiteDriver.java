@@ -23,7 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-//import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
@@ -74,7 +74,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new ChromeDriver(capabilities);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
-			//driver = new HtmlUnitDriver(true);
+			driver = new HtmlUnitDriver(true);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src//test//resources//IEDriverServer.exe");
@@ -140,7 +140,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
-
+	public String getBizPWSURL() {
+		return propertyFile.getProperty("pwsBizBase");
+	}
+	public String getComPWSURL() {
+		return propertyFile.getProperty("pwsComBase");
+	}
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");
 	}

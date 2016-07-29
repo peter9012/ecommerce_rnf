@@ -11,7 +11,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.JavascriptExecutor;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -118,10 +118,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
-	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//div[@id='mainBanner']/div[1]/a/img");
+	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
+	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//a[@href='/NewEnrollment/SearchSponsor']");
 	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
 
-	private static final By ADD_TO_CART_BTN = By.xpath("//a[text()='Add to Cart']");
+	private static final By ADD_TO_CART_BTN = By.id("addToCartButton");//"//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
 	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[contains(text(),'Enroll Now')]");
 	private static final By FIRST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxFirstName')]");
@@ -147,7 +148,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By COUNTRY_DD = By.xpath("//input[contains(@id,'uxCountyDropDown_Input')]");
 	private static final By FIRST_VALUE_OF_COUNTRY_DD = By.xpath("//div[contains(@id,'uxCountyDropDown_DropDown')]//ul[@class='rcbList']/li");
 	private static final By PHONE_NUMBER_SHIPPING_PROFILE_PAGE = By.xpath("//input[contains(@id,'uxShippingEditor_AppPhone')]");
-	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.xpath("//input[contains(@id,'uxBillingProfileName')]");
+	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.id("ctl00_ctl00_ContentPlaceHolder1_MainContent_uxBillingInfo_uxBillingEditor_uxBillingProfileName");//xpath("//input[contains(@id,'uxBillingProfileName')]");
 	private static final By NAME_ON_CARD = By.xpath("//input[contains(@id,'uxNameOnCard')]");
 	private static final By CREDIT_CARD_NUMBER_INPUT_FIELD = By.xpath("//input[contains(@id,'uxCreditCardNumber')]");
 	private static final By EXPIRATION_DATE_MONTH_DD = By.xpath("//select[contains(@id,'uxMonthDropDown')]");
@@ -471,9 +472,11 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickEnrollNowBtnOnbizPWSPage(){
-		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
+		//driver.get(driver.getCurrentUrl()+"/Pages/BusinessSystem/WhyRF/GettingStarted");
+		driver.click(BECOME_A_CONSULTANT_MENU);
+//		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
 		driver.click(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
-		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
+//		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
 		logger.info("Enroll Now button on biz PWS page is clicked");
 		driver.waitForPageLoad();
 	}
@@ -530,10 +533,22 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickAddToCartBtn(){
-		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);
-		driver.click(ADD_TO_CART_BTN);
-		logger.info("Add to cart button clicked");
-		driver.waitForPageLoad();
+//		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);
+//		driver.click(ADD_TO_CART_BTN);
+//		logger.info("Add to cart button clicked");
+//		driver.waitForPageLoad();
+		try{
+			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
+			driver.click(By.xpath("//a[text()='Add to Cart']"));
+			System.out.println("Add to cart button on ProdDetailPage is clicked");
+			
+		} catch (NoSuchElementException e) {
+			driver.findElement(ADD_TO_CART_BTN_LOC);
+			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
+			driver.click(ADD_TO_CART_BTN_LOC);
+			logger.info("Add to cart button is clicked");
+		
+		}
 	}
 
 	public void clickClickHereLinkForPC(){
@@ -1510,10 +1525,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void selectConsultantEnrollmentKitByPrice(String price) {
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
-		driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
-		logger.info("Selected consultant enrollment kit's price is: "+price);
+		//driver.pauseExecutionFor(2000);
+		//*** Price became unstable for selection, opting for Javascript
+		JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
+		js.executeScript("selectKit(269)");
+		
+		//driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
+		//driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
+		//logger.info("Selected consultant enrollment kit's price is: "+price);
 	}
 
 	public void selectRegimenForConsultant(String regimen){

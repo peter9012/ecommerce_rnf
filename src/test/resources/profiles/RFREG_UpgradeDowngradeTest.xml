@@ -10,7 +10,11 @@
 		<classes>
 
 			<class name="com.rf.test.website.storeFront.hybris.UpgradeDowngradeTest" />
-
+				<methods>
+					<exclude name="testConsultantToRCDowngrade_4777"/> <!--Goes to US  -->
+					<exclude name="testDowngradeToRCOnTheSummary_3899"/> <!-- doesn't do what it says -->
+					<exclude name="testRCToPcAndPCToConsultantUnderSameAndDifferentSponsor_4718"/><!-- Test does too much - break into two --> -->
+				</methods>
 		</classes>
 	</test>
 </suite>

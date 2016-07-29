@@ -157,7 +157,6 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password);
 		//validate 10% discount for PC User account in order summary section
-		s_assert.assertTrue(storeFrontHomePage.validateDiscountForEnrollingAsPCUser(TestConstants.DISCOUNT_TEXT_FOR_PC_USER),"Discount text Checkbox is not checked for pc User");
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");

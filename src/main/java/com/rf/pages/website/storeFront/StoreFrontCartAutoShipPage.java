@@ -1,6 +1,8 @@
 package com.rf.pages.website.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +22,8 @@ public class StoreFrontCartAutoShipPage extends StoreFrontRFWebsiteBasePage{
 
 	public StoreFrontUpdateCartPage clickUpdateMoreInfoLink() throws InterruptedException{
 		driver.waitForElementPresent(UPDATE_MORE_INFO_LINK_LOC);
-		driver.click(UPDATE_MORE_INFO_LINK_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(UPDATE_MORE_INFO_LINK_LOC));
 		logger.info("Update More Info Link Clicked "+UPDATE_MORE_INFO_LINK_LOC);
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontUpdateCartPage(driver);

@@ -871,7 +871,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public StoreFrontCartAutoShipPage clickEditCrpLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		//driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
-		driver.click(WELCOME_DD_EDIT_CRP_LINK_LOC);
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_EDIT_CRP_LINK_LOC));
 		logger.info("User has clicked on edit Crp link from welcome drop down");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
@@ -1389,9 +1390,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public StoreFrontBillingInfoPage clickBillingInfoLinkPresentOnWelcomeDropDown(){
-		driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_BILLING_INFO_LINK_LOC));
+		try{
+			driver.waitForElementPresent(WELCOME_DD_BILLING_INFO_LINK_LOC);
+			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_BILLING_INFO_LINK_LOC));
+		}
+		catch(Exception e){
+			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']/ul/li/ul[1]/li[5]/a")));
+		}
 		logger.info("User has clicked on billing link from welcome drop down");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();

@@ -1533,8 +1533,11 @@ public class DBQueries_RFO {
 			"FROM    RFO_Accounts.AccountBase AS ab "+
 			"JOIN    RFO_Accounts.AccountRF AS ar ON ar.AccountID = ab.AccountID "+
 			"JOIN    Security.AccountSecurity AS [as] ON ab.AccountID = [as].AccountID "+
+			"JOIN	 RFOperations.Hybris.Sites AS st on st.AccountID = ab.AccountID "+
+			
 			"WHERE   ab.CountryID = %s "+
 			"AND ab.AccountTypeID = 1 "+/*Consultant*/
+			"AND st.SitePrefix IS NOT NULL "+
 			/*Active Accounts*/
 			"AND NOT EXISTS ( SELECT 1 "+
 			"FROM   RFO_Accounts.AccountRF AS ar "+

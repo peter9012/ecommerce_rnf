@@ -1070,7 +1070,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String sitePrefix = "bhopkins"; // standard active consultant site
-		String comPWS = driver.getcomPWSURL();
+		String comPWS = driver.getComPWSURL();
 		String PWS = "https://"+sitePrefix+comPWS+"/"+country;
 		storeFrontHomePage.openPWS(PWS);
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();

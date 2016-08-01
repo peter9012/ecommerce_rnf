@@ -21,7 +21,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
-		closeAllOpenedTabs();
+		//closeAllOpenedTabs();
 		return driver.isElementPresent(USER_NAVIGATION_LABEL_LOC);	
 	}
 
@@ -37,6 +37,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public void enterTextInSearchFieldAndHitEnter(String text){
 		driver.type(SEARCH_TEXT_BOX_LOC,text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
+		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.TAB);
 		driver.waitForPageLoad();
 		driver.waitForCRMLoadingImageToDisappear();
 	}

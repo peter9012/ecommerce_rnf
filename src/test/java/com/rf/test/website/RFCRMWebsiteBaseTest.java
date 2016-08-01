@@ -1,5 +1,6 @@
 package com.rf.test.website;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -88,17 +90,33 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 		logger.info("login button clicked");		
 	}
 
-	//	@AfterMethod
-	//	public void tearDownAfterMethod(){
-	//		driver.manage().deleteAllCookies();
-	//		if(driver.getURL().contains("salesforce")==true){
-	//			try{
-	//				crmLogout();
-	//			}catch(Exception e){
-	//
-	//			}
-	//		}
-	//	}
+		@AfterMethod
+		public void tearDownAfterMethod() throws Exception{
+			
+			if(driver.getURL().contains("salesforce")==true){
+				try{
+					crmLogout();
+					driver.quit();
+				}catch(Exception e){
+	
+				}
+			}
+			driver.pauseExecutionFor(1000);
+			driver.loadApplication();                               
+			logger.info("Application loaded");                                                            
+			driver.setDBConnectionString();
+			driver.pauseExecutionFor(1000);
+			driver.get(driver.getURL());
+			driver.pauseExecutionFor(1000);
+			loginUser(TestConstants.CRM_LOGIN_USERNAME, TestConstants.CRM_LOGIN_PASSWORD);
+			String country = driver.getCountry();		             
+
+			if(country.equalsIgnoreCase("ca"))
+				countryId = "40";
+			else if(country.equalsIgnoreCase("us"))
+				countryId = "236";            
+			setStoreFrontPassword(driver.getStoreFrontPassword());
+		}
 
 	/**
 	 * @throws Exception
@@ -116,10 +134,12 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 
 	public void crmLogout(){
 		driver.switchTo().defaultContent();
-		driver.quickWaitForElementPresent(By.id("userNavLabel"));
+/*		driver.quickWaitForElementPresent(By.id("userNavLabel"));
 		driver.click(By.id("userNavLabel"));
 		driver.waitForElementPresent(By.id("app_logout"));
-		driver.click(By.id("app_logout"));
+		driver.click(By.id("app_logout"));*/
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='app_logout']")));
 		logger.info("Logout");
 		driver.pauseExecutionFor(3000);
 	}

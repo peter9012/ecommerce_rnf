@@ -12,6 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -530,6 +532,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
 		driver.click(By.xpath(String.format(regimenLoc, regimen)));
 		logger.info("Regimen selected is: "+regimen);
+		driver.waitForPageLoad();
 	}
 
 	public void clickAddToCartBtn(){
@@ -541,12 +544,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
+			driver.waitForPageLoad();
 			
 		} catch (NoSuchElementException e) {
 			driver.findElement(ADD_TO_CART_BTN_LOC);
 			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
 			driver.click(ADD_TO_CART_BTN_LOC);
 			logger.info("Add to cart button is clicked");
+			driver.waitForPageLoad();
 		
 		}
 	}
@@ -638,6 +643,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.type(ADDRESS_LINE_1, addressLine1);
 		logger.info("Address line 1 entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
+		driver.findElement(ZIP_CODE).sendKeys(Keys.ENTER);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 		logger.info("Postal code entered as: "+postalCode);
@@ -680,6 +686,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.type(ADDRESS_LINE_1, addressLine1);
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
+		driver.findElement(ZIP_CODE).sendKeys(Keys.ENTER);
 		logger.info("Postal code entered as: "+postalCode);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		/*driver.click(CITY_DD);
@@ -690,6 +697,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
+		driver.waitForPageLoad();
 	}
 
 	public void clickCompleteEnrollmentBtn(){

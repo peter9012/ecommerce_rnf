@@ -138,6 +138,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify the note in account activity section present
 		s_assert.assertTrue(crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage().contains(orderNote),"Note text from UI is "+crmAccountDetailsPage.getNoteFromUIOnAccountDetailPage()+" While expected text is "+orderNote);
 		s_assert.assertAll();
+		
 	}
 
 	// Hybris Project-4507:Edit Preferred Customer Account details
@@ -873,7 +874,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//save Account information
 		crmAccountDetailsPage.clickSaveBtnUnderAccountDetail();
 		//verify respective account name should be updated in sales force
-		s_assert.assertTrue(crmAccountDetailsPage.getAccountName().contains(TestConstants.CRM_VALID_ACCOUNT_NAME),"Äccount name is not updated!!");
+		s_assert.assertTrue(crmAccountDetailsPage.getAccountName().contains(TestConstants.CRM_VALID_ACCOUNT_NAME),"ï¿½ccount name is not updated!!");
 		//Click edit account button under Account detail section
 		crmAccountDetailsPage.clickAccountDetailsButton("Edit Account");
 		//Edit Account Information by updating account name with single name

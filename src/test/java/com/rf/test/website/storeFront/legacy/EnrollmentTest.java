@@ -290,7 +290,8 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("PC Perks FAQs"),"PC Perks FAQs Status link is not present");
 		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Order History");
 		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyOrderHistoryPresent("Order History"),"section order history not present");
-		storeFrontLegacyPCUserPage.navigateToBackPage();
+		storeFrontLegacyPCUserPage.clickMyAccountLink();
+		//storeFrontLegacyPCUserPage.navigateToBackPage();
 		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Edit Order");
 		s_assert.assertTrue(storeFrontLegacyPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
 		storeFrontLegacyPCUserPage.clickMyAccountLink();

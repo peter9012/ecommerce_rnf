@@ -131,7 +131,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		logger.info("Continue button clicked on Autoship cart page");
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickCompleteOrderBtn(){

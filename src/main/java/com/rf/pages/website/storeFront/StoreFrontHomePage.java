@@ -4029,8 +4029,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean isSolutionToolContentBlockPresent() {
-		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
-		return driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+		//https://bhopkins.myrfostg2.com/ca/dynamic/url/solutionTool
+		driver.waitForElementPresent(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));///div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+		return driver.isElementPresent(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));
 	}
 
 

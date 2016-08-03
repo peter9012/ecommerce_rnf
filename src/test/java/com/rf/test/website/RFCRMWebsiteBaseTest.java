@@ -96,6 +96,7 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 			if(driver.getURL().contains("salesforce")==true){
 				try{
 					crmLogout();
+					driver.pauseExecutionFor(1000);
 					driver.quit();
 				}catch(Exception e){
 	

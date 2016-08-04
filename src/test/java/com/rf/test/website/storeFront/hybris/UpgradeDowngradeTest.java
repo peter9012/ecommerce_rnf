@@ -2355,7 +2355,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
 		String qty = "10";
-		String increasedQty = "12";
+		String increasedQty = "50";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_RFO,countryId),RFO_DB);
@@ -2384,8 +2384,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected for rc user");
 		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
 		s_assert.assertTrue(storeFrontHomePage.isPopUpForPCThresholdPresent(),"Threshold poup for PC validation NOT present");
-		storeFrontHomePage.addQuantityOfProduct(qty);
-		storeFrontHomePage.addQuantityOfProductTillThresholdPopupDisappear(increasedQty);
+		storeFrontHomePage.addQuantityOfProduct(increasedQty);
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains(TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED),"auto ship update cart message from UI is "+storeFrontHomePage.getAutoshipTemplateUpdatedMsg()+" while expected msg is "+TestConstants.AUTOSHIP_TEMPLATE_PRODUCT_ADDED);
 		storeFrontHomePage.clickOnCheckoutButton();
 		storeFrontHomePage.enterMainAccountInfoAndClearPreviousField();

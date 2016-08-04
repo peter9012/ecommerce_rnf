@@ -120,7 +120,7 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
 		storeFrontLegacyHomePage.clickContinueBtn();
 		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
-		storeFrontLegacyHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontLegacyHomePage.enterBillingInfoDetailsForRC(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontLegacyHomePage.clickContinueBtn();
 		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
 		storeFrontLegacyHomePage.clickCompleteOrderBtn();

@@ -484,7 +484,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 			logger.info("save shipping info clicked");
 		}catch(Exception e){
-			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+			//action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+			//driver.click(By.id("saveShippingInfo"));
+			action.doubleClick(driver.findElement(By.id("saveShippingInfo")));
 		}  
 		logger.info("Next button on shipping address clicked");  
 		driver.waitForLoadingImageToDisappear();
@@ -783,6 +785,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.id("pc-customer2-div-order-summary"));
 		driver.click(By.id("pc-customer2-div-order-summary"));
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void checkIAcknowledgePCAccountCheckBox(){
@@ -898,26 +901,27 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-		//		driver.type(By.id("first-Name"),firstName);
-		//		logger.info("first name entered as "+firstName);
-		//		driver.type(By.id("last-name"),lastName);
-		//		logger.info("last name entered as "+lastName);
+		//  driver.type(By.id("first-Name"),firstName);
+		//  logger.info("first name entered as "+firstName);
+		//  driver.type(By.id("last-name"),lastName);
+		//  logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
-
 			driver.findElement(By.id("email-account")).sendKeys(pcmailid+"\t");
+			driver.findElement(By.id("password")).click();
 			logger.info("email entered as "+pcmailid);
 		}else if(userid.equalsIgnoreCase("rc")){
 			randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "Username"));
-
 			driver.findElement(By.id("email-account")).sendKeys(rcmailid+"\t");
+			driver.findElement(By.id("password")).click();
 			logger.info("email entered as "+rcmailid);
 		}else{
 			randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "Username"));
 			driver.findElement(By.id("email-account")).sendKeys(consultantmailid+"\t");
+			driver.findElement(By.id("password")).click();
 			logger.info("email entered as "+consultantmailid);
 		}
 		//driver.pauseExecutionFor(2000);
@@ -925,7 +929,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		return driver.isElementPresent(By.xpath("//div[@class='fancybox-inner']"));
 	}
-
 
 	public boolean validateSendMailToResetMyPasswordFunctionalityPC(){
 		driver.waitForElementPresent(By.xpath("//div[@id='activePCPopup']//input[contains(@class,'resetPasswordEmail')]"));
@@ -1108,7 +1111,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickCheckMyPulseLinkPresentOnWelcomeDropDown(){
-/*		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
+		/*		driver.waitForElementPresent(By.xpath("//a[text()='Check My Pulse']"));
 		WebElement element = driver.findElement(By.xpath("//a[text()='Check My Pulse']"));
 		JavascriptExecutor executor = (JavascriptExecutor)RFWebsiteDriver.driver;
 		executor.executeScript("arguments[0].click();", element);*/
@@ -1126,7 +1129,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
 		driver.pauseExecutionFor(2000);
-/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
 		if(driver.isElementPresent(By.xpath("//nav[@class='row navbar navbar-inverse hidden-xs']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
@@ -1135,7 +1138,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			WebElement allProducts = driver.findElement(By.xpath("//nav[@class='row navbar navbar-inverse hidden-xs']//a[text()='All Products']"));
 			/*actions.moveToElement(allProducts).pause(1000).build().perform();*/
 			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();", allProducts);
-/*			while(true){
+			/*			while(true){
 				try{
 					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 					break;
@@ -1156,9 +1159,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("our-products")); 
-/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
 		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
-		
+
 		driver.pauseExecutionFor(2000);
 		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
@@ -1181,7 +1184,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public void ClickAllProductsLinks(){
 		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
 			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
@@ -1189,15 +1192,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}else{
 			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
 			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
-			
+
 			while(true){
 				try{
-					
+
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
 					break;
 				}catch(Exception e){
 					System.out.println("element not clicked..trying again");
-					
+
 
 				}
 			}
@@ -1206,10 +1209,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
-		
+
 	}
-	
-	
+
+
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
@@ -1546,8 +1549,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
 				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
 			}
-  
+
 		}
+		driver.pauseExecutionFor(5000);
 		driver.waitForPageLoad();
 	}
 
@@ -1762,9 +1766,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		boolean status = false;
 		//click learn more..	
 		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");
-//		
-//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		
+		//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
 		if(driver.getCountry().equalsIgnoreCase("us")){
@@ -1898,7 +1902,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
-	
+
 	public boolean isSearchedSponsorIdPresentInSearchList(String CID){
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//li[contains(text(),'"+CID+"')]"));
@@ -1914,7 +1918,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.type(By.id("quantity1"),qty);
 		logger.info("quantity added is "+qty);
 		driver.click(By.xpath("//form[@id='updateCartForm1']/a"));
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(4000);
 		logger.info("Update button clicked after adding quantity");
 		driver.waitForPageLoad();
 	}

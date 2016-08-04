@@ -88,19 +88,19 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
-			
+
 		} catch (NoSuchElementException e) {
 			driver.findElement(ADD_TO_CART_BTN_LOC);
 			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
 			driver.click(ADD_TO_CART_BTN_LOC);
 			logger.info("Add to cart button is clicked");
-		
+
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 	}
 	public void mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn(){
 		actions =  new Actions(RFWebsiteDriver.driver);
@@ -119,19 +119,21 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(ORDER_CONFIRMATION_THANK_YOU_TXT);
 		return driver.isElementPresent(ORDER_CONFIRMATION_THANK_YOU_TXT);
 	}
+
 	public void clickCheckoutBtn(){
-		driver.quickWaitForElementPresent(CHECKOUT_BTN);
+		driver.waitForElementPresent(CHECKOUT_BTN);
 		driver.click(CHECKOUT_BTN);
 		logger.info("Checkout button clicked");
+		driver.pauseExecutionFor(5000);
 		driver.waitForPageLoad();
 	}
 
 	public void clickContinueBtn(){
-		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
+		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		logger.info("Continue button clicked on Autoship cart page");
-		driver.waitForPageLoad();
 		driver.pauseExecutionFor(5000);
+		driver.waitForPageLoad();
 	}
 
 	public void clickCompleteOrderBtn(){

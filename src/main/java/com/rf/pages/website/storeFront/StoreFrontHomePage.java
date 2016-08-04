@@ -189,7 +189,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-	
+
 	public void mouseHoverSponsorInResultAndClickContinue(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
@@ -198,7 +198,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//input[contains(@value,'Select')]"));
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public boolean isSponsorPresentInSearchResult(){
 		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
@@ -208,11 +208,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']")); 
 		WebElement shopSkinCare = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[@id='corp-opp']"));
-	     ((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", shopSkinCare);
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", shopSkinCare);
 		//actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
 		WebElement allProducts = driver.findElement(By.xpath("//*[@id='header']/nav/div/div[1]//a[text()='Enroll Now']"));
 
-		 ((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", allProducts);
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", allProducts);
 		//allProducts.click();//actions.moveToElement(allProducts).pause(1000).build().perform();
 		while(true){
 			try{
@@ -300,11 +300,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.type(By.id("last-name"),lastName);
 	}
 
-	public void enterEmailAddress(String emailAddress){	
+	public void enterEmailAddress(String emailAddress){ 
 		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
 		logger.info("email Address of the user is "+emailAddress);
-		driver.findElement(By.xpath("//*[@id='new-password-account']")).click();
+		try{
+			driver.findElement(By.xpath("//*[@id='new-password-account']")).click();
+		}catch(Exception e){
+			driver.findElement(By.id("password")).click();
+		}
 		driver.waitForSpinImageToDisappear();
 	}
 
@@ -408,7 +412,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsNotSelected(){
-				driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]/input"));
+		driver.waitForElementPresent(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]/input"));
 		return !driver.findElement(By.xpath("//li[contains(text(),'Yes, subscribe me to Pulse Pro')]/preceding::div[contains(@class,'repaired-checkbox')]/input")).getAttribute("class").contains("checked");
 	}
 
@@ -480,7 +484,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			}
 		}
 	}
-	
+
 	public boolean verifyAndClickAcceptOnQASPopup(){
 		try{
 			driver.waitForLoadingImageToDisappear();
@@ -1427,7 +1431,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String getThresholdMessageIsDisplayed(){
 		driver.pauseExecutionFor(3000);
-				try{
+		try{
 			driver.quickWaitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 			return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText();
 		}catch(NoSuchElementException e){
@@ -1509,8 +1513,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnContinueShoppingLinkOnEmptyShoppingCartPage(){
-		driver.waitForElementPresent(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
-		driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
+		try{
+			driver.waitForElementPresent(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
+			driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
+			driver.click(By.xpath("//input[@value='ADD MORE ITEMS']"));
+		}
 		driver.waitForPageLoad();
 	}
 
@@ -1974,8 +1983,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//ul[@id='subtotal']/li/span[1]")); 
 		String productCount=driver.findElement(By.xpath("//ul[@id='subtotal']/li/span[1]")).getText();
-//		Boolean bCount;
-//		if productCoun
+		//		Boolean bCount;
+		//		if productCoun
 		return productCount!="0";
 	}
 
@@ -2545,6 +2554,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li[1]"));
 		String productNameFromfilter = driver.findElement(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[contains(@class,'dropdown-items text')]")).getText().trim();
 		driver.click(By.xpath("//ul[contains(@class,'refine-products')][contains(@style,'display: block;')]/li["+i+"]//div[@class='pull-right']//input/.."));
+		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();
 		String productNameFromUI = driver.findElement(By.xpath("//div[@class='quick-shop-section-header']/h2")).getText().trim();
 		driver.click(By.xpath("//a[contains(text(),'Clear All')]"));
@@ -2695,7 +2705,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//a[text()='CANCEL']"));
 		driver.click(By.xpath("//div[contains(@class,'top-save')]//a[text()='CANCEL']"));
 		driver.pauseExecutionFor(1000);
-		
+
 	}
 
 	public boolean validateSubmissionGuideLinesLink(){
@@ -3347,6 +3357,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public double getProductPricingOnSummaryPage(){
+		driver.pauseExecutionFor(10000);
 		double productpricing=0.00;
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='module-subtotal']/div[contains(text(),'Subtotal')]/following-sibling::div/span"));
 		String productPricing=driver.findElement(By.xpath("//div[@id='module-subtotal']/div[contains(text(),'Subtotal')]/following-sibling::div/span")).getText();
@@ -3365,7 +3376,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		if(driver.isElementPresent(By.xpath("//input[@id='pc-customer2' and @disabled='']/.."))){
 			driver.click(By.xpath("//input[@id='pc-customer2' and @disabled='']/.."));
 			driver.waitForPageLoad();
-			driver.pauseExecutionFor(1500);
+			driver.pauseExecutionFor(5000);
 		}
 	}
 
@@ -4047,8 +4058,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean isAccessSolutionToolPresent() {
 		boolean status = false;
 		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");
-//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		if(driver.getCurrentUrl().contains("solutiontool") && driver.isElementPresent(By.id("mirror"))){
 			status = true;
@@ -4116,7 +4127,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String value= driver.findElement(By.xpath("//span[@id='deliveryCost']")).getText();
 		return !(value==null);
 	}
-	
+
 	public String getNameFromContactBox(){
 		String fullname =  driver.findElement(By.xpath("//div[@class='content-header-filled txtConsultantName']")).getText();
 		return fullname;
@@ -4167,6 +4178,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
 		driver.click(By.xpath("//span[@class='icon-close']"));
 	}
-	
+
 
 }

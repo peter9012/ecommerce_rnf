@@ -392,7 +392,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Quick shop products are displayed");
 
 		//Select a product with the price less than $80 and proceed to buy it
-		storeFrontHomePage.applyPriceFilterLowToHigh();
+		//storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
 
 		//Cart page is displayed?

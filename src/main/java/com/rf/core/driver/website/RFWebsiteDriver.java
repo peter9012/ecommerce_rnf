@@ -532,7 +532,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getCurrentUrl() {
-		return driver.getCurrentUrl();
+		String currentURL = driver.getCurrentUrl();
+		logger.info("current URL is "+currentURL);
+		return currentURL;
 	}
 
 	public String getTitle() {

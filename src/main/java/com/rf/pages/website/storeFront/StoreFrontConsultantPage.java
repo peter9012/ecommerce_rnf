@@ -171,7 +171,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyDefaultContentReseted() {
 		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
 		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]")).getText();
-		if(content.contains("I am proud to represent Rodan + Fields")){
+		if(content.contains("Rodan + Fields has brought confidence, freedom, connections and fun into my life.")){
 			return true;
 		}
 		return false;

@@ -387,27 +387,17 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		//Add multiple quantities of multiple product in the cart
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
-		//update qty to 2 of the first product
+		//update qty to 3 of the first product
 		storeFrontHomePage.addQuantityOfProduct("3"); 
 		//add another product in the cart
 		storeFrontHomePage.addAnotherProduct();
-
-		//update qty to 2 of the second product
+		//update qty to 3 of the second product
 		storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("3"); 
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
@@ -427,13 +417,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//validate empty shopping cart page is displayed
 		storeFrontHomePage.validateEmptyShoppingCartPageIsDisplayed();
 		//click on continue shopping link
-		storeFrontHomePage.clickOnContinueShoppingLinkOnEmptyShoppingCartPage();
+		storeFrontHomePage.clickOnAddMoreItemsBtn();
 		//Select a product  and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");

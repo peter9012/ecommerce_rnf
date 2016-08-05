@@ -1503,6 +1503,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
 		driver.waitForPageLoad();
 	}
+	
+	public void clickOnAddMoreItemsBtn(){
+		driver.waitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
+		driver.click(By.xpath("//input[@value='ADD MORE ITEMS']"));
+		driver.waitForPageLoad();
+	}
 
 	public void addSecondProduct(){
 		driver.pauseExecutionFor(3000);
@@ -2120,11 +2126,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
-		}catch(NoSuchElementException e){
+		}catch(Exception e){
 			driver.type(By.id("sponserparam"),sponsor);
 		}
 		try{

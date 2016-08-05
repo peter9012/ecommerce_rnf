@@ -8,10 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -119,7 +121,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
-	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//a[@href='/NewEnrollment/SearchSponsor']");
+	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//*[@id='nav']/div/ul/li[2]/ul/li[2]/a/span");
 	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
 
 	private static final By ADD_TO_CART_BTN = By.id("addToCartButton");//"//a[text()='Add to Cart']");
@@ -473,9 +475,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	public void clickEnrollNowBtnOnbizPWSPage(){
 		//driver.get(driver.getCurrentUrl()+"/Pages/BusinessSystem/WhyRF/GettingStarted");
-		driver.click(BECOME_A_CONSULTANT_MENU);
 //		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
-		driver.click(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
+		WebElement enrollnow = driver.findElement(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
+		JavascriptExecutor executor = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		executor.executeScript("arguments[0].click();", enrollnow);
 //		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
 		logger.info("Enroll Now button on biz PWS page is clicked");
 		driver.waitForPageLoad();
@@ -1463,9 +1466,16 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickHeaderLinkAfterLogin(String linkName) {
-		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		logger.info("my account link is clicked");
+		try{
+			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			logger.info("my account link is clicked");
+		}
+		catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			driver.click(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			logger.info("my account link is clicked");
+		}
 	}
 
 	public void clickEditOrderLink(){

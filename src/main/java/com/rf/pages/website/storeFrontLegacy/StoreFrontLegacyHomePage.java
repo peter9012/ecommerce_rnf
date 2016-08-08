@@ -547,11 +547,21 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
 			
-		} catch (NoSuchElementException e) {
-			driver.findElement(ADD_TO_CART_BTN_LOC);
-			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
-			driver.click(ADD_TO_CART_BTN_LOC);
-			logger.info("Add to cart button is clicked");
+		} catch (NoSuchElementException e1) {
+			try{
+				driver.findElement(ADD_TO_CART_BTN_LOC);
+				driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
+				driver.click(ADD_TO_CART_BTN_LOC);
+				logger.info("Add to cart button is clicked");
+			}
+			catch(NoSuchElementException e2)
+			{
+				driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
+				driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
+				logger.info("Add to cart button is clicked");
+				
+			}
+
 		
 		}
 	}

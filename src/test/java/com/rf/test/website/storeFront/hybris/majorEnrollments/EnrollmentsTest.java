@@ -184,8 +184,16 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
-		s_assert.assertAll(); 
+		if(driver.getCurrentUrl().contains("qa"))
+		{
+			s_assert.assertAll();
+		}
+		else
+		{
+			s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
+			s_assert.assertAll(); 
+		}
+
 	}
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment

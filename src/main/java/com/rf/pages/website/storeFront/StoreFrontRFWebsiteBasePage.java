@@ -39,7 +39,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
-	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.xpath("//*[@id='account-info-dropdown']/ul[1]/li[5]/a");
+	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.xpath("//*[@id='account-info-dropdown']/ul[1]/li[4]/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[@class='add-new-shipping-address']");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
@@ -232,6 +232,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		//driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
@@ -265,8 +266,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 		applyPriceFilterHighToLow();
 		driver.waitForPageLoad();
-		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));		
+		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][3]"));
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][3]"));  
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -1400,7 +1401,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		catch(Exception e){
 			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']/ul/li/ul[1]/li[5]/a")));
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']/ul/li/ul[1]/li[4]/a")));
 		}
 		logger.info("User has clicked on billing link from welcome drop down");
 		driver.waitForPageLoad();
@@ -1429,7 +1430,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			logger.info("Ads new shipping profile link clicked");
 		}
 	}
-	
+
 	public void enterNewShippingAddressPostalCode(String postalCode){
 		driver.type(By.id("postcode"),postalCode);
 	}

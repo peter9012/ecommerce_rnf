@@ -302,8 +302,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnCheckoutButton(){
-		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
-		driver.click(By.xpath("//input[@value='CHECKOUT']"));
+		WebElement allProducts = driver.findElement(By.xpath("//input[@value='CHECKOUT']"));
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript("arguments[0].click();", allProducts);
+		//driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
+		//driver.click(By.xpath("//input[@value='CHECKOUT']"));
 		logger.info("checkout button clicked");
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));

@@ -2011,7 +2011,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		else{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img")); 
 			WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img"));
-			actions.moveToElement(allProducts).build().perform();
+			String strJavaScript = "var element = arguments[0];"
+					+ "var mouseEventObj = document.createEvent('MouseEvents');"
+					+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+					+ "element.dispatchEvent(mouseEventObj);";
+			JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+			js.executeScript(strJavaScript, allProducts);
+			//actions.moveToElement(allProducts).build().perform();
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
 			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
 			driver.pauseExecutionFor(5000);
@@ -2428,15 +2434,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	}
 
-	public void mouseHoverProductAndClickQuickInfo(int num){		
+	public void mouseHoverProductAndClickQuickInfo(int num){  
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]")); 
 		WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]"));
-		actions.moveToElement(allProducts).build().perform();
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		//actions.moveToElement(allProducts).build().perform();
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
 		driver.click(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
 		driver.pauseExecutionFor(5000);
-
 	}
 
 	public boolean verifyAddToPCPerksButtonOnQuickInfoPopup(){

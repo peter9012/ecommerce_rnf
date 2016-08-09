@@ -1061,11 +1061,17 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
 
 		while(true){
+			String finalTotal =null;
 			storeFrontConsultantPage.addQuantityOfProduct(quantity);
 			String total = storeFrontUpdateCartPage.getTotalPriceOfProduct();
+			logger.info("total product price is "+total);
 			String orderTotal = total.split("\\$")[1].trim();
-			String[] getTotal = orderTotal.split("\\,");
-			String finalTotal = getTotal[0]+getTotal[1];
+			if(orderTotal.contains(",")){
+				String[] getTotal = orderTotal.split("\\,");
+				finalTotal = getTotal[0]+getTotal[1];
+			}else{
+				finalTotal = orderTotal;
+			}
 			System.out.println("Order total for consultant"+finalTotal);
 			double totalFromUI = Double.parseDouble(finalTotal);
 			if(totalFromUI<1000){
@@ -1111,11 +1117,17 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage.clickAddToBagButton(driver.getCountry());
 
 		while(true){
+			String finalTotal =null;
 			storeFrontPCUserPage.addQuantityOfProduct(quantity);
 			String total = storeFrontUpdateCartPage.getTotalPriceOfProductForPC();
+			logger.info("total product price for pc is "+total);
 			String orderTotal = total.split("\\$")[1].trim();
-			String[] getTotal = orderTotal.split("\\,");
-			String finalTotal = getTotal[0]+getTotal[1];
+			if(orderTotal.contains(",")){
+				String[] getTotal = orderTotal.split("\\,");
+				finalTotal = getTotal[0]+getTotal[1];
+			}else{
+				finalTotal=orderTotal;
+			}
 			System.out.println("Order total for consultant"+finalTotal);
 			double totalFromUI = Double.parseDouble(finalTotal);
 			if(totalFromUI<1000){
@@ -1628,7 +1640,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
-//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -2611,7 +2623,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());

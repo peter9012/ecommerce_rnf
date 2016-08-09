@@ -30,10 +30,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	private final By CONSULTANT_VALIDATION_POPUP_LESS_THAN_6_MONTH = By.xpath("//div[@id='inactiveConsultant180Popup']/div/div");
 	private final By LOGIN_BTN_LOC = By.cssSelector("input[value='SIGN IN']");
 	//private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//div[@id='sponsorPage']/div/div/div[2]/div/div[1]/a");
-	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don�t Have an R+F Sponsor?')]");
+	private final By FIELD_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Don't Have an R+F Sponsor?')]");
 	private final By CONFIRMATION_MESSAGE_LOC = By.xpath("//div[@id='sponsorPopup']/div/h2");
 	private final By FORGOT_PASSWORD_LOC=By.xpath("//div[@id='header']//a[@id='show-recover-pass']");
-	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now �')]");
+	private final By SIGN_UP_LINK_LOC=By.xpath("//div[@id='header']//a[contains(text(),'Sign up now')]");
 	private final By POLICY_AND_PROCEDURE_LINK=By.xpath("//div[@id='disclaimer']//a[contains(text(),'Policies and Procedures')]");
 	private String addressLine1=null;
 	private String city=null;
@@ -42,7 +42,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-
 
 	public StoreFrontConsultantPage loginAsConsultant(String username,String password){
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
@@ -3303,7 +3302,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void hitBrowserBackBtn(){
 		driver.pauseExecutionFor(1000);
-		driver.navigate().back();
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.back");
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.go(-1)");
+		//driver.navigate().back();
 		driver.waitForPageLoad();
 	}
 

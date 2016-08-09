@@ -1419,8 +1419,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address ï¿½']"));
-			driver.click(By.xpath("//a[text()='Add new shipping address ï¿½']"));
+			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
+			driver.click(By.xpath("//a[text()='Add new shipping address »']"));
 			logger.info("Ads new shipping profile link clicked");
 		}
 		catch(NoSuchElementException e){
@@ -1429,7 +1429,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			logger.info("Ads new shipping profile link clicked");
 		}
 	}
-
+	
 	public void enterNewShippingAddressPostalCode(String postalCode){
 		driver.type(By.id("postcode"),postalCode);
 	}

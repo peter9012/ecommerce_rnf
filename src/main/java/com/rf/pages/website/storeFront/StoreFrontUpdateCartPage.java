@@ -130,8 +130,16 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.id("use_address"));
 		//driver.pauseExecutionFor(2000);
-		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();		
-		action.moveToElement(driver.findElement(By.id("use_address"))).click(driver.findElement(By.id("use_address"))).build().perform();
+		WebElement allProducts = driver.findElement(By.id("use_address"));
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		js.executeScript("arguments[0].click();", allProducts);
+		//action.moveToElement(driver.findElement(By.xpath("//input[@id='use_address']"))).double.build().perform();  
+		//action.moveToElement(driver.findElement(By.id("use_address"))).click(driver.findElement(By.id("use_address"))).build().perform();
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 		//driver.pauseExecutionFor(2000);
@@ -1251,12 +1259,19 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		String methodNameFromUI = null;
 		driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'Shipping Method')]/ancestor::p[1]"));
 		String[] methodName = driver.findElement(By.xpath("//span[contains(text(),'Shipping Method')]/ancestor::p[1]")).getText().split("\\:");
+		logger.info("shipping method name  "+methodName[1]);
 		if(methodName[1].contains("Ground")){
 			methodNameFromUI = methodName[1].split("\\)")[0]+")";
+			logger.info("shipping method name for assertion "+methodNameFromUI);
 		}
 		if(methodName[1].contains("2Day")){
 			String[] shippingMethod = methodName[1].split("\\ ");
 			methodNameFromUI = shippingMethod[0]+" "+shippingMethod[1];
+			logger.info("shipping method name for assertion "+methodNameFromUI);
+		}if(methodName[1].contains("Standard")){
+			String[] shippingMethod = methodName[1].split("\\ ");
+			methodNameFromUI = shippingMethod[0]+" "+shippingMethod[1]+" "+shippingMethod[2];
+			logger.info("shipping method name for assertion "+methodNameFromUI);
 		}
 		return selectedShippingMethod.contains(methodNameFromUI.trim());
 	}

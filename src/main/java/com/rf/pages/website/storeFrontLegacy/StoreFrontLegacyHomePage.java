@@ -672,6 +672,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+		driver.pauseExecutionFor(2000);
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		//driver.type(ATTENTION_FIRST_NAME, firstName);

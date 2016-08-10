@@ -262,6 +262,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By TOTAL_ROWS_ON_ORDER_HISTORY_PAGE = By.xpath("//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr");
 	private static final By ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']//cufontext[contains(text(),'Order')]/../following-sibling::cufon/cufontext[text()='Details']");
 	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']/following::cufontext[text()='X']/..");
+	private static final By CONNECT_WITH_A_CONSULTANT = By.cssSelector("a[href*='LocatePWS']");
+	private static final By CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING = By.cssSelector("a[href*='directselling']");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -1074,7 +1076,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Clicke here link clicked");
 		driver.waitForPageLoad();
 	}
-
+	
 	public boolean isClickHereLinkRedirectinToAppropriatePage(String redirectedPageLink){
 		driver.waitForPageLoad();
 		Set<String> set=driver.getWindowHandles();
@@ -1911,4 +1913,20 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.waitForPageLoad();
 		return fetchPWS;
 	}
+	
+	public void clickConnectWithAConsultant(){
+		driver.waitForElementPresent(CONNECT_WITH_A_CONSULTANT);
+		driver.click(CONNECT_WITH_A_CONSULTANT);
+		logger.info("Connect with a consultant");
+	}
+	
+	public void clickClickhereLinkToLearnDirectSelling(){
+		driver.quickWaitForElementPresent(CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING);
+		driver.click(CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING);
+		logger.info("Click here link clicked");
+		logger.info("Redirect to direct selling page");
+		driver.waitForPageLoad();
+	}
+	
+	
 }

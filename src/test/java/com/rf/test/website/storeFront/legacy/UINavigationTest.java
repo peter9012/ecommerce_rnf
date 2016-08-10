@@ -498,8 +498,9 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	@Test
 	public void testCorporateBusinessSystemDirectSelling(){
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBeAConsultantBtn();
-		storeFrontLegacyHomePage.clickClickhereLink();
+		storeFrontLegacyHomePage.clickAboutRFBtn();
+		/*storeFrontLegacyHomePage.clickClickhereLink();*/
+		storeFrontLegacyHomePage.clickClickhereLinkToLearnDirectSelling();
 		s_assert.assertTrue(storeFrontLegacyHomePage.isClickHereLinkRedirectinToAppropriatePage("directselling.org"), "Click here link of business system is not redirecting to http://directselling.org/ page");
 		s_assert.assertAll();
 	}
@@ -812,8 +813,9 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void testCorporateFindAConsultant(){
 		String expectedURL = "LocatePWS.aspx?fromHome=1";
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickHomeTabBtn();
-		storeFrontLegacyHomePage.clickFindAConsultantImageLink();
+		/*storeFrontLegacyHomePage.clickHomeTabBtn();*/
+		/*storeFrontLegacyHomePage.clickFindAConsultantImageLink();*/
+		storeFrontLegacyHomePage.clickConnectWithAConsultant();
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
